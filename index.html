@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>ImAc Player</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0, shrink-to-fit=no">
+	<meta name="mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/index.css">
+
+
+	<script src="js/lib/jquery-3.2.1.min.js"></script>
+
+	<script src="js/lib/bootstrap.min.js"></script>	
+
+	<script src="js/lib/three.js"></script>
+	<script src="js/lib/StereoEffect.js"></script>
+	<script src="js/lib/omnitone_i2cat.js"></script>
+	<script src="js/lib/webvr-polyfill2.js"></script>
+	<script src="js/lib/bogJS-latest.js"></script>
+	<script src="js/lib/sax.js"></script>
+    <script src="js/lib/imsc.js"></script>
+
+	<script src="js/Scene_Generators/AplicationManager.js"></script>
+	<script src="js/Scene_Generators/SubtitleManager.js"></script>
+	<script src="js/Scene_Generators/MediaObject.js"></script>
+
+	<script src="js/controllers/DeviceOrientationAndTouchController.js"></script>
+	<script src="js/controllers/FullScreenController.js"></script>
+	<script src="js/controllers/VREffect.js"></script>
+
+	<script src="js/vr/WebVR.js"></script>
+	<script src="js/vr/DaydreamController.js"></script>
+
+	<script src="js/Utils/elementsGenerator.js"></script>
+	<script src="js/Utils/utils.js"></script>
+
+	<script src="js/preTest.js"></script>
+	<script src="js/index.js"></script>
+
+</head>
+
+<body onload="init_webplayer()">
+	<div id="header">
+		<!--img id="imac_logo" src="img/LOGO-IMAC.png" alt="imac-logo"-->
+	</div>
+
+	<div  id="content_area" class="col-xs-12">
+		<h2>Pre-Test</h2>
+		<div class="col-xs-9">
+			<div class="list-group" id="list_group"></div>
+		</div>
+		<div class="col-xs-3 options">
+			<h4>Subtitle Language</h4>
+			<form id="myform">
+				<label for="catala"><b> Català: </b></label>
+				<input type="radio" name="lang" id="catala" value="catala" checked><br>
+				<label for="deutsch"><b> Deutsch: </b></label>
+				<input type="radio" name="lang" id="deutsch" value="deutsch">
+			</form>
+		</div>
+	</div>
+
+	<div id="container"></div>
+</body>	
+</html>

@@ -1,0 +1,129 @@
+html {
+  background-color: #FFFFFF;  
+}
+
+#header {
+  text-align: center;
+}
+
+#imac_logo{
+	margin-top:8px;
+	margin-bottom: 5px;
+	width: 14%;
+}
+
+#content_area { 
+	background-color : #F1F1F1;
+	padding-top: 8px;
+	border-radius: 8px;
+}
+
+.list-group {
+    padding-left: 0;
+    overflow-y: auto;
+    text-align: center;
+    font-size: 1.5rem;
+}
+
+.img-container-4 p {
+  margin: .5rem .5rem 2rem .5rem;
+}
+
+@media screen and (max-width: 650px) {
+
+  .list-group p, .checkbox label, .checkbox caption {
+    font-size: 0.8em;
+  }
+  .col-xs-6 {
+    padding: 0 .5rem;
+  }
+}
+
+.list-group img {
+    width: 95%;
+    height: 9vw;
+    border-style: ridge;
+    border-color: #2581c4;
+    border-radius: 2%;
+    cursor: pointer;
+}
+
+.img-container-4 {
+  width: 33.33%;
+  float: left;
+}
+
+#container {
+  position: relative;
+	background-color: black;
+  display: none; 
+  width:100%;
+}
+
+#webglContainer {
+    position: absolute;
+    width: 100%;
+    pointer-events: none;   /* this element will not catch any events */
+    z-index: 10;    /* position this canvas at bottom of the other one */
+}
+
+#threeContainer {
+    position: absolute;
+    z-index: 8;      /* position this canvas on top of the other one */
+}
+
+.containerList {
+	padding-right: 15px;
+	padding-left: 15px;
+	margin-right: 10%;
+	margin-left: 10%;
+}
+
+/*-------------------------------------------------------------------*/
+#main {
+  position: absolute;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  z-index: 2147483647  !important;
+}
+
+#main2 {
+  position: absolute;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  z-index: 2147483647  !important;
+}
+
+h2, h4 {
+  color: black;
+  text-align: center;
+}
+
+label {
+  font-weight: normal;
+}
+
+.subtitle-image {
+  width: 10%;
+  float: right;
+  display: block;
+  visibility: hidden;
+}
+
+.subtitle-image.left {
+  float: left;
+}
+
+
+.options {
+  text-align: center;
+}
+

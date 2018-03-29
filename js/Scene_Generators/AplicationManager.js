@@ -64,10 +64,17 @@ function AplicationManager ()
 		container = document.getElementById( 'container' );
 	
         camera = new THREE.PerspectiveCamera( 60.0, window.innerWidth / window.innerHeight, 0.05, 100 );
-        camera.lookAt(new THREE.Vector3(0,0,0));
+        //camera.lookAt(new THREE.Vector3(0,0,0));
+
+        this.CameraPatherObject = new THREE.Object3D();
+		this.CameraPatherObject.lookAt(new THREE.Vector3(0,0,0));
+		this.CameraPatherObject.add(camera);
 
 		scene = new THREE.Scene();
-		scene.add(camera);
+		scene.add(this.CameraPatherObject);
+
+		//scene = new THREE.Scene();
+		//scene.add(camera);
 
 		renderer = new THREE.WebGLRenderer({
 			antialias:true,
@@ -97,7 +104,7 @@ function AplicationManager ()
 		       		haveVrDisplay = true;
 		       		renderer.vr.enabled = true;
 
-		       		//camera.eulerOrder = 'ZXY';
+		       		CameraPatherObject.rotateY(Math.PI/2);
 
 			 		document.body.appendChild( WEBVR.createButton( renderer ) );    
 
@@ -109,7 +116,7 @@ function AplicationManager ()
 				}
 				else
 				{
-					camera.lookAt(new THREE.Vector3(-1,0,0));	
+					CameraPatherObject.lookAt(new THREE.Vector3(1,0,0));
 					startAllVideos();
 					isVRtested=true;
 

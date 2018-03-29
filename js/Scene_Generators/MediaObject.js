@@ -10,17 +10,15 @@ THREE.MediaObject = function () {
         subtitleMesh,
         subtitleFont;
 
-    function getVideObject(url, isDASH) 
+    function getVideObject(id, url, isDASH) 
     {
-        var vid = document.createElement( "video" );
-        
+        var vid = document.createElement( "video" );     
         vid.muted = true;
         vid.autoplay = true;
         vid.loop = true;
-
         vid.src = url;
 
-        var objVideo = { vid : vid };
+        var objVideo = { id: id, vid: vid };
 
         listOfVideoContents.push( objVideo );
 
@@ -29,7 +27,7 @@ THREE.MediaObject = function () {
 
     function getVideoMesh(geometry, url, name, order) 
     {
-        var texture = new THREE.VideoTexture( getVideObject( url ) );
+        var texture = new THREE.VideoTexture( getVideObject( name, url ) );
         texture.minFilter = THREE.LinearFilter;
         texture.format = THREE.RGBAFormat;
 
@@ -119,7 +117,7 @@ THREE.MediaObject = function () {
             // right compass
             var imgGeometry = new THREE.PlaneGeometry( 6.7, 6.7 );
             var compass = getImageMesh( imgGeometry, './img/compass.png', 'subIndicatorR', 4 );
-            compass.add( getBackgroundMesh ( 10.7, 8.7, t.backgroundColor, o) );
+            compass.add( getBackgroundMesh ( 10.7, 8.7, t.backgroundColor, o ) );
             compass.position.z = 0.01;
             compass.position.x = xMid/2 + 6.7;
             compass.visible = false;
@@ -129,7 +127,7 @@ THREE.MediaObject = function () {
             // lesft compass
             var imgGeometry = new THREE.PlaneGeometry( 6.7, 6.7 );
             var compass = getImageMesh( imgGeometry, './img/compass2.png', 'subIndicatorL', 4 );
-            compass.add( getBackgroundMesh ( 10.7, 8.7, t.backgroundColor, o) );
+            compass.add( getBackgroundMesh ( 10.7, 8.7, t.backgroundColor, o ) );
             compass.position.z = 0.01;
             compass.position.x = -(xMid/2 + 6.79);
             compass.visible = false;
@@ -141,7 +139,7 @@ THREE.MediaObject = function () {
         {
             // right arrow
             var arrow = getArrowMesh( 6.7, 6.7, t.color );
-            arrow.add( getBackgroundMesh ( 10.7, 8.7, t.backgroundColor, o) );
+            arrow.add( getBackgroundMesh ( 10.7, 8.7, t.backgroundColor, o ) );
             arrow.position.x = xMid/2 + 6.7;
             arrow.name = 'subIndicatorR';
 
@@ -150,7 +148,7 @@ THREE.MediaObject = function () {
             // left arrow
             var arrow = getArrowMesh( 6.7, 6.7, t.color );
             arrow.rotation.z = Math.PI;
-            arrow.add( getBackgroundMesh ( 10.7, 8.7, t.backgroundColor, o) );
+            arrow.add( getBackgroundMesh ( 10.7, 8.7, t.backgroundColor, o ) );
             arrow.position.x = -(xMid/2 + 6.7);
             arrow.name = 'subIndicatorL';
 
@@ -167,6 +165,18 @@ THREE.MediaObject = function () {
         mesh.visible = true;
 
         return mesh;
+    }
+
+    function removeContentById(id)
+    {
+        for (var i = 0, len = listOfVideoContents.length; i < len; i++)
+        {
+            if (listOfVideoContents[i].id == id)
+            {
+                listOfVideoContents.splice(i, 1);
+                break;
+            }
+        }
     }
 
     //************************************************************************************
@@ -283,6 +293,8 @@ THREE.MediaObject = function () {
         plane.position.x = config.x;
         plane.position.y = config.y;
 
+        plane.lookAt(new THREE.Vector3(0,0,0));
+
         signMesh = plane;
 
         camera.add(plane);
@@ -294,6 +306,8 @@ THREE.MediaObject = function () {
         var plane = getImageMesh( geometry, url, name, 5 );
         plane.position.z = -0.5;
         plane.visible = false;
+
+        plane.lookAt(new THREE.Vector3(0,0,0));
 
         imageMesh = plane;
 
@@ -313,10 +327,17 @@ THREE.MediaObject = function () {
 
             group.add(mesh);
         }
+
+        group.lookAt(new THREE.Vector3(0,0,0));
+        
         subtitleMesh = group;
 
         camera.add(group);
     };
+
+    //************************************************************************************
+    // Media Object Destructors
+    //************************************************************************************
 
     this.removeSubtitle = function()
     {
@@ -326,6 +347,7 @@ THREE.MediaObject = function () {
 
     this.removeSignVideo = function()
     {
+        removeContentById(signMesh.name);
         camera.remove(signMesh);
         signMesh = undefined;
     };

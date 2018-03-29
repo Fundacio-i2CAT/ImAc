@@ -62,7 +62,7 @@ function updateISD(offset)
         if (rotaionValue >= maxRotaion) clearInterval(rotationInterval);
         else {
           rotaionValue += 3;
-          camera.rotation.y = (rotaionValue + 90) * (Math.PI / 180);
+          CameraPatherObject.rotation.y = (rotaionValue + 90) * (Math.PI / 180);
         }
       },30);
       //camera.rotation.y = (isd.imac + 90) * (Math.PI / 180);
@@ -210,7 +210,7 @@ function checkSubtitleIdicator (isd)
 
   var difPosition = isd.imac - position.longitude;
 
-  if (difPosition < 50 && difPosition > -50) 
+  if (difPosition < camera.fov && difPosition > -camera.fov) 
   {
     if (subtileIndicator == 'move') {
       forcedTextAlign = 'center';
@@ -253,7 +253,7 @@ function checkSignIdicator (isd)
 
   var difPosition = isd.imac - position.longitude;
 
-  if (difPosition < 50 && difPosition > -50) 
+  if (difPosition < camera.fov && difPosition > -camera.fov) 
   {
     if (signIndicator != 'move') 
     {
@@ -292,8 +292,6 @@ function switchSignIndicator(enable, position)
         if (mysign) mysign.visible = false;
         var mysign2 = getSignMeshByName ('left');
         if (mysign2) mysign2.visible = true;
-        /*signMesh.children[0].visible = false;
-        signMesh.children[1].visible = true; */
       }
       else 
       {
@@ -301,8 +299,6 @@ function switchSignIndicator(enable, position)
         if (mysign) mysign.visible = true;
         var mysign2 = getSignMeshByName ('left');
         if (mysign2) mysign2.visible = false;
-        /*signMesh.children[0].visible = true;
-        signMesh.children[1].visible = false; */
       }
     }
     else
@@ -311,8 +307,6 @@ function switchSignIndicator(enable, position)
         if (mysign) mysign.visible = false;
         var mysign2 = getSignMeshByName ('left');
         if (mysign2) mysign2.visible = false;
-      /*signMesh.children[0].visible = false;
-      signMesh.children[1].visible = false;*/
     }
   }
 }

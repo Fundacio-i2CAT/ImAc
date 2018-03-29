@@ -9,14 +9,14 @@ function runDemo()
     w: 1,
     h: 1
   };
-  moData.createImageInCamera( imgUrl, 'pauseimg', config)
+  moData.createImageInCamera( imgUrl, 'pauseimg', conf)
 
   // demo on es canvia dinamicament el tamany dels subtitols del 30% al 80% cada 30 segons
   // adicionalment tambe es posicionen els subtitols abaix al (centre, esquerre) o adalt (centre) cada 10 segons 
   if (demoId == 1)
   {
     timerCounter = 0;
-
+    initializeAudio(1);
     isSubtitleEnabled = true;
     viewArea = 30;
     forcedDisplayAlign = 'after';
@@ -31,7 +31,7 @@ function runDemo()
   else if (demoId == 2)
   {
     timerCounter = 0;
-
+    initializeAudio(1);
     subtileIndicator = 'arrow';
     isSubtitleEnabled = true;
     viewArea = 60;
@@ -47,7 +47,7 @@ function runDemo()
   else if (demoId == 3)
   {
     timerCounter = 0;
-
+    initializeAudio(1);
     //moData.Create_RectangleVideo_Mesh();
     var signPosition = getPlanePosition();
     var conf = {
@@ -56,7 +56,7 @@ function runDemo()
       y: signPosition.y,
       z: signPosition.z
     };
-    moData.createSignVideo('./resources/signer_rbb_1.mp4', 'name', conf);
+    moData.createSignVideo('./resources/signer_rbb_1.mp4', 'sign', conf);
 
     viewArea = 30;
 
@@ -69,7 +69,7 @@ function runDemo()
   else if (demoId == 4)
   {
     timerCounter = 0;
-
+    initializeAudio(1);
     viewArea = 60;
     signIndicator = 'arrow';
 
@@ -81,7 +81,7 @@ function runDemo()
       y: signPosition.y,
       z: signPosition.z
     };
-    moData.createSignVideo('./resources/signer_rbb_1.mp4', 'name', conf);
+    moData.createSignVideo('./resources/signer_rbb_1.mp4', 'sign', conf);
 
     //myVar = setInterval(runDemo4, 30000);
     runDemo4(30000);
@@ -92,7 +92,7 @@ function runDemo()
   else if (demoId == 5)
   {
     timerCounter = 0;
-
+    initializeAudio(1);
     viewArea = 60;
     autoPositioning = 'enable';
 
@@ -104,15 +104,16 @@ function runDemo()
       y: signPosition.y,
       z: signPosition.z
     };
-    moData.createSignVideo('./resources/signer_rbb_1.mp4', 'name', conf);
+    moData.createSignVideo('./resources/signer_rbb_1.mp4', 'sign', conf);
+    setTimeout(function(){ moData.playAll(); },500);
 
   }
 
   else
   {
   	_isAmbisonics = true;
-  	initializeAudio();
-    viewArea = 80;
+  	initializeAudio(4);
+    viewArea = 60;
     subtileIndicator = 'arrow';
     isSubtitleEnabled = true;
 
@@ -254,7 +255,7 @@ function runDemo3(time)
 	      y: signPosition.y,
 	      z: signPosition.z
 	    };
-	    moData.createSignVideo('./resources/signer_rbb_1.mp4', 'name', conf);
+	    moData.createSignVideo('./resources/signer_rbb_1.mp4', 'sign', conf);
       runDemo3(1000);
     }, time); 
   }
@@ -283,7 +284,7 @@ function runDemo4(time)
       y: signPosition.y,
       z: signPosition.z
     };
-    moData.createSignVideo('./resources/signer_rbb_1.mp4', 'name', conf);
+    moData.createSignVideo('./resources/signer_rbb_1.mp4', 'sign', conf);
         imageMesh.visible = false;       
         signIndicator == 'none' ? location.reload() : runDemo4(30000);
       }

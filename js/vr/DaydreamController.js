@@ -34,11 +34,11 @@ THREE.DaydreamController = function (domElement) {
 			var gamepad = gamepads[ i ];
 
 			if ( gamepad && ( gamepad.id === 'Daydream Controller' || 
-				gamepad.id === 'Gear VR Controller' || 
 				gamepad.id === 'Xbox 360 Controller' || 
 				gamepad.id === 'OpenVR Gamepad' || 
 				gamepad.id === 'Oculus Remote' || 
 				gamepad.id.startsWith( 'Gear VR' ) || 
+				gamepad.id === 'Gear VR Controller' ||
 				/*gamepad.id.startsWith( 'Oculus Touch' ) ||*/ 
 				gamepad.id.startsWith( 'Spatial Controller' )) ) {
 
@@ -129,7 +129,7 @@ THREE.DaydreamController = function (domElement) {
 
 		console.log('onDocumentMouseDown');
 				
-		list_contents[0].vid.paused ? startAllVideos2() : stopAllVideos2();
+		moData.isPausedById(0) ? moData.playAll() : moData.pauseAll();
 		
 	}.bind( this );
 

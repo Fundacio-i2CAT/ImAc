@@ -2,9 +2,9 @@
 // GLOBAL VARS
 
 var _PlayerVersion = 'v0.01.0';
-
 var AplicationManager = new AplicationManager();
 var moData = new THREE.MediaObject();
+
 
 var viewArea = 30;
 var signArea = 'botRight';
@@ -27,8 +27,8 @@ var demoId = 1;
 
 var myVar;
 
-var imageMesh;
-var timerCounter = 0;
+var imageMesh; // s'ha de eliminar i modificar per crear nova imatge cada vegada
+var timerCounter = 0; // per al pretest
 
 var mainContentURL = './resources/rapzember-young-hurn_edit.mp4';
 
@@ -39,7 +39,7 @@ var audioResources_order_1 = Array();
 var _foaRenderer;
 var _isAmbisonics = false;
 
-var config = (function() {
+var polifyConfig = (function() {
   var config = {};
   var q = window.location.search.substring(1);
   if (q === '') {
@@ -59,7 +59,7 @@ var config = (function() {
   return config;
 })();
 
-var polyfill = new WebVRPolyfill(config);
+var polyfill = new WebVRPolyfill(polifyConfig);
 
 
 
@@ -72,37 +72,34 @@ function init_webplayer()
 {
 	console.log('Version: ' + _PlayerVersion);
 
-
   audioResources.push('resources/omnitone-toa-1.wav');
-    audioResources.push('resources/omnitone-toa-2.wav');
-    audioResources.push('resources/omnitone-toa-3.wav');
-    audioResources.push('resources/omnitone-toa-4.wav');
-    audioResources.push('resources/omnitone-toa-5.wav');
-    audioResources.push('resources/omnitone-toa-6.wav');
-    audioResources.push('resources/omnitone-toa-7.wav');
-    audioResources.push('resources/omnitone-toa-8.wav');
+  audioResources.push('resources/omnitone-toa-2.wav');
+  audioResources.push('resources/omnitone-toa-3.wav');
+  audioResources.push('resources/omnitone-toa-4.wav');
+  audioResources.push('resources/omnitone-toa-5.wav');
+  audioResources.push('resources/omnitone-toa-6.wav');
+  audioResources.push('resources/omnitone-toa-7.wav');
+  audioResources.push('resources/omnitone-toa-8.wav');
 
-    audioResources_order_1.push('resources/omnitone-foa-1.wav');
-    audioResources_order_1.push('resources/omnitone-foa-2.wav');
+  audioResources_order_1.push('resources/omnitone-foa-1.wav');
+  audioResources_order_1.push('resources/omnitone-foa-2.wav');
 
-    moData.setFont('./css/fonts/TiresiasScreenfont_Regular.json');
-
-
+  moData.setFont('./css/fonts/TiresiasScreenfont_Regular.json');
 		
-  	for (var i = 0; i < 6; i++) 
-  	{
-      var id = i + 1;
-      var dataText = ' ';
+  for (var i = 0; i < 6; i++) 
+  {
+    var id = i + 1;
+    var dataText = ' ';
 
-      if (i == 0) dataText = "Video 1: Subtitles - comfort viewing field";
-      else if (i == 1) dataText = "Video 2: Subtitles - guiding to speaker";
-      else if (i == 2) dataText = "Video 3: Signer - comfort viewing field";
-      else if (i == 3) dataText = "Video 4: Signer - guiding to speaker (I)";
-      else if (i == 4) dataText = "Video 5: Signer - guiding to speaker (forced perspective)";
-      else if (i == 5) dataText = "Video 6: Demo opera";
+    if (i == 0) dataText = "Video 1: Subtitles - comfort viewing field";
+    else if (i == 1) dataText = "Video 2: Subtitles - guiding to speaker";
+    else if (i == 2) dataText = "Video 3: Signer - comfort viewing field";
+    else if (i == 3) dataText = "Video 4: Signer - guiding to speaker (I)";
+    else if (i == 4) dataText = "Video 5: Signer - guiding to speaker (forced perspective)";
+    else if (i == 5) dataText = "Video 6: Demo opera";
 
-  		createListGroup(id, "img/LOGO-IMAC.png", dataText);
-  	}
+    createListGroup(id, "img/LOGO-IMAC.png", dataText);
+  }
 }
 
 
@@ -180,9 +177,9 @@ function startAmbisonic(url, vid)
 */
 
 //var audioElement;
-function initializeAudio () 
+function initializeAudio (n) 
 {
-  var n = 4;
+
   var listVideoContent = moData.getListOfVideoContents();
   var _videoElement = listVideoContent[0].vid;
     //audioElement = document.createElement('audio');
@@ -202,10 +199,16 @@ function initializeAudio ()
             hrirPathList: audioResources_order_1
         });
     }
-    else
+    else if (n>2)
     {
         _foaRenderer = Omnitone.createHOARenderer(_audioContext, {
             hrirPathList: audioResources
+        });
+    }
+    else {
+      _foaRenderer = Omnitone.createHOARenderer(_audioContext, {
+            hrirPathList: audioResources,
+            renderingMode: 'off'
         });
     }
 

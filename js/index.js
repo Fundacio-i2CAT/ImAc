@@ -1,43 +1,40 @@
 
 // GLOBAL VARS
 
-var _PlayerVersion = 'v0.01.0';
+var _PlayerVersion = 'v0.01.2';
 var AplicationManager = new AplicationManager();
 var moData = new THREE.MediaObject();
+var AudioManager = new AudioManager();
 
+//var subController = new SubSignManager();
 
 var viewArea = 30;
 var signArea = 'botRight';
-var subtileIndicator = 'none';
+var subtitleIndicator = 'none';
 var signIndicator = 'none';
 var forcedDisplayAlign = "after"; // before, center, after
 var forcedTextAlign = "center"; //start, center, end
 var autoPositioning = 'disable';
+var isSubtitleEnabled = false;
+var textListMemory = [];
+
+
 var language = "catala";
 
 var isHMD = true;
 var isVRDisplay = true;
-var isSubtitleEnabled = false;
 
-var obj1, obj2, obj3, obj4;
-
-var textListMemory = [];
 
 var demoId = 1;
 
-var myVar;
-
-var imageMesh; // s'ha de eliminar i modificar per crear nova imatge cada vegada
-var timerCounter = 0; // per al pretest
-
 var mainContentURL = './resources/rapzember-young-hurn_edit.mp4';
 
+var isAndroid = false;
 
-var audioResources = Array();
-var audioResources_order_1 = Array();
 
-var _foaRenderer;
-var _isAmbisonics = false;
+
+
+
 
 var polifyConfig = (function() {
   var config = {};
@@ -64,6 +61,8 @@ var polyfill = new WebVRPolyfill(polifyConfig);
 
 
 
+
+
 /**
  * Initializes the web player.
  */	
@@ -72,18 +71,9 @@ function init_webplayer()
 {
 	console.log('Version: ' + _PlayerVersion);
 
-  audioResources.push('resources/omnitone-toa-1.wav');
-  audioResources.push('resources/omnitone-toa-2.wav');
-  audioResources.push('resources/omnitone-toa-3.wav');
-  audioResources.push('resources/omnitone-toa-4.wav');
-  audioResources.push('resources/omnitone-toa-5.wav');
-  audioResources.push('resources/omnitone-toa-6.wav');
-  audioResources.push('resources/omnitone-toa-7.wav');
-  audioResources.push('resources/omnitone-toa-8.wav');
+  isAndroid = navigator.userAgent.toLowerCase().indexOf("android") > -1;
 
-  audioResources_order_1.push('resources/omnitone-foa-1.wav');
-  audioResources_order_1.push('resources/omnitone-foa-2.wav');
-
+  AudioManager.initAmbisonicResources();
   moData.setFont('./css/fonts/TiresiasScreenfont_Regular.json');
 		
   for (var i = 0; i < 6; i++) 
@@ -112,117 +102,42 @@ function blockContainer()
 
 function selectXML(id)
 {
+  var myform2 = document.forms['myform2'];
+
+  for (i = 0; i < myform2.length; i++) 
+  {
+    if (myform2[i].checked) 
+    {
+      device = myform2[i].value;
+    }
+  }
+  if(device == 'Tablet') isHMD = false;
+    
   demoId = id;
-  if(demoId > 5) mainContentURL = './resources/cam2.mp4';
+  if(demoId > 5) mainContentURL = './resources/cam_2_1080p.mp4';
   AplicationManager.init_AplicationManager();
   enterfullscreen();
 
   var myform = document.forms['myform'];
 
-    for (i = 0; i < myform.length; i++) 
+  for (i = 0; i < myform.length; i++) 
+  {
+    if (myform[i].checked) 
     {
-      if (myform[i].checked) 
-      {
-        language = myform[i].value;
-      }
+      language = myform[i].value;
     }
+  }  
 }
-
+       
 function startAllVideos()
 {
-  //createSubtittleDiv();
-
+  //subController.addsubtitles("./resources/Rapzember_Cat.xml");  
   setTimeout(function()
   {
     runDemo();
-    addsubtitles();    
+    addsubtitles(); 
+    //subController.startSubtitles();   
   },500);
 
-  moData.playAll();
-}
-
-
-
-
-function startAmbisonic(url, vid)
-{
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() 
-    {
-        if (this.readyState == 4 && this.status == 200) 
-        {
-            var xmlDoc = this.responseXML;   
-            if(xmlDoc == null)
-            {
-                var parser = new DOMParser();
-                xmlDoc = parser.parseFromString(this.responseText, "application/xml");
-            }
-            for (var i = 0; i < xmlDoc.getElementsByTagName('AudioChannelConfiguration').length; i++) 
-            {
-                var node = xmlDoc.getElementsByTagName('AudioChannelConfiguration')[i].getAttribute("value") ;
-                if (node >= 4) 
-                {
-                    initializeAudio(vid, node);
-                }
-            }
-        }
-    };
-    xhttp.open("GET", url, true);
-    xhttp.send();
-    //initializeAudio(vid);
-}
-
-/**
-* Initialize Ambisonic audio.
-*/
-
-//var audioElement;
-function initializeAudio (n) 
-{
-
-  var listVideoContent = moData.getListOfVideoContents();
-  var _videoElement = listVideoContent[0].vid;
-    //audioElement = document.createElement('audio');
-    //audioElement.src = 'Liceu/AmbiX-1er_Orquestra_Cam_02.wav';
-
-
-    _videoElement.muted = false;
-
-    _audioContext = new AudioContext();
-    
-    var videoElementSource = _audioContext.createMediaElementSource(_videoElement);
-    //var videoElementSource = _audioContext.createMediaElementSource(audioElement);
-
-    if (n < 16) 
-    {
-        _foaRenderer = Omnitone.createFOARenderer(_audioContext, {
-            hrirPathList: audioResources_order_1
-        });
-    }
-    else if (n>2)
-    {
-        _foaRenderer = Omnitone.createHOARenderer(_audioContext, {
-            hrirPathList: audioResources
-        });
-    }
-    else {
-      _foaRenderer = Omnitone.createHOARenderer(_audioContext, {
-            hrirPathList: audioResources,
-            renderingMode: 'off'
-        });
-    }
-
-    _foaRenderer.initialize().then(function() 
-    {
-        _isAmbisonics = true;
-        videoElementSource.connect(_foaRenderer.input);
-        _foaRenderer.output.connect(_audioContext.destination);
-        _foaRenderer.setRotationMatrix4(camera.matrixWorld.elements);
-
-
-        //audioElement.play();
-    }, function () 
-    {
-        console.log('Error to init Ambisonics');
-    });
+  //moData.playAll();
 }

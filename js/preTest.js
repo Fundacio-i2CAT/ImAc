@@ -1,317 +1,414 @@
 
+var myVar;
+var timerCounter = 0; // per al pretest
 
 function runDemo() 
 {
   console.log("Running demo " + demoId)
-  //moData.Create_RectangleImage_Mesh();
-  var imgUrl = language == "catala" ? './resources/feedback_.png' : './resources/feedback_ger.png';
-  var conf = {
-    w: 1,
-    h: 1
-  };
-  moData.createImageInCamera( imgUrl, 'pauseimg', conf)
 
-  // demo on es canvia dinamicament el tamany dels subtitols del 30% al 80% cada 30 segons
-  // adicionalment tambe es posicionen els subtitols abaix al (centre, esquerre) o adalt (centre) cada 10 segons 
+////////////////
+//   Demo 1   //
+////////////////
   if (demoId == 1)
   {
-    timerCounter = 0;
-    initializeAudio(1);
-    isSubtitleEnabled = true;
-    viewArea = 30;
-    forcedDisplayAlign = 'after';
-    forcedTextAlign = 'center';
+    var imgUrl = language == "catala" ? './resources/preTest/ger/1.png' : './resources/preTest/ger/1.png';
+    moData.createImageInCamera( imgUrl, 'pauseimg', { w: 1, h: 1, visible: true } );
 
-    //myVar = setInterval(runDemo1, 10000);
-    runDemo1(10000);
+    myVar = setTimeout(function() 
+    {  
+      showInfoImages( 2 );
+
+      timerCounter = 0;
+
+      var listVideoContent = moData.getListOfVideoContents();
+      var _videoElement = listVideoContent[0].vid;
+      AudioManager.initializeAudio( _videoElement, 1, camera.matrixWorld.elements );
+
+      isSubtitleEnabled = true;
+      viewArea = 30;
+      forcedDisplayAlign = 'after';
+      forcedTextAlign = 'center';
+
+      //initSubtitle( viewArea, forcedDisplayAlign, forcedTextAlign, subtileIndicator );
+
+    }, 3000);
   }
 
-  // demo on es testegen els indicadors de subtitols
-  // canvia entre fletxes, compass i posicionament dels subtitols
+////////////////
+//   Demo 2   //
+////////////////
   else if (demoId == 2)
   {
-    timerCounter = 0;
-    initializeAudio(1);
-    subtileIndicator = 'arrow';
-    isSubtitleEnabled = true;
-    viewArea = 60;
-    forcedDisplayAlign = 'after';
-    forcedTextAlign = 'center';
+    var imgUrl = language == "catala" ? './resources/preTest/ger/21.png' : './resources/preTest/ger/21.png';
+    moData.createImageInCamera( imgUrl, 'pauseimg', { w: 1, h: 1, visible: true } );
 
-    //myVar = setInterval(runDemo2, 30000);
-    runDemo2(30000);
+    myVar = setTimeout(function() 
+    {  
+      showInfoImages( 22 );
+
+      timerCounter = 0;
+
+      var listVideoContent = moData.getListOfVideoContents();
+      var _videoElement = listVideoContent[0].vid;
+      AudioManager.initializeAudio( _videoElement, 1, camera.matrixWorld.elements );
+
+      subtitleIndicator = 'arrow';
+      isSubtitleEnabled = true;
+      viewArea = 70;
+      forcedDisplayAlign = 'after';
+      forcedTextAlign = 'center';
+
+      //initSubtitle( viewArea, forcedDisplayAlign, forcedTextAlign, subtileIndicator );
+    }, 3000);
+
+    //runDemo2(30000);
   }
 
-  // demo on es canvia dinamicament el tamany del video de signes del 30% al 80% cada 30 segons
-  // es fa una pausa entre video i video de N segons 
+////////////////
+//   Demo 3   //
+////////////////
   else if (demoId == 3)
   {
-    timerCounter = 0;
-    initializeAudio(1);
-    //moData.Create_RectangleVideo_Mesh();
-    var signPosition = getPlanePosition();
-    var conf = {
-      size: 0.3,
-      x: signPosition.x,
-      y: signPosition.y,
-      z: signPosition.z
-    };
-    moData.createSignVideo('./resources/signer_rbb_1.mp4', 'sign', conf);
+    var imgUrl = language == "catala" ? './resources/preTest/ger/32.png' : './resources/preTest/ger/32.png';
+    moData.createImageInCamera( imgUrl, 'pauseimg', { w: 1, h: 1, visible: true } );
 
-    viewArea = 30;
+    myVar = setTimeout(function() 
+    {  
+      showInfoImages( 33 );
 
-    //myVar = setInterval(runDemo3, 30000);
-    runDemo3(30000);
+      timerCounter = 0;
+
+      var listVideoContent = moData.getListOfVideoContents();
+      var _videoElement = listVideoContent[0].vid;
+      AudioManager.initializeAudio( _videoElement, 1, camera.matrixWorld.elements );
+
+      //initSign( viewArea, signArea, signIndicator )
+
+      var signPosition = getPlanePosition();
+      var conf = {
+        size: 0.3,
+        x: signPosition.x,
+        y: signPosition.y,
+        z: signPosition.z
+      };
+      moData.createSignVideo('./resources/signer_rbb_1.mp4', 'sign', conf);
+
+      viewArea = 30;
+    }, 3000);
+
+    //runDemo3(30000);
   }
 
-  // demo on es testegen els indicadors del video de llenguatge de signes
-  // canvia entre fletxes i posicionament del video
+////////////////
+//   Demo 4   //
+////////////////
   else if (demoId == 4)
   {
-    timerCounter = 0;
-    initializeAudio(1);
-    viewArea = 60;
-    signIndicator = 'arrow';
+    var imgUrl = language == "catala" ? './resources/preTest/ger/52.png' : './resources/preTest/ger/52.png';
+    moData.createImageInCamera( imgUrl, 'pauseimg', { w: 1, h: 1, visible: true } );
 
-    //moData.Create_RectangleVideo_Mesh();
-    var signPosition = getPlanePosition();
-    var conf = {
-      size: 0.3,
-      x: signPosition.x,
-      y: signPosition.y,
-      z: signPosition.z
-    };
-    moData.createSignVideo('./resources/signer_rbb_1.mp4', 'sign', conf);
+    myVar = setTimeout(function() 
+    {  
+      showInfoImages( 53 );
 
-    //myVar = setInterval(runDemo4, 30000);
-    runDemo4(30000);
+      timerCounter = 0;
+
+      var listVideoContent = moData.getListOfVideoContents();
+      var _videoElement = listVideoContent[0].vid;
+      AudioManager.initializeAudio( _videoElement, 1, camera.matrixWorld.elements );
+
+      viewArea = 70;
+      signIndicator = 'arrow';
+
+      //initSign( viewArea, signArea, signIndicator )
+
+      var signPosition = getPlanePosition();
+      var conf = {
+        size: 0.3,
+        x: signPosition.x,
+        y: signPosition.y,
+        z: signPosition.z
+      };
+      moData.createSignVideo('./resources/signer_rbb_1.mp4', 'sign', conf);
+
+    }, 3000);
+
+    //runDemo4(30000);
   }
 
-  // demo on es testegen els indicadors del video de llenguatge de signes
-  // poscicionar la camera al començament del video
+////////////////
+//   Demo 5   //
+////////////////
   else if (demoId == 5)
   {
-    timerCounter = 0;
-    initializeAudio(1);
-    viewArea = 60;
-    autoPositioning = 'enable';
+    var imgUrl = language == "catala" ? './resources/preTest/ger/60.png' : './resources/preTest/ger/60.png';
+    moData.createImageInCamera( imgUrl, 'pauseimg', { w: 1, h: 1, visible: true } );
 
-    //moData.Create_RectangleVideo_Mesh();
-    var signPosition = getPlanePosition();
-    var conf = {
-      size: 0.3,
-      x: signPosition.x,
-      y: signPosition.y,
-      z: signPosition.z
-    };
-    moData.createSignVideo('./resources/signer_rbb_1.mp4', 'sign', conf);
-    setTimeout(function(){ moData.playAll(); },500);
+    myVar = setTimeout(function() 
+    {  
+      showInfoImages( 61 );
+
+      timerCounter = 0;
+      
+      var listVideoContent = moData.getListOfVideoContents();
+      var _videoElement = listVideoContent[0].vid;
+      AudioManager.initializeAudio( _videoElement, 1, camera.matrixWorld.elements );
+
+      viewArea = 70;
+      autoPositioning = 'enable';
+
+      //initSign( viewArea, signArea, signIndicator )
+      //enableAutoPositioning()
+
+      var signPosition = getPlanePosition();
+      var conf = {
+        size: 0.3,
+        x: signPosition.x,
+        y: signPosition.y,
+        z: signPosition.z
+      };
+      moData.createSignVideo('./resources/signer_rbb_1.mp4', 'sign', conf);
+
+    }, 3000);
 
   }
 
+////////////////
+//   Demo 6   //
+////////////////
   else
   {
-  	_isAmbisonics = true;
-  	initializeAudio(4);
-    viewArea = 60;
-    subtileIndicator = 'arrow';
+  	
+    var listVideoContent = moData.getListOfVideoContents();
+    var _videoElement = listVideoContent[0].vid;
+    AudioManager.initializeAudio( _videoElement, 4, camera.matrixWorld.elements );
+
+    viewArea = 70;
+    subtitleIndicator = 'arrow';
     isSubtitleEnabled = true;
 
+    moData.playAll();
   }
 }
 
 
-function runDemo1(time) 
+function showInfoImages(id1)
 {
-  var myVar2;
-  if (moData.isPausedById(0)) 
+  moData.pauseAll();
+  var imgUrl = language == "catala" ? './resources/preTest/ger/' + id1 + '.png' : './resources/preTest/ger/' + id1 + '.png';
+  moData.createImageInCamera( imgUrl, 'pauseimg', { w: 1, h: 1, visible: true } );
+
+  myVar = setTimeout(function() 
   {
+    moData.removeInfoImage();
+
+    if (demoId == 1) runDemo1( 10000 );
+    else if (demoId == 2) runDemo2( 30000 );
+    else if (demoId == 3) runDemo3( 30000 );
+    else if (demoId == 4) runDemo4( 30000 );
+    else if (demoId == 5) runDemo5( 60000 );
+
+  }, 3000);
+}
+
+function showEndImage(id1)
+{
+  moData.pauseAll();
+  var imgUrl = language == "catala" ? './resources/preTest/ger/' + id1 + '.png' : './resources/preTest/ger/' + id1 + '.png';
+  moData.createImageInCamera( imgUrl, 'pauseimg', { w: 0.8, h: 0.8, visible: true } );
+
+  myVar = setTimeout(function() 
+  {
+    location.reload();
+  }, 3000);
+}
+
+function waitResponse(id)
+{
+  if ( moData.isPausedById(0) ) 
+  {
+    var imgUrl = language == "catala" ? './resources/preTest/ger/' + id + '.png' : './resources/preTest/ger/' + id + '.png';
+    moData.createImageInCamera( imgUrl, 'pauseimg', { w: 1, h: 1, visible: true } );
+
     myVar2 = setInterval(function() {
       timerCounter++;
-      if(timerCounter == 10) {
+      if(timerCounter == 20) {
         moData.playAll();
       }
       if (!moData.isPausedById(0)) 
       {
         clearInterval(myVar2);
-        imageMesh.visible = false;       
-        viewArea > 80 ? location.reload() : runDemo1(10000);
-      }
-    }, 1000);
-  }
-  else 
-  {
-    myVar = setTimeout(function() {
-      timerCounter = 0;
-      if (forcedTextAlign == 'center') 
-      {
-        if (forcedDisplayAlign == 'before') 
-        {         
-          moData.pauseAll();
-          imageMesh.visible = true;
-          forcedDisplayAlign = 'after';
-          viewArea += 10;
-          textListMemory = [];
-          runDemo1(1000);
-        } 
-        else 
+        moData.removeInfoImage(); 
+        if (demoId == 1) 
         {
-          forcedTextAlign = 'start';
-          textListMemory = [];
-          runDemo1(10000);
+          if (viewArea == 40) showInfoImages( 5 );
+          else if (viewArea == 50) showInfoImages( 8 );
+          else if (viewArea == 60) showInfoImages( 11 );
+          else if (viewArea == 70) showInfoImages( 14 );
+          else if (viewArea == 80) showInfoImages( 17 );
+          else showEndImage( 20 );
+        }   
+        else if(demoId == 2)
+        {
+          if (subtitleIndicator == 'compass') showInfoImages( 25 );
+          else if (subtitleIndicator == 'move') showInfoImages( 28 );
+          else showEndImage( 31 );
+        }  
+        else if (demoId == 3) 
+        {
+          if (viewArea == 40) showInfoImages( 36 );
+          else if (viewArea == 50) showInfoImages( 39 );
+          else if (viewArea == 60) showInfoImages( 42 );
+          else if (viewArea == 70) showInfoImages( 45 );
+          else if (viewArea == 80) showInfoImages( 48 );
+          else showEndImage( 51 );
+        } 
+        else if(demoId == 4)
+        {
+          if (signIndicator == 'move') 
+          {
+            showInfoImages( 56 );
+            var signPosition = getPlanePosition();
+            var conf = {
+              size: 0.3,
+              x: signPosition.x,
+              y: signPosition.y,
+              z: signPosition.z
+            };
+            moData.createSignVideo('./resources/signer_rbb_1.mp4', 'sign', conf);
+          }
+          else showEndImage( 59 );
+        }  
+        else if(demoId == 5)
+        {
+          showEndImage( 64 );
         }
       }
+    }, 500);
+  }
+}
+
+function runDemo1(time) 
+{ 
+  moData.playAll();
+  myVar = setTimeout(function() 
+  {
+    timerCounter = 0;
+    if (forcedTextAlign == 'center') 
+    {
+      if (forcedDisplayAlign == 'before') 
+      {         
+        moData.pauseAll();
+        forcedDisplayAlign = 'after';
+        viewArea += 10;
+        textListMemory = [];
+        waitResponse(4);
+      } 
       else 
       {
-        forcedDisplayAlign = 'before';
-        forcedTextAlign = 'center';
+        forcedTextAlign = 'start';
         textListMemory = [];
         runDemo1(10000);
       }
-    }, time); 
-  }
+    }
+    else 
+    {
+      forcedDisplayAlign = 'before';
+      forcedTextAlign = 'center';
+      textListMemory = [];
+      runDemo1(10000);
+    }
+  }, time);  
 }
 
 function runDemo2(time) 
 {
-  var myVar2;
-  if (moData.isPausedById(0)) 
+  moData.playAll();
+  myVar = setTimeout(function() 
   {
-    myVar2 = setInterval(function() {
-      timerCounter++;
-      if(timerCounter == 10) {
-        moData.playAll();
-      }
-      if (!moData.isPausedById(0)) 
-      {
-        clearInterval(myVar2);
-        imageMesh.visible = false;       
-        subtileIndicator == 'none' ? location.reload() : runDemo2(30000);
-      }
-    }, 1000);
-  }
-  else {
-    myVar = setTimeout(function() {
-      timerCounter = 0;
-      moData.pauseAll();
-      imageMesh.visible = true;
-      if (subtileIndicator == 'arrow') 
-      {
-        subtileIndicator = 'compass';
-        textListMemory = [];
-        runDemo2(1000);
-      }
-      else if (subtileIndicator == 'compass')
-      {
-        subtileIndicator = 'move';
-        textListMemory = [];
-        runDemo2(1000);
-      }
-      else if (subtileIndicator == 'move')
-      {
-        subtileIndicator = 'none';
-        textListMemory = [];
-        runDemo2(1000);
-      }
-      else {
-        location.reload();
-      }
-    }, time); 
-  }
+    timerCounter = 0;
+    moData.pauseAll();
+    if (subtitleIndicator == 'arrow') 
+    {
+      subtitleIndicator = 'compass';
+      textListMemory = [];
+      waitResponse(24);
+    }
+    else if (subtitleIndicator == 'compass')
+    {
+      subtitleIndicator = 'move';
+      textListMemory = [];
+      waitResponse(27);
+    }
+    else if (subtitleIndicator == 'move')
+    {
+      subtitleIndicator = 'none';
+      textListMemory = [];
+      waitResponse(30);
+    }
+    else 
+    {
+      location.reload();
+    }
+  }, time); 
 }
 
 function runDemo3(time) 
 {
-  var myVar2;
-  if (moData.isPausedById(0)) 
+  moData.playAll();
+  myVar = setTimeout(function() 
   {
-    myVar2 = setInterval(function() {
-      timerCounter++;
-      if(timerCounter == 10) {
-        moData.playAll();
-      }
-      if (!moData.isPausedById(0)) 
-      {
-        clearInterval(myVar2);
-        imageMesh.visible = false;       
-        viewArea > 80 ? location.reload() : runDemo3(30000);
-      }
-    }, 1000);
-  }
-  else 
-  {
-    myVar = setTimeout(function() {
-      timerCounter = 0;
-      moData.pauseAll();
-      imageMesh.visible = true;
-      //camera.remove(signMesh);
-      moData.removeSignVideo();
-      viewArea += 10;
-      //moData.Create_RectangleVideo_Mesh();
-      var signPosition = getPlanePosition();
-	    var conf = {
-	      size: 0.3,
-	      x: signPosition.x,
-	      y: signPosition.y,
-	      z: signPosition.z
-	    };
-	    moData.createSignVideo('./resources/signer_rbb_1.mp4', 'sign', conf);
-      runDemo3(1000);
-    }, time); 
-  }
+    timerCounter = 0;
+    moData.pauseAll();
+    moData.removeSignVideo();
+    viewArea += 10;
+    var signPosition = getPlanePosition();
+	  var conf = {
+	    size: 0.3,
+	    x: signPosition.x,
+	    y: signPosition.y,
+	    z: signPosition.z
+	  };
+	  moData.createSignVideo('./resources/signer_rbb_1.mp4', 'sign', conf);
+    waitResponse(35);
+  }, time); 
 }
 
 
 function runDemo4(time) 
 {
-  var myVar2;
-  if (moData.isPausedById(0)) 
+  moData.playAll();
+  myVar = setTimeout(function() 
   {
-    myVar2 = setInterval(function() {
-      timerCounter++;
-      if(timerCounter == 10) {
-        moData.playAll();
-      }
-      if (!moData.isPausedById(0)) 
-      {
-        clearInterval(myVar2);
-        //moData.Create_RectangleVideo_Mesh();
+    timerCounter = 0;
+    moData.pauseAll();
+    moData.removeSignVideo();
+    if (signIndicator == 'arrow') 
+    {
+      signIndicator = 'move';
+      waitResponse(55);;
+    }
+    else if (signIndicator == 'move')
+    {
+      signIndicator = 'none';
+      waitResponse(58);
+    }
+    else {
+      location.reload();
+    }
+  }, time); 
+}
 
-        var signPosition = getPlanePosition();
-    var conf = {
-      size: 0.3,
-      x: signPosition.x,
-      y: signPosition.y,
-      z: signPosition.z
-    };
-    moData.createSignVideo('./resources/signer_rbb_1.mp4', 'sign', conf);
-        imageMesh.visible = false;       
-        signIndicator == 'none' ? location.reload() : runDemo4(30000);
-      }
-    }, 1000);
-  }
-  else 
+function runDemo5(time) 
+{
+  moData.playAll();
+  myVar = setTimeout(function() 
   {
-    myVar = setTimeout(function() {
-      timerCounter = 0;
-      moData.pauseAll();
-      imageMesh.visible = true;
-      //camera.remove(signMesh);
-      moData.removeSignVideo();
-      if (signIndicator == 'arrow') 
-      {
-        signIndicator = 'move';
-        runDemo4(1000);
-      }
-      else if (signIndicator == 'move')
-      {
-        signIndicator = 'none';
-        runDemo4(1000);
-      }
-      else {
-        location.reload();
-      }
-    }, time); 
-  }
+    timerCounter = 0;
+    moData.pauseAll();
+    moData.removeSignVideo();
+    waitResponse(63);
+
+  }, time); 
 }
 

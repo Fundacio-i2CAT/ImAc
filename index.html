@@ -23,10 +23,12 @@
 	<script src="js/lib/bogJS-latest.js"></script>
 	<script src="js/lib/sax.js"></script>
     <script src="js/lib/imsc_i2cat.js"></script>
+    <script src="js/lib/dash.all.min.js"></script>
 
 	<script src="js/Scene_Generators/AplicationManager.js"></script>
 	<script src="js/Scene_Generators/SubtitleManager.js"></script>
 	<script src="js/Scene_Generators/MediaObject.js"></script>
+	<script src="js/Scene_Generators/AudioManager.js"></script>
 
 	<script src="js/controllers/DeviceOrientationAndTouchController.js"></script>
 	<script src="js/controllers/FullScreenController.js"></script>
@@ -60,6 +62,17 @@
 				<input type="radio" name="lang" id="catala" value="catala" checked><br>
 				<label for="deutsch"><b> Deutsch: </b></label>
 				<input type="radio" name="lang" id="deutsch" value="deutsch">
+			</form>
+			<br>
+			<label for="speaker"><b> Video 5: </b>
+			<input type="text" name="speaker" id="speaker" placeholder="180"></label>
+			<br><br>
+			<h4>Select Device</h4>
+			<form id="myform2">
+				<label for="HMD"><b> HMD: </b></label>
+				<input type="radio" name="dev" id="HMD" value="HMD" checked><br>
+				<label for="Tablet"><b> Tablet: </b></label>
+				<input type="radio" name="dev" id="Tablet" value="Tablet">
 			</form>
 		</div>
 	</div>

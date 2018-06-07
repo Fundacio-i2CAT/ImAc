@@ -11,7 +11,7 @@ function runDemo()
 ////////////////
   if (demoId == 1)
   {
-    var imgUrl = language == "catala" ? './resources/preTest/ger/1.png' : './resources/preTest/ger/1.png';
+    var imgUrl = language == "catala" ? './resources/preTest/cat/1.png' : './resources/preTest/ger/1.png';
     moData.createImageInCamera( imgUrl, 'pauseimg', { w: 1, h: 1, visible: true } );
 
     myVar = setTimeout(function() 
@@ -39,7 +39,7 @@ function runDemo()
 ////////////////
   else if (demoId == 2)
   {
-    var imgUrl = language == "catala" ? './resources/preTest/ger/21.png' : './resources/preTest/ger/21.png';
+    var imgUrl = language == "catala" ? './resources/preTest/cat/21.png' : './resources/preTest/ger/21.png';
     moData.createImageInCamera( imgUrl, 'pauseimg', { w: 1, h: 1, visible: true } );
 
     myVar = setTimeout(function() 
@@ -69,7 +69,7 @@ function runDemo()
 ////////////////
   else if (demoId == 3)
   {
-    var imgUrl = language == "catala" ? './resources/preTest/ger/32.png' : './resources/preTest/ger/32.png';
+    var imgUrl = language == "catala" ? './resources/preTest/cat/32.png' : './resources/preTest/ger/32.png';
     moData.createImageInCamera( imgUrl, 'pauseimg', { w: 1, h: 1, visible: true } );
 
     myVar = setTimeout(function() 
@@ -91,7 +91,7 @@ function runDemo()
         y: signPosition.y,
         z: signPosition.z
       };
-      moData.createSignVideo('./resources/signer_rbb_1.mp4', 'sign', conf);
+      moData.createSignVideo('./resources/signer_rbb_new.mp4', 'sign', conf);
 
       viewArea = 30;
     }, 3000);
@@ -104,7 +104,7 @@ function runDemo()
 ////////////////
   else if (demoId == 4)
   {
-    var imgUrl = language == "catala" ? './resources/preTest/ger/52.png' : './resources/preTest/ger/52.png';
+    var imgUrl = language == "catala" ? './resources/preTest/cat/52.png' : './resources/preTest/ger/52.png';
     moData.createImageInCamera( imgUrl, 'pauseimg', { w: 1, h: 1, visible: true } );
 
     myVar = setTimeout(function() 
@@ -129,7 +129,7 @@ function runDemo()
         y: signPosition.y,
         z: signPosition.z
       };
-      moData.createSignVideo('./resources/signer_rbb_1.mp4', 'sign', conf);
+      moData.createSignVideo('./resources/signer_rbb_new.mp4', 'sign', conf);
 
     }, 3000);
 
@@ -141,7 +141,7 @@ function runDemo()
 ////////////////
   else if (demoId == 5)
   {
-    var imgUrl = language == "catala" ? './resources/preTest/ger/60.png' : './resources/preTest/ger/60.png';
+    var imgUrl = language == "catala" ? './resources/preTest/cat/60.png' : './resources/preTest/ger/60.png';
     moData.createImageInCamera( imgUrl, 'pauseimg', { w: 1, h: 1, visible: true } );
 
     myVar = setTimeout(function() 
@@ -167,7 +167,7 @@ function runDemo()
         y: signPosition.y,
         z: signPosition.z
       };
-      moData.createSignVideo('./resources/signer_rbb_1.mp4', 'sign', conf);
+      moData.createSignVideo('./resources/signer_rbb_new.mp4', 'sign', conf);
 
     }, 3000);
 
@@ -178,14 +178,15 @@ function runDemo()
 ////////////////
   else
   {
-  	
     var listVideoContent = moData.getListOfVideoContents();
     var _videoElement = listVideoContent[0].vid;
-    AudioManager.initializeAudio( _videoElement, 4, camera.matrixWorld.elements );
+    AudioManager.initializeAudio( _videoElement, 2, camera.matrixWorld.elements );
 
-    viewArea = 70;
+    viewArea = 60;
     subtitleIndicator = 'arrow';
     isSubtitleEnabled = true;
+
+    //moData.createControlBar();
 
     moData.playAll();
   }
@@ -195,7 +196,7 @@ function runDemo()
 function showInfoImages(id1)
 {
   moData.pauseAll();
-  var imgUrl = language == "catala" ? './resources/preTest/ger/' + id1 + '.png' : './resources/preTest/ger/' + id1 + '.png';
+  var imgUrl = language == "catala" ? './resources/preTest/cat/' + id1 + '.png' : './resources/preTest/ger/' + id1 + '.png';
   moData.createImageInCamera( imgUrl, 'pauseimg', { w: 1, h: 1, visible: true } );
 
   myVar = setTimeout(function() 
@@ -214,7 +215,7 @@ function showInfoImages(id1)
 function showEndImage(id1)
 {
   moData.pauseAll();
-  var imgUrl = language == "catala" ? './resources/preTest/ger/' + id1 + '.png' : './resources/preTest/ger/' + id1 + '.png';
+  var imgUrl = language == "catala" ? './resources/preTest/cat/' + id1 + '.png' : './resources/preTest/ger/' + id1 + '.png';
   moData.createImageInCamera( imgUrl, 'pauseimg', { w: 0.8, h: 0.8, visible: true } );
 
   myVar = setTimeout(function() 
@@ -227,7 +228,7 @@ function waitResponse(id)
 {
   if ( moData.isPausedById(0) ) 
   {
-    var imgUrl = language == "catala" ? './resources/preTest/ger/' + id + '.png' : './resources/preTest/ger/' + id + '.png';
+    var imgUrl = language == "catala" ? './resources/preTest/cat/' + id + '.png' : './resources/preTest/ger/' + id + '.png';
     moData.createImageInCamera( imgUrl, 'pauseimg', { w: 1, h: 1, visible: true } );
 
     myVar2 = setInterval(function() {
@@ -275,7 +276,7 @@ function waitResponse(id)
               y: signPosition.y,
               z: signPosition.z
             };
-            moData.createSignVideo('./resources/signer_rbb_1.mp4', 'sign', conf);
+            moData.createSignVideo('./resources/signer_rbb_new.mp4', 'sign', conf);
           }
           else showEndImage( 59 );
         }  
@@ -302,7 +303,8 @@ function runDemo1(time)
         forcedDisplayAlign = 'after';
         viewArea += 10;
         textListMemory = [];
-        waitResponse(4);
+        var idDiapo = 4 + 3*(viewArea-40)/10;
+        waitResponse(idDiapo);
       } 
       else 
       {
@@ -369,7 +371,7 @@ function runDemo3(time)
 	    y: signPosition.y,
 	    z: signPosition.z
 	  };
-	  moData.createSignVideo('./resources/signer_rbb_1.mp4', 'sign', conf);
+	  moData.createSignVideo('./resources/signer_rbb_new.mp4', 'sign', conf);
     waitResponse(35);
   }, time); 
 }
@@ -410,5 +412,21 @@ function runDemo5(time)
     waitResponse(63);
 
   }, time); 
+}
+
+
+function runADDemo(id)
+{
+  enterfullscreen();
+  //showLoader();
+  //myVar = setTimeout(function() {
+    //clearLoader();
+    //enterfullscreen();
+    document.getElementById("ad1").style.display = "block";
+    if (id == 0) document.getElementById("ad2").src = "https://www.youtube.com/embed/lyd4HDUA4JY?autoplay=1";//window.location = 'https://youtu.be/SqIrXu0NkVU';
+    else if (id == 1) document.getElementById("ad2").src = "https://www.youtube.com/embed/KSyvf5R0Se0?autoplay=1";//window.location = 'https://youtu.be/cMeLWQsU27Y';
+    else if (id == 2) document.getElementById("ad2").src = "https://www.youtube.com/embed/akfVIe5NGzk?autoplay=1";//window.location = 'https://youtu.be/x0HAOLUjn1Y';
+
+  //}, 10000); 
 }
 

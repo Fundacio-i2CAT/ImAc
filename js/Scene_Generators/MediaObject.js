@@ -23,13 +23,33 @@ THREE.MediaObject = function () {
         vid.loop = true;
         //vid.src = url;
 
-        if (isDASH)
+        if ( isDASH )
         {
             var player = dashjs.MediaPlayer().create();
             player.initialize( vid, url, true );
             player.getDebug().setLogToBrowserConsole( false );
             var objVideo = { id: id, vid: vid, dash: player };
         }
+        /*    url = 'https://video-weaver.lhr03.hls.ttvnw.net/v1/playlist/Cq8Df81Nyka_RiKemz8LjhTJUG72froKfKpZJR6dkfv9j1i6JAiHGXSKyQjoLOzwNex-KZtQ-l2TjZycYDy-fNIljvoJWwL-rk3CIrNrXZigESNi7sWHlH-nCmA4YJcX-6QY88aTtT_Z2ney3eJ6reFgx4OHGZxF2Pj3F-fp71tr3j2PpH4633Y-3DnR_HaChyNjDMmi2msdKooa8oTuDv8kCIiJIrKN_M2abmtjhm1_3YwHhBt2ofLyNvqFEvwe9kH6nHiU8PHd5Vo5niWOXys5zwV-FE51cmMgzFvq65ma9-jhy6itdlB2swMYsno4cocxMKVbaEIBwmO_Ey6vKFpBz-blIgFII18M-NpkPwXhorr8Ui3RrV13PQFmftsUT4L2ws9_KOj2ExUhAv-qKL-otCs9YN9NpgFulVqaY26JRPCRUv98TQidBQHmRRqBGxtSp-ys7xcrWJNc3PlsPmiK2S8B2ttOPu3XgnabaIm_KCCcuDg7kqMZXIkNm0JGL6nqcHVIfPVZrSGBOpfX__iZVzkQ_tkFSxusOzAeBMFQzG784r2pL3qw9enOX7IH85QSEAUd1FLgPTYs6g8EPM_mhBcaDE-BNFfKdPn8RVu-lg.m3u8';
+
+            if(Hls.isSupported()) {
+                var hls = new Hls();
+                hls.loadSource( url );
+                hls.attachMedia(vid);
+                hls.on(Hls.Events.MANIFEST_PARSED,function() {
+                  vid.play();
+              });
+                var objVideo = { id: id, vid: vid };
+             }
+              else if (vid.canPlayType('application/vnd.apple.mpegurl')) {
+                vid.src = url;
+                vid.addEventListener('loadedmetadata',function() {
+                  vid.play();
+                });
+                var objVideo = { id: id, vid: vid };
+              }
+            
+        */
         else
         {
             vid.src = url;
@@ -41,6 +61,14 @@ THREE.MediaObject = function () {
         return vid;
     }
 
+    function syncVideos()
+    {
+        for ( var i = 1, l = listOfVideoContents.length; i < l; i++ )
+        {
+            listOfVideoContents[i].vid.currentTime = listOfVideoContents[0].vid.currentTime;
+        }
+    }
+
     function getVideoMesh(geometry, url, name, order) 
     {
         var texture = new THREE.VideoTexture( getVideObject( name, url ) );
@@ -48,7 +76,7 @@ THREE.MediaObject = function () {
         //texture.minFilter = THREE.NearestFilter;
         texture.format = THREE.RGBAFormat;
 
-        var material = new THREE.MeshBasicMaterial({ map: texture, side: THREE.FrontSide });
+        var material = new THREE.MeshBasicMaterial( { map: texture, side: THREE.FrontSide } );
         var mesh = new THREE.Mesh( geometry, material );
 
         mesh.name = name;
@@ -64,7 +92,7 @@ THREE.MediaObject = function () {
         texture.minFilter = THREE.LinearFilter;
         texture.format = THREE.RGBAFormat;
 
-        var material = new THREE.MeshBasicMaterial({ map: texture, transparent: true, side: THREE.FrontSide })
+        var material = new THREE.MeshBasicMaterial( { map: texture, transparent: true, side: THREE.FrontSide } );
         var mesh = new THREE.Mesh( geometry, material );
 
         mesh.name = name;
@@ -78,7 +106,7 @@ THREE.MediaObject = function () {
         var material = new THREE.MeshBasicMaterial( { color: c, transparent: true, opacity: o } );
         var geometry = new THREE.PlaneGeometry( w, h ); 
         var mesh = new THREE.Mesh( geometry, material );
-        mesh.position.z -= 0.001;
+        mesh.position.z = -0.1;
 
         return mesh;
     }
@@ -100,8 +128,123 @@ THREE.MediaObject = function () {
         var material = new THREE.MeshBasicMaterial( { color: c } );
         var mesh = new THREE.Mesh( geometry, material ) ;
 
-        mesh.position.z = 0.01;
+        mesh.position.z = 0.1;
         mesh.visible = false;
+        
+        return mesh;
+    }
+
+    function getPlayMesh(w, h, c)
+    {
+        var arrowShape = new THREE.Shape();
+
+        arrowShape.moveTo( -w/2.5, -h/2 );
+        arrowShape.quadraticCurveTo ( -w/2.5, -h/2, -w/2.5, h/2 );
+        arrowShape.quadraticCurveTo ( -w/2.5, h/2, w/2, 0 );
+        arrowShape.quadraticCurveTo ( w/2, 0, -w/2.5, -h/2 );
+
+        var geometry = new THREE.ShapeGeometry( arrowShape );
+        var material = new THREE.MeshBasicMaterial( { color: c } );
+        var mesh = new THREE.Mesh( geometry, material ) ;
+
+        mesh.position.z = 0.01;
+        mesh.visible = true;
+        
+        return mesh;
+    }
+
+    function getPauseMesh(w, h, c)
+    {
+        var group = new THREE.Group();
+
+        var arrowShape = new THREE.Shape();
+
+        arrowShape.moveTo( -w/8, -h/2 );
+        arrowShape.quadraticCurveTo ( -w/8, -h/2, -3*w/8, -h/2 );
+        arrowShape.quadraticCurveTo ( -3*w/8, -h/2, -3*w/8, h/2 );
+        arrowShape.quadraticCurveTo ( -3*w/8, h/2, -w/8, h/2 );
+        arrowShape.quadraticCurveTo ( -w/8, h/2, -w/8, -h/2 );
+
+        var geometry = new THREE.ShapeGeometry( arrowShape );
+        var material = new THREE.MeshBasicMaterial( { color: c } );
+        var mesh1 = new THREE.Mesh( geometry, material ) ;
+
+        group.add(mesh1);
+
+        var arrowShape = new THREE.Shape();
+
+        arrowShape.moveTo( w/8, -h/2 );
+        arrowShape.quadraticCurveTo ( w/8, -h/2, 3*w/8, -h/2 );
+        arrowShape.quadraticCurveTo ( 3*w/8, -h/2, 3*w/8, h/2 );
+        arrowShape.quadraticCurveTo ( 3*w/8, h/2, w/8, h/2 );
+        arrowShape.quadraticCurveTo ( w/8, h/2, w/8, -h/2 );
+
+        var geometry = new THREE.ShapeGeometry( arrowShape );
+        var material = new THREE.MeshBasicMaterial( { color: c } );
+        var mesh2 = new THREE.Mesh( geometry, material ) ;
+
+        group.add(mesh2);
+
+        group.position.z = 0.01;
+        group.visible = true;
+        
+        return group;
+    }
+
+    function getSeekMesh(w, h, c)
+    {
+        var arrowShape = new THREE.Shape();
+
+        arrowShape.moveTo( -w/2, -h/2 );
+        arrowShape.quadraticCurveTo ( -w/2, -h/2, -w/2, h/2 );
+        arrowShape.quadraticCurveTo ( -w/2, h/2, 0, 0 );
+        arrowShape.quadraticCurveTo ( 0, 0, 0, h/2 );
+        arrowShape.quadraticCurveTo ( 0, h/2, w/2, 0 );
+
+        arrowShape.quadraticCurveTo ( w/2, 0, w/2, h/2 );
+        arrowShape.quadraticCurveTo ( w/2, h/2, w/1.8, h/2 );
+        arrowShape.quadraticCurveTo ( w/1.8, h/2, w/1.8, -h/2 );
+        arrowShape.quadraticCurveTo ( w/1.8, -h/2, w/2, -h/2 );
+        arrowShape.quadraticCurveTo ( w/2, -h/2, w/2, 0 );
+
+        arrowShape.quadraticCurveTo ( w/2, 0, 0, -h/2 );
+        arrowShape.quadraticCurveTo ( 0, -h/2, 0, 0 );
+        arrowShape.quadraticCurveTo ( 0, 0, -w/2, -h/2 );
+
+        var geometry = new THREE.ShapeGeometry( arrowShape );
+        var material = new THREE.MeshBasicMaterial( { color: c } );
+        var mesh = new THREE.Mesh( geometry, material ) ;
+
+        mesh.position.z = 0.01;
+        mesh.visible = true;
+        
+        return mesh;
+    }
+
+    function getSeekBarMesh(w, h, c)
+    {
+        var roundedRectShape = new THREE.Shape();
+        ( function roundedRect( ctx, x, y, width, height, radius ) {
+            ctx.moveTo( x, y + radius );
+            ctx.lineTo( x, y + height - radius );
+            ctx.quadraticCurveTo( x, y + height, x - radius/2, y + height );
+            ctx.lineTo( x + width - radius, y + height );
+            ctx.quadraticCurveTo( x + width, y + height, x + width, y + height - radius );
+            ctx.lineTo( x + width, y + radius );
+            ctx.quadraticCurveTo( x + width, y, x + width - radius, y );
+            ctx.lineTo( x - radius/2, y );
+            ctx.quadraticCurveTo( x, y, x, y + radius );
+        } )( roundedRectShape, -w/2, -h/2, w, h, h/2 );
+
+        var geometry = new THREE.ShapeBufferGeometry( roundedRectShape );
+        var mesh = new THREE.Mesh( geometry, new THREE.MeshBasicMaterial( { color: c } ) );
+
+        var seekbutton = getSeekMesh( 10, 5, 0x000000 );
+
+        mesh.add( seekbutton );
+
+        mesh.position.z = 0.01;
+        mesh.visible = true;
         
         return mesh;
     }
@@ -121,55 +264,55 @@ THREE.MediaObject = function () {
         var textplane = new THREE.Mesh( textShape, textmaterial );
         textplane.position.x = -xMid/2;
         textplane.position.y = -2;
-        textplane.position.z = 0.001;
+        textplane.position.z = 0.1;
                
         var material = new THREE.MeshBasicMaterial( { color: t.backgroundColor, transparent: true, opacity: o } );
         var geometry = new THREE.PlaneGeometry( xMid+4, 8.7 ); 
         var mesh = new THREE.Mesh( geometry, material );
 
-        mesh.add(textplane);
+        mesh.add( textplane );
 
-        if (i == l-1 && c.subtitleIndicator == 'compass')
+        if ( i == l-1 && c.subtitleIndicator == 'compass' )
         {
             // right compass
             var imgGeometry = new THREE.PlaneGeometry( 6.7, 6.7 );
             var compass = getImageMesh( imgGeometry, './img/compass_r.png', 'right', 4 );
-            compass.add( getBackgroundMesh ( 10.7, 8.7, t.backgroundColor, o ) );
-            compass.position.z = 0.01;
-            compass.position.x = xMid/2 + 6.7;
+            compass.add( getBackgroundMesh ( 9.7, 8.7, t.backgroundColor, o ) );
+            compass.position.z = 0.1;
+            compass.position.x = xMid/2 + 6.8;
             compass.visible = false;
 
-            mesh.add(compass);
+            mesh.add( compass );
 
             // lesft compass
             var imgGeometry = new THREE.PlaneGeometry( 6.7, 6.7 );
             var compass = getImageMesh( imgGeometry, './img/compass_l.png', 'left', 4 );
-            compass.add( getBackgroundMesh ( 10.7, 8.7, t.backgroundColor, o ) );
-            compass.position.z = 0.01;
-            compass.position.x = -(xMid/2 + 6.79);
+            compass.add( getBackgroundMesh ( 9.7, 8.7, t.backgroundColor, o ) );
+            compass.position.z = 0.1;
+            compass.position.x = -(xMid/2 + 6.8);
             compass.visible = false;
 
-            mesh.add(compass);
+            mesh.add( compass );
 
         }
-        else if (i == l-1 && c.subtitleIndicator == 'arrow')
+        else if ( i == l-1 && c.subtitleIndicator == 'arrow' )
         {
             // right arrow
             var arrow = getArrowMesh( 6.7, 6.7, t.color );
-            arrow.add( getBackgroundMesh ( 10.7, 8.7, t.backgroundColor, o ) );
-            arrow.position.x = xMid/2 + 6.7;
+            arrow.add( getBackgroundMesh ( 9.7, 8.7, t.backgroundColor, o ) );
+            arrow.position.x = xMid/2 + 6.8;
             arrow.name = 'right';
 
-            mesh.add(arrow);
+            mesh.add( arrow );
 
             // left arrow
             var arrow = getArrowMesh( 6.7, 6.7, t.color );
             arrow.rotation.z = Math.PI;
-            arrow.add( getBackgroundMesh ( 10.7, 8.7, t.backgroundColor, o ) );
-            arrow.position.x = -(xMid/2 + 6.7);
+            arrow.add( getBackgroundMesh ( 9.7, 8.7, t.backgroundColor, o ) );
+            arrow.position.x = -(xMid/2 + 6.8);
             arrow.name = 'left';
 
-            mesh.add(arrow);
+            mesh.add( arrow );
         }
 
         mesh.scale.set( c.size,c.size,c.size );
@@ -186,11 +329,11 @@ THREE.MediaObject = function () {
 
     function removeContentById(id)
     {
-        for (var i = 0, len = listOfVideoContents.length; i < len; i++)
+        for ( var i = 0, len = listOfVideoContents.length; i < len; i++ )
         {
-            if (listOfVideoContents[i].id == id)
+            if ( listOfVideoContents[i].id == id )
             {
-                listOfVideoContents.splice(i, 1);
+                listOfVideoContents.splice( i, 1 );
                 break;
             }
         }
@@ -416,15 +559,16 @@ THREE.MediaObject = function () {
 
     this.playAll = function()
     {
-        for (var i = 0, len = listOfVideoContents.length; i < len; i++) 
+        for ( var i = 0, len = listOfVideoContents.length; i < len; i++ ) 
         {
             listOfVideoContents[i].vid.play();
         }
+        syncVideos();
     };
 
     this.pauseAll = function()
     {
-        for (var i = 0, len = listOfVideoContents.length; i < len; i++) 
+        for ( var i = 0, len = listOfVideoContents.length; i < len; i++ ) 
         {
             listOfVideoContents[i].vid.pause();
         }
@@ -441,7 +585,8 @@ THREE.MediaObject = function () {
 
     this.createSphericalVideoInScene = function(url, name) 
     {
-        var geometry = new THREE.SphereBufferGeometry( 10, 32, 16 );
+        var geometry = new THREE.SphereBufferGeometry( 100, 32, 16, Math.PI/2 );
+
         geometry.scale( - 1, 1, 1 );
         var sphere = getVideoMesh( geometry, url, name, 0 );
 
@@ -462,7 +607,7 @@ THREE.MediaObject = function () {
         arrow.position.x = -3 * config.size/8;
         arrow.name = 'left';
 
-        plane.add(arrow);
+        plane.add( arrow );
 
         // right arrow
         var arrow = getArrowMesh( config.size/5, config.size/6, 0xffffff );
@@ -470,14 +615,14 @@ THREE.MediaObject = function () {
         arrow.position.x = 3 * config.size/8;
         arrow.name = 'right';
 
-        plane.add(arrow);
+        plane.add( arrow );
 
         // background 
         var backgroundMesh = getBackgroundMesh ( config.size, config.size/5, 0x000000, 0.8 );
         backgroundMesh.position.y = -6 * config.size/10;
         backgroundMesh.visible = signIndicator == 'arrow' ? true : false;
 
-        plane.add(backgroundMesh);
+        plane.add( backgroundMesh );
 
         plane.position.z = - config.z;
         plane.position.x = config.x;
@@ -485,45 +630,45 @@ THREE.MediaObject = function () {
 
         signMesh = plane;
 
-        camera.add(plane);
+        camera.add( plane );
     };
 
     this.createImageInCamera = function(url, name, config) 
     {
-        var geometry = new THREE.PlaneGeometry( config.w, config.h);
+        var geometry = new THREE.PlaneGeometry( config.w, config.h );
         var plane = getImageMesh( geometry, url, name, 5 );
         plane.position.z = -0.5;
         plane.visible = config.visible;
 
-        if (imageMesh) {
+        if ( imageMesh ) {
             var imgMesh = imageMesh;
             setTimeout(function() {
-                camera.remove(imgMesh);
+                camera.remove( imgMesh );
             }, 300);
         }
 
         imageMesh = plane;
 
-        camera.add(plane);
+        camera.add( plane );
     };
 
     this.createSubtitle = function(textList, config)
     {
         var group = new THREE.Group();
 
-        for (var i = 0, len = textList.length; i < len; ++i) 
+        for ( var i = 0, len = textList.length; i < len; ++i ) 
         {
             config.x = config.textAlign == 'center' ? 0 : config.textAlign == 'start' ? -config.size : config.size;
 
-            var mesh = getSubMesh(textList[i], config, 0.8, len, i);            
+            var mesh = getSubMesh( textList[i], config, 0.8, len, i );            
             mesh.name = i;
 
-            group.add(mesh);
+            group.add( mesh );
         }
         
         subtitleMesh = group;
 
-        camera.add(group);
+        camera.add( group );
     };
 
 //************************************************************************************
@@ -532,20 +677,20 @@ THREE.MediaObject = function () {
 
     this.removeSubtitle = function()
     {
-        camera.remove(subtitleMesh);
+        camera.remove( subtitleMesh );
         subtitleMesh = undefined;
     };
 
     this.removeSignVideo = function()
     {
-        removeContentById(signMesh.name);
-        camera.remove(signMesh);
+        removeContentById( signMesh.name );
+        camera.remove( signMesh );
         signMesh = undefined;
     };
 
     this.removeInfoImage = function()
     {
-        camera.remove(imageMesh);
+        camera.remove( imageMesh );
         imageMesh = undefined;
     };
 
@@ -555,14 +700,14 @@ THREE.MediaObject = function () {
 
     this.changeSubtitleIndicator = function(pos)
     {
-        if (subtitleMesh)
+        if ( subtitleMesh )
         {
-            for (var i = 0, li = subtitleMesh.children.length; i < li; ++i) 
+            for ( var i = 0, li = subtitleMesh.children.length; i < li; ++i ) 
             {
-                for (var j = 0, lj = subtitleMesh.children[i].children.length; j < lj; ++j)
+                for ( var j = 0, lj = subtitleMesh.children[i].children.length; j < lj; ++j )
                 {
-                    if (subtitleMesh.children[i].children[j].name == 'left') subtitleMesh.children[i].children[j].visible = pos == 'left' ? true : false;
-                    else if (subtitleMesh.children[i].children[j].name == 'right') subtitleMesh.children[i].children[j].visible = pos == 'right' ? true : false;
+                    if ( subtitleMesh.children[i].children[j].name == 'left' ) subtitleMesh.children[i].children[j].visible = pos == 'left' ? true : false;
+                    else if ( subtitleMesh.children[i].children[j].name == 'right' ) subtitleMesh.children[i].children[j].visible = pos == 'right' ? true : false;
                 }
             }
         }
@@ -570,19 +715,19 @@ THREE.MediaObject = function () {
 
     this.changeSignIndicator = function(pos)
     {
-        if (signMesh)
+        if ( signMesh )
         {
-            for (var i = 0, l = signMesh.children.length; i < l; ++i) 
+            for ( var i = 0, l = signMesh.children.length; i < l; ++i ) 
             {
-                if (signMesh.children[i].name == 'left') signMesh.children[i].visible = pos == 'left' ? true : false;
-                else if (signMesh.children[i].name == 'right') signMesh.children[i].visible = pos == 'right' ? true : false;
+                if ( signMesh.children[i].name == 'left' ) signMesh.children[i].visible = pos == 'left' ? true : false;
+                else if ( signMesh.children[i].name == 'right' ) signMesh.children[i].visible = pos == 'right' ? true : false;
             }
         }
     };
 
     this.changeSignPosition = function(pos) 
     {
-        if (signMesh && ((pos == 'left' && signMesh.position.x > 0) || (pos == 'right' && signMesh.position.x < 0)))
+        if ( signMesh && ( ( pos == 'left' && signMesh.position.x > 0 ) || ( pos == 'right' && signMesh.position.x < 0 ) ) )
         {
             signMesh.position.x = signMesh.position.x * -1;
         }
@@ -605,29 +750,170 @@ THREE.MediaObject = function () {
     this.createCubeGeometry116 = function(url, name) 
     {
         var geometry = getCubeGeometry116();  
-
         var cube = getVideoMesh( geometry, url, name, 0 );      
-
-        /*var loader = new THREE.TextureLoader();
-        var texture = loader.load( url );
-        //texture.minFilter = THREE.LinearFilter;
-        //texture.format = THREE.RGBAFormat;
-        
-        // Using THREE.NearestFilter (instead of THREE.LinearFilter) avoids noise lines.
-        texture.minFilter = THREE.NearestFilter;
-        
-        // Clamp
-        texture.format = THREE.RGBAFormat;       
-
-        var material = new THREE.MeshBasicMaterial({ map: texture, side: THREE.FrontSide });
-        var cube = new THREE.Mesh(geometry, material);
-
-        cube.renderOrder = 0;
-        cube.visible = true;*/
 
         mainMesh = cube;
 
         scene.add( cube );
+    };
+
+    this.createControlBar = function()
+    {
+        var geometry = new THREE.CircleGeometry( 8, 32 );
+        var material = new THREE.MeshBasicMaterial( { color: 0xffffff } );
+        var circle = new THREE.Mesh( geometry, material );
+
+        var playbutton = getPauseMesh(10, 10, 0x000000);
+        var seekBarR = getSeekBarMesh(15, 10, 0xffffff);
+        var seekBarL = getSeekBarMesh(15, 10, 0xffffff);
+
+        seekBarL.rotation.z = Math.PI;
+        seekBarR.position.x = 16;
+        seekBarL.position.x = -16;
+
+        circle.add( playbutton );
+        circle.add( seekBarR );
+        circle.add( seekBarL );
+
+        circle.scale.set( 0.05,0.05,1 );
+
+        circle.position.z = -10;
+        circle.position.x = 0;
+        circle.position.y = 0;
+
+        circle.lookAt(new THREE.Vector3(0, 0, 0));
+
+        circle.renderOrder = 5;
+        circle.name = 'playpause';
+
+        scene.add( circle );
+
+    };
+
+    this.createCineVideoInScene = function(url, name) 
+    {
+
+        var loader = new THREE.TextureLoader();
+        var texture = loader.load( './img/starry_background.jpg' );
+        texture.minFilter = THREE.LinearFilter;
+        texture.format = THREE.RGBAFormat;
+
+        var material = new THREE.MeshBasicMaterial( { map: texture, transparent: true, side: THREE.FrontSide } );
+
+        var geometry = new THREE.BoxGeometry( -500, 500, 500 );
+        //var material = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
+        var cube = new THREE.Mesh( geometry, material );
+        scene.add( cube );
+
+        var loader = new THREE.BufferGeometryLoader();
+
+var loader = new THREE.ObjectLoader();
+
+loader.load(
+    // resource URL
+    "models/goku.json",
+
+    // onLoad callback
+    // Here the loaded data is assumed to be an object
+    function ( obj ) {
+        // Add the loaded object to the scene
+        obj.name = 'goku';
+        obj.renderOrder = 6;
+        obj.position.z = 0;
+        obj.position.x = 1;
+        obj.position.y = 1.2;
+
+        obj.scale.set( 2.5,2.5,1 );
+        obj.rotation.y = Math.PI/2;
+
+        scene.add( obj );
+    },
+
+    // onProgress callback
+    function ( xhr ) {
+        console.log( (xhr.loaded / xhr.total * 100) + '% loaded' );
+    },
+
+    // onError callback
+    function ( err ) {
+        console.error( 'An error happened' );
+    }
+);
+
+var loader = new THREE.ObjectLoader();
+
+loader.load(
+    // resource URL
+    "models/gears-of-war-3-lambent-female.json",
+
+    // onLoad callback
+    // Here the loaded data is assumed to be an object
+    function ( obj ) {
+        // Add the loaded object to the scene
+        obj.name = 'female';
+        obj.renderOrder = 6;
+        obj.position.z = 0;
+        obj.position.x = -1.5;
+        obj.position.y = 0;
+
+        obj.scale.set( 0.5,0.5,0.5 );
+        obj.rotation.y = -Math.PI/2;
+
+        scene.add( obj );
+    },
+
+    // onProgress callback
+    function ( xhr ) {
+        console.log( (xhr.loaded / xhr.total * 100) + '% loaded' );
+    },
+
+    // onError callback
+    function ( err ) {
+        console.error( 'An error happened' );
+    }
+);
+/*
+var loader = new THREE.ObjectLoader();
+
+loader.load(
+    // resource URL
+    "models/sofa-1.json",
+
+    // onLoad callback
+    // Here the loaded data is assumed to be an object
+    function ( obj ) {
+        // Add the loaded object to the scene
+        obj.name = 'sofa';
+        obj.renderOrder = 6;
+        obj.position.z = 0;
+        obj.position.x = 0.8;
+        obj.position.y = -0.3;
+
+        obj.scale.set( 1.7,1.7,1.7 );
+        //obj.rotation.y = -Math.PI;
+
+        scene.add( obj );
+    },
+
+    // onProgress callback
+    function ( xhr ) {
+        console.log( (xhr.loaded / xhr.total * 100) + '% loaded' );
+    },
+
+    // onError callback
+    function ( err ) {
+        console.error( 'An error happened' );
+    }
+);
+*/
+
+        var geometry = new THREE.SphereBufferGeometry( 100, 32, 16, Math.PI+0.6, 2, 1, 1.2 );
+        geometry.scale( - 1, 1, 1 );
+        var sphere = getVideoMesh( geometry, url, name, 0 );
+
+        mainMesh = sphere;
+
+        scene.add( sphere );
     };
 }
 

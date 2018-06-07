@@ -6,7 +6,7 @@ function addsubtitles()
 {
   var r = new XMLHttpRequest();
 
-  if (demoId < 6)
+  if (_selected_content == 'Radio')
     var subtitleXML = language == "catala" ? "./resources/Rapzember_Cat.xml" : "./resources/Rapzember3.ebu-tt.xml";
   else
     var subtitleXML = language == "catala" ? "./resources/LICEU_CAST.xml" : "./resources/LICEU_ENG.xml";
@@ -70,7 +70,7 @@ function updateISD(offset)
         if (rotaionValue >= maxRotaion) clearInterval(rotationInterval);
         else {
           rotaionValue += 3;
-          CameraPatherObject.rotation.y = (rotaionValue + 90) * (Math.PI / 180);
+          CameraPatherObject.rotation.y = (rotaionValue + 0) * (Math.PI / 180);
         }
       },30);
       //camera.rotation.y = (isd.imac + 90) * (Math.PI / 180);
@@ -116,15 +116,19 @@ function print3DText(isdContent)
       var latitud = forcedDisplayAlign == 'before' ? 30 * viewArea/100 : -30 * viewArea/100; 
       var planePosition = convertAngular_toCartesian (latitud, 0);
 
+      var posY = Math.sin( Math.radians(latitud) );
+
       var conf = {
         subtitleIndicator: subtitleIndicator,
         displayAlign: forcedDisplayAlign,
         textAlign: forcedTextAlign,
-        size: 0.0001 * viewArea,
-        x: planePosition.x,
-        y: planePosition.y * 9/16,
-        z: planePosition.z
+        size: 0.008 * viewArea,
+        x: 0,
+        y: posY * 80 * 9/16,
+        z: 1 * 80
       };
+
+      //console.log(conf)
 
       moData.createSubtitle(textList, conf);
 
@@ -189,7 +193,7 @@ function getMeshByName (name)
 
 function checkSubtitleIdicator (isd)
 {
-  var cameraView = camera.getWorldDirection();
+  var cameraView = camera.getWorldDirection(new THREE.Vector3( ));
   var position = cartesianToAngular(cameraView.x,cameraView.y,cameraView.z);
 
   var difPosition = isd.imac - position.longitude;
@@ -232,7 +236,7 @@ function checkSubtitleIdicator (isd)
 
 function checkSignIdicator (isd)
 {
-  var cameraView = camera.getWorldDirection();
+  var cameraView = camera.getWorldDirection(new THREE.Vector3( ));
   var position = cartesianToAngular(cameraView.x,cameraView.y,cameraView.z);
   var difPosition = isd.imac - position.longitude;
 

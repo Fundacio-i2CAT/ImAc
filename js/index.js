@@ -1,7 +1,7 @@
 
 // GLOBAL VARS
 
-var _PlayerVersion = 'v0.01.2';
+var _PlayerVersion = 'v0.01.3';
 var AplicationManager = new AplicationManager();
 var moData = new THREE.MediaObject();
 var AudioManager = new AudioManager();
@@ -28,6 +28,7 @@ var isVRDisplay = true;
 var demoId = 1;
 
 var mainContentURL = './resources/rapzember-young-hurn_edit.mp4';
+var _selected_content = 'Radio';
 
 var isAndroid = false;
 
@@ -89,6 +90,7 @@ function init_webplayer()
     else if (i == 5) dataText = "Video 6: Demo opera";
 
     createListGroup(id, "img/LOGO-IMAC.png", dataText);
+
   }
 }
 
@@ -100,8 +102,32 @@ function blockContainer()
 	document.getElementById("container").style.display = "block";
 }
 
+function showLoader()
+{
+  document.getElementById("header").style.display = "none";
+  document.getElementById("content_area").style.display = "none";
+  document.getElementById("container").style.display = "none";
+  document.getElementById("loader").style.display = "block";
+}
+
+function clearLoader()
+{
+  document.getElementById("loader").style.display = "none";
+}
+
 function selectXML(id)
 {
+  var myform0 = document.forms['myform0'];
+
+  for (i = 0; i < myform0.length; i++) 
+  {
+    if (myform0[i].checked) 
+    {
+      mainContentURL = myform0[i].value == "Liceu" ? './resources/cam_2_2k.mp4' : './resources/rapzember-young-hurn_edit.mp4';
+      _selected_content = myform0[i].value;
+    }
+  }
+
   var myform2 = document.forms['myform2'];
 
   for (i = 0; i < myform2.length; i++) 
@@ -114,7 +140,7 @@ function selectXML(id)
   if(device == 'Tablet') isHMD = false;
     
   demoId = id;
-  if(demoId > 5) mainContentURL = './resources/cam_2_1080p.mp4';
+  //if(demoId > 5) mainContentURL = './resources/sp_c01_cena_01_base_0_edit.mp4';
   AplicationManager.init_AplicationManager();
   enterfullscreen();
 

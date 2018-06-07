@@ -15,84 +15,57 @@ SubSignManager = function() {
 
 	// subtitle vars
 	var subtitleEnabled = false;
-	var subtitleAlign = "after"; // before, center, after
-	var subtitleTextAlign = "center"; // start, center, end
+	var subtitleAlign = "after"; // before = top = 1, center = 0, after = bottom = -1 
+	var subtitleTextAlign = "center"; // start = left = -1, center = 0, end = right = 1 
 	var subtitleIndicator = 'none'; // none, arrow, compass, move
 
 	// sign vars
 	var signEnabled = false;
-	var signPosition= 'botRight'; // botRight, botLeft, topRight, topLeft
+	var signAlignX = 1; // left = -1, center = 0, right = 1
+	var signAlignY = -1; // bottom = -1, center = 0, top = 1
+	var signPosition= 'botRight'; // botRight, botLeft, topRight, topLeft //
 	var signIndicator = 'none';	 // none, arrow, move
 
 
 	function checkSignIdicator(isdImac)
 	{
 	  	var difPosition = getViewDifPosition( isdImac );
+	  	var position;
 
 	  	if (difPosition < camera.fov && difPosition > -camera.fov) 
 	  	{
-	  		signIndicator != 'move' ? changeSignIndicator( signMesh, 'center' ) : (signArea == 'topLeft' || signArea == 'botLeft') ? changeSignPosition( signMesh, 'left' ) : changeSignPosition( signMesh, 'right' );
+	  		position = signIndicator != 'move' ? 'center' : (signArea == 'topLeft' || signArea == 'botLeft') ? 'left' : 'right';
 	  	}
 	  	else 
 	  	{
 		   	difPosition = difPosition < 0 ? difPosition + 360 : difPosition;
 
-		   	if (difPosition > 0 && difPosition <= 180) 
-		   	{
-		   		signIndicator != 'move' ? changeSignIndicator( signMesh, 'left' ) : changeSignPosition( signMesh, 'left' );
-		   	}
-		   	else 
-		   	{
-		   		signIndicator != 'move' ? changeSignIndicator( 'right' ) : changeSignPosition( signMesh, 'right' );
-		   	}
+		   	position = (difPosition > 0 && difPosition <= 180) ? 'left' : 'right';
 		}
+		signIndicator != 'move' ? moData.changeSignIndicator( position ) : moData.changeSignPosition( position );
 	}
 
 	function checkSubtitleIdicator(isdImac)
 	{
 	  	var difPosition = getViewDifPosition( isdImac );
+	  	var position;
 
 	  	if (difPosition < camera.fov && difPosition > -camera.fov) 
 	  	{
-	    	if (subtitleIndicator == 'move') 
-	    	{
-	      			subtitleTextAlign = 'center';
-	      			textListMemory = [];
-	    		} 
-	    		else 
-	    		{
-	      			moData.changeSubtitleIndicator( 'center' );
-	    		}
-	  		}
-	  		else 
-	  		{
-	    		var difPosition2 = difPosition < 0 ? difPosition + 360 : difPosition;
-	    		if(difPosition2 > 0 && difPosition2 <= 180) 
-	    		{
-	      			if (subtitleIndicator == 'move') 
-	      			{
-				        subtitleTextAlign = 'start';
-				        textListMemory = [];
-	      			}
-	      			else 
-	      			{
-	        			moData.changeSubtitleIndicator( 'left' );
-	      			}
-	    		}
-	    		else 
-	    		{
-	      			if (subtitleIndicator == 'move') 
-	      			{
-			        	subtitleTextAlign = 'end';
-			        	textListMemory = [];
-	      			} 
-	      			else 
-	      			{
-	        			moData.changeSubtitleIndicator( 'right' );
-	      			} 
-	      		}
-	    	}
+	  		position = 'center';
 	  	}
+	  	else 
+	  	{
+	    	difPosition = difPosition < 0 ? difPosition + 360 : difPosition;
+
+	    	position = (difPosition > 0 && difPosition <= 180) ? 'left' : 'right';
+	  	}
+	  	subtitleIndicator != 'move' ? moData.changeSubtitleIndicator( position ) : textListMemory = [];
+	}
+
+	function checkSpeakerPosition(isdImac)
+	{
+		
 	}
 
 	function changePositioning(sp)
@@ -111,12 +84,15 @@ SubSignManager = function() {
 
 	function update(offset)
 	{
-		var isd = imsc.generateISD(imsc1doc, offset);
+		var isd = imsc.generateISD( imsc1doc, offset );
 
 		if (isd.contents.length > 0) 
 	  	{
-	  		if (autoPositioning) changePositioning( isd.imac );
-	    	if (subtitleEnabled) print3DText( isd.contents[0] );
+	  		if ( autoPositioning ) changePositioning( isd.imac );
+	    	if ( subtitleEnabled ) print3DText( isd.contents[0] );
+
+	    	checkSpeakerPosition( isd.imac );
+
 	    	if (subtileIndicator != 'none') checkSubtitleIdicator( isd.imac );
 	    	if (signIndicator != 'none') checkSignIdicator( isd.imac );
 	  	}
@@ -156,7 +132,7 @@ SubSignManager = function() {
 	        		textAlign: subtitleTextAlign,
 	        		size: 0.0001 * viewArea,
 	        		x: planePosition.x,
-	        		y: planePosition.y *9/16,
+	        		y: planePosition.y * 9/16,
 	        		z: planePosition.z
 	      		};
 

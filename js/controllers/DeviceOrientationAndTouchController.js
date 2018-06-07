@@ -25,7 +25,7 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 	this.screenOrientation = window.orientation || 0;
 
 	this.alpha = 0;
-	this.alphaOffsetAngle = THREE.Math.degToRad(90);
+	this.alphaOffsetAngle = 0;//THREE.Math.degToRad(90);
 	
 	// Manual rotate override components
 	var startX = 0, startY = 0,

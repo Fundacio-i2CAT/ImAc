@@ -432,15 +432,15 @@
         }
         i.prototype.setRotationMatrix3 = function(A) {
 
-            this._m0.gain.setValueAtTime(-A[0], this._context.currentTime); //i2cat
-            this._m1.gain.setValueAtTime(-A[1], this._context.currentTime); //i2cat
-            this._m2.gain.setValueAtTime(-A[2], this._context.currentTime); //i2cat
-            this._m3.gain.setValueAtTime(-A[3], this._context.currentTime); //i2cat
-            this._m4.gain.setValueAtTime(-A[4], this._context.currentTime); //i2cat
-            this._m5.gain.setValueAtTime(-A[5], this._context.currentTime); //i2cat
+            this._m0.gain.setValueAtTime(A[0], this._context.currentTime); //i2cat
+            this._m1.gain.setValueAtTime(A[1], this._context.currentTime); //i2cat
+            this._m2.gain.setValueAtTime(A[2], this._context.currentTime); //i2cat
+            this._m3.gain.setValueAtTime(A[3], this._context.currentTime); //i2cat
+            this._m4.gain.setValueAtTime(A[4], this._context.currentTime); //i2cat
+            this._m5.gain.setValueAtTime(A[5], this._context.currentTime); //i2cat
             this._m6.gain.setValueAtTime(-A[6], this._context.currentTime); //i2cat
-            this._m7.gain.setValueAtTime(A[7], this._context.currentTime); //i2cat
-            this._m8.gain.setValueAtTime(A[8], this._context.currentTime); //i2cat
+            this._m7.gain.setValueAtTime(-A[7], this._context.currentTime); //i2cat
+            this._m8.gain.setValueAtTime(-A[8], this._context.currentTime); //i2cat
 
             /*this._m0.gain.value = A[0];
             this._m1.gain.value = A[1];
@@ -455,15 +455,15 @@
         i.prototype.setRotationMatrix4 = function(A) {
             // i2cat
             //console.log(A[10])
-            this._m0.gain.setValueAtTime( -A[0] * 1, this._context.currentTime ); //i2cat
-            this._m1.gain.setValueAtTime( -A[1] * 1, this._context.currentTime ); //i2cat
-            this._m2.gain.setValueAtTime( -A[2] * 1, this._context.currentTime ); //i2cat
-            this._m3.gain.setValueAtTime( -A[4] * 1, this._context.currentTime ); //i2cat
-            this._m4.gain.setValueAtTime( -A[5] * 1, this._context.currentTime ); //i2cat
-            this._m5.gain.setValueAtTime( -A[6] * 1, this._context.currentTime ); //i2cat
-            this._m6.gain.setValueAtTime( A[8] * 1, this._context.currentTime ); //i2cat
-            this._m7.gain.setValueAtTime( A[9] * 1, this._context.currentTime ); //i2cat
-            this._m8.gain.setValueAtTime( A[10] * 1, this._context.currentTime ); //i2cat
+            this._m0.gain.setValueAtTime( A[0] * 1, this._context.currentTime ); //i2cat
+            this._m1.gain.setValueAtTime( A[1] * 1, this._context.currentTime ); //i2cat
+            this._m2.gain.setValueAtTime( A[2] * 1, this._context.currentTime ); //i2cat
+            this._m3.gain.setValueAtTime( A[4] * 1, this._context.currentTime ); //i2cat
+            this._m4.gain.setValueAtTime( A[5] * 1, this._context.currentTime ); //i2cat
+            this._m5.gain.setValueAtTime( A[6] * 1, this._context.currentTime ); //i2cat
+            this._m6.gain.setValueAtTime( -A[8] * 1, this._context.currentTime ); //i2cat
+            this._m7.gain.setValueAtTime( -A[9] * 1, this._context.currentTime ); //i2cat
+            this._m8.gain.setValueAtTime( -A[10] * 1, this._context.currentTime ); //i2cat
 
 
             /*this._m0.gain.value = (A[0] + 0) * 10;

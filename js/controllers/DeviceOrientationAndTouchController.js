@@ -5,7 +5,7 @@
 //* Orientation and touch controllers
 //*
 //**
-THREE.DeviceOrientationAndTouchController = function( object , domElement, renderer) {
+THREE.DeviceOrientationAndTouchController = function( object, domElement, renderer) {
 
 	var scope = this;
 
@@ -25,7 +25,7 @@ THREE.DeviceOrientationAndTouchController = function( object , domElement, rende
 	this.screenOrientation = window.orientation || 0;
 
 	this.alpha = 0;
-	this.alphaOffsetAngle = THREE.Math.degToRad(90);
+	this.alphaOffsetAngle = 0;//THREE.Math.degToRad(90);
 	
 	// Manual rotate override components
 	var startX = 0, startY = 0,
@@ -63,36 +63,31 @@ THREE.DeviceOrientationAndTouchController = function( object , domElement, rende
 		{
 			case 37:
             	camera.rotation.y += Math.PI / 90;
-            	if (_isAmbisonics) 
-		{
-			_foaRenderer.setRotationMatrix4(camera.matrixWorld.elements);
-		}
-            	//subtitles3d.position.x += 0.1;
+
+				if (AudioManager.isAmbisonics) AudioManager.updateRotationMatrix( camera.matrixWorld.elements );
+		        //subtitles3d.position.x += 0.1;
             	break;
 
         	case 38:
             	camera.rotation.x += Math.PI / 180;
-            	if (_isAmbisonics) 
-		{
-			_foaRenderer.setRotationMatrix4(camera.matrixWorld.elements);
-		}
+
+				if (AudioManager.isAmbisonics) AudioManager.updateRotationMatrix( camera.matrixWorld.elements );
+
             	break;
 
         	case 39:
         		//subtitles3d.position.x -= 0.1;
             	camera.rotation.y -= Math.PI / 90;
-            	if (_isAmbisonics) 
-		{
-			_foaRenderer.setRotationMatrix4(camera.matrixWorld.elements);
-		}
+
+				if (AudioManager.isAmbisonics) AudioManager.updateRotationMatrix( camera.matrixWorld.elements );
+
             	break;
 
         	case 40:
             	camera.rotation.x -= Math.PI / 180;
-            	if (_isAmbisonics) 
-		{
-			_foaRenderer.setRotationMatrix4(camera.matrixWorld.elements);
-		}
+
+				if (AudioManager.isAmbisonics) AudioManager.updateRotationMatrix( camera.matrixWorld.elements );
+
             	break;
 
         	case 32:
@@ -155,10 +150,8 @@ THREE.DeviceOrientationAndTouchController = function( object , domElement, rende
 		{
 			this.updateDeviceMove();		
 		}
-		if (_isAmbisonics) 
-		{
-			_foaRenderer.setRotationMatrix4(camera.matrixWorld.elements);
-		}
+
+		if (AudioManager.isAmbisonics) AudioManager.updateRotationMatrix( camera.matrixWorld.elements );
 	};
 	
 	this.connect = function() {

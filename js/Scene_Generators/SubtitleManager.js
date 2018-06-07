@@ -6,7 +6,7 @@ function addsubtitles()
 {
   var r = new XMLHttpRequest();
 
-  if (demoId < 6)
+  if (_selected_content == 'Radio')
     var subtitleXML = language == "catala" ? "./resources/Rapzember_Cat.xml" : "./resources/Rapzember3.ebu-tt.xml";
   else
     var subtitleXML = language == "catala" ? "./resources/LICEU_CAST.xml" : "./resources/LICEU_ENG.xml";
@@ -27,6 +27,7 @@ function displaySample(contents)
   imsc1doc = imsc.fromXML(contents);
 
   var listVideoContent = moData.getListOfVideoContents();
+  
   listVideoContent[0].vid.ontimeupdate = function() 
   {
     updateISD(listVideoContent[0].vid.currentTime);
@@ -58,11 +59,18 @@ function updateISD(offset)
       auxcount++;
       var maxRotaion = isd.imac;
       var rotaionValue = 0;
+
+      var forcedSpeakerPosition = document.getElementById('speaker').value;
+
+      if(forcedSpeakerPosition && forcedSpeakerPosition != '') {
+        maxRotaion = parseInt(forcedSpeakerPosition);
+      }
+
       var rotationInterval = setInterval(function() {
         if (rotaionValue >= maxRotaion) clearInterval(rotationInterval);
         else {
           rotaionValue += 3;
-          CameraPatherObject.rotation.y = (rotaionValue + 90) * (Math.PI / 180);
+          CameraPatherObject.rotation.y = (rotaionValue + 0) * (Math.PI / 180);
         }
       },30);
       //camera.rotation.y = (isd.imac + 90) * (Math.PI / 180);
@@ -70,7 +78,7 @@ function updateISD(offset)
 
     if (isSubtitleEnabled) print3DText(isd.contents[0]);
 
-    if (subtileIndicator != 'none') checkSubtitleIdicator(isd);
+    if (subtitleIndicator != 'none') checkSubtitleIdicator(isd);
     if (signIndicator != 'none') checkSignIdicator(isd);
 
     if (!isVRDisplay) 
@@ -105,18 +113,22 @@ function print3DText(isdContent)
     {
       moData.removeSubtitle();
 
-      var latitud = forcedDisplayAlign == 'before' ? 30 * viewArea/100 : 30 * viewArea/ -100; 
+      var latitud = forcedDisplayAlign == 'before' ? 30 * viewArea/100 : -30 * viewArea/100; 
       var planePosition = convertAngular_toCartesian (latitud, 0);
 
+      var posY = Math.sin( Math.radians(latitud) );
+
       var conf = {
-        subtileIndicator: subtileIndicator,
+        subtitleIndicator: subtitleIndicator,
         displayAlign: forcedDisplayAlign,
         textAlign: forcedTextAlign,
-        size: 0.0001 * viewArea,
-        x: planePosition.x,
-        y: planePosition.y,
-        z: planePosition.z
+        size: 0.008 * viewArea,
+        x: 0,
+        y: posY * 80 * 9/16,
+        z: 1 * 80
       };
+
+      //console.log(conf)
 
       moData.createSubtitle(textList, conf);
 
@@ -138,55 +150,31 @@ function switchSubtitleIndicator(enable, position)
   {
     if (position == 'left') 
     {
-      if(isVRDisplay)
-      {
-        var mysub = getMeshByName ('subIndicatorR');
+
+        var mysub = getMeshByName ('right');
         if (mysub) mysub.visible = false;
-        var mysub2 = getMeshByName ('subIndicatorL');
+        var mysub2 = getMeshByName ('left');
         if (mysub2) mysub2.visible = true;
-      }
-      else 
-      {
-        obj1.visibility = 'visible';
-        obj2.visibility = 'visible';
-        obj3.visibility = 'hidden';
-        obj4.visibility = 'hidden';
-      }
+     
     }
     else 
     {
-      if(isVRDisplay)
-      {
-        var mysub = getMeshByName ('subIndicatorR');
+
+        var mysub = getMeshByName ('right');
         if (mysub) mysub.visible = true;
-        var mysub2 = getMeshByName ('subIndicatorL');
+        var mysub2 = getMeshByName ('left');
         if (mysub2) mysub2.visible = false;
-      }
-      else 
-      {
-        obj1.visibility = 'hidden';
-        obj2.visibility = 'hidden';
-        obj3.visibility = 'visible';
-        obj4.visibility = 'visible';
-      }
+     
     }
   }
   else
   {
-    if(isVRDisplay)
-    {
-      var mysub = getMeshByName ('subIndicatorR');
+
+      var mysub = getMeshByName ('right');
       if (mysub) mysub.visible = false;
-      var mysub2 = getMeshByName ('subIndicatorL');
+      var mysub2 = getMeshByName ('left');
       if (mysub2) mysub2.visible = false;
-    }
-    else 
-    {
-      obj1.visibility = 'hidden';
-      obj2.visibility = 'hidden';
-      obj3.visibility = 'hidden';
-      obj4.visibility = 'hidden';
-    }
+   
   }
 }
 
@@ -205,14 +193,14 @@ function getMeshByName (name)
 
 function checkSubtitleIdicator (isd)
 {
-  var cameraView = camera.getWorldDirection();
+  var cameraView = camera.getWorldDirection(new THREE.Vector3( ));
   var position = cartesianToAngular(cameraView.x,cameraView.y,cameraView.z);
 
   var difPosition = isd.imac - position.longitude;
 
   if (difPosition < camera.fov && difPosition > -camera.fov) 
   {
-    if (subtileIndicator == 'move') {
+    if (subtitleIndicator == 'move') {
       forcedTextAlign = 'center';
       textListMemory = [];
     } 
@@ -225,7 +213,7 @@ function checkSubtitleIdicator (isd)
     var difPosition2 = difPosition < 0 ? difPosition + 360 : difPosition;
     if(difPosition2 > 0 && difPosition2 <= 180) 
     {
-      if (subtileIndicator == 'move') {
+      if (subtitleIndicator == 'move') {
         forcedTextAlign = 'start';
         textListMemory = [];
       }
@@ -234,7 +222,7 @@ function checkSubtitleIdicator (isd)
       }
     }
     else {
-      if (subtileIndicator == 'move') {
+      if (subtitleIndicator == 'move') {
         forcedTextAlign = 'end';
         textListMemory = [];
       } 
@@ -248,88 +236,52 @@ function checkSubtitleIdicator (isd)
 
 function checkSignIdicator (isd)
 {
-  var cameraView = camera.getWorldDirection();
+  var cameraView = camera.getWorldDirection(new THREE.Vector3( ));
   var position = cartesianToAngular(cameraView.x,cameraView.y,cameraView.z);
-
   var difPosition = isd.imac - position.longitude;
 
-  if (difPosition < camera.fov && difPosition > -camera.fov) 
-  {
-    if (signIndicator != 'move') 
-    {
-      switchSignIndicator(false);
-    }
-    else 
-    {
-      //changeSignPosition('center');
-      (signArea == 'topLeft' || signArea == 'botLeft')  ? changeSignPosition('left') : changeSignPosition('right');
-    }
-  }
-  else 
-  {
-    var difPosition2 = difPosition < 0 ? difPosition + 360 : difPosition;
-    if(difPosition2 > 0 && difPosition2 <= 180) 
-    {
-      signIndicator == 'move' ? changeSignPosition('left') : switchSignIndicator(true, 'left');
-    }
-    else 
-    {
-      signIndicator == 'move' ? changeSignPosition('right') : switchSignIndicator(true, 'right');
-    }
-  }
-}
-
-function switchSignIndicator(enable, position)
-{
   var signMesh = moData.getSignMesh();
   if(signMesh)
   {
-    if (enable)
+    if (difPosition < camera.fov && difPosition > -camera.fov) 
     {
-      if (position == 'left') 
+      if (signIndicator != 'move') 
       {
-        var mysign = getSignMeshByName ('right');
-        if (mysign) mysign.visible = false;
-        var mysign2 = getSignMeshByName ('left');
-        if (mysign2) mysign2.visible = true;
+        changeSignIndicator( signMesh, 'center' );
       }
       else 
       {
-        var mysign = getSignMeshByName ('right');
-        if (mysign) mysign.visible = true;
-        var mysign2 = getSignMeshByName ('left');
-        if (mysign2) mysign2.visible = false;
+        (signArea == 'topLeft' || signArea == 'botLeft')  ? changeSignPosition( signMesh, 'left' ) : changeSignPosition( signMesh, 'right' );
       }
     }
-    else
+    else 
     {
-      var mysign = getSignMeshByName ('right');
-        if (mysign) mysign.visible = false;
-        var mysign2 = getSignMeshByName ('left');
-        if (mysign2) mysign2.visible = false;
+      var difPosition2 = difPosition < 0 ? difPosition + 360 : difPosition;
+      if(difPosition2 > 0 && difPosition2 <= 180) 
+      {
+        signIndicator == 'move' ? changeSignPosition( signMesh, 'left' ) : changeSignIndicator( signMesh, 'left' );
+      }
+      else 
+      {
+        signIndicator == 'move' ? changeSignPosition( signMesh, 'right' ) : changeSignIndicator( signMesh, 'right' );
+      }
     }
   }
 }
 
-function getSignMeshByName (name)
+function changeSignIndicator(mesh, position)
 {
-  var sign = moData.getSignMesh();
-  if(sign){
-    for (var i = 0; i < sign.children.length; ++i) {
-        if (sign.children[i].name == name) return sign.children[i];
-    }
-  }
-  return;
-}
-
-function changeSignPosition(position) 
-{
-  var signMesh = moData.getSignMesh();
-  if(signMesh)
+  for (var i = 0, l = mesh.children.length; i < l; ++i) 
   {
-    if ((position == 'left' && signMesh.position.x > 0) || (position == 'right' && signMesh.position.x < 0))
-    {
-      signMesh.position.x = signMesh.position.x * -1;
-    }
+    if (mesh.children[i].name == 'left') mesh.children[i].visible = position == 'left' ? true : false;
+    else if (mesh.children[i].name == 'right') mesh.children[i].visible = position == 'right' ? true : false;
+  }
+}
+
+function changeSignPosition(mesh, position) 
+{
+  if ((position == 'left' && mesh.position.x > 0) || (position == 'right' && mesh.position.x < 0))
+  {
+    mesh.position.x = mesh.position.x * -1;
   }
 }

@@ -25,7 +25,7 @@ function cartesianToAngular (x, y, z)
 {
     var dist = Math.round(Math.sqrt(Math.pow(x,2) + Math.pow(y,2) + Math.pow(z,2))*100)/100;
     var lat = Math.round(Math.degrees(Math.asin(y/-dist))*10)/10;
-    var lon = z >= 0 ? Math.round(Math.degrees(Math.atan(x/z))*10)/10 + 90 : Math.round(Math.degrees(Math.atan(x/z))*10)/10 - 90;
+    var lon = z >= 0 ? Math.round(Math.degrees(Math.atan(x/z))*10)/10 + 180 : Math.round(Math.degrees(Math.atan(x/z))*10)/10 - 0;
 
     lon = lon >= 0 ? lon : lon + 360;
 
@@ -48,20 +48,6 @@ function adaptSize (size)
 
     newSize.width = width_Defecto * output_size * factor;
     newSize.height = height_Defecto * output_size * factor;
-
-    return newSize;
-}
-
-function adaptUserSize (size) 
-{
-    var newSize = new Array(2);
-
-    var output_size = Math.tan(size * Math.PI / 4);
-
-    var factor = 1.6; //1.2
-
-    newSize.width = output_size * factor;
-    newSize.height = output_size * factor;
 
     return newSize;
 }

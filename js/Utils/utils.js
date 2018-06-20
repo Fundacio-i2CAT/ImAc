@@ -21,76 +21,6 @@ function convertAngular_toCartesian(latitud, longitud)
     return position;
 }
 
-function cartesianToAngular (x, y, z)
-{
-    var dist = Math.round(Math.sqrt(Math.pow(x,2) + Math.pow(y,2) + Math.pow(z,2))*100)/100;
-    var lat = Math.round(Math.degrees(Math.asin(y/-dist))*10)/10;
-    var lon = z >= 0 ? Math.round(Math.degrees(Math.atan(x/z))*10)/10 + 180 : Math.round(Math.degrees(Math.atan(x/z))*10)/10 - 0;
-
-    lon = lon >= 0 ? lon : lon + 360;
-
-    var outAng = {
-        latitude : lat,
-        longitude : lon,
-        distance : dist
-    };
-    return outAng;
-}
-
-function adaptSize (size) 
-{
-    var width_Defecto = 1;
-    var height_Defecto = 1;
-    var newSize = new Array(2);
-
-    var factor = 2 * Math.PI; 
-    var output_size = Math.tan(size * Math.PI / 2);
-
-    newSize.width = width_Defecto * output_size * factor;
-    newSize.height = height_Defecto * output_size * factor;
-
-    return newSize;
-}
-
-function rgb2hex(rgb){
- return (rgb && rgb.length === 4) ? "0x" +
-  ("0" + parseInt(rgb[1],10).toString(16)).slice(-2) +
-  ("0" + parseInt(rgb[2],10).toString(16)).slice(-2) +
-  ("0" + parseInt(rgb[3],10).toString(16)).slice(-2) : '';
-}
-
-function adaptRGBA(rgb){
-    return (rgb && rgb.length === 4) ? "rgb(" + rgb[0] + "," + rgb[1] + "," + rgb[2] + ")" : '';
-}
-
-function objectsAreSame(x, y) {
-   var objectsAreSame = true;
-   for(var propertyName in x) {
-      if(x[propertyName] !== y[propertyName]) {
-         objectsAreSame = false;
-         break;
-      }
-   }
-   return objectsAreSame;
-}
-
-// Converts from degrees to radians.
-Math.radians = function(degrees) {
-    return degrees * (Math.PI / 180);
-};
- 
-// Converts from radians to degrees.
-Math.degrees = function(radians) {
-    return radians * (180 / Math.PI);
-};
-
-Math.inv = function(number) {
-    return -1 * number;
-}
-
-
-
-
 function getPlanePosition ()
 {
   var fov = camera.fov;
@@ -127,3 +57,15 @@ function getPlanePosition ()
 
   return convertAngular_toCartesian (latitud, longitud);
 }
+
+
+
+// Converts from degrees to radians.
+Math.radians = function(degrees) {
+    return degrees * (Math.PI / 180);
+};
+ 
+// Converts from radians to degrees.
+Math.degrees = function(radians) {
+    return radians * (180 / Math.PI);
+};

@@ -61,7 +61,7 @@ AudioManager = function() {
             updateMatrix4( m );
         }, function () 
         {
-            console.error( 'Error to init Ambisonics' );
+            console.error( '[AudioManager] Error to init Ambisonics' );
         });
     };
 

@@ -15,41 +15,37 @@ THREE.MediaObject = function () {
 // Private Functions
 //************************************************************************************
 
-    function getVideObject(id, url, isDASH) 
+    function getVideObject(id, url, type) 
     {
         var vid = document.createElement( "video" );     
         vid.muted = true;
         vid.autoplay = false;
         vid.loop = true;
-        //vid.src = url;
 
-        if ( isDASH )
+        if ( type == 'dash' )
         {
             var player = dashjs.MediaPlayer().create();
             player.initialize( vid, url, true );
             player.getDebug().setLogToBrowserConsole( false );
             var objVideo = { id: id, vid: vid, dash: player };
         }
-        /*    url = 'https://video-weaver.lhr03.hls.ttvnw.net/v1/playlist/Cq8Df81Nyka_RiKemz8LjhTJUG72froKfKpZJR6dkfv9j1i6JAiHGXSKyQjoLOzwNex-KZtQ-l2TjZycYDy-fNIljvoJWwL-rk3CIrNrXZigESNi7sWHlH-nCmA4YJcX-6QY88aTtT_Z2ney3eJ6reFgx4OHGZxF2Pj3F-fp71tr3j2PpH4633Y-3DnR_HaChyNjDMmi2msdKooa8oTuDv8kCIiJIrKN_M2abmtjhm1_3YwHhBt2ofLyNvqFEvwe9kH6nHiU8PHd5Vo5niWOXys5zwV-FE51cmMgzFvq65ma9-jhy6itdlB2swMYsno4cocxMKVbaEIBwmO_Ey6vKFpBz-blIgFII18M-NpkPwXhorr8Ui3RrV13PQFmftsUT4L2ws9_KOj2ExUhAv-qKL-otCs9YN9NpgFulVqaY26JRPCRUv98TQidBQHmRRqBGxtSp-ys7xcrWJNc3PlsPmiK2S8B2ttOPu3XgnabaIm_KCCcuDg7kqMZXIkNm0JGL6nqcHVIfPVZrSGBOpfX__iZVzkQ_tkFSxusOzAeBMFQzG784r2pL3qw9enOX7IH85QSEAUd1FLgPTYs6g8EPM_mhBcaDE-BNFfKdPn8RVu-lg.m3u8';
-
-            if(Hls.isSupported()) {
+        else if ( type == 'hls' )
+        {
+            if ( Hls.isSupported() ) 
+            {
                 var hls = new Hls();
                 hls.loadSource( url );
-                hls.attachMedia(vid);
-                hls.on(Hls.Events.MANIFEST_PARSED,function() {
-                  vid.play();
-              });
+                hls.attachMedia( vid );
+                hls.on( Hls.Events.MANIFEST_PARSED, function() { vid.play() } );
                 var objVideo = { id: id, vid: vid };
-             }
-              else if (vid.canPlayType('application/vnd.apple.mpegurl')) {
+            }
+            else if ( vid.canPlayType( 'application/vnd.apple.mpegurl' ) ) 
+            {
                 vid.src = url;
-                vid.addEventListener('loadedmetadata',function() {
-                  vid.play();
-                });
+                vid.addEventListener( 'loadedmetadata', function() { vid.play() } );
                 var objVideo = { id: id, vid: vid };
-              }
-            
-        */
+            }           
+        }
         else
         {
             vid.src = url;
@@ -69,9 +65,9 @@ THREE.MediaObject = function () {
         }
     }
 
-    function getVideoMesh(geometry, url, name, order) 
+    function getVideoMesh(geometry, url, type, name, order) 
     {
-        var texture = new THREE.VideoTexture( getVideObject( name, url ) );
+        var texture = new THREE.VideoTexture( getVideObject( name, url, type ) );
         texture.minFilter = THREE.LinearFilter;
         //texture.minFilter = THREE.NearestFilter;
         texture.format = THREE.RGBAFormat;
@@ -149,6 +145,8 @@ THREE.MediaObject = function () {
 
         mesh.position.z = 0.01;
         mesh.visible = true;
+
+        mesh.name = 'btnPlay';
         
         return mesh;
     }
@@ -187,6 +185,8 @@ THREE.MediaObject = function () {
 
         group.position.z = 0.01;
         group.visible = true;
+
+        group.name = 'btnPause';
         
         return group;
     }
@@ -318,7 +318,7 @@ THREE.MediaObject = function () {
         mesh.scale.set( c.size,c.size,c.size );
 
         mesh.position.z = - c.z;
-        mesh.position.y = c.displayAlign == 'before' ? c.y - (9.57 * i * c.size) : c.y + (9.57 * (l-1-i) * c.size);
+        mesh.position.y = c.displayAlign == 1 ? c.y - (9.57 * i * c.size) : c.y + (9.57 * (l-1-i) * c.size); //c.displayAlign == 'before'
         mesh.position.x = c.x * (49 - xMid/2);
 
         mesh.renderOrder = 3;
@@ -583,22 +583,22 @@ THREE.MediaObject = function () {
 // Media Object Generators
 //************************************************************************************
 
-    this.createSphericalVideoInScene = function(url, name) 
+    this.createSphericalVideoInScene = function(url, type, name) 
     {
         var geometry = new THREE.SphereBufferGeometry( 100, 32, 16, Math.PI/2 );
 
         geometry.scale( - 1, 1, 1 );
-        var sphere = getVideoMesh( geometry, url, name, 0 );
+        var sphere = getVideoMesh( geometry, url, type, name, 0 );
 
         mainMesh = sphere;
 
         scene.add( sphere );
     };
 
-    this.createSignVideo = function(url, name, config) 
+    this.createSignVideo = function(url, type, name, config) 
     {
         var geometry = new THREE.PlaneGeometry( config.size, config.size );
-        var plane = getVideoMesh( geometry, url, name, 1 );
+        var plane = getVideoMesh( geometry, url, type, name, 1 );
 
         // left arrow
         var arrow = getArrowMesh( config.size/5, config.size/6, 0xffffff );
@@ -658,7 +658,7 @@ THREE.MediaObject = function () {
 
         for ( var i = 0, len = textList.length; i < len; ++i ) 
         {
-            config.x = config.textAlign == 'center' ? 0 : config.textAlign == 'start' ? -config.size : config.size;
+            config.x = config.textAlign == 0 ? 0 : config.textAlign == -1 ? -config.size : config.size;
 
             var mesh = getSubMesh( textList[i], config, 0.8, len, i );            
             mesh.name = i;
@@ -737,20 +737,20 @@ THREE.MediaObject = function () {
 // Experimental
 //************************************************************************************
 
-    this.createCubeGeometry65 = function(url, name) 
+    this.createCubeGeometry65 = function(url, type, name) 
     {
         var geometry = getCubeGeometry65();  
-        var cube = getVideoMesh( geometry, url, name, 0 );
+        var cube = getVideoMesh( geometry, url, type, name, 0 );
 
         mainMesh = cube;
 
         scene.add( cube );
     };
 
-    this.createCubeGeometry116 = function(url, name) 
+    this.createCubeGeometry116 = function(url, type, name) 
     {
         var geometry = getCubeGeometry116();  
-        var cube = getVideoMesh( geometry, url, name, 0 );      
+        var cube = getVideoMesh( geometry, url, type, name, 0 );      
 
         mainMesh = cube;
 
@@ -763,9 +763,12 @@ THREE.MediaObject = function () {
         var material = new THREE.MeshBasicMaterial( { color: 0xffffff } );
         var circle = new THREE.Mesh( geometry, material );
 
-        var playbutton = getPauseMesh(10, 10, 0x000000);
+        var playbutton = getPlayMesh(10, 10, 0x000000);
         var seekBarR = getSeekBarMesh(15, 10, 0xffffff);
         var seekBarL = getSeekBarMesh(15, 10, 0xffffff);
+
+        seekBarR.name = 'btnSeekR';
+        seekBarL.name = 'btnSeekL';
 
         seekBarL.rotation.z = Math.PI;
         seekBarR.position.x = 16;
@@ -788,133 +791,9 @@ THREE.MediaObject = function () {
 
         scene.add( circle );
 
+        return circle;
     };
 
-    this.createCineVideoInScene = function(url, name) 
-    {
-
-        var loader = new THREE.TextureLoader();
-        var texture = loader.load( './img/starry_background.jpg' );
-        texture.minFilter = THREE.LinearFilter;
-        texture.format = THREE.RGBAFormat;
-
-        var material = new THREE.MeshBasicMaterial( { map: texture, transparent: true, side: THREE.FrontSide } );
-
-        var geometry = new THREE.BoxGeometry( -500, 500, 500 );
-        //var material = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
-        var cube = new THREE.Mesh( geometry, material );
-        scene.add( cube );
-
-        var loader = new THREE.BufferGeometryLoader();
-
-var loader = new THREE.ObjectLoader();
-
-loader.load(
-    // resource URL
-    "models/goku.json",
-
-    // onLoad callback
-    // Here the loaded data is assumed to be an object
-    function ( obj ) {
-        // Add the loaded object to the scene
-        obj.name = 'goku';
-        obj.renderOrder = 6;
-        obj.position.z = 0;
-        obj.position.x = 1;
-        obj.position.y = 1.2;
-
-        obj.scale.set( 2.5,2.5,1 );
-        obj.rotation.y = Math.PI/2;
-
-        scene.add( obj );
-    },
-
-    // onProgress callback
-    function ( xhr ) {
-        console.log( (xhr.loaded / xhr.total * 100) + '% loaded' );
-    },
-
-    // onError callback
-    function ( err ) {
-        console.error( 'An error happened' );
-    }
-);
-
-var loader = new THREE.ObjectLoader();
-
-loader.load(
-    // resource URL
-    "models/gears-of-war-3-lambent-female.json",
-
-    // onLoad callback
-    // Here the loaded data is assumed to be an object
-    function ( obj ) {
-        // Add the loaded object to the scene
-        obj.name = 'female';
-        obj.renderOrder = 6;
-        obj.position.z = 0;
-        obj.position.x = -1.5;
-        obj.position.y = 0;
-
-        obj.scale.set( 0.5,0.5,0.5 );
-        obj.rotation.y = -Math.PI/2;
-
-        scene.add( obj );
-    },
-
-    // onProgress callback
-    function ( xhr ) {
-        console.log( (xhr.loaded / xhr.total * 100) + '% loaded' );
-    },
-
-    // onError callback
-    function ( err ) {
-        console.error( 'An error happened' );
-    }
-);
-/*
-var loader = new THREE.ObjectLoader();
-
-loader.load(
-    // resource URL
-    "models/sofa-1.json",
-
-    // onLoad callback
-    // Here the loaded data is assumed to be an object
-    function ( obj ) {
-        // Add the loaded object to the scene
-        obj.name = 'sofa';
-        obj.renderOrder = 6;
-        obj.position.z = 0;
-        obj.position.x = 0.8;
-        obj.position.y = -0.3;
-
-        obj.scale.set( 1.7,1.7,1.7 );
-        //obj.rotation.y = -Math.PI;
-
-        scene.add( obj );
-    },
-
-    // onProgress callback
-    function ( xhr ) {
-        console.log( (xhr.loaded / xhr.total * 100) + '% loaded' );
-    },
-
-    // onError callback
-    function ( err ) {
-        console.error( 'An error happened' );
-    }
-);
-*/
-
-        var geometry = new THREE.SphereBufferGeometry( 100, 32, 16, Math.PI+0.6, 2, 1, 1.2 );
-        geometry.scale( - 1, 1, 1 );
-        var sphere = getVideoMesh( geometry, url, name, 0 );
-
-        mainMesh = sphere;
-
-        scene.add( sphere );
-    };
 }
 
 THREE.MediaObject.prototype.constructor = THREE.MediaObject;

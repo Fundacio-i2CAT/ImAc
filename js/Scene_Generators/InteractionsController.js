@@ -26,6 +26,18 @@ THREE.InteractionsController = function () {
 	function checkInteractionByName(name)
 	{
 		// TODO
+		if ( name == 'button1' )
+		{
+			moData.isPausedById(0) ? moData.playAll() : moData.pauseAll();
+		}
+		else if ( name == 'button2' )
+		{
+
+		}
+		else if ( name == 'button3' )
+		{
+			
+		}
 	}
 
 
@@ -58,6 +70,7 @@ THREE.InteractionsController = function () {
 	        {
 	        	if (intersects[inter].object.type == 'Mesh') {
 					intersectedShapeId = intersects[inter].object.name;
+					checkInteractionByName( intersectedShapeId );
 					console.error(intersectedShapeId);
 					break;
 				}
@@ -78,9 +91,6 @@ THREE.InteractionsController = function () {
 	{
 		// TODO
 	};
-
-
-
 
 
 }

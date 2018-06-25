@@ -7,14 +7,14 @@ var AplicationManager = new AplicationManager();
 var moData = new THREE.MediaObject();
 var AudioManager = new AudioManager();
 var subController = new SubSignManager();
-
 var interController = new THREE.InteractionsController();
+var polyfill = new WebVRPolyfill();
 
 
 
 //var language = "catala";
 
-var isHMD = true;
+var isHMD = false;
 var isVRDisplay = true;
 
 var demoId = 1;
@@ -23,32 +23,6 @@ var mainContentURL = './resources/rapzember-young-hurn_edit.mp4';
 //var _selected_content = 'Radio';
 
 
-
-
-
-/*var polifyConfig = (function() {
-  var config = {};
-  var q = window.location.search.substring(1);
-  if (q === '') {
-    return config;
-  }
-  var params = q.split('&');
-  var param, name, value;
-  for (var i = 0; i < params.length; i++) {
-    param = params[i].split('=');
-    name = param[0];
-    value = param[1];
-    // All config values are either boolean or float
-    config[name] = value === 'true' ? true :
-                   value === 'false' ? false :
-                   parseFloat(value);
-  }
-  return config;
-})();*/
-
-//var polyfill = new WebVRPolyfill(polifyConfig);
-
-var polyfill = new WebVRPolyfill();
 
 
 
@@ -88,7 +62,7 @@ function blockContainer()
 
 function selectXML(id)
 {
-  mainContentURL = id == 2 ? 'http://192.168.10.115:8080/dash/liceu_demo/video/cam_1/stream.mpd' : './resources/rapzember-young-hurn_edit.mp4';
+  mainContentURL = id == 2 ? './resources/cam_2_2k.mp4' : './resources/rapzember-young-hurn_edit.mp4';
  console.error(id)   
   demoId = id;
 
@@ -108,3 +82,12 @@ function startAllVideos()
 
   //moData.playAll();
 }
+
+
+(function() {
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker
+              .register('./service-worker.js')
+              .then(function() { console.log('Service Worker Registered'); });
+    }
+})();

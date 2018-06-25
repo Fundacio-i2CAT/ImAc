@@ -9,7 +9,7 @@ function runDemo()
 ////////////////
 //   Demo 1   //
 ////////////////
-  if (demoId == 1)
+  if (demoId == 0)
   {
     var imgUrl = language == "catala" ? './resources/preTest/cat/1.png' : './resources/preTest/ger/1.png';
     moData.createImageInCamera( imgUrl, 'pauseimg', { w: 1, h: 1, visible: true } );
@@ -91,7 +91,7 @@ function runDemo()
         y: signPosition.y,
         z: signPosition.z
       };
-      moData.createSignVideo('./resources/signer_rbb_new.mp4', 'sign', conf);
+      moData.createSignVideo('./resources/signer_rbb_new.mp4', 'mp4', 'sign', conf);
 
       viewArea = 30;
     }, 3000);
@@ -129,7 +129,7 @@ function runDemo()
         y: signPosition.y,
         z: signPosition.z
       };
-      moData.createSignVideo('./resources/signer_rbb_new.mp4', 'sign', conf);
+      moData.createSignVideo('./resources/signer_rbb_new.mp4', 'mp4', 'sign', conf);
 
     }, 3000);
 
@@ -167,7 +167,7 @@ function runDemo()
         y: signPosition.y,
         z: signPosition.z
       };
-      moData.createSignVideo('./resources/signer_rbb_new.mp4', 'sign', conf);
+      moData.createSignVideo('./resources/signer_rbb_new.mp4', 'mp4', 'sign', conf);
 
     }, 3000);
 
@@ -182,11 +182,15 @@ function runDemo()
     var _videoElement = listVideoContent[0].vid;
     AudioManager.initializeAudio( _videoElement, 2, camera.matrixWorld.elements );
 
-    viewArea = 60;
-    subtitleIndicator = 'arrow';
-    isSubtitleEnabled = true;
+    var controlBar = moData.createControlBar();
+    console.log(controlBar);
+    interController.addInteractiveObject(controlBar);
 
-    //moData.createControlBar();
+    subController.enableSubtitles();
+    subController.initSubtitle( 60, 0, -1, 'arrow' );
+    subController.setSubtitle( "./resources/Rapzember_Cat.xml" );  
+
+    //subController.enableAutoPositioning();
 
     moData.playAll();
   }
@@ -276,7 +280,7 @@ function waitResponse(id)
               y: signPosition.y,
               z: signPosition.z
             };
-            moData.createSignVideo('./resources/signer_rbb_new.mp4', 'sign', conf);
+            moData.createSignVideo('./resources/signer_rbb_new.mp4', 'mp4', 'sign', conf);
           }
           else showEndImage( 59 );
         }  
@@ -371,7 +375,7 @@ function runDemo3(time)
 	    y: signPosition.y,
 	    z: signPosition.z
 	  };
-	  moData.createSignVideo('./resources/signer_rbb_new.mp4', 'sign', conf);
+	  moData.createSignVideo('./resources/signer_rbb_new.mp4', 'mp4', 'sign', conf);
     waitResponse(35);
   }, time); 
 }

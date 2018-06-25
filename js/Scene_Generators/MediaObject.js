@@ -794,6 +794,138 @@ THREE.MediaObject = function () {
         return circle;
     };
 
+    this.createButton1 = function()
+    {
+        var geometry = new THREE.CircleGeometry( 8, 32 );
+        var material = new THREE.MeshBasicMaterial( { color: 0xc90000 } );
+        var circle = new THREE.Mesh( geometry, material );
+
+        circle.scale.set( 0.05,0.05,1 );
+
+        circle.position.z = -10;
+        circle.position.x = -1;
+        circle.position.y = -4;
+
+        circle.lookAt(new THREE.Vector3(0, 0, 0));
+
+        circle.renderOrder = 5;
+        circle.name = 'button1';
+
+        scene.add( circle );
+
+        return circle;
+    };
+
+    this.createButton2 = function()
+    {
+        var geometry = new THREE.CircleGeometry( 8, 32 );
+        var material = new THREE.MeshBasicMaterial( { color: 0xc900c2 } );
+        var circle = new THREE.Mesh( geometry, material );
+
+        circle.scale.set( 0.05,0.05,1 );
+
+        circle.position.z = -10;
+        circle.position.x = 1;
+        circle.position.y = -4;
+
+        circle.lookAt(new THREE.Vector3(0, 0, 0));
+
+        circle.renderOrder = 5;
+        circle.name = 'button2';
+
+        scene.add( circle );
+
+        return circle;
+    };
+
+    this.createButton3 = function()
+    {
+        var geometry = new THREE.CircleGeometry( 8, 32 );
+        var material = new THREE.MeshBasicMaterial( { color: 0x330031 } );
+        var circle = new THREE.Mesh( geometry, material );
+
+        circle.scale.set( 0.05,0.05,1 );
+
+        circle.position.z = -10;
+        circle.position.x = 0;
+        circle.position.y = -4;
+
+        circle.lookAt(new THREE.Vector3(0, 0, 0));
+
+        circle.renderOrder = 5;
+        circle.name = 'button3';
+
+        scene.add( circle );
+
+        return circle;
+    };
+
+    this.createButton4 = function()
+    {
+        var geometry = new THREE.CircleGeometry( 8, 32 );
+        var material = new THREE.MeshBasicMaterial( { color: 0x420008 } );
+        var circle = new THREE.Mesh( geometry, material );
+
+        circle.scale.set( 0.05,0.05,1 );
+
+        circle.position.z = -10;
+        circle.position.x = 2;
+        circle.position.y = -4;
+
+        circle.lookAt(new THREE.Vector3(0, 0, 0));
+
+        circle.renderOrder = 5;
+        circle.name = 'button4';
+
+        scene.add( circle );
+
+        return circle;
+    };
+
+    this.createButton5 = function()
+    {
+        var geometry = new THREE.CircleGeometry( 8, 32 );
+        var material = new THREE.MeshBasicMaterial( { color: 0x5b3300 } );
+        var circle = new THREE.Mesh( geometry, material );
+
+        circle.scale.set( 0.05,0.05,1 );
+
+        circle.position.z = -10;
+        circle.position.x = 3;
+        circle.position.y = -4;
+
+        circle.lookAt(new THREE.Vector3(0, 0, 0));
+
+        circle.renderOrder = 5;
+        circle.name = 'button5';
+
+        scene.add( circle );
+
+        return circle;
+    };
+
+    this.createButton6 = function()
+    {
+        var geometry = new THREE.CircleGeometry( 8, 32 );
+        var material = new THREE.MeshBasicMaterial( { color: 0x895513 } );
+        var circle = new THREE.Mesh( geometry, material );
+
+        circle.scale.set( 0.05,0.05,1 );
+
+        circle.position.z = -10;
+        circle.position.x = 4;
+        circle.position.y = -4;
+
+        circle.lookAt(new THREE.Vector3(0, 0, 0));
+
+        circle.renderOrder = 5;
+        circle.name = 'button6';
+
+        scene.add( circle );
+
+        return circle;
+    };
+
 }
 
 THREE.MediaObject.prototype.constructor = THREE.MediaObject;

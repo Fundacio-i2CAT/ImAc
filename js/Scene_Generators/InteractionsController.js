@@ -26,19 +26,32 @@ THREE.InteractionsController = function () {
 	function checkInteractionByName(name)
 	{
 		// TODO
-		if ( name == 'button1' )
+		if ( name == 'btnPlay' )
 		{
+			console.log(moData.isPausedById(0));
 			moData.isPausedById(0) ? moData.playAll() : moData.pauseAll();
 		}
-		else if ( name == 'button2' )
+		else if ( name == 'button1' )
 		{
-
+			if(scene.getObjectByName( "playseekmenu" ) == undefined){
+				var backgroud = moData.createMenuBackground();
+				moData.createPlaySeekMenu(backgroud);
+			}
+			else{
+				console.log("Menu already open");
+			} 
 		}
-		else if ( name == 'button3' )
+		else if ( name == 'closeButton' )
 		{
-			
+			moData.removeEntity('playseekmenu');
 		}
 	}
+
+	function getInteractiveObjectList()
+	{
+		console.log(interactiveListObjects)
+	};
+
 
 
 //************************************************************************************
@@ -87,12 +100,10 @@ THREE.InteractionsController = function () {
 		interactiveListObjects.push(object);
 	};
 
-	this.removeInteractiveObject = function()
+	this.removeInteractiveObject = function(name)
 	{
-		// TODO
-	};
-
-
+		interactiveListObjects = interactiveListObjects.filter(e => e.name != name);
+	}
 }
 
 THREE.InteractionsController.prototype.constructor = THREE.InteractionsController;

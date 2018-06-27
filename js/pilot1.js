@@ -1,16 +1,17 @@
+var demoId = 1;
 
 function runDemo() 
 {
   	console.log("Running demo " + demoId)
 
-  	/*var listVideoContent = moData.getListOfVideoContents();
+  	var listVideoContent = moData.getListOfVideoContents();
     var _videoElement = listVideoContent[0].vid;
     AudioManager.initializeAudio( _videoElement, 2, camera.matrixWorld.elements );
 
     var controlBar = moData.createButton1();
     interController.addInteractiveObject(controlBar);
 
-    var controlBar2 = moData.createButton2();
+    /*var controlBar2 = moData.createButton2();
     interController.addInteractiveObject(controlBar2);
 
     var controlBar3 = moData.createButton3();

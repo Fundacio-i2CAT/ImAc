@@ -261,4 +261,5 @@ paket-files/
 *.rc
 
 img/
+css/fonts/
 resources/

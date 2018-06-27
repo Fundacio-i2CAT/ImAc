@@ -139,14 +139,18 @@ THREE.MediaObject = function () {
         arrowShape.quadraticCurveTo ( -w/2.5, h/2, w/2, 0 );
         arrowShape.quadraticCurveTo ( w/2, 0, -w/2.5, -h/2 );
 
+        var coliderMesh = new THREE.Mesh( new THREE.PlaneGeometry(w*2, h*2), new THREE.MeshBasicMaterial({visible: false}));
         var geometry = new THREE.ShapeGeometry( arrowShape );
         var material = new THREE.MeshBasicMaterial( { color: c } );
         var mesh = new THREE.Mesh( geometry, material ) ;
 
+        coliderMesh.name = 'btnPlay';
+        interController.addInteractiveObject(coliderMesh);
+        mesh.add(coliderMesh);
+        
         mesh.position.z = 0.01;
-        mesh.visible = true;
-
-        mesh.name = 'btnPlay';
+        //mesh.visible = true;
+        //mesh.name = 'btnPlay';
         
         return mesh;
     }
@@ -737,6 +741,284 @@ THREE.MediaObject = function () {
 // Experimental
 //************************************************************************************
 
+function getMinusIconMesh(w, h, c)
+    {
+        /* 8x8 Vector points for Minus icon:
+                                    
+             ____________+h___________
+            |                         |
+            |                         |
+            |                         |
+            |  2____________________3 |
+            |  |                    | |
+            -w |                    | +w
+            |  |____________________| | 
+            |  1                    4 |
+            |                         |
+            |                         | 
+            |____________-h___________| */   
+
+        var minusIconShape = new THREE.Shape();
+
+        minusIconShape.moveTo( -w, -h/3 );                        //1
+        minusIconShape.quadraticCurveTo ( -w, -h/3, -w, h/3 );    //1-2
+        minusIconShape.quadraticCurveTo ( -w, h/3, w, h/3 );      //2-3
+        minusIconShape.quadraticCurveTo (w, h/3, w, -h/3 );       //3-4
+        minusIconShape.quadraticCurveTo (w, -h/3, -w, -h/3 );     //4-1
+
+        var coliderMesh = new THREE.Mesh( new THREE.PlaneGeometry(w*2, h*2), new THREE.MeshBasicMaterial({visible: false}));
+        var geometry = new THREE.ShapeGeometry( minusIconShape );
+        var material = new THREE.MeshBasicMaterial( { color: c } );
+        var minusMesh = new THREE.Mesh( geometry, material ) ;
+
+        coliderMesh.name = 'closeButton';
+        interController.addInteractiveObject(coliderMesh);
+        minusMesh.add(coliderMesh);
+        minusMesh.position.z = 0.01;
+        
+        return minusMesh;
+    }
+
+
+    function getPlusIconMesh(w, h, c)
+    {
+        /* 8x8 Vector points for Plus icon:
+                                    
+             ____________+h___________
+            |         4______5        |
+            |         |      |        |
+            |         |      |        |
+            |  2______|      |______7 |
+            |  |      3      6      | |
+            -w |                    | +w
+            |  |______12     9______| | 
+            |  1      |      |     8  |
+            |         |      |        |
+            |       11|______|10      | 
+            |____________-h___________| */   
+
+        var plusIconShape = new THREE.Shape();
+
+        plusIconShape.moveTo( -w, -h/3 );                         //1
+        plusIconShape.quadraticCurveTo ( -w, -h/3, -w, h/3 );     //1-2
+        plusIconShape.quadraticCurveTo ( -w, h/3, -w/3, h/3 );    //2-3
+        plusIconShape.quadraticCurveTo ( -w/3, h/3, -w/3, h );    //3-4
+        plusIconShape.quadraticCurveTo ( -w/3, h, w/3, h);        //4-5
+        plusIconShape.quadraticCurveTo ( w/3, h, w/3, h/3 );      //5-6
+        plusIconShape.quadraticCurveTo ( w/3, h/3 , w, h/3 );     //6-7
+        plusIconShape.quadraticCurveTo (w, h/3, w, -h/3 );        //7-8
+        plusIconShape.quadraticCurveTo (w, -h/3, w/3, -h/3 );     //8-9
+        plusIconShape.quadraticCurveTo (w/3, -h/3, w/3, -h );     //9-10
+        plusIconShape.quadraticCurveTo (w/3, -h, -w/3, -h );      //10-11
+        plusIconShape.quadraticCurveTo (-w/3, -h, -w/3, -h/3 );   //11-12
+        plusIconShape.quadraticCurveTo (-w/3, -h/3, -w, -h/3 );   //12-1
+
+        var coliderMesh = new THREE.Mesh( new THREE.PlaneGeometry(w*2, h*2), new THREE.MeshBasicMaterial({visible: false}));
+        var geometry = new THREE.ShapeGeometry( plusIconShape );
+        var material = new THREE.MeshBasicMaterial( { color: c } );
+        var plusMesh = new THREE.Mesh( geometry, material ) ;
+
+        coliderMesh.name = 'closeButton';
+        interController.addInteractiveObject(coliderMesh);
+        plusMesh.add(coliderMesh);
+        plusMesh.position.z = 0.01;
+        
+        return plusMesh;
+    }
+
+    function getNextIconMesh(w, h, c, r)
+    {
+        /* 8x8 Vector points for Next icon:
+                                
+          ___________+h___________
+         |     ____               |
+         |     5   6              |
+         |      \   \             |
+         |       \   \            |
+         |        \   \           |
+        -w        4    1          +w
+         |        /   /           |
+         |       /   /            |
+         |      /   /             |
+         |     3___2              | 
+         |___________-h___________| */
+
+        var nextIconShape = new THREE.Shape();
+
+        nextIconShape.moveTo( w/4, 0 ); //1
+        nextIconShape.quadraticCurveTo ( w/4, 0, -3*w/4, -h );     //1-2
+        nextIconShape.quadraticCurveTo ( -3*w/4, -h, -w, -3*h/4 ); //2-3
+        nextIconShape.quadraticCurveTo ( -w, -3*h/4, -w/4, 0 );    //3-4
+
+        nextIconShape.quadraticCurveTo ( -w/4, 0, -w, 3*h/4);      //4-5
+        nextIconShape.quadraticCurveTo ( -w, 3*h/4, -3*w/4, h );   //5-6
+        nextIconShape.quadraticCurveTo ( -3*w/4, h, w/4, 0);       //6-1
+
+        var coliderMesh = new THREE.Mesh( new THREE.PlaneGeometry(w*2, h*2), new THREE.MeshBasicMaterial({visible: false}));
+        var geometry = new THREE.ShapeGeometry( nextIconShape );
+        var material = new THREE.MeshBasicMaterial( { color: c } );
+        var nextMesh = new THREE.Mesh( geometry, material ) ;
+
+        nextMesh.rotation.z = r;
+
+        coliderMesh.name = 'closeButton';
+        interController.addInteractiveObject(coliderMesh);
+        nextMesh.add(coliderMesh);
+        nextMesh.position.z = 0.01;
+
+        return nextMesh;
+    }
+
+    function getCloseIconMesh(w, h, c)
+    {
+        /* 8x8 Vector points for Close Icon :
+                                
+          ___________+h___________
+         |     ____       ____    |
+         |     5   6     8   9    |
+         |      \   \   /   /     |
+         |       \   \ /   /      |
+         |        \   7   /       |
+        -w        4 (0,0) 10      +w
+         |        /   1   \       |
+         |       /   / \   \      |
+         |      /   /   \   \     |
+         |     3___2    12___11   | 
+         |___________-h___________| */
+
+        var closeIconShape = new THREE.Shape();
+
+        closeIconShape.moveTo( 0,-h/4 ); //1
+        closeIconShape.quadraticCurveTo ( 0,-h/4, -3*w/4, -h );     //1-2
+        closeIconShape.quadraticCurveTo ( -3*w/4, -h, -w, -3*h/4 ); //2-3
+        closeIconShape.quadraticCurveTo ( -w, -3*h/4, -w/4, 0 );    //3-4
+
+        closeIconShape.quadraticCurveTo ( -w/4, 0, -w, 3*h/4);      //4-5
+        closeIconShape.quadraticCurveTo ( -w, 3*h/4, -3*w/4, h );   //5-6
+        closeIconShape.quadraticCurveTo ( -3*w/4, h, 0, h/4);       //6-7
+
+        closeIconShape.quadraticCurveTo ( 0, h/4, 3*w/4, h);        //7-8
+        closeIconShape.quadraticCurveTo ( 3*w/4, h, w, 3*h/4 );     //8-9
+        closeIconShape.quadraticCurveTo ( w, 3*h/4, w/4, 0 );       //9-10
+
+        closeIconShape.quadraticCurveTo ( w/4, 0, w, -3*h/4 );      //10-11
+        closeIconShape.quadraticCurveTo ( w, -3*h/4, 3*w/4, -h );   //11-12
+        closeIconShape.quadraticCurveTo ( 3*w/4, -h, 0,-h/4 );      //12-1
+
+
+        var coliderMesh = new THREE.Mesh( new THREE.PlaneGeometry(w*2, h*2), new THREE.MeshBasicMaterial({visible: false}));
+        var geometry = new THREE.ShapeGeometry( closeIconShape );
+        var material = new THREE.MeshBasicMaterial( { color: c} );
+        var closeMesh = new THREE.Mesh( geometry, material ) ;
+
+        coliderMesh.name = 'closeButton';
+        interController.addInteractiveObject(coliderMesh);
+        closeMesh.add(coliderMesh);
+        closeMesh.position.z = 0.01;
+
+        return closeMesh;
+    }
+
+    this.createVolumeChangeMenu = function(menu)
+    {
+        var plusVolume = getPlusIconMesh( 20, 20, 0xffffff );
+        var audioIcon = getImageMesh( new THREE.PlaneGeometry( 150,150 ), './img/menu/audio_volume_icon.png', 'right', 4 );
+        var minusVolume = getMinusIconMesh( 20, 20, 0xffffff );
+
+        plusVolume.position.x = 130;
+        minusVolume.position.x = -130;
+        
+        audioIcon.position.z = 1;
+
+        menu.add( plusVolume );
+        menu.add( audioIcon );
+        menu.add( minusVolume );
+
+        menu.scale.set(0.05,0.05,1);
+        menu.position.set(0, 0, -10);
+
+        scene.add( menu );
+    }
+
+
+    this.createSettingsCardboardMenu = function(menu)
+    {
+        var settingsIcon = getImageMesh( new THREE.PlaneGeometry( 120, 120 ), './img/menu/cog_icon.png', 'right', 4 );
+        var cardboardIcon = getImageMesh( new THREE.PlaneGeometry( 120, 80 ), './img/menu/cardboard_icon.png', 'right', 4 );
+
+
+        cardboardIcon.position.x = 80;
+        settingsIcon.position.x = -80;
+        
+        menu.add( cardboardIcon );
+        menu.add( settingsIcon );
+
+        menu.scale.set(0.05,0.05,1);
+        menu.position.set(0, 0, -10);
+
+        scene.add( menu );
+    }
+
+    this.createPlaySeekMenu = function(menu)
+    {
+        //var playPusebutton = moData.isPausedById(0) ? getPauseMesh(140, 140, 0xffffff) : getPlayMesh(140, 140, 0xffffff);
+        var playPausebutton = getPlayMesh(140, 140, 0xffffff);
+        var seekBarR = getSeekMesh( 80, 40, 0xffffff );
+        var seekBarL = getSeekMesh( 80, 40, 0xffffff );
+
+        seekBarL.rotation.z = Math.PI;  
+        seekBarR.position.x = 120;
+        seekBarL.position.x = -120;
+
+        menu.add( playPausebutton );
+        menu.add( seekBarR );
+        menu.add( seekBarL );
+
+        menu.scale.set(0.05,0.05,1);
+        menu.position.set(0, 0, -10);
+
+        menu.name = 'playseekmenu';
+        scene.add(menu);
+    }
+
+    this.removeEntity = function(name) {
+        
+        var selectedObject = scene.getObjectByName(name);
+        selectedObject.children.forEach(function(elem1){
+            elem1.children.forEach(function(elem2){
+                interController.removeInteractiveObject(elem2.name);
+            });
+        });
+        scene.remove(selectedObject);
+    }
+
+    this.createMenuBackground = function()
+    {
+        var menu = getBackgroundMesh(352, 198, 0x000000,1);
+        var closeButton = getCloseIconMesh(20,20,0xffffff);
+        var nextR = getNextIconMesh(20,20,0xffffff,0);
+        var nextL = getNextIconMesh(20,20,0xffffff, Math.PI);
+
+        closeButton.position.y = (menu.geometry.parameters.height/2 - 15);
+        closeButton.position.x = (menu.geometry.parameters.width/2 - 15);
+        closeButton.scale.set(0.5,0.5,1);
+
+        nextR.position.y = -(menu.geometry.parameters.height/2 - 15);
+        nextR.position.x = (menu.geometry.parameters.width/2 - 10);
+        nextR.scale.set(0.5,0.5,1);
+
+        nextL.position.y = -(menu.geometry.parameters.height/2 - 15);
+        nextL.position.x = -(menu.geometry.parameters.width/2 - 10);
+        nextL.scale.set(0.5,0.5,1);
+
+        menu.add(closeButton);
+        menu.add(nextR);
+        menu.add(nextL);
+
+        return menu
+    }
+
+
     this.createCubeGeometry65 = function(url, type, name) 
     {
         var geometry = getCubeGeometry65();  
@@ -803,8 +1085,8 @@ THREE.MediaObject = function () {
         circle.scale.set( 0.05,0.05,1 );
 
         circle.position.z = -10;
-        circle.position.x = -1;
-        circle.position.y = -4;
+        circle.position.x = 0;
+        circle.position.y = 5;
 
         circle.lookAt(new THREE.Vector3(0, 0, 0));
 
@@ -816,7 +1098,7 @@ THREE.MediaObject = function () {
         return circle;
     };
 
-    this.createButton2 = function()
+    /*this.createButton2 = function()
     {
         var geometry = new THREE.CircleGeometry( 8, 32 );
         var material = new THREE.MeshBasicMaterial( { color: 0xc900c2 } );
@@ -824,8 +1106,8 @@ THREE.MediaObject = function () {
 
         circle.scale.set( 0.05,0.05,1 );
 
-        circle.position.z = -10;
-        circle.position.x = 1;
+        circle.position.z = 1;
+        circle.position.x = 0;
         circle.position.y = -4;
 
         circle.lookAt(new THREE.Vector3(0, 0, 0));
@@ -846,8 +1128,8 @@ THREE.MediaObject = function () {
 
         circle.scale.set( 0.05,0.05,1 );
 
-        circle.position.z = -10;
-        circle.position.x = 0;
+        circle.position.z = 1;
+        circle.position.x = 1;
         circle.position.y = -4;
 
         circle.lookAt(new THREE.Vector3(0, 0, 0));
@@ -868,7 +1150,7 @@ THREE.MediaObject = function () {
 
         circle.scale.set( 0.05,0.05,1 );
 
-        circle.position.z = -10;
+        circle.position.z = 1;
         circle.position.x = 2;
         circle.position.y = -4;
 
@@ -890,7 +1172,7 @@ THREE.MediaObject = function () {
 
         circle.scale.set( 0.05,0.05,1 );
 
-        circle.position.z = -10;
+        circle.position.z = 1;
         circle.position.x = 3;
         circle.position.y = -4;
 
@@ -924,7 +1206,7 @@ THREE.MediaObject = function () {
         scene.add( circle );
 
         return circle;
-    };
+    };*/
 
 }
 

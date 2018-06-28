@@ -17,17 +17,25 @@ THREE.MenuManager = function () {
 
     this.changeMenuLeftOrRight = function(direction)
     {
-        var index = menuList.map(function(e) { return e.name; }).indexOf(interController.getActiveMenuName());
+        var indexActiveMenu = menuList.map(function(e) { return e.name; }).indexOf(interController.getActiveMenuName());
+        var newIndex = 0;
         scene.getObjectByName(interController.getActiveMenuName()).visible = false;
 
-        if(direction)
-        {
-            interController.setActiveMenuName(menuList[getNextArrayPosition(menuList, index+1)].name);        
-        } 
-        else
-        {
-            interController.setActiveMenuName(menuList[getNextArrayPosition(menuList, index-1)].name);  
-        } 
+///********* CODE REPITE IN LINE 59 *************************  
+        menuList.forEach(function(menu, index){
+            if(index != 0)
+            {
+                menu.buttons.forEach(function(button){
+                    interController.removeInteractiveObject(button)
+                });
+            }   
+        });
+///***********************************************************
+        if(direction) newIndex = getNextArrayPosition(menuList, indexActiveMenu+1);
+        else newIndex = getNextArrayPosition(menuList, indexActiveMenu-1);
+
+        interController.setActiveMenuName(menuList[newIndex].name);
+        menuList[newIndex].buttons.forEach(function(elem){interController.addInteractiveObject(scene.getObjectByName(elem))}); 
 
         scene.getObjectByName(interController.getActiveMenuName()).visible = true;
     } 
@@ -42,8 +50,18 @@ THREE.MenuManager = function () {
         createPlaySeekMenu(backgroud);
         createVolumeChangeMenu(backgroud);
         createSettingsCardboardMenu(backgroud);
-
         showPlayPauseButton();
+
+///********* CODE REPITE IN LINE 23 *************************        
+        menuList.forEach(function(menu, index){
+            if(index != 0 && index != menuList.map(function(e) { return e.name; }).indexOf(interController.getActiveMenuName()))
+            {
+                menu.buttons.forEach(function(button){
+                    interController.removeInteractiveObject(button)
+                });
+            }   
+        });
+///************************************************************        
     }
 
     this.closeMenu = function()

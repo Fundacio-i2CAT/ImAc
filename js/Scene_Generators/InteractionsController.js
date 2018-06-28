@@ -7,6 +7,7 @@ THREE.InteractionsController = function () {
 	var raycaster = new THREE.Raycaster();
 	var interactiveListObjects = [];
 	var interactionState = true;
+	var nameMenuActive = "";
 
 
 //************************************************************************************
@@ -26,24 +27,39 @@ THREE.InteractionsController = function () {
 	function checkInteractionByName(name)
 	{
 		// TODO
-		if ( name == 'btnPlay' )
+		if ( name == 'openMenu' )
 		{
-			console.log(moData.isPausedById(0));
-			moData.isPausedById(0) ? moData.playAll() : moData.pauseAll();
-		}
-		else if ( name == 'button1' )
-		{
-			if(scene.getObjectByName( "playseekmenu" ) == undefined){
-				var backgroud = moData.createMenuBackground();
-				moData.createPlaySeekMenu(backgroud);
+			if(scene.getObjectByName("backgroudMenu") == undefined)
+			{
+		        MenuManager.openMenu();
 			}
 			else{
 				console.log("Menu already open");
-			} 
+			}
 		}
-		else if ( name == 'closeButton' )
+		else if ( name == 'playButton')
 		{
-			moData.removeEntity('playseekmenu');
+			MenuManager.playButtonInteraction();
+		}
+		else if ( name == 'pauseButton') 
+		{
+			MenuManager.pauseButtonInteraction();
+		}
+		else if (name == 'forwardMenuButton')
+		{
+			MenuManager.changeMenuLeftOrRight(true);
+		}
+		else if(name == 'backMenuButton')
+		{
+			MenuManager.changeMenuLeftOrRight(false);
+		}
+		else if ( name == 'closeMenuButton' )
+		{
+			MenuManager.closeMenu();
+		}
+		else
+		{
+			console.log("You have clicked a button with no interactivity in the list!!!");
 		}
 	}
 
@@ -52,7 +68,14 @@ THREE.InteractionsController = function () {
 		console.log(interactiveListObjects)
 	};
 
+//************************************************************************************
+// Public Setters
+//************************************************************************************
 
+	this.setActiveMenuName = function(name)
+	{
+		nameMenuActive = name;
+	}
 
 //************************************************************************************
 // Public Getters
@@ -61,6 +84,11 @@ THREE.InteractionsController = function () {
 	this.getInteractionState = function()
 	{
 		return interactionState;
+	};
+
+	this.getActiveMenuName = function()
+	{
+		return nameMenuActive;
 	};
 
 
@@ -81,7 +109,7 @@ THREE.InteractionsController = function () {
     		var intersectedShapeId;
 			for(var inter = 0; inter < intersects.length; inter++)
 	        {
-	        	if (intersects[inter].object.type == 'Mesh') {
+	        	if (intersects[inter].object.type == 'Mesh' || intersects[inter].object.type == 'Group') {
 					intersectedShapeId = intersects[inter].object.name;
 					checkInteractionByName( intersectedShapeId );
 					console.error(intersectedShapeId);

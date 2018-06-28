@@ -37,6 +37,18 @@ THREE.InteractionsController = function () {
 				console.log("Menu already open");
 			}
 		}
+		else if(name == 'backMenuButton')
+		{
+			MenuManager.changeMenuLeftOrRight(false);
+		}
+		else if(name == 'forwardMenuButton')
+		{
+			MenuManager.changeMenuLeftOrRight(true);
+		}
+		else if ( name == 'closeMenuButton' )
+		{
+			MenuManager.closeMenu();
+		}
 		else if ( name == 'playButton')
 		{
 			MenuManager.playButtonInteraction();
@@ -53,27 +65,19 @@ THREE.InteractionsController = function () {
 		{
 			//TODO
 		}
-		else if(name == 'backMenuButton')
+		else if (name == 'minusVolumeButton')
 		{
-			MenuManager.changeMenuLeftOrRight(false);
+			//TODO
 		}
-		else if ( name == 'closeMenuButton' )
+		else if (name == 'plusVolumeButton')
 		{
-			MenuManager.closeMenu();
+			//TODO
 		}
 		else if (name == 'cardboardButton')
 		{
 			//TODO
 		}
 		else if (name == 'settingsButton')
-		{
-			//TODO
-		}
-		else if (name == 'minusVolumeButton')
-		{
-			//TODO
-		}
-		else if (name == 'plusVolumeButton')
 		{
 			//TODO
 		}

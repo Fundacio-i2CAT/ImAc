@@ -32,11 +32,15 @@ THREE.InteractionsController = function () {
 		}
 		else if ( name == 'button2' )
 		{
-
+			AplicationManager.switchDevice();
 		}
 		else if ( name == 'button3' )
 		{
-			
+			subController.setSubtitle( "./resources/LICEU_CAST.xml" ); 
+		}
+		else if ( name == 'button4' )
+		{
+			subController.setSubtitle( "./resources/LICEU_ENG.xml" ); 
 		}
 	}
 

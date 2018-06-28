@@ -29,7 +29,7 @@ THREE.InteractionsController = function () {
 		// TODO
 		if ( name == 'openMenu' )
 		{
-			if(scene.getObjectByName("backgroudMenu") == undefined)
+			if(!scene.getObjectByName("backgroudMenu"))
 			{
 		        MenuManager.openMenu();
 			}
@@ -45,9 +45,13 @@ THREE.InteractionsController = function () {
 		{
 			MenuManager.pauseButtonInteraction();
 		}
-		else if (name == 'forwardMenuButton')
+		else if (name == 'backSeekButton')
 		{
-			MenuManager.changeMenuLeftOrRight(true);
+			//TODO
+		}
+		else if (name == 'forwardSeekButton')
+		{
+			//TODO
 		}
 		else if(name == 'backMenuButton')
 		{
@@ -56,6 +60,22 @@ THREE.InteractionsController = function () {
 		else if ( name == 'closeMenuButton' )
 		{
 			MenuManager.closeMenu();
+		}
+		else if (name == 'cardboardButton')
+		{
+			//TODO
+		}
+		else if (name == 'settingsButton')
+		{
+			//TODO
+		}
+		else if (name == 'minusVolumeButton')
+		{
+			//TODO
+		}
+		else if (name == 'plusVolumeButton')
+		{
+			//TODO
 		}
 		else
 		{

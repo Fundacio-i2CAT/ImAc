@@ -11,11 +11,14 @@ var subController = new SubSignManager();
 var interController = new THREE.InteractionsController();
 var polyfill = new WebVRPolyfill();
 
+var statObj = new StatObject();
 
+
+var loggerActivated = false;
 
 //var language = "catala";
 
-var isHMD = false;
+var isHMD = true;
 var isVRDisplay = true;
 
 var demoId = 1;
@@ -63,8 +66,8 @@ function blockContainer()
 
 function selectXML(id)
 {
-  mainContentURL = id == 2 ? './resources/cam_2_2k.mp4' : './resources/rapzember-young-hurn_edit.mp4';
- console.error(id)   
+  mainContentURL = id == 2 ? 'http://192.168.10.128:8080/dash/liceu_demo/video/cam_2/stream.mpd' : './resources/rapzember-young-hurn_edit.mp4';
+ 
   demoId = id;
 
   AplicationManager.init_AplicationManager();
@@ -74,11 +77,8 @@ function selectXML(id)
 function startAllVideos()
 {
   
-  setTimeout(function()
-  {
-    runDemo();
-    //addsubtitles(); 
-    //subController.startSubtitles();   
+  setTimeout(function() {
+    runDemo(); 
   },500);
 
   //moData.playAll();

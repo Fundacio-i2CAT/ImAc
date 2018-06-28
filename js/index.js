@@ -5,6 +5,7 @@ var _PlayerVersion = 'v0.02.0';
 
 var AplicationManager = new AplicationManager();
 var moData = new THREE.MediaObject();
+var MenuManager = new THREE.MenuManager();
 var AudioManager = new AudioManager();
 var subController = new SubSignManager();
 var interController = new THREE.InteractionsController();

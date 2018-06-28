@@ -7,6 +7,7 @@ THREE.InteractionsController = function () {
 	var raycaster = new THREE.Raycaster();
 	var interactiveListObjects = [];
 	var interactionState = true;
+	var nameMenuActive = "";
 
 
 //************************************************************************************
@@ -26,24 +27,55 @@ THREE.InteractionsController = function () {
 	function checkInteractionByName(name)
 	{
 		// TODO
-		if ( name == 'button1' )
+		if ( name == 'openMenu' )
 		{
-			moData.isPausedById(0) ? moData.playAll() : moData.pauseAll();
+			if(scene.getObjectByName("backgroudMenu") == undefined)
+			{
+		        MenuManager.openMenu();
+			}
+			else{
+				console.log("Menu already open");
+			}
 		}
-		else if ( name == 'button2' )
+		else if ( name == 'playButton')
 		{
-			AplicationManager.switchDevice();
+			MenuManager.playButtonInteraction();
 		}
-		else if ( name == 'button3' )
+		else if ( name == 'pauseButton') 
 		{
-			subController.setSubtitle( "./resources/LICEU_CAST.xml" ); 
+			MenuManager.pauseButtonInteraction();
 		}
-		else if ( name == 'button4' )
+		else if (name == 'forwardMenuButton')
 		{
-			subController.setSubtitle( "./resources/LICEU_ENG.xml" ); 
+			MenuManager.changeMenuLeftOrRight(true);
+		}
+		else if(name == 'backMenuButton')
+		{
+			MenuManager.changeMenuLeftOrRight(false);
+		}
+		else if ( name == 'closeMenuButton' )
+		{
+			MenuManager.closeMenu();
+		}
+		else
+		{
+			console.log("You have clicked a button with no interactivity in the list!!!");
 		}
 	}
 
+	function getInteractiveObjectList()
+	{
+		console.log(interactiveListObjects)
+	};
+
+//************************************************************************************
+// Public Setters
+//************************************************************************************
+
+	this.setActiveMenuName = function(name)
+	{
+		nameMenuActive = name;
+	}
 
 //************************************************************************************
 // Public Getters
@@ -52,6 +84,11 @@ THREE.InteractionsController = function () {
 	this.getInteractionState = function()
 	{
 		return interactionState;
+	};
+
+	this.getActiveMenuName = function()
+	{
+		return nameMenuActive;
 	};
 
 
@@ -72,7 +109,7 @@ THREE.InteractionsController = function () {
     		var intersectedShapeId;
 			for(var inter = 0; inter < intersects.length; inter++)
 	        {
-	        	if (intersects[inter].object.type == 'Mesh') {
+	        	if (intersects[inter].object.type == 'Mesh' || intersects[inter].object.type == 'Group') {
 					intersectedShapeId = intersects[inter].object.name;
 					checkInteractionByName( intersectedShapeId );
 					console.error(intersectedShapeId);
@@ -91,12 +128,10 @@ THREE.InteractionsController = function () {
 		interactiveListObjects.push(object);
 	};
 
-	this.removeInteractiveObject = function()
+	this.removeInteractiveObject = function(name)
 	{
-		// TODO
-	};
-
-
+		interactiveListObjects = interactiveListObjects.filter(e => e.name != name);
+	}
 }
 
 THREE.InteractionsController.prototype.constructor = THREE.InteractionsController;

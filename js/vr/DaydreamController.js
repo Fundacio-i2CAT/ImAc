@@ -129,7 +129,7 @@ THREE.DaydreamController = function (domElement) {
 
 		console.log('onDocumentMouseDown');
 				
-		moData.isPausedById(0) ? moData.playAll() : moData.pauseAll();
+		//moData.isPausedById(0) ? moData.playAll() : moData.pauseAll();
 		
 	}.bind( this );
 

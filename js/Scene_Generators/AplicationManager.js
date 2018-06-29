@@ -24,7 +24,6 @@ function AplicationManager()
 
     this.switchDevice = function()
     {
-    	console.log('switchDevice')
     	if ( _display.length > 0 ) 
     	{
 			controls = undefined;
@@ -33,7 +32,6 @@ function AplicationManager()
 
 			renderer.vr.setDevice( _display[ 0 ] );
 		}
-
     };
 
 	function waitSesionManager()
@@ -75,12 +73,12 @@ function AplicationManager()
 
     function render()
     {
-    	if(gamepad) gamepad.update();
-    	if(controls) controls.update();
+    	if ( gamepad ) gamepad.update();
+    	if ( controls ) controls.update();
     	//THREE.VRController.update()
     	renderer.render( scene, camera );
 
-    	if (AudioManager.isAmbisonics) AudioManager.updateRotationMatrix(camera.matrixWorld.elements);
+    	if ( AudioManager.isAmbisonics ) AudioManager.updateRotationMatrix( camera.matrixWorld.elements );
 
     	/*if(gamepad.getTouchPadState()) 
     	{
@@ -119,13 +117,10 @@ function AplicationManager()
 
 		container.appendChild( renderer.domElement );
 
-        moData.createSphericalVideoInScene(mainContentURL, 'dash', 'name');
+        moData.createSphericalVideoInScene( mainContentURL, 'name' );
 
-        //moData.createCineVideoInScene(mainContentURL, 'mp4','exp');
-
-        //moData.createCubeGeometry65('./resources/cubemap2.jpg', 'mp4', 'name');
-        //moData.createCubeGeometry116('./resources/cubemap3.jpg', 'mp4', 'name');
-        //moData.createCubeGeometry65('./resources/dagomi_cube_603_edit.mp4', 'mp4', 'name');
+        //moData.createCubeGeometry116('./resources/cubemap3.jpg', 'name');
+        //moData.createCubeGeometry65('./resources/dagomi_cube_603_edit.mp4', 'name');
 
 
 		if ( 'getVRDisplays' in navigator ) 
@@ -135,10 +130,13 @@ function AplicationManager()
 		    {
 		        _display = vrDisplays;
 
-
 		        if ( vrDisplays.length )
 		        {
-		        	gamepad = new THREE.DaydreamController( renderer.domElement );
+		        	gamepad = new THREE.DaydreamController( camera, renderer.domElement );
+		        }
+		        else 
+		        {
+
 		        }
 
 		        controls = new THREE.DeviceOrientationAndTouchController( camera, renderer.domElement, renderer );

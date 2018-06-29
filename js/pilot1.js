@@ -16,6 +16,8 @@ function runDemo()
     if ( demoId == 1 ) subController.setSubtitle( "./resources/Rapzember3.ebu-tt.xml" );
     else subController.setSubtitle( "./resources/LICEU_ENG.xml" ); 
 
+    moData.createPointer();
+
 
     moData.playAll();
 }

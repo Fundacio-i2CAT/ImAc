@@ -15,21 +15,31 @@ THREE.MediaObject = function () {
 // Private Functions
 //************************************************************************************
 
-    function getVideObject(id, url, type) 
+    function getVideObject(id, url) 
     {
         var vid = document.createElement( "video" );     
         vid.muted = true;
         vid.autoplay = false;
         vid.loop = true;
 
-        if ( type == 'dash' )
+        var type = getMediaType( url );
+
+        if ( type == 'mpd' )
         {
             var player = dashjs.MediaPlayer().create();
+
             player.initialize( vid, url, true );
+            if (window.screen.availWidth <= 1920 ) {
+                player.setMaxAllowedBitrateFor('video', 13000);
+            }
+        else if (window.screen.availWidth <= 2300 ) {
+            player.setMaxAllowedBitrateFor('video', 12000);
+        }
             player.getDebug().setLogToBrowserConsole( false );
+            
             var objVideo = { id: id, vid: vid, dash: player };
         }
-        else if ( type == 'hls' )
+        else if ( type == 'm3u8' )
         {
             if ( Hls.isSupported() ) 
             {
@@ -57,6 +67,11 @@ THREE.MediaObject = function () {
         return vid;
     }
 
+    function getMediaType(url)
+    {
+        return url.split('.').pop();
+    }
+
     function syncVideos()
     {
         for ( var i = 1, l = listOfVideoContents.length; i < l; i++ )
@@ -65,14 +80,30 @@ THREE.MediaObject = function () {
         }
     }
 
-    function getVideoMesh(geometry, url, type, name, order) 
+    function getVideoMesh(geometry, url, name, order) 
     {
-        var texture = new THREE.VideoTexture( getVideObject( name, url, type ) );
+        var texture = new THREE.VideoTexture( getVideObject( name, url ) );
         texture.minFilter = THREE.LinearFilter;
         //texture.minFilter = THREE.NearestFilter;
         texture.format = THREE.RGBAFormat;
 
         var material = new THREE.MeshBasicMaterial( { map: texture, side: THREE.FrontSide } );
+        var mesh = new THREE.Mesh( geometry, material );
+
+        mesh.name = name;
+        mesh.renderOrder = order || 0;
+
+        return mesh;
+    }
+
+    function getImageMesh(geometry, url, name, order) 
+    {
+        var loader = new THREE.TextureLoader();
+        var texture = loader.load( url );
+        texture.minFilter = THREE.LinearFilter;
+        texture.format = THREE.RGBAFormat;
+
+        var material = new THREE.MeshBasicMaterial( { map: texture, transparent: true, side: THREE.FrontSide } );
         var mesh = new THREE.Mesh( geometry, material );
 
         mesh.name = name;
@@ -445,6 +476,14 @@ THREE.MediaObject = function () {
         return listOfVideoContents[id].vid.paused;
     };
 
+    this.seekAll = function(time)
+    {
+        for ( var i = 0, len = listOfVideoContents.length; i < len; i++ ) 
+        {
+            listOfVideoContents[i].vid.currentTime += time;
+        }
+    };
+
 //************************************************************************************
 // Media Object Generators
 //************************************************************************************
@@ -659,6 +698,18 @@ THREE.MediaObject = function () {
 
         return circle;
     };
+
+    this.createPointer = function()
+    {
+        var pointer = new THREE.Mesh(
+                new THREE.SphereBufferGeometry( 0.006, 16, 8 ),
+                new THREE.MeshBasicMaterial( { color: 0xc90000 } )
+            );
+        pointer.position.z = -8;
+        pointer.name = 'pointer';
+
+        camera.add( pointer );
+    }
 }
 
 THREE.MediaObject.prototype.constructor = THREE.MediaObject;

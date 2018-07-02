@@ -119,7 +119,7 @@ function AplicationManager()
 
 		container.appendChild( renderer.domElement );
 
-        moData.createSphericalVideoInScene(mainContentURL, 'dash', 'name');
+        moData.createSphericalVideoInScene(mainContentURL, 'mp4', 'name');
 
         //moData.createCineVideoInScene(mainContentURL, 'mp4','exp');
 

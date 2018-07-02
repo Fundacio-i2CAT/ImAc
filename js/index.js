@@ -66,7 +66,7 @@ function blockContainer()
 
 function selectXML(id)
 {
-  mainContentURL = id == 2 ? 'http://192.168.10.128:8080/dash/liceu_demo/video/cam_2/stream.mpd' : './resources/rapzember-young-hurn_edit.mp4';
+  mainContentURL = id == 2 ? './resources/cam_2_2k.mp4' : './resources/rapzember-young-hurn_edit.mp4';
  
   demoId = id;
 

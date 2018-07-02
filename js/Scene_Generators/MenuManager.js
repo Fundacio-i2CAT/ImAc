@@ -623,6 +623,29 @@ THREE.MenuManager = function () {
 
         return circle;
     };
+
+
+    this.createButton2 = function()
+    {
+        var geometry = new THREE.CircleGeometry( 8, 32 );
+        var material = new THREE.MeshBasicMaterial( { color: 0xc900c2 } );
+        var circle = new THREE.Mesh( geometry, material );
+
+        circle.scale.set( 0.05,0.05,1 );
+
+        circle.position.z = -10;
+        circle.position.x = 1;
+        circle.position.y = -4;
+
+        circle.lookAt(new THREE.Vector3(0, 0, 0));
+
+        circle.renderOrder = 5;
+        circle.name = 'cardboardButton';
+
+        scene.add( circle );
+
+        return circle;
+    };
 }
 
 THREE.MenuManager.prototype.constructor = THREE.MenuManager;

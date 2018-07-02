@@ -6,8 +6,10 @@ AudioManager = function() {
 
     var audioResources = Array();
     var audioResources_order_1 = Array();
+    var volume = 1;
     var foaRenderer,
-        isAmbisonics;
+        isAmbisonics,
+        activeVideoElement;
 
     function getFOARenderer(audioContext)
     {
@@ -47,6 +49,8 @@ AudioManager = function() {
     {
         var audioContext = new AudioContext();
 
+        activeVideoElement = videoElement;
+
         videoElement.muted = false;
 
         var videoElementSource = audioContext.createMediaElementSource( videoElement );
@@ -69,6 +73,34 @@ AudioManager = function() {
     {
         return foaRenderer;
     };
+
+    this.setmute = function()
+    {
+        volume = activeVideoElement.volume;
+        activeVideoElement.volume = 0;
+    };
+
+    this.setunmute = function()
+    {
+        activeVideoElement.volume = volume || 1;
+    };
+
+    this.changeVolume = function(value)
+    {
+        var newVolume = activeVideoElement.volume + value;
+
+        if ( newVolume < 0 )
+        {
+            newVolume = 0;
+        }
+        else if ( newVolume > 1 )
+        {
+            newVolume = 1;
+        }
+        
+        activeVideoElement.volume = newVolume;
+        volume = activeVideoElement.volume;
+    }
 
     this.isAmbisonics = function()
     {

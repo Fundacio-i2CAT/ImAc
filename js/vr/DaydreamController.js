@@ -2,9 +2,11 @@
  * @author Mugen87 / https://github.com/Mugen87
  */
 
-THREE.DaydreamController = function (domElement) {
+THREE.DaydreamController = function (object, domElement) {
 
 	THREE.Object3D.call( this );
+
+	this.object = object;
 
 	var scope = this;
 	var gamepad;
@@ -135,6 +137,7 @@ THREE.DaydreamController = function (domElement) {
 
 	this.connect = function() 
 	{	
+
 		this.element.addEventListener( 'mousedown', this.onDocumentMouseDown, false );
 
 		scope.enabled = true;

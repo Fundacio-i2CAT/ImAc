@@ -247,18 +247,26 @@ SubSignManager = function() {
 	this.setSize = function(size)
 	{
 		viewArea = size;
+		textListMemory = [];
 	};
 
 	this.setSubPosition = function(x, y)
 	{
 		subPosX = x;
 		subPosY = y;
+		textListMemory = [];
 	};
 
 	this.setSignerPosition = function(x, y)
 	{
 		signPosX = x;
 		signPosY = y;
+	};
+
+	this.setSubIndicator = function(ind)
+	{
+		subtitleIndicator = ind;
+		textListMemory = [];
 	};
 
 
@@ -272,6 +280,7 @@ SubSignManager = function() {
 		subPosX = x;
 		subPosY = y;
 		subtitleIndicator = ind;
+		textListMemory = [];
 	};
 
 	this.initSigner = function(fov, x, y, ind)

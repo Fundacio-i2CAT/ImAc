@@ -26,65 +26,162 @@ THREE.InteractionsController = function () {
 
 	function checkInteractionByName(name)
 	{
-		// TODO
-		if ( name == 'openMenu' )
-		{
-			if(!scene.getObjectByName("backgroudMenu"))
-			{
-		        MenuManager.openMenu();
-			}
-			else{
-				console.log("Menu already open");
-			}
-		}
-		else if(name == 'backMenuButton')
-		{
-			MenuManager.changeMenuLeftOrRight(false);
-		}
-		else if(name == 'forwardMenuButton')
-		{
-			MenuManager.changeMenuLeftOrRight(true);
-		}
-		else if ( name == 'closeMenuButton' )
-		{
-			MenuManager.closeMenu();
-		}
-		else if ( name == 'playButton')
-		{
-			MenuManager.playButtonInteraction();
-		}
-		else if ( name == 'pauseButton') 
-		{
-			MenuManager.pauseButtonInteraction();
-		}
-		else if (name == 'backSeekButton')
-		{
-			//TODO
-		}
-		else if (name == 'forwardSeekButton')
-		{
-			//TODO
-		}
-		else if (name == 'minusVolumeButton')
-		{
-			//TODO
-		}
-		else if (name == 'plusVolumeButton')
-		{
-			//TODO
-		}
-		else if (name == 'cardboardButton')
-		{
-			//TODO
-		}
-		else if (name == 'settingsButton')
-		{
-			//TODO
-		}
-		else
-		{
-			console.log("You have clicked a button with no interactivity in the list!!!");
-		}
+		switch ( name )
+        {
+
+        //****************************
+        //       Main controls
+        //****************************
+
+        	case "openMenu":
+        		scene.getObjectByName( "backgroudMenu" ) ? console.log("Menu already open") : MenuManager.openMenu();
+				break;
+
+        	case "backMenuButton":
+        		MenuManager.changeMenuLeftOrRight( false );
+        		break;
+
+        	case "forwardMenuButton":
+        		MenuManager.changeMenuLeftOrRight( true );
+        		break;
+
+        	case "closeMenuButton":
+        		MenuManager.closeMenu();
+        		break;
+
+        //****************************
+        //      Player controls
+        //****************************
+
+        	case "playButton":
+        		MenuManager.playButtonInteraction();
+        		break;
+
+        	case "pauseButton":
+        		MenuManager.pauseButtonInteraction();
+        		break;
+
+        	case "backSeekButton":
+        		moData.seekAll( -5 );
+        		break;
+
+        	case "forwardSeekButton":
+        		moData.seekAll( 5 );
+        		break;
+
+        //****************************
+        //      Volume controls
+        //****************************
+
+        	case "minusVolumeButton":
+        		AudioManager.changeVolume( -0.2 );
+        		break;
+
+        	case "plusVolumeButton":
+        		AudioManager.changeVolume( 0.2 );
+        		break;
+
+        	case "muteVolumeButton":
+        		AudioManager.setmute();
+        		break;
+
+        	case "unmuteVolumeButton":
+        		AudioManager.setunmute();
+        		break;
+
+        //****************************
+        //     Settings controls
+        //****************************
+
+        	case "cardboardButton":
+        		AplicationManager.switchDevice();
+        		break;
+
+        	case "settingsButton":
+        		// TODO
+        		break;
+
+        //****************************
+        //     Subtitle controls
+        //****************************
+
+        	case "subtitleTopButton":
+        		subController.setSubPosition( 0, 1 );
+        		break;
+
+        	case "subtitleBottomButton":
+        		subController.setSubPosition( 0, -1 );
+        		break;
+
+        	case "subtitleOnButton":
+        		subController.enableSubtitles();
+        		break;
+
+        	case "subtitleOffButton":
+        		subController.disableSubtiles();
+        		break;
+
+        	case "subtitleEngButton":
+        		subController.setSubtitle( "./resources/LICEU_ENG.xml" ); 
+        		break;
+
+        	case "subtitleEspButton":
+        		subController.setSubtitle( "./resources/LICEU_CAST.xml" ); 
+        		break;
+
+        	case "subtitleNoneButton":
+        		subController.setSubIndicator( "none" );
+        		break;
+
+        	case "subtitleArrowButton":
+        		subController.setSubIndicator( "arrow" );
+        		break;
+
+        	case "subtitleRadarButton":
+        		subController.setSubIndicator( "compass" );
+        		break;
+
+        	case "subtitleSmallAreaButton":
+        		subController.setSize( 50 );
+        		break;
+
+        	case "subtitleMediumlAreaButton":
+        		subController.setSize( 60 );
+        		break;
+
+        	case "subtitleLargeAreaButton":
+        		subController.setSize( 70 );
+        		break;
+
+        	case "showSubtitleMenu":
+        		// TODO
+        		// mostrar menu de configuracion de subtitulos
+        		break;
+
+        	case "subtitleShowLanguages":
+        		// TODO
+        		// mostar el menu con la lista de idiomas seleccionables
+        		break;
+
+        	case "subtitleShowPositions":
+        		// TODO
+        		// mostrar la lista de las posiciones de los subtitulos (top/bottom)
+        		break;
+
+        	case "subtitleShowSpeakers":
+        		// TODO
+        		// mostrar lista de los indicadores (none/arrow/radar)
+        		break;
+
+        	case "subtitleShowAreas":
+        		// TODO
+        		// mostrar lista de areas de visualizacion (small/medium/large)
+        		break;
+
+        	default:
+        		console.log("You have clicked a button with no interactivity in the list!!!");
+        		break;
+        }
 	}
 
 	function getInteractiveObjectList()
@@ -115,7 +212,6 @@ THREE.InteractionsController = function () {
 		return nameMenuActive;
 	};
 
-
 //************************************************************************************
 // Public Functions
 //************************************************************************************
@@ -126,14 +222,15 @@ THREE.InteractionsController = function () {
 
 		//raycaster = new THREE.Raycaster();
     	raycaster.setFromCamera( mouse3D, camera );
-    	var intersects = raycaster.intersectObjects( interactiveListObjects, true); // false
+    	var intersects = raycaster.intersectObjects( interactiveListObjects, true ); // false
 
-    	if (intersects[0])
+    	if ( intersects[0] )
     	{
     		var intersectedShapeId;
 			for(var inter = 0; inter < intersects.length; inter++)
 	        {
-	        	if (intersects[inter].object.type == 'Mesh' || intersects[inter].object.type == 'Group') {
+	        	if ( intersects[inter].object.type == 'Mesh' || intersects[inter].object.type == 'Group' ) 
+	        	{
 					intersectedShapeId = intersects[inter].object.name;
 					checkInteractionByName( intersectedShapeId );
 					console.error(intersectedShapeId);

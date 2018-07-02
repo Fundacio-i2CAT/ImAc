@@ -10,25 +10,16 @@ var AudioManager = new AudioManager();
 var subController = new SubSignManager();
 var interController = new THREE.InteractionsController();
 var polyfill = new WebVRPolyfill();
-
 var statObj = new StatObject();
 
 
 var loggerActivated = false;
 
-//var language = "catala";
-
-var isHMD = true;
-var isVRDisplay = true;
 
 var demoId = 1;
 
 var mainContentURL = './resources/rapzember-young-hurn_edit.mp4';
 //var _selected_content = 'Radio';
-
-
-
-
 
 
 

@@ -83,14 +83,16 @@ THREE.InteractionsController = function () {
 
         	case "muteVolumeButton":
         		AudioManager.setmute();
+                MenuManager.muteButtonInteraction();
         		break;
 
         	case "unmuteVolumeButton":
         		AudioManager.setunmute();
+                MenuManager.unMuteButtonInteraction();
         		break;
 
         //****************************
-        //     Settings controls
+        //     Settings Cardboard controls
         //****************************
 
         	case "cardboardButton":
@@ -98,9 +100,59 @@ THREE.InteractionsController = function () {
         		break;
 
         	case "settingsButton":
-        		// TODO
+        		MenuManager.openSecondLevelMenu(5);
         		break;
 
+
+        //****************************
+        //     Settings  controls
+        //****************************  
+              
+            case "settingsLanguageButton":
+                console.log("SETTINGS LANGUAGES")
+                MenuManager.openSubMenuDropdown(0);
+                break;
+
+        //****************************
+        //     Multi options menu
+        //****************************
+
+            case "showSubtitleMenuButton":
+                // TODO
+                // show the subtitle configuration menu
+                console.log("showSubtitleMenuButton");
+                MenuManager.openSecondLevelMenu(6);
+                break;
+
+            case "showSignLanguageMenuButton":
+                // TODO
+                // show the sign language configuration menu
+                console.log("showSignLanguageMenuButton");
+                break;
+
+            case "showAudioDescriptionMenuButton":
+                // TODO
+                // show the audio description configuration menu
+                console.log("showAudioDescriptionMenuButton");
+                //MenuManager.openSecondLevelMenu(7);
+                break;
+
+            case "showAudioSubtitleMenuButton":
+                // TODO
+                // show the audio subtitle configuration menu
+                console.log("showAudioSubtitleMenuButton");
+                break;
+
+        //****************************
+        //     Audio Description controls
+        //****************************
+            case "audioDescriptionOnButton":
+                console.log("audioDescriptionOnButton");
+                break;
+
+            case "audioDescriptionOffButton":
+                console.log("audioDescriptionOffButton");
+                break;
         //****************************
         //     Subtitle controls
         //****************************
@@ -129,6 +181,14 @@ THREE.InteractionsController = function () {
         		subController.setSubtitle( "./resources/LICEU_CAST.xml" ); 
         		break;
 
+            case "subtitleGerButton":
+                console.log("Subtitles changed to GERMAN");
+                break;
+
+            case "subtitleCatButton":
+                console.log("Subtitles changed to CATALAN");
+                break;
+
         	case "subtitleNoneButton":
         		subController.setSubIndicator( "none" );
         		break;
@@ -153,20 +213,20 @@ THREE.InteractionsController = function () {
         		subController.setSize( 70 );
         		break;
 
-        	case "showSubtitleMenu":
-        		// TODO
-        		// mostrar menu de configuracion de subtitulos
-        		break;
-
-        	case "subtitleShowLanguages":
+        	case "subtitleShowLanguagesDropdown":
+                MenuManager.openSubMenuDropdown(0);
         		// TODO
         		// mostar el menu con la lista de idiomas seleccionables
         		break;
 
-        	case "subtitleShowPositions":
+        	case "subtitleShowPositionsDropdown":
         		// TODO
-        		// mostrar la lista de las posiciones de los subtitulos (top/bottom)
+        		MenuManager.openSubMenuDropdown(1);
         		break;
+            case "subtitleShowAreasDropdown":
+                // mostrar lista de areas de visualizacion (small/medium/large)
+                MenuManager.openSubMenuDropdown(2);
+                break;
 
         	case "subtitleShowSpeakers":
         		// TODO
@@ -175,7 +235,6 @@ THREE.InteractionsController = function () {
 
         	case "subtitleShowAreas":
         		// TODO
-        		// mostrar lista de areas de visualizacion (small/medium/large)
         		break;
 
         	default:

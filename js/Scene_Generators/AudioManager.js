@@ -111,4 +111,9 @@ AudioManager = function() {
     {
         updateMatrix4( m );
     };
+
+    this.getVolume = function()
+    {
+        return activeVideoElement.volume;
+    }
 }

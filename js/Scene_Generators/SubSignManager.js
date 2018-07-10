@@ -298,6 +298,7 @@ SubSignManager = function() {
 
 	this.disableSubtiles = function()
 	{
+		moData.removeSubtitle();
 		subtitleEnabled = false;
 	};
 

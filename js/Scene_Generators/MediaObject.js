@@ -112,7 +112,7 @@ THREE.MediaObject = function () {
         return mesh;
     }
 
-//****************************
+//***********CODE REPITED IN MENU MANAGER *****************
     function getBackgroundMesh(w, h, c, o)
     {
         var material = new THREE.MeshBasicMaterial( { color: c, transparent: true, opacity: o } );

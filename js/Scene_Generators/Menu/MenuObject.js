@@ -1,254 +1,11 @@
-/**
- * @author isaac.fraile@i2cat.net
- */
-THREE.MenuManager = function () {
+THREE.MenuObject = function () {
 
-    var menuList = 
-    [
-        { name: 'backgroudMenu', buttons: ['closeMenuButton', 'forwardMenuButton', 'backMenuButton']},          //0
-        { name: 'playSeekMenu', buttons: ['playButton', 'pauseButton', 'backSeekButton', 'forwardSeekButton']}, //1
-        { name: 'volumeChangeMenu', buttons: ['minusVolumeButton', 'plusVolumeButton']},                        //2
-        { name: 'settingsCardboardMenu', buttons: ['settingsButton', 'cardboardButton']}                        //3
-    ];
 
 //************************************************************************************
-// PUBLIC FUNCTIONS
-//************************************************************************************
-
-    this.changeMenuLeftOrRight = function(direction)
-    {
-        var indexActiveMenu = menuList.map(function(e) { return e.name; }).indexOf(interController.getActiveMenuName());
-        var newIndex = 0;
-        scene.getObjectByName(interController.getActiveMenuName()).visible = false;
-
-///********* CODE REPITE IN LINE 59 *************************  
-        menuList.forEach(function(menu, index){
-            if(index != 0)
-            {
-                menu.buttons.forEach(function(button){
-                    interController.removeInteractiveObject(button)
-                });
-            }   
-        });
-///***********************************************************
-        if(direction) newIndex = getNextArrayPosition(menuList, indexActiveMenu+1);
-        else newIndex = getNextArrayPosition(menuList, indexActiveMenu-1);
-
-        interController.setActiveMenuName(menuList[newIndex].name);
-        menuList[newIndex].buttons.forEach(function(elem){interController.addInteractiveObject(scene.getObjectByName(elem))}); 
-
-        scene.getObjectByName(interController.getActiveMenuName()).visible = true;
-    } 
-
-//************************************************************************************
-// PUBLIC INTERACTION FUNCTIONS
+// SHAPES
 //************************************************************************************
     
-    this.openMenu = function()
-    {
-        var backgroud = createMenuBackground();
-        createPlaySeekMenu(backgroud);
-        createVolumeChangeMenu(backgroud);
-        createSettingsCardboardMenu(backgroud);
-        showPlayPauseButton();
-
-///********* CODE REPITE IN LINE 23 *************************        
-        menuList.forEach(function(menu, index){
-            if(index != 0 && index != menuList.map(function(e) { return e.name; }).indexOf(interController.getActiveMenuName()))
-            {
-                menu.buttons.forEach(function(button){
-                    interController.removeInteractiveObject(button)
-                });
-            }   
-        });
-///************************************************************        
-    }
-
-    this.closeMenu = function()
-    {
-        var menu = scene.getObjectByName("backgroudMenu");
-        menu.children.forEach(function(elem){
-            removeEntity(elem);
-        });
-        removeEntity(menu);
-        menu.visible = false;
-        scene.remove(menu);
-    }
-
-    this.playButtonInteraction = function()
-    {
-        moData.isPausedById(0) ? moData.playAll() : moData.pauseAll();
-        showPlayPauseButton();
-        interController.removeInteractiveObject(name);
-        interController.addInteractiveObject(scene.getObjectByName(menuList[1].buttons[1])); //menuList.playSeekMenu.pauseButton
-    }
-
-    this.pauseButtonInteraction = function()
-    {
-        moData.isPausedById(0) ? moData.playAll() : moData.pauseAll();
-        showPlayPauseButton();
-        interController.removeInteractiveObject(name);
-        interController.addInteractiveObject(scene.getObjectByName(menuList[1].buttons[0])); //menuList.playSeekMenu.playButton
-    }
-
-//************************************************************************************
-// Private Functions
-//************************************************************************************
-
-    function removeEntity (object) 
-    {
-        object.children.forEach(function(elem1){
-            elem1.children.forEach(function(elem2){
-                interController.removeInteractiveObject(elem2.name);
-            });
-        });
-    }
-
-    function getNextArrayPosition(array, nextIndex)
-    {
-        if (nextIndex > array.length - 1)
-        {
-            return 1;
-        }
-        else if (nextIndex < 1)
-        {
-            return array.length-1;
-        }
-        else
-        {
-            return nextIndex;
-        }
-    }  
-
-    function showPlayPauseButton()
-    {
-        if(moData.isPausedById(0))
-        {
-            scene.getObjectByName(menuList[1].buttons[0]).visible = true; //menuList.playSeekMenu.playButton
-            scene.getObjectByName(menuList[1].buttons[1]).visible = false; //menuList.playSeekMenu.pauseButton
-        }
-        else
-        {
-            scene.getObjectByName(menuList[1].buttons[1]).visible = true; //menuList.playSeekMenu.pauseButton
-            scene.getObjectByName(menuList[1].buttons[0]).visible = false; //menuList.playSeekMenu.playButton
-        }
-    }
-
-    function createMenuBackground()
-    {
-        var menu = getBackgroundMesh(352, 198, 0x000000,1);
-        var closeButton = getCloseIconMesh(20,20,0xffffff);
-        var nextR = getNextIconMesh(20,20,0xffffff,0);
-        var nextL = getNextIconMesh(20,20,0xffffff, Math.PI);
-
-        closeButton.position.y = (menu.geometry.parameters.height/2 - 15);
-        closeButton.position.x = (menu.geometry.parameters.width/2 - 15);
-        closeButton.scale.set(0.5,0.5,1);
-
-        nextR.position.y = -(menu.geometry.parameters.height/2 - 15);
-        nextR.position.x = (menu.geometry.parameters.width/2 - 10);
-        nextR.scale.set(0.5,0.5,1);
-
-        nextL.position.y = -(menu.geometry.parameters.height/2 - 15);
-        nextL.position.x = -(menu.geometry.parameters.width/2 - 10);
-        nextL.scale.set(0.5,0.5,1);
-
-        menu.add(closeButton);
-        menu.add(nextR);
-        menu.add(nextL);
-
-        menu.name = menuList[0].name; // menuList.backgroudMenu
-
-        return menu
-    }
-
-    function createPlaySeekMenu(menu)
-    {
-        var playSeekGroup =  new THREE.Group();
-        var pausebutton = getPauseMesh(140, 140, 0xffffff);
-        var playbutton = getPlayMesh(140, 140, 0xffffff);
-        playbutton.visible = false;
-        var seekBarR = getSeekMesh( 80, 40, 0xffffff, 0);
-        var seekBarL = getSeekMesh( 80, 40, 0xffffff, Math.PI);
-
-        seekBarR.position.x = 120;
-        seekBarL.position.x = -120;
-
-        playSeekGroup.add( playbutton );
-        playSeekGroup.add( pausebutton );
-        playSeekGroup.add( seekBarR );
-        playSeekGroup.add( seekBarL );
-
-        playSeekGroup.name = menuList[1].name; //menuList.playSeekMenu
-        menu.add(playSeekGroup);
-
-        menu.scale.set(0.05,0.05,1);
-        menu.position.set(0, 0, -10);
-
-        interController.setActiveMenuName(menuList[1].name); //menuList.playSeekMenu
-
-        scene.add(menu);
-    }
-
-    function createVolumeChangeMenu(menu)
-    {
-
-        var volumeChangeGroup =  new THREE.Group();
-
-        var plusVolume = getPlusIconMesh( 20, 20, 0xffffff );
-        var audioIcon = getImageMesh( new THREE.PlaneGeometry( 150,150 ), './img/menu/audio_volume_icon.png', 'right', 4 );
-        var minusVolume = getMinusIconMesh( 20, 20, 0xffffff );
-
-        plusVolume.position.x = 130;
-        minusVolume.position.x = -130;
-        
-        audioIcon.position.z = 1;
-
-        volumeChangeGroup.add( plusVolume );
-        volumeChangeGroup.add( audioIcon );
-        volumeChangeGroup.add( minusVolume );
-
-        volumeChangeGroup.name = menuList[2].name; // menuList.volumeChangeMenu
-        volumeChangeGroup.visible = false;
-        menu.add(volumeChangeGroup);
-
-        menu.scale.set(0.05,0.05,1);
-        menu.position.set(0, 0, -10);
-
-        scene.add( menu );
-    }
-
-    function createSettingsCardboardMenu(menu)
-    {
-        var settingsCardboardGroup =  new THREE.Group();
-
-        var settingsIcon = getImageMesh( new THREE.PlaneGeometry( 120, 120 ), './img/menu/cog_icon.png', 'right', 4 );
-        var cardboardIcon = getImageMesh( new THREE.PlaneGeometry( 120, 80 ), './img/menu/cardboard_icon.png', 'right', 4 );
-        
-        settingsIcon.name = menuList[3].buttons[0]; // menuList.settingsCardboardMenu.settingsButton;
-        cardboardIcon.name = menuList[3].buttons[1]; //menuList.settingsCardboardMenu.cardboadButton;
-
-        cardboardIcon.position.x = 80;
-        settingsIcon.position.x = -80;
-        
-        settingsCardboardGroup.add( cardboardIcon );
-        settingsCardboardGroup.add( settingsIcon );
-
-        settingsCardboardGroup.name = menuList[3].name; // menuList.settingsCardboardMenu
-        settingsCardboardGroup.visible = false;
-
-        menu.add(settingsCardboardGroup);
-        menu.scale.set(0.05,0.05,1);
-        menu.position.set(0, 0, -10);
-
-        scene.add( menu );
-    } 
-
-//************************************************************************************
-// PRIVATE SHAPES
-//************************************************************************************
-    
-    function getImageMesh(geometry, url, name, order) 
+    this.getImageMesh = function(geometry, url, name, order) 
     {
         var loader = new THREE.TextureLoader();
         var texture = loader.load( url );
@@ -264,8 +21,7 @@ THREE.MenuManager = function () {
         return mesh;
     }
 
-//**********************
-    function getBackgroundMesh(w, h, c, o)
+    this.getBackgroundMesh = function(w, h, c, o)
     {
         var material = new THREE.MeshBasicMaterial( { color: c, transparent: true, opacity: o } );
         var geometry = new THREE.PlaneGeometry( w, h ); 
@@ -275,7 +31,7 @@ THREE.MenuManager = function () {
         return mesh;
     }
 
-    function getPlayMesh(w, h, c)
+    this.getPlayMesh = function(w, h, c, name)
     {
         var arrowShape = new THREE.Shape();
 
@@ -289,17 +45,17 @@ THREE.MenuManager = function () {
         var material = new THREE.MeshBasicMaterial( { color: c } );
         var mesh = new THREE.Mesh( geometry, material ) ;
 
-        coliderMesh.name = menuList[1].buttons[0]; //menuList.playSeekMenu.playButton
+        coliderMesh.name = name; //menuList.playSeekMenu.playButton
         interController.addInteractiveObject(coliderMesh);
         mesh.add(coliderMesh);
         
         mesh.position.z = 0.01;
-        mesh.name = menuList[1].buttons[0]; //menuList.playSeekMenu.playButton
+        mesh.name = name; //menuList.playSeekMenu.playButton
         
         return mesh;
     }
 
-    function getPauseMesh(w, h, c)
+    this.getPauseMesh = function(w, h, c, name)
     {
         var leftPauseShape = new THREE.Shape();
 
@@ -326,19 +82,19 @@ THREE.MenuManager = function () {
         var material = new THREE.MeshBasicMaterial( { color: c } );
         var meshR = new THREE.Mesh( geometry, material ) ;
 
-        coliderMesh.name = menuList[1].buttons[1]; //menuList.playSeekMenu.pauseButton
+        coliderMesh.name = name; //menuList.playSeekMenu.pauseButton
         interController.addInteractiveObject(coliderMesh);
         coliderMesh.position.z = 0.01;
         meshL.add(meshR);
         meshL.add(coliderMesh);
-        meshL.name = menuList[1].buttons[1]; //menuList.playSeekMenu.pauseButton
+        meshL.name = name; //menuList.playSeekMenu.pauseButton
 
         meshL.position.z = 0.01;
         
         return meshL;
     }
 
-    function getSeekMesh(w, h, c, r)
+    this.getSeekMesh = function(w, h, c, r, name)
     {
         var arrowShape = new THREE.Shape();
 
@@ -364,26 +120,17 @@ THREE.MenuManager = function () {
         var mesh = new THREE.Mesh( geometry, material ) ;
 
         mesh.rotation.z = r;
-        if(r > 0)
-        {
-            coliderMesh.name = menuList[1].buttons[2]; //menuList.playSeekMenu.backSeekButton
-        }
-
-        else
-        {
-            coliderMesh.name = menuList[1].buttons[3]; //menuList.playSeekMenu.forwardSeekButton;
-        }
+        coliderMesh.name = name;
 
         interController.addInteractiveObject(coliderMesh);
 
         mesh.add(coliderMesh);
         mesh.position.z = 0.01;
-        mesh.visible = true;
 
         return mesh;
     }
 
-    function getSeekBarMesh(w, h, c)
+    /*this.getSeekBarMesh = function(w, h, c)
     {
         var roundedRectShape = new THREE.Shape();
         ( function roundedRect( ctx, x, y, width, height, radius ) {
@@ -406,12 +153,11 @@ THREE.MenuManager = function () {
         mesh.add( seekbutton );
 
         mesh.position.z = 0.01;
-        mesh.visible = true;
         
         return mesh;
-    }
+    }*/
 
-    function getMinusIconMesh(w, h, c)
+    this.getMinusIconMesh = function(w, h, c, name)
     {
         /* 8x8 Vector points for Minus icon:
                                     
@@ -441,7 +187,8 @@ THREE.MenuManager = function () {
         var material = new THREE.MeshBasicMaterial( { color: c } );
         var minusMesh = new THREE.Mesh( geometry, material ) ;
 
-        coliderMesh.name =  menuList[2].buttons[0]; //menuList.volumeChangeMenu.minusVolumeButton;
+        //coliderMesh.name =  menuList[2].buttons[0]; //menuList.volumeChangeMenu.minusVolumeButton;
+        coliderMesh.name =  name;
         interController.addInteractiveObject(coliderMesh);
         minusMesh.add(coliderMesh);
         minusMesh.position.z = 0.01;
@@ -450,7 +197,7 @@ THREE.MenuManager = function () {
     }
 
 
-    function getPlusIconMesh(w, h, c)
+    this.getPlusIconMesh = function(w, h, c, name)
     {
         /* 8x8 Vector points for Plus icon:
                                     
@@ -488,7 +235,7 @@ THREE.MenuManager = function () {
         var material = new THREE.MeshBasicMaterial( { color: c } );
         var plusMesh = new THREE.Mesh( geometry, material ) ;
 
-        coliderMesh.name = menuList[2].buttons[1]; //menuList.volumeChangeMenu.plusVolumeButton;
+        coliderMesh.name = name;
         interController.addInteractiveObject(coliderMesh);
         plusMesh.add(coliderMesh);
         plusMesh.position.z = 0.01;
@@ -496,7 +243,7 @@ THREE.MenuManager = function () {
         return plusMesh;
     }
 
-    function getNextIconMesh(w, h, c, r)
+    this.getNextIconMesh = function(w, h, c, r, name)
     {
         /* 8x8 Vector points for Next icon:
                                 
@@ -530,16 +277,7 @@ THREE.MenuManager = function () {
         var nextMesh = new THREE.Mesh( geometry, material ) ;
 
         nextMesh.rotation.z = r;
-
-        if(r > 0)
-        {
-            coliderMesh.name = menuList[0].buttons[2]; //menuList.backgroudMenu.backMenuButton;
-        }
-
-        else
-        {
-            coliderMesh.name = menuList[0].buttons[1]; //menuList.backgroudMenu.forwardMenuButton;
-        }
+        coliderMesh.name = name;
 
         interController.addInteractiveObject(coliderMesh);
         nextMesh.add(coliderMesh);
@@ -548,7 +286,7 @@ THREE.MenuManager = function () {
         return nextMesh;
     }
 
-    function getCloseIconMesh(w, h, c)
+    this.getCloseIconMesh = function(w, h, c, name)
     {
         /* 8x8 Vector points for Close Icon :
                                 
@@ -590,7 +328,7 @@ THREE.MenuManager = function () {
         var material = new THREE.MeshBasicMaterial( { color: c} );
         var closeMesh = new THREE.Mesh( geometry, material );
 
-        coliderMesh.name = menuList[0].buttons[0]; //menuList.backgroudMenu.closeMenuButton;
+        coliderMesh.name = name;
         interController.addInteractiveObject(coliderMesh);
         closeMesh.add(coliderMesh);
         closeMesh.position.z = 0.01;
@@ -598,54 +336,147 @@ THREE.MenuManager = function () {
         return closeMesh;
     }
 
-//************************************************************************************
-// EXPERIMENTAL
-//************************************************************************************
 
-    this.createMenu = function()
+/**
+ * Gets the menu text mesh.
+ *
+ * @param      {<type>}    text      The text
+ * @param      {number}    size      The size
+ * @param      {<type>}    color     The color
+ * @param      {<type>}    name      The name
+ * @param      {Function}  callback  The callback
+ */
+
+    this.getMenuTextMesh = function(text, size, color, name, callback)
     {
-        var geometry = new THREE.CircleGeometry( 8, 32 );
-        var material = new THREE.MeshBasicMaterial( { color: 0xc90000 } );
-        var circle = new THREE.Mesh( geometry, material );
+        var loader = new THREE.FontLoader();
+        var myfont = loader.load('./css/fonts/helvetiker_bold.typeface.json', 
+            function(font){
 
-        circle.scale.set( 0.05,0.05,1 );
+                var textShape = new THREE.BufferGeometry();
+                var textmaterial = new THREE.MeshBasicMaterial( { color: color} );
+                var shapes = font.generateShapes( text, size);
+                var geometry = new THREE.ShapeGeometry( shapes );
 
-        circle.position.z = -10;
-        circle.position.x = 0;
-        circle.position.y = 5;
+                var coliderMesh = new THREE.Mesh( new THREE.PlaneGeometry(size*shapes.length, size*2), new THREE.MeshBasicMaterial({visible: false}));
+                coliderMesh.position.x = size*shapes.length/2;
+                coliderMesh.position.y = size/2;
 
-        circle.lookAt(new THREE.Vector3(0, 0, 0));
+                geometry.computeBoundingBox();
+                textShape.fromGeometry( geometry );
 
-        circle.renderOrder = 5;
-        circle.name = 'openMenu';
+                var mesh = new THREE.Mesh(textShape, textmaterial);
 
-        scene.add( circle );
+                coliderMesh.name = name;
+                interController.addInteractiveObject(coliderMesh);
+                mesh.add(coliderMesh);
+                mesh.position.z = 0.01;
 
-        return circle;
-    };
+                callback(mesh);
+        });
+    }
 
-
-    this.createButton2 = function()
+/**
+ * Creates a line.
+ *
+ * @param      {<type>}  color        The color
+ * @param      {<type>}  startvector  The startvector
+ * @param      {<type>}  endvector    The endvector
+ * @return     {THREE}   { description_of_the_return_value }
+ */
+    function createLine(color, startvector, endvector)
     {
-        var geometry = new THREE.CircleGeometry( 8, 32 );
-        var material = new THREE.MeshBasicMaterial( { color: 0xc900c2 } );
-        var circle = new THREE.Mesh( geometry, material );
+        var material = new THREE.LineBasicMaterial({color: color, linewidth: 1});
+        var geometry = new THREE.Geometry();
+        geometry.vertices.push(startvector,endvector);
+        var line = new THREE.Line( geometry, material );
+        return line;
+    }
 
-        circle.scale.set( 0.05,0.05,1 );
+/**
+ * Creates all the vertical and horitzontal lines in the menus.
+ *
+ * @param      {<type>}  backgroundmenu    The backgroundmenu
+ * @param      {<type>}  color             The color
+ * @param      {number}  firstcolumnrows   The firstcolumnrows
+ * @param      {number}  secondcolumnrows  The secondcolumnrows
+ */
+    this.menuLineVerticalDivisions = function(backgroundmenu, color)
+    {
+        var linesMenuGroup =  new THREE.Group();
+        var line = createLine(color, 
+            new THREE.Vector3( -backgroundmenu.geometry.parameters.width/6, backgroundmenu.geometry.parameters.height/2, 0 ),
+            new THREE.Vector3( -backgroundmenu.geometry.parameters.width/6, -backgroundmenu.geometry.parameters.height/2, 0 ));
 
-        circle.position.z = -10;
-        circle.position.x = 1;
-        circle.position.y = -4;
+        var line2 = line.clone();
+        line2.position.x = 2*backgroundmenu.geometry.parameters.width/6;
 
-        circle.lookAt(new THREE.Vector3(0, 0, 0));
+        linesMenuGroup.add( line );
+        linesMenuGroup.add( line2 );
 
-        circle.renderOrder = 5;
-        circle.name = 'cardboardButton';
+        linesMenuGroup.position.z = 0.01;
 
-        scene.add( circle );
-
-        return circle;
-    };
+        return linesMenuGroup
+    }
+/**
+ * Creates the horitzontal lines that divide the menu depending on the indicated row 
+ *
+ * @param      {<type>}  color              The color
+ * @param      {<type>}  numberofdivisions  The numberofdivisions
+ * @param      {<type>}  backgroundmenu     The backgroundmenu
+ * @param      {number}  row                The row
+ * @return     {Group}   { Returns the group of lines }
+ */
+    this.menuLineHoritzontalDivisions = function(color, numberofdivisions, backgroundmenu, row)
+    {
+        var linesHoritzontalGroup =  new THREE.Group();
+        var line = createLine(color, 
+                    new THREE.Vector3( -backgroundmenu.geometry.parameters.width/6, 0, 0 ),
+                    new THREE.Vector3( backgroundmenu.geometry.parameters.width/6, 0, 0 ));
+        switch(numberofdivisions)
+        {
+            case 1:
+            default:
+                return linesHoritzontalGroup
+                break;
+            case 2:
+                if(row>1) line.position.x +=  backgroundmenu.geometry.parameters.width/3;
+                linesHoritzontalGroup.add(line);
+                return linesHoritzontalGroup
+                break;
+            case 3:
+                var line1 = line.clone();
+                var line2 = line.clone();
+                line1.position.y += backgroundmenu.geometry.parameters.height/6
+                line2.position.y -= backgroundmenu.geometry.parameters.height/6
+                if(row>1)
+                    {
+                      line1.position.x +=  backgroundmenu.geometry.parameters.width/3;  
+                      line2.position.x +=  backgroundmenu.geometry.parameters.width/3;  
+                    } 
+                linesHoritzontalGroup.add(line1);
+                linesHoritzontalGroup.add(line2);
+                return linesHoritzontalGroup
+                break;
+            case 4:
+                var line2 = line.clone();
+                var line3 = line.clone();
+                line2.position.y += backgroundmenu.geometry.parameters.height/4
+                line3.position.y -= backgroundmenu.geometry.parameters.height/4
+                if(row>1)
+                    {
+                      line.position.x +=  backgroundmenu.geometry.parameters.width/3;
+                      line2.position.x +=  backgroundmenu.geometry.parameters.width/3; 
+                      line3.position.x +=  backgroundmenu.geometry.parameters.width/3;  
+                    } 
+                linesHoritzontalGroup.add(line);
+                linesHoritzontalGroup.add(line2);
+                linesHoritzontalGroup.add(line3);
+                return linesHoritzontalGroup
+                break;
+        }
+    }
 }
 
-THREE.MenuManager.prototype.constructor = THREE.MenuManager;
+THREE.MenuObject.prototype.constructor = THREE.MenuObject;
+

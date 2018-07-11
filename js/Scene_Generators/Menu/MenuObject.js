@@ -336,45 +336,43 @@ THREE.MenuObject = function () {
         return closeMesh;
     }
 
-
 /**
  * Gets the menu text mesh.
  *
- * @param      {<type>}    text      The text
- * @param      {number}    size      The size
- * @param      {<type>}    color     The color
- * @param      {<type>}    name      The name
- * @param      {Function}  callback  The callback
+ * @param      {<type>}  text    The text
+ * @param      {number}  size    The size
+ * @param      {<type>}  color   The color
+ * @param      {<type>}  name    The name
+ * @return     {THREE}   The menu text mesh.
  */
-
-    this.getMenuTextMesh = function(text, size, color, name, callback)
+    this.getMenuTextMesh = function(text, size, color, name)
     {
-        var loader = new THREE.FontLoader();
-        var myfont = loader.load('./css/fonts/helvetiker_bold.typeface.json', 
-            function(font){
+        var textShape = new THREE.BufferGeometry();
+        var textmaterial = new THREE.MeshBasicMaterial( { color: color} );
+        var shapes = moData.getFont().generateShapes( text, size);
+        var geometry = new THREE.ShapeGeometry( shapes );
 
-                var textShape = new THREE.BufferGeometry();
-                var textmaterial = new THREE.MeshBasicMaterial( { color: color} );
-                var shapes = font.generateShapes( text, size);
-                var geometry = new THREE.ShapeGeometry( shapes );
+        var coliderMesh = new THREE.Mesh( new THREE.PlaneGeometry(size*shapes.length, size*2), new THREE.MeshBasicMaterial({visible: false}));
+        //var coliderMesh = new THREE.Mesh( new THREE.PlaneGeometry(size*shapes.length, size*2), new THREE.MeshBasicMaterial({color:0x00ff00}));
+        coliderMesh.position.x = size*shapes.length/2;
+        coliderMesh.position.y = size/2;
 
-                var coliderMesh = new THREE.Mesh( new THREE.PlaneGeometry(size*shapes.length, size*2), new THREE.MeshBasicMaterial({visible: false}));
-                coliderMesh.position.x = size*shapes.length/2;
-                coliderMesh.position.y = size/2;
+        geometry.computeBoundingBox();
+        textShape.fromGeometry( geometry );
 
-                geometry.computeBoundingBox();
-                textShape.fromGeometry( geometry );
+        var mesh = new THREE.Mesh(textShape, textmaterial);
 
-                var mesh = new THREE.Mesh(textShape, textmaterial);
+        mesh.name = name;
+        coliderMesh.name = name;
+        coliderMesh.position.z = 0.02;
+        interController.addInteractiveObject(coliderMesh);
+        mesh.add(coliderMesh);
+        mesh.position.z = 0.01;
 
-                coliderMesh.name = name;
-                interController.addInteractiveObject(coliderMesh);
-                mesh.add(coliderMesh);
-                mesh.position.z = 0.01;
-
-                callback(mesh);
-        });
+        return mesh;
     }
+
+    
 
 /**
  * Creates a line.

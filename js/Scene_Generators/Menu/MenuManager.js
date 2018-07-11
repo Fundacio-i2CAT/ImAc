@@ -6,6 +6,8 @@ THREE.MenuManager = function () {
     var numberFirstLevelMenus = 5;
     var isUserInSecondLevelMenus = false;
     var submenuNameActive;
+    var firstColumnActiveButton;
+    var secondColumnActiveButton;
     var menuList = 
     [
 /*0*/   { 
@@ -73,17 +75,19 @@ THREE.MenuManager = function () {
                     ]
                 },
                 { 
-                    name:'voiceControl', 
-                    buttons:[]
+                    name:'settingsVoiceControl', 
+                    buttons:['vc1']
                 },
                 { 
-                    name:'userProfile', 
-                    buttons:[]
+                    name:'settingsUserProfile', 
+                    buttons:['up1', 'up2']
                 }
             ],
             buttons: 
             [
-                'settingsLanguageButton'
+                'settingsLanguageButton',
+                'settingsVoiceControlButton',
+                'settingsUserProfileButton'
             ]
         },                                                       
 /*6*/   { 
@@ -126,15 +130,15 @@ THREE.MenuManager = function () {
                 'subtitleShowPositionsDropdown',
                 'subtitleShowAreasDropdown'
             ]
-        },                                   
-/*7*/   { 
+        }/*,                                   
+/*7   { 
             name: 'audioDescriptionMenu', isEnabled: true, firstmenuindex: 4, 
             buttons: 
             [
                 'audioDescriptionOnButton', 
                 'audioDescriptionOffButton'
             ]
-        }                                    
+        } */                                   
     ];
 
 //************************************************************************************
@@ -188,7 +192,6 @@ THREE.MenuManager = function () {
         subMenuData.buttons.forEach(function(elem, index)
         {
             var factor = (index*2)+1;
-
             secondColumGroup.add(testButton(elem, 0xcce6ff, backgroundmenu.geometry.parameters.width/3, (backgroundmenu.geometry.parameters.height/2-factor*backgroundmenu.geometry.parameters.height/(subMenuDataLength*2)))); 
         })
 
@@ -204,15 +207,13 @@ THREE.MenuManager = function () {
  *
  * @param      {<type>}  submenuNameActiveIndex  The submenu name active index
  */
-    this.openSubMenuDropdown = function(submenuNameActiveIndex)
+    this.openSubMenuDropdown = function(submenuNameActiveIndex, firstRowButtonName)
     {
         var indexActiveMenu = menuList.map(function(e) { return e.name; }).indexOf(interController.getActiveMenuName());
-        
-        var secondColumnIndex = menuList[indexActiveMenu].submenus.map(function(e) { return e.name; }).indexOf(MenuManager.getSubmenuNameActive())
+        var secondColumnIndex = menuList[indexActiveMenu].submenus.map(function(e) { return e.name; }).indexOf(MenuManager.getSubmenuNameActive());
         if(secondColumnIndex > -1)
         {
             scene.getObjectByName(menuList[indexActiveMenu].name).getObjectByName(menuList[indexActiveMenu].submenus[secondColumnIndex].name).visible = false;
-            
             menuList[indexActiveMenu].submenus[secondColumnIndex].buttons.forEach(function(elem)
             {
                 interController.removeInteractiveObject(elem);
@@ -220,7 +221,15 @@ THREE.MenuManager = function () {
         }
 
         MenuManager.setSubmenuNameActive(menuList[indexActiveMenu].submenus[submenuNameActiveIndex].name);
+
         scene.getObjectByName(menuList[indexActiveMenu].name).getObjectByName(menuList[indexActiveMenu].submenus[submenuNameActiveIndex].name).visible = true;
+
+        menuList[indexActiveMenu].buttons.forEach(function(elem){
+            
+            if(elem === firstRowButtonName) scene.getObjectByName(elem).material.color.set( 0xffff00 );
+            else scene.getObjectByName(elem).material.color.set( 0xffffff );
+        }); 
+        
         menuList[indexActiveMenu].submenus[submenuNameActiveIndex].buttons.forEach(function(elem){interController.addInteractiveObject(scene.getObjectByName(elem))}); 
     }
 
@@ -299,8 +308,10 @@ THREE.MenuManager = function () {
         });
 
         interController.setActiveMenuName(menuList[submenuindex].name);
-        menuList[submenuindex].buttons.forEach(function(elem){interController.addInteractiveObject(scene.getObjectByName(elem))}); 
-
+        menuList[submenuindex].buttons.forEach(function(elem){
+            interController.addInteractiveObject(scene.getObjectByName(elem));
+            //scene.getObjectByName(elem).material.color.set(0xffffff);
+        }); 
         scene.getObjectByName(interController.getActiveMenuName()).visible = true;
     }
 
@@ -519,7 +530,7 @@ THREE.MenuManager = function () {
 
         //Video starts in play so PLAY button is not visible and interaction is removed from list.
         playbutton.visible = false; 
-        interController.removeInteractiveObject(playbutton.name); //Remove intercativity because it is the first menu to be open.
+        interController.removeInteractiveObject(menuList[1].buttons[0]); //Remove intercativity because it is the first menu to be open.
 
         seekBarR.position.x = 120;
         seekBarL.position.x = -120;
@@ -615,49 +626,37 @@ THREE.MenuManager = function () {
         multiOptionsGroup.name = menuList[4].name; // menuList.multiOptionsMenu
         multiOptionsGroup.visible = false;
         
-        menuData.getMenuTextMesh('ST', 30, 0xffffff, menuList[4].buttons[0], function(subtitlesMenuButton) //menuList.multiOptionsMenu.showSubtitleMenuButton;                
-        {
-            subtitlesMenuButton.position.x = -4*backgroundmenu.geometry.parameters.width/9;
-            subtitlesMenuButton.position.y = -subtitlesMenuButton.children[0].geometry.parameters.height/4;
+        var subtitlesMenuButton = menuData.getMenuTextMesh('ST', 30, 0xffffff, menuList[4].buttons[0]); //menuList.multiOptionsMenu.showSubtitleMenuButton;                
+        subtitlesMenuButton.position.x = -4*backgroundmenu.geometry.parameters.width/9;
+        subtitlesMenuButton.position.y = -subtitlesMenuButton.children[0].geometry.parameters.height/4;
 
-            subtitlesMenuButton.name = menuList[4].buttons[0]; 
-            multiOptionsGroup.add( subtitlesMenuButton );
-            backgroundmenu.add(multiOptionsGroup);
-            scene.add( backgroundmenu );
-        });
+        subtitlesMenuButton.name = menuList[4].buttons[0]; 
+        multiOptionsGroup.add( subtitlesMenuButton );
 
-        menuData.getMenuTextMesh('SL', 30, 0xffffff, menuList[4].buttons[1], function(signLanguageMenuButton) //menuList.multiOptionsMenu.showSignLanguageMenuButton;                
-        {
-            signLanguageMenuButton.position.x = -2*backgroundmenu.geometry.parameters.width/9;
-            signLanguageMenuButton.position.y = -signLanguageMenuButton.children[0].geometry.parameters.height/4;
+        var signLanguageMenuButton = menuData.getMenuTextMesh('SL', 30, 0xffffff, menuList[4].buttons[1]); //menuList.multiOptionsMenu.showSignLanguageMenuButton;                
+        signLanguageMenuButton.position.x = -2*backgroundmenu.geometry.parameters.width/9;
+        signLanguageMenuButton.position.y = -signLanguageMenuButton.children[0].geometry.parameters.height/4;
 
-            signLanguageMenuButton.name = menuList[4].buttons[1]; 
-            multiOptionsGroup.add( signLanguageMenuButton );
-            backgroundmenu.add(multiOptionsGroup);
-            scene.add( backgroundmenu );
-        });
+        signLanguageMenuButton.name = menuList[4].buttons[1]; 
+        multiOptionsGroup.add( signLanguageMenuButton );
 
-        menuData.getMenuTextMesh('AD', 30, 0xffffff, menuList[4].buttons[2], function(audiodescriptionMenuButton) //menuList.multiOptionsMenu.showAudioDescriptionMenuButton;                
-        {
-            audiodescriptionMenuButton.position.x = 0*backgroundmenu.geometry.parameters.width/9;
-            audiodescriptionMenuButton.position.y = -audiodescriptionMenuButton.children[0].geometry.parameters.height/4;
+        var audiodescriptionMenuButton = menuData.getMenuTextMesh('AD', 30, 0xffffff, menuList[4].buttons[2]); //menuList.multiOptionsMenu.showAudioDescriptionMenuButton;                
+        audiodescriptionMenuButton.position.x = 0*backgroundmenu.geometry.parameters.width/9;
+        audiodescriptionMenuButton.position.y = -audiodescriptionMenuButton.children[0].geometry.parameters.height/4;
 
-            audiodescriptionMenuButton.name = menuList[4].buttons[2]; 
-            multiOptionsGroup.add( audiodescriptionMenuButton );
-            backgroundmenu.add(multiOptionsGroup);
-            scene.add( backgroundmenu );
-        }); 
+        audiodescriptionMenuButton.name = menuList[4].buttons[2]; 
+        multiOptionsGroup.add( audiodescriptionMenuButton );
 
-        menuData.getMenuTextMesh('AST', 30, 0xffffff, menuList[4].buttons[3], function(audioSubtitleMenuButton) //menuList.multiOptionsMenu.showAudioSubtitleMenuButton;                
-        {
-            audioSubtitleMenuButton.position.x = 2*backgroundmenu.geometry.parameters.width/9;
-            audioSubtitleMenuButton.position.y = -audioSubtitleMenuButton.children[0].geometry.parameters.height/4;
 
-            audioSubtitleMenuButton.name = menuList[4].buttons[3]; 
-            multiOptionsGroup.add( audioSubtitleMenuButton );
-            backgroundmenu.add(multiOptionsGroup);
-            scene.add( backgroundmenu );
-        });         
+        var audioSubtitleMenuButton = menuData.getMenuTextMesh('AST', 30, 0xffffff, menuList[4].buttons[3]); //menuList.multiOptionsMenu.showAudioSubtitleMenuButton;                
+        audioSubtitleMenuButton.position.x = 2*backgroundmenu.geometry.parameters.width/9;
+        audioSubtitleMenuButton.position.y = -audioSubtitleMenuButton.children[0].geometry.parameters.height/4;
+
+        audioSubtitleMenuButton.name = menuList[4].buttons[3]; 
+        multiOptionsGroup.add( audioSubtitleMenuButton );
+
+        backgroundmenu.add(multiOptionsGroup);
+        scene.add( backgroundmenu );         
     }
 
 //************************************************************************************
@@ -738,7 +737,7 @@ THREE.MenuManager = function () {
 
             interController.removeInteractiveObject (menuList[4].buttons[1]);
 
-            audiodescriptionMenuButton.material.color.setHex( 0xffff00 );
+            audiodescriptionMenuButton.material.color.set( 0xffff00 );
             audiodescriptionMenuButton.position.x = -150;
             audiodescriptionMenuButton.position.y = -20;
 

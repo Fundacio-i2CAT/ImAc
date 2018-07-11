@@ -3,53 +3,65 @@ THREE.SubtitleMenuManager = function () {
     this.openSubtitleMenu = function(backgroundmenu)
     {
     	var menuList = MenuManager.getMenuList();
-        menuData.getMenuTextMesh('ST', 40, 0xffffff, menuList[4].buttons[0], function(subtitlesMenuTitle) //menuList.multiOptionsMenu.showSubtitleMenuButton;                
-        {
-            var subtitlesMenuGroup =  new THREE.Group();
+    	var subtitlesMenuTitle = menuData.getMenuTextMesh('ST', 40, 0xffffff, menuList[4].buttons[0]); //menuList.multiOptionsMenu.showSubtitleMenuButton;                
+        var subtitlesMenuGroup =  new THREE.Group();
 
-            var linesMenuGroup = menuData.menuLineVerticalDivisions(backgroundmenu, 0xffffff);
+        var linesMenuGroup = menuData.menuLineVerticalDivisions(backgroundmenu, 0xffffff);
 
-            //function menuLineHoritzontalDivisions(color, numberofdivisions, backgroundmenu, row)
-            var firstColumnLines = menuData.menuLineHoritzontalDivisions(0xffffff, 4, backgroundmenu, 1);
-            linesMenuGroup.add(firstColumnLines);
-
-
-            subtitlesMenuGroup.add( linesMenuGroup );
+        //function menuLineHoritzontalDivisions(color, numberofdivisions, backgroundmenu, row)
+        var firstColumnLines = menuData.menuLineHoritzontalDivisions(0xffffff, 4, backgroundmenu, 1);
+        linesMenuGroup.add(firstColumnLines);
 
 
-            // TODO- CREATE DYNAMIC FUNCTION FOR FIRST COLUMN ELEMENTS
+        subtitlesMenuGroup.add( linesMenuGroup );
 
-            var onButton = testButton('subtitleOnButton', 0x00ff00, 10, 3*backgroundmenu.geometry.parameters.height/8);
-            var offButton = testButton('subtitleOffButton', 0xff0000, -10, 3*backgroundmenu.geometry.parameters.height/8);
 
-            var subtitleShowLanguagesDropdown = testButton('subtitleShowLanguagesDropdown', 0x0059b3, 0, backgroundmenu.geometry.parameters.height/8);
-            var subtitleShowPositionsDropdown = testButton('subtitleShowPositionsDropdown', 0xffcccc, 0, -backgroundmenu.geometry.parameters.height/8);
-            var subtitleShowAreasDropdown = testButton('subtitleShowAreasDropdown', 0xffffcc, 0, -3*backgroundmenu.geometry.parameters.height/8);
+        // TODO- CREATE DYNAMIC FUNCTION FOR FIRST COLUMN ELEMENTS
 
-            interController.removeInteractiveObject (menuList[4].buttons[0]);
+        var onButton = menuData.getMenuTextMesh('ON', 10, 0xffffff, menuList[6].buttons[0]); //menuList
+        onButton.position.x = 20-onButton.children[0].geometry.parameters.width/2;
+        onButton.position.y = 3*backgroundmenu.geometry.parameters.height/8-(onButton.children[0].geometry.parameters.height/4);
+        subtitlesMenuGroup.add(onButton);
 
-            subtitlesMenuTitle.material.color.setHex( 0xffff00 );
-            subtitlesMenuTitle.position.x = -150;
-            subtitlesMenuTitle.position.y = -20;
 
-            subtitlesMenuGroup.add(subtitlesMenuTitle);
-            subtitlesMenuGroup.add(onButton);
-            subtitlesMenuGroup.add(offButton);
+        var offButton = menuData.getMenuTextMesh('OFF', 10, 0xffffff, menuList[6].buttons[1]); //menuList
+        offButton.position.x = -20-offButton.children[0].geometry.parameters.width/2;
+        offButton.position.y = 3*backgroundmenu.geometry.parameters.height/8-(offButton.children[0].geometry.parameters.height/4);
+        subtitlesMenuGroup.add(offButton);
 
-            subtitlesMenuGroup.add(subtitleShowLanguagesDropdown);
-            subtitlesMenuGroup.add(subtitleShowPositionsDropdown);
-            subtitlesMenuGroup.add(subtitleShowAreasDropdown);
 
-            subtitlesMenuGroup.add( MenuManager.dropdownSubMenuCreation(backgroundmenu, menuList[6].submenus[0]) );
-            subtitlesMenuGroup.add( MenuManager.dropdownSubMenuCreation(backgroundmenu, menuList[6].submenus[1]) );
-            subtitlesMenuGroup.add( MenuManager.dropdownSubMenuCreation(backgroundmenu, menuList[6].submenus[2]) );
+        var subtitleShowLanguagesDropdown = menuData.getMenuTextMesh('Languanges', 10, 0xffffff, menuList[6].buttons[2]); //menuList
+        subtitleShowLanguagesDropdown.position.x = -backgroundmenu.geometry.parameters.height/3+20;
+        subtitleShowLanguagesDropdown.position.y = 1*backgroundmenu.geometry.parameters.height/8-(subtitleShowLanguagesDropdown.children[0].geometry.parameters.height/4);
+        subtitlesMenuGroup.add(subtitleShowLanguagesDropdown);
+        subtitlesMenuGroup.add( MenuManager.dropdownSubMenuCreation(backgroundmenu, menuList[6].submenus[0]) );
 
-            subtitlesMenuGroup.name = menuList[6].name; //menuList.
-            subtitlesMenuGroup.visible = false; //Not the first menu. Visibility false.
+        var subtitleShowPositionsDropdown = menuData.getMenuTextMesh('Position', 10, 0xffffff, menuList[6].buttons[3]); //menuList
+        subtitleShowPositionsDropdown.position.x = -backgroundmenu.geometry.parameters.height/3+20;
+        subtitleShowPositionsDropdown.position.y = -1*backgroundmenu.geometry.parameters.height/8-(subtitleShowPositionsDropdown.children[0].geometry.parameters.height/4);
+        subtitlesMenuGroup.add(subtitleShowPositionsDropdown);
+        subtitlesMenuGroup.add( MenuManager.dropdownSubMenuCreation(backgroundmenu, menuList[6].submenus[1]) );
 
-            backgroundmenu.add(subtitlesMenuGroup);
-            scene.add( backgroundmenu );
-         });
+        var subtitleShowAreasDropdown = menuData.getMenuTextMesh('Area', 10, 0xffffff, menuList[6].buttons[4]); //menuList
+        subtitleShowAreasDropdown.position.x = -backgroundmenu.geometry.parameters.height/3+20;
+        subtitleShowAreasDropdown.position.y = -3*backgroundmenu.geometry.parameters.height/8-(subtitleShowAreasDropdown.children[0].geometry.parameters.height/4);
+        subtitlesMenuGroup.add(subtitleShowAreasDropdown);
+        subtitlesMenuGroup.add( MenuManager.dropdownSubMenuCreation(backgroundmenu, menuList[6].submenus[2]) );
+
+
+        interController.removeInteractiveObject (menuList[4].buttons[0]);
+
+        subtitlesMenuTitle.material.color.set( 0xffff00 );
+        subtitlesMenuTitle.position.x = -150;
+        subtitlesMenuTitle.position.y = -20;
+
+        subtitlesMenuGroup.add(subtitlesMenuTitle);
+
+        subtitlesMenuGroup.name = menuList[6].name; //menuList.
+        subtitlesMenuGroup.visible = false; //Not the first menu. Visibility false.
+
+        backgroundmenu.add(subtitlesMenuGroup);
+        scene.add( backgroundmenu );
     }
 
    

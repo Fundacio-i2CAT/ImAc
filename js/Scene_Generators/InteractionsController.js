@@ -7,7 +7,7 @@ THREE.InteractionsController = function () {
 	var raycaster = new THREE.Raycaster();
 	var interactiveListObjects = [];
 	var interactionState = true;
-	var nameMenuActive = "";
+	var nameMenuActive;
 
 
 //************************************************************************************
@@ -28,7 +28,6 @@ THREE.InteractionsController = function () {
 	{
 		switch ( name )
         {
-
         //****************************
         //       Main controls
         //****************************
@@ -109,8 +108,15 @@ THREE.InteractionsController = function () {
         //****************************  
               
             case "settingsLanguageButton":
-                console.log("SETTINGS LANGUAGES")
-                MenuManager.openSubMenuDropdown(0);
+                MenuManager.openSubMenuDropdown(0, name);
+                break;
+
+            case "settingsVoiceControlButton":
+                MenuManager.openSubMenuDropdown(1, name);
+                break;
+
+            case "settingsUserProfileButton":
+                MenuManager.openSubMenuDropdown(2, name);
                 break;
 
         //****************************
@@ -120,38 +126,34 @@ THREE.InteractionsController = function () {
             case "showSubtitleMenuButton":
                 // TODO
                 // show the subtitle configuration menu
-                console.log("showSubtitleMenuButton");
                 MenuManager.openSecondLevelMenu(6);
                 break;
 
             case "showSignLanguageMenuButton":
                 // TODO
                 // show the sign language configuration menu
-                console.log("showSignLanguageMenuButton");
                 break;
 
             case "showAudioDescriptionMenuButton":
                 // TODO
                 // show the audio description configuration menu
-                console.log("showAudioDescriptionMenuButton");
                 //MenuManager.openSecondLevelMenu(7);
                 break;
 
             case "showAudioSubtitleMenuButton":
                 // TODO
                 // show the audio subtitle configuration menu
-                console.log("showAudioSubtitleMenuButton");
                 break;
 
         //****************************
         //     Audio Description controls
         //****************************
             case "audioDescriptionOnButton":
-                console.log("audioDescriptionOnButton");
+            //TODO
                 break;
 
             case "audioDescriptionOffButton":
-                console.log("audioDescriptionOffButton");
+            //TODO
                 break;
         //****************************
         //     Subtitle controls
@@ -214,18 +216,18 @@ THREE.InteractionsController = function () {
         		break;
 
         	case "subtitleShowLanguagesDropdown":
-                MenuManager.openSubMenuDropdown(0);
+                MenuManager.openSubMenuDropdown(0, name);
         		// TODO
         		// mostar el menu con la lista de idiomas seleccionables
         		break;
 
         	case "subtitleShowPositionsDropdown":
         		// TODO
-        		MenuManager.openSubMenuDropdown(1);
+        		MenuManager.openSubMenuDropdown(1, name);
         		break;
             case "subtitleShowAreasDropdown":
                 // mostrar lista de areas de visualizacion (small/medium/large)
-                MenuManager.openSubMenuDropdown(2);
+                MenuManager.openSubMenuDropdown(2, name);
                 break;
 
         	case "subtitleShowSpeakers":
@@ -279,7 +281,6 @@ THREE.InteractionsController = function () {
 	{
 		//interactionState = false;
 
-		//raycaster = new THREE.Raycaster();
     	raycaster.setFromCamera( mouse3D, camera );
     	var intersects = raycaster.intersectObjects( interactiveListObjects, true ); // false
 
@@ -288,7 +289,8 @@ THREE.InteractionsController = function () {
     		var intersectedShapeId;
 			for(var inter = 0; inter < intersects.length; inter++)
 	        {
-	        	if ( intersects[inter].object.type == 'Mesh' || intersects[inter].object.type == 'Group' ) 
+	        	//if ( intersects[inter].object.type == 'Mesh' || intersects[inter].object.type == 'Group' ) 
+                if ( intersects[inter].object.type == 'Mesh' && intersects[inter].object.name) 
 	        	{
 					intersectedShapeId = intersects[inter].object.name;
 					checkInteractionByName( intersectedShapeId );

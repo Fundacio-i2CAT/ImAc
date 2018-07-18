@@ -31,7 +31,7 @@ THREE.MenuObject = function () {
         return mesh;
     }
 
-    this.getPlayMesh = function(w, h, c, name)
+    this.getPlayMesh = function(w, h, f, c, name)
     {
         var arrowShape = new THREE.Shape();
 
@@ -46,55 +46,54 @@ THREE.MenuObject = function () {
         var mesh = new THREE.Mesh( geometry, material ) ;
 
         coliderMesh.name = name; //menuList.playSeekMenu.playButton
-        interController.addInteractiveObject(coliderMesh);
+        //interController.addInteractiveObject(coliderMesh);
         mesh.add(coliderMesh);
         
         mesh.position.z = 0.01;
         mesh.name = name; //menuList.playSeekMenu.playButton
+        mesh.scale.set(f,f,1);
         
         return mesh;
     }
 
-    this.getPauseMesh = function(w, h, c, name)
+    this.getPauseMesh = function(w, h, f, c, name)
     {
-        var leftPauseShape = new THREE.Shape();
+        var shape = new THREE.Shape();
 
-        leftPauseShape.moveTo( -w/8, -h/2 );
-        leftPauseShape.quadraticCurveTo ( -w/8, -h/2, -3*w/8, -h/2 );
-        leftPauseShape.quadraticCurveTo ( -3*w/8, -h/2, -3*w/8, h/2 );
-        leftPauseShape.quadraticCurveTo ( -3*w/8, h/2, -w/8, h/2 );
-        leftPauseShape.quadraticCurveTo ( -w/8, h/2, -w/8, -h/2 );
+        shape.moveTo( 3*w/8, -h/2 );
+        shape.quadraticCurveTo ( 3*w/8, -h/2, 3*w/8, h/2 );
+        shape.quadraticCurveTo ( 3*w/8, h/2, -3*w/8, h/2 );
+        shape.quadraticCurveTo ( -3*w/8, h/2, -3*w/8, -h/2 );
+        shape.quadraticCurveTo ( -3*w/8, -h/2, 3*w/8, -h/2 );
 
-        var geometry = new THREE.ShapeGeometry( leftPauseShape );
+        var hole = new THREE.Path();
+        hole.moveTo( w/8, -h/2 );
+        hole.quadraticCurveTo ( w/8, -h/2, w/8, h/2 );
+        hole.quadraticCurveTo ( w/8, h/2, -w/8, h/2 );
+        hole.quadraticCurveTo ( -w/8, h/2, -w/8, -h/2 );
+        hole.quadraticCurveTo ( -w/8, -h/2, w/8, -h/2 );
+        shape.holes.push( hole );
+
+        var geometry = new THREE.ShapeGeometry( shape );
         var material = new THREE.MeshBasicMaterial( { color: c } );
-        var meshL = new THREE.Mesh( geometry, material ) ;
+        var mesh = new THREE.Mesh( geometry, material ) ;
 
-        var rightPauseShape = new THREE.Shape();
-
-        rightPauseShape.moveTo( w/8, -h/2 );
-        rightPauseShape.quadraticCurveTo ( w/8, -h/2, 3*w/8, -h/2 );
-        rightPauseShape.quadraticCurveTo ( 3*w/8, -h/2, 3*w/8, h/2 );
-        rightPauseShape.quadraticCurveTo ( 3*w/8, h/2, w/8, h/2 );
-        rightPauseShape.quadraticCurveTo ( w/8, h/2, w/8, -h/2 );
-        
         var coliderMesh = new THREE.Mesh( new THREE.PlaneGeometry(w, h), new THREE.MeshBasicMaterial({visible: false}));
-        var geometry = new THREE.ShapeGeometry( rightPauseShape );
-        var material = new THREE.MeshBasicMaterial( { color: c } );
-        var meshR = new THREE.Mesh( geometry, material ) ;
+
 
         coliderMesh.name = name; //menuList.playSeekMenu.pauseButton
-        interController.addInteractiveObject(coliderMesh);
+        //interController.addInteractiveObject(coliderMesh);
         coliderMesh.position.z = 0.01;
-        meshL.add(meshR);
-        meshL.add(coliderMesh);
-        meshL.name = name; //menuList.playSeekMenu.pauseButton
+        mesh.add(coliderMesh);
+        mesh.name = name; //menuList.playSeekMenu.pauseButton
 
-        meshL.position.z = 0.01;
+        mesh.position.z = 0.01;
+        mesh.scale.set(f,f,1);
         
-        return meshL;
+        return mesh;
     }
 
-    this.getSeekMesh = function(w, h, c, r, name)
+    this.getSeekMesh = function(w, h, f, c, r, name)
     {
         var arrowShape = new THREE.Shape();
 
@@ -118,14 +117,15 @@ THREE.MenuObject = function () {
         var geometry = new THREE.ShapeGeometry( arrowShape );
         var material = new THREE.MeshBasicMaterial( { color: c } );
         var mesh = new THREE.Mesh( geometry, material ) ;
-
+        mesh.name = name;
         mesh.rotation.z = r;
         coliderMesh.name = name;
 
-        interController.addInteractiveObject(coliderMesh);
+        //interController.addInteractiveObject(coliderMesh);
 
         mesh.add(coliderMesh);
         mesh.position.z = 0.01;
+        mesh.scale.set(f,f,1);
 
         return mesh;
     }
@@ -157,7 +157,7 @@ THREE.MenuObject = function () {
         return mesh;
     }*/
 
-    this.getMinusIconMesh = function(w, h, c, name)
+    this.getMinusIconMesh = function(w, h, f, c, name)
     {
         /* 8x8 Vector points for Minus icon:
                                     
@@ -189,15 +189,17 @@ THREE.MenuObject = function () {
 
         //coliderMesh.name =  menuList[2].buttons[0]; //menuList.volumeChangeMenu.minusVolumeButton;
         coliderMesh.name =  name;
-        interController.addInteractiveObject(coliderMesh);
+        minusMesh.name =  name;
+        //interController.addInteractiveObject(coliderMesh);
         minusMesh.add(coliderMesh);
         minusMesh.position.z = 0.01;
+        minusMesh.scale.set(f,f,1);  
         
         return minusMesh;
     }
 
 
-    this.getPlusIconMesh = function(w, h, c, name)
+    this.getPlusIconMesh = function(w, h, f, c, name)
     {
         /* 8x8 Vector points for Plus icon:
                                     
@@ -236,14 +238,16 @@ THREE.MenuObject = function () {
         var plusMesh = new THREE.Mesh( geometry, material ) ;
 
         coliderMesh.name = name;
-        interController.addInteractiveObject(coliderMesh);
+        plusMesh.name = name;
+        //interController.addInteractiveObject(coliderMesh);
         plusMesh.add(coliderMesh);
         plusMesh.position.z = 0.01;
+        plusMesh.scale.set(f,f,1);
         
         return plusMesh;
     }
 
-    this.getNextIconMesh = function(w, h, c, r, name)
+    this.getNextIconMesh = function(w, h,f, c, r, name, parent)
     {
         /* 8x8 Vector points for Next icon:
                                 
@@ -279,14 +283,14 @@ THREE.MenuObject = function () {
         nextMesh.rotation.z = r;
         coliderMesh.name = name;
 
-        interController.addInteractiveObject(coliderMesh);
+        //interController.addInteractiveObject(coliderMesh);
         nextMesh.add(coliderMesh);
-        nextMesh.position.z = 0.01;
+        nextMesh.scale.set(f,f,1);
 
         return nextMesh;
     }
 
-    this.getCloseIconMesh = function(w, h, c, name)
+    this.getCloseIconMesh = function(w, h, f, c, name, parent)
     {
         /* 8x8 Vector points for Close Icon :
                                 
@@ -329,9 +333,9 @@ THREE.MenuObject = function () {
         var closeMesh = new THREE.Mesh( geometry, material );
 
         coliderMesh.name = name;
-        interController.addInteractiveObject(coliderMesh);
+        //interController.addInteractiveObject(coliderMesh);
         closeMesh.add(coliderMesh);
-        closeMesh.position.z = 0.01;
+        closeMesh.scale.set(f,f,1);
 
         return closeMesh;
     }
@@ -352,20 +356,19 @@ THREE.MenuObject = function () {
         var shapes = moData.getFont().generateShapes( text, size);
         var geometry = new THREE.ShapeGeometry( shapes );
 
-        var coliderMesh = new THREE.Mesh( new THREE.PlaneGeometry(size*shapes.length, size*2), new THREE.MeshBasicMaterial({visible: false}));
-        //var coliderMesh = new THREE.Mesh( new THREE.PlaneGeometry(size*shapes.length, size*2), new THREE.MeshBasicMaterial({color:0x00ff00}));
-        coliderMesh.position.x = size*shapes.length/2;
-        coliderMesh.position.y = size/2;
+        var coliderMesh = new THREE.Mesh( new THREE.PlaneGeometry(size*shapes.length*0.7, size*2), new THREE.MeshBasicMaterial({visible: false}));
+        //var coliderMesh = new THREE.Mesh( new THREE.PlaneGeometry(size*shapes.length*0.7, size*2), new THREE.MeshBasicMaterial({color:0x00ff00}));
 
         geometry.computeBoundingBox();
         textShape.fromGeometry( geometry );
+        textShape.center();
 
         var mesh = new THREE.Mesh(textShape, textmaterial);
 
         mesh.name = name;
         coliderMesh.name = name;
         coliderMesh.position.z = 0.02;
-        interController.addInteractiveObject(coliderMesh);
+        //interController.addInteractiveObject(coliderMesh);
         mesh.add(coliderMesh);
         mesh.position.z = 0.01;
 
@@ -462,11 +465,18 @@ THREE.MenuObject = function () {
                 line2.position.y += backgroundmenu.geometry.parameters.height/4
                 line3.position.y -= backgroundmenu.geometry.parameters.height/4
                 if(row>1)
-                    {
-                      line.position.x +=  backgroundmenu.geometry.parameters.width/3;
-                      line2.position.x +=  backgroundmenu.geometry.parameters.width/3; 
-                      line3.position.x +=  backgroundmenu.geometry.parameters.width/3;  
-                    } 
+                {
+                  line.position.x +=  backgroundmenu.geometry.parameters.width/3;
+                  line2.position.x +=  backgroundmenu.geometry.parameters.width/3; 
+                  line3.position.x +=  backgroundmenu.geometry.parameters.width/3;  
+                }
+                else if (row == 0)
+                {
+                    var line4 = line.clone();
+                    line4.position.x -=  backgroundmenu.geometry.parameters.width/3;
+                    line4.position.y += backgroundmenu.geometry.parameters.height/4;
+                    linesHoritzontalGroup.add(line4);
+                } 
                 linesHoritzontalGroup.add(line);
                 linesHoritzontalGroup.add(line2);
                 linesHoritzontalGroup.add(line3);

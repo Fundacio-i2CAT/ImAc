@@ -34,18 +34,26 @@ THREE.InteractionsController = function () {
 
         	case "openMenu":
         		scene.getObjectByName( "backgroudMenu" ) ? console.log("Menu already open") : MenuManager.openMenu();
+                scene.getObjectByName( "openMenu" ).visible = false;
 				break;
 
         	case "backMenuButton":
+                MenuManager.pressButtonFeedback(name);
         		MenuManager.changeMenuLeftOrRight( false );
         		break;
 
         	case "forwardMenuButton":
+                MenuManager.pressButtonFeedback(name);
         		MenuManager.changeMenuLeftOrRight( true );
         		break;
 
         	case "closeMenuButton":
-        		MenuManager.closeMenu();
+                MenuManager.pressButtonFeedback(name);
+                setTimeout(function(){
+                 MenuManager.closeMenu(); 
+                 scene.getObjectByName( "openMenu" ).visible = true;
+             }, clickInteractionTimeout);
+                
         		break;
 
         //****************************
@@ -53,18 +61,22 @@ THREE.InteractionsController = function () {
         //****************************
 
         	case "playButton":
-        		MenuManager.playButtonInteraction();
+                MenuManager.pressButtonFeedback(name);
+                PlayPauseMenuManager.playButtonInteraction();
         		break;
 
         	case "pauseButton":
-        		MenuManager.pauseButtonInteraction();
+                MenuManager.pressButtonFeedback(name);
+                PlayPauseMenuManager.pauseButtonInteraction();
         		break;
 
         	case "backSeekButton":
+                MenuManager.pressButtonFeedback(name);
         		moData.seekAll( -5 );
         		break;
 
         	case "forwardSeekButton":
+                MenuManager.pressButtonFeedback(name);
         		moData.seekAll( 5 );
         		break;
 
@@ -73,21 +85,30 @@ THREE.InteractionsController = function () {
         //****************************
 
         	case "minusVolumeButton":
-        		AudioManager.changeVolume( -0.2 );
+                MenuManager.pressButtonFeedback(name);
+        		AudioManager.changeVolume( -0.1 );
+                console.log(AudioManager.getVolume());
+      
+                VolumeMenuManager.volumeLevelDispolayLogic(false);              
         		break;
 
         	case "plusVolumeButton":
-        		AudioManager.changeVolume( 0.2 );
-        		break;
+                MenuManager.pressButtonFeedback(name);
+        		AudioManager.changeVolume( 0.1 );
+                console.log(AudioManager.getVolume());
+                VolumeMenuManager.volumeLevelDispolayLogic(true);
+                break;
 
         	case "muteVolumeButton":
+                MenuManager.pressButtonFeedback(name);
         		AudioManager.setmute();
-                MenuManager.muteButtonInteraction();
+                setTimeout(function(){ VolumeMenuManager.showMuteUnmuteButton(); }, clickInteractionTimeout);                
         		break;
 
         	case "unmuteVolumeButton":
+                MenuManager.pressButtonFeedback(name);
         		AudioManager.setunmute();
-                MenuManager.unMuteButtonInteraction();
+                setTimeout(function(){ VolumeMenuManager.showMuteUnmuteButton(); }, clickInteractionTimeout);
         		break;
 
         //****************************
@@ -95,11 +116,13 @@ THREE.InteractionsController = function () {
         //****************************
 
         	case "cardboardButton":
+                MenuManager.pressButtonFeedback(name);
         		AplicationManager.switchDevice();
         		break;
 
         	case "settingsButton":
-        		MenuManager.openSecondLevelMenu(5);
+                MenuManager.pressButtonFeedback(name);
+                setTimeout(function(){ MenuManager.openSecondLevelMenu(5); }, clickInteractionTimeout);
         		break;
 
 
@@ -119,30 +142,60 @@ THREE.InteractionsController = function () {
                 MenuManager.openSubMenuDropdown(2, name);
                 break;
 
+            case "settingsLanguageEngButton":
+                console.log("Settings language changed to ENGLISH");
+                MenuManager.selectOptionFinalDropdown(name);
+                settingsLanguage = name;
+                break;
+
+            case "settingsLanguageEspButton":
+                console.log("Settings language changed to SPANISH");
+                MenuManager.selectOptionFinalDropdown(name);
+                settingsLanguage = name;
+                break;
+
+            case "settingsLanguageGerButton":
+                console.log("Settings language changed to GERMAN");
+                MenuManager.selectOptionFinalDropdown(name);
+                settingsLanguage = name;
+                break;
+
+            case "settingsLanguageCatButton":
+                console.log("Settings language changed to CATALAN");
+                MenuManager.selectOptionFinalDropdown(name);
+                settingsLanguage = name;
+                break;
+
         //****************************
         //     Multi options menu
         //****************************
 
             case "showSubtitleMenuButton":
-                // TODO
                 // show the subtitle configuration menu
-                MenuManager.openSecondLevelMenu(6);
+                MenuManager.pressButtonFeedback(name);
+                setTimeout(function(){ MenuManager.openSecondLevelMenu(6);
+                    if(isSubtitlesAvtive) scene.getObjectByName("subtitleOnButton").material.color.set( menuButtonActiveColor );
+                    else scene.getObjectByName("subtitleOffButton").material.color.set( menuButtonActiveColor );
+                 }, clickInteractionTimeout);
                 break;
 
             case "showSignLanguageMenuButton":
                 // TODO
                 // show the sign language configuration menu
+                MenuManager.pressButtonFeedback(name);
                 break;
 
             case "showAudioDescriptionMenuButton":
                 // TODO
                 // show the audio description configuration menu
+                MenuManager.pressButtonFeedback(name);
                 //MenuManager.openSecondLevelMenu(7);
                 break;
 
             case "showAudioSubtitleMenuButton":
                 // TODO
                 // show the audio subtitle configuration menu
+                MenuManager.pressButtonFeedback(name);
                 break;
 
         //****************************
@@ -161,58 +214,89 @@ THREE.InteractionsController = function () {
 
         	case "subtitleTopButton":
         		subController.setSubPosition( 0, 1 );
+                MenuManager.selectOptionFinalDropdown(name);
+                subtitlesPosition = name;
         		break;
 
         	case "subtitleBottomButton":
         		subController.setSubPosition( 0, -1 );
+                MenuManager.selectOptionFinalDropdown(name);
+                subtitlesPosition = name;
         		break;
 
         	case "subtitleOnButton":
+                //MenuManager.pressButtonFeedback(name);
         		subController.enableSubtitles();
+                
+                scene.getObjectByName(name).material.color.set( menuButtonActiveColor );
+                scene.getObjectByName("subtitleOffButton").material.color.set( menuDefaultColor );
+                isSubtitlesAvtive = true;
         		break;
 
         	case "subtitleOffButton":
+                //MenuManager.pressButtonFeedback(name);
         		subController.disableSubtiles();
+
+                scene.getObjectByName(name).material.color.set( menuButtonActiveColor );
+                scene.getObjectByName("subtitleOnButton").material.color.set( menuDefaultColor );
+                isSubtitlesAvtive = false;
         		break;
 
         	case "subtitleEngButton":
         		subController.setSubtitle( "./resources/LICEU_ENG.xml" ); 
+                MenuManager.selectOptionFinalDropdown(name);
+                subtitlesLanguage = name;
         		break;
 
         	case "subtitleEspButton":
         		subController.setSubtitle( "./resources/LICEU_CAST.xml" ); 
+                MenuManager.selectOptionFinalDropdown(name);
+                subtitlesLanguage = name;
         		break;
 
             case "subtitleGerButton":
                 console.log("Subtitles changed to GERMAN");
+                MenuManager.selectOptionFinalDropdown(name);
+                subtitlesLanguage = name;
                 break;
 
             case "subtitleCatButton":
                 console.log("Subtitles changed to CATALAN");
+                MenuManager.selectOptionFinalDropdown(name);
+                subtitlesLanguage = name;
                 break;
 
-        	case "subtitleNoneButton":
+        	case "subtitleIndicatorNoneButton":
         		subController.setSubIndicator( "none" );
+                MenuManager.selectOptionFinalDropdown(name);
         		break;
 
-        	case "subtitleArrowButton":
+        	case "subtitleIndicatorArrowButton":
         		subController.setSubIndicator( "arrow" );
+                MenuManager.selectOptionFinalDropdown(name);
         		break;
 
-        	case "subtitleRadarButton":
+        	case "subtitleIndicatorRadarButton":
         		subController.setSubIndicator( "compass" );
+                MenuManager.selectOptionFinalDropdown(name);
         		break;
 
         	case "subtitleSmallAreaButton":
         		subController.setSize( 50 );
+                MenuManager.selectOptionFinalDropdown(name);
+                subtitlesSize = name;
         		break;
 
         	case "subtitleMediumlAreaButton":
         		subController.setSize( 60 );
+                MenuManager.selectOptionFinalDropdown(name);
+                subtitlesSize = name;
         		break;
 
         	case "subtitleLargeAreaButton":
         		subController.setSize( 70 );
+                MenuManager.selectOptionFinalDropdown(name);
+                subtitlesSize = name;
         		break;
 
         	case "subtitleShowLanguagesDropdown":
@@ -228,6 +312,11 @@ THREE.InteractionsController = function () {
             case "subtitleShowAreasDropdown":
                 // mostrar lista de areas de visualizacion (small/medium/large)
                 MenuManager.openSubMenuDropdown(2, name);
+                break;
+
+            case "subtitleShowIndicatorDropdown":
+                // mostrar lista de indicadores de visualizacion (none/arrow/radar)
+                MenuManager.openSubMenuDropdown(3, name);
                 break;
 
         	case "subtitleShowSpeakers":
@@ -307,7 +396,11 @@ THREE.InteractionsController = function () {
 
 	this.addInteractiveObject = function(object)
 	{
-		interactiveListObjects.push(object);
+        var index = interactiveListObjects.map(function(e) { return e.name; }).indexOf(object);
+
+        if(index < 0) interactiveListObjects.push(object);
+        else console.error("Interactivity already exists in the list.")
+		
 	};
 
 	this.removeInteractiveObject = function(name)

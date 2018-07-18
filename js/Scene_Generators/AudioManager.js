@@ -114,6 +114,6 @@ AudioManager = function() {
 
     this.getVolume = function()
     {
-        return activeVideoElement.volume;
+        return Math.round(activeVideoElement.volume * 100) / 100
     }
 }

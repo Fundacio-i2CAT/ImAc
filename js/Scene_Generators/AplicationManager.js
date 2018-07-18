@@ -96,11 +96,14 @@ function AplicationManager()
 		container = document.getElementById( 'container' );
 	
         camera = new THREE.PerspectiveCamera( 60.0, window.innerWidth / window.innerHeight, 0.05, 1000 );
-        this.CameraPatherObject = new THREE.Object3D();
-		this.CameraPatherObject.add(camera);
+        camera.name = 'perspectivecamera';
+        
+        this.CameraParentObject = new THREE.Object3D();
+        this.CameraParentObject.name = 'parentcamera';
+		this.CameraParentObject.add(camera);
 
 		scene = new THREE.Scene();
-		scene.add(this.CameraPatherObject);
+		scene.add(this.CameraParentObject);
 
 		renderer = new THREE.WebGLRenderer({
 			antialias:true,
@@ -117,7 +120,7 @@ function AplicationManager()
 
 		container.appendChild( renderer.domElement );
 
-        moData.createSphericalVideoInScene( mainContentURL, 'name' );
+        moData.createSphericalVideoInScene( mainContentURL, 'contentsphere' );
 
         //moData.createCubeGeometry116('./resources/cubemap3.jpg', 'name');
         //moData.createCubeGeometry65('./resources/dagomi_cube_603_edit.mp4', 'name');
@@ -141,7 +144,7 @@ function AplicationManager()
 
 		        controls = new THREE.DeviceOrientationAndTouchController( camera, renderer.domElement, renderer );
 		        	
-		        		//startAllVideos();
+        		//startAllVideos();
 			    haveVrDisplay = true;
 			    renderer.vr.enabled = true;
 

@@ -79,7 +79,7 @@ THREE.MediaObject = function () {
             listOfVideoContents[i].vid.currentTime = listOfVideoContents[0].vid.currentTime;
         }
     }
-
+    
     function getVideoMesh(geometry, url, name, order) 
     {
         var texture = new THREE.VideoTexture( getVideObject( name, url ) );
@@ -247,7 +247,7 @@ THREE.MediaObject = function () {
         geometry.faceVertexUvs[0] = []; // cleans the geometry UVs
         // front
         geometry.faceVertexUvs[0][0] = [ f[0], f[1], f[3] ];
-        geometry.faceVertexUvs[0][1] =  [ f[1], f[2], f[3] ];
+        geometry.faceVertexUvs[0][1] = [ f[1], f[2], f[3] ];
         // back
         geometry.faceVertexUvs[0][2] = [ b[0], b[1], b[3] ];
         geometry.faceVertexUvs[0][3] = [ b[1], b[2], b[3] ];
@@ -488,22 +488,22 @@ THREE.MediaObject = function () {
 // Media Object Generators
 //************************************************************************************
 
-    this.createSphericalVideoInScene = function(url, type, name) 
+    this.createSphericalVideoInScene = function(url, name) 
     {
-        var geometry = new THREE.SphereBufferGeometry( 100, 32, 16, Math.PI/2 );
+        var geometry = new THREE.SphereBufferGeometry( 100, 32, 32, Math.PI/2 );
 
         geometry.scale( - 1, 1, 1 );
-        var sphere = getVideoMesh( geometry, url, type, name, 0 );
+        var sphere = getVideoMesh( geometry, url, name, 0 );
 
         mainMesh = sphere;
 
         scene.add( sphere );
     };
 
-    this.createSignVideo = function(url, type, name, config) 
+    this.createSignVideo = function(url, name, config) 
     {
         var geometry = new THREE.PlaneGeometry( config.size, config.size );
-        var plane = getVideoMesh( geometry, url, type, name, 1 );
+        var plane = getVideoMesh( geometry, url, name, 1 );
 
         // left arrow
         var arrow = getArrowMesh( config.size/5, config.size/6, 0xffffff );
@@ -642,20 +642,20 @@ THREE.MediaObject = function () {
 // Experimental
 //************************************************************************************
 
-    this.createCubeGeometry65 = function(url, type, name) 
+    this.createCubeGeometry65 = function(url, name) 
     {
         var geometry = getCubeGeometry65();  
-        var cube = getVideoMesh( geometry, url, type, name, 0 );
+        var cube = getVideoMesh( geometry, url, name, 0 );
 
         mainMesh = cube;
 
         scene.add( cube );
     };
 
-    this.createCubeGeometry116 = function(url, type, name) 
+    this.createCubeGeometry116 = function(url, name) 
     {
         var geometry = getCubeGeometry116();  
-        var cube = getVideoMesh( geometry, url, type, name, 0 );      
+        var cube = getVideoMesh( geometry, url, name, 0 );      
 
         mainMesh = cube;
 

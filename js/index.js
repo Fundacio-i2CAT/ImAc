@@ -1,65 +1,32 @@
 
 // GLOBAL VARS
 
-var _PlayerVersion = 'v0.01.3';
+var _PlayerVersion = 'v0.02.0';
+
 var AplicationManager = new AplicationManager();
 var moData = new THREE.MediaObject();
+var menuData = new THREE.MenuObject();
+var SubtitleMenuManager = new THREE.SubtitleMenuManager();
+var SettingsCardboardMenuManager = new THREE.SettingsCardboardMenuManager();
+var MultiOptionsMenuManager = new THREE.MultiOptionsMenuManager();
+var SettingsMenuManager = new THREE.SettingsMenuManager();
+var VolumeMenuManager = new THREE.VolumeMenuManager();
+var PlayPauseMenuManager = new THREE.PlayPauseMenuManager();
+var MenuManager = new THREE.MenuManager();
 var AudioManager = new AudioManager();
-
-//var subController = new SubSignManager();
-
-var viewArea = 30;
-var signArea = 'botRight';
-var subtitleIndicator = 'none';
-var signIndicator = 'none';
-var forcedDisplayAlign = "after"; // before, center, after
-var forcedTextAlign = "center"; //start, center, end
-var autoPositioning = 'disable';
-var isSubtitleEnabled = false;
-var textListMemory = [];
+var subController = new SubSignManager();
+var interController = new THREE.InteractionsController();
+var polyfill = new WebVRPolyfill();
+var statObj = new StatObject();
 
 
-var language = "catala";
-
-var isHMD = true;
-var isVRDisplay = true;
+var loggerActivated = false;
 
 
 var demoId = 1;
 
 var mainContentURL = './resources/rapzember-young-hurn_edit.mp4';
-var _selected_content = 'Radio';
-
-var isAndroid = false;
-
-
-
-
-
-
-var polifyConfig = (function() {
-  var config = {};
-  var q = window.location.search.substring(1);
-  if (q === '') {
-    return config;
-  }
-  var params = q.split('&');
-  var param, name, value;
-  for (var i = 0; i < params.length; i++) {
-    param = params[i].split('=');
-    name = param[0];
-    value = param[1];
-    // All config values are either boolean or float
-    config[name] = value === 'true' ? true :
-                   value === 'false' ? false :
-                   parseFloat(value);
-  }
-  return config;
-})();
-
-var polyfill = new WebVRPolyfill(polifyConfig);
-
-
+//var _selected_content = 'Radio';
 
 
 
@@ -72,25 +39,18 @@ function init_webplayer()
 {
 	console.log('Version: ' + _PlayerVersion);
 
-  isAndroid = navigator.userAgent.toLowerCase().indexOf("android") > -1;
-
   AudioManager.initAmbisonicResources();
   moData.setFont('./css/fonts/TiresiasScreenfont_Regular.json');
 		
-  for (var i = 0; i < 6; i++) 
+  for (var i = 0; i < 2; i++) 
   {
     var id = i + 1;
     var dataText = ' ';
 
-    if (i == 0) dataText = "Video 1: Subtitles - comfort viewing field";
-    else if (i == 1) dataText = "Video 2: Subtitles - guiding to speaker";
-    else if (i == 2) dataText = "Video 3: Signer - comfort viewing field";
-    else if (i == 3) dataText = "Video 4: Signer - guiding to speaker (I)";
-    else if (i == 4) dataText = "Video 5: Signer - guiding to speaker (forced perspective)";
-    else if (i == 5) dataText = "Video 6: Demo opera";
+    if (i == 0) dataText = "Video 1: Demo radio";
+    else if (i == 1) dataText = "Video 2: Demo opera";
 
     createListGroup(id, "img/LOGO-IMAC.png", dataText);
-
   }
 }
 
@@ -102,68 +62,31 @@ function blockContainer()
 	document.getElementById("container").style.display = "block";
 }
 
-function showLoader()
-{
-  document.getElementById("header").style.display = "none";
-  document.getElementById("content_area").style.display = "none";
-  document.getElementById("container").style.display = "none";
-  document.getElementById("loader").style.display = "block";
-}
-
-function clearLoader()
-{
-  document.getElementById("loader").style.display = "none";
-}
-
 function selectXML(id)
 {
-  var myform0 = document.forms['myform0'];
-
-  for (i = 0; i < myform0.length; i++) 
-  {
-    if (myform0[i].checked) 
-    {
-      mainContentURL = myform0[i].value == "Liceu" ? './resources/cam_2_2k.mp4' : './resources/rapzember-young-hurn_edit.mp4';
-      _selected_content = myform0[i].value;
-    }
-  }
-
-  var myform2 = document.forms['myform2'];
-
-  for (i = 0; i < myform2.length; i++) 
-  {
-    if (myform2[i].checked) 
-    {
-      device = myform2[i].value;
-    }
-  }
-  if(device == 'Tablet') isHMD = false;
-    
+  mainContentURL = id == 2 ? './resources/cam_2_2k.mp4' : './resources/rapzember-young-hurn_edit.mp4';
+ 
   demoId = id;
-  //if(demoId > 5) mainContentURL = './resources/sp_c01_cena_01_base_0_edit.mp4';
+
   AplicationManager.init_AplicationManager();
   enterfullscreen();
-
-  var myform = document.forms['myform'];
-
-  for (i = 0; i < myform.length; i++) 
-  {
-    if (myform[i].checked) 
-    {
-      language = myform[i].value;
-    }
-  }  
 }
        
 function startAllVideos()
 {
-  //subController.addsubtitles("./resources/Rapzember_Cat.xml");  
-  setTimeout(function()
-  {
-    runDemo();
-    addsubtitles(); 
-    //subController.startSubtitles();   
+  
+  setTimeout(function() {
+    runDemo(); 
   },500);
 
   //moData.playAll();
 }
+
+
+(function() {
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker
+              .register('./service-worker.js')
+              .then(function() { console.log('Service Worker Registered'); });
+    }
+})();

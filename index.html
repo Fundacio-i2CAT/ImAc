@@ -8,15 +8,16 @@
 	<meta name="apple-mobile-web-app-capable" content="yes" />
 	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
+	<link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />
+	<link rel="manifest" href="./manifest.json">
+
 	<link rel="stylesheet" href="css/bootstrap.min.css">
 	<link rel="stylesheet" href="css/index.css">
 
 
 	<script src="js/lib/jquery-3.2.1.min.js"></script>
-
 	<script src="js/lib/bootstrap.min.js"></script>	
 
-	<!--script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script-->
 	<script src="js/lib/hls.js"></script>
 
 	<script src="js/lib/three.js"></script>
@@ -28,23 +29,40 @@
     <script src="js/lib/imsc_i2cat.js"></script>
     <script src="js/lib/dash.all.min.js"></script>
 
+    <script src="js/constants/constants.js"></script>
+    
+
 	<script src="js/Scene_Generators/AplicationManager.js"></script>
-	<script src="js/Scene_Generators/SubtitleManager.js"></script>
 	<script src="js/Scene_Generators/MediaObject.js"></script>
 	<script src="js/Scene_Generators/AudioManager.js"></script>
+
+	<script src="js/Scene_Generators/Menu/MenuState.js"></script>
+	<script src="js/Scene_Generators/Menu/MenuManager.js"></script>
+	<script src="js/Scene_Generators/Menu/MenuObject.js"></script>
+	
+	<script src="js/Scene_Generators/Menu/MultiOptionsMenuManager.js"></script>
+	<script src="js/Scene_Generators/Menu/SubtitleMenuManager.js"></script>
+	<script src="js/Scene_Generators/Menu/SettingsCardboardMenuManager.js"></script>
+	<script src="js/Scene_Generators/Menu/SettingsMenuManager.js"></script>
+	<script src="js/Scene_Generators/Menu/VolumeMenuManager.js"></script>
+	<script src="js/Scene_Generators/Menu/PlayPauseMenuManager.js"></script>
+
+	<script src="js/Scene_Generators/SubSignManager.js"></script>
+	<script src="js/Scene_Generators/InteractionsController.js"></script>
 
 	<script src="js/controllers/DeviceOrientationAndTouchController.js"></script>
 	<script src="js/controllers/FullScreenController.js"></script>
 	<script src="js/controllers/VREffect.js"></script>
 
-	<script src="js/vr/WebVR.js"></script>
+	<!--script src="js/vr/WebVR.js"></script-->
 	<script src="js/vr/DaydreamController.js"></script>
 	<!--script src="js/vr/VRController.js"></script-->
 
 	<script src="js/Utils/elementsGenerator.js"></script>
+	<script src="js/Utils/logger.js"></script>
 	<script src="js/Utils/utils.js"></script>
 
-	<script src="js/preTest.js"></script>
+	<script src="js/pilot1.js"></script>
 	<script src="js/index.js"></script>
 
 </head>
@@ -60,7 +78,7 @@
 			<div class="list-group" id="list_group"></div>
 		</div>
 		<div id="clips-display"></div>
-		<div class="col-xs-3 options">
+		<!--div class="col-xs-3 options">
 			<h4>Content</h4>
 			<form id="myform0">
 				<label for="Radio"><b> Radio: </b></label>
@@ -77,9 +95,6 @@
 				<input type="radio" name="lang" id="deutsch" value="deutsch">
 			</form>
 			<br>
-			<label for="speaker"><b> Video 5: </b>
-			<input type="text" name="speaker" id="speaker" placeholder="180"></label>
-			<br><br>
 			<h4>Select Device</h4>
 			<form id="myform2">
 				<label for="HMD"><b> HMD: </b></label>
@@ -87,14 +102,13 @@
 				<label for="Tablet"><b> Tablet: </b></label>
 				<input type="radio" name="dev" id="Tablet" value="Tablet">
 			</form>
-		</div>
-		<div class="col-xs-12 links-group">
-				<!--a href="https://youtu.be/XqZddN11Mic"> 360 Google Spotlight Story Pearl 1 Catalan Privilege of sound </a><br><br-->
+		</div-->
+		<!--div class="col-xs-12 links-group">
 			<h3>AD pre-pilots: Catalan</h3>
 			<button type="button" class="btn btn-primary btn-block" onclick="runADDemo(0)">AD placed on the action (privilege of sound)</button> 
 			<button type="button" class="btn btn-primary btn-block" onclick="runADDemo(1)">AD anchored to head position (voice of God)</button> 
 			<button type="button" class="btn btn-primary btn-block" onclick="runADDemo(2)">AD anchored to soundscape (1st person, past tense)</button>
-		</div> 
+		</div--> 
 	</div>
 
 	<div class="col-xs-12" id="loader" align="center">
@@ -103,8 +117,9 @@
 	</div>
 
 	<div id="container"></div>
-	<div id="ad1">
+
+	<!--div id="ad1">
 		<iframe id="ad2" width="100%" height="100%" src=""></iframe> 
-	</div>
+	</div-->
 </body>	
 </html>

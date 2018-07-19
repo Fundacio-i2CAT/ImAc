@@ -25,7 +25,7 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 	this.screenOrientation = window.orientation || 0;
 
 	this.alpha = 0;
-	this.alphaOffsetAngle = 0;//THREE.Math.degToRad(90);
+	//this.alphaOffsetAngle = 0;//THREE.Math.degToRad(90);
 	
 	// Manual rotate override components
 	var startX = 0, startY = 0,
@@ -48,6 +48,25 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 		object.updateProjectionMatrix();
 		renderer.setSize( window.innerWidth, window.innerHeight );
 	};
+
+	this.onDocumentMouseDown = function ( event ) {
+		event.preventDefault();
+
+
+		startX = currentX = event.pageX;
+		startY = currentY = event.pageY;
+		
+		
+		var mouse3D = new THREE.Vector2();
+        mouse3D.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+        mouse3D.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+		
+
+            interController.checkInteraction(mouse3D, scope.object, 'onDocumentMouseDown');
+
+		
+		
+	}.bind( this );
 
 	var onDeviceOrientationChangeEvent = function( event ) 
 	{
@@ -132,7 +151,7 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 			
 			if ( scope.enabled === false ) return;
 
-			alpha = scope.deviceOrientation.alpha ? THREE.Math.degToRad( scope.deviceOrientation.alpha ) + this.alphaOffsetAngle : 0; // Z
+			alpha = scope.deviceOrientation.alpha ? THREE.Math.degToRad( scope.deviceOrientation.alpha ) : 0; // Z
 			beta = scope.deviceOrientation.beta ? THREE.Math.degToRad( scope.deviceOrientation.beta ) : 0; // X'
 			gamma = scope.deviceOrientation.gamma ? THREE.Math.degToRad( scope.deviceOrientation.gamma ) : 0; // Y''
 			orient = scope.screenOrientation ? THREE.Math.degToRad( scope.screenOrientation ) : 0; // O
@@ -165,6 +184,7 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 		window.addEventListener( 'resize', onWindowResize, false );		
 
 		this.element.addEventListener( 'touchstart', this.onDocumentTouchStart, false );
+		this.element.addEventListener( 'mousedown', this.onDocumentMouseDown, false );
 
 		document.onkeydown = this.onkeydownStart;
 
@@ -179,6 +199,7 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 		window.removeEventListener( 'resize', onWindowResize, false );		
 
 		this.element.removeEventListener( 'touchstart', this.onDocumentTouchStart, false );
+		this.element.removeEventListener( 'mousedown', this.onDocumentMouseDown, false );
 
 		scope.enabled = false;
 
@@ -187,13 +208,6 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 	this.dispose = function() {
 
 		this.disconnect();
-
-	};
-	
-	this.updateAlphaOffsetAngle = function( angle ) {
-
-		this.alphaOffsetAngle = angle;
-		this.update();
 
 	};
 

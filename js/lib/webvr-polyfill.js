@@ -1680,22 +1680,16 @@ var Viewers = {
     screenLensDistance: 0.039,
     distortionCoefficients: [0.34, 0.55],
     inverseCoefficients: [-0.33836704, -0.18162185, 0.862655, -1.2462051, 1.0560602, -0.58208317, 0.21609078, -0.05444823, 0.009177956, -9.904169E-4, 6.183535E-5, -1.6981803E-6]
-  }),
-  Experimental: new CardboardViewer({
-    id: 'Experimental',
-    label: 'Cardboard i2CAT',
-    fov: 60,
-    interLensDistance: 0.060,
-    baselineLensDistance: 0.035,
-    screenLensDistance: 0.042,
-    distortionCoefficients: [0.441, 0.156],
-    inverseCoefficients: [-0.4410035, 0.42756155, -0.4804439, 0.5460139, -0.58821183, 0.5733938, -0.48303202, 0.33299083, -0.17573841, 0.0651772, -0.01488963, 0.001559834]
   })
 };
-function DeviceInfo(deviceParams) {
+function DeviceInfo(deviceParams, additionalViewers) {
   this.viewer = Viewers.CardboardV2;
   this.updateDeviceParams(deviceParams);
   this.distortion = new Distortion(this.viewer.distortionCoefficients);
+  for (var i = 0; i < additionalViewers.length; i++) {
+    var viewer = additionalViewers[i];
+    Viewers[viewer.id] = new CardboardViewer(viewer);
+  }
 }
 DeviceInfo.prototype.updateDeviceParams = function (deviceParams) {
   this.device = this.determineDevice_(deviceParams) || this.device;
@@ -2130,6 +2124,11 @@ function FusionPoseSensor(kFilter, predictionTime, yawOnly, isDebug) {
   this.gyroscope = new Vector3();
   this.filter = new ComplementaryFilter(kFilter, isDebug);
   this.posePredictor = new PosePredictor(predictionTime, isDebug);
+  this.isFirefoxAndroid = isFirefoxAndroid();
+  this.isIOS = isIOS();
+  var chromeVersion = getChromeVersion();
+  this.isDeviceMotionInRadians = !this.isIOS && chromeVersion && chromeVersion < 66;
+  this.isWithoutDeviceMotion = isChromeWithoutDeviceMotion();
   this.filterToWorldQ = new Quaternion();
   if (isIOS()) {
     this.filterToWorldQ.setFromAxisAngle(new Vector3(1, 0, 0), Math.PI / 2);
@@ -2145,11 +2144,6 @@ function FusionPoseSensor(kFilter, predictionTime, yawOnly, isDebug) {
     this.filterToWorldQ.multiply(this.inverseWorldToScreenQ);
   }
   this.resetQ = new Quaternion();
-  this.isFirefoxAndroid = isFirefoxAndroid();
-  this.isIOS = isIOS();
-  var chromeVersion = getChromeVersion();
-  this.isDeviceMotionInRadians = !this.isIOS && chromeVersion && chromeVersion < 66;
-  this.isWithoutDeviceMotion = isChromeWithoutDeviceMotion();
   this.orientationOut_ = new Float32Array(4);
   this.start();
 }
@@ -2161,13 +2155,23 @@ FusionPoseSensor.prototype.getOrientation = function () {
   if (this.isWithoutDeviceMotion && this._deviceOrientationQ) {
     this.deviceOrientationFixQ = this.deviceOrientationFixQ || function () {
       var z = new Quaternion().setFromAxisAngle(new Vector3(0, 0, -1), 0);
-      var y = new Quaternion().setFromAxisAngle(new Vector3(0, 1, 0), Math.PI / 2);
+      var y = new Quaternion();
+      if (window.orientation === -90) {
+        y.setFromAxisAngle(new Vector3(0, 1, 0), Math.PI / -2);
+      } else {
+        y.setFromAxisAngle(new Vector3(0, 1, 0), Math.PI / 2);
+      }
       return z.multiply(y);
+    }();
+    this.deviceOrientationFilterToWorldQ = this.deviceOrientationFilterToWorldQ || function () {
+      var q = new Quaternion();
+      q.setFromAxisAngle(new Vector3(1, 0, 0), -Math.PI / 2);
+      return q;
     }();
     orientation = this._deviceOrientationQ;
     var out = new Quaternion();
     out.copy(orientation);
-    out.multiply(this.filterToWorldQ);
+    out.multiply(this.deviceOrientationFilterToWorldQ);
     out.multiply(this.resetQ);
     out.multiply(this.worldToScreenQ);
     out.multiplyQuaternions(this.deviceOrientationFixQ, out);
@@ -2372,6 +2376,11 @@ var PoseSensor = function () {
     value: function useDeviceMotion() {
       this.api = 'devicemotion';
       this.fusionSensor = new FusionPoseSensor(this.config.K_FILTER, this.config.PREDICTION_TIME_S, this.config.YAW_ONLY, this.config.DEBUG);
+      if (this.sensor) {
+        this.sensor.removeEventListener('reading', this._onSensorRead);
+        this.sensor.removeEventListener('error', this._onSensorError);
+        this.sensor = null;
+      }
     }
   }, {
     key: 'getOrientation',
@@ -2411,6 +2420,7 @@ var PoseSensor = function () {
       } else {
         console.error(event.error);
       }
+      this.useDeviceMotion();
     }
   }, {
     key: '_onSensorRead',
@@ -2529,14 +2539,14 @@ RotateInstructions.prototype.loadIcon_ = function () {
 var DEFAULT_VIEWER = 'CardboardV1';
 var VIEWER_KEY = 'WEBVR_CARDBOARD_VIEWER';
 var CLASS_NAME = 'webvr-polyfill-viewer-selector';
-function ViewerSelector() {
+function ViewerSelector(defaultViewer) {
   try {
     this.selectedKey = localStorage.getItem(VIEWER_KEY);
   } catch (error) {
     console.error('Failed to load viewer profile: %s', error);
   }
   if (!this.selectedKey) {
-    this.selectedKey = DEFAULT_VIEWER;
+    this.selectedKey = defaultViewer || DEFAULT_VIEWER;
   }
   this.dialog = this.createDialog_(DeviceInfo.Viewers);
   this.root = null;
@@ -3136,6 +3146,8 @@ VRDisplay.prototype.getEyeParameters = function (whichEye) {
   return null;
 };
 var config = {
+  ADDITIONAL_VIEWERS: [],
+  DEFAULT_VIEWER: '',
   MOBILE_WAKE_LOCK: true,
   DEBUG: false,
   DPDB_URL: 'https://dpdb.webvr.rocks/dpdb.json',
@@ -3172,8 +3184,8 @@ function CardboardVRDisplay(config$$1) {
   this.distorter_ = null;
   this.cardboardUI_ = null;
   this.dpdb_ = new Dpdb(this.config.DPDB_URL, this.onDeviceParamsUpdated_.bind(this));
-  this.deviceInfo_ = new DeviceInfo(this.dpdb_.getDeviceParams());
-  this.viewerSelector_ = new ViewerSelector();
+  this.deviceInfo_ = new DeviceInfo(this.dpdb_.getDeviceParams(), config$$1.ADDITIONAL_VIEWERS);
+  this.viewerSelector_ = new ViewerSelector(config$$1.DEFAULT_VIEWER);
   this.viewerSelector_.onChange(this.onViewerChanged_.bind(this));
   this.deviceInfo_.setViewer(this.viewerSelector_.getCurrentViewer());
   if (!this.config.ROTATE_INSTRUCTIONS_DISABLED) {
@@ -3214,9 +3226,9 @@ CardboardVRDisplay.prototype._getFieldOfView = function (whichEye) {
 CardboardVRDisplay.prototype._getEyeOffset = function (whichEye) {
   var offset;
   if (whichEye == Eye.LEFT) {
-    offset = [this.deviceInfo_.viewer.interLensDistance * 0.5, 0.0, 0.0];
-  } else if (whichEye == Eye.RIGHT) {
     offset = [-this.deviceInfo_.viewer.interLensDistance * 0.5, 0.0, 0.0];
+  } else if (whichEye == Eye.RIGHT) {
+    offset = [this.deviceInfo_.viewer.interLensDistance * 0.5, 0.0, 0.0];
   } else {
     console.error('Invalid eye provided: %s', whichEye);
     return null;
@@ -3370,9 +3382,11 @@ return CardboardVRDisplay;
 });
 var CardboardVRDisplay = unwrapExports(cardboardVrDisplay);
 
-var version = "0.10.3";
+var version = "0.10.6";
 
 var DefaultConfig = {
+  ADDITIONAL_VIEWERS: [],
+  DEFAULT_VIEWER: '',
   PROVIDE_MOBILE_VRDISPLAY: true,
   GET_VR_DISPLAYS_TIMEOUT: 1000,
   MOBILE_WAKE_LOCK: true,
@@ -3412,6 +3426,8 @@ WebVRPolyfill.prototype.getPolyfillDisplays = function () {
   }
   if (isMobile()) {
     var vrDisplay = new CardboardVRDisplay({
+      ADDITIONAL_VIEWERS: this.config.ADDITIONAL_VIEWERS,
+      DEFAULT_VIEWER: this.config.DEFAULT_VIEWER,
       MOBILE_WAKE_LOCK: this.config.MOBILE_WAKE_LOCK,
       DEBUG: this.config.DEBUG,
       DPDB_URL: this.config.DPDB_URL,

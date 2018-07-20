@@ -9,7 +9,7 @@ THREE.SettingsCardboardMenuManager = function () {
     {
         //The 2 main buttons are created inside a group 'settingsCardboardGroup'
         var settingsCardboardGroup =  new THREE.Group();
-        var settingsIcon = menuData.getImageMesh( new THREE.PlaneGeometry( settingsButtonWidth*factorScale, settingsButtonHeight*factorScale ), './img/menu/cog_icon.png', 'right', 4 );
+        var settingsIcon = menuData.getImageMesh( new THREE.PlaneGeometry( settingsButtonWidth*factorScale, settingsButtonHeight*factorScale ), './img/menu/settings_icon.png', 'right', 4 );
         var cardboardIcon = menuData.getImageMesh( new THREE.PlaneGeometry( cardboardButtonWidth*factorScale, cardboardButtonHeight*factorScale ), './img/menu/cardboard_icon.png', 'right', 4 );
         
         settingsIcon.name = menuList[3].buttons[0]; // menuList.settingsCardboardMenu.settingsButton;

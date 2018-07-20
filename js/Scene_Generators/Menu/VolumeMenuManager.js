@@ -21,59 +21,22 @@ THREE.VolumeMenuManager = function () {
         }
     }
 
-
-// TODO CHANGE TO DIFFERENT SMALL FUNCTIONS 
-
-    this.volumeLevelDispolayLogic = function(boolean)
+    this.volumeLevelDisplayLogic = function()
     {
-    	if(!boolean)
-    	{
-    	if(AudioManager.getVolume()>0)
-        {
-            scene.getObjectByName('muteVolumeButton').visible = false; //menuList.volumeChangeMenu.unmuteVolumeButton
-            interController.removeInteractiveObject('muteVolumeButton'); //menuList.volumeChangeMenu.unmuteVolumeButton
-        }
-        else
-        {
-            scene.getObjectByName('unmuteVolumeButton').visible = false; //menuList.volumeChangeMenu.muteVolumeButton
-            interController.removeInteractiveObject('unmuteVolumeButton'); //menuList.volumeChangeMenu.muteVolumeButton
-        }
+        scene.getObjectByName(menuList[2].buttons[2]).visible = false; //menuList.volumeChangeMenu.unmuteVolumeButton
+        interController.removeInteractiveObject(menuList[2].buttons[2]); //menuList.volumeChangeMenu.unmuteVolumeButton
+
+        scene.getObjectByName(menuList[2].buttons[3]).visible = false; //menuList.volumeChangeMenu.muteVolumeButton
+        interController.removeInteractiveObject(menuList[2].buttons[3]); //menuList.volumeChangeMenu.muteVolumeButton
+
         scene.getObjectByName('volumeChangeMenu').remove(scene.getObjectByName('volumeLevel'));
         var newText = menuData.getMenuTextMesh(AudioManager.getVolume()*100+'%', volFeedbackMenuTextSize, menuDefaultColor, 'volumeLevel');
-        console.log(newText.children[0].geometry.parameters.width);
         scene.getObjectByName('volumeChangeMenu').add(newText)
         scene.getObjectByName('volumeLevel').visible = true;
-        interController.removeInteractiveObject(name); //menuList.volumeChangeMenu.
         setTimeout(function(){ 
             VolumeMenuManager.showMuteUnmuteButton();
             scene.getObjectByName('volumeLevel').visible = false;
-            interController.addInteractiveObject(scene.getObjectByName(name)); //menuList.volumeChangeMenu.
-             }, 1000);
-    	}
-    	else
-    	{
-    		if(AudioManager.getVolume()>0)
-            {
-                scene.getObjectByName('muteVolumeButton').visible = false; //menuList.volumeChangeMenu.unmuteVolumeButton
-                interController.removeInteractiveObject('muteVolumeButton'); //menuList.volumeChangeMenu.unmuteVolumeButton
-            }
-            else
-            {
-                scene.getObjectByName('unmuteVolumeButton').visible = false; //menuList.volumeChangeMenu.muteVolumeButton
-                interController.removeInteractiveObject('unmuteVolumeButton'); //menuList.volumeChangeMenu.muteVolumeButton
-            }
-
-            scene.getObjectByName('volumeChangeMenu').remove(scene.getObjectByName('volumeLevel'));
-            var newText = menuData.getMenuTextMesh(AudioManager.getVolume()*100+'%', volFeedbackMenuTextSize, menuDefaultColor, 'volumeLevel');
-            scene.getObjectByName('volumeChangeMenu').add(newText)
-            scene.getObjectByName('volumeLevel').visible = true;
-            interController.removeInteractiveObject(name); //menuList.volumeChangeMenu.
-            setTimeout(function(){ 
-                VolumeMenuManager.showMuteUnmuteButton();
-                scene.getObjectByName('volumeLevel').visible = false;
-                interController.addInteractiveObject(scene.getObjectByName(name)); //menuList.volumeChangeMenu.
-                 }, 1000);         	
-    	}          
+             }, visualFeedbackTimeout);
     }
 
     /**
@@ -85,12 +48,14 @@ THREE.VolumeMenuManager = function () {
     {
         //The 4 main buttons are created inside a group 'volumeChangeGroup'
         var volumeChangeGroup =  new THREE.Group();
-        var plusVolume = menuData.getPlusIconMesh( volumeLevelButtonWidth, volumeLevelButtonHeight,factorScale, menuDefaultColor,  menuList[2].buttons[1]);
-        var audioMuteIcon = menuData.getImageMesh( new THREE.PlaneGeometry( muteUnmuteButtonWidth*factorScale,muteUnmuteButtonHeight*factorScale ), './img/menu/audio_volume_icon.png', menuList[2].buttons[3], 4 ); // menuList.volumeChangeMenu.muteVolumeButton
-        var audioUnmuteIcon = menuData.getImageMesh( new THREE.PlaneGeometry( muteUnmuteButtonWidth*factorScale,muteUnmuteButtonHeight*factorScale ), './img/menu/audio_volume_mute_icon.png', menuList[2].buttons[2], 4 ); // menuList.volumeChangeMenu.unmuteVolumeButton
-        var minusVolume = menuData.getMinusIconMesh( volumeLevelButtonWidth, volumeLevelButtonHeight, factorScale, menuDefaultColor,  menuList[2].buttons[0] );
+        //var plusVolume = menuData.getPlusIconMesh( volumeLevelButtonWidth, volumeLevelButtonHeight,factorScale, menuDefaultColor,  menuList[2].buttons[1]);
+        var audioMuteIcon = menuData.getImageMesh( new THREE.PlaneGeometry( muteUnmuteButtonWidth*factorScale,muteUnmuteButtonHeight*factorScale ), './img/menu/volume_mute_icon.png', menuList[2].buttons[3], 4 ); // menuList.volumeChangeMenu.muteVolumeButton
+        var audioUnmuteIcon = menuData.getImageMesh( new THREE.PlaneGeometry( muteUnmuteButtonWidth*factorScale,muteUnmuteButtonHeight*factorScale ), './img/menu/volume_unmute_icon.png', menuList[2].buttons[2], 4 ); // menuList.volumeChangeMenu.unmuteVolumeButton
+        
+        var minusVolume = menuData.getImageMesh( new THREE.PlaneGeometry( volumeLevelButtonWidth*factorScale, volumeLevelButtonHeight*factorScale ), './img/menu/minus_icon.png', menuList[2].buttons[0], 4 ); // menuList.volumeChangeMenu.
+        var plusVolume = menuData.getImageMesh( new THREE.PlaneGeometry( volumeLevelButtonWidth*factorScale, volumeLevelButtonHeight*factorScale ), './img/menu/plus_icon.png', menuList[2].buttons[1], 4 ); // menuList.volumeChangeMenu.
+        
         var volumeLevel = menuData.getMenuTextMesh(AudioManager.getVolume()*100+'%', volFeedbackMenuTextSize, menuDefaultColor, 'volumeLevel');
-        volumeLevel.position.x -= 20; 
         volumeLevel.visible = false;
 
         plusVolume.position.set(backgroundmenu.geometry.parameters.width/2 - volumeLevelMarginX*factorScale, 0, 0.01);

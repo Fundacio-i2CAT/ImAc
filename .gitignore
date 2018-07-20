@@ -260,6 +260,5 @@ paket-files/
 *.p12
 *.rc
 
-img/
 css/fonts/
 resources/

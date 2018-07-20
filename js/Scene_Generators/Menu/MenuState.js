@@ -3,6 +3,8 @@ var submenuNameActive;
 var firstColumnActiveButton;
 var secondColumnActiveButton;
 
+var initialVolumeLevel = 0.5;
+
 var settingsLanguage = 'settingsLanguageEngButton';
 
 var isSubtitlesAvtive = true;

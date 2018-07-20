@@ -63,21 +63,25 @@ THREE.InteractionsController = function () {
         	case "playButton":
                 MenuManager.pressButtonFeedback(name);
                 PlayPauseMenuManager.playButtonInteraction();
+                setTimeout(function(){ PlayPauseMenuManager.playoutTimeDisplayLogic(true); }, clickInteractionTimeout);
         		break;
 
         	case "pauseButton":
                 MenuManager.pressButtonFeedback(name);
                 PlayPauseMenuManager.pauseButtonInteraction();
+                setTimeout(function(){ PlayPauseMenuManager.playoutTimeDisplayLogic(false); }, clickInteractionTimeout);     
         		break;
 
         	case "backSeekButton":
                 MenuManager.pressButtonFeedback(name);
-        		moData.seekAll( -seekTime );
+        		PlayPauseMenuManager.seekAll( -seekTime );
+                PlayPauseMenuManager.playoutTimeDisplayLogic(true);
         		break;
 
         	case "forwardSeekButton":
                 MenuManager.pressButtonFeedback(name);
-        		moData.seekAll( seekTime );
+        		PlayPauseMenuManager.seekAll( seekTime );
+                PlayPauseMenuManager.playoutTimeDisplayLogic(true);
         		break;
 
         //****************************

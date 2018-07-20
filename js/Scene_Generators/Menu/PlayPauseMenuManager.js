@@ -1,12 +1,72 @@
 THREE.PlayPauseMenuManager = function () {
 
+    var listOfVideoContents = moData.getListOfVideoContents();
+    var playoutTimeout;
+
+this.getPlayoutTime = function(secs, format) {
+        var hr  = Math.floor(secs / 3600);
+        var min = Math.floor((secs - (hr * 3600))/60);
+        var sec = Math.floor(secs - (hr * 3600) -  (min * 60));
+
+        if (min < 10) { min = "0" + min; }
+        if (sec < 10)  { sec  = "0" + sec; }
+        return min + ':' + sec;
+    }
+
+/**
+ * { function_description }
+ */
+    this.playAll = function()
+    {
+        for ( var i = 0, len = listOfVideoContents.length; i < len; i++ ) 
+        {
+            listOfVideoContents[i].vid.play();
+        }
+        syncVideos();
+    };
+
+/**
+ * { function_description }
+ */
+    this.pauseAll = function()
+    {
+        for ( var i = 0, len = listOfVideoContents.length; i < len; i++ ) 
+        {
+            listOfVideoContents[i].vid.pause();
+        }
+    };
+
+/**
+ * Determines if paused by identifier.
+ *
+ * @param      {<type>}   id      The identifier
+ * @return     {boolean}  True if paused by identifier, False otherwise.
+ */
+    this.isPausedById = function(id)
+    {
+        return listOfVideoContents[id].vid.paused;
+    };
+
+/**
+ * { function_description }
+ *
+ * @param      {<type>}  time    The time
+ */
+    this.seekAll = function(time)
+    {
+        for ( var i = 0, len = listOfVideoContents.length; i < len; i++ ) 
+        {
+            listOfVideoContents[i].vid.currentTime += time;
+        }
+    };
+
+
 	/**
  * { function_description }
  */
     this.playButtonInteraction = function()
     {   
-        moData.isPausedById(0) ? moData.playAll() : moData.pauseAll();
-        setTimeout(function(){ PlayPauseMenuManager.showPlayPauseButton(); }, clickInteractionTimeout);
+        PlayPauseMenuManager.isPausedById(0) ? PlayPauseMenuManager.playAll() : PlayPauseMenuManager.pauseAll();
     }
 
 /**
@@ -14,16 +74,15 @@ THREE.PlayPauseMenuManager = function () {
  */
     this.pauseButtonInteraction = function()
     {
-        moData.isPausedById(0) ? moData.playAll() : moData.pauseAll();
-        setTimeout(function(){ PlayPauseMenuManager.showPlayPauseButton(); }, clickInteractionTimeout);
+        PlayPauseMenuManager.isPausedById(0) ? PlayPauseMenuManager.playAll() : PlayPauseMenuManager.pauseAll();
     }
 
 /**
- * Shows/Hides the play pause button depeding on the activeVideo status moData.isPausedById(0) = true/false
+ * Shows/Hides the play pause button depeding on the activeVideo status PlayPauseMenuManager.isPausedById(0) = true/false
  */
     this.showPlayPauseButton = function ()
     {
-        if(moData.isPausedById(0))
+        if(PlayPauseMenuManager.isPausedById(0))
         {
             scene.getObjectByName(menuList[1].buttons[0]).visible = true; //menuList.playSeekMenu.playButton
             scene.getObjectByName(menuList[1].buttons[1]).visible = false; //menuList.playSeekMenu.pauseButton
@@ -53,6 +112,9 @@ THREE.PlayPauseMenuManager = function () {
         var seekBarL = menuData.getImageMesh( new THREE.PlaneGeometry( seekButtonWidth*factorScale,seekButtonHeigth*factorScale ), './img/menu/seek_icon.png', menuList[1].buttons[2], 4 ); // menuList.
         var seekBarR = menuData.getImageMesh( new THREE.PlaneGeometry( seekButtonWidth*factorScale,seekButtonHeigth*factorScale ), './img/menu/seek_icon.png', menuList[1].buttons[3], 4 ); // menuList.
         
+        var playouttime = menuData.getMenuTextMesh(PlayPauseMenuManager.getPlayoutTime(moData.getListOfVideoContents()[0].vid.currentTime), playoutFeedbackMenuTextSize, menuDefaultColor, 'playouttime');
+        playouttime.visible = false;
+
         seekBarR.position.set(Math.cos(0)*(backgroundmenu.geometry.parameters.width/2 - seekButtonMarginX*factorScale), 0, 0.01);
         seekBarR.rotation.z = Math.PI;
         seekBarL.position.set(Math.cos(Math.PI)*(backgroundmenu.geometry.parameters.width/2 - seekButtonMarginX*factorScale), 0, 0.01);
@@ -61,6 +123,7 @@ THREE.PlayPauseMenuManager = function () {
         playSeekGroup.add( pausebutton );
         playSeekGroup.add( seekBarR );
         playSeekGroup.add( seekBarL );
+        playSeekGroup.add( playouttime );
 
         playSeekGroup.name = menuList[1].name; //menuList.playSeekMenu
         backgroundmenu.add(playSeekGroup);
@@ -70,6 +133,56 @@ THREE.PlayPauseMenuManager = function () {
         scene.add(backgroundmenu);
     }
 
+    this.playoutTimeDisplayLogic = function(isPlay)
+    {
+        var timeoutFactor = 1;
+        clearTimeout(playoutTimeout);
+
+        scene.getObjectByName(menuList[1].buttons[0]).visible = false; //menuList.
+        interController.removeInteractiveObject(menuList[1].buttons[0]); //menuList.
+
+        scene.getObjectByName(menuList[1].buttons[1]).visible = false; //menuList.
+        interController.removeInteractiveObject(menuList[1].buttons[1]); //menuList.
+
+        createPlayoutTimeFeedback(
+            menuData.getMenuTextMesh(PlayPauseMenuManager.getPlayoutTime(moData.getListOfVideoContents()[0].vid.currentTime), 
+                playoutFeedbackMenuTextSize, 
+                menuDefaultColor, 'playouttime'));
+
+        if(isPlay)
+        {
+            timeoutFactor = 2;
+            playoutTimeout =setTimeout(function(){    
+                createPlayoutTimeFeedback(
+                    menuData.getMenuTextMesh(PlayPauseMenuManager.getPlayoutTime(moData.getListOfVideoContents()[0].vid.currentTime), 
+                        playoutFeedbackMenuTextSize, 
+                        menuDefaultColor, 'playouttime'));
+            }, visualFeedbackTimeout);
+        }
+
+        playoutTimeout = setTimeout(function(){ 
+            scene.getObjectByName('playSeekMenu').remove(scene.getObjectByName('playouttime'));
+            PlayPauseMenuManager.showPlayPauseButton();
+        }, timeoutFactor*visualFeedbackTimeout);
+    }
+
+/**
+ * { function_description }
+ */
+    function syncVideos()
+    {
+        for ( var i = 1, l = listOfVideoContents.length; i < l; i++ )
+        {
+            listOfVideoContents[i].vid.currentTime = listOfVideoContents[0].vid.currentTime;
+        }
+    }
+
+    function createPlayoutTimeFeedback(newTime)
+    {
+        scene.getObjectByName('playSeekMenu').remove(scene.getObjectByName('playouttime'));           
+        scene.getObjectByName('playSeekMenu').add(newTime)
+        scene.getObjectByName('playouttime').visible = true;
+    }
 
 }
 

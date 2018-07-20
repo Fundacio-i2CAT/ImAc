@@ -71,14 +71,6 @@ THREE.MediaObject = function () {
     {
         return url.split('.').pop();
     }
-
-    function syncVideos()
-    {
-        for ( var i = 1, l = listOfVideoContents.length; i < l; i++ )
-        {
-            listOfVideoContents[i].vid.currentTime = listOfVideoContents[0].vid.currentTime;
-        }
-    }
     
     function getVideoMesh(geometry, url, name, order) 
     {
@@ -448,40 +440,6 @@ THREE.MediaObject = function () {
         loader.load( url, function ( font ) {
             subtitleFont = font;
         });
-    };
-
-//************************************************************************************
-// Video Controller
-//************************************************************************************
-
-    this.playAll = function()
-    {
-        for ( var i = 0, len = listOfVideoContents.length; i < len; i++ ) 
-        {
-            listOfVideoContents[i].vid.play();
-        }
-        syncVideos();
-    };
-
-    this.pauseAll = function()
-    {
-        for ( var i = 0, len = listOfVideoContents.length; i < len; i++ ) 
-        {
-            listOfVideoContents[i].vid.pause();
-        }
-    };
-
-    this.isPausedById = function(id)
-    {
-        return listOfVideoContents[id].vid.paused;
-    };
-
-    this.seekAll = function(time)
-    {
-        for ( var i = 0, len = listOfVideoContents.length; i < len; i++ ) 
-        {
-            listOfVideoContents[i].vid.currentTime += time;
-        }
     };
 
 //************************************************************************************

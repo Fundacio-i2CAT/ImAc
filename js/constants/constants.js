@@ -26,6 +26,7 @@ var playPauseButtonHeight = 75;
 var seekButtonWidth = 40;
 var seekButtonHeigth = 20;
 var seekButtonMarginX = 30;
+var playoutFeedbackMenuTextSize = 15;
 
 var seekTime = 5;
 

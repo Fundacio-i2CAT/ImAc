@@ -375,12 +375,14 @@ THREE.MenuManager = function () {
         var menu = menuData.getBackgroundMesh(menuWidth, menuHeight, color, 1);
         var factorScale = menuHeight/menuWidth;
 
-        var closeButton = menuData.getCloseIconMesh(backgroundMenuButtonWidth, backgroundMenuButtonHeight, factorScale, menuDefaultColor, menuList[0].buttons[0]);
-        var nextR = menuData.getNextIconMesh(backgroundMenuButtonWidth, backgroundMenuButtonHeight, factorScale, menuDefaultColor, 0, menuList[0].buttons[1]);
-        var nextL = menuData.getNextIconMesh(backgroundMenuButtonWidth, backgroundMenuButtonHeight, factorScale, menuDefaultColor, Math.PI, menuList[0].buttons[2]);
+        var closeButton = menuData.getImageMesh( new THREE.PlaneGeometry( backgroundMenuCloseButtonWidth*factorScale,backgroundMenuCloseButtonHeight*factorScale ), './img/menu/plus_icon.png', menuList[0].buttons[0], 4 ); // menuList.
+        var nextR = menuData.getImageMesh( new THREE.PlaneGeometry( backgroundChangeMenuButtonWidth*factorScale,backgroundChangeMenuButtonHeight*factorScale ), './img/menu/less_than_icon.png', menuList[0].buttons[1], 4 ); // menuList.
+        var nextL = menuData.getImageMesh( new THREE.PlaneGeometry( backgroundChangeMenuButtonWidth*factorScale,backgroundChangeMenuButtonHeight*factorScale ), './img/menu/less_than_icon.png', menuList[0].buttons[2], 4 ); // menuList.
 
         closeButton.position.set((menu.geometry.parameters.width/2-closeButtonMarginX*factorScale), (menu.geometry.parameters.height/2-closeButtonMarginY*factorScale), 0.01)
+        closeButton.rotation.z = Math.PI/4;
         nextR.position.set(Math.cos(0)*(menu.geometry.parameters.width/2 - nextButtonMarginX*factorScale), -(menu.geometry.parameters.height/2 - nextButtonMarginY*factorScale), 0.01)
+        nextR.rotation.z = Math.PI;
         nextL.position.set(Math.cos(Math.PI)*(menu.geometry.parameters.width/2 - nextButtonMarginX*factorScale), -(menu.geometry.parameters.height/2 - nextButtonMarginY*factorScale), 0.01)
 
         closeButton.name = menuList[0].buttons[0]; //menuList.backgroudMenu.closeMenuButton;

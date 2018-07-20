@@ -6,10 +6,10 @@ AudioManager = function() {
 
     var audioResources = Array();
     var audioResources_order_1 = Array();
-    var volume = 1;
+    var volume; // Variable for volume level state saving;
     var foaRenderer,
         isAmbisonics,
-        activeVideoElement;
+        activeVideoElement;  // Video element been reproduced.
 
     function getFOARenderer(audioContext)
     {
@@ -50,6 +50,8 @@ AudioManager = function() {
         var audioContext = new AudioContext();
 
         activeVideoElement = videoElement;
+
+        activeVideoElement.volume = initialVolumeLevel; // Start volume level in 0.5 
 
         videoElement.muted = false;
 

@@ -368,7 +368,6 @@ THREE.MenuObject = function () {
         mesh.name = name;
         coliderMesh.name = name;
         coliderMesh.position.z = 0.02;
-        //interController.addInteractiveObject(coliderMesh);
         mesh.add(coliderMesh);
         mesh.position.z = 0.01;
 

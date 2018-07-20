@@ -1,39 +1,43 @@
 var clickInteractionTimeout = 300;
+var visualFeedbackTimeout = 1000;
 
 var menuMargin = 25;
 var menuDefaultColor = 0xffffff;
-//var menuLineDefaultColor = 0xffffff;
 var menuButtonActiveColor = 0xffff00;
-//var menuButtonClickColor = 0x808080;
-
 var factorScale; 
 
 /* MENU BACKGROUND */
 var backgroundMenuColor = 0x000000;
 var menuAspectRatioWidth = 16;
 var menuAspectRatioHeigth = 9;
-var backgroundMenuButtonWidth = 7;
-var backgroundMenuButtonHeight = 7;
+var backgroundMenuCloseButtonWidth = 20;
+var backgroundMenuCloseButtonHeight = 20;
+var backgroundChangeMenuButtonWidth = 15;
+var backgroundChangeMenuButtonHeight = 15;
 
 var closeButtonMarginX = 10;
 var closeButtonMarginY = 10;
-var nextButtonMarginX = 5;
+var nextButtonMarginX = 10;
 var nextButtonMarginY = 10;
 
 /* MENU PLAY/PAUSE */
-var playPauseButtonWidth = 100;
-var playPauseButtonHeight = 100;
+var playPauseButtonWidth = 75;
+var playPauseButtonHeight = 75;
 var seekButtonWidth = 40;
 var seekButtonHeigth = 20;
 var seekButtonMarginX = 30;
 
+var seekTime = 5;
+
 /* MENU VOLUME */
-var volumeLevelButtonWidth = 15;
-var volumeLevelButtonHeight = 15;
+var volumeLevelButtonWidth = 40;
+var volumeLevelButtonHeight = 40;
 var muteUnmuteButtonWidth = 100;
 var muteUnmuteButtonHeight = 100;
 var volumeLevelMarginX = 25;
 var volFeedbackMenuTextSize = 18;
+
+var volumeChangeStep = 0.1;
 
 /* MENU SETTINGS/CARDBOARD */
 var settingsButtonWidth = 80;

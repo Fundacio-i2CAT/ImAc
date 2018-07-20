@@ -72,12 +72,12 @@ THREE.InteractionsController = function () {
 
         	case "backSeekButton":
                 MenuManager.pressButtonFeedback(name);
-        		moData.seekAll( -5 );
+        		moData.seekAll( -seekTime );
         		break;
 
         	case "forwardSeekButton":
                 MenuManager.pressButtonFeedback(name);
-        		moData.seekAll( 5 );
+        		moData.seekAll( seekTime );
         		break;
 
         //****************************
@@ -86,17 +86,14 @@ THREE.InteractionsController = function () {
 
         	case "minusVolumeButton":
                 MenuManager.pressButtonFeedback(name);
-        		AudioManager.changeVolume( -0.1 );
-                console.log(AudioManager.getVolume());
-      
-                VolumeMenuManager.volumeLevelDispolayLogic(false);              
+        		AudioManager.changeVolume( -volumeChangeStep );      
+                VolumeMenuManager.volumeLevelDisplayLogic();              
         		break;
 
         	case "plusVolumeButton":
                 MenuManager.pressButtonFeedback(name);
-        		AudioManager.changeVolume( 0.1 );
-                console.log(AudioManager.getVolume());
-                VolumeMenuManager.volumeLevelDispolayLogic(true);
+        		AudioManager.changeVolume( volumeChangeStep );
+                VolumeMenuManager.volumeLevelDisplayLogic();
                 break;
 
         	case "muteVolumeButton":

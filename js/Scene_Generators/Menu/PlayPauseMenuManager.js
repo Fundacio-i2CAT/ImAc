@@ -48,13 +48,14 @@ THREE.PlayPauseMenuManager = function () {
     {
         //The 4 main buttons are created inside a group 'playSeekGroup'
         var playSeekGroup =  new THREE.Group();
-        var playbutton = menuData.getPlayMesh(playPauseButtonWidth, playPauseButtonHeight, factorScale, menuDefaultColor, menuList[1].buttons[0]);
-        var pausebutton = menuData.getPauseMesh(playPauseButtonWidth, playPauseButtonHeight, factorScale, menuDefaultColor, menuList[1].buttons[1]);
-        var seekBarL = menuData.getSeekMesh( seekButtonWidth, seekButtonHeigth, factorScale, menuDefaultColor, Math.PI, menuList[1].buttons[2]);
-        var seekBarR = menuData.getSeekMesh( seekButtonWidth, seekButtonHeigth, factorScale, menuDefaultColor, 0, menuList[1].buttons[3]);
+        var playbutton = menuData.getImageMesh( new THREE.PlaneGeometry( playPauseButtonWidth*factorScale,playPauseButtonHeight*factorScale ), './img/menu/play_icon.png', menuList[1].buttons[0], 4 ); // menuList.
+        var pausebutton = menuData.getImageMesh( new THREE.PlaneGeometry( playPauseButtonWidth*factorScale,playPauseButtonHeight*factorScale ), './img/menu/pause_icon.png', menuList[1].buttons[1], 4 ); // menuList.
+        var seekBarL = menuData.getImageMesh( new THREE.PlaneGeometry( seekButtonWidth*factorScale,seekButtonHeigth*factorScale ), './img/menu/seek_icon.png', menuList[1].buttons[2], 4 ); // menuList.
+        var seekBarR = menuData.getImageMesh( new THREE.PlaneGeometry( seekButtonWidth*factorScale,seekButtonHeigth*factorScale ), './img/menu/seek_icon.png', menuList[1].buttons[3], 4 ); // menuList.
         
-        seekBarR.position.set(Math.cos(0)*(backgroundmenu.geometry.parameters.width/2 - seekButtonMarginX*factorScale), 0, 0.01)
-        seekBarL.position.set(Math.cos(Math.PI)*(backgroundmenu.geometry.parameters.width/2 - seekButtonMarginX*factorScale), 0, 0.01)
+        seekBarR.position.set(Math.cos(0)*(backgroundmenu.geometry.parameters.width/2 - seekButtonMarginX*factorScale), 0, 0.01);
+        seekBarR.rotation.z = Math.PI;
+        seekBarL.position.set(Math.cos(Math.PI)*(backgroundmenu.geometry.parameters.width/2 - seekButtonMarginX*factorScale), 0, 0.01);
 
         playSeekGroup.add( playbutton );
         playSeekGroup.add( pausebutton );

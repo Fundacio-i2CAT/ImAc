@@ -84,7 +84,7 @@ AudioManager = function() {
 
     this.setunmute = function()
     {
-        activeVideoElement.volume = volume || volumeChangeStep;
+        activeVideoElement.volume = volume > 0 ? volume : volumeChangeStep;
     };
 
     this.changeVolume = function(value)

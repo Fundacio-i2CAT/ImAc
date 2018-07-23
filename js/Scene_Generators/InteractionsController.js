@@ -172,21 +172,24 @@ THREE.InteractionsController = function () {
         //****************************
 
             case "showSubtitleMenuButton":
+            case "disabledSubtitleMenuButton":
                 // show the subtitle configuration menu
                 MenuManager.pressButtonFeedback(name);
-                setTimeout(function(){ MenuManager.openSecondLevelMenu(6);
-                    if(isSubtitlesAvtive) scene.getObjectByName("subtitleOnButton").material.color.set( menuButtonActiveColor );
-                    else scene.getObjectByName("subtitleOffButton").material.color.set( menuButtonActiveColor );
+                setTimeout(function(){ 
+                    MenuManager.openSecondLevelMenu(6);
+                    SubtitleMenuManager.showOnOffToggleButton();
                  }, clickInteractionTimeout);
                 break;
 
             case "showSignLanguageMenuButton":
+            case "disabledSignLanguageMenuButton":
                 // TODO
                 // show the sign language configuration menu
                 MenuManager.pressButtonFeedback(name);
                 break;
 
             case "showAudioDescriptionMenuButton":
+            case "disabledAudioDescriptionMenuButton":
                 // TODO
                 // show the audio description configuration menu
                 MenuManager.pressButtonFeedback(name);
@@ -194,6 +197,7 @@ THREE.InteractionsController = function () {
                 break;
 
             case "showAudioSubtitleMenuButton":
+            case "disabledAudioSubtitleMenuButton":
                 // TODO
                 // show the audio subtitle configuration menu
                 MenuManager.pressButtonFeedback(name);
@@ -226,21 +230,17 @@ THREE.InteractionsController = function () {
         		break;
 
         	case "subtitleOnButton":
-                //MenuManager.pressButtonFeedback(name);
         		subController.enableSubtitles();
-                
-                scene.getObjectByName(name).material.color.set( menuButtonActiveColor );
-                scene.getObjectByName("subtitleOffButton").material.color.set( menuDefaultColor );
-                isSubtitlesAvtive = true;
+                menuList[6].isEnabled = false;
+                MultiOptionsMenuManager.showMultiOptionsButtons(multiOptionsMainSubMenuIndexes.slice(0,1));
+                SubtitleMenuManager.showOnOffToggleButton();
         		break;
 
         	case "subtitleOffButton":
-                //MenuManager.pressButtonFeedback(name);
         		subController.disableSubtiles();
-
-                scene.getObjectByName(name).material.color.set( menuButtonActiveColor );
-                scene.getObjectByName("subtitleOnButton").material.color.set( menuDefaultColor );
-                isSubtitlesAvtive = false;
+                menuList[6].isEnabled = true;
+                MultiOptionsMenuManager.showMultiOptionsButtons(multiOptionsMainSubMenuIndexes.slice(0,1));
+                SubtitleMenuManager.showOnOffToggleButton();
         		break;
 
         	case "subtitleEngButton":

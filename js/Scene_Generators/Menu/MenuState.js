@@ -7,7 +7,11 @@ var initialVolumeLevel = 0.5;
 
 var settingsLanguage = 'settingsLanguageEngButton';
 
-var isSubtitlesAvtive = true;
+var isSubtitlesActive = true;
+var isSignLanguageActive = false;
+var isAudioDescriptionActive = false;
+var isAudioSubtitleActive = false;
+
 var subtitlesLanguage = 'subtitleEngButton';
 var subtitlesPosition = 'subtitleBottomButton';
 var subtitlesSize = 'subtitleSmallAreaButton';
@@ -20,6 +24,8 @@ var subtitlesIndicator = 'subtitleIndicatorArrowButton';
 //                              M E N U       S T R U C T U R E 
 // 
 //*******************************************************************************************************
+
+var multiOptionsMainSubMenuIndexes = [[6,0,4],[7,1,5],[8,2,6],[9,3,7]];
 
 var numberFirstLevelMenus = 5;
 var menuList = 
@@ -68,7 +74,11 @@ var menuList =
                 'showSubtitleMenuButton',
                 'showSignLanguageMenuButton', 
                 'showAudioDescriptionMenuButton', 
-                'showAudioSubtitleMenuButton'
+                'showAudioSubtitleMenuButton',
+                'disabledSubtitleMenuButton',
+                'disabledSignLanguageMenuButton', 
+                'disabledAudioDescriptionMenuButton', 
+                'disabledAudioSubtitleMenuButton'
             ]
         }, 
 
@@ -154,13 +164,29 @@ var menuList =
                 'subtitleShowAreasDropdown',
                 'subtitleShowIndicatorDropdown'
             ]
-        }/*,                                   
-/*7   { 
-            name: 'audioDescriptionMenu', isEnabled: true, firstmenuindex: 4, 
+        },                                   
+/*7*/   { 
+            name: 'signLanguageMenu', isEnabled: false, firstmenuindex: 4, 
+            buttons: 
+            [
+                'signLanguageOnButton', 
+                'signLanguageOffButton'
+            ]
+        },
+/*8*/   { 
+            name: 'audioDescriptionMenu', isEnabled: false, firstmenuindex: 4, 
             buttons: 
             [
                 'audioDescriptionOnButton', 
                 'audioDescriptionOffButton'
             ]
-        } */                                   
+        },
+/*9*/   { 
+            name: 'audioSubtitleMenu', isEnabled: false, firstmenuindex: 4, 
+            buttons: 
+            [
+                'audioSubtitleOnButton', 
+                'audioSubtitleOffButton'
+            ]
+        }                                    
     ];

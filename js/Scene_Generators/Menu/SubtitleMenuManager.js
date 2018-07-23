@@ -1,9 +1,41 @@
 THREE.SubtitleMenuManager = function () {
 
+/**
+ * Changes the state of the ON/OFF toggle button
+ * THIS FUNCTIONS WILL CHANGE TO MENUMANAGER AS A GENERAL FUNCTION OF ALL THE MULTI OPTIONS MENUS.
+ */
+    this.showOnOffToggleButton = function ()
+    {
+        if(menuList[6].isEnabled)
+        {
+            scene.getObjectByName(menuList[6].buttons[0]).visible = true; //menuList.
+            scene.getObjectByName(menuList[6].buttons[1]).visible = false; //menuList.
+
+
+            scene.getObjectByName(menuList[6].name).getObjectByName(menuList[4].buttons[0]).visible = true; //menuList.
+            scene.getObjectByName(menuList[6].name).getObjectByName(menuList[4].buttons[4]).visible = false; //menuList.
+
+            interController.removeInteractiveObject(menuList[6].buttons[1]);
+            interController.addInteractiveObject(scene.getObjectByName(menuList[6].buttons[0])); //menuList.
+        }
+        else
+        {
+            scene.getObjectByName(menuList[6].buttons[1]).visible = true; //menuList.
+            scene.getObjectByName(menuList[6].buttons[0]).visible = false; //menuList.
+
+            scene.getObjectByName(menuList[6].name).getObjectByName(menuList[4].buttons[0]).visible = false; //menuList.
+            scene.getObjectByName(menuList[6].name).getObjectByName(menuList[4].buttons[4]).visible = true; //menuList.
+
+            interController.removeInteractiveObject(menuList[6].buttons[0]);
+            interController.addInteractiveObject(scene.getObjectByName(menuList[6].buttons[1])); //menuList.
+        }
+    }
+
     this.openSubtitleMenu = function(backgroundmenu)
     {
-    	var menuList = MenuManager.getMenuList();
-    	var subtitlesMenuTitle = menuData.getMenuTextMesh('ST', 20, menuDefaultColor, menuList[4].buttons[0]); //menuList.multiOptionsMenu.showSubtitleMenuButton;                
+    	var subtitlesMenuTitle = menuData.getMenuTextMesh('ST', 22, menuDefaultColor, menuList[4].buttons[0]); //menuList.multiOptionsMenu.showSubtitleMenuButton;                
+        var disabledSubtitles = menuData.getImageMesh( new THREE.PlaneGeometry( 50*factorScale,59*factorScale ), './img/menu/disabled_st_icon.png', menuList[4].buttons[4], 4 ); // menuList.
+
         var subtitlesMenuGroup =  new THREE.Group();
 
         var linesMenuGroup = menuData.menuLineVerticalDivisions(backgroundmenu, menuDefaultColor);
@@ -12,22 +44,18 @@ THREE.SubtitleMenuManager = function () {
         var firstColumnLines = menuData.menuLineHoritzontalDivisions(menuDefaultColor, 4, backgroundmenu, 1);
         linesMenuGroup.add(firstColumnLines);
 
-        /*var zeroColumnLines = menuData.menuLineHoritzontalDivisions(menuDefaultColor, 4, backgroundmenu, 0);
-        linesMenuGroup.add(zeroColumnLines);*/
-
         subtitlesMenuGroup.add( linesMenuGroup );
 
 
         // TODO- CREATE DYNAMIC FUNCTION FOR FIRST COLUMN ELEMENTS
 
-        var onButton = menuData.getMenuTextMesh('ON', subMenuTextSize, menuDefaultColor, menuList[6].buttons[0]); //menuList
-        onButton.position.x = (-backgroundmenu.geometry.parameters.width/3) + 7;
-        onButton.position.y = 3*backgroundmenu.geometry.parameters.height/8
+        var onButton = menuData.getImageMesh( new THREE.PlaneGeometry( 40*factorScale,22.5*factorScale ), './img/menu/toggle_on.png', menuList[6].buttons[0], 4 ); // menuList.
+        onButton.position.x = (-backgroundmenu.geometry.parameters.width/3);
+        onButton.position.y = 3*backgroundmenu.geometry.parameters.height/8;
         subtitlesMenuGroup.add(onButton);
 
-
-        var offButton = menuData.getMenuTextMesh('OFF', subMenuTextSize, menuDefaultColor, menuList[6].buttons[1]); //menuList
-        offButton.position.x = (-backgroundmenu.geometry.parameters.width/3) - 7;
+        var offButton = menuData.getImageMesh( new THREE.PlaneGeometry( 40*factorScale,22.5*factorScale ), './img/menu/toggle_off.png', menuList[6].buttons[1], 4 ); // menuList.
+        offButton.position.x = (-backgroundmenu.geometry.parameters.width/3);
         offButton.position.y = 3*backgroundmenu.geometry.parameters.height/8;
         subtitlesMenuGroup.add(offButton);
 
@@ -55,11 +83,12 @@ THREE.SubtitleMenuManager = function () {
 
         subtitlesMenuTitle.material.color.set( 0xffff00 );
 
-        //subtitlesMenuTitle.position.set(-(backgroundmenu.geometry.parameters.width/2-5), -10, 0.01) //NEEEDS FACTOR
         subtitlesMenuTitle.position.x = -backgroundmenu.geometry.parameters.width/3;
+        disabledSubtitles.position.x = -backgroundmenu.geometry.parameters.width/3;
 
         subtitlesMenuGroup.add(subtitlesMenuTitle);
-
+        subtitlesMenuGroup.add(disabledSubtitles);
+    
         subtitlesMenuGroup.name = menuList[6].name; //menuList.
         subtitlesMenuGroup.visible = false; //Not the first menu. Visibility false.
 

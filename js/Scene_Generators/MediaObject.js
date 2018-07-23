@@ -170,17 +170,17 @@ THREE.MediaObject = function () {
             compass.position.z = 0.1;
             compass.position.x = xMid/2 + 6.8;
             compass.visible = false;
-
+            compass.material.color.set(t.color);
             mesh.add( compass );
 
-            // lesft compass
+            // left compass
             var imgGeometry = new THREE.PlaneGeometry( 6.7, 6.7 );
             var compass = getImageMesh( imgGeometry, './img/compass_l.png', 'left', 4 );
             compass.add( getBackgroundMesh ( 9.7, 8.7, t.backgroundColor, o ) );
             compass.position.z = 0.1;
             compass.position.x = -(xMid/2 + 6.8);
             compass.visible = false;
-
+            compass.material.color.set(t.color);
             mesh.add( compass );
 
         }

@@ -92,7 +92,7 @@ THREE.MenuManager = function () {
         MultiOptionsMenuManager.createMultiOptionsMenu(background,factorScale); 
 
 // SECOND LEVEL MENUS
-        SettingsMenuManager.openSettingsMenu(background) 
+        SettingsMenuManager.openSettingsMenu(background); 
         SubtitleMenuManager.openSubtitleMenu(background); 
         //openAudioDescriptionMenu(background); //EXPERIMENTAL
         
@@ -104,6 +104,7 @@ THREE.MenuManager = function () {
             }
         });
         PlayPauseMenuManager.showPlayPauseButton();
+        MultiOptionsMenuManager.showMultiOptionsButtons(multiOptionsMainSubMenuIndexes);
 ///************************************************************  
 
         // THIS OPTION HAS TO EXIST ONLY IN TABLET/PC OPTION
@@ -148,7 +149,6 @@ THREE.MenuManager = function () {
         menuList[submenuindex].buttons.forEach(function(elem){
             scene.getObjectByName(elem).material.color.set(menuDefaultColor)
             interController.addInteractiveObject(scene.getObjectByName(elem));
-            //scene.getObjectByName(elem).material.color.set(0xffffff);
         }); 
         scene.getObjectByName(interController.getActiveMenuName()).visible = true;
     }

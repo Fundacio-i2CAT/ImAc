@@ -48,7 +48,7 @@ var cardboardButtonHeight = 50;
 var settingsCardboardMarginX = 60;
 
 /* MENU MULTIOPTIONS */
-var multioptionsMenuTextSize = 10;
+var multioptionsMenuTextSize = 11;
 
 var subMenuTextSize = 5;
 

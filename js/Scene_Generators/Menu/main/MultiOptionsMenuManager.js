@@ -32,8 +32,8 @@ THREE.MultiOptionsMenuManager = function () {
         var subtitlesMenuButton = menuData.getMenuTextMesh('ST', multioptionsMenuTextSize, 0xffffff, menuList[4].buttons[0]); //menuList.multiOptionsMenu.showSubtitleMenuButton;
         var disabledSubtitles = menuData.getImageMesh( new THREE.PlaneGeometry( 25.1*factorScale, 29.5*factorScale ), './img/menu/disabled_st_icon.png', menuList[4].buttons[4], 4 ); // menuList.
 
-        disabledSubtitles.position.x = -3*backgroundmenu.geometry.parameters.width/8;
-        subtitlesMenuButton.position.x = -3*backgroundmenu.geometry.parameters.width/8;
+        subtitlesMenuButton.position.set( -3*backgroundmenu.geometry.parameters.width/8, 0, menuElementsZ);
+        disabledSubtitles.position.set(-3*backgroundmenu.geometry.parameters.width/8, 0, menuElementsZ);
 
         subtitlesMenuButton.name = menuList[4].buttons[0];
         disabledSubtitles.name = menuList[4].buttons[4]; 
@@ -41,10 +41,10 @@ THREE.MultiOptionsMenuManager = function () {
         multiOptionsGroup.add( disabledSubtitles );
 
         var signLanguageMenuButton = menuData.getMenuTextMesh('SL', multioptionsMenuTextSize, 0xffffff, menuList[4].buttons[1]); //menuList.multiOptionsMenu.showSignLanguageMenuButton;
-        var disabledSignLanguageMenu = menuData.getImageMesh( new THREE.PlaneGeometry( 24.6*factorScale, 29.5*factorScale ), './img/menu/disabled_sl_icon.png', menuList[4].buttons[5], 4 ); // menuList.                
-        
-        signLanguageMenuButton.position.x = -1*backgroundmenu.geometry.parameters.width/8;
-        disabledSignLanguageMenu.position.x = -1*backgroundmenu.geometry.parameters.width/8;
+        var disabledSignLanguageMenu = menuData.getImageMesh( new THREE.PlaneGeometry( 24.6*factorScale, 29.5*factorScale ), './img/menu/disabled_sl_icon.png', menuList[4].buttons[5], 4 ); // menuList.                       
+
+        signLanguageMenuButton.position.set(-1*backgroundmenu.geometry.parameters.width/8, 0, menuElementsZ);
+        disabledSignLanguageMenu.position.set(-1*backgroundmenu.geometry.parameters.width/8, 0, menuElementsZ);
 
         signLanguageMenuButton.name = menuList[4].buttons[1]; 
         disabledSignLanguageMenu.name = menuList[4].buttons[5]; 
@@ -54,8 +54,8 @@ THREE.MultiOptionsMenuManager = function () {
         var audiodescriptionMenuButton = menuData.getMenuTextMesh('AD', multioptionsMenuTextSize, 0xffffff, menuList[4].buttons[2]); //menuList.multiOptionsMenu.showAudioDescriptionMenuButton;                
         var disabledAudiodescriptionMenu = menuData.getImageMesh( new THREE.PlaneGeometry( 29.4*factorScale, 29.5*factorScale ), './img/menu/disabled_ad_icon.png', menuList[4].buttons[6], 4 ); // menuList.
 
-        audiodescriptionMenuButton.position.x = 1*backgroundmenu.geometry.parameters.width/8;
-        disabledAudiodescriptionMenu.position.x = 1*backgroundmenu.geometry.parameters.width/8;
+        audiodescriptionMenuButton.position.set(1*backgroundmenu.geometry.parameters.width/8,0, menuElementsZ);
+        disabledAudiodescriptionMenu.position.set(1*backgroundmenu.geometry.parameters.width/8,0, menuElementsZ);
 
         audiodescriptionMenuButton.name = menuList[4].buttons[2]; 
         disabledAudiodescriptionMenu.name = menuList[4].buttons[6]; 
@@ -66,8 +66,8 @@ THREE.MultiOptionsMenuManager = function () {
         var audioSubtitleMenuButton = menuData.getMenuTextMesh('AST', multioptionsMenuTextSize, 0xffffff, menuList[4].buttons[3]); //menuList.multiOptionsMenu.showAudioSubtitleMenuButton;   
         var disabledAudioSubtitleMenu = menuData.getImageMesh( new THREE.PlaneGeometry( 42*factorScale, 29.5*factorScale ), './img/menu/disabled_ast_icon.png', menuList[4].buttons[7], 4 ); // menuList.            
 
-        disabledAudioSubtitleMenu.position.x = 3*backgroundmenu.geometry.parameters.width/8;
-        audioSubtitleMenuButton.position.x = 3*backgroundmenu.geometry.parameters.width/8;
+        disabledAudioSubtitleMenu.position.set( 3*backgroundmenu.geometry.parameters.width/8, 0, menuElementsZ);
+        audioSubtitleMenuButton.position.set( 3*backgroundmenu.geometry.parameters.width/8, 0, menuElementsZ);
 
         audioSubtitleMenuButton.name = menuList[4].buttons[3]; 
         disabledAudioSubtitleMenu.name = menuList[4].buttons[7]; 

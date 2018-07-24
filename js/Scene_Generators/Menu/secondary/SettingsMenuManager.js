@@ -1,6 +1,6 @@
 THREE.SettingsMenuManager = function () {
 
-    this.openSettingsMenu = function (backgroundmenu)
+    this.openMenu = function (backgroundmenu)
     {
     	var menuList = MenuManager.getMenuList();
         var settingsIcon = scene.getObjectByName(menuList[3].buttons[0]).clone(); // menuList.settingsCardboardMenu.settingsButton

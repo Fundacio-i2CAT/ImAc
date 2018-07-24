@@ -16,8 +16,10 @@ THREE.SettingsCardboardMenuManager = function () {
         cardboardIcon.name = menuList[3].buttons[1]; //menuList.settingsCardboardMenu.cardboadButton;
 
         cardboardIcon.position.x = backgroundmenu.geometry.parameters.width/4;
+        cardboardIcon.position.z = menuElementsZ;
         settingsIcon.position.x = -backgroundmenu.geometry.parameters.width/4;
-        
+        settingsIcon.position.z = menuElementsZ;
+
         settingsCardboardGroup.add( cardboardIcon );
         settingsCardboardGroup.add( settingsIcon );
 

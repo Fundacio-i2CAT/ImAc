@@ -111,8 +111,8 @@ THREE.MenuManager = function () {
 
         // THIS OPTION HAS TO EXIST ONLY IN TABLET/PC OPTION
         // VR MODE NEEDS OTHER OPTION   
-        //camera.add(background);   
-        scene.add(background);   
+        camera.add(background);   
+        //scene.add(background);   
     }
 
     /**
@@ -210,8 +210,8 @@ THREE.MenuManager = function () {
 
         // THIS OPTION HAS TO EXIST ONLY IN TABLET/PC OPTION
         // VR MODE MENU MAY BE ATTACHED TO BACKGROUND/SCENE ONLY   
-        //camera.remove(menu);
-        scene.remove(menu);
+        camera.remove(menu);
+        //scene.remove(menu);
     }
 
 /**

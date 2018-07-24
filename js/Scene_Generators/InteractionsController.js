@@ -249,7 +249,7 @@ THREE.InteractionsController = function () {
         		break;
 
         	case "subtitlesOnButton":
-        		subController.enableSubtitles();
+                subController.disableSubtiles();
                 menuList[6].isEnabled = false;
                 mloptMMgr.showMultiOptionsButtons(multiOptionsMainSubMenuIndexes.slice(0,1));
 
@@ -258,7 +258,7 @@ THREE.InteractionsController = function () {
         		break;
 
         	case "subtitlesOffButton":
-        		subController.disableSubtiles();
+                subController.enableSubtitles();
                 menuList[6].isEnabled = true;
                 mloptMMgr.showMultiOptionsButtons(multiOptionsMainSubMenuIndexes.slice(0,1));
 

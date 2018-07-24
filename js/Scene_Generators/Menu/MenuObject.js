@@ -49,7 +49,7 @@ THREE.MenuObject = function () {
         //interController.addInteractiveObject(coliderMesh);
         mesh.add(coliderMesh);
         
-        mesh.position.z = 0.01;
+        mesh.position.z = menuElementsZ;
         mesh.name = name; //menuList.playSeekMenu.playButton
         mesh.scale.set(f,f,1);
         
@@ -83,11 +83,11 @@ THREE.MenuObject = function () {
 
         coliderMesh.name = name; //menuList.playSeekMenu.pauseButton
         //interController.addInteractiveObject(coliderMesh);
-        coliderMesh.position.z = 0.01;
+        coliderMesh.position.z = menuElementsZ;
         mesh.add(coliderMesh);
         mesh.name = name; //menuList.playSeekMenu.pauseButton
 
-        mesh.position.z = 0.01;
+        mesh.position.z = menuElementsZ;
         mesh.scale.set(f,f,1);
         
         return mesh;
@@ -124,7 +124,7 @@ THREE.MenuObject = function () {
         //interController.addInteractiveObject(coliderMesh);
 
         mesh.add(coliderMesh);
-        mesh.position.z = 0.01;
+        mesh.position.z = menuElementsZ;
         mesh.scale.set(f,f,1);
 
         return mesh;
@@ -192,7 +192,7 @@ THREE.MenuObject = function () {
         minusMesh.name =  name;
         //interController.addInteractiveObject(coliderMesh);
         minusMesh.add(coliderMesh);
-        minusMesh.position.z = 0.01;
+        minusMesh.position.z = menuElementsZ;
         minusMesh.scale.set(f,f,1);  
         
         return minusMesh;
@@ -241,7 +241,7 @@ THREE.MenuObject = function () {
         plusMesh.name = name;
         //interController.addInteractiveObject(coliderMesh);
         plusMesh.add(coliderMesh);
-        plusMesh.position.z = 0.01;
+        plusMesh.position.z = menuElementsZ;
         plusMesh.scale.set(f,f,1);
         
         return plusMesh;
@@ -367,9 +367,9 @@ THREE.MenuObject = function () {
 
         mesh.name = name;
         coliderMesh.name = name;
-        coliderMesh.position.z = 0.02;
+        coliderMesh.position.z = 0.06;
         mesh.add(coliderMesh);
-        mesh.position.z = 0.01;
+        mesh.position.z = 0.05;
 
         return mesh;
     }
@@ -414,7 +414,7 @@ THREE.MenuObject = function () {
         linesMenuGroup.add( line );
         linesMenuGroup.add( line2 );
 
-        linesMenuGroup.position.z = 0.01;
+        linesMenuGroup.position.z = 0.05;
 
         return linesMenuGroup
     }

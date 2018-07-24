@@ -58,7 +58,7 @@ THREE.MenuManager = function () {
         {
             var factor = (index*2)+1;
             var option = menuData.getMenuTextMesh(dataArray[index], subMenuTextSize, menuDefaultColor, elem)
-            option.position.set( backgroundmenu.geometry.parameters.width/3, (backgroundmenu.geometry.parameters.height/2-factor*backgroundmenu.geometry.parameters.height/(subMenuDataLength*2)), 0.01);                    
+            option.position.set( backgroundmenu.geometry.parameters.width/3, (backgroundmenu.geometry.parameters.height/2-factor*backgroundmenu.geometry.parameters.height/(subMenuDataLength*2)), menuElementsZ);                    
             
             // CHANGE TO A SEPARATE FUNCTION
             if (settingsLanguage == elem || subtitlesLanguage == elem || subtitlesPosition == elem ||subtitlesSize == elem || subtitlesIndicator == elem) option.material.color.set( menuButtonActiveColor ); 
@@ -66,7 +66,7 @@ THREE.MenuManager = function () {
             secondColumGroup.add(option); 
         })
 
-        secondColumGroup.position.z = 0.01;
+        secondColumGroup.position.z = menuElementsZ;
         secondColumGroup.name = subMenuData.name;
         secondColumGroup.visible = false;
 
@@ -85,16 +85,18 @@ THREE.MenuManager = function () {
         var background = createMenuBackground(menuMargin, backgroundMenuColor);
         factorScale = background.geometry.parameters.height/background.geometry.parameters.width
 
-// FIRST LEVEL MENUS
-        PlayPauseMenuManager.createPlaySeekMenu(background, factorScale);
-        VolumeMenuManager.createVolumeChangeMenu(background, factorScale);
-        SettingsCardboardMenuManager.createSettingsCardboardMenu(background, factorScale);
-        MultiOptionsMenuManager.createMultiOptionsMenu(background,factorScale); 
+// MAIN MENUS
+        ppMMgr.createPlaySeekMenu(background, factorScale);
+        volMMgr.createVolumeChangeMenu(background, factorScale);
+        setcarMMgr.createSettingsCardboardMenu(background, factorScale);
+        mloptMMgr.createMultiOptionsMenu(background,factorScale); 
 
-// SECOND LEVEL MENUS
-        SettingsMenuManager.openSettingsMenu(background); 
-        SubtitleMenuManager.openSubtitleMenu(background); 
-        //openAudioDescriptionMenu(background); //EXPERIMENTAL
+// SECONDARY MENUS
+        setMMgr.openMenu(background); 
+        stMMngr.openMenu(background); 
+        slMMngr.openMenu(background); 
+        adMMngr.openMenu(background);
+        astMMngr.openMenu(background);
         
 ///********* CODE REPITE IN LINE 23 *************************        
         menuList.forEach(function(menu, index){
@@ -103,14 +105,14 @@ THREE.MenuManager = function () {
                 menu.buttons.forEach(function(elem){interController.addInteractiveObject(scene.getObjectByName(elem))}); 
             }
         });
-        PlayPauseMenuManager.showPlayPauseButton();
-        MultiOptionsMenuManager.showMultiOptionsButtons(multiOptionsMainSubMenuIndexes);
+        ppMMgr.showPlayPauseButton();
+        mloptMMgr.showMultiOptionsButtons(multiOptionsMainSubMenuIndexes);
 ///************************************************************  
 
         // THIS OPTION HAS TO EXIST ONLY IN TABLET/PC OPTION
         // VR MODE NEEDS OTHER OPTION   
-        camera.add(background);   
-        //scene.add(background);   
+        //camera.add(background);   
+        scene.add(background);   
     }
 
     /**
@@ -154,14 +156,22 @@ THREE.MenuManager = function () {
     }
 
 /**
- * Opens a sub menu dropdown.
- *
- * @param      {<type>}  submenuNameActiveIndex  The submenu name active index
+ * Opens the submenu final dropdown
+ * 
+ * This function displays the dropdown with the final options to be chosen by the user.
+ * The first column option selected will be highlighted with 'menuButtonActiveColor' (yellow).
+ * 
+ * @param      {<int>}      submenuActiveIndex  The submenu active index
+ * @param      {<string>}   activeOptionName    The active option name
  */
-    this.openSubMenuDropdown = function(submenuNameActiveIndex, firstRowButtonName)
+    this.openSubMenuDropdown = function(submenuActiveIndex, activeOptionName)
     {
+        // Find the main menu index with the saved variable interController.getActiveMenuName()
         var indexActiveMenu = menuList.map(function(e) { return e.name; }).indexOf(interController.getActiveMenuName());
+
+        // Find the index of the sub menu opened before in order to remove the interativity from the array and change visible = false
         var secondColumnIndex = menuList[indexActiveMenu].submenus.map(function(e) { return e.name; }).indexOf(MenuManager.getSubmenuNameActive());
+        
         if(secondColumnIndex > -1)
         {
             scene.getObjectByName(menuList[indexActiveMenu].name).getObjectByName(menuList[indexActiveMenu].submenus[secondColumnIndex].name).visible = false;
@@ -171,23 +181,23 @@ THREE.MenuManager = function () {
             });
         }
 
-        MenuManager.setSubmenuNameActive(menuList[indexActiveMenu].submenus[submenuNameActiveIndex].name);
+        // Set the new active sub menu name and change visible = true
+        MenuManager.setSubmenuNameActive(menuList[indexActiveMenu].submenus[submenuActiveIndex].name);
+        scene.getObjectByName(menuList[indexActiveMenu].name).getObjectByName(menuList[indexActiveMenu].submenus[submenuActiveIndex].name).visible = true;
 
-        scene.getObjectByName(menuList[indexActiveMenu].name).getObjectByName(menuList[indexActiveMenu].submenus[submenuNameActiveIndex].name).visible = true;
-
+        // Change color of all nonactive options to 'menuDefaultColor' (white) and active option to 'menuButtonActiveColor' (yellow)
         menuList[indexActiveMenu].buttons.forEach(function(elem)
         {
-            if(elem != menuList[6].buttons[0] && elem != menuList[6].buttons[1])
-            {
-                if(elem === firstRowButtonName) scene.getObjectByName(elem).material.color.set( menuButtonActiveColor );
+                if(elem === activeOptionName) scene.getObjectByName(elem).material.color.set( menuButtonActiveColor );
                 else scene.getObjectByName(elem).material.color.set( menuDefaultColor );
-            }
-        }); 
-        menuList[indexActiveMenu].submenus[submenuNameActiveIndex].buttons.forEach(function(elem){interController.addInteractiveObject(scene.getObjectByName(elem))}); 
+        });
+
+        // Add all buttons from active dropdown to the interactivity array.
+        menuList[indexActiveMenu].submenus[submenuActiveIndex].buttons.forEach(function(elem){interController.addInteractiveObject(scene.getObjectByName(elem))}); 
     }
 
 /**
- * Closes a menu.
+ * Closes the menu and removes all the entities from the camera/scene.
  */
     this.closeMenu = function()
     {
@@ -200,23 +210,33 @@ THREE.MenuManager = function () {
 
         // THIS OPTION HAS TO EXIST ONLY IN TABLET/PC OPTION
         // VR MODE MENU MAY BE ATTACHED TO BACKGROUND/SCENE ONLY   
-        camera.remove(menu);
-        //scene.remove(menu);
+        //camera.remove(menu);
+        scene.remove(menu);
     }
 
 /**
- * This function creates the visual feedback when pressing any of the menu buttons (except dropdown elements)
+ * This function creates the visual feedback when pressing
+ * any of the menu buttons (except dropdown elements)
  *
- * @param      {<type>}  buttonName  The button name
+ * @param      {<tring>}  buttonName  The button name
  */
     this.pressButtonFeedback = function(buttonName)
     {   
+        // Remove the interactivity during the visual feedback so users can not click while the animation is occuring.
         interController.removeInteractiveObject(buttonName);
+
         var sceneElement = scene.getObjectByName(buttonName)
+
+        // Save the init scale of the element in order to return the button to the same size.
         var initScale = sceneElement.scale;
+
+        // Change color of the button to 'menuButtonActiveColor' (yellow) for greater contrast. 
         sceneElement.material.color.set(menuButtonActiveColor);
+
+        // Reduce size of the button.
         sceneElement.scale.set(initScale.x*0.8, initScale.y*0.8, 1);
 
+        // Set color 'menuDefaultColor' (white), size to initial and add interactivity within 'clickInteractionTimeout' to sceneElement;
         setTimeout(function(){ 
             sceneElement.material.color.set(menuDefaultColor);
             sceneElement.scale.set(initScale.x*1.25, initScale.y*1.25, 1); 
@@ -225,15 +245,19 @@ THREE.MenuManager = function () {
     }
 
 /**
- * { function_description }
+ * Select one of the options in the final dropdown.
  *
- * @param      {<type>}  buttonName  The button name
+ * @param      {<string>}  buttonName  The button name
  */
-    this.selectOptionFinalDropdown = function(buttonName)
+    this.selectFinalDropdownOption = function(buttonName)
     {
+        // Find the main menu index with the saved variable interController.getActiveMenuName()
         var indexActiveMenu = menuList.map(function(e) { return e.name; }).indexOf(interController.getActiveMenuName());
+
+        // Find the index of the sub menu opened with MenuManager.getSubmenuNameActive()
         var secondColumnIndex = menuList[indexActiveMenu].submenus.map(function(e) { return e.name; }).indexOf(MenuManager.getSubmenuNameActive());
 
+        // Change color of all nonactive options to 'menuDefaultColor' (white) and active option to 'menuButtonActiveColor' (yellow)
         menuList[indexActiveMenu].submenus[secondColumnIndex].buttons.forEach(function(elem)
         {    
             if(elem === buttonName) scene.getObjectByName(elem).material.color.set( menuButtonActiveColor );
@@ -279,17 +303,48 @@ THREE.MenuManager = function () {
         // If the next menu is PLAY/PAUSE or volume change MUTE/UNMUTE remove the nonactive button interactivity from the list.
         if(newIndex == 1)
         {
-            if(PlayPauseMenuManager.isPausedById(0)) interController.removeInteractiveObject(menuList[1].buttons[1]); //menuList.playSeekMenu.playButton
+            if(ppMMgr.isPausedById(0)) interController.removeInteractiveObject(menuList[1].buttons[1]); //menuList.playSeekMenu.playButton
             else interController.removeInteractiveObject(menuList[1].buttons[0]); //menuList.playSeekMenu.pauseButton
         }
         else if(newIndex == 2)
         {
-            VolumeMenuManager.showMuteUnmuteButton();
+            volMMgr.showMuteUnmuteButton();
             if(AudioManager.getVolume()>0) interController.removeInteractiveObject(menuList[2].buttons[2]); //menuList.volumeChangeMenu.unmuteVolumeButton  
             else interController.removeInteractiveObject(menuList[2].buttons[3]); //menuList.volumeChangeMenu.unmuteVolumeButton  
         }
         scene.getObjectByName(interController.getActiveMenuName()).visible = true;
     } 
+
+/**
+ * This functions displays the correct on/off toggle state and shows/hides the multi options disabled icons.
+ */
+    this.showOnOffToggleButton = function (subMenuIndex, onButtonIndex, offButtonIndex, enabledTitleIndex, disabledTitleIndex)
+    {
+        var mainMenuIndex = menuList[subMenuIndex].firstmenuindex;
+        if(menuList[subMenuIndex].isEnabled)
+        {
+            scene.getObjectByName(menuList[subMenuIndex].buttons[onButtonIndex]).visible = true; 
+            scene.getObjectByName(menuList[subMenuIndex].buttons[offButtonIndex]).visible = false; 
+
+
+            scene.getObjectByName(menuList[subMenuIndex].name).getObjectByName(menuList[mainMenuIndex].buttons[enabledTitleIndex]).visible = true; 
+            scene.getObjectByName(menuList[subMenuIndex].name).getObjectByName(menuList[mainMenuIndex].buttons[disabledTitleIndex]).visible = false; 
+
+            interController.removeInteractiveObject(menuList[subMenuIndex].buttons[offButtonIndex]);
+            interController.addInteractiveObject(scene.getObjectByName(menuList[subMenuIndex].buttons[onButtonIndex])); 
+        }
+        else
+        {
+            scene.getObjectByName(menuList[subMenuIndex].buttons[offButtonIndex]).visible = true; 
+            scene.getObjectByName(menuList[subMenuIndex].buttons[onButtonIndex]).visible = false; 
+
+            scene.getObjectByName(menuList[subMenuIndex].name).getObjectByName(menuList[mainMenuIndex].buttons[enabledTitleIndex]).visible = false; 
+            scene.getObjectByName(menuList[subMenuIndex].name).getObjectByName(menuList[mainMenuIndex].buttons[disabledTitleIndex]).visible = true; 
+
+            interController.removeInteractiveObject(menuList[subMenuIndex].buttons[onButtonIndex]);
+            interController.addInteractiveObject(scene.getObjectByName(menuList[subMenuIndex].buttons[offButtonIndex])); 
+        }
+    }
 
 //************************************************************************************
 //
@@ -379,11 +434,11 @@ THREE.MenuManager = function () {
         var nextR = menuData.getImageMesh( new THREE.PlaneGeometry( backgroundChangeMenuButtonWidth*factorScale,backgroundChangeMenuButtonHeight*factorScale ), './img/menu/less_than_icon.png', menuList[0].buttons[1], 4 ); // menuList.
         var nextL = menuData.getImageMesh( new THREE.PlaneGeometry( backgroundChangeMenuButtonWidth*factorScale,backgroundChangeMenuButtonHeight*factorScale ), './img/menu/less_than_icon.png', menuList[0].buttons[2], 4 ); // menuList.
 
-        closeButton.position.set((menu.geometry.parameters.width/2-closeButtonMarginX*factorScale), (menu.geometry.parameters.height/2-closeButtonMarginY*factorScale), 0.01)
+        closeButton.position.set((menu.geometry.parameters.width/2-closeButtonMarginX*factorScale), (menu.geometry.parameters.height/2-closeButtonMarginY*factorScale), menuElementsZ)
         closeButton.rotation.z = Math.PI/4;
-        nextR.position.set(Math.cos(0)*(menu.geometry.parameters.width/2 - nextButtonMarginX*factorScale), -(menu.geometry.parameters.height/2 - nextButtonMarginY*factorScale), 0.01)
+        nextR.position.set(Math.cos(0)*(menu.geometry.parameters.width/2 - nextButtonMarginX*factorScale), -(menu.geometry.parameters.height/2 - nextButtonMarginY*factorScale), menuElementsZ)
         nextR.rotation.z = Math.PI;
-        nextL.position.set(Math.cos(Math.PI)*(menu.geometry.parameters.width/2 - nextButtonMarginX*factorScale), -(menu.geometry.parameters.height/2 - nextButtonMarginY*factorScale), 0.01)
+        nextL.position.set(Math.cos(Math.PI)*(menu.geometry.parameters.width/2 - nextButtonMarginX*factorScale), -(menu.geometry.parameters.height/2 - nextButtonMarginY*factorScale), menuElementsZ)
 
         closeButton.name = menuList[0].buttons[0]; //menuList.backgroudMenu.closeMenuButton;
         nextR.name = menuList[0].buttons[1]; //menuList.backgroudMenu.forwardMenuButton;
@@ -408,7 +463,7 @@ THREE.MenuManager = function () {
         var material = new THREE.MeshBasicMaterial( { color: color } );
         var circle = new THREE.Mesh( geometry, material );
 
-        circle.position.z = 0.01;
+        circle.position.z = menuElementsZ;
         circle.position.x = x;
         circle.position.y = y;
 

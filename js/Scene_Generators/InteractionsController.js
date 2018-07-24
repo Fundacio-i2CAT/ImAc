@@ -28,9 +28,12 @@ THREE.InteractionsController = function () {
 	{
 		switch ( name )
         {
-        //****************************
-        //       Main controls
-        //****************************
+
+////***********************************************************************************************************
+//
+//                  M A I N     M E N U     C O N T R O L S 
+//                  
+//***********************************************************************************************************
 
         	case "openMenu":
         		scene.getObjectByName( "backgroudMenu" ) ? console.log("Menu already open") : MenuManager.openMenu();
@@ -56,65 +59,71 @@ THREE.InteractionsController = function () {
                 
         		break;
 
-        //****************************
-        //      Player controls
-        //****************************
+//***********************************************************************************************************
+//
+//                  P L A Y / P A U S E     C O N T R O L S 
+//                  
+//***********************************************************************************************************
 
         	case "playButton":
                 MenuManager.pressButtonFeedback(name);
-                PlayPauseMenuManager.playButtonInteraction();
-                setTimeout(function(){ PlayPauseMenuManager.playoutTimeDisplayLogic(true); }, clickInteractionTimeout);
+                ppMMgr.playButtonInteraction();
+                setTimeout(function(){ ppMMgr.playoutTimeDisplayLogic(true); }, clickInteractionTimeout);
         		break;
 
         	case "pauseButton":
                 MenuManager.pressButtonFeedback(name);
-                PlayPauseMenuManager.pauseButtonInteraction();
-                setTimeout(function(){ PlayPauseMenuManager.playoutTimeDisplayLogic(false); }, clickInteractionTimeout);     
+                ppMMgr.pauseButtonInteraction();
+                setTimeout(function(){ ppMMgr.playoutTimeDisplayLogic(false); }, clickInteractionTimeout);     
         		break;
 
         	case "backSeekButton":
                 MenuManager.pressButtonFeedback(name);
-        		PlayPauseMenuManager.seekAll( -seekTime );
-                PlayPauseMenuManager.playoutTimeDisplayLogic(true);
+        		ppMMgr.seekAll( -seekTime );
+                ppMMgr.playoutTimeDisplayLogic(true);
         		break;
 
         	case "forwardSeekButton":
                 MenuManager.pressButtonFeedback(name);
-        		PlayPauseMenuManager.seekAll( seekTime );
-                PlayPauseMenuManager.playoutTimeDisplayLogic(true);
+        		ppMMgr.seekAll( seekTime );
+                ppMMgr.playoutTimeDisplayLogic(true);
         		break;
 
-        //****************************
-        //      Volume controls
-        //****************************
+//***********************************************************************************************************
+//
+//                  V O L U M E     C O N T R O L S 
+//                  
+//***********************************************************************************************************
 
         	case "minusVolumeButton":
                 MenuManager.pressButtonFeedback(name);
         		AudioManager.changeVolume( -volumeChangeStep );      
-                VolumeMenuManager.volumeLevelDisplayLogic();              
+                volMMgr.volumeLevelDisplayLogic();              
         		break;
 
         	case "plusVolumeButton":
                 MenuManager.pressButtonFeedback(name);
         		AudioManager.changeVolume( volumeChangeStep );
-                VolumeMenuManager.volumeLevelDisplayLogic();
+                volMMgr.volumeLevelDisplayLogic();
                 break;
 
         	case "muteVolumeButton":
                 MenuManager.pressButtonFeedback(name);
         		AudioManager.setmute();
-                setTimeout(function(){ VolumeMenuManager.showMuteUnmuteButton(); }, clickInteractionTimeout);                
+                setTimeout(function(){ volMMgr.showMuteUnmuteButton(); }, clickInteractionTimeout);                
         		break;
 
         	case "unmuteVolumeButton":
                 MenuManager.pressButtonFeedback(name);
         		AudioManager.setunmute();
-                setTimeout(function(){ VolumeMenuManager.showMuteUnmuteButton(); }, clickInteractionTimeout);
+                setTimeout(function(){ volMMgr.showMuteUnmuteButton(); }, clickInteractionTimeout);
         		break;
 
-        //****************************
-        //     Settings Cardboard controls
-        //****************************
+//***********************************************************************************************************
+//
+//                  S E T T I N G S / C A R D B O A R D     C O N T R O L S 
+//                  
+//***********************************************************************************************************
 
         	case "cardboardButton":
                 MenuManager.pressButtonFeedback(name);
@@ -126,10 +135,11 @@ THREE.InteractionsController = function () {
                 setTimeout(function(){ MenuManager.openSecondLevelMenu(5); }, clickInteractionTimeout);
         		break;
 
-
-        //****************************
-        //     Settings  controls
-        //****************************  
+//***********************************************************************************************************
+//
+//                  S E T T I N G S     C O N T R O L S 
+//                  
+//***********************************************************************************************************
               
             case "settingsLanguageButton":
                 MenuManager.openSubMenuDropdown(0, name);
@@ -145,39 +155,42 @@ THREE.InteractionsController = function () {
 
             case "settingsLanguageEngButton":
                 console.log("Settings language changed to ENGLISH");
-                MenuManager.selectOptionFinalDropdown(name);
+                MenuManager.selectFinalDropdownOption(name);
                 settingsLanguage = name;
                 break;
 
             case "settingsLanguageEspButton":
                 console.log("Settings language changed to SPANISH");
-                MenuManager.selectOptionFinalDropdown(name);
+                MenuManager.selectFinalDropdownOption(name);
                 settingsLanguage = name;
                 break;
 
             case "settingsLanguageGerButton":
                 console.log("Settings language changed to GERMAN");
-                MenuManager.selectOptionFinalDropdown(name);
+                MenuManager.selectFinalDropdownOption(name);
                 settingsLanguage = name;
                 break;
 
             case "settingsLanguageCatButton":
                 console.log("Settings language changed to CATALAN");
-                MenuManager.selectOptionFinalDropdown(name);
+                MenuManager.selectFinalDropdownOption(name);
                 settingsLanguage = name;
                 break;
 
-        //****************************
-        //     Multi options menu
-        //****************************
+//***********************************************************************************************************
+//
+//                  M U L T I - O P T I O N S     M E N U     C O N T R O L S 
+//                  
+//***********************************************************************************************************
 
-            case "showSubtitleMenuButton":
-            case "disabledSubtitleMenuButton":
+            case "showSubtitlesMenuButton":
+            case "disabledSubtitlesMenuButton":
                 // show the subtitle configuration menu
                 MenuManager.pressButtonFeedback(name);
                 setTimeout(function(){ 
                     MenuManager.openSecondLevelMenu(6);
-                    SubtitleMenuManager.showOnOffToggleButton();
+                    /* function (subMenuIndex, onButtonIndex, offButtonIndex, enabledTitleIndex, disabledTitleIndex) */
+                    MenuManager.showOnOffToggleButton(6, 0, 1, 0, 4);// Indexes from MenuState menuList
                  }, clickInteractionTimeout);
                 break;
 
@@ -186,6 +199,11 @@ THREE.InteractionsController = function () {
                 // TODO
                 // show the sign language configuration menu
                 MenuManager.pressButtonFeedback(name);
+                setTimeout(function(){ 
+                    MenuManager.openSecondLevelMenu(7);
+                    /* function (subMenuIndex, onButtonIndex, offButtonIndex, enabledTitleIndex, disabledTitleIndex) */
+                    MenuManager.showOnOffToggleButton(7, 0, 1, 1, 5);// Indexes from MenuState menuList
+                 }, clickInteractionTimeout);
                 break;
 
             case "showAudioDescriptionMenuButton":
@@ -193,141 +211,219 @@ THREE.InteractionsController = function () {
                 // TODO
                 // show the audio description configuration menu
                 MenuManager.pressButtonFeedback(name);
-                //MenuManager.openSecondLevelMenu(7);
+                setTimeout(function(){ 
+                    MenuManager.openSecondLevelMenu(8);
+                    /* function (subMenuIndex, onButtonIndex, offButtonIndex, enabledTitleIndex, disabledTitleIndex) */
+                    MenuManager.showOnOffToggleButton(8, 0, 1, 2, 6);// Indexes from MenuState menuList
+                 }, clickInteractionTimeout);
                 break;
 
-            case "showAudioSubtitleMenuButton":
-            case "disabledAudioSubtitleMenuButton":
+            case "showAudioSubtitlesMenuButton":
+            case "disabledAudioSubtitlesMenuButton":
                 // TODO
                 // show the audio subtitle configuration menu
                 MenuManager.pressButtonFeedback(name);
+                setTimeout(function(){ 
+                    MenuManager.openSecondLevelMenu(9);
+                    /* function (subMenuIndex, onButtonIndex, offButtonIndex, enabledTitleIndex, disabledTitleIndex) */
+                    MenuManager.showOnOffToggleButton(9, 0, 1, 3, 7); // Indexes from MenuState menuList
+                 }, clickInteractionTimeout);
                 break;
 
-        //****************************
-        //     Audio Description controls
-        //****************************
-            case "audioDescriptionOnButton":
-            //TODO
-                break;
+//***********************************************************************************************************
+//
+//                  S U B T I T L E S     M E N U     C O N T R O L S 
+//                  
+//***********************************************************************************************************
 
-            case "audioDescriptionOffButton":
-            //TODO
-                break;
-        //****************************
-        //     Subtitle controls
-        //****************************
-
-        	case "subtitleTopButton":
+        	case "subtitlesTopButton":
         		subController.setSubPosition( 0, 1 );
-                MenuManager.selectOptionFinalDropdown(name);
+                MenuManager.selectFinalDropdownOption(name);
                 subtitlesPosition = name;
         		break;
 
-        	case "subtitleBottomButton":
+        	case "subtitlesBottomButton":
         		subController.setSubPosition( 0, -1 );
-                MenuManager.selectOptionFinalDropdown(name);
+                MenuManager.selectFinalDropdownOption(name);
                 subtitlesPosition = name;
         		break;
 
-        	case "subtitleOnButton":
+        	case "subtitlesOnButton":
         		subController.enableSubtitles();
                 menuList[6].isEnabled = false;
-                MultiOptionsMenuManager.showMultiOptionsButtons(multiOptionsMainSubMenuIndexes.slice(0,1));
-                SubtitleMenuManager.showOnOffToggleButton();
+                mloptMMgr.showMultiOptionsButtons(multiOptionsMainSubMenuIndexes.slice(0,1));
+
+                /* function (subMenuIndex, onButtonIndex, offButtonIndex, enabledTitleIndex, disabledTitleIndex) */
+                MenuManager.showOnOffToggleButton(6, 0, 1, 0, 4);// Indexes from MenuState menuList
         		break;
 
-        	case "subtitleOffButton":
+        	case "subtitlesOffButton":
         		subController.disableSubtiles();
                 menuList[6].isEnabled = true;
-                MultiOptionsMenuManager.showMultiOptionsButtons(multiOptionsMainSubMenuIndexes.slice(0,1));
-                SubtitleMenuManager.showOnOffToggleButton();
+                mloptMMgr.showMultiOptionsButtons(multiOptionsMainSubMenuIndexes.slice(0,1));
+
+                /* function (subMenuIndex, onButtonIndex, offButtonIndex, enabledTitleIndex, disabledTitleIndex) */
+                MenuManager.showOnOffToggleButton(6, 0, 1, 0, 4); // Indexes from MenuState menuList
         		break;
 
-        	case "subtitleEngButton":
+        	case "subtitlesEngButton":
         		subController.setSubtitle( "./resources/LICEU_ENG.xml" ); 
-                MenuManager.selectOptionFinalDropdown(name);
+                MenuManager.selectFinalDropdownOption(name);
                 subtitlesLanguage = name;
         		break;
 
-        	case "subtitleEspButton":
+        	case "subtitlesEspButton":
         		subController.setSubtitle( "./resources/LICEU_CAST.xml" ); 
-                MenuManager.selectOptionFinalDropdown(name);
+                MenuManager.selectFinalDropdownOption(name);
                 subtitlesLanguage = name;
         		break;
 
-            case "subtitleGerButton":
+            case "subtitlesGerButton":
                 console.log("Subtitles changed to GERMAN");
-                MenuManager.selectOptionFinalDropdown(name);
+                MenuManager.selectFinalDropdownOption(name);
                 subtitlesLanguage = name;
                 break;
 
-            case "subtitleCatButton":
+            case "subtitlesCatButton":
                 console.log("Subtitles changed to CATALAN");
-                MenuManager.selectOptionFinalDropdown(name);
+                MenuManager.selectFinalDropdownOption(name);
                 subtitlesLanguage = name;
                 break;
 
-        	case "subtitleIndicatorNoneButton":
+        	case "subtitlesIndicatorNoneButton":
         		subController.setSubIndicator( "none" );
-                MenuManager.selectOptionFinalDropdown(name);
+                MenuManager.selectFinalDropdownOption(name);
         		break;
 
-        	case "subtitleIndicatorArrowButton":
+        	case "subtitlesIndicatorArrowButton":
         		subController.setSubIndicator( "arrow" );
-                MenuManager.selectOptionFinalDropdown(name);
+                MenuManager.selectFinalDropdownOption(name);
         		break;
 
-        	case "subtitleIndicatorRadarButton":
+        	case "subtitlesIndicatorRadarButton":
         		subController.setSubIndicator( "compass" );
-                MenuManager.selectOptionFinalDropdown(name);
+                MenuManager.selectFinalDropdownOption(name);
         		break;
 
-        	case "subtitleSmallAreaButton":
+        	case "subtitlesSmallAreaButton":
         		subController.setSize( 50 );
-                MenuManager.selectOptionFinalDropdown(name);
+                MenuManager.selectFinalDropdownOption(name);
                 subtitlesSize = name;
         		break;
 
-        	case "subtitleMediumlAreaButton":
+        	case "subtitlesMediumlAreaButton":
         		subController.setSize( 60 );
-                MenuManager.selectOptionFinalDropdown(name);
+                MenuManager.selectFinalDropdownOption(name);
                 subtitlesSize = name;
         		break;
 
-        	case "subtitleLargeAreaButton":
+        	case "subtitlesLargeAreaButton":
         		subController.setSize( 70 );
-                MenuManager.selectOptionFinalDropdown(name);
+                MenuManager.selectFinalDropdownOption(name);
                 subtitlesSize = name;
         		break;
 
-        	case "subtitleShowLanguagesDropdown":
+        	case "subtitlesShowLanguagesDropdown":
                 MenuManager.openSubMenuDropdown(0, name);
         		// TODO
         		// mostar el menu con la lista de idiomas seleccionables
         		break;
 
-        	case "subtitleShowPositionsDropdown":
+        	case "subtitlesShowPositionsDropdown":
         		// TODO
         		MenuManager.openSubMenuDropdown(1, name);
         		break;
-            case "subtitleShowAreasDropdown":
+            case "subtitlesShowAreasDropdown":
                 // mostrar lista de areas de visualizacion (small/medium/large)
                 MenuManager.openSubMenuDropdown(2, name);
                 break;
 
-            case "subtitleShowIndicatorDropdown":
+            case "subtitlesShowIndicatorDropdown":
                 // mostrar lista de indicadores de visualizacion (none/arrow/radar)
                 MenuManager.openSubMenuDropdown(3, name);
                 break;
 
-        	case "subtitleShowSpeakers":
+        	case "subtitlesShowSpeakers":
         		// TODO
         		// mostrar lista de los indicadores (none/arrow/radar)
         		break;
 
-        	case "subtitleShowAreas":
+        	case "subtitlesShowAreas":
         		// TODO
         		break;
+
+//***********************************************************************************************************
+//
+//                  S I G N     L A N G U A G E     M E N U     C O N T R O L S 
+//                  
+//***********************************************************************************************************
+
+            case "signLanguageOnButton":
+            //TODO
+                //subController.enableSubtitles();
+                menuList[7].isEnabled = false;
+                mloptMMgr.showMultiOptionsButtons(multiOptionsMainSubMenuIndexes.slice(1,2));
+                                
+                /* function (subMenuIndex, onButtonIndex, offButtonIndex, enabledTitleIndex, disabledTitleIndex) */
+                MenuManager.showOnOffToggleButton(7, 0, 1, 1, 5); // Indexes from MenuState menuList
+                break;
+
+            case "signLanguageOffButton":
+            //TODO
+                menuList[7].isEnabled = true;
+                mloptMMgr.showMultiOptionsButtons(multiOptionsMainSubMenuIndexes.slice(1,2));
+                
+                /* function (subMenuIndex, onButtonIndex, offButtonIndex, enabledTitleIndex, disabledTitleIndex) */
+                MenuManager.showOnOffToggleButton(7, 0, 1, 1, 5); // Indexes from MenuState menuList
+                break;
+
+//***********************************************************************************************************
+//
+//                  A U D I O     D E S C R I P T I O N     M E N U     C O N T R O L S 
+//                  
+//***********************************************************************************************************
+
+            case "audioDescriptionOnButton":
+            //TODO
+                menuList[8].isEnabled = false;
+                mloptMMgr.showMultiOptionsButtons(multiOptionsMainSubMenuIndexes.slice(2,3));
+
+                /* function (subMenuIndex, onButtonIndex, offButtonIndex, enabledTitleIndex, disabledTitleIndex) */
+                MenuManager.showOnOffToggleButton(8, 0, 1, 2, 6); // Indexes from MenuState menuList
+                break;
+
+            case "audioDescriptionOffButton":
+            //TODO
+                menuList[8].isEnabled = true;
+                mloptMMgr.showMultiOptionsButtons(multiOptionsMainSubMenuIndexes.slice(2,3));
+
+                /* function (subMenuIndex, onButtonIndex, offButtonIndex, enabledTitleIndex, disabledTitleIndex) */
+                MenuManager.showOnOffToggleButton(8, 0, 1, 2, 6); // Indexes from MenuState menuList
+                break;
+
+//***********************************************************************************************************
+//
+//                  A U D I O     S U B T I T L E S     M E N U     C O N T R O L S 
+//                  
+//***********************************************************************************************************
+
+            case "audioSubtitlesOnButton":
+            //TODO
+                menuList[9].isEnabled = false;
+                mloptMMgr.showMultiOptionsButtons(multiOptionsMainSubMenuIndexes.slice(3,4));
+
+                /* function (subMenuIndex, onButtonIndex, offButtonIndex, enabledTitleIndex, disabledTitleIndex) */
+                MenuManager.showOnOffToggleButton(9, 0, 1, 3, 7); // Indexes from MenuState menuList
+                break;
+
+            case "audioSubtitlesOffButton":
+            //TODO
+                menuList[9].isEnabled = true;
+                mloptMMgr.showMultiOptionsButtons(multiOptionsMainSubMenuIndexes.slice(3,4));
+
+                /* function (subMenuIndex, onButtonIndex, offButtonIndex, enabledTitleIndex, disabledTitleIndex) */
+                MenuManager.showOnOffToggleButton(9, 0, 1, 3, 7); // Indexes from MenuState menuList
+                break;
 
         	default:
         		console.log("You have clicked a button with no interactivity in the list!!!");

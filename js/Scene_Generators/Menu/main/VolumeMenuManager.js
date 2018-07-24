@@ -34,7 +34,7 @@ THREE.VolumeMenuManager = function () {
         scene.getObjectByName('volumeChangeMenu').add(newText)
         scene.getObjectByName('volumeLevel').visible = true;
         setTimeout(function(){ 
-            VolumeMenuManager.showMuteUnmuteButton();
+            volMMgr.showMuteUnmuteButton();
             scene.getObjectByName('volumeLevel').visible = false;
              }, visualFeedbackTimeout);
     }
@@ -58,11 +58,11 @@ THREE.VolumeMenuManager = function () {
         var volumeLevel = menuData.getMenuTextMesh(AudioManager.getVolume()*100+'%', volFeedbackMenuTextSize, menuDefaultColor, 'volumeLevel');
         volumeLevel.visible = false;
 
-        plusVolume.position.set(backgroundmenu.geometry.parameters.width/2 - volumeLevelMarginX*factorScale, 0, 0.01);
-        minusVolume.position.set(-(backgroundmenu.geometry.parameters.width/2 - volumeLevelMarginX*factorScale), 0, 0.01);
+        plusVolume.position.set(backgroundmenu.geometry.parameters.width/2 - volumeLevelMarginX*factorScale, 0, menuElementsZ);
+        minusVolume.position.set(-(backgroundmenu.geometry.parameters.width/2 - volumeLevelMarginX*factorScale), 0, menuElementsZ);
         
-        audioMuteIcon.position.z = 1;
-        audioUnmuteIcon.position.z = 1;
+        audioMuteIcon.position.z = menuElementsZ;
+        audioUnmuteIcon.position.z = menuElementsZ;
 
         volumeChangeGroup.add( plusVolume );
         volumeChangeGroup.add( audioMuteIcon );

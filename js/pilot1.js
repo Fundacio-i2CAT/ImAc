@@ -19,5 +19,5 @@ function runDemo()
     moData.createPointer();
 
 
-    PlayPauseMenuManager.playAll();
+    ppMMgr.playAll();
 }

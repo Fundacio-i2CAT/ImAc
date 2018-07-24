@@ -6,13 +6,20 @@ var _PlayerVersion = 'v0.02.0';
 var AplicationManager = new AplicationManager();
 var moData = new THREE.MediaObject();
 var menuData = new THREE.MenuObject();
-var SubtitleMenuManager = new THREE.SubtitleMenuManager();
-var SettingsCardboardMenuManager = new THREE.SettingsCardboardMenuManager();
-var MultiOptionsMenuManager = new THREE.MultiOptionsMenuManager();
-var SettingsMenuManager = new THREE.SettingsMenuManager();
-var VolumeMenuManager = new THREE.VolumeMenuManager();
-var PlayPauseMenuManager = new THREE.PlayPauseMenuManager();
+
 var MenuManager = new THREE.MenuManager();
+
+var ppMMgr = new THREE.PlayPauseMenuManager();
+var volMMgr = new THREE.VolumeMenuManager();
+var setcarMMgr = new THREE.SettingsCardboardMenuManager();
+var mloptMMgr = new THREE.MultiOptionsMenuManager();
+
+var stMMngr = new THREE.SubtitlesMenuManager();
+var slMMngr = new THREE.SignLanguageMenuManager();
+var adMMngr = new THREE.AudioDescriptionMenuManager();
+var astMMngr = new THREE.AudioSubtitlesMenuManager();
+var setMMgr = new THREE.SettingsMenuManager();
+
 var AudioManager = new AudioManager();
 var subController = new SubSignManager();
 var interController = new THREE.InteractionsController();

@@ -5,6 +5,7 @@ var menuMargin = 25;
 var menuDefaultColor = 0xffffff;
 var menuButtonActiveColor = 0xffff00;
 var factorScale; 
+var menuElementsZ = 0.05;
 
 /* MENU BACKGROUND */
 var backgroundMenuColor = 0x000000;

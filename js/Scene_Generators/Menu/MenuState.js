@@ -8,14 +8,14 @@ var initialVolumeLevel = 0.5;
 var settingsLanguage = 'settingsLanguageEngButton';
 
 var isSubtitlesActive = true;
-var isSignLanguageActive = false;
-var isAudioDescriptionActive = false;
-var isAudioSubtitleActive = false;
+var isSignLanguageActive = true;
+var isAudioDescriptionActive = true;
+var isAudioSubtitleActive = true;
 
-var subtitlesLanguage = 'subtitleEngButton';
-var subtitlesPosition = 'subtitleBottomButton';
-var subtitlesSize = 'subtitleSmallAreaButton';
-var subtitlesIndicator = 'subtitleIndicatorArrowButton';
+var subtitlesLanguage = 'subtitlesEngButton';
+var subtitlesPosition = 'subtitlesBottomButton';
+var subtitlesSize = 'subtitlesSmallAreaButton';
+var subtitlesIndicator = 'subtitlesIndicatorArrowButton';
 
 
 
@@ -71,14 +71,14 @@ var menuList =
             name: 'multiOptionsMenu', 
             buttons: 
             [
-                'showSubtitleMenuButton',
+                'showSubtitlesMenuButton',
                 'showSignLanguageMenuButton', 
                 'showAudioDescriptionMenuButton', 
-                'showAudioSubtitleMenuButton',
-                'disabledSubtitleMenuButton',
+                'showAudioSubtitlesMenuButton',
+                'disabledSubtitlesMenuButton',
                 'disabledSignLanguageMenuButton', 
                 'disabledAudioDescriptionMenuButton', 
-                'disabledAudioSubtitleMenuButton'
+                'disabledAudioSubtitlesMenuButton'
             ]
         }, 
 
@@ -115,58 +115,59 @@ var menuList =
             ]
         },                                                       
 /*6*/   { 
-            name: 'subtitleMenu', isEnabled: true, firstmenuindex: 4,
+            name: 'subtitlesMenu', isEnabled: true, firstmenuindex: 4,
             submenus:
             [
                 { 
-                    name: 'subtitleLanguages', 
+                    name: 'subtitlesLanguages', 
                     buttons:
                     [
-                        'subtitleEngButton', 
-                        'subtitleEspButton',
-                        'subtitleGerButton',
-                        'subtitleCatButton'
+                        'subtitlesEngButton', 
+                        'subtitlesEspButton',
+                        'subtitlesGerButton',
+                        'subtitlesCatButton'
                     ]
                 },
                 { 
-                    name: 'subtitleShowPositions', 
+                    name: 'subtitlesShowPositions', 
                     buttons:
                     [
-                        'subtitleTopButton',
-                        'subtitleBottomButton'
+                        'subtitlesTopButton',
+                        'subtitlesBottomButton'
                     ]
                 },
                 { 
-                    name: 'subtitleAreas', 
+                    name: 'subtitlesAreas', 
                     buttons:
                     [
-                        'subtitleSmallAreaButton', 
-                        'subtitleMediumlAreaButton',
-                        'subtitleLargeAreaButton'
+                        'subtitlesSmallAreaButton', 
+                        'subtitlesMediumlAreaButton',
+                        'subtitlesLargeAreaButton'
                     ]
                 },
                 { 
-                    name: 'subtitleIndicator', 
+                    name: 'subtitlesIndicator', 
                     buttons:
                     [
-                        'subtitleIndicatorNoneButton', 
-                        'subtitleIndicatorArrowButton',
-                        'subtitleIndicatorRadarButton'
+                        'subtitlesIndicatorNoneButton', 
+                        'subtitlesIndicatorArrowButton',
+                        'subtitlesIndicatorRadarButton'
                     ]
                 }
             ],
             buttons: 
             [
-                'subtitleOnButton', 
-                'subtitleOffButton',
-                'subtitleShowLanguagesDropdown',
-                'subtitleShowPositionsDropdown',
-                'subtitleShowAreasDropdown',
-                'subtitleShowIndicatorDropdown'
+                'subtitlesOnButton', 
+                'subtitlesOffButton',
+                'subtitlesShowLanguagesDropdown',
+                'subtitlesShowPositionsDropdown',
+                'subtitlesShowAreasDropdown',
+                'subtitlesShowIndicatorDropdown'
             ]
         },                                   
 /*7*/   { 
-            name: 'signLanguageMenu', isEnabled: false, firstmenuindex: 4, 
+            name: 'signLanguageMenu', isEnabled: true, firstmenuindex: 4, 
+            submenus:[],
             buttons: 
             [
                 'signLanguageOnButton', 
@@ -174,7 +175,8 @@ var menuList =
             ]
         },
 /*8*/   { 
-            name: 'audioDescriptionMenu', isEnabled: false, firstmenuindex: 4, 
+            name: 'audioDescriptionMenu', isEnabled: true, firstmenuindex: 4, 
+            submenus:[],
             buttons: 
             [
                 'audioDescriptionOnButton', 
@@ -182,11 +184,12 @@ var menuList =
             ]
         },
 /*9*/   { 
-            name: 'audioSubtitleMenu', isEnabled: false, firstmenuindex: 4, 
+            name: 'audioSubtitlesMenu', isEnabled: true, firstmenuindex: 4, 
+            submenus:[],
             buttons: 
             [
-                'audioSubtitleOnButton', 
-                'audioSubtitleOffButton'
+                'audioSubtitlesOnButton', 
+                'audioSubtitlesOffButton'
             ]
         }                                    
     ];

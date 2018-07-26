@@ -84,6 +84,11 @@ function AplicationManager()
     	{
             moData.isPausedById(0) ? moData.playAll() : moData.pauseAll();
 		}*/
+
+		if(scene.getObjectByName(menuList[0].name))
+		{
+			MenuManager.menuFollowCameraFOV(Math.sign(Math.round(Math.degrees(camera.rotation.y))%360));
+		}		
     }
 
 

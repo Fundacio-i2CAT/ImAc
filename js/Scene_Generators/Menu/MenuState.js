@@ -1,3 +1,4 @@
+var menuAngle = 0;
 var isUserInSecondLevelMenus = false;
 var submenuNameActive;
 var firstColumnActiveButton;

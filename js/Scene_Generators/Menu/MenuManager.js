@@ -10,6 +10,41 @@ THREE.MenuManager = function () {
 //*******************************************************************************************************
 
 /**
+ * { function_description }
+ *
+ * @param      {number}  rotationDir  The rotation dir
+ */
+    this.menuFollowCameraFOV = function(rotationDir)
+    {
+        var object = scene.getObjectByName(menuList[0].name);
+        var objRotAngleY = Math.round(Math.degrees(object.rotation.y))%360;
+        var camRotAngleY = Math.round(Math.degrees(camera.rotation.y))%360;
+        
+        if(rotationDir<0)
+        {
+            if(Math.abs(camRotAngleY - objRotAngleY)>60)
+            {
+                menuAngle -= (camRotAngleY - objRotAngleY);
+                object.position.x = Math.sin(Math.radians(menuAngle))*69;
+                object.position.z = -Math.cos(Math.radians(menuAngle))*69;
+
+                object.rotation.y = object.rotation.y + 1*Math.radians((camRotAngleY - objRotAngleY));
+            }
+        }
+        else
+        {
+            if(Math.abs((objRotAngleY - camRotAngleY))>60)
+            {
+                menuAngle += (objRotAngleY - camRotAngleY);
+                object.position.x = Math.sin(Math.radians(menuAngle))*69;
+                object.position.z = -Math.cos(Math.radians(menuAngle))*69;
+
+                object.rotation.y = object.rotation.y + -1*Math.radians((objRotAngleY - camRotAngleY));
+            }
+        }
+    }
+    
+/**
  * Gets the menu list.
  *
  * @return     {<type>}  The menu list.
@@ -111,8 +146,8 @@ THREE.MenuManager = function () {
 
         // THIS OPTION HAS TO EXIST ONLY IN TABLET/PC OPTION
         // VR MODE NEEDS OTHER OPTION   
-        camera.add(background);   
-        //scene.add(background);   
+        //camera.add(background);   
+        scene.add(background);   
     }
 
     /**
@@ -210,8 +245,8 @@ THREE.MenuManager = function () {
 
         // THIS OPTION HAS TO EXIST ONLY IN TABLET/PC OPTION
         // VR MODE MENU MAY BE ATTACHED TO BACKGROUND/SCENE ONLY   
-        camera.remove(menu);
-        //scene.remove(menu);
+        //camera.remove(menu);
+        scene.remove(menu);
     }
 
 /**

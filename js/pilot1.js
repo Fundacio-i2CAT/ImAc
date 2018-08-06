@@ -11,7 +11,7 @@ function runDemo()
     interController.addInteractiveObject(menu);
 
     subController.enableSubtitles();
-    subController.initSubtitle( 60, 0, -1, 'arrow' );
+    subController.initSubtitle( 60, 0, -1, 'none' );
 
     if ( demoId == 1 ) subController.setSubtitle( "./resources/Rapzember3.ebu-tt.xml" );
     else subController.setSubtitle( "./resources/LICEU_ENG.xml" ); 

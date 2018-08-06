@@ -16,7 +16,7 @@ var isAudioSubtitleActive = true;
 var subtitlesLanguage = 'subtitlesEngButton';
 var subtitlesPosition = 'subtitlesBottomButton';
 var subtitlesSize = 'subtitlesSmallAreaButton';
-var subtitlesIndicator = 'subtitlesIndicatorArrowButton';
+var subtitlesIndicator = 'subtitlesIndicatorNoneButton';
 
 
 

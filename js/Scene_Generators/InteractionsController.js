@@ -279,7 +279,7 @@ THREE.InteractionsController = function () {
         		break;
 
             case "subtitlesGerButton":
-                console.log("Subtitles changed to GERMAN");
+                subController.setSubtitle( "./resources/LICEU_DE.xml" );
                 MenuManager.selectFinalDropdownOption(name);
                 subtitlesLanguage = name;
                 break;

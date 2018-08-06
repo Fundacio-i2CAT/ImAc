@@ -73,6 +73,8 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 		scope.deviceOrientation = event;
 	};
 
+	var myangle = 0;
+
 	this.onkeydownStart = function ( event ) {
 		
 		//event.preventDefault();
@@ -110,8 +112,46 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
             	break;
 
         	case 32:
-            	moData.isPausedById(0) ? moData.playAll() : moData.pauseAll();
+
+            	//moData.isPausedById(0) ? moData.playAll() : moData.pauseAll();
+            	camera.position.z += 10;
+            	camera.position.y += 5;
+
             	break;
+
+
+        	case 87:
+
+        		scene.getObjectByName(menuList[0].name).position.y += 1;
+            	break;
+
+        	case 83:
+
+    			scene.getObjectByName(menuList[0].name).position.y -= 1;
+        		break;
+
+        	case 65:
+
+        		myangle -= 120;
+
+    			scene.getObjectByName(menuList[0].name).position.x = Math.sin(Math.radians(myangle))*69;
+    			scene.getObjectByName(menuList[0].name).position.z = -Math.cos(Math.radians(myangle))*69;
+
+    			scene.getObjectByName(menuList[0].name).rotation.y += Math.radians(120);
+
+        		break;        			
+
+    		case 68:
+
+    			myangle += 120;
+
+    			scene.getObjectByName(menuList[0].name).position.x = Math.sin(Math.radians(myangle))*69;
+    			scene.getObjectByName(menuList[0].name).position.z = -Math.cos(Math.radians(myangle))*69;
+
+    			scene.getObjectByName(menuList[0].name).rotation.y -= Math.radians(120);
+    			
+        		break;
+
 		}
 
 	}.bind( this );

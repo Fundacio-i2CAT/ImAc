@@ -153,6 +153,15 @@ var menuList =
                         'subtitlesIndicatorArrowButton',
                         'subtitlesIndicatorRadarButton'
                     ]
+                },
+                { 
+                    name: 'subtitlesSizes', 
+                    buttons:
+                    [
+                        'subtitlesSmallAreaButton', 
+                        'subtitlesMediumlAreaButton',
+                        'subtitlesLargeAreaButton'
+                    ]
                 }
             ],
             buttons: 
@@ -161,8 +170,11 @@ var menuList =
                 'subtitlesOffButton',
                 'subtitlesShowLanguagesDropdown',
                 'subtitlesShowPositionsDropdown',
+                'subtitlesShowSizesDropdown',
+                'subtitlesShowIndicatorDropdown',
                 'subtitlesShowAreasDropdown',
-                'subtitlesShowIndicatorDropdown'
+                'subtitlesUpButton', 
+                'subtitlesDownButton',
             ]
         },                                   
 /*7*/   { 

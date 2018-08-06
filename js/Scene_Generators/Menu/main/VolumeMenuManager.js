@@ -74,7 +74,7 @@ THREE.VolumeMenuManager = function () {
         volumeChangeGroup.visible = false; //Not the first menu. Visibility false.
         backgroundmenu.add(volumeChangeGroup);
 
-        scene.add( backgroundmenu );
+        //scene.add( backgroundmenu );
     }
 
 }

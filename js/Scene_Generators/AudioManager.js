@@ -61,10 +61,12 @@ AudioManager = function() {
 
         foaRenderer.initialize().then(function() 
         {
-            isAmbisonics = true;
+            isAmbisonics = n > 2 ? true : false;
             videoElementSource.connect( foaRenderer.input );
             foaRenderer.output.connect( audioContext.destination );
-            updateMatrix4( m );
+
+            isAmbisonics ? updateMatrix4( m ) : foaRenderer.setRenderingMode( 'bypass' );
+
         }, function () 
         {
             console.error( '[AudioManager] Error to init Ambisonics' );

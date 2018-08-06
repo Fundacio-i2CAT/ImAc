@@ -418,6 +418,24 @@ THREE.MenuObject = function () {
 
         return linesMenuGroup
     }
+
+    this.getVerticalLineDivisions = function(w, h, color)
+    {
+        var linesMenuGroup =  new THREE.Group();
+        var line = createLine( color, 
+            new THREE.Vector3( -w/6, h/2, 0 ),
+            new THREE.Vector3( -w/6, -h/2, 0 ) );
+
+        var line2 = line.clone();
+        line2.position.x = 2 * w/6;
+
+        linesMenuGroup.add( line );
+        linesMenuGroup.add( line2 );
+
+        linesMenuGroup.position.z = 0.05;
+
+        return linesMenuGroup;
+    }
 /**
  * Creates the horitzontal lines that divide the menu depending on the indicated row 
  *
@@ -481,6 +499,85 @@ THREE.MenuObject = function () {
                 linesHoritzontalGroup.add(line3);
                 return linesHoritzontalGroup
                 break;
+        }
+    }
+
+    this.getHoritzontalLineDivisions = function(w, h, color, numberofdivisions, row)
+    {
+        var linesHoritzontalGroup =  new THREE.Group();
+        var line = createLine( color, 
+                    new THREE.Vector3( -w/6, 0, 0 ),
+                    new THREE.Vector3( w/6, 0, 0 ) );
+
+        switch( numberofdivisions )
+        {
+            case 1:
+
+            
+
+            case 2:
+                if( row > 1 ) line.position.x +=  w/3;
+                linesHoritzontalGroup.add( line );
+                return linesHoritzontalGroup;
+
+            case 3:
+                var line1 = line.clone();
+                var line2 = line.clone();
+                line1.position.y += h/6
+                line2.position.y -= h/6
+                if( row > 1 )
+                    {
+                      line1.position.x +=  w/3;  
+                      line2.position.x +=  w/3;  
+                    } 
+                linesHoritzontalGroup.add(line1);
+                linesHoritzontalGroup.add(line2);
+                return linesHoritzontalGroup;
+
+            case 4:
+                var line2 = line.clone();
+                var line3 = line.clone();
+                line2.position.y += h/4
+                line3.position.y -= h/4
+                if( row > 1 )
+                {
+                  line.position.x += w/3;
+                  line2.position.x += w/3; 
+                  line3.position.x += w/3;  
+                }
+                else if ( row == 0 )
+                {
+                    var line4 = line.clone();
+                    line4.position.x -= w/3;
+                    line4.position.y += h/4;
+                    linesHoritzontalGroup.add(line4);
+                } 
+                linesHoritzontalGroup.add(line);
+                linesHoritzontalGroup.add(line2);
+                linesHoritzontalGroup.add(line3);
+                return linesHoritzontalGroup;
+
+            case 5:
+                var line1 = line.clone();
+                var line2 = line.clone();
+                var line3 = line.clone();
+                var line4 = line.clone();
+
+                line1.position.y += h/8;
+                line2.position.y += 3*h/8;
+                line3.position.y -= h/8;
+                line4.position.y -= 3*h/8;
+
+
+                linesHoritzontalGroup.add(line1);
+                linesHoritzontalGroup.add(line2);
+                linesHoritzontalGroup.add(line3);
+                linesHoritzontalGroup.add(line4);
+
+                return linesHoritzontalGroup;
+
+            default:
+                return linesHoritzontalGroup;
         }
     }
 }

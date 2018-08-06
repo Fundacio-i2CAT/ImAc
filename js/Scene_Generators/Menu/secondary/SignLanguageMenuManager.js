@@ -47,7 +47,7 @@ THREE.SignLanguageMenuManager = function () {
         menuGroup.visible = false; //Not the first menu. Visibility false.
 
         backgroundmenu.add(menuGroup);
-        scene.add( backgroundmenu );
+        //scene.add( backgroundmenu );
     }
 }
 

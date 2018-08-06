@@ -352,6 +352,16 @@ THREE.InteractionsController = function () {
         		// TODO
         		break;
 
+            case "subtitlesUpButton":
+                // TODO
+                MenuManager.changeMenuUpOrDown( true );
+                break;
+
+            case "subtitlesDownButton":
+                // TODO
+                MenuManager.changeMenuUpOrDown( false );
+                break;
+
 //***********************************************************************************************************
 //
 //                  S I G N     L A N G U A G E     M E N U     C O N T R O L S 

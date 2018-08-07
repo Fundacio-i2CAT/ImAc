@@ -134,7 +134,7 @@ this.getPlayoutTime = function(secs, format) {
 
         interController.setActiveMenuName(menuList[1].name); //menuList.playSeekMenu
 
-        scene.add(backgroundmenu);
+        //scene.add(backgroundmenu);
     }
 
     this.playoutTimeDisplayLogic = function(isPlay)

@@ -105,8 +105,10 @@ THREE.MenuManager = function () {
         secondColumGroup.name = subMenuData.name;
         secondColumGroup.visible = false;
 
-        return secondColumGroup
+        return secondColumGroup;
     }
+
+    
 
 //*******************************************************************************************************
 //
@@ -118,7 +120,7 @@ THREE.MenuManager = function () {
     {
         isUserInSecondLevelMenus = false;
         var background = createMenuBackground(menuMargin, backgroundMenuColor);
-        factorScale = background.geometry.parameters.height/background.geometry.parameters.width
+        factorScale = background.geometry.parameters.height/background.geometry.parameters.width;
 
 // MAIN MENUS
         ppMMgr.createPlaySeekMenu(background, factorScale);
@@ -127,11 +129,13 @@ THREE.MenuManager = function () {
         mloptMMgr.createMultiOptionsMenu(background,factorScale); 
 
 // SECONDARY MENUS
-        setMMgr.openMenu(background); 
-        stMMngr.openMenu(background); 
+        //setMMgr.openMenu(background); 
+        //stMMngr.openMenu(background); 
         slMMngr.openMenu(background); 
         adMMngr.openMenu(background);
         astMMngr.openMenu(background);
+
+        secMMgr.createSecondaryMenus( background );
         
 ///********* CODE REPITE IN LINE 23 *************************        
         menuList.forEach(function(menu, index){
@@ -142,6 +146,8 @@ THREE.MenuManager = function () {
         });
         ppMMgr.showPlayPauseButton();
         mloptMMgr.showMultiOptionsButtons(multiOptionsMainSubMenuIndexes);
+
+        background.scale.set(0.7,0.7,1);
 ///************************************************************  
 
         // THIS OPTION HAS TO EXIST ONLY IN TABLET/PC OPTION
@@ -184,7 +190,7 @@ THREE.MenuManager = function () {
         });
         interController.setActiveMenuName(menuList[submenuindex].name);
         menuList[submenuindex].buttons.forEach(function(elem){
-            scene.getObjectByName(elem).material.color.set(menuDefaultColor)
+            scene.getObjectByName(elem).material.color.set(menuDefaultColor);
             interController.addInteractiveObject(scene.getObjectByName(elem));
         }); 
         scene.getObjectByName(interController.getActiveMenuName()).visible = true;
@@ -229,6 +235,55 @@ THREE.MenuManager = function () {
 
         // Add all buttons from active dropdown to the interactivity array.
         menuList[indexActiveMenu].submenus[submenuActiveIndex].buttons.forEach(function(elem){interController.addInteractiveObject(scene.getObjectByName(elem))}); 
+    }
+
+    function updateSubtitleSubMenu(position)
+    {
+        // Find the main menu index with the saved variable interController.getActiveMenuName()
+        var indexActiveMenu = menuList.map(function(e) { return e.name; }).indexOf(interController.getActiveMenuName());
+
+        // Find the index of the sub menu opened before in order to remove the interativity from the array and change visible = false
+        var secondColumnIndex = menuList[indexActiveMenu].submenus.map(function(e) { return e.name; }).indexOf(MenuManager.getSubmenuNameActive());
+        
+        if(secondColumnIndex > -1)
+        {
+            scene.getObjectByName(menuList[indexActiveMenu].name).getObjectByName(menuList[indexActiveMenu].submenus[secondColumnIndex].name).visible = false;
+            menuList[indexActiveMenu].submenus[secondColumnIndex].buttons.forEach(function(elem)
+            {
+                interController.removeInteractiveObject(elem);
+            });
+        }
+        //console.error(scene.getObjectByName(menuList[0].name).geometry.parameters.height)
+
+        var h = scene.getObjectByName(menuList[0].name).geometry.parameters.height;
+
+        menuList[indexActiveMenu].buttons.forEach(function(elem)
+        {
+            if( elem == 'subtitlesShowLanguagesDropdown' 
+                || elem == 'subtitlesShowPositionsDropdown' 
+                || elem == 'subtitlesShowSizesDropdown' 
+                || elem == 'subtitlesShowIndicatorDropdown' 
+                || elem == 'subtitlesShowAreasDropdown' )
+            {
+                var menuElem = scene.getObjectByName(elem);
+                menuElem.position.y = position ? menuElem.position.y + h/4 : menuElem.position.y - h/4;
+                if (menuElem.visible && menuElem.position.y > h/4) menuElem.visible = false;
+                else if (menuElem.visible && menuElem.position.y < -h/4) menuElem.visible = false;
+                else if (menuElem.visible == false && menuElem.position.y <= h/4 && menuElem.position.y >= -h/4) menuElem.visible = true;
+
+                // Posible position.y -->        -2, -1, 0, 1, 2         (5 elements)
+                // Posible position.y -->    -3, -2, -1, 0, 1, 2         (6 elements)
+                // Posible position.y -->    -3, -2, -1, 0, 1, 2, 3      (7 elements)
+
+                if (menuElem.position.y < -2*h/4) menuElem.position.y = 2*h/4;
+                else if (menuElem.position.y > 2*h/4) menuElem.position.y = -2*h/4;
+
+            }
+
+        });
+
+ 
+
     }
 
 /**
@@ -348,6 +403,15 @@ THREE.MenuManager = function () {
             else interController.removeInteractiveObject(menuList[2].buttons[3]); //menuList.volumeChangeMenu.unmuteVolumeButton  
         }
         scene.getObjectByName(interController.getActiveMenuName()).visible = true;
+    } 
+
+    this.changeMenuUpOrDown = function(direction)
+    {
+        //secondarySubIndex = direction ? secondarySubIndex + 1 : secondarySubIndex - 1;
+
+        updateSubtitleSubMenu(direction);
+
+        //console.error(secondarySubIndex)
     } 
 
 /**
@@ -509,7 +573,7 @@ THREE.MenuManager = function () {
 
     this.createMenu = function()
     {
-        var geometry = new THREE.CircleGeometry( 1,32 );
+        var geometry = new THREE.CircleGeometry( 1, 32 );
         var material = new THREE.MeshBasicMaterial( { color: 0x13ec56 } );
         var circle = new THREE.Mesh( geometry, material );
 

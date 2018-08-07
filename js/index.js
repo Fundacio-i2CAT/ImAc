@@ -14,11 +14,13 @@ var volMMgr = new THREE.VolumeMenuManager();
 var setcarMMgr = new THREE.SettingsCardboardMenuManager();
 var mloptMMgr = new THREE.MultiOptionsMenuManager();
 
-var stMMngr = new THREE.SubtitlesMenuManager();
+//var stMMngr = new THREE.SubtitlesMenuManager();
 var slMMngr = new THREE.SignLanguageMenuManager();
 var adMMngr = new THREE.AudioDescriptionMenuManager();
 var astMMngr = new THREE.AudioSubtitlesMenuManager();
 var setMMgr = new THREE.SettingsMenuManager();
+
+var secMMgr = new THREE.SecondaryMenuManager();
 
 var AudioManager = new AudioManager();
 var subController = new SubSignManager();
@@ -48,14 +50,16 @@ function init_webplayer()
 
   AudioManager.initAmbisonicResources();
   moData.setFont('./css/fonts/TiresiasScreenfont_Regular.json');
+  //moData.setFont('./css/fonts/helvetiker_bold.typeface.json');
 		
-  for (var i = 0; i < 2; i++) 
+  for (var i = 0; i < 3; i++) 
   {
     var id = i + 1;
     var dataText = ' ';
 
     if (i == 0) dataText = "Video 1: Demo radio";
     else if (i == 1) dataText = "Video 2: Demo opera";
+    else if (i == 2) dataText = "Video 3: Demo RBB";
 
     createListGroup(id, "img/LOGO-IMAC.png", dataText);
   }
@@ -71,7 +75,11 @@ function blockContainer()
 
 function selectXML(id)
 {
-  mainContentURL = id == 2 ? './resources/cam_2_2k.mp4' : './resources/rapzember-young-hurn_edit.mp4';
+  //mainContentURL = id == 2 ? './resources/cam_2_2k.mp4' : './resources/rapzember-young-hurn_edit.mp4';
+
+  if (id == 2) mainContentURL = './resources/cam_2_2k.mp4';
+  else if (id == 1) mainContentURL = './resources/rapzember-young-hurn_edit.mp4';
+  else mainContentURL = './resources/rbb/dash/stream.mpd';
  
   demoId = id;
 

@@ -5,7 +5,9 @@ function runDemo()
 
   	var listVideoContent = moData.getListOfVideoContents();
     var _videoElement = listVideoContent[0].vid;
-    AudioManager.initializeAudio( _videoElement, 2, camera.matrixWorld.elements );
+    var audioChannels =  demoId == 2 ? 4 : 2;
+    
+    AudioManager.initializeAudio( _videoElement, audioChannels, camera.matrixWorld.elements );
 
     var menu = MenuManager.createMenu();
     interController.addInteractiveObject(menu);
@@ -14,9 +16,10 @@ function runDemo()
     subController.initSubtitle( 60, 0, -1, 'none' );
 
     if ( demoId == 1 ) subController.setSubtitle( "./resources/Rapzember3.ebu-tt.xml" );
-    else subController.setSubtitle( "./resources/LICEU_ENG.xml" ); 
+    else if ( demoId == 2 ) subController.setSubtitle( "./resources/LICEU_ENG.xml" ); 
+    else subController.setSubtitle( "./resources/rbb/RBB_Abendschau_short_subtitles_angles.xml" ); 
 
-    moData.createPointer();
+    //moData.createPointer();
 
 
     ppMMgr.playAll();

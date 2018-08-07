@@ -43,7 +43,7 @@ THREE.SettingsMenuManager = function () {
         settingsMenuGroup.name = menuList[5].name; //menuList.
         settingsMenuGroup.visible = false; //Not the first menu. Visibility false.
         backgroundmenu.add(settingsMenuGroup);
-        scene.add( backgroundmenu );
+        //scene.add( backgroundmenu );
     }
 }
 

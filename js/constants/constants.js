@@ -63,3 +63,6 @@ var subtitlesIndicatorArray = ['None', 'Arrow', 'Radar'];
 var settingsLanguagesArray = ['English', 'Spanish', 'Catalan', 'German'];
 var settingsVoiceControlArray = ['option 1'];
 var settingsUserProfileArray = ['option 1', 'option 2'];
+
+
+var secondarySubIndex = 0;

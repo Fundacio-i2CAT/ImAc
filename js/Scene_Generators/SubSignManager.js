@@ -175,7 +175,8 @@ SubSignManager = function() {
 
     	var lon = Math.degrees( Math.atan( camView.x/camView.z ) ) + offset;
 
-    	return lon >= 0 ? sp - lon : sp - ( lon + 360 );	
+    	//return lon >= 0 ? sp - lon : sp - ( lon + 360 );
+    	return lon >= 0 ? 360 - sp - lon : - sp - lon;	
     }
 
 //************************************************************************************

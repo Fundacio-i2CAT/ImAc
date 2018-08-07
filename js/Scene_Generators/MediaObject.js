@@ -663,7 +663,7 @@ THREE.MediaObject = function () {
                 new THREE.SphereBufferGeometry( 0.006, 16, 8 ),
                 new THREE.MeshBasicMaterial( { color: 0xc90000 } )
             );
-        pointer.position.z = -8;
+        pointer.position.z = -3;
         pointer.name = 'pointer';
 
         camera.add( pointer );

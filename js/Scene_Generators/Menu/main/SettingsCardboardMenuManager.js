@@ -28,7 +28,7 @@ THREE.SettingsCardboardMenuManager = function () {
 
         backgroundmenu.add(settingsCardboardGroup);
 
-        scene.add( backgroundmenu );
+        //scene.add( backgroundmenu );
     } 
 
 }

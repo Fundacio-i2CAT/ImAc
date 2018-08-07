@@ -129,6 +129,14 @@ var menuList =
                     ]
                 },
                 { 
+                    name: 'subtitlesEasyRead', 
+                    buttons:
+                    [
+                        'subtitlesEasyOn',
+                        'subtitlesEasyOff'
+                    ]
+                },
+                { 
                     name: 'subtitlesShowPositions', 
                     buttons:
                     [
@@ -137,12 +145,20 @@ var menuList =
                     ]
                 },
                 { 
-                    name: 'subtitlesAreas', 
+                    name: 'subtitlesBackground', 
                     buttons:
                     [
-                        'subtitlesSmallAreaButton', 
-                        'subtitlesMediumlAreaButton',
-                        'subtitlesLargeAreaButton'
+                        'subtitlesSemitrans',
+                        'subtitlesOutline'
+                    ]
+                },
+                { 
+                    name: 'subtitlesSizes', 
+                    buttons:
+                    [
+                        'subtitlesSmallSizeButton', 
+                        'subtitlesMediumlSizeButton',
+                        'subtitlesLargeSizeButton'
                     ]
                 },
                 { 
@@ -155,7 +171,7 @@ var menuList =
                     ]
                 },
                 { 
-                    name: 'subtitlesSizes', 
+                    name: 'subtitlesAreas', 
                     buttons:
                     [
                         'subtitlesSmallAreaButton', 
@@ -169,7 +185,9 @@ var menuList =
                 'subtitlesOnButton', 
                 'subtitlesOffButton',
                 'subtitlesShowLanguagesDropdown',
+                'subtitlesShowEasyReadDropdown',
                 'subtitlesShowPositionsDropdown',
+                'subtitlesShowBackgroundDropdown',
                 'subtitlesShowSizesDropdown',
                 'subtitlesShowIndicatorDropdown',
                 'subtitlesShowAreasDropdown',
@@ -179,11 +197,41 @@ var menuList =
         },                                   
 /*7*/   { 
             name: 'signLanguageMenu', isEnabled: true, firstmenuindex: 4, 
-            submenus:[],
+            submenus:[
+                { 
+                    name: 'signerShowPositions', 
+                    buttons:
+                    [
+                        'signerTopButton',
+                        'signerBottomButton'
+                    ]
+                },
+                { 
+                    name: 'signerIndicator', 
+                    buttons:
+                    [
+                        'signerIndicatorNoneButton', 
+                        'signerIndicatorArrowButton',
+                        'signerIndicatorRadarButton'
+                    ]
+                },
+                { 
+                    name: 'signerAreas', 
+                    buttons:
+                    [
+                        'signerSmallAreaButton', 
+                        'signerMediumlAreaButton',
+                        'signerLargeAreaButton'
+                    ]
+                }
+            ],
             buttons: 
             [
                 'signLanguageOnButton', 
-                'signLanguageOffButton'
+                'signLanguageOffButton',
+                'signShowPositionsDropdown',
+                'signShowIndicatorDropdown',
+                'signShowAreasDropdown'
             ]
         },
 /*8*/   { 

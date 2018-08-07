@@ -90,17 +90,25 @@ THREE.MenuManager = function () {
 // MAIN MENUS
         ppMMgr.createPlaySeekMenu(background, factorScale);
         volMMgr.createVolumeChangeMenu(background, factorScale);
-        setcarMMgr.createSettingsCardboardMenu(background, factorScale);
-        mloptMMgr.createMultiOptionsMenu(background,factorScale); 
+        //setcarMMgr.createSettingsCardboardMenu(background, factorScale);
+        //mloptMMgr.createMultiOptionsMenu(background,factorScale); 
+
+
+        secMMgr.createMainMenus( background );
 
 // SECONDARY MENUS
-        //setMMgr.openMenu(background); 
-        //stMMngr.openMenu(background); 
-        slMMngr.openMenu(background); 
-        adMMngr.openMenu(background);
-        astMMngr.openMenu(background);
-
         secMMgr.createSecondaryMenus( background );
+
+        if ( _isHMD )
+        {
+            background.scale.set( 0.6, 0.6, 1 );
+            scene.add( background );
+        }
+        else
+        {
+            background.scale.set( 1, 1, 1 );
+            camera.add( background );
+        }
         
 ///********* CODE REPITE IN LINE 23 *************************        
         menuList.forEach(function(menu, index){
@@ -109,16 +117,11 @@ THREE.MenuManager = function () {
                 menu.buttons.forEach(function(elem){interController.addInteractiveObject(scene.getObjectByName(elem))}); 
             }
         });
+        
         ppMMgr.showPlayPauseButton();
         mloptMMgr.showMultiOptionsButtons(multiOptionsMainSubMenuIndexes);
 
-        background.scale.set(0.7,0.7,1);
-///************************************************************  
-
-        // THIS OPTION HAS TO EXIST ONLY IN TABLET/PC OPTION
-        // VR MODE NEEDS OTHER OPTION   
-        //camera.add(background);   
-        scene.add(background);   
+        
     }
 
     /**
@@ -204,34 +207,24 @@ THREE.MenuManager = function () {
 
     function updateSubtitleSubMenu(position)
     {
-        // Find the main menu index with the saved variable interController.getActiveMenuName()
         var indexActiveMenu = menuList.map(function(e) { return e.name; }).indexOf(interController.getActiveMenuName());
-
-        // Find the index of the sub menu opened before in order to remove the interativity from the array and change visible = false
-        var secondColumnIndex = menuList[indexActiveMenu].submenus.map(function(e) { return e.name; }).indexOf(MenuManager.getSubmenuNameActive());
-        
-        if(secondColumnIndex > -1)
-        {
-            scene.getObjectByName(menuList[indexActiveMenu].name).getObjectByName(menuList[indexActiveMenu].submenus[secondColumnIndex].name).visible = false;
-            menuList[indexActiveMenu].submenus[secondColumnIndex].buttons.forEach(function(elem)
-            {
-                interController.removeInteractiveObject(elem);
-            });
-        }
-        //console.error(scene.getObjectByName(menuList[0].name).geometry.parameters.height)
 
         var h = scene.getObjectByName(menuList[0].name).geometry.parameters.height;
 
         menuList[indexActiveMenu].buttons.forEach(function(elem)
         {
             if( elem == 'subtitlesShowLanguagesDropdown' 
+                || elem == 'subtitlesShowEasyReadDropdown' 
                 || elem == 'subtitlesShowPositionsDropdown' 
-                || elem == 'subtitlesShowSizesDropdown' 
-                || elem == 'subtitlesShowIndicatorDropdown' 
+                || elem == 'subtitlesShowBackgroundDropdown' 
+                || elem == 'subtitlesShowSizesDropdown'
+                || elem == 'subtitlesShowIndicatorDropdown'
                 || elem == 'subtitlesShowAreasDropdown' )
+
             {
                 var menuElem = scene.getObjectByName(elem);
                 menuElem.position.y = position ? menuElem.position.y + h/4 : menuElem.position.y - h/4;
+
                 if (menuElem.visible && menuElem.position.y > h/4) menuElem.visible = false;
                 else if (menuElem.visible && menuElem.position.y < -h/4) menuElem.visible = false;
                 else if (menuElem.visible == false && menuElem.position.y <= h/4 && menuElem.position.y >= -h/4) menuElem.visible = true;
@@ -240,14 +233,11 @@ THREE.MenuManager = function () {
                 // Posible position.y -->    -3, -2, -1, 0, 1, 2         (6 elements)
                 // Posible position.y -->    -3, -2, -1, 0, 1, 2, 3      (7 elements)
 
-                if (menuElem.position.y < -2*h/4) menuElem.position.y = 2*h/4;
-                else if (menuElem.position.y > 2*h/4) menuElem.position.y = -2*h/4;
+                if (menuElem.position.y < -3*h/4) menuElem.position.y = 3*h/4;
+                else if (menuElem.position.y > 3*h/4) menuElem.position.y = -3*h/4;
 
             }
-
         });
-
- 
 
     }
 
@@ -266,7 +256,7 @@ THREE.MenuManager = function () {
         // THIS OPTION HAS TO EXIST ONLY IN TABLET/PC OPTION
         // VR MODE MENU MAY BE ATTACHED TO BACKGROUND/SCENE ONLY   
         //camera.remove(menu);
-        scene.remove(menu);
+        _isHMD ? scene.remove(menu) :camera.remove(menu);
     }
 
 /**

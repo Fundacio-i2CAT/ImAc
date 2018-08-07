@@ -11,14 +11,9 @@ var MenuManager = new THREE.MenuManager();
 
 var ppMMgr = new THREE.PlayPauseMenuManager();
 var volMMgr = new THREE.VolumeMenuManager();
-var setcarMMgr = new THREE.SettingsCardboardMenuManager();
+//var setcarMMgr = new THREE.SettingsCardboardMenuManager();
 var mloptMMgr = new THREE.MultiOptionsMenuManager();
 
-//var stMMngr = new THREE.SubtitlesMenuManager();
-var slMMngr = new THREE.SignLanguageMenuManager();
-var adMMngr = new THREE.AudioDescriptionMenuManager();
-var astMMngr = new THREE.AudioSubtitlesMenuManager();
-var setMMgr = new THREE.SettingsMenuManager();
 
 var secMMgr = new THREE.SecondaryMenuManager();
 

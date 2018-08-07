@@ -21,6 +21,23 @@ THREE.MenuObject = function () {
         return mesh;
     }
 
+    this.getPlaneImageMesh = function(w, h, url, name, order) 
+    {
+        var geometry = new THREE.PlaneGeometry( w, h );
+        var loader = new THREE.TextureLoader();
+        var texture = loader.load( url );
+        texture.minFilter = THREE.LinearFilter;
+        texture.format = THREE.RGBAFormat;
+
+        var material = new THREE.MeshBasicMaterial( { map: texture, transparent: true, side: THREE.FrontSide } );
+        var mesh = new THREE.Mesh( geometry, material );
+
+        mesh.name = name;
+        mesh.renderOrder = order || 0;
+
+        return mesh;
+    }
+
     this.getBackgroundMesh = function(w, h, c, o)
     {
         var material = new THREE.MeshBasicMaterial( { color: c, transparent: true, opacity: o } );
@@ -511,9 +528,6 @@ THREE.MenuObject = function () {
 
         switch( numberofdivisions )
         {
-            case 1:
-
-            
 
             case 2:
                 if( row > 1 ) line.position.x +=  w/3;

@@ -28,7 +28,12 @@ function AplicationManager()
     	{
 			controls = undefined;
 
-			_display[ 0 ].isPresenting ? _display[ 0 ].exitPresent() : _display[ 0 ].requestPresent( [ { source: renderer.domElement } ] ).then(function () { isVRtested=true; startAllVideos(); });
+			_display[ 0 ].isPresenting ? _display[ 0 ].exitPresent() : _display[ 0 ].requestPresent( [ { source: renderer.domElement } ] ).then(
+				function () { 
+					isVRtested=true; 
+					startAllVideos(); 
+					_isHMD = true;
+				});
 
 			renderer.vr.setDevice( _display[ 0 ] );
 		}
@@ -125,55 +130,6 @@ function AplicationManager()
 
         document.body.appendChild( WEBVR.createButton( renderer ) );
 
-		/*if ( 'getVRDisplays' in navigator ) 
-		{
-
-		  	navigator.getVRDisplays().then(function (vrDisplays) 
-		    {
-		        _display = vrDisplays;
-
-		        if ( vrDisplays.length )
-		        {
-		        	gamepad = new THREE.DaydreamController( camera, renderer.domElement );
-		        	//this.switchDevice();
-		        	document.body.appendChild( WEBVR.createButton( renderer ) );
-		        }
-		        else 
-		        {
-		        	//document.body.appendChild( WEBVR.createButton( renderer ) );
-		        }
-
-		        //controls = new THREE.DeviceOrientationAndTouchController( camera, renderer.domElement, renderer );
-		        	
-        		//startAllVideos();
-			    haveVrDisplay = true;
-			    renderer.vr.enabled = true;
-
-				 		//document.body.appendChild( WEBVR.createButton( renderer ) );   		 		
-
-				 		//gamepad = new THREE.DaydreamController(renderer.domElement);
-						//gamepad.position.set( 0.025, - 0.05, 0 );
-						//gamepad.position.z = - 1;
-						//gamepad.renderOrder = 10;
-
-						//scene.add( gamepad );
-
-
-				isVRtested = true; 
-				startAllVideos();
-		  	});
-		}
-		else 
-		{
-			startAllVideos();
-			isVRtested=true;
-
-			effect = new THREE.StereoEffect(renderer);
-		    effect.setSize(window.innerWidth, window.innerHeight);
-
-			controls = new THREE.DeviceOrientationAndTouchController(camera, renderer.domElement, renderer);
-			//controls.connect();
-		}*/
 	}
 
 	var WEBVR = {
@@ -195,8 +151,12 @@ function AplicationManager()
 
 				button.onclick = function () {
 
-					display.isPresenting ? display.exitPresent() : display.requestPresent( [ { source: renderer.domElement } ] ).then(function () { isVRtested=true; startAllVideos(); });
-
+					display.isPresenting ? display.exitPresent() : display.requestPresent( [ { source: renderer.domElement } ] ).then(
+						function () { 
+							isVRtested=true; 
+							startAllVideos(); 
+							_isHMD = true; 
+						});
 				};
 
 				renderer.vr.setDevice( display );
@@ -255,20 +215,17 @@ function AplicationManager()
 
 						_display = displays;
 
-						if ( displays.length > 0 ) 
+						if ( displays.length > 0 && confirm("Use this device as HMD?") ) 
 						{
-
-							console.error('ahashashashhjasja jaskj kjaksdka k')
 							gamepad = new THREE.DaydreamController( camera, renderer.domElement );
-
 							showEnterVR( displays[ 0 ] );
-
 							moData.createPointer();
-
 						} 
 						else 
 						{
 							controls = new THREE.DeviceOrientationAndTouchController( camera, renderer.domElement, renderer );
+							if ( displays.length > 0 ) gamepad = new THREE.DaydreamController( camera, renderer.domElement );
+							_isHMD = false;
 						}
 
 						haveVrDisplay = true;
@@ -300,9 +257,7 @@ function AplicationManager()
 			    effect.setSize(window.innerWidth, window.innerHeight);
 
 				controls = new THREE.DeviceOrientationAndTouchController(camera, renderer.domElement, renderer);
-
 			}
-
 		}
 	};
 }

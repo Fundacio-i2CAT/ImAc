@@ -28,7 +28,12 @@ function AplicationManager()
     	{
 			controls = undefined;
 
-			_display[ 0 ].isPresenting ? _display[ 0 ].exitPresent() : _display[ 0 ].requestPresent( [ { source: renderer.domElement } ] ).then(function () { isVRtested=true; startAllVideos(); });
+			_display[ 0 ].isPresenting ? _display[ 0 ].exitPresent() : _display[ 0 ].requestPresent( [ { source: renderer.domElement } ] ).then(
+				function () { 
+					isVRtested=true; 
+					startAllVideos(); 
+					_isHMD = true;
+				});
 
 			renderer.vr.setDevice( _display[ 0 ] );
 		}
@@ -241,8 +246,12 @@ function AplicationManager()
 
 				button.onclick = function () {
 
-					display.isPresenting ? display.exitPresent() : display.requestPresent( [ { source: renderer.domElement } ] ).then(function () { isVRtested=true; startAllVideos(); });
-
+					display.isPresenting ? display.exitPresent() : display.requestPresent( [ { source: renderer.domElement } ] ).then(
+						function () { 
+							isVRtested=true; 
+							startAllVideos(); 
+							_isHMD = true; 
+						});
 				};
 
 				renderer.vr.setDevice( display );
@@ -301,20 +310,17 @@ function AplicationManager()
 
 						_display = displays;
 
-						if ( displays.length > 0 ) 
+						if ( displays.length > 0 && confirm("Use this device as HMD?") ) 
 						{
-
-							console.error('ahashashashhjasja jaskj kjaksdka k')
 							gamepad = new THREE.DaydreamController( camera, renderer.domElement );
-
 							showEnterVR( displays[ 0 ] );
-
 							moData.createPointer();
-
 						} 
 						else 
 						{
 							controls = new THREE.DeviceOrientationAndTouchController( camera, renderer.domElement, renderer );
+							if ( displays.length > 0 ) gamepad = new THREE.DaydreamController( camera, renderer.domElement );
+							_isHMD = false;
 						}
 
 						haveVrDisplay = true;
@@ -346,9 +352,7 @@ function AplicationManager()
 			    effect.setSize(window.innerWidth, window.innerHeight);
 
 				controls = new THREE.DeviceOrientationAndTouchController(camera, renderer.domElement, renderer);
-
 			}
-
 		}
 	};
 }

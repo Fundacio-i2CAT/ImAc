@@ -66,3 +66,5 @@ var settingsUserProfileArray = ['option 1', 'option 2'];
 
 
 var secondarySubIndex = 0;
+
+var _isHMD = false;

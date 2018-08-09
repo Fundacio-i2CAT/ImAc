@@ -126,7 +126,11 @@ THREE.InteractionsController = function () {
 //***********************************************************************************************************
 
         	case "cardboardButton":
-                MenuManager.pressButtonFeedback(name);
+                setTimeout(function(){
+                 MenuManager.closeMenu(); 
+                 scene.getObjectByName( "openMenu" ).visible = true;
+             }, clickInteractionTimeout);
+                MenuManager.pressButtonFeedback(name); 
         		AplicationManager.switchDevice();
         		break;
 
@@ -329,18 +333,34 @@ THREE.InteractionsController = function () {
         		// mostar el menu con la lista de idiomas seleccionables
         		break;
 
+            case "subtitlesShowEasyReadDropdown":
+                MenuManager.openSubMenuDropdown(1, name);
+                // TODO
+                break;
+
         	case "subtitlesShowPositionsDropdown":
         		// TODO
-        		MenuManager.openSubMenuDropdown(1, name);
+        		MenuManager.openSubMenuDropdown(2, name);
         		break;
+
+            case "subtitlesShowBackgroundDropdown":
+                MenuManager.openSubMenuDropdown(3, name);
+                // TODO
+                break;
+
+            case "subtitlesShowSizesDropdown":
+                MenuManager.openSubMenuDropdown(4, name);
+                // TODO
+                break;
+
             case "subtitlesShowAreasDropdown":
                 // mostrar lista de areas de visualizacion (small/medium/large)
-                MenuManager.openSubMenuDropdown(2, name);
+                MenuManager.openSubMenuDropdown(6, name);
                 break;
 
             case "subtitlesShowIndicatorDropdown":
                 // mostrar lista de indicadores de visualizacion (none/arrow/radar)
-                MenuManager.openSubMenuDropdown(3, name);
+                MenuManager.openSubMenuDropdown(5, name);
                 break;
 
         	case "subtitlesShowSpeakers":
@@ -354,12 +374,12 @@ THREE.InteractionsController = function () {
 
             case "subtitlesUpButton":
                 // TODO
-                MenuManager.changeMenuUpOrDown( true );
+                MenuManager.changeMenuUpOrDown( false );
                 break;
 
             case "subtitlesDownButton":
                 // TODO
-                MenuManager.changeMenuUpOrDown( false );
+                MenuManager.changeMenuUpOrDown( true );
                 break;
 
 //***********************************************************************************************************
@@ -386,6 +406,23 @@ THREE.InteractionsController = function () {
                 /* function (subMenuIndex, onButtonIndex, offButtonIndex, enabledTitleIndex, disabledTitleIndex) */
                 MenuManager.showOnOffToggleButton(7, 0, 1, 1, 5); // Indexes from MenuState menuList
                 break;
+
+            case "signShowPositionsDropdown":
+                // TODO
+                MenuManager.openSubMenuDropdown(0, name);
+                break;
+
+            case "signShowAreasDropdown":
+                // mostrar lista de areas de visualizacion (small/medium/large)
+                MenuManager.openSubMenuDropdown(2, name);
+                break;
+
+            case "signShowIndicatorDropdown":
+                // mostrar lista de indicadores de visualizacion (none/arrow/radar)
+                MenuManager.openSubMenuDropdown(1, name);
+                break;
+
+
 
 //***********************************************************************************************************
 //

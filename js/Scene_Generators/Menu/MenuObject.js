@@ -20,7 +20,15 @@ THREE.MenuObject = function () {
 
         return mesh;
     }
-
+/**
+ * Gets the background mesh.
+ *
+ * @param      {<type>}  w       { parameter_description }
+ * @param      {<type>}  h       { parameter_description }
+ * @param      {<type>}  c       { parameter_description }
+ * @param      {<type>}  o       { parameter_description }
+ * @return     {THREE}   The background mesh.
+ */
     this.getBackgroundMesh = function(w, h, c, o)
     {
         var material = new THREE.MeshBasicMaterial( { color: c, transparent: true, opacity: o } );

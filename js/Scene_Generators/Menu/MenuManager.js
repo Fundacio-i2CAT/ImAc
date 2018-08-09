@@ -118,42 +118,49 @@ THREE.MenuManager = function () {
     
     this.openMenu = function()
     {
-        isUserInSecondLevelMenus = false;
-        var background = createMenuBackground(menuMargin, backgroundMenuColor);
-        factorScale = background.geometry.parameters.height/background.geometry.parameters.width;
+        if(!scene.getObjectByName( "backgroudMenu" ))
+        {
+            isUserInSecondLevelMenus = false;
+            var background = createMenuBackground(menuMargin, backgroundMenuColor);
+            factorScale = background.geometry.parameters.height/background.geometry.parameters.width;
 
-// MAIN MENUS
-        ppMMgr.createPlaySeekMenu(background, factorScale);
-        volMMgr.createVolumeChangeMenu(background, factorScale);
-        setcarMMgr.createSettingsCardboardMenu(background, factorScale);
-        mloptMMgr.createMultiOptionsMenu(background,factorScale); 
+    // MAIN MENUS
+            ppMMgr.createPlaySeekMenu(background, factorScale);
+            volMMgr.createVolumeChangeMenu(background, factorScale);
+            setcarMMgr.createSettingsCardboardMenu(background, factorScale);
+            mloptMMgr.createMultiOptionsMenu(background,factorScale); 
 
-// SECONDARY MENUS
-        //setMMgr.openMenu(background); 
-        //stMMngr.openMenu(background); 
-        slMMngr.openMenu(background); 
-        adMMngr.openMenu(background);
-        astMMngr.openMenu(background);
+    // SECONDARY MENUS
+            //setMMgr.openMenu(background); 
+            //stMMngr.openMenu(background); 
+            slMMngr.openMenu(background); 
+            adMMngr.openMenu(background);
+            astMMngr.openMenu(background);
 
-        secMMgr.createSecondaryMenus( background );
-        
-///********* CODE REPITE IN LINE 23 *************************        
-        menuList.forEach(function(menu, index){
-            if(index == 0 || index == menuList.map(function(e) { return e.name; }).indexOf(interController.getActiveMenuName()))
-            {
-                menu.buttons.forEach(function(elem){interController.addInteractiveObject(scene.getObjectByName(elem))}); 
-            }
-        });
-        ppMMgr.showPlayPauseButton();
-        mloptMMgr.showMultiOptionsButtons(multiOptionsMainSubMenuIndexes);
+            secMMgr.createSecondaryMenus( background );
+            
+    ///********* CODE REPITE IN LINE 23 *************************        
+            menuList.forEach(function(menu, index){
+                if(index == 0 || index == menuList.map(function(e) { return e.name; }).indexOf(interController.getActiveMenuName()))
+                {
+                    menu.buttons.forEach(function(elem){interController.addInteractiveObject(scene.getObjectByName(elem))}); 
+                }
+            });
+            ppMMgr.showPlayPauseButton();
+            mloptMMgr.showMultiOptionsButtons(multiOptionsMainSubMenuIndexes);
 
-        background.scale.set(0.7,0.7,1);
-///************************************************************  
+            background.scale.set(0.7,0.7,1);
+    ///************************************************************  
 
-        // THIS OPTION HAS TO EXIST ONLY IN TABLET/PC OPTION
-        // VR MODE NEEDS OTHER OPTION   
-        //camera.add(background);   
-        scene.add(background);   
+            // THIS OPTION HAS TO EXIST ONLY IN TABLET/PC OPTION
+            // VR MODE NEEDS OTHER OPTION   
+            //camera.add(background);   
+            scene.add(background);   
+        }
+        else
+        {
+            console.log("Menu already open") 
+        }    
     }
 
     /**
@@ -573,22 +580,69 @@ THREE.MenuManager = function () {
 
     this.createMenu = function()
     {
-        var geometry = new THREE.CircleGeometry( 1, 32 );
+
+        var geometry = new THREE.SphereGeometry(99, 64, 16, Math.PI/2, Math.PI * 2,  7*Math.PI/20,  -Math.PI/12);
+        //var material = new THREE.MeshBasicMaterial( {color: 0x13ec56, side: THREE.FrontSide, colorWrite: false});
+        var material = new THREE.MeshBasicMaterial( {color: 0x00ff00, side: THREE.FrontSide, transparent: true, opacity:0.05});
+        var sphere = new THREE.Mesh( geometry, material );
+        sphere.name = 'openMenu';
+        
+        /*var geometry = new THREE.CircleGeometry( 1, 32 );
         var material = new THREE.MeshBasicMaterial( { color: 0x13ec56 } );
         var circle = new THREE.Mesh( geometry, material );
 
         circle.position.z = -8;
         circle.position.x = 0;
-        circle.position.y = 5;
+        circle.position.y = 7;
 
         circle.lookAt(new THREE.Vector3(0, 0, 0));
 
         circle.renderOrder = 5;
         circle.name = 'openMenu';
 
-        scene.add( circle );
+        var circleRadius = 5;
+        var circleShape = new THREE.Shape();
+        circleShape.moveTo( 0, circleRadius );
+        circleShape.quadraticCurveTo( circleRadius, circleRadius, circleRadius, 0 );
+        circleShape.quadraticCurveTo( circleRadius, -circleRadius, 0, -circleRadius );
+        circleShape.quadraticCurveTo( -circleRadius, -circleRadius, -circleRadius, 0 );
+        circleShape.quadraticCurveTo( -circleRadius, circleRadius, 0, circleRadius );*/
 
-        return circle;
+        Reticulum.add( sphere, {
+            reticleHoverColor: 0xff0000,
+            fuseDuration: 2.5, // Overrides global fuse duration
+            fuseVisible: true,
+            onGazeOver: function(){
+                // do something when user targets object
+                scene.getObjectByName("openmenutext").visible = true;
+
+                this.material.color.setHex( 0xffcc00 );
+            },
+            onGazeOut: function(){
+                // do something when user moves reticle off targeted object
+                scene.getObjectByName("openmenutext").visible = false;
+                this.material.color.setHex( 0x13ec56 );
+            },
+            onGazeLong: function(){
+                // do something user targetes object for specific time
+                this.material.color.setHex( 0x0000cc );
+                MenuManager.openMenu();
+                scene.getObjectByName( "openMenu" ).visible = false;
+            },
+            onGazeClick: function(){
+                // have the object react when user clicks / taps on targeted object
+                //this.material.color.setHex( 0x00cccc * Math.random() );
+                this.material.color.setHex( 0x13ec56 );
+                MenuManager.openMenu();
+                scene.getObjectByName( "openMenu" ).visible = false;
+                scene.getObjectByName("openmenutext").visible = false;
+            }
+        });
+
+
+        scene.add( sphere );
+
+        return sphere;
     };
 
 

@@ -36,7 +36,7 @@ THREE.InteractionsController = function () {
 //***********************************************************************************************************
 
         	case "openMenu":
-        		scene.getObjectByName( "backgroudMenu" ) ? console.log("Menu already open") : MenuManager.openMenu();
+                MenuManager.openMenu();
                 scene.getObjectByName( "openMenu" ).visible = false;
 				break;
 

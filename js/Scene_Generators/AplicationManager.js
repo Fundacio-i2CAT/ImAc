@@ -82,6 +82,14 @@ function AplicationManager()
 			//moData.isPausedById(0) ? moData.playAll() : moData.pauseAll();
 			interController.checkInteraction(mouse3D, camera, 'onDocumentMouseDown');
 		}
+
+		// If the device is in HMD mode and the menu is open, the menu will follow the FoV of the user
+	    if(_isHMD && scene.getObjectByName(menuList[0].name))
+	    {
+	        MenuManager.menuFollowCameraFOV(Math.sign(Math.round(Math.degrees(camera.rotation.y))%360));
+	    } 
+
+		Reticulum.update();
     }
 
 
@@ -95,7 +103,16 @@ function AplicationManager()
 	
         camera = new THREE.PerspectiveCamera( 60.0, window.innerWidth / window.innerHeight, 0.05, 1000 );
         camera.name = 'perspectivecamera';
-        
+
+
+ 		var openMenuText = menuData.getMenuTextMesh("Menu", 22, 0xff0000, "openmenutext");
+ 		openMenuText.position.y = 6;
+ 		openMenuText.position.z = -60;
+ 		openMenuText.scale.set(0.15, 0.15, 1)
+ 		openMenuText.visible = false;
+
+ 		camera.add(openMenuText);
+
         this.CameraParentObject = new THREE.Object3D();
         this.CameraParentObject.name = 'parentcamera';
 		this.CameraParentObject.add(camera);
@@ -174,6 +191,35 @@ function AplicationManager()
 			controls = new THREE.DeviceOrientationAndTouchController(camera, renderer.domElement, renderer);
 			//controls.connect();
 		}*/
+
+		Reticulum.init(camera, {
+			proximity: false,
+			clickevents: true,
+			reticle: {
+				visible: true,
+				restPoint: 50, //Defines the reticle's resting point when no object has been targeted
+				color: 0xffff00,
+				innerRadius: 0.0004,
+				outerRadius: 0.003,
+				hover: {
+					color: 0x13ec56,
+					innerRadius: 0.02,
+					outerRadius: 0.024,
+					speed: 5,
+					vibrate: 50 //Set to 0 or [] to disable
+				}
+			},
+			fuse: {
+				visible: false,
+				duration: 3,
+				color: 0xff0000,
+				innerRadius: 0.045,
+				outerRadius: 0.06,
+				vibrate: 100, //Set to 0 or [] to disable
+				clickCancelFuse: false //If users clicks on targeted object fuse is canceled
+			}
+		});
+
 	}
 
 	var WEBVR = {

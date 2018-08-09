@@ -11,7 +11,16 @@ THREE.SecondaryMenuManager = function () {
 //************************************************************************************
 // Private Functions
 //************************************************************************************
-    
+
+/**
+ * Gets the menu lines.
+ *
+ * @param      {<type>}  w       { parameter_description }
+ * @param      {<type>}  h       { parameter_description }
+ * @param      {<type>}  numDiv  The number div
+ * @param      {<type>}  rows    The rows
+ * @return     {<type>}  The menu lines.
+ */
     function getMenuLines(w, h, numDiv, rows)
     {
         var linesMenuGroup = menuData.getVerticalLineDivisions( w, h, menuDefaultColor );
@@ -20,6 +29,14 @@ THREE.SecondaryMenuManager = function () {
         return linesMenuGroup;
     }
 
+/**
+ * { function_description }
+ *
+ * @param      {number}  w       { parameter_description }
+ * @param      {number}  h       { parameter_description }
+ * @param      {<type>}  name    The name
+ * @return     {<type>}  On menu button.
+ */
     function getOnMenuButton(w, h, name)
     {
         var onButton = menuData.getImageMesh( new THREE.PlaneGeometry( 40*factorScale, 22.5*factorScale ), './img/menu/toggle_on.png', name, 4 ); // menuList.
@@ -28,6 +45,14 @@ THREE.SecondaryMenuManager = function () {
         return onButton;
     }
 
+/**
+ * { function_description }
+ *
+ * @param      {number}  w       { parameter_description }
+ * @param      {number}  h       { parameter_description }
+ * @param      {<type>}  name    The name
+ * @return     {<type>}  Off menu button.
+ */
     function getOffMenuButton(w, h, name)
     {
         var onButton = menuData.getImageMesh( new THREE.PlaneGeometry( 40*factorScale, 22.5*factorScale ), './img/menu/toggle_off.png', name, 4 ); // menuList.
@@ -36,6 +61,15 @@ THREE.SecondaryMenuManager = function () {
         return onButton;
     }
 
+/**
+ * Gets the menu text mesh.
+ *
+ * @param      {<type>}   posY     The position y
+ * @param      {<type>}   text     The text
+ * @param      {<type>}   name     The name
+ * @param      {boolean}  visible  The visible
+ * @return     {<type>}   The menu text mesh.
+ */
     function getMenuTextMesh(posY, text, name, visible=true)
     {
         var menuTextMesh = menuData.getMenuTextMesh( text, subMenuTextSize, menuDefaultColor, name );
@@ -46,6 +80,14 @@ THREE.SecondaryMenuManager = function () {
         return menuTextMesh;
     }
 
+/**
+ * Gets the menu title mesh.
+ *
+ * @param      {<type>}  posX    The position x
+ * @param      {<type>}  text    The text
+ * @param      {<type>}  name    The name
+ * @return     {<type>}  The menu title mesh.
+ */
     function getMenuTitleMesh(posX, text, name)
     {
         var title = menuData.getMenuTextMesh( text, 22, menuDefaultColor, name );
@@ -57,6 +99,13 @@ THREE.SecondaryMenuManager = function () {
         return title;
     }
 
+/**
+ * Gets the menu disabled title mesh.
+ *
+ * @param      {<type>}  posX    The position x
+ * @param      {<type>}  name    The name
+ * @return     {<type>}  The menu disabled title mesh.
+ */
     function getMenuDisabledTitleMesh(posX, name)
     {
         var disabledTitle = menuData.getImageMesh( new THREE.PlaneGeometry( 50*factorScale, 59*factorScale ), './img/menu/disabled_st_icon.png', name, 4 );
@@ -67,6 +116,13 @@ THREE.SecondaryMenuManager = function () {
         return disabledTitle;
     }
 
+/**
+ * Gets the settings icon mesh.
+ *
+ * @param      {number}  w       { parameter_description }
+ * @param      {<type>}  name    The name
+ * @return     {<type>}  The settings icon mesh.
+ */
     function getSettingsIconMesh(w, name)
     {
         var settingsIcon = scene.getObjectByName( name ).clone(); // menuList.settingsCardboardMenu.settingsButton
@@ -77,6 +133,14 @@ THREE.SecondaryMenuManager = function () {
         return settingsIcon;
     }
 
+/**
+ * { function_description }
+ *
+ * @param      {<type>}  posY    The position y
+ * @param      {<type>}  rotZ    The rot z
+ * @param      {<type>}  name    The name
+ * @return     {<type>}  The up down mesh.
+ */
     function getUpDownMesh(posY, rotZ, name)
     {
         var mesh = menuData.getImageMesh( new THREE.PlaneGeometry( backgroundChangeMenuButtonWidth*factorScale/2, backgroundChangeMenuButtonHeight*factorScale ), './img/menu/less_than_icon.png', name, 4 ); 
@@ -89,6 +153,15 @@ THREE.SecondaryMenuManager = function () {
         return mesh;
     }
 
+/**
+ * Creates a dropdown sub menu.
+ *
+ * @param      {number}  w            { parameter_description }
+ * @param      {number}  h            { parameter_description }
+ * @param      {<type>}  subMenuData  The sub menu data
+ * @param      {<type>}  dataArray    The data array
+ * @return     {THREE}   { description_of_the_return_value }
+ */
     function createDropdownSubMenu(w, h, subMenuData, dataArray)
     {
         var secondColumGroup = new THREE.Group();
@@ -116,6 +189,14 @@ THREE.SecondaryMenuManager = function () {
         return secondColumGroup;
     }
 
+/**
+ * Creates a subtitle menu group.
+ *
+ * @param      {number}  w       { parameter_description }
+ * @param      {number}  h       { parameter_description }
+ * @param      {<type>}  name    The name
+ * @return     {THREE}   { description_of_the_return_value }
+ */
     function createSubtitleMenuGroup(w, h, name)
     {
         var menuGroup =  new THREE.Group();
@@ -154,6 +235,14 @@ THREE.SecondaryMenuManager = function () {
         return menuGroup;
     }
 
+/**
+ * Creates a settings menu group.
+ *
+ * @param      {<type>}  w       { parameter_description }
+ * @param      {number}  h       { parameter_description }
+ * @param      {<type>}  name    The name
+ * @return     {THREE}   { description_of_the_return_value }
+ */
     function createSettingsMenuGroup(w, h, name)
     {
         var menuGroup =  new THREE.Group();

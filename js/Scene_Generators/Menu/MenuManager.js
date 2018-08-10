@@ -553,7 +553,7 @@ THREE.MenuManager = function () {
 
             activationElement.position.z = -8;
             activationElement.position.x = 0;
-            activationElement.position.y = 7;
+            activationElement.position.y = 5;
 
             activationElement.lookAt(new THREE.Vector3(0, 0, 0));
 

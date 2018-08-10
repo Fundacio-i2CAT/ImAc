@@ -16,10 +16,10 @@ var isAudioSubtitleActive = true;
 var subtitlesLanguage = 'subtitlesEngButton';
 var subtitlesPosition = 'subtitlesBottomButton';
 var subtitlesSize = 'subtitlesLargeSizeButton';
-var subtitlesIndicator = 'subtitlesIndicatorArrowButton';
+var subtitlesIndicator = 'subtitlesIndicatorNoneButton';
 var subtitlesEasy = 'subtitlesEasyOff';
 var subtitlesBackground = 'subtitlesSemitrans';
-var subtitlesArea = 'subtitlesMediumAreaButton'; 
+var subtitlesArea = 'subtitlesLargeAreaButton'; 
 
 
 

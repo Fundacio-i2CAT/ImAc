@@ -314,7 +314,7 @@ function AplicationManager()
 						{
 							gamepad = new THREE.DaydreamController( camera, renderer.domElement );
 							showEnterVR( displays[ 0 ] );
-							moData.createPointer();
+							//moData.createPointer();
 						} 
 						else 
 						{

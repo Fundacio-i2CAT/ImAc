@@ -74,7 +74,7 @@ THREE.SecondaryMenuManager = function () {
 
     function getMenuTitleMesh(posX, size, text, name, setColor=true)
     {
-        var title = menuData.getMenuTextMesh( text, 22, menuDefaultColor, name );
+        var title = menuData.getMenuTextMesh( text, size, menuDefaultColor, name );
 
         if ( setColor ) title.material.color.set( 0xffff00 );
         title.position.x = posX;

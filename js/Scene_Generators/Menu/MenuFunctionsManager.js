@@ -26,8 +26,7 @@ MenuFunctionsManager = function() {
 	// Language
 
     this.getSubLanguageFunc = function(xml, name)
-    {   
-    console.error(xml)  
+    {    
         return function() {
             subController.setSubtitle( xml );
             MenuManager.selectFinalDropdownOption( name );

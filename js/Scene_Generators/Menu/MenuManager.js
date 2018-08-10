@@ -552,7 +552,7 @@ THREE.MenuManager = function () {
             var activationElement = new THREE.Mesh( geometry, material );
 
             activationElement.position.z = -8;
-            activationElement.position.x = 0;
+            activationElement.position.x = 1.2;
             activationElement.position.y = 7;
 
             activationElement.lookAt(new THREE.Vector3(0, 0, 0));
@@ -602,6 +602,29 @@ THREE.MenuManager = function () {
 
             scene.add( activationElement );
         }
+
+        return activationElement;
+    };
+
+        this.createMenuTrad = function()
+    {
+
+        var geometry = new THREE.CircleGeometry( 1, 32 );
+        var material = new THREE.MeshBasicMaterial( { color: 0xff0000 } );
+        var activationElement = new THREE.Mesh( geometry, material );
+
+        activationElement.position.z = -8;
+        activationElement.position.x = -1.2;
+        activationElement.position.y = 7;
+
+        activationElement.lookAt(new THREE.Vector3(0, 0, 0));
+
+        activationElement.renderOrder = 5;
+        activationElement.name = 'openMenuTrad';
+        scene.add( activationElement );
+
+
+        scene.add( activationElement );
 
         return activationElement;
     };

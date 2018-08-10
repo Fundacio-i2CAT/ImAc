@@ -18,18 +18,18 @@ SubSignManager = function() {
 	var subPosX = 0; // start = left = -1, center = 0, end = right = 1 
 	var subPosY = -1; // before = top = 1, center = 0, after = bottom = -1 
 	var subtitleIndicator = 'none'; // none, arrow, compass, move
-	var subSize; // TODO - string (small, medium, large)
+	var subSize = 1; // small = 0.6, medium = 0.8, large = 1
 	var subLang; // TODO - string (Eng, De, Cat, Esp)
-	var subBackground; // TODO - (semi-transparent, outline)
-	var subEasy; // TODO - boolean
-	var subArea; // TODO - viewArea (small, medium, large)
+	var subBackground = 0.8; // TODO - (semi-transparent, outline)
+	var subEasy = false; // TODO - boolean
+	var subArea = 50; // small = 50, medium = 60, large = 70
 
 	// [SL] signer vars
 	var signEnabled = false;
 	var signPosX = 1; // left = -1, center = 0, right = 1
 	var signPosY = -1; // bottom = -1, center = 0, top = 1
 	var signIndicator = 'none';	 // none, arrow, move (forced prespective)
-	var signArea; // TODO - viewArea (small, medium, large)
+	var signArea; // small = 50, medium = 60, large = 70
 
 
 //************************************************************************************
@@ -74,17 +74,19 @@ SubSignManager = function() {
 	    	{
 	      		moData.removeSubtitle();
 
-	      		var latitud = subPosY == 1 ? 30 * viewArea/100 : -30 * viewArea/100; 
+	      		var latitud = subPosY == 1 ? 30 * subArea/100 : -30 * subArea/100; 
 	      		var posY = Math.sin( Math.radians( latitud ) );
 
 	      		var conf = {
 			        subtitleIndicator: subtitleIndicator,
 			        displayAlign: subPosY,
 			        textAlign: subPosX,
-			        size: 0.008 * viewArea, //modificar si se quiere cambiar el tamaño de los subtitulos (siempre conservar la relacion con el viewArea)
+			        size: subSize,
+			        area: subArea/130,
+			        opacity: subBackground,
 			        x: 0,
 			        y: posY * 80 * 9/16,
-			        z: 1 * 80
+			        z: 75
 			    };
 
 	      		moData.createSubtitle( textList, conf );
@@ -183,9 +185,9 @@ SubSignManager = function() {
 // Public Getters
 //************************************************************************************
 
-	this.getSize = function()
+	this.getSubArea = function()
 	{
-		return viewArea;
+		return subArea;
 	};
 
 	this.getSubPosition = function()
@@ -245,10 +247,27 @@ SubSignManager = function() {
 	    r.send();
 	};
 
-	this.setSize = function(size)
+	this.setSubArea = function(size)
 	{
-		viewArea = size;
+		subArea = size;
 		textListMemory = [];
+	};
+
+	this.setSubSize = function(size)
+	{
+		subSize = size;
+		textListMemory = [];
+	};
+
+	this.setSubBackground = function(background)
+	{
+		subBackground = background;
+		textListMemory = [];
+	};
+
+	this.setSubEasy = function(easy)
+	{
+		subEasy = easy;
 	};
 
 	this.setSubPosition = function(x, y)
@@ -277,7 +296,7 @@ SubSignManager = function() {
 
     this.initSubtitle = function(fov, x, y, ind)
 	{
-		viewArea = fov;
+		subArea = fov;
 		subPosX = x;
 		subPosY = y;
 		subtitleIndicator = ind;
@@ -286,7 +305,7 @@ SubSignManager = function() {
 
 	this.initSigner = function(fov, x, y, ind)
 	{
-		viewArea = fov;
+		signArea = fov;
 		signPosX = x;
 		signPosY = y;
 		signIndicator = ind;
@@ -302,6 +321,12 @@ SubSignManager = function() {
 		moData.removeSubtitle();
 		subtitleEnabled = false;
 	};
+
+	this.switchSubtitles = function(enable)
+	{
+		if ( !enable ) moData.removeSubtitle();
+		subtitleEnabled = enable;
+	}
 
 	this.enableAutoPositioning = function()
 	{

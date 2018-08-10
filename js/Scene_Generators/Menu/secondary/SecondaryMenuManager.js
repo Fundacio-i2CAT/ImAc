@@ -2,7 +2,7 @@
  * @author isaac.fraile@i2cat.net
  */
 
- // GLOBALS used: scene, menuDefaultColor, menuElementsZ, menuList, subtitlesLanguagesArray......
+ // GLOBALS used: menuDefaultColor, menuElementsZ, menuList, subtitlesLanguagesArray......
  // Used class --> menuData, THREE
 
 THREE.SecondaryMenuManager = function () {
@@ -24,6 +24,7 @@ THREE.SecondaryMenuManager = function () {
     {
         var onButton = menuData.getPlaneImageMesh( 22.5, 12.6, './img/menu/toggle_on.png', name, 4 );
         onButton.position.set( -w/3, 3*h/8, menuElementsZ );
+        onButton.onexecute = MenuFunctionsManager.getSubOnOffFunc( false );
 
         return onButton;
     }
@@ -32,15 +33,15 @@ THREE.SecondaryMenuManager = function () {
     {
         var onButton = menuData.getPlaneImageMesh( 22.5, 12.6, './img/menu/toggle_off.png', name, 4 ); 
         onButton.position.set( -w/3, 3*h/8, menuElementsZ );
+        onButton.onexecute = MenuFunctionsManager.getSubOnOffFunc( true );
 
         return onButton;
     }
 
-    function getMenuTextMesh(posY, text, name, visible=true)
+    function getMenuTextMesh(posY, text, name, visible, func)
     {
-        var menuTextMesh = menuData.getMenuTextMesh( text, subMenuTextSize, menuDefaultColor, name );
+        var menuTextMesh = menuData.getMenuTextMesh( text, subMenuTextSize, menuDefaultColor, name, func );
         menuTextMesh.position.y = posY;
-
         menuTextMesh.visible = visible;
 
         return menuTextMesh;
@@ -67,26 +68,15 @@ THREE.SecondaryMenuManager = function () {
         return disabledTitle;
     }
 
-    function getSettingsIconMesh(w, name)
-    {
-        var settingsIcon = scene.getObjectByName( name ).clone(); // menuList.settingsCardboardMenu.settingsButton  settingsCardboardMenu
-
-        settingsIcon.scale.set( 0.75, 0.75, 1 );
-        settingsIcon.position.x = -w/3;
-
-        return settingsIcon;
-    }
-
-    function getUpDownMesh(posY, rotZ, name)
+    function getUpDownMesh(posY, rotZ, name, func)
     {
         var mesh = menuData.getPlaneImageMesh( backgroundChangeMenuButtonWidth*9/32, backgroundChangeMenuButtonHeight*9/16, './img/menu/less_than_icon.png', name, 4 ); 
 
         mesh.position.y = posY;
         mesh.rotation.z = rotZ;
-
         mesh.position.z = menuElementsZ;
-
         mesh.name = name; 
+        mesh.onexecute = func;
 
         return mesh;
     }
@@ -97,10 +87,75 @@ THREE.SecondaryMenuManager = function () {
 
         mesh.position.x = posX;
         mesh.position.z = menuElementsZ;
-
         mesh.name = name; 
 
         return mesh;
+    }
+
+    function getFunctionByElement(name)
+    {
+        switch ( name )
+        {
+            case "subtitlesEngButton":
+                return MenuFunctionsManager.getSubLanguageFunc( list_contents[demoId].subtitles[0]['en'], name );
+
+            case "subtitlesEspButton":
+                return MenuFunctionsManager.getSubLanguageFunc( list_contents[demoId].subtitles[0]['es'], name );
+
+            case "subtitlesGerButton":
+                return MenuFunctionsManager.getSubLanguageFunc( list_contents[demoId].subtitles[0]['de'], name );
+
+            case "subtitlesCatButton":
+                return MenuFunctionsManager.getSubLanguageFunc( list_contents[demoId].subtitles[0]['ca'], name );
+
+            case "subtitlesEasyOn":
+                return MenuFunctionsManager.getSubEasyOnOffFunc( true, name );
+
+            case "subtitlesEasyOff":
+                return MenuFunctionsManager.getSubEasyOnOffFunc( false, name );
+
+            case "subtitlesTopButton":
+                return MenuFunctionsManager.getSubPositionFunc( 1, name );
+
+            case "subtitlesBottomButton":
+                return MenuFunctionsManager.getSubPositionFunc( -1, name );
+
+            case "subtitlesSemitrans":
+                return MenuFunctionsManager.getSubBackgroundFunc( 0.8, name );
+
+            case "subtitlesOutline":
+                return MenuFunctionsManager.getSubBackgroundFunc( 0, name );
+
+            case "subtitlesSmallSizeButton":
+                return MenuFunctionsManager.getSubSizeFunc( 0.6, name );
+
+            case "subtitlesMediumSizeButton":
+                return MenuFunctionsManager.getSubSizeFunc( 0.8, name );
+
+            case "subtitlesLargeSizeButton":
+                return MenuFunctionsManager.getSubSizeFunc( 1, name );
+
+            case "subtitlesIndicatorNoneButton":
+                return MenuFunctionsManager.getSubIndicatorFunc( "none", name );
+
+            case "subtitlesIndicatorArrowButton":
+                return MenuFunctionsManager.getSubIndicatorFunc( "arrow", name );
+
+            case "subtitlesIndicatorRadarButton":
+                return MenuFunctionsManager.getSubIndicatorFunc( "compass", name );
+
+            case "subtitlesSmallAreaButton":
+                return MenuFunctionsManager.getSubAreaFunc( 50, name );
+
+            case "subtitlesMediumAreaButton":
+                return MenuFunctionsManager.getSubAreaFunc( 60, name );
+
+            case "subtitlesLargeAreaButton":
+                return MenuFunctionsManager.getSubAreaFunc( 70, name );
+
+            default: 
+                return undefined;
+        }
     }
 
     function createDropdownSubMenu(w, h, subMenuData, dataArray)
@@ -110,17 +165,27 @@ THREE.SecondaryMenuManager = function () {
 
         var secondColumnLines = menuData.getHoritzontalLineDivisions( w, h, menuDefaultColor, subMenuDataLength, 2 );
         
-        secondColumGroup.add(secondColumnLines);
-        subMenuData.buttons.forEach(function(elem, index)
+        secondColumGroup.add( secondColumnLines );
+        subMenuData.buttons.forEach(function( elem, index )
         {
             var factor = (index*2)+1;
-            var option = menuData.getMenuTextMesh(dataArray[index], subMenuTextSize, menuDefaultColor, elem)
-            option.position.set( w/3, (h/2-factor*h/(subMenuDataLength*2)), menuElementsZ);                    
+            var option = menuData.getMenuTextMesh( dataArray[index], subMenuTextSize, menuDefaultColor, elem, getFunctionByElement( elem ) )
+            option.position.set( w/3, ( h/2-factor*h/(subMenuDataLength*2) ), menuElementsZ );                    
             
             // CHANGE TO A SEPARATE FUNCTION
-            if (settingsLanguage == elem || subtitlesLanguage == elem || subtitlesPosition == elem || subtitlesSize == elem || subtitlesIndicator == elem) option.material.color.set( menuButtonActiveColor ); 
+            if ( settingsLanguage == elem 
+                || subtitlesLanguage == elem 
+                || subtitlesEasy == elem 
+                || subtitlesPosition == elem 
+                || subtitlesSize == elem 
+                || subtitlesIndicator == elem
+                || subtitlesBackground == elem
+                || subtitlesArea == elem   ) 
+            {
+                option.material.color.set( menuButtonActiveColor ); 
+            }
             
-            secondColumGroup.add(option); 
+            secondColumGroup.add( option ); 
         })
 
         secondColumGroup.position.z = menuElementsZ;
@@ -139,28 +204,28 @@ THREE.SecondaryMenuManager = function () {
         menuGroup.add( getOnMenuButton( w, h, menuList[6].buttons[0] ) );
         menuGroup.add( getOffMenuButton( w, h, menuList[6].buttons[1] ) );
 
-        menuGroup.add( getUpDownMesh( 7*h/16, -Math.PI/2, menuList[6].buttons[9] ) );
-        menuGroup.add( getUpDownMesh( -7*h/16, Math.PI/2, menuList[6].buttons[10] ) );
+        menuGroup.add( getUpDownMesh( 7*h/16, -Math.PI/2, menuList[6].buttons[9], MenuFunctionsManager.getSubUpDownFunc( false ) ) );
+        menuGroup.add( getUpDownMesh( -7*h/16, Math.PI/2, menuList[6].buttons[10], MenuFunctionsManager.getSubUpDownFunc( true ) ) );
 
-        menuGroup.add( getMenuTextMesh( h/4, 'Languages', menuList[6].buttons[2] ) );
+        menuGroup.add( getMenuTextMesh( h/4, 'Languages', menuList[6].buttons[2], true, MenuFunctionsManager.getSubShowDropdownFunc( 0, menuList[6].buttons[2] ) ) );
         menuGroup.add( createDropdownSubMenu( w, h, menuList[6].submenus[0], subtitlesLanguagesArray ) );
 
-        menuGroup.add( getMenuTextMesh( 0, 'Easy read', menuList[6].buttons[3] ) );
-        menuGroup.add( createDropdownSubMenu( w, h, menuList[6].submenus[1], settingsUserProfileArray ) ); //modify array
+        menuGroup.add( getMenuTextMesh( 0, 'Easy read', menuList[6].buttons[3], true, MenuFunctionsManager.getSubShowDropdownFunc( 1, menuList[6].buttons[3] ) ) );
+        menuGroup.add( createDropdownSubMenu( w, h, menuList[6].submenus[1], subtitlesEasyArray ) ); //modify array
 
-        menuGroup.add( getMenuTextMesh( -h/4, 'Position', menuList[6].buttons[4] ) );
+        menuGroup.add( getMenuTextMesh( -h/4, 'Position', menuList[6].buttons[4], true, MenuFunctionsManager.getSubShowDropdownFunc( 2, menuList[6].buttons[4] ) ) );
         menuGroup.add( createDropdownSubMenu( w, h, menuList[6].submenus[2], subtitlesPositionArray ) );
 
-        menuGroup.add( getMenuTextMesh( -2*h/4, 'Background', menuList[6].buttons[5], false ) );
-        menuGroup.add( createDropdownSubMenu( w, h, menuList[6].submenus[3], settingsUserProfileArray ) ); //modify array
+        menuGroup.add( getMenuTextMesh( -2*h/4, 'Background', menuList[6].buttons[5], false, MenuFunctionsManager.getSubShowDropdownFunc( 3, menuList[6].buttons[5] ) ) );
+        menuGroup.add( createDropdownSubMenu( w, h, menuList[6].submenus[3], subtitlesBackgroundArray ) ); //modify array
 
-        menuGroup.add( getMenuTextMesh( -3*h/4, 'Size', menuList[6].buttons[6], false ) );
+        menuGroup.add( getMenuTextMesh( -3*h/4, 'Size', menuList[6].buttons[6], false, MenuFunctionsManager.getSubShowDropdownFunc( 4, menuList[6].buttons[6] ) ) );
         menuGroup.add( createDropdownSubMenu( w, h, menuList[6].submenus[4], subtitlesSizeArray ) );
 
-        menuGroup.add( getMenuTextMesh( 3*h/4, 'Indicator', menuList[6].buttons[7], false ) );
+        menuGroup.add( getMenuTextMesh( 3*h/4, 'Indicator', menuList[6].buttons[7], false, MenuFunctionsManager.getSubShowDropdownFunc( 5, menuList[6].buttons[7] ) ) );
         menuGroup.add( createDropdownSubMenu( w, h, menuList[6].submenus[5], subtitlesIndicatorArray ) );
 
-        menuGroup.add( getMenuTextMesh( 2*h/4, 'Area', menuList[6].buttons[8], false ) );
+        menuGroup.add( getMenuTextMesh( 2*h/4, 'Area', menuList[6].buttons[8], false, MenuFunctionsManager.getSubShowDropdownFunc( 6, menuList[6].buttons[8] ) ) );
         menuGroup.add( createDropdownSubMenu( w, h, menuList[6].submenus[6], subtitlesSizeArray ) );
 
         interController.removeInteractiveObject( menuList[4].buttons[0] );
@@ -180,16 +245,15 @@ THREE.SecondaryMenuManager = function () {
 
         menuGroup.add( getMenuLines( w, h, 3, 1 ) );
 
-        //menuGroup.add( getSettingsIconMesh( w, menuList[3].buttons[0] ) );
         menuGroup.add( getImageMesh( -w/3, 34, 34, './img/menu/settings_icon.png', 'right', menuList[3].buttons[0] ) );
 
-        menuGroup.add( getMenuTextMesh( h/3, 'Languages', menuList[5].buttons[0] ) );
+        menuGroup.add( getMenuTextMesh( h/3, 'Languages', menuList[5].buttons[0], true ) );
         menuGroup.add( createDropdownSubMenu( w, h, menuList[5].submenus[0], settingsLanguagesArray ) );
 
-        menuGroup.add( getMenuTextMesh( 0, 'Voice control', menuList[5].buttons[1] ) ); 
+        menuGroup.add( getMenuTextMesh( 0, 'Voice control', menuList[5].buttons[1], true ) ); 
         menuGroup.add( createDropdownSubMenu( w, h, menuList[5].submenus[1], settingsVoiceControlArray ) );
 
-        menuGroup.add( getMenuTextMesh( -h/3, 'User Profile', menuList[5].buttons[2] ) ); 
+        menuGroup.add( getMenuTextMesh( -h/3, 'User Profile', menuList[5].buttons[2], true ) ); 
         menuGroup.add( createDropdownSubMenu( w, h, menuList[5].submenus[2], settingsUserProfileArray ) );
     
     
@@ -208,13 +272,13 @@ THREE.SecondaryMenuManager = function () {
         menuGroup.add( getOnMenuButton( w, h, menuList[7].buttons[0] ) );
         menuGroup.add( getOffMenuButton( w, h, menuList[7].buttons[1] ) );
 
-        menuGroup.add( getMenuTextMesh( h/3, 'Position', menuList[7].buttons[2] ) );
+        menuGroup.add( getMenuTextMesh( h/3, 'Position', menuList[7].buttons[2], true ) );
         menuGroup.add( createDropdownSubMenu( w, h, menuList[7].submenus[0], subtitlesPositionArray ) );
 
-        menuGroup.add( getMenuTextMesh( 0, 'Indicator', menuList[7].buttons[3] ) );
+        menuGroup.add( getMenuTextMesh( 0, 'Indicator', menuList[7].buttons[3], true ) );
         menuGroup.add( createDropdownSubMenu( w, h, menuList[7].submenus[1], subtitlesIndicatorArray ) );
 
-        menuGroup.add( getMenuTextMesh( -h/3, 'Area', menuList[7].buttons[4] ) );
+        menuGroup.add( getMenuTextMesh( -h/3, 'Area', menuList[7].buttons[4], true ) );
         menuGroup.add( createDropdownSubMenu( w, h, menuList[7].submenus[2], subtitlesSizeArray ) );
 
         interController.removeInteractiveObject( menuList[4].buttons[1] );
@@ -308,6 +372,23 @@ THREE.SecondaryMenuManager = function () {
 // Public Functions
 //************************************************************************************
 
+    this.showMultiOptionsButtons = function(menuIndexArray)
+    {
+        for ( var i = 0; i < menuIndexArray.length; i++ )
+        {
+            if( menuList[menuIndexArray[i][0]].isEnabled )
+            {
+                scene.getObjectByName( menuList[menuList[menuIndexArray[i][0]].firstmenuindex].buttons[menuIndexArray[i][1]] ).visible = true; //menuList.
+                scene.getObjectByName( menuList[menuList[menuIndexArray[i][0]].firstmenuindex].buttons[menuIndexArray[i][2]] ).visible = false; //menuList.
+            }
+            else
+            {
+                scene.getObjectByName( menuList[menuList[menuIndexArray[i][0]].firstmenuindex].buttons[menuIndexArray[i][1]] ).visible = false; //menuList.
+                scene.getObjectByName( menuList[menuList[menuIndexArray[i][0]].firstmenuindex].buttons[menuIndexArray[i][2]] ).visible = true; //menuList.
+            }
+        }
+    }
+
     this.createMainMenus = function(backgroundmenu)
     {
         var w = backgroundmenu.geometry.parameters.width;
@@ -315,8 +396,6 @@ THREE.SecondaryMenuManager = function () {
 
         backgroundmenu.add( createSettingsCardboardMenu( w, h, menuList[3].name ) );
         backgroundmenu.add( createMultiOptionsMenu( w, h, menuList[4].name ) );
-
-        //scene.add( backgroundmenu );
      
     };
 

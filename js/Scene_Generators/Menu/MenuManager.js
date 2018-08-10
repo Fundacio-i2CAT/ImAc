@@ -39,40 +39,6 @@ THREE.MenuManager = function () {
         return submenuNameActive;
     }
 
-    /**
- * { function_description }
- *
- * @param      {<type>}  backgroundmenu  The backgroundmenu
- * @param      {<type>}  subMenuData     The sub menu data
- */
-    this.dropdownSubMenuCreation = function(backgroundmenu, subMenuData, dataArray)
-    {
-        var secondColumGroup = new THREE.Group();
-        var subMenuDataLength = subMenuData.buttons.length;
-
-        /*function menuLineHoritzontalDivisions(color, numberofdivisions, backgroundmenu, row)*/
-        var secondColumnLines = menuData.menuLineHoritzontalDivisions(menuDefaultColor, subMenuDataLength, backgroundmenu, 2);
-        
-        secondColumGroup.add(secondColumnLines);
-        subMenuData.buttons.forEach(function(elem, index)
-        {
-            var factor = (index*2)+1;
-            var option = menuData.getMenuTextMesh(dataArray[index], subMenuTextSize, menuDefaultColor, elem)
-            option.position.set( backgroundmenu.geometry.parameters.width/3, (backgroundmenu.geometry.parameters.height/2-factor*backgroundmenu.geometry.parameters.height/(subMenuDataLength*2)), menuElementsZ);                    
-            
-            // CHANGE TO A SEPARATE FUNCTION
-            if (settingsLanguage == elem || subtitlesLanguage == elem || subtitlesPosition == elem ||subtitlesSize == elem || subtitlesIndicator == elem) option.material.color.set( menuButtonActiveColor ); 
-            
-            secondColumGroup.add(option); 
-        })
-
-        secondColumGroup.position.z = menuElementsZ;
-        secondColumGroup.name = subMenuData.name;
-        secondColumGroup.visible = false;
-
-        return secondColumGroup;
-    }
-
     
 
 //*******************************************************************************************************
@@ -119,7 +85,7 @@ THREE.MenuManager = function () {
         });
         
         ppMMgr.showPlayPauseButton();
-        mloptMMgr.showMultiOptionsButtons(multiOptionsMainSubMenuIndexes);
+        secMMgr.showMultiOptionsButtons(multiOptionsMainSubMenuIndexes);
 
         
     }
@@ -213,7 +179,7 @@ THREE.MenuManager = function () {
 
         menuList[indexActiveMenu].buttons.forEach(function(elem)
         {
-            if( elem == 'subtitlesShowLanguagesDropdown' 
+            if ( elem == 'subtitlesShowLanguagesDropdown' 
                 || elem == 'subtitlesShowEasyReadDropdown' 
                 || elem == 'subtitlesShowPositionsDropdown' 
                 || elem == 'subtitlesShowBackgroundDropdown' 

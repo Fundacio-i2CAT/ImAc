@@ -366,7 +366,7 @@ THREE.MenuObject = function () {
  * @param      {<type>}  name    The name
  * @return     {THREE}   The menu text mesh.
  */
-    this.getMenuTextMesh = function(text, size, color, name)
+    this.getMenuTextMesh = function(text, size, color, name, func)
     {
         var textShape = new THREE.BufferGeometry();
         var textmaterial = new THREE.MeshBasicMaterial( { color: color} );
@@ -385,6 +385,12 @@ THREE.MenuObject = function () {
         mesh.name = name;
         coliderMesh.name = name;
         coliderMesh.position.z = 0.06;
+
+        if ( func ) 
+        {
+            coliderMesh.onexecute = func;
+        }
+
         mesh.add(coliderMesh);
         mesh.position.z = 0.05;
 

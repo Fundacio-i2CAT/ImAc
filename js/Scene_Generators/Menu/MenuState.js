@@ -14,8 +14,11 @@ var isAudioSubtitleActive = true;
 
 var subtitlesLanguage = 'subtitlesEngButton';
 var subtitlesPosition = 'subtitlesBottomButton';
-var subtitlesSize = 'subtitlesSmallAreaButton';
+var subtitlesSize = 'subtitlesLargeSizeButton';
 var subtitlesIndicator = 'subtitlesIndicatorArrowButton';
+var subtitlesEasy = 'subtitlesEasyOff';
+var subtitlesBackground = 'subtitlesSemitrans';
+var subtitlesArea = 'subtitlesMediumAreaButton'; 
 
 
 
@@ -157,7 +160,7 @@ var menuList =
                     buttons:
                     [
                         'subtitlesSmallSizeButton', 
-                        'subtitlesMediumlSizeButton',
+                        'subtitlesMediumSizeButton',
                         'subtitlesLargeSizeButton'
                     ]
                 },
@@ -175,7 +178,7 @@ var menuList =
                     buttons:
                     [
                         'subtitlesSmallAreaButton', 
-                        'subtitlesMediumlAreaButton',
+                        'subtitlesMediumAreaButton',
                         'subtitlesLargeAreaButton'
                     ]
                 }

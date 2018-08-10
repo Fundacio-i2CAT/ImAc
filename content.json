@@ -1,0 +1,43 @@
+{
+  "title": "ImAc",
+  "contents": [
+  {
+    "name": "Video 1: Demo radio",
+    "thumbnail": "img/LOGO-IMAC.png",
+    "url": "./resources/rapzember-young-hurn_edit.mp4",
+    "audioChannels": 2,
+    "subtitles": [
+    {
+      "en": "./resources/Rapzember3.ebu-tt.xml",
+      "es": "./resources/Rapzember3.ebu-tt.xml",
+      "de": "./resources/Rapzember3.ebu-tt.xml",
+      "ca": "./resources/Rapzember_Cat.xml"
+    }]
+  }, 
+  {
+    "name": "Video 2: Demo liceu",
+    "thumbnail": "img/LOGO-IMAC.png",
+    "url": "./resources/cam_2_2k.mp4",
+    "audioChannels": 4,
+    "subtitles": [
+    {
+      "en": "./resources/liceu/LICEU_ENG.xml",
+      "es": "./resources/liceu/LICEU_CAST.xml",
+      "de": "./resources/liceu/LICEU_ENG.xml",
+      "ca": "./resources/liceu/LICEU_CAST.xml"
+    }]
+  }, 
+  {
+    "name": "Video 3: Demo RBB",
+    "thumbnail": "img/LOGO-IMAC.png",
+    "url": "./resources/rbb/dash/stream.mpd",
+    "audioChannels": 2,
+    "subtitles": [
+    {
+      "en": "./resources/rbb/RBB_Abendschau_short_subtitles_angles.xml",
+      "es": "./resources/rbb/RBB_Abendschau_short_subtitles_angles.xml",
+      "de": "./resources/rbb/RBB_Abendschau_short_subtitles_angles.xml",
+      "ca": "./resources/rbb/RBB_Abendschau_short_subtitles_angles.xml"
+    }]
+  }]
+}

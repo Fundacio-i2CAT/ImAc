@@ -536,7 +536,16 @@ THREE.InteractionsController = function () {
 	function getInteractiveObjectList()
 	{
 		console.log(interactiveListObjects)
-	};
+	}
+
+    function freeInteractionState(time)
+    {
+        var myVar = setTimeout(function()
+        {
+            interactionState = true;
+            clearTimeout(myVar);
+        },time); 
+    }
 
 //************************************************************************************
 // Public Setters
@@ -567,13 +576,13 @@ THREE.InteractionsController = function () {
 
 	this.checkInteraction = function(mouse3D, camera) 
 	{
-		//interactionState = false;
 
     	raycaster.setFromCamera( mouse3D, camera );
     	var intersects = raycaster.intersectObjects( interactiveListObjects, true ); // false
 
-    	if ( intersects[0] )
+    	if ( intersects[0] && interactionState )
     	{
+            interactionState = false;
     		var intersectedShapeId;
 			for(var inter = 0; inter < intersects.length; inter++)
 	        {
@@ -593,6 +602,7 @@ THREE.InteractionsController = function () {
 					break;
 				}
 			}
+            freeInteractionState(300);
     	}
     	else
     	{

@@ -10,35 +10,44 @@ THREE.MenuManager = function () {
 //*******************************************************************************************************
 
 /**
- * { function_description }
+ * This function makes the menu follow the users FoV. This option is 
+ * only enabled in HMD mode.
  *
- * @param      {number}  rotationDir  The rotation dir
+ * @param      {integer}  rotationDir  The rotation direction negative/left positive/right
  */
     this.menuFollowCameraFOV = function(rotationDir)
     {
-        var object = scene.getObjectByName(menuList[0].name);
-        var objRotAngleY = Math.round(Math.degrees(object.rotation.y))%360;
-        var camRotAngleY = Math.round(Math.degrees(camera.rotation.y))%360;
+        var object = scene.getObjectByName(menuList[0].name); // The menu
+        var objRotAngleY = Math.round(Math.degrees(object.rotation.y))%360; // The menu rotation angle in the Y axe.
+        var camRotAngleY = Math.round(Math.degrees(camera.rotation.y))%360; // The camera rotation angle in the Y axe.
         
+        // If the difference between the menu and camera angle is over 60 recalculate the new angle
+        // in order to have the menu centered for the user.
         if(rotationDir<0)
         {
             if(Math.abs(camRotAngleY - objRotAngleY)>60)
             {
+                // Subtract the diference between the camera and menu rotation
                 menuAngle -= (camRotAngleY - objRotAngleY);
+
+                // Calculate the new distances on the x & z axes with the new angle.
                 object.position.x = Math.sin(Math.radians(menuAngle))*69;
                 object.position.z = -Math.cos(Math.radians(menuAngle))*69;
 
+                // Caculate the new menu rotation in Y adding the diference between the camera and menu rotation.
                 object.rotation.y = object.rotation.y + 1*Math.radians((camRotAngleY - objRotAngleY));
             }
         }
         else
         {
-            if(Math.abs((objRotAngleY - camRotAngleY))>60)
+            if(Math.abs(objRotAngleY - camRotAngleY)>60)
             {
+                // Add the diference between the menu and camera rotation
                 menuAngle += (objRotAngleY - camRotAngleY);
                 object.position.x = Math.sin(Math.radians(menuAngle))*69;
                 object.position.z = -Math.cos(Math.radians(menuAngle))*69;
 
+                // Caculate the new menu rotation in Y subtracting the diference between the camera and menu rotation.
                 object.rotation.y = object.rotation.y + -1*Math.radians((objRotAngleY - camRotAngleY));
             }
         }
@@ -47,7 +56,7 @@ THREE.MenuManager = function () {
 /**
  * Gets the menu list.
  *
- * @return     {<type>}  The menu list.
+ * @return     {<Array>}  The menu list.
  */
     this.getMenuList = function()
     {
@@ -55,9 +64,9 @@ THREE.MenuManager = function () {
     }
 
 /**
- * Sets the submenu name active.
+ * Sets the active submenu name.
  *
- * @param      {<type>}  name    The name
+ * @param      {<String>}  name    The name
  */
     this.setSubmenuNameActive = function(name)
     {
@@ -65,16 +74,16 @@ THREE.MenuManager = function () {
     }
 
 /**
- * Gets the submenu name active.
+ * Gets the active submenu name.
  *
- * @return     {<type>}  The submenu name active.
+ * @return     {<String>}  The submenu name active.
  */
     this.getSubmenuNameActive = function()
     {
         return submenuNameActive;
     }
 
-    /**
+/**
  * { function_description }
  *
  * @param      {<type>}  backgroundmenu  The backgroundmenu
@@ -85,7 +94,7 @@ THREE.MenuManager = function () {
         var secondColumGroup = new THREE.Group();
         var subMenuDataLength = subMenuData.buttons.length;
 
-        /*function menuLineHoritzontalDivisions(color, numberofdivisions, backgroundmenu, row)*/
+        //function menuLineHoritzontalDivisions(color, numberofdivisions, backgroundmenu, row)
         var secondColumnLines = menuData.menuLineHoritzontalDivisions(menuDefaultColor, subMenuDataLength, backgroundmenu, 2);
         
         secondColumGroup.add(secondColumnLines);
@@ -116,6 +125,10 @@ THREE.MenuManager = function () {
 // 
 //*******************************************************************************************************
     
+/**
+ * This function creates all the menus and submenus and opens the menu. 
+ * If HMD or tablet the menu is attached and scaled differently (HMD -> scene; tablet -> camera).
+ */
     this.openMenu = function()
     {
         isUserInSecondLevelMenus = false;
@@ -563,69 +576,68 @@ THREE.MenuManager = function () {
 
     this.createMenu = function()
     {
+        var _isMenuOpenButton = false;
+        var activationElement;
 
-        var geometry = new THREE.SphereGeometry(99, 64, 16, Math.PI/2, Math.PI * 2,  7*Math.PI/20,  -Math.PI/12);
-        //var material = new THREE.MeshBasicMaterial( {color: 0x13ec56, side: THREE.FrontSide, colorWrite: false});
-        var material = new THREE.MeshBasicMaterial( {color: 0x00ff00, side: THREE.FrontSide, transparent: true, opacity:0.05});
-        var sphere = new THREE.Mesh( geometry, material );
-        sphere.name = 'openMenu';
-        
-        /*var geometry = new THREE.CircleGeometry( 1, 32 );
-        var material = new THREE.MeshBasicMaterial( { color: 0x13ec56 } );
-        var circle = new THREE.Mesh( geometry, material );
+        if(_isMenuOpenButton)
+        {
+            var geometry = new THREE.CircleGeometry( 1, 32 );
+            var material = new THREE.MeshBasicMaterial( { color: 0x13ec56 } );
+            var activationElement = new THREE.Mesh( geometry, material );
 
-        circle.position.z = -8;
-        circle.position.x = 0;
-        circle.position.y = 7;
+            activationElement.position.z = -8;
+            activationElement.position.x = 0;
+            activationElement.position.y = 7;
 
-        circle.lookAt(new THREE.Vector3(0, 0, 0));
+            activationElement.lookAt(new THREE.Vector3(0, 0, 0));
 
-        circle.renderOrder = 5;
-        circle.name = 'openMenu';
+            activationElement.renderOrder = 5;
+            activationElement.name = 'openMenu';
+            scene.add( activationElement );
+        }
+        else
+        {
+            var geometry = new THREE.SphereGeometry(99, 64, 16, Math.PI/2, Math.PI * 2,  7*Math.PI/20,  -Math.PI/12);
+            //var material = new THREE.MeshBasicMaterial( {color: 0x13ec56, side: THREE.FrontSide, colorWrite: false});
+            var material = new THREE.MeshBasicMaterial( {color: 0x00ff00, side: THREE.FrontSide, transparent: true, opacity:0.05});
+            var activationElement = new THREE.Mesh( geometry, material );
+            activationElement.name = 'openMenu';
 
-        var circleRadius = 5;
-        var circleShape = new THREE.Shape();
-        circleShape.moveTo( 0, circleRadius );
-        circleShape.quadraticCurveTo( circleRadius, circleRadius, circleRadius, 0 );
-        circleShape.quadraticCurveTo( circleRadius, -circleRadius, 0, -circleRadius );
-        circleShape.quadraticCurveTo( -circleRadius, -circleRadius, -circleRadius, 0 );
-        circleShape.quadraticCurveTo( -circleRadius, circleRadius, 0, circleRadius );*/
+            Reticulum.add( activationElement, {
+                reticleHoverColor: 0xff0000,
+                fuseDuration: 2.5, // Overrides global fuse duration
+                fuseVisible: true,
+                onGazeOver: function(){
+                    // do something when user targets object
+                    scene.getObjectByName("openmenutext").visible = true;
 
-        Reticulum.add( sphere, {
-            reticleHoverColor: 0xff0000,
-            fuseDuration: 2.5, // Overrides global fuse duration
-            fuseVisible: true,
-            onGazeOver: function(){
-                // do something when user targets object
-                scene.getObjectByName("openmenutext").visible = true;
+                    this.material.color.setHex( 0xffcc00 );
+                },
+                onGazeOut: function(){
+                    // do something when user moves reticle off targeted object
+                    scene.getObjectByName("openmenutext").visible = false;
+                    this.material.color.setHex( 0x13ec56 );
+                },
+                onGazeLong: function(){
+                    // do something user targetes object for specific time
+                    this.material.color.setHex( 0x0000cc );
+                    MenuManager.openMenu();
+                    scene.getObjectByName( "openMenu" ).visible = false;
+                },
+                onGazeClick: function(){
+                    // have the object react when user clicks / taps on targeted object
+                    //this.material.color.setHex( 0x00cccc * Math.random() );
+                    this.material.color.setHex( 0x13ec56 );
+                    MenuManager.openMenu();
+                    scene.getObjectByName( "openMenu" ).visible = false;
+                    scene.getObjectByName("openmenutext").visible = false;
+                }
+            });
 
-                this.material.color.setHex( 0xffcc00 );
-            },
-            onGazeOut: function(){
-                // do something when user moves reticle off targeted object
-                scene.getObjectByName("openmenutext").visible = false;
-                this.material.color.setHex( 0x13ec56 );
-            },
-            onGazeLong: function(){
-                // do something user targetes object for specific time
-                this.material.color.setHex( 0x0000cc );
-                MenuManager.openMenu();
-                scene.getObjectByName( "openMenu" ).visible = false;
-            },
-            onGazeClick: function(){
-                // have the object react when user clicks / taps on targeted object
-                //this.material.color.setHex( 0x00cccc * Math.random() );
-                this.material.color.setHex( 0x13ec56 );
-                MenuManager.openMenu();
-                scene.getObjectByName( "openMenu" ).visible = false;
-                scene.getObjectByName("openmenutext").visible = false;
-            }
-        });
+            scene.add( activationElement );
+        }
 
-
-        scene.add( sphere );
-
-        return sphere;
+        return activationElement;
     };
 
 

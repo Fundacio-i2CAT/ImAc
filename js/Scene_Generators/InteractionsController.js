@@ -38,8 +38,14 @@ THREE.InteractionsController = function () {
         	case "openMenu":
                 MenuManager.openMenu();
                 scene.getObjectByName( "openMenu" ).visible = false;
-                scene.getObjectByName( "openMenuTrad" ).visible = false; //EXPERIMENTAL
+                //scene.getObjectByName( "openMenuTrad" ).visible = false; //EXPERIMENTAL
 				break;
+
+            case "openMenuTrad":
+                MenuManager.openMenuTrad();
+                scene.getObjectByName( "openMenu" ).visible = false;
+                //scene.getObjectByName( "openMenuTrad" ).visible = false; //EXPERIMENTAL
+                break;
 
         	case "backMenuButton":
                 MenuManager.pressButtonFeedback(name);
@@ -56,7 +62,7 @@ THREE.InteractionsController = function () {
                 setTimeout(function(){
                  MenuManager.closeMenu(); 
                  scene.getObjectByName( "openMenu" ).visible = true;
-                 scene.getObjectByName( "openMenuTrad" ).visible = true; //EXPERIMENTAL
+                 //scene.getObjectByName( "openMenuTrad" ).visible = true; //EXPERIMENTAL
              }, clickInteractionTimeout);
                 
         		break;

@@ -23,16 +23,21 @@ THREE.VolumeMenuManager = function () {
 
     this.volumeLevelDisplayLogic = function()
     {
-        scene.getObjectByName(menuList[2].buttons[2]).visible = false; //menuList.volumeChangeMenu.unmuteVolumeButton
-        interController.removeInteractiveObject(menuList[2].buttons[2]); //menuList.volumeChangeMenu.unmuteVolumeButton
+        if(!_isTradMenuOpen) 
+        {
+            scene.getObjectByName(menuList[2].buttons[2]).visible = false; //menuList.volumeChangeMenu.unmuteVolumeButton
+            interController.removeInteractiveObject(menuList[2].buttons[2]); //menuList.volumeChangeMenu.unmuteVolumeButton
 
-        scene.getObjectByName(menuList[2].buttons[3]).visible = false; //menuList.volumeChangeMenu.muteVolumeButton
-        interController.removeInteractiveObject(menuList[2].buttons[3]); //menuList.volumeChangeMenu.muteVolumeButton
+            scene.getObjectByName(menuList[2].buttons[3]).visible = false; //menuList.volumeChangeMenu.muteVolumeButton
+            interController.removeInteractiveObject(menuList[2].buttons[3]); //menuList.volumeChangeMenu.muteVolumeButton
 
-        scene.getObjectByName('volumeChangeMenu').remove(scene.getObjectByName('volumeLevel'));
-        var newText = menuData.getMenuTextMesh(AudioManager.getVolume()*100+'%', volFeedbackMenuTextSize, menuDefaultColor, 'volumeLevel');
-        scene.getObjectByName('volumeChangeMenu').add(newText)
-        scene.getObjectByName('volumeLevel').visible = true;
+            scene.getObjectByName('volumeChangeMenu').remove(scene.getObjectByName('volumeLevel'));
+            var newText = menuData.getMenuTextMesh(AudioManager.getVolume()*100+'%', volFeedbackMenuTextSize, menuDefaultColor, 'volumeLevel');
+            scene.getObjectByName('volumeChangeMenu').add(newText)
+            scene.getObjectByName('volumeLevel').visible = true;
+        }
+
+
         setTimeout(function(){ 
             volMMgr.showMuteUnmuteButton();
             scene.getObjectByName('volumeLevel').visible = false;

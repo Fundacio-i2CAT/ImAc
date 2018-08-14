@@ -1,3 +1,4 @@
+var _isTradMenuOpen = false;
 var menuAngle = 0;
 var isUserInSecondLevelMenus = false;
 var submenuNameActive;

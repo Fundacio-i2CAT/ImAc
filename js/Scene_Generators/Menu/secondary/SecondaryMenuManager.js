@@ -386,6 +386,20 @@ THREE.SecondaryMenuManager = function () {
         return menuGroup;
     }
 
+    function createSettingsCardboardMenuTraditional(w, h, name)
+    {
+        var menuGroup =  new THREE.Group();
+
+        menuGroup.add( getImageMesh( 19*w/(20*2), 2, 2, './img/menu/settings_icon.png', 'right', menuList[3].buttons[0] ) );
+        var c = getImageMesh( 19*w/(20*2), 2, 1.6, './img/menu/cardboard_icon.png', 'right', menuList[3].buttons[1] );
+        c.visible = false ;
+        menuGroup.add( c );
+    
+        menuGroup.name = name;
+
+        return menuGroup;
+    }
+
     function createMultiOptionsMenu(w, h, name)
     {
         var menuGroup =  new THREE.Group();
@@ -407,6 +421,36 @@ THREE.SecondaryMenuManager = function () {
 
         return menuGroup;
     }
+
+// EXPERIMENTAL
+    function createMultiOptionsMenuTraditional(w, h, name)
+    {
+
+        var menuGroup =  new THREE.Group();
+
+        menuGroup.add( getMenuTitleMesh( 9*w/(20*2), 1.5, 'ST', menuList[4].buttons[0], false ) );
+        var stDis = getMenuDisabledTitleMesh( 5*w/(20*2), 14, 14, './img/menu/disabled_st_icon.png', menuList[4].buttons[4] );
+        stDis.visible = false;
+        menuGroup.add(stDis );
+
+        menuGroup.add( getMenuTitleMesh( 11*w/(20*2), 1.5, 'SL', menuList[4].buttons[1], false ) );
+        var slDis = getMenuDisabledTitleMesh( 7*w/(20*2), 14, 14, './img/menu/disabled_sl_icon.png', menuList[4].buttons[5] );
+        slDis.visible = false;
+        menuGroup.add( slDis );
+
+        menuGroup.add( getMenuTitleMesh( 13*w/(20*2), 1.5, 'AD', menuList[4].buttons[2], false ) );
+        var adDis = getMenuDisabledTitleMesh( 9*w/(20*2), 14, 14, './img/menu/disabled_ad_icon.png', menuList[4].buttons[6] );
+        adDis.visible = false;
+        menuGroup.add( adDis );
+
+        menuGroup.add( getMenuTitleMesh( 15*w/(20*2), 1.5, 'AST', menuList[4].buttons[3], false ) );
+        var astDis = getMenuDisabledTitleMesh( 11*w/(20*2), 18, 14, './img/menu/disabled_ast_icon.png', menuList[4].buttons[7] );
+        astDis.visible = false;
+        menuGroup.add( astDis );
+
+        return menuGroup;
+    }
+
 
 
 //************************************************************************************
@@ -451,6 +495,18 @@ THREE.SecondaryMenuManager = function () {
         backgroundmenu.add( createAudioDescriptionMenuGroup( w, h, menuList[8].name ) );
         backgroundmenu.add( createAudioSubtMenuGroup( w, h, menuList[9].name ) );
      
+    };
+
+
+// EXPERIMENTAL
+    this.createSecondaryMenusTraditional = function(backgroundmenu)
+    {
+        var w = backgroundmenu.geometry.parameters.width;
+        var h = backgroundmenu.geometry.parameters.height;
+
+        backgroundmenu.add( createMultiOptionsMenuTraditional(w,h, "multiOptionsTrad") );
+        backgroundmenu.add( createSettingsCardboardMenuTraditional(w,h, "settingsCardboardTrad") );
+            
     };
 }
 

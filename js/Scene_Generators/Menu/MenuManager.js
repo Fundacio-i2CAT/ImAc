@@ -542,7 +542,7 @@ THREE.MenuManager = function () {
 
     this.createMenu = function()
     {
-        var _isMenuOpenButton = true;
+        var _isMenuOpenButton = false;
         var activationElement;
 
         if(_isMenuOpenButton)
@@ -606,7 +606,7 @@ THREE.MenuManager = function () {
         return activationElement;
     };
 
-        this.createMenuTrad = function()
+    this.createMenuTrad = function()
     {
 
         var geometry = new THREE.CircleGeometry( 1, 32 );
@@ -628,6 +628,112 @@ THREE.MenuManager = function () {
 
         return activationElement;
     };
+
+   function visibleHeightAtZDepth ( depth, camera )
+   {
+      // compensate for cameras not positioned at z=0
+      const cameraOffset = camera.position.z;
+      if ( depth < cameraOffset ) depth -= cameraOffset;
+      else depth += cameraOffset;
+
+      // vertical fov in radians
+      const vFOV = camera.fov * Math.PI / 180; 
+
+      // Math.abs to ensure the result is always positive
+      return 2 * Math.tan( vFOV / 2 ) * Math.abs( depth );
+    };
+
+    function visibleWidthAtZDepth ( depth, camera ) 
+    {
+      const height = visibleHeightAtZDepth( depth, camera );
+      return height * camera.aspect;
+    };
+
+    this.openMenuTrad = function()
+    {
+        _isTradMenuOpen = true;
+        var bgWidth = Math.round(visibleWidthAtZDepth( 60, camera )-20);
+        var bg = menuData.getBackgroundMesh(bgWidth, 4, 0x333333, 0.75);
+        bg.position.set(0, (-visibleHeightAtZDepth( 60, camera )/2)+2+5,-60);
+
+        var playSeekGroup =  new THREE.Group();
+        var playbutton = menuData.getImageMesh( new THREE.PlaneGeometry( 2,2 ), './img/menu/play_icon.png', menuList[1].buttons[0], 4 ); // menuList.
+        var pausebutton = menuData.getImageMesh( new THREE.PlaneGeometry( 2,2 ), './img/menu/pause_icon.png', menuList[1].buttons[1], 4 ); // menuList.
+        var seekBarL = menuData.getImageMesh( new THREE.PlaneGeometry( 2,1 ), './img/menu/seek_icon.png', menuList[1].buttons[2], 4 ); // menuList.
+        var seekBarR = menuData.getImageMesh( new THREE.PlaneGeometry( 2,1 ), './img/menu/seek_icon.png', menuList[1].buttons[3], 4 ); // menuList.
+        
+        playbutton.position.z = menuElementsZ;
+        pausebutton.position.z = menuElementsZ;
+
+        seekBarR.rotation.z = Math.PI;
+
+        seekBarR.position.x = -15*bgWidth/(20*2);
+        playbutton.position.x = -17*bgWidth/(20*2);
+        pausebutton.position.x = -17*bgWidth/(20*2); //pausebutton.visible = false;
+        seekBarL.position.x = -19*bgWidth/(20*2);
+        
+
+        playSeekGroup.add( playbutton );
+        playSeekGroup.add( pausebutton );
+        playSeekGroup.add( seekBarR );
+        playSeekGroup.add( seekBarL );
+
+        playSeekGroup.name = menuList[1].name; //menuList.playSeekMenu
+        bg.add(playSeekGroup);
+
+        //interController.setActiveMenuName(menuList[1].name); //menuList.playSeekMenu
+
+
+
+
+
+
+        //The 4 main buttons are created inside a group 'volumeChangeGroup'
+        var volumeChangeGroup =  new THREE.Group();
+        //var plusVolume = menuData.getPlusIconMesh( volumeLevelButtonWidth, volumeLevelButtonHeight,factorScale, menuDefaultColor,  menuList[2].buttons[1]);
+        var audioMuteIcon = menuData.getImageMesh( new THREE.PlaneGeometry(2,2 ), './img/menu/volume_mute_icon.png', menuList[2].buttons[3], 4 ); // menuList.volumeChangeMenu.muteVolumeButton
+        var audioUnmuteIcon = menuData.getImageMesh( new THREE.PlaneGeometry(2,2 ), './img/menu/volume_unmute_icon.png', menuList[2].buttons[2], 4 ); // menuList.volumeChangeMenu.unmuteVolumeButton
+        
+        var minusVolume = menuData.getImageMesh( new THREE.PlaneGeometry( 1,1), './img/menu/minus_icon.png', menuList[2].buttons[0], 4 ); // menuList.volumeChangeMenu.
+        var plusVolume = menuData.getImageMesh( new THREE.PlaneGeometry( 1,1 ), './img/menu/plus_icon.png', menuList[2].buttons[1], 4 ); // menuList.volumeChangeMenu.
+        
+        
+        minusVolume.position.x = -13*bgWidth/(20*2);
+        audioMuteIcon.position.x = -11*bgWidth/(20*2);
+        audioUnmuteIcon.position.x = -11*bgWidth/(20*2); audioUnmuteIcon.visible = false;
+        plusVolume.position.x = -9*bgWidth/(20*2);
+
+        volumeChangeGroup.add( plusVolume );
+        volumeChangeGroup.add( audioMuteIcon );
+        volumeChangeGroup.add( audioUnmuteIcon );
+        volumeChangeGroup.add( minusVolume );
+
+        volumeChangeGroup.name = menuList[2].name; // menuList.volumeChangeMenu
+
+
+        secMMgr.createSecondaryMenusTraditional(bg);
+
+        //var linesTest = menuData.menuLineVerticalDivisions(bgWidth, 4, 0xffffff, 20)
+        
+
+        //bg.add(linesTest); //DESIGN PURPOSE
+
+        bg.add(playSeekGroup);
+        bg.add(volumeChangeGroup);
+
+
+        camera.add(bg);
+
+        menuList.forEach(function(menu, index){
+            if(index > 0 && index < 5 )
+            {
+                menu.buttons.forEach(function(elem){interController.addInteractiveObject(scene.getObjectByName(elem))}); 
+            }
+        });
+        ppMMgr.showPlayPauseButton();
+        secMMgr.showMultiOptionsButtons(multiOptionsMainSubMenuIndexes);
+
+    }
 
 
     this.createButton2 = function()

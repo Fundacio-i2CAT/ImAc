@@ -417,29 +417,27 @@ THREE.MenuObject = function () {
     }
 
 /**
- * Creates all the vertical and horitzontal lines in the menus.
+ * { function_description }
  *
- * @param      {<type>}  backgroundmenu    The backgroundmenu
- * @param      {<type>}  color             The color
- * @param      {number}  firstcolumnrows   The firstcolumnrows
- * @param      {number}  secondcolumnrows  The secondcolumnrows
+ * @param      {number}  w          { parameter_description }
+ * @param      {number}  h          { parameter_description }
+ * @param      {<type>}  color      The color
+ * @param      {<type>}  divisions  The divisions
+ * @return     {THREE}   { description_of_the_return_value }
  */
-    this.menuLineVerticalDivisions = function(backgroundmenu, color)
+    this.menuLineVerticalDivisions = function(w, h, color, divisions)
     {
         var linesMenuGroup =  new THREE.Group();
-        var line = createLine(color, 
-            new THREE.Vector3( -backgroundmenu.geometry.parameters.width/6, backgroundmenu.geometry.parameters.height/2, 0 ),
-            new THREE.Vector3( -backgroundmenu.geometry.parameters.width/6, -backgroundmenu.geometry.parameters.height/2, 0 ));
-
-        var line2 = line.clone();
-        line2.position.x = 2*backgroundmenu.geometry.parameters.width/6;
-
-        linesMenuGroup.add( line );
-        linesMenuGroup.add( line2 );
+        var line;
+        for (var i = 1; i<divisions; i++)
+        {
+            line = createLine( color, new THREE.Vector3(  -w/2+i*w/divisions, h/2, 0 ), new THREE.Vector3( -w/2+i*w/divisions, -h/2, 0 ) );
+            linesMenuGroup.add( line );
+        }
 
         linesMenuGroup.position.z = 0.05;
 
-        return linesMenuGroup
+        return linesMenuGroup;
     }
 
     this.getVerticalLineDivisions = function(w, h, color)

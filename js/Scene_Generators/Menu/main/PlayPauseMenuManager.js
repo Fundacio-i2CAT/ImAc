@@ -139,30 +139,34 @@ this.getPlayoutTime = function(secs, format) {
 
     this.playoutTimeDisplayLogic = function(isPlay)
     {
-        var timeoutFactor = 1;
-        clearTimeout(playoutTimeout);
-
-        scene.getObjectByName(menuList[1].buttons[0]).visible = false; //menuList.
-        interController.removeInteractiveObject(menuList[1].buttons[0]); //menuList.
-
-        scene.getObjectByName(menuList[1].buttons[1]).visible = false; //menuList.
-        interController.removeInteractiveObject(menuList[1].buttons[1]); //menuList.
-
-        createPlayoutTimeFeedback(
-            menuData.getMenuTextMesh(ppMMgr.getPlayoutTime(moData.getListOfVideoContents()[0].vid.currentTime), 
-                playoutFeedbackMenuTextSize, 
-                menuDefaultColor, 'playouttime'));
-
-        if(isPlay)
+        if(!_isTradMenuOpen)
         {
-            timeoutFactor = 2;
-            playoutTimeout =setTimeout(function(){    
-                createPlayoutTimeFeedback(
-                    menuData.getMenuTextMesh(ppMMgr.getPlayoutTime(moData.getListOfVideoContents()[0].vid.currentTime), 
-                        playoutFeedbackMenuTextSize, 
-                        menuDefaultColor, 'playouttime'));
-            }, visualFeedbackTimeout);
+            var timeoutFactor = 1;
+            clearTimeout(playoutTimeout);
+
+            scene.getObjectByName(menuList[1].buttons[0]).visible = false; //menuList.
+            interController.removeInteractiveObject(menuList[1].buttons[0]); //menuList.
+
+            scene.getObjectByName(menuList[1].buttons[1]).visible = false; //menuList.
+            interController.removeInteractiveObject(menuList[1].buttons[1]); //menuList.
+
+            createPlayoutTimeFeedback(
+                menuData.getMenuTextMesh(ppMMgr.getPlayoutTime(moData.getListOfVideoContents()[0].vid.currentTime), 
+                    playoutFeedbackMenuTextSize, 
+                    menuDefaultColor, 'playouttime'));
+
+            if(isPlay)
+            {
+                timeoutFactor = 2;
+                playoutTimeout =setTimeout(function(){    
+                    createPlayoutTimeFeedback(
+                        menuData.getMenuTextMesh(ppMMgr.getPlayoutTime(moData.getListOfVideoContents()[0].vid.currentTime), 
+                            playoutFeedbackMenuTextSize, 
+                            menuDefaultColor, 'playouttime'));
+                }, visualFeedbackTimeout);
+            }
         }
+
 
         playoutTimeout = setTimeout(function(){ 
             scene.getObjectByName('playSeekMenu').remove(scene.getObjectByName('playouttime'));

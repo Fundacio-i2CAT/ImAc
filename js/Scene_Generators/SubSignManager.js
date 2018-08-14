@@ -18,18 +18,18 @@ SubSignManager = function() {
 	var subPosX = 0; // start = left = -1, center = 0, end = right = 1 
 	var subPosY = -1; // before = top = 1, center = 0, after = bottom = -1 
 	var subtitleIndicator = 'none'; // none, arrow, compass, move
-	var subSize; // TODO - string (small, medium, large)
+	var subSize = 1; // small = 0.6, medium = 0.8, large = 1
 	var subLang; // TODO - string (Eng, De, Cat, Esp)
-	var subBackground; // TODO - (semi-transparent, outline)
-	var subEasy; // TODO - boolean
-	var subArea; // TODO - viewArea (small, medium, large)
+	var subBackground = 0.8; // TODO - (semi-transparent, outline)
+	var subEasy = false; // TODO - boolean
+	var subArea = 50; // small = 50, medium = 60, large = 70
 
 	// [SL] signer vars
 	var signEnabled = false;
 	var signPosX = 1; // left = -1, center = 0, right = 1
 	var signPosY = -1; // bottom = -1, center = 0, top = 1
 	var signIndicator = 'none';	 // none, arrow, move (forced prespective)
-	var signArea; // TODO - viewArea (small, medium, large)
+	var signArea; // small = 50, medium = 60, large = 70
 
 
 //************************************************************************************
@@ -74,17 +74,21 @@ SubSignManager = function() {
 	    	{
 	      		moData.removeSubtitle();
 
-	      		var latitud = subPosY == 1 ? 30 * viewArea/100 : -30 * viewArea/100; 
-	      		var posY = Math.sin( Math.radians( latitud ) );
+	      		var latitud = subPosY == 1 ? 30 * subArea/100 : -30 * subArea/100; 
+	      		var posY = _isHMD ? 80 * Math.sin( Math.radians( latitud ) ) : 69 * Math.sin( Math.radians( latitud ) );
+	      		var subAjust = _isHMD ? 1 : 0.45;
+	      		var posZ = _isHMD ? 75 : 38;
 
 	      		var conf = {
 			        subtitleIndicator: subtitleIndicator,
 			        displayAlign: subPosY,
 			        textAlign: subPosX,
-			        size: 0.008 * viewArea, //modificar si se quiere cambiar el tamaño de los subtitulos (siempre conservar la relacion con el viewArea)
+			        size: subSize * subAjust,
+			        area: subArea/130,
+			        opacity: subBackground,
 			        x: 0,
-			        y: posY * 80 * 9/16,
-			        z: 1 * 80
+			        y: posY * 9/16,
+			        z: posZ
 			    };
 
 	      		moData.createSubtitle( textList, conf );
@@ -143,17 +147,36 @@ SubSignManager = function() {
 	function changePositioning(isdImac)
 	{
 		autoPositioning = false;
+		var difPosition = Math.round(getViewDifPosition( isdImac ));
+		var position;
+
+	  	if ( difPosition <= 3  && difPosition >= -3 ) 
+	  	{
+	  		position = 0;
+	  	}
+	  	else
+	  	{
+	  		difPosition = difPosition < 0 ? difPosition + 360 : difPosition;
+
+	    	position = ( difPosition > 0 && difPosition <= 180 ) ? -1 : 1;
+	  	}
       	var rotaionValue = 0;
+      	var initY = Math.round( CameraParentObject.rotation.y * (-180/Math.PI)%360 );
+
       	var rotationInterval = setInterval(function() 
       	{
-        	if ( rotaionValue >= isdImac ) 
+      		var difff = isdImac - initY;
+      		if ( difff > 180 ) difff -= 360;
+      		if ( difff < 0 ) difff = -1*difff;
+        	if ( position * rotaionValue >= difff || position == 0 ) 
         	{
         		clearInterval( rotationInterval );
+        		autoPositioning = true;
         	}
         	else 
         	{
-          		rotaionValue += 3;
-          		CameraPatherObject.rotation.y = rotaionValue * ( Math.PI / 180 );
+          		rotaionValue += position*3;
+          		CameraParentObject.rotation.y = initY / ( -180 / Math.PI )%360 + rotaionValue * ( -Math.PI / 180 );
         	}
       	}, 30);
 	}	
@@ -175,16 +198,17 @@ SubSignManager = function() {
 
     	var lon = Math.degrees( Math.atan( camView.x/camView.z ) ) + offset;
 
-    	return lon >= 0 ? sp - lon : sp - ( lon + 360 );	
+    	//return lon >= 0 ? sp - lon : sp - ( lon + 360 );
+    	return lon >= 0 ? 360 - sp - lon : - sp - lon;	
     }
 
 //************************************************************************************
 // Public Getters
 //************************************************************************************
 
-	this.getSize = function()
+	this.getSubArea = function()
 	{
-		return viewArea;
+		return subArea;
 	};
 
 	this.getSubPosition = function()
@@ -217,6 +241,11 @@ SubSignManager = function() {
 		return signIndicator;
 	};
 
+	this.getSubtitleEnabled = function()
+	{
+		return subtitleEnabled;
+	};
+
 
 //************************************************************************************
 // Public Setters
@@ -244,10 +273,27 @@ SubSignManager = function() {
 	    r.send();
 	};
 
-	this.setSize = function(size)
+	this.setSubArea = function(size)
 	{
-		viewArea = size;
+		subArea = size;
 		textListMemory = [];
+	};
+
+	this.setSubSize = function(size)
+	{
+		subSize = size;
+		textListMemory = [];
+	};
+
+	this.setSubBackground = function(background)
+	{
+		subBackground = background;
+		textListMemory = [];
+	};
+
+	this.setSubEasy = function(easy)
+	{
+		subEasy = easy;
 	};
 
 	this.setSubPosition = function(x, y)
@@ -276,7 +322,7 @@ SubSignManager = function() {
 
     this.initSubtitle = function(fov, x, y, ind)
 	{
-		viewArea = fov;
+		subArea = fov;
 		subPosX = x;
 		subPosY = y;
 		subtitleIndicator = ind;
@@ -285,7 +331,7 @@ SubSignManager = function() {
 
 	this.initSigner = function(fov, x, y, ind)
 	{
-		viewArea = fov;
+		signArea = fov;
 		signPosX = x;
 		signPosY = y;
 		signIndicator = ind;
@@ -301,6 +347,12 @@ SubSignManager = function() {
 		moData.removeSubtitle();
 		subtitleEnabled = false;
 	};
+
+	this.switchSubtitles = function(enable)
+	{
+		if ( !enable ) moData.removeSubtitle();
+		subtitleEnabled = enable;
+	}
 
 	this.enableAutoPositioning = function()
 	{

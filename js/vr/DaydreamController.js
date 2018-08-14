@@ -130,8 +130,13 @@ THREE.DaydreamController = function (object, domElement) {
 		event.preventDefault();
 
 		console.log('onDocumentMouseDown');
+
+		var mouse3D = new THREE.Vector2();
+        mouse3D.x = 0;
+        mouse3D.y = 0;
 				
 		//moData.isPausedById(0) ? moData.playAll() : moData.pauseAll();
+		if (_isHMD) interController.checkInteraction(mouse3D, camera, 'onDocumentMouseDown');
 		
 	}.bind( this );
 

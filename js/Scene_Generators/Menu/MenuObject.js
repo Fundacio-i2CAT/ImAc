@@ -21,6 +21,23 @@ THREE.MenuObject = function () {
         return mesh;
     }
 
+    this.getPlaneImageMesh = function(w, h, url, name, order) 
+    {
+        var geometry = new THREE.PlaneGeometry( w, h );
+        var loader = new THREE.TextureLoader();
+        var texture = loader.load( url );
+        texture.minFilter = THREE.LinearFilter;
+        texture.format = THREE.RGBAFormat;
+
+        var material = new THREE.MeshBasicMaterial( { map: texture, transparent: true, side: THREE.FrontSide } );
+        var mesh = new THREE.Mesh( geometry, material );
+
+        mesh.name = name;
+        mesh.renderOrder = order || 0;
+
+        return mesh;
+    }
+
     this.getBackgroundMesh = function(w, h, c, o)
     {
         var material = new THREE.MeshBasicMaterial( { color: c, transparent: true, opacity: o } );
@@ -349,7 +366,7 @@ THREE.MenuObject = function () {
  * @param      {<type>}  name    The name
  * @return     {THREE}   The menu text mesh.
  */
-    this.getMenuTextMesh = function(text, size, color, name)
+    this.getMenuTextMesh = function(text, size, color, name, func)
     {
         var textShape = new THREE.BufferGeometry();
         var textmaterial = new THREE.MeshBasicMaterial( { color: color} );
@@ -368,6 +385,12 @@ THREE.MenuObject = function () {
         mesh.name = name;
         coliderMesh.name = name;
         coliderMesh.position.z = 0.06;
+
+        if ( func ) 
+        {
+            coliderMesh.onexecute = func;
+        }
+
         mesh.add(coliderMesh);
         mesh.position.z = 0.05;
 
@@ -394,29 +417,45 @@ THREE.MenuObject = function () {
     }
 
 /**
- * Creates all the vertical and horitzontal lines in the menus.
+ * { function_description }
  *
- * @param      {<type>}  backgroundmenu    The backgroundmenu
- * @param      {<type>}  color             The color
- * @param      {number}  firstcolumnrows   The firstcolumnrows
- * @param      {number}  secondcolumnrows  The secondcolumnrows
+ * @param      {number}  w          { parameter_description }
+ * @param      {number}  h          { parameter_description }
+ * @param      {<type>}  color      The color
+ * @param      {<type>}  divisions  The divisions
+ * @return     {THREE}   { description_of_the_return_value }
  */
-    this.menuLineVerticalDivisions = function(backgroundmenu, color)
+    this.menuLineVerticalDivisions = function(w, h, color, divisions)
     {
         var linesMenuGroup =  new THREE.Group();
-        var line = createLine(color, 
-            new THREE.Vector3( -backgroundmenu.geometry.parameters.width/6, backgroundmenu.geometry.parameters.height/2, 0 ),
-            new THREE.Vector3( -backgroundmenu.geometry.parameters.width/6, -backgroundmenu.geometry.parameters.height/2, 0 ));
+        var line;
+        for (var i = 1; i<divisions; i++)
+        {
+            line = createLine( color, new THREE.Vector3(  -w/2+i*w/divisions, h/2, 0 ), new THREE.Vector3( -w/2+i*w/divisions, -h/2, 0 ) );
+            linesMenuGroup.add( line );
+        }
+
+        linesMenuGroup.position.z = 0.05;
+
+        return linesMenuGroup;
+    }
+
+    this.getVerticalLineDivisions = function(w, h, color)
+    {
+        var linesMenuGroup =  new THREE.Group();
+        var line = createLine( color, 
+            new THREE.Vector3( -w/6, h/2, 0 ),
+            new THREE.Vector3( -w/6, -h/2, 0 ) );
 
         var line2 = line.clone();
-        line2.position.x = 2*backgroundmenu.geometry.parameters.width/6;
+        line2.position.x = 2 * w/6;
 
         linesMenuGroup.add( line );
         linesMenuGroup.add( line2 );
 
         linesMenuGroup.position.z = 0.05;
 
-        return linesMenuGroup
+        return linesMenuGroup;
     }
 /**
  * Creates the horitzontal lines that divide the menu depending on the indicated row 
@@ -481,6 +520,82 @@ THREE.MenuObject = function () {
                 linesHoritzontalGroup.add(line3);
                 return linesHoritzontalGroup
                 break;
+        }
+    }
+
+    this.getHoritzontalLineDivisions = function(w, h, color, numberofdivisions, row)
+    {
+        var linesHoritzontalGroup =  new THREE.Group();
+        var line = createLine( color, 
+                    new THREE.Vector3( -w/6, 0, 0 ),
+                    new THREE.Vector3( w/6, 0, 0 ) );
+
+        switch( numberofdivisions )
+        {
+
+            case 2:
+                if( row > 1 ) line.position.x +=  w/3;
+                linesHoritzontalGroup.add( line );
+                return linesHoritzontalGroup;
+
+            case 3:
+                var line1 = line.clone();
+                var line2 = line.clone();
+                line1.position.y += h/6
+                line2.position.y -= h/6
+                if( row > 1 )
+                    {
+                      line1.position.x +=  w/3;  
+                      line2.position.x +=  w/3;  
+                    } 
+                linesHoritzontalGroup.add(line1);
+                linesHoritzontalGroup.add(line2);
+                return linesHoritzontalGroup;
+
+            case 4:
+                var line2 = line.clone();
+                var line3 = line.clone();
+                line2.position.y += h/4
+                line3.position.y -= h/4
+                if( row > 1 )
+                {
+                  line.position.x += w/3;
+                  line2.position.x += w/3; 
+                  line3.position.x += w/3;  
+                }
+                else if ( row == 0 )
+                {
+                    var line4 = line.clone();
+                    line4.position.x -= w/3;
+                    line4.position.y += h/4;
+                    linesHoritzontalGroup.add(line4);
+                } 
+                linesHoritzontalGroup.add(line);
+                linesHoritzontalGroup.add(line2);
+                linesHoritzontalGroup.add(line3);
+                return linesHoritzontalGroup;
+
+            case 5:
+                var line1 = line.clone();
+                var line2 = line.clone();
+                var line3 = line.clone();
+                var line4 = line.clone();
+
+                line1.position.y += h/8;
+                line2.position.y += 3*h/8;
+                line3.position.y -= h/8;
+                line4.position.y -= 3*h/8;
+
+
+                linesHoritzontalGroup.add(line1);
+                linesHoritzontalGroup.add(line2);
+                linesHoritzontalGroup.add(line3);
+                linesHoritzontalGroup.add(line4);
+
+                return linesHoritzontalGroup;
+
+            default:
+                return linesHoritzontalGroup;
         }
     }
 }

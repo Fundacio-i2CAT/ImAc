@@ -59,7 +59,14 @@ var subtitlesLanguagesArray = ['English', 'Spanish', 'German', 'Catalan'];
 var subtitlesPositionArray = ['Top', 'Bottom'];
 var subtitlesSizeArray = ['Small', 'Medium', 'Large'];
 var subtitlesIndicatorArray = ['None', 'Arrow', 'Radar'];
+var subtitlesBackgroundArray = ['Semi-Trans', 'Outline'];
+var subtitlesEasyArray = ['On', 'Off'];
 
 var settingsLanguagesArray = ['English', 'Spanish', 'Catalan', 'German'];
 var settingsVoiceControlArray = ['option 1'];
 var settingsUserProfileArray = ['option 1', 'option 2'];
+
+
+var secondarySubIndex = 0;
+
+var _isHMD = false;

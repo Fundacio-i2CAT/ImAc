@@ -142,7 +142,7 @@ THREE.MediaObject = function () {
     {
         var textmaterial = new THREE.MeshBasicMaterial( { color: t.color } );
         var textShape = new THREE.BufferGeometry();
-        var shapes = subtitleFont.generateShapes( t.text, 5, 2 );
+        var shapes = subtitleFont.generateShapes( /*'MMMMMWWWWWMMMMMWWWWWMMMMMWWWWWMMMMMQQ'*/t.text, 5*c.size );
         var geometry = new THREE.ShapeGeometry( shapes );
         geometry.computeBoundingBox();
 
@@ -152,33 +152,68 @@ THREE.MediaObject = function () {
 
         var textplane = new THREE.Mesh( textShape, textmaterial );
         textplane.position.x = -xMid/2;
-        textplane.position.y = -2;
+        textplane.position.y = -2*c.size;
         textplane.position.z = 0.1;
-               
+
         var material = new THREE.MeshBasicMaterial( { color: t.backgroundColor, transparent: true, opacity: o } );
-        var geometry = new THREE.PlaneGeometry( xMid+4, 8.7 ); 
+        var geometry = new THREE.PlaneGeometry( xMid+4*c.size, 8.7*c.size ); 
         var mesh = new THREE.Mesh( geometry, material );
 
         mesh.add( textplane );
 
+
+        if ( o == 0 )
+        {
+            var matDark = new THREE.LineBasicMaterial( { color: t.backgroundColor,
+                linewidth: 1
+            } );
+
+            var holeShapes = [];
+            for ( var j = 0; j < shapes.length; j ++ ) {
+                var shape = shapes[ j ];
+                if ( shape.holes && shape.holes.length > 0 ) {
+                    for ( var k = 0; k < shape.holes.length; k ++ ) {
+                        var hole = shape.holes[ k ];
+                        holeShapes.push( hole );
+                    }
+                }
+            }
+            shapes.push.apply( shapes, holeShapes );
+            var lineText = new THREE.Object3D();
+            for ( var j = 0; j < shapes.length; j ++ ) {
+                var shape = shapes[ j ];
+                var points = shape.getPoints();
+                var geometry = new THREE.BufferGeometry().setFromPoints( points );
+                var lineMesh = new THREE.Line( geometry, matDark );
+                      
+
+                lineText.add( lineMesh );
+            }
+            lineText.position.x = -xMid/2;
+            lineText.position.y = -2*c.size;
+            lineText.position.z = 0.1;
+
+            mesh.add( lineText );
+        }
+
         if ( i == l-1 && c.subtitleIndicator == 'compass' )
         {
             // right compass
-            var imgGeometry = new THREE.PlaneGeometry( 6.7, 6.7 );
+            var imgGeometry = new THREE.PlaneGeometry( 6.7*c.size, 6.7*c.size );
             var compass = getImageMesh( imgGeometry, './img/compass_r.png', 'right', 4 );
-            compass.add( getBackgroundMesh ( 9.7, 8.7, t.backgroundColor, o ) );
+            compass.add( getBackgroundMesh ( 9.7*c.size, 8.7*c.size, t.backgroundColor, o ) );
             compass.position.z = 0.1;
-            compass.position.x = xMid/2 + 6.8;
+            compass.position.x = xMid/2 + 6.8*c.size;
             compass.visible = false;
             compass.material.color.set(t.color);
             mesh.add( compass );
 
             // left compass
-            var imgGeometry = new THREE.PlaneGeometry( 6.7, 6.7 );
+            var imgGeometry = new THREE.PlaneGeometry( 6.7*c.size, 6.7*c.size );
             var compass = getImageMesh( imgGeometry, './img/compass_l.png', 'left', 4 );
-            compass.add( getBackgroundMesh ( 9.7, 8.7, t.backgroundColor, o ) );
+            compass.add( getBackgroundMesh ( 9.7*c.size, 8.7*c.size, t.backgroundColor, o ) );
             compass.position.z = 0.1;
-            compass.position.x = -(xMid/2 + 6.8);
+            compass.position.x = -(xMid/2 + 6.8*c.size);
             compass.visible = false;
             compass.material.color.set(t.color);
             mesh.add( compass );
@@ -187,27 +222,27 @@ THREE.MediaObject = function () {
         else if ( i == l-1 && c.subtitleIndicator == 'arrow' )
         {
             // right arrow
-            var arrow = getArrowMesh( 6.7, 6.7, t.color );
-            arrow.add( getBackgroundMesh ( 9.7, 8.7, t.backgroundColor, o ) );
-            arrow.position.x = xMid/2 + 6.8;
+            var arrow = getArrowMesh( 6.7*c.size, 6.7*c.size, t.color );
+            arrow.add( getBackgroundMesh ( 9.7*c.size, 8.7*c.size, t.backgroundColor, o ) );
+            arrow.position.x = xMid/2 + 6.8*c.size;
             arrow.name = 'right';
 
             mesh.add( arrow );
 
             // left arrow
-            var arrow = getArrowMesh( 6.7, 6.7, t.color );
+            var arrow = getArrowMesh( 6.7*c.size, 6.7*c.size, t.color );
             arrow.rotation.z = Math.PI;
-            arrow.add( getBackgroundMesh ( 9.7, 8.7, t.backgroundColor, o ) );
-            arrow.position.x = -(xMid/2 + 6.8);
+            arrow.add( getBackgroundMesh ( 9.7*c.size, 8.7*c.size, t.backgroundColor, o ) );
+            arrow.position.x = -(xMid/2 + 6.8*c.size);
             arrow.name = 'left';
 
             mesh.add( arrow );
         }
 
-        mesh.scale.set( c.size,c.size,c.size );
+        mesh.scale.set( c.area,c.area,1 );
 
         mesh.position.z = - c.z;
-        mesh.position.y = c.displayAlign == 1 ? c.y - (9.57 * i * c.size) : c.y + (9.57 * (l-1-i) * c.size); //c.displayAlign == 'before'
+        mesh.position.y = c.displayAlign == 1 ? c.y - (9.57 * i * c.area *c.size) : c.y + (9.57 * (l-1-i) * c.area *c.size); //c.displayAlign == 'before'
         mesh.position.x = c.x * (49 - xMid/2);
 
         mesh.renderOrder = 3;
@@ -523,7 +558,7 @@ THREE.MediaObject = function () {
         {
             config.x = config.textAlign == 0 ? 0 : config.textAlign == -1 ? -config.size : config.size;
 
-            var mesh = getSubMesh( textList[i], config, 0.8, len, i );            
+            var mesh = getSubMesh( textList[i], config, config.opacity, len, i );            
             mesh.name = i;
 
             group.add( mesh );
@@ -663,7 +698,7 @@ THREE.MediaObject = function () {
                 new THREE.SphereBufferGeometry( 0.006, 16, 8 ),
                 new THREE.MeshBasicMaterial( { color: 0xc90000 } )
             );
-        pointer.position.z = -8;
+        pointer.position.z = -3;
         pointer.name = 'pointer';
 
         camera.add( pointer );

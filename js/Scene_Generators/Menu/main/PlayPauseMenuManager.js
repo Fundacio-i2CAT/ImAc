@@ -98,71 +98,36 @@ this.getPlayoutTime = function(secs, format) {
         }
     }
 
-    /**
- * Creates the play/seek menu.
- *
- * @param      {<mesh>}  backgroundmenu  The backgroundmenu
- */
-    this.createPlaySeekMenu = function (backgroundmenu, factorScale)
-    {
-        //The 4 main buttons are created inside a group 'playSeekGroup'
-        var playSeekGroup =  new THREE.Group();
-        var playbutton = menuData.getImageMesh( new THREE.PlaneGeometry( playPauseButtonWidth*factorScale,playPauseButtonHeight*factorScale ), './img/menu/play_icon.png', menuList[1].buttons[0], 4 ); // menuList.
-        var pausebutton = menuData.getImageMesh( new THREE.PlaneGeometry( playPauseButtonWidth*factorScale,playPauseButtonHeight*factorScale ), './img/menu/pause_icon.png', menuList[1].buttons[1], 4 ); // menuList.
-        var seekBarL = menuData.getImageMesh( new THREE.PlaneGeometry( seekButtonWidth*factorScale,seekButtonHeigth*factorScale ), './img/menu/seek_icon.png', menuList[1].buttons[2], 4 ); // menuList.
-        var seekBarR = menuData.getImageMesh( new THREE.PlaneGeometry( seekButtonWidth*factorScale,seekButtonHeigth*factorScale ), './img/menu/seek_icon.png', menuList[1].buttons[3], 4 ); // menuList.
-        
-        var playouttime = menuData.getMenuTextMesh(ppMMgr.getPlayoutTime(moData.getListOfVideoContents()[0].vid.currentTime), playoutFeedbackMenuTextSize, menuDefaultColor, 'playouttime');
-        playouttime.visible = false;
-
-        playouttime.position.z = menuElementsZ;
-        playbutton.position.z = menuElementsZ;
-        pausebutton.position.z = menuElementsZ;
-
-        seekBarR.position.set(Math.cos(0)*(backgroundmenu.geometry.parameters.width/2 - seekButtonMarginX*factorScale), 0, menuElementsZ);
-        seekBarR.rotation.z = Math.PI;
-        seekBarL.position.set(Math.cos(Math.PI)*(backgroundmenu.geometry.parameters.width/2 - seekButtonMarginX*factorScale), 0, menuElementsZ);
-
-        playSeekGroup.add( playbutton );
-        playSeekGroup.add( pausebutton );
-        playSeekGroup.add( seekBarR );
-        playSeekGroup.add( seekBarL );
-        playSeekGroup.add( playouttime );
-
-        playSeekGroup.name = menuList[1].name; //menuList.playSeekMenu
-        backgroundmenu.add(playSeekGroup);
-
-        interController.setActiveMenuName(menuList[1].name); //menuList.playSeekMenu
-
-        scene.add(backgroundmenu);
-    }
-
     this.playoutTimeDisplayLogic = function(isPlay)
     {
-        var timeoutFactor = 1;
-        clearTimeout(playoutTimeout);
-
-        scene.getObjectByName(menuList[1].buttons[0]).visible = false; //menuList.
-        interController.removeInteractiveObject(menuList[1].buttons[0]); //menuList.
-
-        scene.getObjectByName(menuList[1].buttons[1]).visible = false; //menuList.
-        interController.removeInteractiveObject(menuList[1].buttons[1]); //menuList.
-
-        createPlayoutTimeFeedback(
-            menuData.getMenuTextMesh(ppMMgr.getPlayoutTime(moData.getListOfVideoContents()[0].vid.currentTime), 
-                playoutFeedbackMenuTextSize, 
-                menuDefaultColor, 'playouttime'));
-
-        if(isPlay)
+        if(!_isTradMenuOpen)
         {
-            timeoutFactor = 2;
-            playoutTimeout =setTimeout(function(){    
-                createPlayoutTimeFeedback(
-                    menuData.getMenuTextMesh(ppMMgr.getPlayoutTime(moData.getListOfVideoContents()[0].vid.currentTime), 
-                        playoutFeedbackMenuTextSize, 
-                        menuDefaultColor, 'playouttime'));
-            }, visualFeedbackTimeout);
+            var timeoutFactor = 1;
+            clearTimeout(playoutTimeout);
+
+            scene.getObjectByName(menuList[1].buttons[0]).visible = false; //menuList.
+            interController.removeInteractiveObject(menuList[1].buttons[0]); //menuList.
+
+            scene.getObjectByName(menuList[1].buttons[1]).visible = false; //menuList.
+            interController.removeInteractiveObject(menuList[1].buttons[1]); //menuList.
+
+            createPlayoutTimeFeedback(
+                menuData.getMenuTextMesh(ppMMgr.getPlayoutTime(moData.getListOfVideoContents()[0].vid.currentTime), 
+                    playoutFeedbackMenuTextSize, 
+                    menuDefaultColor, 'playouttime'));
+
+            if(isPlay)
+            {
+                timeoutFactor = 2;
+                playoutTimeout =setTimeout(function(){    
+                    createPlayoutTimeFeedback(
+                        menuData.getMenuTextMesh(ppMMgr.getPlayoutTime(moData.getListOfVideoContents()[0].vid.currentTime), 
+                            playoutFeedbackMenuTextSize, 
+                            menuDefaultColor, 'playouttime'));
+                }, visualFeedbackTimeout);
+            }
         }
+
 
         playoutTimeout = setTimeout(function(){ 
             scene.getObjectByName('playSeekMenu').remove(scene.getObjectByName('playouttime'));

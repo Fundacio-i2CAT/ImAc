@@ -4,6 +4,7 @@
 var _PlayerVersion = 'v0.02.0';
 
 var AplicationManager = new AplicationManager();
+var MenuFunctionsManager = new MenuFunctionsManager();
 var moData = new THREE.MediaObject();
 var menuData = new THREE.MenuObject();
 
@@ -11,14 +12,11 @@ var MenuManager = new THREE.MenuManager();
 
 var ppMMgr = new THREE.PlayPauseMenuManager();
 var volMMgr = new THREE.VolumeMenuManager();
-var setcarMMgr = new THREE.SettingsCardboardMenuManager();
-var mloptMMgr = new THREE.MultiOptionsMenuManager();
+//var setcarMMgr = new THREE.SettingsCardboardMenuManager();
+//var mloptMMgr = new THREE.MultiOptionsMenuManager();
 
-var stMMngr = new THREE.SubtitlesMenuManager();
-var slMMngr = new THREE.SignLanguageMenuManager();
-var adMMngr = new THREE.AudioDescriptionMenuManager();
-var astMMngr = new THREE.AudioSubtitlesMenuManager();
-var setMMgr = new THREE.SettingsMenuManager();
+
+var secMMgr = new THREE.SecondaryMenuManager();
 
 var AudioManager = new AudioManager();
 var subController = new SubSignManager();
@@ -35,6 +33,8 @@ var demoId = 1;
 var mainContentURL = './resources/rapzember-young-hurn_edit.mp4';
 //var _selected_content = 'Radio';
 
+var list_contents;
+
 
 
 
@@ -48,17 +48,20 @@ function init_webplayer()
 
   AudioManager.initAmbisonicResources();
   moData.setFont('./css/fonts/TiresiasScreenfont_Regular.json');
-		
-  for (var i = 0; i < 2; i++) 
+  //moData.setFont('./css/fonts/helvetiker_bold.typeface.json');
+
+  $.getJSON('./content.json', function(json)
   {
-    var id = i + 1;
-    var dataText = ' ';
+    list_contents = json.contents;
+		
+    for (var i = 0; i < list_contents.length; i++) 
+    {
+      var id = i;
+      var dataText = list_contents[i].name;
 
-    if (i == 0) dataText = "Video 1: Demo radio";
-    else if (i == 1) dataText = "Video 2: Demo opera";
-
-    createListGroup(id, "img/LOGO-IMAC.png", dataText);
-  }
+      createListGroup(id, list_contents[i].thumbnail, dataText);
+    }
+  });
 }
 
 
@@ -71,12 +74,16 @@ function blockContainer()
 
 function selectXML(id)
 {
-  mainContentURL = id == 2 ? './resources/cam_2_2k.mp4' : './resources/rapzember-young-hurn_edit.mp4';
+  //mainContentURL = id == 2 ? './resources/cam_2_2k.mp4' : './resources/rapzember-young-hurn_edit.mp4';
+  enterfullscreen();
+  mainContentURL = list_contents[id].url;
  
   demoId = id;
 
-  AplicationManager.init_AplicationManager();
-  enterfullscreen();
+  setTimeout(function(){ AplicationManager.init_AplicationManager(); }, 100);
+
+  //AplicationManager.init_AplicationManager();
+
 }
        
 function startAllVideos()

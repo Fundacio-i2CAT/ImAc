@@ -10,9 +10,53 @@ THREE.MenuManager = function () {
 //*******************************************************************************************************
 
 /**
+ * This function makes the menu follow the users FoV. This option is 
+ * only enabled in HMD mode.
+ *
+ * @param      {integer}  rotationDir  The rotation direction negative/left positive/right
+ */
+    this.menuFollowCameraFOV = function(rotationDir)
+    {
+        var object = scene.getObjectByName(menuList[0].name); // The menu
+        var objRotAngleY = Math.round(Math.degrees(object.rotation.y))%360; // The menu rotation angle in the Y axe.
+        var camRotAngleY = Math.round(Math.degrees(camera.rotation.y))%360; // The camera rotation angle in the Y axe.
+        
+        // If the difference between the menu and camera angle is over 60 recalculate the new angle
+        // in order to have the menu centered for the user.
+        if(rotationDir<0)
+        {
+            if(Math.abs(camRotAngleY - objRotAngleY)>60)
+            {
+                // Subtract the diference between the camera and menu rotation
+                menuAngle -= (camRotAngleY - objRotAngleY);
+
+                // Calculate the new distances on the x & z axes with the new angle.
+                object.position.x = Math.sin(Math.radians(menuAngle))*69;
+                object.position.z = -Math.cos(Math.radians(menuAngle))*69;
+
+                // Caculate the new menu rotation in Y adding the diference between the camera and menu rotation.
+                object.rotation.y = object.rotation.y + 1*Math.radians((camRotAngleY - objRotAngleY));
+            }
+        }
+        else
+        {
+            if(Math.abs(objRotAngleY - camRotAngleY)>60)
+            {
+                // Add the diference between the menu and camera rotation
+                menuAngle += (objRotAngleY - camRotAngleY);
+                object.position.x = Math.sin(Math.radians(menuAngle))*69;
+                object.position.z = -Math.cos(Math.radians(menuAngle))*69;
+
+                // Caculate the new menu rotation in Y subtracting the diference between the camera and menu rotation.
+                object.rotation.y = object.rotation.y + -1*Math.radians((objRotAngleY - camRotAngleY));
+            }
+        }
+    }
+    
+/**
  * Gets the menu list.
  *
- * @return     {<type>}  The menu list.
+ * @return     {<Array>}  The menu list.
  */
     this.getMenuList = function()
     {
@@ -20,9 +64,9 @@ THREE.MenuManager = function () {
     }
 
 /**
- * Sets the submenu name active.
+ * Sets the active submenu name.
  *
- * @param      {<type>}  name    The name
+ * @param      {<String>}  name    The name
  */
     this.setSubmenuNameActive = function(name)
     {
@@ -30,48 +74,16 @@ THREE.MenuManager = function () {
     }
 
 /**
- * Gets the submenu name active.
+ * Gets the active submenu name.
  *
- * @return     {<type>}  The submenu name active.
+ * @return     {<String>}  The submenu name active.
  */
     this.getSubmenuNameActive = function()
     {
         return submenuNameActive;
     }
 
-    /**
- * { function_description }
- *
- * @param      {<type>}  backgroundmenu  The backgroundmenu
- * @param      {<type>}  subMenuData     The sub menu data
- */
-    this.dropdownSubMenuCreation = function(backgroundmenu, subMenuData, dataArray)
-    {
-        var secondColumGroup = new THREE.Group();
-        var subMenuDataLength = subMenuData.buttons.length;
-
-        /*function menuLineHoritzontalDivisions(color, numberofdivisions, backgroundmenu, row)*/
-        var secondColumnLines = menuData.menuLineHoritzontalDivisions(menuDefaultColor, subMenuDataLength, backgroundmenu, 2);
-        
-        secondColumGroup.add(secondColumnLines);
-        subMenuData.buttons.forEach(function(elem, index)
-        {
-            var factor = (index*2)+1;
-            var option = menuData.getMenuTextMesh(dataArray[index], subMenuTextSize, menuDefaultColor, elem)
-            option.position.set( backgroundmenu.geometry.parameters.width/3, (backgroundmenu.geometry.parameters.height/2-factor*backgroundmenu.geometry.parameters.height/(subMenuDataLength*2)), menuElementsZ);                    
-            
-            // CHANGE TO A SEPARATE FUNCTION
-            if (settingsLanguage == elem || subtitlesLanguage == elem || subtitlesPosition == elem ||subtitlesSize == elem || subtitlesIndicator == elem) option.material.color.set( menuButtonActiveColor ); 
-            
-            secondColumGroup.add(option); 
-        })
-
-        secondColumGroup.position.z = menuElementsZ;
-        secondColumGroup.name = subMenuData.name;
-        secondColumGroup.visible = false;
-
-        return secondColumGroup
-    }
+    
 
 //*******************************************************************************************************
 //
@@ -79,24 +91,29 @@ THREE.MenuManager = function () {
 // 
 //*******************************************************************************************************
     
+/**
+ * This function creates all the menus and submenus and opens the menu. 
+ * If HMD or tablet the menu is attached and scaled differently (HMD -> scene; tablet -> camera).
+ */
     this.openMenu = function()
     {
         isUserInSecondLevelMenus = false;
         var background = createMenuBackground(menuMargin, backgroundMenuColor);
-        factorScale = background.geometry.parameters.height/background.geometry.parameters.width
+        factorScale = background.geometry.parameters.height/background.geometry.parameters.width;
 
 // MAIN MENUS
-        ppMMgr.createPlaySeekMenu(background, factorScale);
-        volMMgr.createVolumeChangeMenu(background, factorScale);
-        setcarMMgr.createSettingsCardboardMenu(background, factorScale);
-        mloptMMgr.createMultiOptionsMenu(background,factorScale); 
+        secMMgr.createLSMenus( background );
 
-// SECONDARY MENUS
-        setMMgr.openMenu(background); 
-        stMMngr.openMenu(background); 
-        slMMngr.openMenu(background); 
-        adMMngr.openMenu(background);
-        astMMngr.openMenu(background);
+        if ( _isHMD )
+        {
+            background.scale.set( 0.6, 0.6, 1 );
+            scene.add( background );
+        }
+        else
+        {
+            background.scale.set( 1, 1, 1 );
+            camera.add( background );
+        }
         
 ///********* CODE REPITE IN LINE 23 *************************        
         menuList.forEach(function(menu, index){
@@ -105,14 +122,11 @@ THREE.MenuManager = function () {
                 menu.buttons.forEach(function(elem){interController.addInteractiveObject(scene.getObjectByName(elem))}); 
             }
         });
+        
         ppMMgr.showPlayPauseButton();
-        mloptMMgr.showMultiOptionsButtons(multiOptionsMainSubMenuIndexes);
-///************************************************************  
+        secMMgr.showMultiOptionsButtons(multiOptionsMainSubMenuIndexes);
 
-        // THIS OPTION HAS TO EXIST ONLY IN TABLET/PC OPTION
-        // VR MODE NEEDS OTHER OPTION   
-        camera.add(background);   
-        //scene.add(background);   
+        
     }
 
     /**
@@ -149,7 +163,7 @@ THREE.MenuManager = function () {
         });
         interController.setActiveMenuName(menuList[submenuindex].name);
         menuList[submenuindex].buttons.forEach(function(elem){
-            scene.getObjectByName(elem).material.color.set(menuDefaultColor)
+            scene.getObjectByName(elem).material.color.set(menuDefaultColor);
             interController.addInteractiveObject(scene.getObjectByName(elem));
         }); 
         scene.getObjectByName(interController.getActiveMenuName()).visible = true;
@@ -196,6 +210,42 @@ THREE.MenuManager = function () {
         menuList[indexActiveMenu].submenus[submenuActiveIndex].buttons.forEach(function(elem){interController.addInteractiveObject(scene.getObjectByName(elem))}); 
     }
 
+    function updateSubtitleSubMenu(position)
+    {
+        var indexActiveMenu = menuList.map(function(e) { return e.name; }).indexOf(interController.getActiveMenuName());
+
+        var h = scene.getObjectByName(menuList[0].name).geometry.parameters.height;
+
+        menuList[indexActiveMenu].buttons.forEach(function(elem)
+        {
+            if ( elem == 'subtitlesShowLanguagesDropdown' 
+                || elem == 'subtitlesShowEasyReadDropdown' 
+                || elem == 'subtitlesShowPositionsDropdown' 
+                || elem == 'subtitlesShowBackgroundDropdown' 
+                || elem == 'subtitlesShowSizesDropdown'
+                || elem == 'subtitlesShowIndicatorDropdown'
+                || elem == 'subtitlesShowAreasDropdown' )
+
+            {
+                var menuElem = scene.getObjectByName(elem);
+                menuElem.position.y = position ? menuElem.position.y + h/4 : menuElem.position.y - h/4;
+
+                if (menuElem.visible && menuElem.position.y > h/4) menuElem.visible = false;
+                else if (menuElem.visible && menuElem.position.y < -h/4) menuElem.visible = false;
+                else if (menuElem.visible == false && menuElem.position.y <= h/4 && menuElem.position.y >= -h/4) menuElem.visible = true;
+
+                // Posible position.y -->        -2, -1, 0, 1, 2         (5 elements)
+                // Posible position.y -->    -3, -2, -1, 0, 1, 2         (6 elements)
+                // Posible position.y -->    -3, -2, -1, 0, 1, 2, 3      (7 elements)
+
+                if (menuElem.position.y < -3*h/4) menuElem.position.y = 3*h/4;
+                else if (menuElem.position.y > 3*h/4) menuElem.position.y = -3*h/4;
+
+            }
+        });
+
+    }
+
 /**
  * Closes the menu and removes all the entities from the camera/scene.
  */
@@ -210,8 +260,8 @@ THREE.MenuManager = function () {
 
         // THIS OPTION HAS TO EXIST ONLY IN TABLET/PC OPTION
         // VR MODE MENU MAY BE ATTACHED TO BACKGROUND/SCENE ONLY   
-        camera.remove(menu);
-        //scene.remove(menu);
+        //camera.remove(menu);
+        _isHMD ? scene.remove(menu) : camera.remove(menu);
     }
 
 /**
@@ -313,6 +363,13 @@ THREE.MenuManager = function () {
             else interController.removeInteractiveObject(menuList[2].buttons[3]); //menuList.volumeChangeMenu.unmuteVolumeButton  
         }
         scene.getObjectByName(interController.getActiveMenuName()).visible = true;
+    } 
+
+    this.changeMenuUpOrDown = function(direction)
+    {
+        //secondarySubIndex = direction ? secondarySubIndex + 1 : secondarySubIndex - 1;
+
+        updateSubtitleSubMenu(direction);
     } 
 
 /**
@@ -474,23 +531,198 @@ THREE.MenuManager = function () {
 
     this.createMenu = function()
     {
-        var geometry = new THREE.CircleGeometry( 1,32 );
-        var material = new THREE.MeshBasicMaterial( { color: 0x13ec56 } );
-        var circle = new THREE.Mesh( geometry, material );
+        var _isMenuOpenButton = false;
+        var activationElement;
 
-        circle.position.z = -8;
-        circle.position.x = 0;
-        circle.position.y = 5;
+        if(_isMenuOpenButton)
+        {
+            var geometry = new THREE.CircleGeometry( 1, 32 );
+            var material = new THREE.MeshBasicMaterial( { color: 0x13ec56 } );
+            var activationElement = new THREE.Mesh( geometry, material );
 
-        circle.lookAt(new THREE.Vector3(0, 0, 0));
+            activationElement.position.z = -8;
+            activationElement.position.x = 1.2;
+            activationElement.position.y = 5;
 
-        circle.renderOrder = 5;
-        circle.name = 'openMenu';
+            activationElement.lookAt(new THREE.Vector3(0, 0, 0));
 
-        scene.add( circle );
+            activationElement.renderOrder = 5;
+            activationElement.name = 'openMenu';
+            scene.add( activationElement );
+        }
+        else
+        {
+            var geometry = new THREE.SphereGeometry(99, 64, 16, Math.PI/2, Math.PI * 2,  7*Math.PI/20,  -Math.PI/12);
+            //var material = new THREE.MeshBasicMaterial( {color: 0x13ec56, side: THREE.FrontSide, colorWrite: false});
+            var material = new THREE.MeshBasicMaterial( {color: 0x00ff00, side: THREE.FrontSide, transparent: true, opacity:0.05});
+            var activationElement = new THREE.Mesh( geometry, material );
+            activationElement.name = 'openMenu';
 
-        return circle;
+            Reticulum.add( activationElement, {
+                reticleHoverColor: 0xff0000,
+                fuseDuration: 2.5, // Overrides global fuse duration
+                fuseVisible: true,
+                onGazeOver: function(){
+                    // do something when user targets object
+                    scene.getObjectByName("openmenutext").visible = true;
+
+                    this.material.color.setHex( 0xffcc00 );
+                },
+                onGazeOut: function(){
+                    // do something when user moves reticle off targeted object
+                    scene.getObjectByName("openmenutext").visible = false;
+                    this.material.color.setHex( 0x13ec56 );
+                },
+                onGazeLong: function(){
+                    // do something user targetes object for specific time
+                    this.material.color.setHex( 0x0000cc );
+                    MenuManager.openMenu();
+                    scene.getObjectByName( "openMenu" ).visible = false;
+                },
+                onGazeClick: function(){
+                    // have the object react when user clicks / taps on targeted object
+                    //this.material.color.setHex( 0x00cccc * Math.random() );
+                    this.material.color.setHex( 0x13ec56 );
+                    MenuManager.openMenu();
+                    scene.getObjectByName( "openMenu" ).visible = false;
+                    scene.getObjectByName("openmenutext").visible = false;
+                }
+            });
+
+            scene.add( activationElement );
+        }
+
+        return activationElement;
     };
+
+    this.createMenuTrad = function()
+    {
+
+        var geometry = new THREE.CircleGeometry( 1, 32 );
+        var material = new THREE.MeshBasicMaterial( { color: 0xff0000 } );
+        var activationElement = new THREE.Mesh( geometry, material );
+
+        activationElement.position.z = -8;
+        activationElement.position.x = -1.2;
+        activationElement.position.y = 5;
+
+        activationElement.lookAt(new THREE.Vector3(0, 0, 0));
+
+        activationElement.renderOrder = 5;
+        activationElement.name = 'openMenuTrad';
+        scene.add( activationElement );
+
+
+        scene.add( activationElement );
+
+        return activationElement;
+    };
+
+   function visibleHeightAtZDepth ( depth, camera )
+   {
+      // compensate for cameras not positioned at z=0
+      const cameraOffset = camera.position.z;
+      if ( depth < cameraOffset ) depth -= cameraOffset;
+      else depth += cameraOffset;
+
+      // vertical fov in radians
+      const vFOV = camera.fov * Math.PI / 180; 
+
+      // Math.abs to ensure the result is always positive
+      return 2 * Math.tan( vFOV / 2 ) * Math.abs( depth );
+    };
+
+    function visibleWidthAtZDepth ( depth, camera ) 
+    {
+      const height = visibleHeightAtZDepth( depth, camera );
+      return height * camera.aspect;
+    };
+
+    this.openMenuTrad = function()
+    {
+        _isTradMenuOpen = true;
+        var bgWidth = Math.round(visibleWidthAtZDepth( 60, camera )-20);
+        var bg = menuData.getBackgroundMesh(bgWidth, 4, 0x333333, 0.75);
+        bg.position.set(0, (-visibleHeightAtZDepth( 60, camera )/2)+2+5,-60);
+
+        var playSeekGroup =  new THREE.Group();
+        var playbutton = menuData.getImageMesh( new THREE.PlaneGeometry( 2,2 ), './img/menu/play_icon.png', menuList[1].buttons[0], 4 ); // menuList.
+        var pausebutton = menuData.getImageMesh( new THREE.PlaneGeometry( 2,2 ), './img/menu/pause_icon.png', menuList[1].buttons[1], 4 ); // menuList.
+        var seekBarL = menuData.getImageMesh( new THREE.PlaneGeometry( 2,1 ), './img/menu/seek_icon.png', menuList[1].buttons[2], 4 ); // menuList.
+        var seekBarR = menuData.getImageMesh( new THREE.PlaneGeometry( 2,1 ), './img/menu/seek_icon.png', menuList[1].buttons[3], 4 ); // menuList.
+        
+        playbutton.position.z = menuElementsZ;
+        pausebutton.position.z = menuElementsZ;
+
+        seekBarR.rotation.z = Math.PI;
+
+        seekBarR.position.x = -15*bgWidth/(20*2);
+        playbutton.position.x = -17*bgWidth/(20*2);
+        pausebutton.position.x = -17*bgWidth/(20*2); //pausebutton.visible = false;
+        seekBarL.position.x = -19*bgWidth/(20*2);
+        
+
+        playSeekGroup.add( playbutton );
+        playSeekGroup.add( pausebutton );
+        playSeekGroup.add( seekBarR );
+        playSeekGroup.add( seekBarL );
+
+        playSeekGroup.name = menuList[1].name; //menuList.playSeekMenu
+        bg.add(playSeekGroup);
+
+        //interController.setActiveMenuName(menuList[1].name); //menuList.playSeekMenu
+
+
+
+
+
+
+        //The 4 main buttons are created inside a group 'volumeChangeGroup'
+        var volumeChangeGroup =  new THREE.Group();
+        //var plusVolume = menuData.getPlusIconMesh( volumeLevelButtonWidth, volumeLevelButtonHeight,factorScale, menuDefaultColor,  menuList[2].buttons[1]);
+        var audioMuteIcon = menuData.getImageMesh( new THREE.PlaneGeometry(2,2 ), './img/menu/volume_mute_icon.png', menuList[2].buttons[3], 4 ); // menuList.volumeChangeMenu.muteVolumeButton
+        var audioUnmuteIcon = menuData.getImageMesh( new THREE.PlaneGeometry(2,2 ), './img/menu/volume_unmute_icon.png', menuList[2].buttons[2], 4 ); // menuList.volumeChangeMenu.unmuteVolumeButton
+        
+        var minusVolume = menuData.getImageMesh( new THREE.PlaneGeometry( 1,1), './img/menu/minus_icon.png', menuList[2].buttons[0], 4 ); // menuList.volumeChangeMenu.
+        var plusVolume = menuData.getImageMesh( new THREE.PlaneGeometry( 1,1 ), './img/menu/plus_icon.png', menuList[2].buttons[1], 4 ); // menuList.volumeChangeMenu.
+        
+        
+        minusVolume.position.x = -13*bgWidth/(20*2);
+        audioMuteIcon.position.x = -11*bgWidth/(20*2);
+        audioUnmuteIcon.position.x = -11*bgWidth/(20*2); audioUnmuteIcon.visible = false;
+        plusVolume.position.x = -9*bgWidth/(20*2);
+
+        volumeChangeGroup.add( plusVolume );
+        volumeChangeGroup.add( audioMuteIcon );
+        volumeChangeGroup.add( audioUnmuteIcon );
+        volumeChangeGroup.add( minusVolume );
+
+        volumeChangeGroup.name = menuList[2].name; // menuList.volumeChangeMenu
+
+
+        secMMgr.createSecondaryMenusTraditional(bg);
+
+        //var linesTest = menuData.menuLineVerticalDivisions(bgWidth, 4, 0xffffff, 20)
+        
+
+        //bg.add(linesTest); //DESIGN PURPOSE
+
+        bg.add(playSeekGroup);
+        bg.add(volumeChangeGroup);
+
+
+        camera.add(bg);
+
+        menuList.forEach(function(menu, index){
+            if(index > 0 && index < 5 )
+            {
+                menu.buttons.forEach(function(elem){interController.addInteractiveObject(scene.getObjectByName(elem))}); 
+            }
+        });
+        ppMMgr.showPlayPauseButton();
+        secMMgr.showMultiOptionsButtons(multiOptionsMainSubMenuIndexes);
+
+    }
 
 
     this.createButton2 = function()
@@ -514,33 +746,6 @@ THREE.MenuManager = function () {
 
         return circle;
     };
-
-    /*function openAudioDescriptionMenu(backgroundmenu)
-    {
-        menuData.getMenuTextMesh('AD', 40, 0xffffff, menuList[4].buttons[1], function(audiodescriptionMenuButton) //menuList.multiOptionsMenu.showAudioDescriptionMenuButton;           
-        {
-            var audiodescriptionMenuGroup =  new THREE.Group();
-            var onButton = testButton('audioDescriptionOnButton', 0x00ff00, 5);
-            var offButton = testButton('audioDescriptionOffButton', 0xff0000, 25);
-
-            interController.removeInteractiveObject (menuList[4].buttons[1]);
-
-            audiodescriptionMenuButton.material.color.set( 0xffff00 );
-            audiodescriptionMenuButton.position.x = -150;
-            audiodescriptionMenuButton.position.y = -20;
-
-            audiodescriptionMenuGroup.add(audiodescriptionMenuButton);
-            audiodescriptionMenuGroup.add(onButton);
-            audiodescriptionMenuGroup.add(offButton);
-
-            audiodescriptionMenuGroup.name = menuList[7].name; //menuList.
-            audiodescriptionMenuGroup.visible = false; //Not the first menu. Visibility false.
-
-            backgroundmenu.add(audiodescriptionMenuGroup);
-
-            scene.add( backgroundmenu );
-         });
-    }*/
 }
 
 THREE.MenuManager.prototype.constructor = THREE.MenuManager;

@@ -1,3 +1,5 @@
+var _isTradMenuOpen = false;
+var menuAngle = 0;
 var isUserInSecondLevelMenus = false;
 var submenuNameActive;
 var firstColumnActiveButton;
@@ -14,8 +16,11 @@ var isAudioSubtitleActive = true;
 
 var subtitlesLanguage = 'subtitlesEngButton';
 var subtitlesPosition = 'subtitlesBottomButton';
-var subtitlesSize = 'subtitlesSmallAreaButton';
-var subtitlesIndicator = 'subtitlesIndicatorArrowButton';
+var subtitlesSize = 'subtitlesLargeSizeButton';
+var subtitlesIndicator = 'subtitlesIndicatorNoneButton';
+var subtitlesEasy = 'subtitlesEasyOff';
+var subtitlesBackground = 'subtitlesSemitrans';
+var subtitlesArea = 'subtitlesLargeAreaButton'; 
 
 
 
@@ -129,6 +134,14 @@ var menuList =
                     ]
                 },
                 { 
+                    name: 'subtitlesEasyRead', 
+                    buttons:
+                    [
+                        'subtitlesEasyOn',
+                        'subtitlesEasyOff'
+                    ]
+                },
+                { 
                     name: 'subtitlesShowPositions', 
                     buttons:
                     [
@@ -137,12 +150,20 @@ var menuList =
                     ]
                 },
                 { 
-                    name: 'subtitlesAreas', 
+                    name: 'subtitlesBackground', 
                     buttons:
                     [
-                        'subtitlesSmallAreaButton', 
-                        'subtitlesMediumlAreaButton',
-                        'subtitlesLargeAreaButton'
+                        'subtitlesSemitrans',
+                        'subtitlesOutline'
+                    ]
+                },
+                { 
+                    name: 'subtitlesSizes', 
+                    buttons:
+                    [
+                        'subtitlesSmallSizeButton', 
+                        'subtitlesMediumSizeButton',
+                        'subtitlesLargeSizeButton'
                     ]
                 },
                 { 
@@ -153,6 +174,15 @@ var menuList =
                         'subtitlesIndicatorArrowButton',
                         'subtitlesIndicatorRadarButton'
                     ]
+                },
+                { 
+                    name: 'subtitlesAreas', 
+                    buttons:
+                    [
+                        'subtitlesSmallAreaButton', 
+                        'subtitlesMediumAreaButton',
+                        'subtitlesLargeAreaButton'
+                    ]
                 }
             ],
             buttons: 
@@ -160,18 +190,53 @@ var menuList =
                 'subtitlesOnButton', 
                 'subtitlesOffButton',
                 'subtitlesShowLanguagesDropdown',
+                'subtitlesShowEasyReadDropdown',
                 'subtitlesShowPositionsDropdown',
+                'subtitlesShowBackgroundDropdown',
+                'subtitlesShowSizesDropdown',
+                'subtitlesShowIndicatorDropdown',
                 'subtitlesShowAreasDropdown',
-                'subtitlesShowIndicatorDropdown'
+                'subtitlesUpButton', 
+                'subtitlesDownButton',
             ]
         },                                   
 /*7*/   { 
             name: 'signLanguageMenu', isEnabled: true, firstmenuindex: 4, 
-            submenus:[],
+            submenus:[
+                { 
+                    name: 'signerShowPositions', 
+                    buttons:
+                    [
+                        'signerTopButton',
+                        'signerBottomButton'
+                    ]
+                },
+                { 
+                    name: 'signerIndicator', 
+                    buttons:
+                    [
+                        'signerIndicatorNoneButton', 
+                        'signerIndicatorArrowButton',
+                        'signerIndicatorRadarButton'
+                    ]
+                },
+                { 
+                    name: 'signerAreas', 
+                    buttons:
+                    [
+                        'signerSmallAreaButton', 
+                        'signerMediumlAreaButton',
+                        'signerLargeAreaButton'
+                    ]
+                }
+            ],
             buttons: 
             [
                 'signLanguageOnButton', 
-                'signLanguageOffButton'
+                'signLanguageOffButton',
+                'signShowPositionsDropdown',
+                'signShowIndicatorDropdown',
+                'signShowAreasDropdown'
             ]
         },
 /*8*/   { 

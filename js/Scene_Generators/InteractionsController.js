@@ -47,9 +47,14 @@ THREE.InteractionsController = function () {
 				break;
 
             case "openMenuTrad":
-                MenuManager.openMenuTrad();
-                scene.getObjectByName( "openMenu" ).visible = false;
-                //scene.getObjectByName( "openMenuTrad" ).visible = false; //EXPERIMENTAL
+                if(camera.getObjectByName( "traditionalMenu" ))  console.error("Menu already open");
+                else
+                {
+                    MenuManager.openMenuTrad();
+                    //scene.getObjectByName( "openMenu" ).visible = false;
+                    scene.getObjectByName( "openMenuTrad" ).visible = false; //EXPERIMENTAL
+                    interController.removeInteractiveObject("openMenuTrad" );              
+                }
                 break;
 
         	case "backMenuButton":
@@ -150,8 +155,25 @@ THREE.InteractionsController = function () {
         		break;
 
         	case "settingsButton":
-                MenuManager.pressButtonFeedback(name);
-                setTimeout(function(){ MenuManager.openSecondLevelMenu(5); }, clickInteractionTimeout);
+                getInteractiveObjectList();
+                if(!_isTradMenuOpen)
+                {
+                    MenuManager.pressButtonFeedback(name);
+                    setTimeout(function(){ MenuManager.openSecondLevelMenu(5); }, clickInteractionTimeout);
+                }
+
+                else//EXPERIMENTAL
+                {
+                    scene.getObjectByName( "traditionalMenu" ).visible = false;
+                    scene.getObjectByName( "openMenuTrad" ).visible = true; 
+
+
+                    interactiveListObjects = [];
+                    camera.remove(camera.getObjectByName( "traditionalMenu" ))
+
+                    interController.addInteractiveObject(scene.getObjectByName( "openMenuTrad" ));
+                    getInteractiveObjectList();
+                }
         		break;
 
 //***********************************************************************************************************

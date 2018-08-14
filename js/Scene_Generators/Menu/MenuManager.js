@@ -487,9 +487,9 @@ THREE.MenuManager = function () {
         var menu = menuData.getBackgroundMesh(menuWidth, menuHeight, color, 1);
         var factorScale = menuHeight/menuWidth;
 
-        var closeButton = menuData.getImageMesh( new THREE.PlaneGeometry( backgroundMenuCloseButtonWidth*factorScale,backgroundMenuCloseButtonHeight*factorScale ), './img/menu/plus_icon.png', menuList[0].buttons[0], 4 ); // menuList.
-        var nextR = menuData.getImageMesh( new THREE.PlaneGeometry( backgroundChangeMenuButtonWidth*factorScale,backgroundChangeMenuButtonHeight*factorScale ), './img/menu/less_than_icon.png', menuList[0].buttons[1], 4 ); // menuList.
-        var nextL = menuData.getImageMesh( new THREE.PlaneGeometry( backgroundChangeMenuButtonWidth*factorScale,backgroundChangeMenuButtonHeight*factorScale ), './img/menu/less_than_icon.png', menuList[0].buttons[2], 4 ); // menuList.
+        var closeButton = menuData.getImageMesh( (menu.geometry.parameters.width/2-closeButtonMarginX*factorScale), backgroundMenuCloseButtonWidth*factorScale,backgroundMenuCloseButtonHeight*factorScale , './img/menu/plus_icon.png','right', menuList[0].buttons[0] ); // menuList.
+        var nextR = menuData.getImageMesh( Math.cos(0)*(menu.geometry.parameters.width/2 - nextButtonMarginX*factorScale), backgroundChangeMenuButtonWidth*factorScale,backgroundChangeMenuButtonHeight*factorScale , './img/menu/less_than_icon.png','right', menuList[0].buttons[1] ); // menuList.
+        var nextL = menuData.getImageMesh( Math.cos(Math.PI)*(menu.geometry.parameters.width/2 - nextButtonMarginX*factorScale), backgroundChangeMenuButtonWidth*factorScale,backgroundChangeMenuButtonHeight*factorScale , './img/menu/less_than_icon.png','right', menuList[0].buttons[2] ); // menuList.
 
         closeButton.position.set((menu.geometry.parameters.width/2-closeButtonMarginX*factorScale), (menu.geometry.parameters.height/2-closeButtonMarginY*factorScale), menuElementsZ)
         closeButton.rotation.z = Math.PI/4;
@@ -597,25 +597,16 @@ THREE.MenuManager = function () {
 
     this.createMenuTrad = function()
     {
+        var bgWidth = Math.round(visibleWidthAtZDepth( 60, camera )-20)/24;
+        var bg = menuData.getBackgroundMesh(bgWidth, 4, 0x333333, 0.75);
+        
+        bg.position.set(23*bgWidth/2, (-visibleHeightAtZDepth( 60, camera )/2)+2+5,-60);
+        var x = menuData.getImageMesh( 0, 2, 2, './img/menu/settings_icon.png', 'right', 'openMenuTrad' );
+        bg.add( x );  
+        bg.name = 'openMenuTrad';
+        camera.add( bg );
 
-        var geometry = new THREE.CircleGeometry( 1, 32 );
-        var material = new THREE.MeshBasicMaterial( { color: 0xff0000 } );
-        var activationElement = new THREE.Mesh( geometry, material );
-
-        activationElement.position.z = -8;
-        activationElement.position.x = -1.2;
-        activationElement.position.y = 5;
-
-        activationElement.lookAt(new THREE.Vector3(0, 0, 0));
-
-        activationElement.renderOrder = 5;
-        activationElement.name = 'openMenuTrad';
-        scene.add( activationElement );
-
-
-        scene.add( activationElement );
-
-        return activationElement;
+        return x;
     };
 
    function visibleHeightAtZDepth ( depth, camera )
@@ -641,26 +632,21 @@ THREE.MenuManager = function () {
     this.openMenuTrad = function()
     {
         _isTradMenuOpen = true;
+        bardivisions = 24;
+
         var bgWidth = Math.round(visibleWidthAtZDepth( 60, camera )-20);
         var bg = menuData.getBackgroundMesh(bgWidth, 4, 0x333333, 0.75);
         bg.position.set(0, (-visibleHeightAtZDepth( 60, camera )/2)+2+5,-60);
 
         var playSeekGroup =  new THREE.Group();
-        var playbutton = menuData.getImageMesh( new THREE.PlaneGeometry( 2,2 ), './img/menu/play_icon.png', menuList[1].buttons[0], 4 ); // menuList.
-        var pausebutton = menuData.getImageMesh( new THREE.PlaneGeometry( 2,2 ), './img/menu/pause_icon.png', menuList[1].buttons[1], 4 ); // menuList.
-        var seekBarL = menuData.getImageMesh( new THREE.PlaneGeometry( 2,1 ), './img/menu/seek_icon.png', menuList[1].buttons[2], 4 ); // menuList.
-        var seekBarR = menuData.getImageMesh( new THREE.PlaneGeometry( 2,1 ), './img/menu/seek_icon.png', menuList[1].buttons[3], 4 ); // menuList.
+        //posX, w, h, img, iname, name
+        var playbutton = menuData.getImageMesh(-21*bgWidth/(bardivisions*2) , 2,2 , './img/menu/play_icon.png', 'right', menuList[1].buttons[0]); // menuList.
+        var pausebutton = menuData.getImageMesh( -21*bgWidth/(bardivisions*2), 2,2, './img/menu/pause_icon.png', 'right', menuList[1].buttons[1]); // menuList.
+        var seekBarL = menuData.getImageMesh( -23*bgWidth/(bardivisions*2), 2,1, './img/menu/seek_icon.png', 'right', menuList[1].buttons[2]); // menuList.
+        var seekBarR = menuData.getImageMesh( -19*bgWidth/(bardivisions*2), 2,1 , './img/menu/seek_icon.png',menuList[1].buttons[3], menuList[1].buttons[3]); // menuList.
         
         playbutton.position.z = menuElementsZ;
         pausebutton.position.z = menuElementsZ;
-
-        seekBarR.rotation.z = Math.PI;
-
-        seekBarR.position.x = -15*bgWidth/(20*2);
-        playbutton.position.x = -17*bgWidth/(20*2);
-        pausebutton.position.x = -17*bgWidth/(20*2); //pausebutton.visible = false;
-        seekBarL.position.x = -19*bgWidth/(20*2);
-        
 
         playSeekGroup.add( playbutton );
         playSeekGroup.add( pausebutton );
@@ -680,17 +666,11 @@ THREE.MenuManager = function () {
         //The 4 main buttons are created inside a group 'volumeChangeGroup'
         var volumeChangeGroup =  new THREE.Group();
         //var plusVolume = menuData.getPlusIconMesh( volumeLevelButtonWidth, volumeLevelButtonHeight,factorScale, menuDefaultColor,  menuList[2].buttons[1]);
-        var audioMuteIcon = menuData.getImageMesh( new THREE.PlaneGeometry(2,2 ), './img/menu/volume_mute_icon.png', menuList[2].buttons[3], 4 ); // menuList.volumeChangeMenu.muteVolumeButton
-        var audioUnmuteIcon = menuData.getImageMesh( new THREE.PlaneGeometry(2,2 ), './img/menu/volume_unmute_icon.png', menuList[2].buttons[2], 4 ); // menuList.volumeChangeMenu.unmuteVolumeButton
+        var audioMuteIcon = menuData.getImageMesh( -14*bgWidth/(24*2),2,2, './img/menu/volume_mute_icon.png', 'right', menuList[2].buttons[3]); // menuList.volumeChangeMenu.muteVolumeButton
+        var audioUnmuteIcon = menuData.getImageMesh( -14*bgWidth/(24*2),2,2 , './img/menu/volume_unmute_icon.png','right', menuList[2].buttons[2]); // menuList.volumeChangeMenu.unmuteVolumeButton
         
-        var minusVolume = menuData.getImageMesh( new THREE.PlaneGeometry( 1,1), './img/menu/minus_icon.png', menuList[2].buttons[0], 4 ); // menuList.volumeChangeMenu.
-        var plusVolume = menuData.getImageMesh( new THREE.PlaneGeometry( 1,1 ), './img/menu/plus_icon.png', menuList[2].buttons[1], 4 ); // menuList.volumeChangeMenu.
-        
-        
-        minusVolume.position.x = -13*bgWidth/(20*2);
-        audioMuteIcon.position.x = -11*bgWidth/(20*2);
-        audioUnmuteIcon.position.x = -11*bgWidth/(20*2); audioUnmuteIcon.visible = false;
-        plusVolume.position.x = -9*bgWidth/(20*2);
+        var minusVolume = menuData.getImageMesh( -16*bgWidth/(24*2), 1.5, 1.5, './img/menu/minus_icon.png','right', menuList[2].buttons[0]); // menuList.volumeChangeMenu.
+        var plusVolume = menuData.getImageMesh( -12*bgWidth/(24*2), 1.5, 1.5 , './img/menu/plus_icon.png','right', menuList[2].buttons[1]); // menuList.volumeChangeMenu.
 
         volumeChangeGroup.add( plusVolume );
         volumeChangeGroup.add( audioMuteIcon );
@@ -702,7 +682,7 @@ THREE.MenuManager = function () {
 
         secMMgr.createSecondaryMenusTraditional(bg);
 
-        //var linesTest = menuData.menuLineVerticalDivisions(bgWidth, 4, 0xffffff, 20)
+        //var linesTest = menuData.menuLineVerticalDivisions(bgWidth, 4, 0xffffff, bardivisions)
         
 
         //bg.add(linesTest); //DESIGN PURPOSE
@@ -710,6 +690,7 @@ THREE.MenuManager = function () {
         bg.add(playSeekGroup);
         bg.add(volumeChangeGroup);
 
+        bg.name = "traditionalMenu"
 
         camera.add(bg);
 
@@ -720,6 +701,7 @@ THREE.MenuManager = function () {
             }
         });
         ppMMgr.showPlayPauseButton();
+        volMMgr.showMuteUnmuteButton()
         secMMgr.showMultiOptionsButtons(multiOptionsMainSubMenuIndexes);
 
     }

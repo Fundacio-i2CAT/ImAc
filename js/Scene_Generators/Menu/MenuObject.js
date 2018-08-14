@@ -5,18 +5,16 @@ THREE.MenuObject = function () {
 // SHAPES
 //************************************************************************************
     
-    this.getImageMesh = function(geometry, url, name, order) 
+    this.getImageMesh = function(posX, w, h, img, iname, name) 
     {
-        var loader = new THREE.TextureLoader();
-        var texture = loader.load( url );
-        texture.minFilter = THREE.LinearFilter;
-        texture.format = THREE.RGBAFormat;
+        var mesh = menuData.getPlaneImageMesh( w, h, img, iname, 4 ); 
 
-        var material = new THREE.MeshBasicMaterial( { map: texture, transparent: true, side: THREE.FrontSide } );
-        var mesh = new THREE.Mesh( geometry, material );
+        mesh.position.x = posX;
+        mesh.position.z = menuElementsZ;
 
-        mesh.name = name;
-        mesh.renderOrder = order || 0;
+        if ( iname == menuList[1].buttons[3] ) mesh.rotation.z = Math.PI;
+
+        mesh.name = name; 
 
         return mesh;
     }

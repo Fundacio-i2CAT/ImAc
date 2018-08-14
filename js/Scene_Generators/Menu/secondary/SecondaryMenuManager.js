@@ -382,10 +382,11 @@ THREE.SecondaryMenuManager = function () {
 
     function createSettingsCardboardMenuTraditional(w, h, name)
     {
+        bardivisions = 24;
         var menuGroup =  new THREE.Group();
 
-        menuGroup.add( getImageMesh( 19*w/(20*2), 2, 2, './img/menu/settings_icon.png', 'right', menuList[3].buttons[0] ) );
-        var c = getImageMesh( 19*w/(20*2), 2, 1.6, './img/menu/cardboard_icon.png', 'right', menuList[3].buttons[1] );
+        menuGroup.add( getImageMesh( 23*w/(bardivisions*2), 2, 2, './img/menu/settings_icon.png', 'right', menuList[3].buttons[0] ) );
+        var c = getImageMesh( 23*w/(bardivisions*2), 2, 1.6, './img/menu/cardboard_icon.png', 'right', menuList[3].buttons[1] );
         c.visible = false ;
         menuGroup.add( c );
     
@@ -419,26 +420,26 @@ THREE.SecondaryMenuManager = function () {
 // EXPERIMENTAL
     function createMultiOptionsMenuTraditional(w, h, name)
     {
-
+        bardivisions = 24;
         var menuGroup =  new THREE.Group();
 
-        menuGroup.add( getMenuTitleMesh( 9*w/(20*2), 1.5, 'ST', menuList[4].buttons[0], false ) );
-        var stDis = getMenuDisabledTitleMesh( 5*w/(20*2), 14, 14, './img/menu/disabled_st_icon.png', menuList[4].buttons[4] );
+        menuGroup.add( getMenuTitleMesh( 13*w/(bardivisions*2), 1.5, 'ST', menuList[4].buttons[0], false ) );
+        var stDis = getMenuDisabledTitleMesh( 13*w/(bardivisions*2), 14, 14, './img/menu/disabled_st_icon.png', menuList[4].buttons[4] );
         stDis.visible = false;
         menuGroup.add(stDis );
 
-        menuGroup.add( getMenuTitleMesh( 11*w/(20*2), 1.5, 'SL', menuList[4].buttons[1], false ) );
-        var slDis = getMenuDisabledTitleMesh( 7*w/(20*2), 14, 14, './img/menu/disabled_sl_icon.png', menuList[4].buttons[5] );
+        menuGroup.add( getMenuTitleMesh( 15*w/(bardivisions*2), 1.5, 'SL', menuList[4].buttons[1], false ) );
+        var slDis = getMenuDisabledTitleMesh( 15*w/(bardivisions*2), 14, 14, './img/menu/disabled_sl_icon.png', menuList[4].buttons[5] );
         slDis.visible = false;
         menuGroup.add( slDis );
 
-        menuGroup.add( getMenuTitleMesh( 13*w/(20*2), 1.5, 'AD', menuList[4].buttons[2], false ) );
-        var adDis = getMenuDisabledTitleMesh( 9*w/(20*2), 14, 14, './img/menu/disabled_ad_icon.png', menuList[4].buttons[6] );
+        menuGroup.add( getMenuTitleMesh( 17*w/(bardivisions*2), 1.5, 'AD', menuList[4].buttons[2], false ) );
+        var adDis = getMenuDisabledTitleMesh( 17*w/(bardivisions*2), 14, 14, './img/menu/disabled_ad_icon.png', menuList[4].buttons[6] );
         adDis.visible = false;
         menuGroup.add( adDis );
 
-        menuGroup.add( getMenuTitleMesh( 15*w/(20*2), 1.5, 'AST', menuList[4].buttons[3], false ) );
-        var astDis = getMenuDisabledTitleMesh( 11*w/(20*2), 18, 14, './img/menu/disabled_ast_icon.png', menuList[4].buttons[7] );
+        menuGroup.add( getMenuTitleMesh( 19*w/(bardivisions*2), 1.5, 'AST', menuList[4].buttons[3], false ) );
+        var astDis = getMenuDisabledTitleMesh( 19*w/(bardivisions*2), 18, 14, './img/menu/disabled_ast_icon.png', menuList[4].buttons[7] );
         astDis.visible = false;
         menuGroup.add( astDis );
 

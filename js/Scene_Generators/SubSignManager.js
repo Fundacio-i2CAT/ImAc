@@ -75,18 +75,20 @@ SubSignManager = function() {
 	      		moData.removeSubtitle();
 
 	      		var latitud = subPosY == 1 ? 30 * subArea/100 : -30 * subArea/100; 
-	      		var posY = Math.sin( Math.radians( latitud ) );
+	      		var posY = _isHMD ? 80 * Math.sin( Math.radians( latitud ) ) : 69 * Math.sin( Math.radians( latitud ) );
+	      		var subAjust = _isHMD ? 1 : 0.45;
+	      		var posZ = _isHMD ? 75 : 38;
 
 	      		var conf = {
 			        subtitleIndicator: subtitleIndicator,
 			        displayAlign: subPosY,
 			        textAlign: subPosX,
-			        size: subSize,
+			        size: subSize * subAjust,
 			        area: subArea/130,
 			        opacity: subBackground,
 			        x: 0,
-			        y: posY * 80 * 9/16,
-			        z: 75
+			        y: posY * 9/16,
+			        z: posZ
 			    };
 
 	      		moData.createSubtitle( textList, conf );
@@ -145,17 +147,36 @@ SubSignManager = function() {
 	function changePositioning(isdImac)
 	{
 		autoPositioning = false;
+		var difPosition = Math.round(getViewDifPosition( isdImac ));
+		var position;
+
+	  	if ( difPosition <= 3  && difPosition >= -3 ) 
+	  	{
+	  		position = 0;
+	  	}
+	  	else
+	  	{
+	  		difPosition = difPosition < 0 ? difPosition + 360 : difPosition;
+
+	    	position = ( difPosition > 0 && difPosition <= 180 ) ? -1 : 1;
+	  	}
       	var rotaionValue = 0;
+      	var initY = Math.round( CameraParentObject.rotation.y * (-180/Math.PI)%360 );
+
       	var rotationInterval = setInterval(function() 
       	{
-        	if ( rotaionValue >= isdImac ) 
+      		var difff = isdImac - initY;
+      		if ( difff > 180 ) difff -= 360;
+      		if ( difff < 0 ) difff = -1*difff;
+        	if ( position * rotaionValue >= difff || position == 0 ) 
         	{
         		clearInterval( rotationInterval );
+        		autoPositioning = true;
         	}
         	else 
         	{
-          		rotaionValue += 3;
-          		CameraPatherObject.rotation.y = rotaionValue * ( Math.PI / 180 );
+          		rotaionValue += position*3;
+          		CameraParentObject.rotation.y = initY / ( -180 / Math.PI )%360 + rotaionValue * ( -Math.PI / 180 );
         	}
       	}, 30);
 	}	
@@ -218,6 +239,11 @@ SubSignManager = function() {
 	this.getSignerIndicator = function()
 	{
 		return signIndicator;
+	};
+
+	this.getSubtitleEnabled = function()
+	{
+		return subtitleEnabled;
 	};
 
 

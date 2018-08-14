@@ -16,7 +16,8 @@ MenuFunctionsManager = function() {
 	this.getSubOnOffFunc = function( isEnabled )
 	{		
 		return function() {
-	        subController.switchSubtitles( isEnabled );
+	        //subController.switchSubtitles( isEnabled );
+            interController.setSubtitlesActive( isEnabled );
             menuList[6].isEnabled = isEnabled;
             secMMgr.showMultiOptionsButtons( multiOptionsMainSubMenuIndexes.slice(0,1) );
             MenuManager.showOnOffToggleButton( 6, 0, 1, 0, 4 );

@@ -75,13 +75,15 @@ function blockContainer()
 function selectXML(id)
 {
   //mainContentURL = id == 2 ? './resources/cam_2_2k.mp4' : './resources/rapzember-young-hurn_edit.mp4';
-
+  enterfullscreen();
   mainContentURL = list_contents[id].url;
  
   demoId = id;
 
-  AplicationManager.init_AplicationManager();
-  enterfullscreen();
+  setTimeout(function(){ AplicationManager.init_AplicationManager(); }, 100);
+
+  //AplicationManager.init_AplicationManager();
+
 }
        
 function startAllVideos()

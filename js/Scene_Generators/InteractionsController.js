@@ -9,6 +9,8 @@ THREE.InteractionsController = function () {
 	var interactionState = true;
 	var nameMenuActive;
 
+    var subtitlesActive = false;
+
 
 //************************************************************************************
 // Private Functions
@@ -36,6 +38,9 @@ THREE.InteractionsController = function () {
 //***********************************************************************************************************
 
         	case "openMenu":
+                subtitlesActive = subController.getSubtitleEnabled();
+                console.error(subtitlesActive)
+                if ( subtitlesActive ) subController.disableSubtiles();
                 MenuManager.openMenu();
                 scene.getObjectByName( "openMenu" ).visible = false;
 				break;
@@ -51,6 +56,7 @@ THREE.InteractionsController = function () {
         		break;
 
         	case "closeMenuButton":
+                if ( subtitlesActive ) subController.enableSubtitles();
                 MenuManager.pressButtonFeedback(name);
                 setTimeout(function(){
                  MenuManager.closeMenu(); 
@@ -126,12 +132,13 @@ THREE.InteractionsController = function () {
 //***********************************************************************************************************
 
         	case "cardboardButton":
+                MenuManager.closeMenu();
                 setTimeout(function(){
-                 MenuManager.closeMenu(); 
-                 scene.getObjectByName( "openMenu" ).visible = true;
+                 
+                 //MenuManager.pressButtonFeedback(name); 
+                    AplicationManager.switchDevice();
+                scene.getObjectByName( "openMenu" ).visible = true;
              }, clickInteractionTimeout);
-                MenuManager.pressButtonFeedback(name); 
-        		AplicationManager.switchDevice();
         		break;
 
         	case "settingsButton":
@@ -239,7 +246,7 @@ THREE.InteractionsController = function () {
 //                  S U B T I T L E S     M E N U     C O N T R O L S 
 //                  
 //***********************************************************************************************************
-
+/*
         // On / Off 
 
         	case "subtitlesOnButton":
@@ -247,7 +254,6 @@ THREE.InteractionsController = function () {
                 menuList[6].isEnabled = false;
                 secMMgr.showMultiOptionsButtons(multiOptionsMainSubMenuIndexes.slice(0,1));
 
-                /* function (subMenuIndex, onButtonIndex, offButtonIndex, enabledTitleIndex, disabledTitleIndex) */
                 MenuManager.showOnOffToggleButton(6, 0, 1, 0, 4);// Indexes from MenuState menuList
         		break;
 
@@ -256,7 +262,6 @@ THREE.InteractionsController = function () {
                 menuList[6].isEnabled = true;
                 secMMgr.showMultiOptionsButtons(multiOptionsMainSubMenuIndexes.slice(0,1));
 
-                /* function (subMenuIndex, onButtonIndex, offButtonIndex, enabledTitleIndex, disabledTitleIndex) */
                 MenuManager.showOnOffToggleButton(6, 0, 1, 0, 4); // Indexes from MenuState menuList
         		break;
 
@@ -434,7 +439,7 @@ THREE.InteractionsController = function () {
                 // TODO
                 MenuManager.changeMenuUpOrDown( true );
                 break;
-
+*/
 //***********************************************************************************************************
 //
 //                  S I G N     L A N G U A G E     M E N U     C O N T R O L S 
@@ -593,7 +598,6 @@ THREE.InteractionsController = function () {
 
                 else if ( intersects[inter].object.type == 'Mesh' && intersects[inter].object.name) 
 	        	{
-                    console.warn(intersects[inter].object)
 					intersectedShapeId = intersects[inter].object.name;
 					checkInteractionByName( intersectedShapeId );
 					console.error(intersectedShapeId);
@@ -607,6 +611,11 @@ THREE.InteractionsController = function () {
     		// TODO
     	}
 	};
+
+    this.setSubtitlesActive = function(activated)
+    {
+        subtitlesActive = activated;
+    };
 
 	this.addInteractiveObject = function(object)
 	{

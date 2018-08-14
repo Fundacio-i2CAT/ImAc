@@ -102,16 +102,7 @@ THREE.MenuManager = function () {
         factorScale = background.geometry.parameters.height/background.geometry.parameters.width;
 
 // MAIN MENUS
-        ppMMgr.createPlaySeekMenu(background, factorScale);
-        volMMgr.createVolumeChangeMenu(background, factorScale);
-        //setcarMMgr.createSettingsCardboardMenu(background, factorScale);
-        //mloptMMgr.createMultiOptionsMenu(background,factorScale); 
-
-
-        secMMgr.createMainMenus( background );
-
-// SECONDARY MENUS
-        secMMgr.createSecondaryMenus( background );
+        secMMgr.createLSMenus( background );
 
         if ( _isHMD )
         {
@@ -270,7 +261,7 @@ THREE.MenuManager = function () {
         // THIS OPTION HAS TO EXIST ONLY IN TABLET/PC OPTION
         // VR MODE MENU MAY BE ATTACHED TO BACKGROUND/SCENE ONLY   
         //camera.remove(menu);
-        _isHMD ? scene.remove(menu) :camera.remove(menu);
+        _isHMD ? scene.remove(menu) : camera.remove(menu);
     }
 
 /**
@@ -379,8 +370,6 @@ THREE.MenuManager = function () {
         //secondarySubIndex = direction ? secondarySubIndex + 1 : secondarySubIndex - 1;
 
         updateSubtitleSubMenu(direction);
-
-        //console.error(secondarySubIndex)
     } 
 
 /**
@@ -757,33 +746,6 @@ THREE.MenuManager = function () {
 
         return circle;
     };
-
-    /*function openAudioDescriptionMenu(backgroundmenu)
-    {
-        menuData.getMenuTextMesh('AD', 40, 0xffffff, menuList[4].buttons[1], function(audiodescriptionMenuButton) //menuList.multiOptionsMenu.showAudioDescriptionMenuButton;           
-        {
-            var audiodescriptionMenuGroup =  new THREE.Group();
-            var onButton = testButton('audioDescriptionOnButton', 0x00ff00, 5);
-            var offButton = testButton('audioDescriptionOffButton', 0xff0000, 25);
-
-            interController.removeInteractiveObject (menuList[4].buttons[1]);
-
-            audiodescriptionMenuButton.material.color.set( 0xffff00 );
-            audiodescriptionMenuButton.position.x = -150;
-            audiodescriptionMenuButton.position.y = -20;
-
-            audiodescriptionMenuGroup.add(audiodescriptionMenuButton);
-            audiodescriptionMenuGroup.add(onButton);
-            audiodescriptionMenuGroup.add(offButton);
-
-            audiodescriptionMenuGroup.name = menuList[7].name; //menuList.
-            audiodescriptionMenuGroup.visible = false; //Not the first menu. Visibility false.
-
-            backgroundmenu.add(audiodescriptionMenuGroup);
-
-            scene.add( backgroundmenu );
-         });
-    }*/
 }
 
 THREE.MenuManager.prototype.constructor = THREE.MenuManager;

@@ -165,7 +165,7 @@ THREE.MediaObject = function () {
         if ( o == 0 )
         {
             var matDark = new THREE.LineBasicMaterial( { color: t.backgroundColor,
-                side: THREE.DoubleSide
+                linewidth: 1
             } );
 
             var holeShapes = [];

@@ -28,6 +28,7 @@ function AplicationManager()
     	{
     		if ( _isHMD )
     		{
+    			ppMMgr.playAll();
     			_isHMD = false;
     			_display[ 0 ].isPresenting ? _display[ 0 ].exitPresent() : _display[ 0 ].requestPresent( [ { source: renderer.domElement } ] ).then(
 				function () { 
@@ -38,18 +39,29 @@ function AplicationManager()
     		}
     		else
     		{
+    			ppMMgr.playAll();
     			_isHMD = true;;
     			controls = undefined;
     			_display[ 0 ].isPresenting ? _display[ 0 ].exitPresent() : _display[ 0 ].requestPresent( [ { source: renderer.domElement } ] ).then(
 				function () { 
 					isVRtested=true; 
-					startAllVideos();
+					startAllVideos(); 
 				});
 
 				renderer.vr.setDevice( _display[ 0 ] );
 
     		}
 		}
+    };
+
+    this.enableVR = function()
+    {
+    	renderer.vr.setDevice( _display[ 0 ] );
+    };
+
+    this.disableVR = function()
+    {
+    	renderer.vr.setDevice( null );
     };
 
 	function waitSesionManager()
@@ -91,7 +103,7 @@ function AplicationManager()
 
     	if ( AudioManager.isAmbisonics ) AudioManager.updateRotationMatrix( camera.matrixWorld.elements );
 
-    	if(gamepad && gamepad.getTouchPadState() && _isHMD) 
+    	if( gamepad && gamepad.getTouchPadState() && _isHMD ) 
     	{
             var mouse3D = new THREE.Vector2();
 	        mouse3D.x = 0;
@@ -162,6 +174,7 @@ function AplicationManager()
         	document.body.appendChild( WEBVR.createButton( renderer ) );
         	document.body.appendChild( WEBVR.createButton2( renderer ) );
 
+        	startAllVideos(); 
 
         	navigator.getVRDisplays().then( function ( displays ) 
         	{
@@ -169,7 +182,7 @@ function AplicationManager()
 				haveVrDisplay = true;
 				renderer.vr.enabled = true;
 				isVRtested = true; 
-				startAllVideos();
+				ppMMgr.playAll();
 			} );
         }
         else
@@ -237,13 +250,16 @@ function AplicationManager()
 
 					button1.style.display = 'none';
 					button2.style.display = 'none';
-					startAllVideos();
+
+					ppMMgr.playAll();
+
+					controls = new THREE.DeviceOrientationAndTouchController( camera, renderer.domElement, renderer );
 
 					display.isPresenting ? display.exitPresent() : display.requestPresent( [ { source: renderer.domElement } ] ).then(
 						function () { 
 							gamepad = new THREE.DaydreamController( camera, renderer.domElement );
 							isVRtested=true; 
-							startAllVideos(); 
+							//startAllVideos(); 
 							_isHMD = true; 
 							//document.body.appendChild( WEBVR.createButton( renderer ) );   		 		
 
@@ -267,7 +283,7 @@ function AplicationManager()
 
 				stylizeElement( button );
 
-				/*window.addEventListener( 'vrdisplayconnect', function ( event ) {
+				window.addEventListener( 'vrdisplayconnect', function ( event ) {
 
 					showEnterVR( event.display );
 
@@ -288,7 +304,8 @@ function AplicationManager()
 
 					event.display.requestPresent( [ { source: renderer.domElement } ] ).then(function () { isVRtested = true; startAllVideos(); });
 
-				}, false );*/
+				}, false );
+
 
 				navigator.getVRDisplays()
 					.then( function ( displays ) {
@@ -332,10 +349,12 @@ function AplicationManager()
 					button1.style.display = 'none';
 					button2.style.display = 'none';
 
+					ppMMgr.playAll();
+
 					controls = new THREE.DeviceOrientationAndTouchController( camera, renderer.domElement, renderer );
 					
 					isVRtested=true; 
-					startAllVideos(); 
+					//startAllVideos(); 
 					_isHMD = false; 
 
 				};

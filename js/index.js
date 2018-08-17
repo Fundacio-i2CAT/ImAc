@@ -53,7 +53,7 @@ function init_webplayer()
   $.getJSON('./content.json', function(json)
   {
     list_contents = json.contents;
-		
+		//console.error(list_contents)
     for (var i = 0; i < list_contents.length; i++) 
     {
       var id = i;
@@ -88,10 +88,10 @@ function selectXML(id)
        
 function startAllVideos()
 {
-  
   setTimeout(function() {
     runDemo(); 
   },500);
+  
 
   //moData.playAll();
 }

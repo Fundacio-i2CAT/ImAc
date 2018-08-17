@@ -12,8 +12,8 @@ function runDemo()
     var menu = MenuManager.createMenu();
     interController.addInteractiveObject(menu);
 
-    var menuTrad = MenuManager.createMenuTrad();
-    interController.addInteractiveObject(menuTrad);
+    /*var menuTrad = MenuManager.createMenuTrad();
+    interController.addInteractiveObject(menuTrad);*/
 
     subController.enableSubtitles();
     subController.initSubtitle( 70, 0, -1, 'none' );

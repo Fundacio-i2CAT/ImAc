@@ -90,6 +90,20 @@ MenuFunctionsManager = function() {
         }
     };
 
+    this.getSubAutoPositioningFunc = function(name)
+    {       
+        return function() {
+            if ( !_isHMD ) AplicationManager.disableVR();
+            camera.rotation.set(0,0,0);
+            interController.closeMenu();
+            subController.setSubIndicator( 'none' );
+            subController.enableAutoPositioning();
+            MenuManager.selectFinalDropdownOption( name );
+            //subtitlesIndicator = name;
+            autopositioning = true;
+        }
+    };
+
     // Area
 
     this.getSubAreaFunc = function(area, name)

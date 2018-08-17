@@ -157,7 +157,6 @@ SubSignManager = function() {
 	  	else
 	  	{
 	  		difPosition = difPosition < 0 ? difPosition + 360 : difPosition;
-
 	    	position = ( difPosition > 0 && difPosition <= 180 ) ? -1 : 1;
 	  	}
       	var rotaionValue = 0;
@@ -171,7 +170,12 @@ SubSignManager = function() {
         	if ( position * rotaionValue >= difff || position == 0 ) 
         	{
         		clearInterval( rotationInterval );
-        		autoPositioning = true;
+        		if ( moData.getListOfVideoContents()[0].vid.currentTime < moData.getListOfVideoContents()[0].vid.duration - 10 ) autoPositioning = true;
+        		else {
+        			AplicationManager.enableVR();
+        			autopositioning = false;
+        			if ( _isHMD ) CameraParentObject.rotation.set(0,0,0);
+        		}
         	}
         	else 
         	{

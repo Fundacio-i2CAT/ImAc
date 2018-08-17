@@ -58,7 +58,7 @@ var subMenuTextSize = 5;
 var subtitlesLanguagesArray = ['English', 'Spanish', 'German', 'Catalan'];
 var subtitlesPositionArray = ['Top', 'Bottom'];
 var subtitlesSizeArray = ['Small', 'Medium', 'Large'];
-var subtitlesIndicatorArray = ['None', 'Arrow', 'Radar'];
+var subtitlesIndicatorArray = ['None', 'Arrow', 'Radar', 'Auto'];
 var subtitlesBackgroundArray = ['Semi-Trans', 'Outline'];
 var subtitlesEasyArray = ['On', 'Off'];
 
@@ -70,3 +70,4 @@ var settingsUserProfileArray = ['option 1', 'option 2'];
 var secondarySubIndex = 0;
 
 var _isHMD = false;
+var autopositioning = false;

@@ -140,7 +140,7 @@ THREE.InteractionsController = function () {
 //***********************************************************************************************************
 
         	case "cardboardButton":
-                MenuManager.closeMenu();
+                interController.closeMenu();
                 setTimeout(function(){
                  
                  //MenuManager.pressButtonFeedback(name); 
@@ -249,205 +249,7 @@ THREE.InteractionsController = function () {
                  }, clickInteractionTimeout);
                 break;
 
-//***********************************************************************************************************
-//
-//                  S U B T I T L E S     M E N U     C O N T R O L S 
-//                  
-//***********************************************************************************************************
-/*
-        // On / Off 
 
-        	case "subtitlesOnButton":
-                subController.disableSubtiles();
-                menuList[6].isEnabled = false;
-                secMMgr.showMultiOptionsButtons(multiOptionsMainSubMenuIndexes.slice(0,1));
-
-                MenuManager.showOnOffToggleButton(6, 0, 1, 0, 4);// Indexes from MenuState menuList
-        		break;
-
-        	case "subtitlesOffButton":
-                subController.enableSubtitles();
-                menuList[6].isEnabled = true;
-                secMMgr.showMultiOptionsButtons(multiOptionsMainSubMenuIndexes.slice(0,1));
-
-                MenuManager.showOnOffToggleButton(6, 0, 1, 0, 4); // Indexes from MenuState menuList
-        		break;
-
-        // Language
-
-            case "subtitlesShowLanguagesDropdown":
-                MenuManager.openSubMenuDropdown(0, name);
-                // TODO
-                // mostar el menu con la lista de idiomas seleccionables
-                break;
-
-            case "subtitlesEngButton":
-                subController.setSubtitle( "./resources/LICEU_ENG.xml" ); 
-                MenuManager.selectFinalDropdownOption(name);
-                subtitlesLanguage = name;
-                break;
-
-            case "subtitlesEspButton":
-                subController.setSubtitle( "./resources/LICEU_CAST.xml" ); 
-                MenuManager.selectFinalDropdownOption(name);
-                subtitlesLanguage = name;
-                break;
-
-            case "subtitlesGerButton":
-                subController.setSubtitle( "./resources/LICEU_DE.xml" );
-                MenuManager.selectFinalDropdownOption(name);
-                subtitlesLanguage = name;
-                break;
-
-            case "subtitlesCatButton":
-                console.log("Subtitles changed to CATALAN");
-                MenuManager.selectFinalDropdownOption(name);
-                subtitlesLanguage = name;
-                break;
-
-        // Easy To Read
-
-            case "subtitlesShowEasyReadDropdown":
-                MenuManager.openSubMenuDropdown(1, name);
-                // TODO
-                break;
-
-            case "subtitlesEasyOn":
-                subController.setSubEasy( true );
-                MenuManager.selectFinalDropdownOption(name);
-                subtitlesEasy = name;
-                break;
-
-            case "subtitlesEasyOff":
-                subController.setSubEasy( false );
-                MenuManager.selectFinalDropdownOption(name);
-                subtitlesEasy = name;
-                break;
-
-        // Position
-
-            case "subtitlesShowPositionsDropdown":
-                MenuManager.openSubMenuDropdown(2, name);
-                break;
-
-            case "subtitlesTopButton":
-                subController.setSubPosition( 0, 1 );
-                MenuManager.selectFinalDropdownOption( name );
-                subtitlesPosition = name;
-                break;
-
-            case "subtitlesBottomButton":
-                subController.setSubPosition( 0, -1 );
-                MenuManager.selectFinalDropdownOption( name );
-                subtitlesPosition = name;
-                break;
-
-        // Background
-
-            case "subtitlesShowBackgroundDropdown":
-                MenuManager.openSubMenuDropdown(3, name);
-                // TODO
-                break;
-
-            case "subtitlesSemitrans":
-                subController.setSubBackground( 0.8 );
-                MenuManager.selectFinalDropdownOption(name);
-                subtitlesBackground = name;
-                break;
-
-            case "subtitlesOutline":
-                subController.setSubBackground( 0 );
-                MenuManager.selectFinalDropdownOption(name);
-                subtitlesBackground = name;
-                break;
-
-        // Size
-
-            case "subtitlesShowSizesDropdown":
-                MenuManager.openSubMenuDropdown(4, name);
-                // TODO
-                break;
-
-            case "subtitlesSmallSizeButton":
-                subController.setSubSize( 0.6 );
-                MenuManager.selectFinalDropdownOption(name);
-                subtitlesSize = name;
-                break;
-
-            case "subtitlesMediumSizeButton":
-                subController.setSubSize( 0.8 );
-                MenuManager.selectFinalDropdownOption(name);
-                subtitlesSize = name;
-                break;
-
-            case "subtitlesLargeSizeButton":
-                subController.setSubSize( 1 );
-                MenuManager.selectFinalDropdownOption(name);
-                subtitlesSize = name;
-                break;
-
-        // Indicator
-
-            case "subtitlesShowIndicatorDropdown":
-                // mostrar lista de indicadores de visualizacion (none/arrow/radar)
-                MenuManager.openSubMenuDropdown(5, name);
-                break;
-
-            case "subtitlesIndicatorNoneButton":
-                subController.setSubIndicator( "none" );
-                MenuManager.selectFinalDropdownOption(name);
-                subtitlesIndicator = name;
-                break;
-
-            case "subtitlesIndicatorArrowButton":
-                subController.setSubIndicator( "arrow" );
-                MenuManager.selectFinalDropdownOption(name);
-                subtitlesIndicator = name;
-                break;
-
-            case "subtitlesIndicatorRadarButton":
-                subController.setSubIndicator( "compass" );
-                MenuManager.selectFinalDropdownOption(name);
-                subtitlesIndicator = name;
-                break;
-
-        // Area
-
-            case "subtitlesShowAreasDropdown":
-                // mostrar lista de areas de visualizacion (small/medium/large)
-                MenuManager.openSubMenuDropdown(6, name);
-                break;
-
-        	case "subtitlesSmallAreaButton":
-        		subController.setSubArea( 50 );
-                MenuManager.selectFinalDropdownOption(name);
-                subtitlesArea = name;
-        		break;
-
-        	case "subtitlesMediumAreaButton":
-        		subController.setSubArea( 60 );
-                MenuManager.selectFinalDropdownOption(name);
-                subtitlesArea = name;
-        		break;
-
-        	case "subtitlesLargeAreaButton":
-        		subController.setSubArea( 70 );
-                MenuManager.selectFinalDropdownOption(name);
-                subtitlesArea = name;
-        		break;
-
-        // Up/Down
-
-            case "subtitlesUpButton":
-                // TODO
-                MenuManager.changeMenuUpOrDown( false );
-                break;
-
-            case "subtitlesDownButton":
-                // TODO
-                MenuManager.changeMenuUpOrDown( true );
-                break;
-*/
 //***********************************************************************************************************
 //
 //                  S I G N     L A N G U A G E     M E N U     C O N T R O L S 
@@ -619,6 +421,11 @@ THREE.InteractionsController = function () {
     		// TODO
     	}
 	};
+
+    this.closeMenu = function()
+    {
+        checkInteractionByName( "closeMenuButton" );
+    };
 
     this.setSubtitlesActive = function(activated)
     {

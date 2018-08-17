@@ -106,14 +106,14 @@ THREE.SecondaryMenuManager = function () {
         return mesh;
     }
 
-    function getImageMesh(posX, w, h, img, iname, name)
+    function getImageMesh(posX, w, h, img, name)
     {
-        var mesh = menuData.getPlaneImageMesh( w, h, img, iname, 4 ); 
+        var mesh = menuData.getPlaneImageMesh( w, h, img, name, 4 ); 
 
         mesh.position.x = posX;
         mesh.position.z = menuElementsZ;
 
-        if ( iname == menuList[1].buttons[3] ) mesh.rotation.z = Math.PI;
+        if ( name == menuList[1].buttons[3] ) mesh.rotation.z = Math.PI;
 
         mesh.name = name; 
 
@@ -171,6 +171,9 @@ THREE.SecondaryMenuManager = function () {
 
             case "subtitlesIndicatorRadarButton":
                 return MenuFunctionsManager.getSubIndicatorFunc( "compass", name );
+
+            case "subtitlesIndicatorAutoButton":
+                return MenuFunctionsManager.getSubAutoPositioningFunc( name );
 
             case "subtitlesSmallAreaButton":
                 return MenuFunctionsManager.getSubAreaFunc( 50, name );
@@ -240,16 +243,16 @@ THREE.SecondaryMenuManager = function () {
         menuGroup.add( getUpDownMesh( -7*h/16, Math.PI/2, menuList[6].buttons[10], MenuFunctionsManager.getSubUpDownFunc( true ) ) );
 
         menuGroup.add( getMenuTextMesh( h/4, 'Languages', 5, menuList[6].buttons[2], true, MenuFunctionsManager.getSubShowDropdownFunc( 0, menuList[6].buttons[2] ) ) );
-        menuGroup.add( createDropdownSubMenu( w, h, menuList[6].submenus[0], subtitlesLanguagesArray ) );
+        menuGroup.add( createDropdownSubMenu( w, h, menuList[6].submenus[0], subtitlesLanguagesArray ) ); // read xml num of subtitle languages
 
         menuGroup.add( getMenuTextMesh( 0, 'Easy read', 5, menuList[6].buttons[3], true, MenuFunctionsManager.getSubShowDropdownFunc( 1, menuList[6].buttons[3] ) ) );
-        menuGroup.add( createDropdownSubMenu( w, h, menuList[6].submenus[1], subtitlesEasyArray ) ); //modify array
+        menuGroup.add( createDropdownSubMenu( w, h, menuList[6].submenus[1], subtitlesEasyArray ) ); 
 
         menuGroup.add( getMenuTextMesh( -h/4, 'Position', 5, menuList[6].buttons[4], true, MenuFunctionsManager.getSubShowDropdownFunc( 2, menuList[6].buttons[4] ) ) );
         menuGroup.add( createDropdownSubMenu( w, h, menuList[6].submenus[2], subtitlesPositionArray ) );
 
         menuGroup.add( getMenuTextMesh( -2*h/4, 'Background', 5, menuList[6].buttons[5], false, MenuFunctionsManager.getSubShowDropdownFunc( 3, menuList[6].buttons[5] ) ) );
-        menuGroup.add( createDropdownSubMenu( w, h, menuList[6].submenus[3], subtitlesBackgroundArray ) ); //modify array
+        menuGroup.add( createDropdownSubMenu( w, h, menuList[6].submenus[3], subtitlesBackgroundArray ) );
 
         menuGroup.add( getMenuTextMesh( -3*h/4, 'Size', 5, menuList[6].buttons[6], false, MenuFunctionsManager.getSubShowDropdownFunc( 4, menuList[6].buttons[6] ) ) );
         menuGroup.add( createDropdownSubMenu( w, h, menuList[6].submenus[4], subtitlesSizeArray ) );
@@ -281,7 +284,7 @@ THREE.SecondaryMenuManager = function () {
 
         menuGroup.add( getMenuLines( w, h, 3, 1 ) );
 
-        menuGroup.add( getImageMesh( -w/3, 34, 34, './img/menu/settings_icon.png', 'right', menuList[3].buttons[0] ) );
+        menuGroup.add( getImageMesh( -w/3, 34, 34, './img/menu/settings_icon.png', menuList[3].buttons[0] ) );
 
         menuGroup.add( getMenuTextMesh( h/3, 'Languages', 5, menuList[5].buttons[0], true ) );
         menuGroup.add( createDropdownSubMenu( w, h, menuList[5].submenus[0], settingsLanguagesArray ) );
@@ -371,8 +374,8 @@ THREE.SecondaryMenuManager = function () {
     {
         var menuGroup =  new THREE.Group();
 
-        menuGroup.add( getImageMesh( -w/4, 45, 45, './img/menu/settings_icon.png', 'right', menuList[3].buttons[0] ) );
-        menuGroup.add( getImageMesh( w/4, 45, 28, './img/menu/cardboard_icon.png', 'right', menuList[3].buttons[1] ) );
+        menuGroup.add( getImageMesh( -w/4, 45, 45, './img/menu/settings_icon.png', menuList[3].buttons[0] ) );
+        menuGroup.add( getImageMesh( w/4, 45, 28, './img/menu/cardboard_icon.png', menuList[3].buttons[1] ) );
     
         menuGroup.name = name;
         menuGroup.visible = false; //Not the first menu. Visibility false.
@@ -384,8 +387,8 @@ THREE.SecondaryMenuManager = function () {
     {
         var menuGroup =  new THREE.Group();
 
-        menuGroup.add( getImageMesh( 19*w/(20*2), 2, 2, './img/menu/settings_icon.png', 'right', menuList[3].buttons[0] ) );
-        var c = getImageMesh( 19*w/(20*2), 2, 1.6, './img/menu/cardboard_icon.png', 'right', menuList[3].buttons[1] );
+        menuGroup.add( getImageMesh( 19*w/(20*2), 2, 2, './img/menu/settings_icon.png', menuList[3].buttons[0] ) );
+        var c = getImageMesh( 19*w/(20*2), 2, 1.6, './img/menu/cardboard_icon.png', menuList[3].buttons[1] );
         c.visible = false ;
         menuGroup.add( c );
     
@@ -451,10 +454,10 @@ THREE.SecondaryMenuManager = function () {
     {
         var menuGroup =  new THREE.Group();
 
-        menuGroup.add( getImageMesh( 3*w/8, 22.5, 22.5, './img/menu/plus_icon.png', menuList[2].buttons[1], menuList[2].buttons[1] ) );
-        menuGroup.add( getImageMesh( 0, 56, 56, './img/menu/volume_mute_icon.png', menuList[2].buttons[3], menuList[2].buttons[3] ) );
-        menuGroup.add( getImageMesh( 0, 56, 56, './img/menu/volume_unmute_icon.png', menuList[2].buttons[2], menuList[2].buttons[2] ) );
-        menuGroup.add( getImageMesh( -3*w/8, 22.5, 22.5, './img/menu/minus_icon.png', menuList[2].buttons[0], menuList[2].buttons[0] ) );
+        menuGroup.add( getImageMesh( 3*w/8, 22.5, 22.5, './img/menu/plus_icon.png', menuList[2].buttons[1] ) );
+        menuGroup.add( getImageMesh( 0, 56, 56, './img/menu/volume_mute_icon.png', menuList[2].buttons[3] ) );
+        menuGroup.add( getImageMesh( 0, 56, 56, './img/menu/volume_unmute_icon.png', menuList[2].buttons[2] ) );
+        menuGroup.add( getImageMesh( -3*w/8, 22.5, 22.5, './img/menu/minus_icon.png', menuList[2].buttons[0] ) );
 
         menuGroup.add( getMenuTextMesh( 0, AudioManager.getVolume()*100+'%', 18, 'volumeLevel', false ) );
 
@@ -468,10 +471,10 @@ THREE.SecondaryMenuManager = function () {
     {
         var menuGroup =  new THREE.Group();
 
-        menuGroup.add( getImageMesh( 0, 42.2, 42.2, './img/menu/play_icon.png', menuList[1].buttons[0], menuList[1].buttons[0] ) );
-        menuGroup.add( getImageMesh( 0, 42.2, 42.2, './img/menu/pause_icon.png', menuList[1].buttons[1], menuList[1].buttons[1] ) );
-        menuGroup.add( getImageMesh( 11*w/32, 22.5, 11.25, './img/menu/seek_icon.png', menuList[1].buttons[3], menuList[1].buttons[3] ) ); // need rotate z PI
-        menuGroup.add( getImageMesh( -11*w/32, 22.5, 11.25, './img/menu/seek_icon.png', menuList[1].buttons[2], menuList[1].buttons[2] ) );
+        menuGroup.add( getImageMesh( 0, 42.2, 42.2, './img/menu/play_icon.png', menuList[1].buttons[0] ) );
+        menuGroup.add( getImageMesh( 0, 42.2, 42.2, './img/menu/pause_icon.png', menuList[1].buttons[1] ) );
+        menuGroup.add( getImageMesh( 11*w/32, 22.5, 11.25, './img/menu/seek_icon.png', menuList[1].buttons[3] ) ); // need rotate z PI
+        menuGroup.add( getImageMesh( -11*w/32, 22.5, 11.25, './img/menu/seek_icon.png', menuList[1].buttons[2] ) );
 
         interController.setActiveMenuName( name );
 
@@ -513,6 +516,7 @@ THREE.SecondaryMenuManager = function () {
         backgroundmenu.add( createMultiOptionsMenu( w, h, menuList[4].name ) );
 
         backgroundmenu.add( createSettingsMenuGroup( w, h, menuList[5].name ) );
+
         backgroundmenu.add( createSubtitleMenuGroup( w, h, menuList[6].name ) );
         backgroundmenu.add( createSignerMenuGroup( w, h, menuList[7].name ) );
         backgroundmenu.add( createAudioDescriptionMenuGroup( w, h, menuList[8].name ) );

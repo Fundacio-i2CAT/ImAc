@@ -80,6 +80,8 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 		//event.preventDefault();
 		//event.stopPropagation();
 
+		if( !autopositioning ){
+
 		switch ( event.keyCode ) 
 		{
 			case 37:
@@ -154,6 +156,8 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 
 		}
 
+		}
+
 	}.bind( this );
 
 	// The angles alpha, beta and gamma form a set of intrinsic Tait-Bryan angles of type Z-X'-Y''
@@ -205,7 +209,7 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 
 	this.update = function() {
 		
-		if (this.isAndroid) 
+		if (this.isAndroid && !autopositioning) 
 		{
 			this.updateDeviceMove();		
 		}

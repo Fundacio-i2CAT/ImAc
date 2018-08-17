@@ -531,7 +531,7 @@ THREE.MenuManager = function () {
 
     this.createMenu = function()
     {
-        var _isMenuOpenButton = false;
+        var _isMenuOpenButton = true;
         var activationElement;
 
         if(_isMenuOpenButton)

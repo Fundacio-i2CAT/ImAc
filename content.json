@@ -17,7 +17,7 @@
   {
     "name": "Video 2: Demo liceu",
     "thumbnail": "img/LOGO-IMAC.png",
-    "url": "./resources/cam_2_2k.mp4",
+    "url": "./resources/liceu/cam_2_2k.mp4",
     "audioChannels": 4,
     "subtitles": [
     {

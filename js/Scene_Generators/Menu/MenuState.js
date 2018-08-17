@@ -172,7 +172,8 @@ var menuList =
                     [
                         'subtitlesIndicatorNoneButton', 
                         'subtitlesIndicatorArrowButton',
-                        'subtitlesIndicatorRadarButton'
+                        'subtitlesIndicatorRadarButton',
+                        'subtitlesIndicatorAutoButton'
                     ]
                 },
                 { 
@@ -258,3 +259,5 @@ var menuList =
             ]
         }                                    
     ];
+
+

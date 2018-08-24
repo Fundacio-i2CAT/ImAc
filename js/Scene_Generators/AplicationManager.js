@@ -34,7 +34,7 @@ function AplicationManager()
 				function () { 
 					isVRtested=true; 
 					startAllVideos(); 
-					controls = new THREE.DeviceOrientationAndTouchController( camera, renderer.domElement, renderer );
+					controls = new THREE.DeviceOrientationAndTouchController( camera, CameraParentObject, renderer.domElement, renderer );
 				});
     		}
     		else
@@ -89,6 +89,7 @@ function AplicationManager()
 
 	function update() 
 	{	
+		//THREE.VRController.update()
 		if(controls) controls.update();
 		effect.render( scene, camera );
 		requestAnimationFrame( update );
@@ -96,14 +97,15 @@ function AplicationManager()
 
     function render()
     {
-    	if ( gamepad ) gamepad.update();
+    	THREE.VRController.update()
+    	//if ( gamepad ) gamepad.update();
     	if ( controls ) controls.update();
     	//THREE.VRController.update()
     	renderer.render( scene, camera );
 
     	if ( AudioManager.isAmbisonics ) AudioManager.updateRotationMatrix( camera.matrixWorld.elements );
 
-    	if( gamepad && gamepad.getTouchPadState() && _isHMD ) 
+    	/*if( gamepad && gamepad.getTouchPadState() && _isHMD ) 
     	{
             var mouse3D = new THREE.Vector2();
 	        mouse3D.x = 0;
@@ -111,10 +113,10 @@ function AplicationManager()
 					
 			//moData.isPausedById(0) ? moData.playAll() : moData.pauseAll();
 			interController.checkInteraction(mouse3D, camera, 'onDocumentMouseDown');
-		}
+		}*/
 
 		// If the device is in HMD mode and the menu is open, the menu will follow the FoV of the user
-	    if(_isHMD && scene.getObjectByName(menuList[0].name))
+	    if ( _isHMD && scene.getObjectByName(menuList[0].name) )
 	    {
 	        MenuManager.menuFollowCameraFOV(Math.sign(Math.round(Math.degrees(camera.rotation.y))%360));
 	    } 
@@ -130,7 +132,7 @@ function AplicationManager()
 			
 		container = document.getElementById( 'container' );
 	
-        camera = new THREE.PerspectiveCamera( 60.0, window.innerWidth / window.innerHeight, 0.05, 1000 );
+        camera = new THREE.PerspectiveCamera( 60.0, window.innerWidth / window.innerHeight, 1, 1000 );
         camera.name = 'perspectivecamera';
 
 
@@ -144,10 +146,10 @@ function AplicationManager()
 
         this.CameraParentObject = new THREE.Object3D();
         this.CameraParentObject.name = 'parentcamera';
-		this.CameraParentObject.add(camera);
+		this.CameraParentObject.add( camera );
 
 		scene = new THREE.Scene();
-		scene.add(this.CameraParentObject);
+		scene.add( this.CameraParentObject );
 
 		renderer = new THREE.WebGLRenderer({
 			antialias:true,
@@ -165,6 +167,37 @@ function AplicationManager()
 		container.appendChild( renderer.domElement );
 
         moData.createSphericalVideoInScene( mainContentURL, 'contentsphere' );
+
+        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//  This shortcut will be useful for later on down the road...
+applyDown = function( obj, key, value ){
+  obj[ key ] = value
+  if( obj.children !== undefined && obj.children.length > 0 ){
+    obj.children.forEach( function( child ){
+      applyDown( child, key, value )
+    })
+  }
+}
+castShadows = function( obj ){
+  applyDown( obj, 'castShadow', true )
+}
+receiveShadows = function( obj ){
+  applyDown( obj, 'receiveShadow', true )
+}
+
+
+var light = new THREE.DirectionalLight( 0xFFFFFF, 1, 1000 )
+light.position.set(  1, 100, -0.5 )
+light.castShadow = true
+light.shadow.mapSize.width  = 2048
+light.shadow.mapSize.height = 2048
+light.shadow.camera.near    =    1
+light.shadow.camera.far     =   1200
+scene.add( light )
+
+scene.add( new THREE.HemisphereLight( 0x909090, 0x404040 ))
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         //moData.createCubeGeometry116('./resources/cubemap3.jpg', 'name');
         //moData.createCubeGeometry65('./resources/dagomi_cube_603_edit.mp4', 'name');
@@ -193,14 +226,14 @@ function AplicationManager()
 			effect = new THREE.StereoEffect(renderer);
 			effect.setSize(window.innerWidth, window.innerHeight);
 
-			controls = new THREE.DeviceOrientationAndTouchController(camera, renderer.domElement, renderer);
+			controls = new THREE.DeviceOrientationAndTouchController(camera, CameraParentObject, renderer.domElement, renderer);
         }
 
 		Reticulum.init(camera, {
 			proximity: false,
 			clickevents: true,
 			reticle: {
-				visible: true,
+				visible: false,
 				restPoint: 50, //Defines the reticle's resting point when no object has been targeted
 				color: 0xffff00,
 				innerRadius: 0.0004,
@@ -253,22 +286,13 @@ function AplicationManager()
 
 					ppMMgr.playAll();
 
-					controls = new THREE.DeviceOrientationAndTouchController( camera, renderer.domElement, renderer );
+					controls = new THREE.DeviceOrientationAndTouchController( camera, CameraParentObject, renderer.domElement, renderer );
 
 					display.isPresenting ? display.exitPresent() : display.requestPresent( [ { source: renderer.domElement } ] ).then(
 						function () { 
-							gamepad = new THREE.DaydreamController( camera, renderer.domElement );
+							//gamepad = new THREE.DaydreamController( camera, renderer.domElement );
 							isVRtested=true; 
-							//startAllVideos(); 
-							_isHMD = true; 
-							//document.body.appendChild( WEBVR.createButton( renderer ) );   		 		
-
-						 		/*gamepad = new THREE.DaydreamController(renderer.domElement);
-								gamepad.position.set( 0.025, - 0.05, 0 );
-								gamepad.position.z = - 1;
-								gamepad.renderOrder = 10;
-
-								scene.add( gamepad );*/
+							_isHMD = true; 							
 						});
 				};
 
@@ -318,7 +342,7 @@ function AplicationManager()
 						}
 						else
 						{
-							controls = new THREE.DeviceOrientationAndTouchController( camera, renderer.domElement, renderer );
+							controls = new THREE.DeviceOrientationAndTouchController( camera, CameraParentObject, renderer.domElement, renderer );
 						}
 					} );
 
@@ -351,7 +375,7 @@ function AplicationManager()
 
 					ppMMgr.playAll();
 
-					controls = new THREE.DeviceOrientationAndTouchController( camera, renderer.domElement, renderer );
+					controls = new THREE.DeviceOrientationAndTouchController( camera, CameraParentObject, renderer.domElement, renderer );
 					
 					isVRtested=true; 
 					//startAllVideos(); 

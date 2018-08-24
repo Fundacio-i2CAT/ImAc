@@ -10,9 +10,9 @@ var initialVolumeLevel = 0.5;
 var settingsLanguage = 'settingsLanguageEngButton';
 
 var isSubtitlesActive = true;
-var isSignLanguageActive = true;
-var isAudioDescriptionActive = true;
-var isAudioSubtitleActive = true;
+var isSignLanguageActive = false;
+var isAudioDescriptionActive = false;
+var isAudioSubtitleActive = false;
 
 var subtitlesLanguage = 'subtitlesEngButton';
 var subtitlesPosition = 'subtitlesBottomButton';
@@ -99,8 +99,8 @@ var menuList =
                     [
                         'settingsLanguageEngButton',
                         'settingsLanguageEspButton',
-                        'settingsLanguageCatButton',
-                        'settingsLanguageGerButton'
+                        'settingsLanguageGerButton',
+                        'settingsLanguageCatButton'
                     ]
                 },
                 { 
@@ -202,7 +202,7 @@ var menuList =
             ]
         },                                   
 /*7*/   { 
-            name: 'signLanguageMenu', isEnabled: true, firstmenuindex: 4, 
+            name: 'signLanguageMenu', isEnabled: false, firstmenuindex: 4, 
             submenus:[
                 { 
                     name: 'signerShowPositions', 
@@ -241,21 +241,81 @@ var menuList =
             ]
         },
 /*8*/   { 
-            name: 'audioDescriptionMenu', isEnabled: true, firstmenuindex: 4, 
-            submenus:[],
+            name: 'audioDescriptionMenu', isEnabled: false, firstmenuindex: 4, 
+            submenus:[
+                { 
+                    name: 'audioDescriptionLanguages', 
+                    buttons:
+                    [
+                        'adEngButton', 
+                        'adEspButton',
+                        'adGerButton',
+                        'adCatButton'
+                    ]
+                },
+                { 
+                    name: 'audioDescriptionPresentation', 
+                    buttons:
+                    [
+                        'adPrespectiveButton', 
+                        'adAnchoredButton',
+                        'adClassicButton',
+                        'adPanoramaButton'
+                    ]
+                },
+                { 
+                    name: 'audioDescriptionVolume', 
+                    buttons:
+                    [
+                        'adPlusButton',
+                        'adMinusButton'
+                    ]
+                }
+            ],
             buttons: 
             [
                 'audioDescriptionOnButton', 
-                'audioDescriptionOffButton'
+                'audioDescriptionOffButton',
+                'audioDescriptionShowLanguagesDropdown',
+                'audioDescriptionShowPrespectiveDropdown'
             ]
         },
 /*9*/   { 
-            name: 'audioSubtitlesMenu', isEnabled: true, firstmenuindex: 4, 
-            submenus:[],
+            name: 'audioSubtitlesMenu', isEnabled: false, firstmenuindex: 4, 
+            submenus:[
+                { 
+                    name: 'audioSubtitlesLanguages', 
+                    buttons:
+                    [
+                        'astEngButton', 
+                        'astEspButton',
+                        'astGerButton',
+                        'astCatButton'
+                    ]
+                },
+                { 
+                    name: 'audioSubtitlesEasy', 
+                    buttons:
+                    [
+                        'astEasyOn',
+                        'astEasyOff'
+                    ]
+                },
+                { 
+                    name: 'audioSubtitlesVolume', 
+                    buttons:
+                    [
+                        'astPlusButton',
+                        'astMinusButton'
+                    ]
+                }
+            ],
             buttons: 
             [
                 'audioSubtitlesOnButton', 
-                'audioSubtitlesOffButton'
+                'audioSubtitlesOffButton',
+                'audioSubtitlesShowLanguagesDropdown',
+                'audioSubtitlesShowEasyDropdown'
             ]
         }                                    
     ];

@@ -4,7 +4,7 @@ var visualFeedbackTimeout = 1000;
 var menuMargin = 25;
 var menuDefaultColor = 0xffffff;
 var menuButtonActiveColor = 0xffff00;
-var factorScale; 
+var factorScale = 9/16; 
 var menuElementsZ = 0.05;
 
 /* MENU BACKGROUND */
@@ -62,9 +62,15 @@ var subtitlesIndicatorArray = ['None', 'Arrow', 'Radar', 'Auto'];
 var subtitlesBackgroundArray = ['Semi-Trans', 'Outline'];
 var subtitlesEasyArray = ['On', 'Off'];
 
-var settingsLanguagesArray = ['English', 'Spanish', 'Catalan', 'German'];
+var settingsLanguagesArray = ['English', 'Spanish', 'German', 'Catalan'];
 var settingsVoiceControlArray = ['option 1'];
 var settingsUserProfileArray = ['option 1', 'option 2'];
+
+var ADLanguagesArray = ['English', 'Spanish', 'German', 'Catalan'];
+var ADPresentationArray = ['Prespective', 'Anchored', 'Classic', 'Panorama'];
+
+var ASTLanguagesArray = ['English', 'Spanish', 'German', 'Catalan'];
+var ASTEasyArray = ['On', 'Off'];
 
 
 var secondarySubIndex = 0;

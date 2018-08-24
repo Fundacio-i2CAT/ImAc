@@ -179,10 +179,10 @@ SubSignManager = function() {
         	}
         	else 
         	{
-          		rotaionValue += position*3;
+          		rotaionValue += position*2;
           		CameraParentObject.rotation.y = initY / ( -180 / Math.PI )%360 + rotaionValue * ( -Math.PI / 180 );
         	}
-      	}, 30);
+      	}, 20);
 	}	
 
 //************************************************************************************

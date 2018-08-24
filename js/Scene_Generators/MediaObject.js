@@ -695,11 +695,12 @@ THREE.MediaObject = function () {
     this.createPointer = function()
     {
         var pointer = new THREE.Mesh(
-                new THREE.SphereBufferGeometry( 0.006, 16, 8 ),
-                new THREE.MeshBasicMaterial( { color: 0xc90000 } )
+                new THREE.SphereBufferGeometry( 0.02, 16, 8 ),
+                new THREE.MeshBasicMaterial( { color: 0xffff00 } )
             );
-        pointer.position.z = -3;
+        pointer.position.z = -4;
         pointer.name = 'pointer';
+        pointer.visible = false;
 
         camera.add( pointer );
     }

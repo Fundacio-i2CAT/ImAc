@@ -91,6 +91,7 @@ THREE.MenuManager = function () {
     function removeEntity (object) 
     {
         object.children.forEach(function(elem1){
+            interController.removeInteractiveObject(elem1.name);
             elem1.children.forEach(function(elem2){
                 interController.removeInteractiveObject(elem2.name);
             });
@@ -104,9 +105,10 @@ THREE.MenuManager = function () {
 
     this.createMenu = function(_isMenuOpenButton)
     {
+        MenuDictionary.initGlobalArraysByLanguage();
         var activationElement = _isMenuOpenButton ? getOpenMenuButton() : getOpenMenuAreaButton();
         scene.add( activationElement );
-    };
+    };  
 
     /**
     * This function creates all the menus and submenus and opens the menu. 

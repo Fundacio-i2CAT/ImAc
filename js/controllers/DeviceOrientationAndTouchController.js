@@ -5,10 +5,15 @@
 //* Orientation and touch controllers
 //*
 //**
-THREE.DeviceOrientationAndTouchController = function( object, objectPather, domElement, renderer) {
+THREE.DeviceOrientationAndTouchController = function( object, objectPather, domElement, renderer ) {
 
 	var scope = this;
 	var touchtime;
+
+	var raycaster = new THREE.Raycaster();
+	var interList = [];
+
+	var _origin = new THREE.Vector3( 0.155, 1.21, -0.15 );
 
 	this.isAndroid = navigator.userAgent.toLowerCase().indexOf("android") > -1;
 
@@ -47,16 +52,27 @@ THREE.DeviceOrientationAndTouchController = function( object, objectPather, domE
 	
 	var deviceQuat = new THREE.Quaternion();
 
-
-
-
-
 	
 	this.objectPather = objectPather;
 
 	var mouse;
 
 	this.enableManualDrag = true;
+
+	this.setInteractiveObject = function(object)
+	{
+		interList.push(object);
+	};
+
+	this.getInteractiveObject = function()
+	{
+		return interList;
+	};
+
+	this.removeInteractiveObject = function(name)
+	{
+		interList = interList.filter(e => e.name != name);
+	};
 
 
 	var onScreenOrientationChangeEvent = function() 
@@ -176,9 +192,7 @@ THREE.DeviceOrientationAndTouchController = function( object, objectPather, domE
 
 	this.onkeydownStart = function ( event ) {
 		
-		//event.preventDefault();
-		//event.stopPropagation();
-
+/*
 		if( !autopositioning )
 		{
 			switch ( event.keyCode ) 
@@ -256,7 +270,7 @@ THREE.DeviceOrientationAndTouchController = function( object, objectPather, domE
 			}
 
 		}
-
+*/
 	}.bind( this );
 
 	this.onDocumentTouchMove = function ( event ) {
@@ -326,7 +340,6 @@ THREE.DeviceOrientationAndTouchController = function( object, objectPather, domE
 			quaternion.multiply( q1 ); // camera looks out the back of the device, not the top
 			quaternion.multiply( q0.setFromAxisAngle( zee, - orient ) ); // adjust for screen orientation
 		}
-
 	}();
 
 	
@@ -345,7 +358,6 @@ THREE.DeviceOrientationAndTouchController = function( object, objectPather, domE
 			setObjectQuaternion( scope.object.quaternion, alpha, beta, gamma, orient );
 			this.alpha = alpha;	
 		}
-
 	}();
 
 	this.updateManualMove = function () {
@@ -430,35 +442,23 @@ THREE.DeviceOrientationAndTouchController = function( object, objectPather, domE
 
 	}();
 
-	function sendVRInteraction(rot)
+	function sendVRInteraction(quat)
 	{
-		var mouse3D = new THREE.Vector2();
-	        mouse3D.x = 0;
-	        mouse3D.y = 0;
-	        //mouse3D.z = 0;
+		var direction = new THREE.Vector3( 0, 0, -1 );
 
-	    var direction = new THREE.Vector3();
-	        direction.x = rot.x;
-	        direction.y = rot.y;
-	        direction.z = rot.z;
+		direction.applyQuaternion( quat ).normalize();
 
-	    var dirvec = new THREE.Vector3();
-
-	        dirvec.copy( direction )//.normalize();
-
-	        //direction.normalize()
-
-//alert(dirvec.x + '   '+dirvec.y + '   '+dirvec.z )
-
-			//interController.checkVRInteraction(mouse3D, dirvec);
-			interController.checkInteraction(mouse3D, scope.object, 'onDocumentMouseDown');
+		interController.checkVRInteraction( _origin, direction );
 	}
 
 	var onVRControllerUpdate = function()
 	{
-		//  Here it is, your VR controller instance.
-		//  It’s really a THREE.Object3D so you can just add it to your scene:
+		moData.createPointer2();
+
 		var controller = event.detail
+		controller.name = "controller"
+		/*var axesHelper = new THREE.AxesHelper( 5 );
+		controller.add( axesHelper )*/
 		scene.add( controller )
 
 		controller.standingMatrix = renderer.vr.getStandingMatrix()
@@ -479,60 +479,51 @@ THREE.DeviceOrientationAndTouchController = function( object, objectPather, domE
 		controllerMaterial.flatShading = true
 		controllerMesh.rotation.x = -Math.PI / 2
 		handleMesh.position.y = -0.05
-
-		controllerMesh.visible = false;
-
+		controllerMesh.visible = true
 		controllerMesh.add( handleMesh )
 
-		controller.userData.mesh = controllerMesh//  So we can change the color later.
-		controller.add( controllerMesh )
+		/*var material = new THREE.LineBasicMaterial( { color: 0x7f7f7f } );
+        var geometry = new THREE.Geometry();
+        geometry.vertices.push(new THREE.Vector3( 0, 0, 0) );
+        geometry.vertices.push(new THREE.Vector3( 0, 1, 0) );
+        var line = new THREE.Line( geometry, material );
+        line.name = 'controllerline'
 
-		/*var geometry = new THREE.BufferGeometry();
-			geometry.addAttribute( 'position', new THREE.Float32BufferAttribute( [ 0, 0, 0, 0, 0, - 1 ], 3 ) );
-				geometry.addAttribute( 'color', new THREE.Float32BufferAttribute( [ 0.5, 0.5, 0.5, 0, 0, 0 ], 3 ) );
-				geometry.scale ( 1, 1, 500  )
-				var material = new THREE.LineBasicMaterial( { vertexColors: true, linewidth: 1, blending: THREE.AdditiveBlending } );
-				var line = new THREE.Line( geometry, material )
-				controller.userData.line = line
-				controller.add( line );*/
+		controllerMesh.add( line );*/
+
+		controller.userData.mesh = controllerMesh//  So we can change the color later.
+
+		controllerMesh.scale.set( 0.5,0.5,0.5 );
+		controller.add( controllerMesh )
 
 		castShadows( controller )
 		receiveShadows( controller )
 
 		controller.addEventListener( 'primary press began', function( event ){
 			event.target.userData.mesh.material.color.setHex( meshColorOn )
-			sendVRInteraction(event.target.rotation)
-			//alert(event.target.rotation.x + '  ' + event.target.rotation.y)
+			sendVRInteraction(event.target.quaternion)
 		})
 		controller.addEventListener( 'primary press ended', function( event ){
 			event.target.userData.mesh.material.color.setHex( meshColorOff )
 		})
-
-		controller.addEventListener( 'disconnected', function( event ){
-			controller.parent.remove( controller )
-		})
-
 		controller.addEventListener( 'button_0 press began', function( event ){
 			event.target.userData.mesh.material.color.setHex( meshColorOn )
-			//sendVRInteraction()
-			sendVRInteraction(event.target.rotation)
+			sendVRInteraction(event.target.quaternion)
 		})
-
 		controller.addEventListener( 'button_0 press ended', function( event ){
 			event.target.userData.mesh.material.color.setHex( meshColorOff )
 		})	
-
 		controller.addEventListener( 'thumbpad press began', function( event ){
 			event.target.userData.mesh.material.color.setHex( meshColorOn )
-			//sendVRInteraction()
-			sendVRInteraction(event.target.rotation)
+			sendVRInteraction(event.target.quaternion)
 		})
-
 		controller.addEventListener( 'thumbpad press ended', function( event ){
 			event.target.userData.mesh.material.color.setHex( meshColorOff )
 		})	
-
-	}
+		controller.addEventListener( 'disconnected', function( event ){
+			controller.parent.remove( controller )
+		})
+	};
 	
 
 	this.update = function() {
@@ -545,10 +536,38 @@ THREE.DeviceOrientationAndTouchController = function( object, objectPather, domE
 		{
 			this.updateManualMove();	
 		}
-		var mouse3D = new THREE.Vector2();
-				mouse3D.x = 0;
-                mouse3D.y = 0;
+
+		if ( scene.getObjectByName('controller') )
+		{
+			var direction = new THREE.Vector3( 0, 0, -1 );
+			var contr = scene.getObjectByName('controller');
+			var rot = contr.quaternion;
+
+			direction.applyQuaternion( rot ).normalize();
+
+			raycaster.set( _origin, direction );
+
+	        var intersects = raycaster.intersectObjects( interList, true ); // false
+
+	        var dist = intersects[0] ? intersects[0].distance : 50;
+
+	        var direction2 = new THREE.Vector3( 0, 0, -dist );
+        	direction2.applyQuaternion(rot)
+
+        	var p2 = scene.getObjectByName('pointer2').children[0];
+            if ( p2 )
+            {
+                p2.position.x = direction2.x;
+                p2.position.y = direction2.y;
+                p2.position.z = direction2.z;
+
+                p2.scale.set( dist/10,dist/10,dist/10 )
+            }
+		}
+		else {
+			var mouse3D = new THREE.Vector3( 0, 0, 0 );
 			interController.checkInteraction(mouse3D, scope.object, 'onDocumentMouseMove');
+		}
 
 		if (AudioManager.isAmbisonics) AudioManager.updateRotationMatrix( camera.matrixWorld.elements );
 	};

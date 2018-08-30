@@ -72,8 +72,16 @@ var ADPresentationArray = ['Prespective', 'Anchored', 'Classic', 'Panorama'];
 var ASTLanguagesArray = ['English', 'Spanish', 'German', 'Catalan'];
 var ASTEasyArray = ['On', 'Off'];
 
+var STMenuList = ['Languages', 'Easy read', 'Position', 'Background', 'Size', 'Indicator', 'Area'];
+var SLMenuList = ['Position', 'Indicator', 'Area'];
+var ADMenuList = ['Languages', 'Presentation'];
+var ASTMenuList = ['Languages', 'Easy read'];
+var SettingsMenuList = ['Languages', 'Voice control', 'User Profile'];
+
 
 var secondarySubIndex = 0;
 
 var _isHMD = false;
 var autopositioning = false;
+
+//var _mainLanguage = 'en';

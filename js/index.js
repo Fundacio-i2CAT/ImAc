@@ -10,6 +10,7 @@ var menuData = new THREE.MenuObject();
 
 var MenuManager = new THREE.MenuManager();
 var MenuController = new THREE.MenuController();
+var MenuDictionary = new MenuDictionary();
 
 var ppMMgr = new THREE.PlayPauseMenuManager();
 //var volMMgr = new THREE.VolumeMenuManager();

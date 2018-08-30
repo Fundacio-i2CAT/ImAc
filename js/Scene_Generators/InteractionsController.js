@@ -54,6 +54,7 @@ THREE.InteractionsController = function () {
 	function getInteractiveObjectList()
 	{
 		console.log(interactiveListObjects)
+        return interactiveListObjects;
 	}
 
     function freeInteractionState(time)
@@ -185,7 +186,10 @@ THREE.InteractionsController = function () {
 	{
         var index = interactiveListObjects.map(function(e) { return e.name; }).indexOf(object);
 
-        if(index < 0) interactiveListObjects.push(object);
+        if (index < 0) {
+            interactiveListObjects.push(object);
+            controls.setInteractiveObject(object);
+        }
         else console.error("Interactivity already exists in the list.")
 		
 	};
@@ -193,6 +197,7 @@ THREE.InteractionsController = function () {
 	this.removeInteractiveObject = function(name)
 	{
 		interactiveListObjects = interactiveListObjects.filter(e => e.name != name);
+        controls.removeInteractiveObject(name);
 	}
 }
 

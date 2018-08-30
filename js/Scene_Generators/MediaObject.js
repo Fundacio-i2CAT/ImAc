@@ -115,7 +115,7 @@ THREE.MediaObject = function () {
         return mesh;
     }
 
-    function getArrowMesh(w, h, c)
+    function getArrowMesh(w, h, c, o)
     {
         var arrowShape = new THREE.Shape();
 
@@ -131,6 +131,24 @@ THREE.MediaObject = function () {
         var geometry = new THREE.ShapeGeometry( arrowShape );
         var material = new THREE.MeshBasicMaterial( { color: c } );
         var mesh = new THREE.Mesh( geometry, material ) ;
+
+        if ( o == 0 )
+        {
+            var geometry = new THREE.Geometry();
+            geometry.vertices.push(
+                new THREE.Vector3( -w/2, -h/4, 0 ),
+                new THREE.Vector3( -w/2, h/4, 0 ),
+                new THREE.Vector3( 0, h/4, 0 ),
+                new THREE.Vector3( 0, h/2, 0 ),
+                new THREE.Vector3( w/2, 0, 0 ),
+                new THREE.Vector3( 0, -h/2, 0 ),
+                new THREE.Vector3( 0, -h/4, 0 ),
+                new THREE.Vector3( -w/2, -h/4, 0 )
+            );
+            var line = new THREE.Line( geometry, new THREE.LineBasicMaterial( { color: 0x000000, linewidth: 1.1 } ) );
+            //line.renderOrder = 6;
+            mesh.add(line)
+        }
 
         mesh.position.z = 0.1;
         mesh.visible = false;
@@ -165,7 +183,7 @@ THREE.MediaObject = function () {
         if ( o == 0 )
         {
             var matDark = new THREE.LineBasicMaterial( { color: t.backgroundColor,
-                linewidth: 1
+                linewidth: 1.1
             } );
 
             var holeShapes = [];
@@ -222,7 +240,7 @@ THREE.MediaObject = function () {
         else if ( i == l-1 && c.subtitleIndicator == 'arrow' )
         {
             // right arrow
-            var arrow = getArrowMesh( 6.7*c.size, 6.7*c.size, t.color );
+            var arrow = getArrowMesh( 6.7*c.size, 6.7*c.size, t.color, o );
             arrow.add( getBackgroundMesh ( 9.7*c.size, 8.7*c.size, t.backgroundColor, o ) );
             arrow.position.x = xMid/2 + 6.8*c.size;
             arrow.name = 'right';
@@ -230,7 +248,7 @@ THREE.MediaObject = function () {
             mesh.add( arrow );
 
             // left arrow
-            var arrow = getArrowMesh( 6.7*c.size, 6.7*c.size, t.color );
+            var arrow = getArrowMesh( 6.7*c.size, 6.7*c.size, t.color, o );
             arrow.rotation.z = Math.PI;
             arrow.add( getBackgroundMesh ( 9.7*c.size, 8.7*c.size, t.backgroundColor, o ) );
             arrow.position.x = -(xMid/2 + 6.8*c.size);
@@ -703,6 +721,73 @@ THREE.MediaObject = function () {
         pointer.visible = false;
 
         camera.add( pointer );
+    }
+
+    this.createPointer2 = function()
+    {
+        var pointer = new THREE.Mesh(
+                new THREE.SphereBufferGeometry( 0.002, 16, 8 ),
+                new THREE.MeshBasicMaterial( { color: 0xffff00 } )
+            );
+        var pointer1 = new THREE.Mesh(
+                new THREE.SphereBufferGeometry( 0.04, 32, 8 ),
+                new THREE.MeshBasicMaterial( { color: 0xDB3236 } )
+            );
+
+        pointer.add(pointer1)
+
+        pointer.position.x = 0.155
+        pointer.position.y = 1.21
+        pointer.position.z = -0.15
+
+        pointer.name = 'pointer2';
+        pointer.visible = true;
+
+        scene.add( pointer );
+    }
+
+    this.createCube = function()
+    {
+        var material = new THREE.LineBasicMaterial( { color: 0x0000ff } );
+        var geometry = new THREE.Geometry();
+        geometry.vertices.push(new THREE.Vector3( 0, 0, 0) );
+        geometry.vertices.push(new THREE.Vector3( 0, 0, -10) );
+        var line = new THREE.Line( geometry, material );
+
+        // material
+          var material = new THREE.MeshBasicMaterial({
+            color: 0xffffff,
+            vertexColors: THREE.FaceColors
+          });
+
+          // geometry
+          geometry = new THREE.BoxGeometry(0.5, 0.5, 0.5);
+
+          // colors
+          red = new THREE.Color(1, 0, 0);
+          green = new THREE.Color(0, 1, 0);
+          blue = new THREE.Color(0, 0, 1);
+          blue2 = new THREE.Color(0, 1, 1);
+          blue3 = new THREE.Color(1, 0, 1);
+          blue4 = new THREE.Color(1, 1, 0);
+          var colors = [red, green, blue, blue2, blue3, blue4];
+          
+          for (var i = 0; i < 6; i++) {
+            geometry.faces[ 2*i ].color = colors[i];
+            geometry.faces[ 2*i + 1 ].color = colors[i];
+          }
+
+          // mesh
+
+        var cube = new THREE.Mesh( geometry, material );
+
+        cube.position.z = -4;
+        cube.name = 'cube';
+        cube.visible = true;
+
+        cube.add(line)
+
+        scene.add( cube );
     }
 }
 

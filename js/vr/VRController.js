@@ -425,6 +425,7 @@ THREE.VRController.prototype.update = function(){
 	//  THREE.Quaternion our controller’s Object3D was initialized with.
 
 	if( pose.orientation !== null ) this.quaternion.fromArray( pose.orientation )
+		if( pose.orientation !== null ) gamepadOrientation = new THREE.Euler().setFromQuaternion( ( new THREE.Quaternion() ).fromArray( pose.orientation ), 'YXZ' )
 
 
 	//  POSITION -- EXISTS!
@@ -506,7 +507,12 @@ THREE.VRController.prototype.update = function(){
 	if( typeof this.updateCallback === 'function' ) this.updateCallback()
 }
 
-
+var gamepadOrientation;
+THREE.VRController.prototype.getGamePose = function()
+{
+	//alert(gamepadOrientation.x+'  '+gamepadOrientation.y+'  '+gamepadOrientation.z)
+	return gamepadOrientation;
+}
 
 
     /////////////////
@@ -664,7 +670,6 @@ THREE.VRController.onGamepadConnect = function( gamepad ){
 	controller = new scope( gamepad ),
 	hapticActuators = controller.gamepad.hapticActuators
 
-
 	//  We also need to store this reference somewhere so that we have a list
 	//  controllers that we know need updating, and by using the gamepad.index
 	//  as the key we also know which gamepads have already been found.
@@ -783,6 +788,17 @@ THREE.VRController.update = function(){
 			//  the API’s intended behavior but it’s what I see in practice.
 
 			else if( this.controllers[ i ] !== undefined ) THREE.VRController.onGamepadDisconnect( gamepad )
+
+			
+		}
+		else if (gamepad !== undefined && gamepad !== null) // i2cat
+		{
+			if ( touchpadIsPressed !== gamepad.buttons[ 0 ].pressed ) {
+				
+				touchpadIsPressed = gamepad.buttons[ 0 ].pressed;
+				//scope.dispatchEvent( { type: touchpadIsPressed ? 'touchpaddown' : 'touchpadup' } );
+
+			}
 		}
 	}
 }
@@ -792,6 +808,12 @@ THREE.VRController.inspect = function(){
 
 		alert( '\n'+ controller.inspect() )
 	})
+}
+
+var touchpadIsPressed = false;
+THREE.VRController.getTouchPadState = function () {
+
+		return touchpadIsPressed;
 }
 
 
@@ -1281,9 +1303,9 @@ function OrientationArmModel(){
 Object.assign( OrientationArmModel, {
 
 	HEAD_ELBOW_OFFSET       : new THREE.Vector3(  0.155, -0.465, -0.15 ),
-	ELBOW_WRIST_OFFSET      : new THREE.Vector3(  0, 0, -0.25 ),
-	WRIST_CONTROLLER_OFFSET : new THREE.Vector3(  0, 0, 0.05 ),
-	ARM_EXTENSION_OFFSET    : new THREE.Vector3( -0.08, 0.14, 0.08 ),
+	ELBOW_WRIST_OFFSET      : new THREE.Vector3(  0, 0, 0 ), //new THREE.Vector3(  0, 0, -0.25 ),
+	WRIST_CONTROLLER_OFFSET : new THREE.Vector3(  0, 0, 0 ), //new THREE.Vector3(  0, 0, 0.05 ),
+	ARM_EXTENSION_OFFSET    : new THREE.Vector3( 0, 0, 0 ), //new THREE.Vector3( -0.08, 0.14, 0.08 ),
 	ELBOW_BEND_RATIO        : 0.4,//  40% elbow, 60% wrist.
 	EXTENSION_RATIO_WEIGHT  : 0.4,
 	MIN_ANGULAR_SPEED       : 0.61//  35˚ per second, converted to radians.

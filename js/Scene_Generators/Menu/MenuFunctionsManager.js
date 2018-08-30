@@ -138,6 +138,25 @@ MenuFunctionsManager = function() {
     }
 
 //************************************************************************************
+// Settings Functions
+//************************************************************************************
+
+    function getMainLanguageFunc(language)
+    {       
+        return function() {
+            //_mainLanguage = language;
+            MenuDictionary.initGlobalArraysByLanguage( language );
+            setTimeout(function() {
+                MenuManager.closeMenu(); 
+                MenuManager.openMenu();
+                //scene.getObjectByName( "openMenu" ).visible = true;
+                //scene.getObjectByName( "openMenuTrad" ).visible = true; //EXPERIMENTAL
+            }, clickInteractionTimeout);
+        }
+    }
+
+
+//************************************************************************************
 // Public Functions
 //************************************************************************************
 
@@ -146,6 +165,7 @@ MenuFunctionsManager = function() {
         return function() {
             interController.setSubtitlesActive( subController.getSubtitleEnabled() );
             if ( interController.getSubtitlesActive() ) subController.disableSubtiles();
+            MenuDictionary.initGlobalArraysByLanguage();
             MenuManager.openMenu();
             scene.getObjectByName( "openMenu" ).visible = false;
             scene.getObjectByName( "openmenutext" ).visible = false;
@@ -482,16 +502,16 @@ MenuFunctionsManager = function() {
 
         // Settings
             case "settingsLanguageEngButton":
-                return;
+                return getMainLanguageFunc( 'en' );
 
             case "settingsLanguageEspButton":
-                return;
+                return getMainLanguageFunc( 'es' );
 
             case "settingsLanguageGerButton":
-                return;
+                return getMainLanguageFunc( 'de' );
 
             case "settingsLanguageCatButton":
-                return;
+                return getMainLanguageFunc( 'ca' );
 
             case "vc1":
                 return;

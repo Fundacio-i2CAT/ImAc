@@ -97,11 +97,10 @@ THREE.MenuController = function () {
             scene.getObjectByName('volumeLevel').visible = true;
         }
 
-
         setTimeout(function(){ 
             MenuController.showMuteUnmuteButton();
             scene.getObjectByName('volumeLevel').visible = false;
-             }, visualFeedbackTimeout);
+        }, visualFeedbackTimeout);
     };
 
     this.closeMenu = function()

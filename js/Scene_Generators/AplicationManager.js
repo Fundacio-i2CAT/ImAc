@@ -2,16 +2,16 @@
 var camera;
 var scene;
 
+var controls;
+
 function AplicationManager()
 {
-    var controls;
+    //var controls;
     var container;
     var renderer;
     var effect;
     var isVRtested = false;
     var haveVrDisplay = false;
-
-    var gamepad;
 
     var _display;
 
@@ -34,14 +34,14 @@ function AplicationManager()
 				function () { 
 					isVRtested=true; 
 					startAllVideos(); 
-					controls = new THREE.DeviceOrientationAndTouchController( camera, CameraParentObject, renderer.domElement, renderer );
+					//controls = new THREE.DeviceOrientationAndTouchController( camera, CameraParentObject, renderer.domElement, renderer );
 				});
     		}
     		else
     		{
     			ppMMgr.playAll();
     			_isHMD = true;;
-    			controls = undefined;
+    			//controls = undefined;
     			_display[ 0 ].isPresenting ? _display[ 0 ].exitPresent() : _display[ 0 ].requestPresent( [ { source: renderer.domElement } ] ).then(
 				function () { 
 					isVRtested=true; 
@@ -89,7 +89,6 @@ function AplicationManager()
 
 	function update() 
 	{	
-		//THREE.VRController.update()
 		if(controls) controls.update();
 		effect.render( scene, camera );
 		requestAnimationFrame( update );
@@ -98,14 +97,13 @@ function AplicationManager()
     function render()
     {
     	THREE.VRController.update()
-    	//if ( gamepad ) gamepad.update();
     	if ( controls ) controls.update();
     	//THREE.VRController.update()
     	renderer.render( scene, camera );
 
     	if ( AudioManager.isAmbisonics ) AudioManager.updateRotationMatrix( camera.matrixWorld.elements );
 
-    	/*if( gamepad && gamepad.getTouchPadState() && _isHMD ) 
+    	if( THREE.VRController.getTouchPadState() && _isHMD ) 
     	{
             var mouse3D = new THREE.Vector2();
 	        mouse3D.x = 0;
@@ -113,7 +111,7 @@ function AplicationManager()
 					
 			//moData.isPausedById(0) ? moData.playAll() : moData.pauseAll();
 			interController.checkInteraction(mouse3D, camera, 'onDocumentMouseDown');
-		}*/
+		}
 
 		// If the device is in HMD mode and the menu is open, the menu will follow the FoV of the user
 	    if ( _isHMD && scene.getObjectByName(menuList[0].name) )
@@ -132,7 +130,7 @@ function AplicationManager()
 			
 		container = document.getElementById( 'container' );
 	
-        camera = new THREE.PerspectiveCamera( 60.0, window.innerWidth / window.innerHeight, 1, 1000 );
+        camera = new THREE.PerspectiveCamera( 60.0, window.innerWidth / window.innerHeight, 0.05, 1000 );
         camera.name = 'perspectivecamera';
 
 
@@ -164,9 +162,19 @@ function AplicationManager()
 		renderer.setPixelRatio(Math.floor(window.devicePixelRatio));
 		renderer.setSize( window.innerWidth, window.innerHeight );
 
+		controls = new THREE.DeviceOrientationAndTouchController( camera, CameraParentObject, renderer.domElement, renderer );
+
 		container.appendChild( renderer.domElement );
 
         moData.createSphericalVideoInScene( mainContentURL, 'contentsphere' );
+
+
+
+
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//moData.createPointer2();
+
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //  This shortcut will be useful for later on down the road...
@@ -226,7 +234,7 @@ scene.add( new THREE.HemisphereLight( 0x909090, 0x404040 ))
 			effect = new THREE.StereoEffect(renderer);
 			effect.setSize(window.innerWidth, window.innerHeight);
 
-			controls = new THREE.DeviceOrientationAndTouchController(camera, CameraParentObject, renderer.domElement, renderer);
+			//controls = new THREE.DeviceOrientationAndTouchController(camera, CameraParentObject, renderer.domElement, renderer);
         }
 
 		Reticulum.init(camera, {
@@ -274,10 +282,10 @@ scene.add( new THREE.HemisphereLight( 0x909090, 0x404040 ))
 				button.style.left = 'calc(50% - 110px)';
 				button.style.width = '100px';
 
-				button.textContent = 'ENTER VR!';
+				button.textContent = 'VR';
 
-				button.onmouseenter = function () { button.style.opacity = '1.0'; };
-				button.onmouseleave = function () { button.style.opacity = '0.5'; };
+				button.onmouseenter = function () { button.style.opacity = '1.0'; button.style.color = '#ff0'; button.style.border = '2px solid #ff0';};
+				button.onmouseleave = function () { button.style.opacity = '0.8'; button.style.color = '#fff'; button.style.border = '2px solid #fff';};
 
 				button.onclick = function () {
 
@@ -286,11 +294,10 @@ scene.add( new THREE.HemisphereLight( 0x909090, 0x404040 ))
 
 					ppMMgr.playAll();
 
-					controls = new THREE.DeviceOrientationAndTouchController( camera, CameraParentObject, renderer.domElement, renderer );
+					//controls = new THREE.DeviceOrientationAndTouchController( camera, CameraParentObject, renderer.domElement, renderer );
 
 					display.isPresenting ? display.exitPresent() : display.requestPresent( [ { source: renderer.domElement } ] ).then(
 						function () { 
-							//gamepad = new THREE.DaydreamController( camera, renderer.domElement );
 							isVRtested=true; 
 							_isHMD = true; 							
 						});
@@ -342,7 +349,7 @@ scene.add( new THREE.HemisphereLight( 0x909090, 0x404040 ))
 						}
 						else
 						{
-							controls = new THREE.DeviceOrientationAndTouchController( camera, CameraParentObject, renderer.domElement, renderer );
+							//controls = new THREE.DeviceOrientationAndTouchController( camera, CameraParentObject, renderer.domElement, renderer );
 						}
 					} );
 
@@ -363,10 +370,10 @@ scene.add( new THREE.HemisphereLight( 0x909090, 0x404040 ))
 				button.style.left = 'calc(50% + 10px)';
 				button.style.width = '100px';
 
-				button.textContent = 'NO ENTER VR!';
+				button.textContent = 'NO VR';
 
-				button.onmouseenter = function () { button.style.opacity = '1.0'; };
-				button.onmouseleave = function () { button.style.opacity = '0.5'; };
+				button.onmouseenter = function () { button.style.opacity = '1.0'; button.style.color = '#ff0'; button.style.border = '2px solid #ff0';};
+				button.onmouseleave = function () { button.style.opacity = '0.8'; button.style.color = '#fff'; button.style.border = '2px solid #fff';};
 
 				button.onclick = function () {
 
@@ -375,7 +382,7 @@ scene.add( new THREE.HemisphereLight( 0x909090, 0x404040 ))
 
 					ppMMgr.playAll();
 
-					controls = new THREE.DeviceOrientationAndTouchController( camera, CameraParentObject, renderer.domElement, renderer );
+					//controls = new THREE.DeviceOrientationAndTouchController( camera, CameraParentObject, renderer.domElement, renderer );
 					
 					isVRtested=true; 
 					//startAllVideos(); 
@@ -414,13 +421,13 @@ function stylizeElement( element )
 	element.style.position = 'absolute';
 	element.style.bottom = '200px';
 	element.style.padding = '12px 6px';
-	element.style.border = '1px solid #fff';
+	element.style.border = '2px solid #fff';
 	element.style.borderRadius = '4px';
-	element.style.background = 'transparent';
+	element.style.background = '#000';
 	element.style.color = '#fff';
-	element.style.font = 'normal 13px sans-serif';
+	element.style.font = 'bold 24px sans-serif';
 	element.style.textAlign = 'center';
-	element.style.opacity = '0.5';
+	element.style.opacity = '0.8';
 	element.style.outline = 'none';
 	element.style.zIndex = '999';
 }

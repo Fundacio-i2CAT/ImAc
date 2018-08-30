@@ -21,6 +21,7 @@ var subtitlesIndicator = 'subtitlesIndicatorNoneButton';
 var subtitlesEasy = 'subtitlesEasyOff';
 var subtitlesBackground = 'subtitlesSemitrans';
 var subtitlesArea = 'subtitlesLargeAreaButton'; 
+var mainLanguage = 'settingsLanguageEngButton';
 
 
 

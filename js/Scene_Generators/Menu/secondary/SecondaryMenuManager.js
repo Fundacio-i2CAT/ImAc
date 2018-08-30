@@ -145,7 +145,7 @@ THREE.SecondaryMenuManager = function () {
                 || subtitlesSize == elem 
                 || subtitlesIndicator == elem
                 || subtitlesBackground == elem
-                || subtitlesArea == elem   ) 
+                || subtitlesArea == elem ) 
             {
                 option.material.color.set( menuButtonActiveColor ); 
             }

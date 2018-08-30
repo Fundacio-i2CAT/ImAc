@@ -141,10 +141,11 @@ MenuFunctionsManager = function() {
 // Settings Functions
 //************************************************************************************
 
-    function getMainLanguageFunc(language)
+    function getMainLanguageFunc(name, language)
     {       
         return function() {
-            //_mainLanguage = language;
+            MenuManager.selectFinalDropdownOption( name );
+            settingsLanguage = name;
             MenuDictionary.initGlobalArraysByLanguage( language );
             setTimeout(function() {
                 MenuManager.closeMenu(); 
@@ -502,16 +503,16 @@ MenuFunctionsManager = function() {
 
         // Settings
             case "settingsLanguageEngButton":
-                return getMainLanguageFunc( 'en' );
+                return getMainLanguageFunc( name, 'en' );
 
             case "settingsLanguageEspButton":
-                return getMainLanguageFunc( 'es' );
+                return getMainLanguageFunc( name, 'es' );
 
             case "settingsLanguageGerButton":
-                return getMainLanguageFunc( 'de' );
+                return getMainLanguageFunc( name, 'de' );
 
             case "settingsLanguageCatButton":
-                return getMainLanguageFunc( 'ca' );
+                return getMainLanguageFunc( name, 'ca' );
 
             case "vc1":
                 return;

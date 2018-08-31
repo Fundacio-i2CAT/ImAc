@@ -72,21 +72,21 @@ MenuDictionary = function() {
         }
         else if ( _mainLanguage == 'es' )
         {
-            subtitlesLanguagesArray = ['Ingles', 'Español', 'Aleman', 'Catalan'];
+            subtitlesLanguagesArray = ['Ingles', 'Español', 'Aleman', 'Catalán'];
             subtitlesPositionArray = ['Arriba', 'Abajo'];
             subtitlesSizeArray = ['Pequeño', 'Mediano', 'Grande'];
             subtitlesIndicatorArray = ['Ninguno', 'Flecha', 'Radar', 'Auto'];
             subtitlesBackgroundArray = ['Semi-Trans', 'Borde'];
             subtitlesEasyArray = ['Activa', 'Desactiva'];
 
-            settingsLanguagesArray = ['Ingles', 'Español', 'Aleman', 'Catalan'];
+            settingsLanguagesArray = ['Ingles', 'Español', 'Aleman', 'Catalán'];
             settingsVoiceControlArray = ['option 1'];
             settingsUserProfileArray = ['option 1', 'option 2'];
 
-            ADLanguagesArray = ['Ingles', 'Español', 'Aleman', 'Catalan'];
-            ADPresentationArray = ['Prespectiva', 'Anchored', 'Clasico', 'Panorama'];
+            ADLanguagesArray = ['Ingles', 'Español', 'Aleman', 'Catalán'];
+            ADPresentationArray = ['Prespectiva', 'Anchored', 'Clásico', 'Panorama'];
 
-            ASTLanguagesArray = ['Ingles', 'Español', 'Aleman', 'Catalan'];
+            ASTLanguagesArray = ['Ingles', 'Español', 'Aleman', 'Catalán'];
             ASTEasyArray = ['Activa', 'Desactiva'];
 
             STMenuList = ['Idiomas', 'Lectura', 'Posición', 'Fondo', 'Tamaño', 'Indicador', 'Area'];

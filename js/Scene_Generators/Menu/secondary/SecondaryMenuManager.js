@@ -554,30 +554,18 @@ THREE.SecondaryMenuManager = function () {
 // Public Functions
 //************************************************************************************
 
-    this.createMenu = function( isLS )
+    this.createMenu = function()
     {
-        if ( !isLS )
-        {
-            var menu = menuData.getBackgroundMesh( 125, 125*9/16, backgroundMenuColor, 1 );
+        var menu = menuData.getBackgroundMesh( 125, 125*9/16, backgroundMenuColor, 1 );
 
-            menu.add( createCloseButtonMenu( menuList[0].buttons[0] ) );
-            menu.add( createNextRButtonMenu( menuList[0].buttons[1] ) );
-            menu.add( createNextLButtonMenu( menuList[0].buttons[2] ) );
+        menu.add( createCloseButtonMenu( menuList[0].buttons[0] ) );
+        menu.add( createNextRButtonMenu( menuList[0].buttons[1] ) );
+        menu.add( createNextLButtonMenu( menuList[0].buttons[2] ) );
 
-            menu.name = menuList[0].name; //menuList.backgroudMenu
-            menu.position.set( 0, 0, -69 );
+        menu.name = menuList[0].name; //menuList.backgroudMenu
+        menu.position.set( 0, 0, -69 );
 
-            createLSMenus( menu );
-        }
-        else
-        {
-            var menu = menuData.getBackgroundMesh( 100, 5, backgroundMenuColor, 1 );
-
-            menu.name = menuList[0].name; //menuList.backgroudMenu
-            menu.position.set( 0, -30, -69 );
-
-            createTradMenus( menu );
-        }
+        createLSMenus( menu );       
 
         if ( _isHMD )
         {

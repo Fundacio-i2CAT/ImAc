@@ -11,7 +11,7 @@ function runDemo()
     moData.createPointer();
 
     subController.enableSubtitles();
-    subController.initSubtitle( 70, 0, -1, 'none' );
+    subController.initSubtitle( 70, 0, -1, 'arrow' );
     subController.setSubtitle( list_contents[demoId].subtitles[0]['en'] );
 
     ppMMgr.playAll();

@@ -245,7 +245,9 @@ var menuList =
             buttons: 
             [
                 'audioDescriptionOnButton', 
-                'audioDescriptionOffButton'
+                'audioDescriptionOffButton',
+                'audioDescriptionShowLanguagesDropdown',
+                'audioDescriptionShowPresentationDropdown'
             ]
         },
 /*9*/   { 
@@ -254,7 +256,9 @@ var menuList =
             buttons: 
             [
                 'audioSubtitlesOnButton', 
-                'audioSubtitlesOffButton'
+                'audioSubtitlesOffButton',
+                'audioSubtitlesShowLanguagesDropdown',
+                'audioSubtitlesShowEasyReadDropdown'
             ]
         }                                    
     ];

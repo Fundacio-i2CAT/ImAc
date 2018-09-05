@@ -11,6 +11,12 @@ MenuFunctionsManager = function() {
         }
     };
 
+    this.getTradSubShowDropdownFunc = function(index, submenu, title)
+    {       
+        return function() {
+            secMMgr.openTradSubMenuDropdown(index, submenu, title);
+        }
+    };
 	// On / Off 
 
 	this.getSubOnOffFunc = function( isEnabled )
@@ -20,7 +26,9 @@ MenuFunctionsManager = function() {
             interController.setSubtitlesActive( isEnabled );
             menuList[6].isEnabled = isEnabled;
             secMMgr.showMultiOptionsButtons( multiOptionsMainSubMenuIndexes.slice(0,1) );
-            MenuManager.showOnOffToggleButton( 6, 0, 1, 0, 4 );
+            //MenuManager.showOnOffToggleButton( 6, 0, 1, 0, 4 );
+            if(_isTradMenuOpen) MenuManager.showOnOffToggleButtonTradMenu(6, 0, 1, 0, 4); // Indexes from MenuState menuList
+            else MenuManager.showOnOffToggleButton(6, 0, 1, 0, 4);// Indexes from MenuState menuList
 		}
 	};
 

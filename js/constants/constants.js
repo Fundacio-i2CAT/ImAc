@@ -66,7 +66,26 @@ var settingsLanguagesArray = ['English', 'Spanish', 'Catalan', 'German'];
 var settingsVoiceControlArray = ['option 1'];
 var settingsUserProfileArray = ['option 1', 'option 2'];
 
+var ADLanguagesArray = ['English', 'Spanish', 'German', 'Catalan'];
+var ADPresentationArray = ['Prespective', 'Anchored', 'Classic', 'Panorama'];
+
+var ASTLanguagesArray = ['English', 'Spanish', 'German', 'Catalan'];
+var ASTEasyArray = ['On', 'Off'];
+
+var STMenuList = ['Languages', 'Easy read', 'Position', 'Background', 'Size', 'Indicator', 'Area'];
+var SLMenuList = ['Position', 'Indicator', 'Area'];
+var ADMenuList = ['Languages', 'Presentation'];
+var ASTMenuList = ['Languages', 'Easy read'];
+var SettingsMenuList = ['Languages', 'Voice control', 'User Profile'];
+
 
 var secondarySubIndex = 0;
 
 var _isHMD = false;
+
+
+/* TRADITIONAL MENU */
+
+var tradMenuMargin = 10;
+var tradmenuDivisions = 24;
+var heigthDropdownOption = 3;

@@ -267,6 +267,16 @@ SubSignManager = function() {
 				listVideoContent[0].vid.ontimeupdate = function() 
 				{
 				    updateISD( listVideoContent[0].vid.currentTime );
+
+		    		if(scene.getObjectByName("timeline"))
+					{
+						var total = moData.getListOfVideoContents()[0].vid.duration;
+						var current  = moData.getListOfVideoContents()[0].vid.currentTime;
+						var w = scene.getObjectByName("bgTimeline").geometry.parameters.width;
+						secMMgr.scaleTimeLine(total,current, w, scene.getObjectByName("currentTimeline"), scene.getObjectByName("bgTimeline"));
+						scene.getObjectByName("timeline").visible = true;
+						scene.getObjectByName("playoutTime").remove(scene.getObjectByName("currentTime"));		
+					}
 				};
 	        }
 	    };

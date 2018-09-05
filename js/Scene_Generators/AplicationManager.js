@@ -79,7 +79,7 @@ function AplicationManager()
 	{	
 		if(controls) controls.update();
 		effect.render( scene, camera );
-		requestAnimationFrame( update );
+		requestAnimationFrame( update );		
     }
 
     function render()
@@ -102,9 +102,14 @@ function AplicationManager()
 		}
 
 		// If the device is in HMD mode and the menu is open, the menu will follow the FoV of the user
-	    if(_isHMD && scene.getObjectByName(menuList[0].name))
+
+		var menu;
+    	if(_isTradMenuOpen) menu = scene.getObjectByName( "traditionalMenu" );
+    	else menu  = scene.getObjectByName(menuList[0].name)
+
+	    if(_isHMD && menu)
 	    {
-	        MenuManager.menuFollowCameraFOV(Math.sign(Math.round(Math.degrees(camera.rotation.y))%360));
+	        MenuManager.menuFollowCameraFOV(Math.sign(Math.round(Math.degrees(camera.rotation.y))%360), menu);
 	    } 
 
 		Reticulum.update();

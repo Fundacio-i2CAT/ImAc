@@ -13,9 +13,9 @@ THREE.MenuManager = function () {
         var material = new THREE.MeshBasicMaterial( { color: 0x13ec56 } );
         var activationElement = new THREE.Mesh( geometry, material );
 
-        activationElement.position.z = -8;
+        activationElement.position.z = -15;
         activationElement.position.x = 1.2;
-        activationElement.position.y = 5;
+        activationElement.position.y = 8;
 
         activationElement.lookAt(new THREE.Vector3(0, 0, 0));
         activationElement.renderOrder = 5;

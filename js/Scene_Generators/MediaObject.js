@@ -536,7 +536,7 @@ THREE.MediaObject = function () {
         // background 
         var backgroundMesh = getBackgroundMesh ( config.size, config.size/5, 0x000000, 0.8 );
         backgroundMesh.position.y = -6 * config.size/10;
-        backgroundMesh.visible = signIndicator == 'arrow' ? true : false;
+        backgroundMesh.visible = config.signIndicator == 'arrow' ? true : false;
 
         plane.add( backgroundMesh );
 
@@ -599,9 +599,12 @@ THREE.MediaObject = function () {
 
     this.removeSignVideo = function()
     {
-        removeContentById( signMesh.name );
-        camera.remove( signMesh );
-        signMesh = undefined;
+        if ( signMesh ) 
+        {
+            removeContentById( signMesh.name );
+            camera.remove( signMesh );
+            signMesh = undefined;
+        }
     };
 
     this.removeInfoImage = function()

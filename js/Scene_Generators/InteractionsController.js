@@ -10,6 +10,7 @@ THREE.InteractionsController = function () {
 	var nameMenuActive;
 
     var subtitlesActive = false;
+    var signerActive = false;
     var pointerState = true;
 
 
@@ -177,9 +178,19 @@ THREE.InteractionsController = function () {
         return subtitlesActive;
     };
 
+    this.getSignerActive = function()
+    {
+        return signerActive;
+    };
+
     this.setSubtitlesActive = function(activated)
     {
         subtitlesActive = activated;
+    };
+
+    this.setSignerActive = function(activated)
+    {
+        signerActive = activated;
     };
 
 	this.addInteractiveObject = function(object)

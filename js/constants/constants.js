@@ -62,6 +62,9 @@ var subtitlesIndicatorArray = ['None', 'Arrow', 'Radar', 'Auto'];
 var subtitlesBackgroundArray = ['Semi-Trans', 'Outline'];
 var subtitlesEasyArray = ['On', 'Off'];
 
+var signerIndicatorArray = ['None', 'Arrow', 'Forced'];
+var signerLanguagesArray = ['English', 'Spanish', 'German', 'Catalan'];
+
 var settingsLanguagesArray = ['English', 'Spanish', 'German', 'Catalan'];
 var settingsVoiceControlArray = ['option 1'];
 var settingsUserProfileArray = ['option 1', 'option 2'];
@@ -73,11 +76,13 @@ var ASTLanguagesArray = ['English', 'Spanish', 'German', 'Catalan'];
 var ASTEasyArray = ['On', 'Off'];
 
 var STMenuList = ['Languages', 'Easy read', 'Position', 'Background', 'Size', 'Indicator', 'Area'];
-var SLMenuList = ['Position', 'Indicator', 'Area'];
+var SLMenuList = ['Languages', 'Position', 'Indicator', 'Area'];
 var ADMenuList = ['Languages', 'Presentation'];
 var ASTMenuList = ['Languages', 'Easy read'];
 var SettingsMenuList = ['Languages', 'Voice control', 'User Profile'];
 
+var MOMenuButtonsArray = ['./img/menu_ai_icons/ST.png', './img/menu_ai_icons/SL.png', './img/menu_ai_icons/AD.png', './img/menu_ai_icons/AST.png'];
+var MOMenuDisabledButtonsArray = ['./img/menu_ai_icons/ST_strike.png', './img/menu_ai_icons/SL_strike.png', './img/menu_ai_icons/AD_strike.png', './img/menu_ai_icons/AST_strike.png'];
 
 var secondarySubIndex = 0;
 

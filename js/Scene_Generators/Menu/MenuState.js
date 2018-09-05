@@ -23,6 +23,11 @@ var subtitlesBackground = 'subtitlesSemitrans';
 var subtitlesArea = 'subtitlesLargeAreaButton'; 
 var mainLanguage = 'settingsLanguageEngButton';
 
+var signerPosition = 'signerBottomButton';
+var signerIndicator = 'signerIndicatorNoneButton';
+var signerArea = 'signerLargeAreaButton';
+var signerLanguage = 'signerEngButton';
+
 
 
 //*******************************************************************************************************
@@ -206,6 +211,16 @@ var menuList =
             name: 'signLanguageMenu', isEnabled: false, firstmenuindex: 4, 
             submenus:[
                 { 
+                    name: 'signerLanguages', 
+                    buttons:
+                    [
+                        'signerEngButton', 
+                        'signerEspButton',
+                        'signerGerButton',
+                        'signerCatButton'
+                    ]
+                },
+                { 
                     name: 'signerShowPositions', 
                     buttons:
                     [
@@ -236,6 +251,7 @@ var menuList =
             [
                 'signLanguageOnButton', 
                 'signLanguageOffButton',
+                'signShowLanguagesDropdown',
                 'signShowPositionsDropdown',
                 'signShowIndicatorDropdown',
                 'signShowAreasDropdown'

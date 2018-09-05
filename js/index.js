@@ -1,7 +1,7 @@
 
 // GLOBAL VARS
 
-var _PlayerVersion = 'v0.03.0';
+var _PlayerVersion = 'v0.04.0';
 
 var AplicationManager = new AplicationManager();
 var MenuFunctionsManager = new MenuFunctionsManager();
@@ -13,10 +13,6 @@ var MenuController = new THREE.MenuController();
 var MenuDictionary = new MenuDictionary();
 
 var ppMMgr = new THREE.PlayPauseMenuManager();
-//var volMMgr = new THREE.VolumeMenuManager();
-//var setcarMMgr = new THREE.SettingsCardboardMenuManager();
-//var mloptMMgr = new THREE.MultiOptionsMenuManager();
-
 
 var secMMgr = new THREE.SecondaryMenuManager();
 

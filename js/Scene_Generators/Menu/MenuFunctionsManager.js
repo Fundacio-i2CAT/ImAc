@@ -73,6 +73,7 @@ MenuFunctionsManager = function() {
             CameraParentObject.quaternion.set(0,0,0,0);
 
             if ( interController.getSubtitlesActive() ) subController.enableSubtitles();
+            subController.switchSigner( interController.getSignerActive() );
 
             setTimeout(function() {
                 MenuManager.closeMenu(); 
@@ -110,7 +111,8 @@ MenuFunctionsManager = function() {
     function getSignerOnOffFunc(isEnabled)
     {       
         return function() {
-            //interController.setSignerActive( isEnabled );
+            interController.setSignerActive( isEnabled );
+            //subController.switchSigner( isEnabled );
             menuList[7].isEnabled = isEnabled;
             MenuController.showMultiOptionsButtons( multiOptionsMainSubMenuIndexes.slice(1,2) );
             MenuController.showOnOffToggleButton( 7, 0, 1, 1, 5 );
@@ -156,6 +158,42 @@ MenuFunctionsManager = function() {
         }
     }
 
+    function getSignerPositionFunc(position, name)
+    {       
+        return function() {
+            subController.setSignerPosition( 1, position );
+            MenuManager.selectFinalDropdownOption( name );
+            signerPosition = name;
+        }
+    }
+
+    function getSignerAreaFunc(area, name)
+    {       
+        return function() {
+            subController.setSignerArea( area );
+            MenuManager.selectFinalDropdownOption( name );
+            subtitlesArea = name;
+        }
+    }
+
+    function getSignerIndicatorFunc(indicator, name)
+    {       
+        return function() {
+            subController.setSignerIndicator( indicator );
+            MenuManager.selectFinalDropdownOption( name );
+            signerIndicator = name;
+        }
+    }
+
+    function getSignerLanguageFunc(url, name)
+    {    
+        return function() {
+            subController.setSignerContent( url );
+            MenuManager.selectFinalDropdownOption( name );
+            signerLanguage = name;
+        }
+    }
+
 
 //************************************************************************************
 // Public Functions
@@ -166,6 +204,7 @@ MenuFunctionsManager = function() {
         return function() {
             interController.setSubtitlesActive( subController.getSubtitleEnabled() );
             if ( interController.getSubtitlesActive() ) subController.disableSubtiles();
+            subController.switchSigner( false );
             MenuDictionary.initGlobalArraysByLanguage();
             MenuManager.openMenu();
             scene.getObjectByName( "openMenu" ).visible = false;
@@ -326,6 +365,7 @@ MenuFunctionsManager = function() {
         return function() {
             //interController.closeMenu();
             if ( interController.getSubtitlesActive() ) subController.enableSubtitles();
+            subController.switchSigner( interController.getSignerActive() );
             setTimeout(function() {
                 MenuManager.closeMenu(); 
                 AplicationManager.switchDevice();
@@ -433,29 +473,41 @@ MenuFunctionsManager = function() {
                 return getSubAreaFunc( 70, name );
 
         // Signer
+            case "signerEngButton":
+                return getSignerLanguageFunc( list_contents[demoId].signer[0]['en'], name );
+
+            case "signerEspButton":
+                return getSignerLanguageFunc( list_contents[demoId].signer[0]['es'], name );
+
+            case "signerGerButton":
+                return getSignerLanguageFunc( list_contents[demoId].signer[0]['de'], name );
+
+            case "signerCatButton":
+                return getSignerLanguageFunc( list_contents[demoId].signer[0]['ca'], name );
+
             case "signerTopButton":
-                return;
+                return getSignerPositionFunc( 1, name );
 
             case "signerBottomButton":
-                return;
+                return getSignerPositionFunc( -1, name );
 
             case "signerIndicatorNoneButton":
-                return;
+                return getSignerIndicatorFunc( "none", name );
 
             case "signerIndicatorArrowButton":
-                return;
+                return getSignerIndicatorFunc( "arrow", name );
 
             case "signerIndicatorRadarButton":
-                return;
+                return getSignerIndicatorFunc( "move", name );
 
             case "signerSmallAreaButton":
-                return;
+                return getSignerAreaFunc( 50, name );
 
             case "signerMediumlAreaButton":
-                return;
+                return getSignerAreaFunc( 60, name );
 
             case "signerLargeAreaButton":
-                return;
+                return getSignerAreaFunc( 70, name );
 
         // Audio Description
             case "adEngButton":

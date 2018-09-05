@@ -7,7 +7,7 @@
 
 THREE.SecondaryMenuManager = function () {
 
-
+    this.timelineScale = 0;
 //************************************************************************************
 // Private Functions
 //************************************************************************************
@@ -63,9 +63,9 @@ THREE.SecondaryMenuManager = function () {
         return onButton;
     }
 
-    function getMenuTextMesh(posY, text, textSize, name, visible, func)
+    function getMenuTextMesh(posY, text, textSize, name, visible, func, coliderMesh)
     {
-        var menuTextMesh = menuData.getMenuTextMesh( text, textSize, menuDefaultColor, name, func );
+        var menuTextMesh = menuData.getMenuTextMesh( text, textSize, menuDefaultColor, name, func, coliderMesh);
         menuTextMesh.position.y = posY;
         menuTextMesh.visible = visible;
 
@@ -359,11 +359,10 @@ THREE.SecondaryMenuManager = function () {
 
     function createSettingsCardboardMenuTraditional(w, h, name)
     {
-        bardivisions = 24;
         var menuGroup =  new THREE.Group();
 
-        menuGroup.add( getImageMesh( 23*w/(bardivisions*2), 2, 2, './img/menu/settings_icon.png', 'right', menuList[3].buttons[0] ) );
-        var c = getImageMesh( 23*w/(bardivisions*2), 2, 1.6, './img/menu/cardboard_icon.png', 'right', menuList[3].buttons[1] );
+        menuGroup.add( getImageMesh((tradmenuDivisions-1)*w/(tradmenuDivisions*2), 2, 2, './img/menu/settings_icon.png', 'right', menuList[3].buttons[0] ) );
+        var c = getImageMesh((tradmenuDivisions-1)*w/(tradmenuDivisions*2), 2, 1.6, './img/menu/cardboard_icon.png', 'right', menuList[3].buttons[1] );
         c.visible = false ;
         menuGroup.add( c );
     
@@ -397,29 +396,61 @@ THREE.SecondaryMenuManager = function () {
 // EXPERIMENTAL
     function createMultiOptionsMenuTraditional(w, h, name)
     {
-        bardivisions = 24;
         var menuGroup =  new THREE.Group();
 
-        menuGroup.add( getMenuTitleMesh( 13*w/(bardivisions*2), 1.5, 'ST', menuList[4].buttons[0], false ) );
-        var stDis = getMenuDisabledTitleMesh( 13*w/(bardivisions*2), 14, 14, './img/menu/disabled_st_icon.png', menuList[4].buttons[4] );
+        menuGroup.add( 
+            getMenuTitleMesh(
+                (tradmenuDivisions-11)*w/(tradmenuDivisions*2), 
+                1.5, 
+                'ST', 
+                menuList[4].buttons[0], 
+                false, 
+                new THREE.Mesh( new THREE.PlaneGeometry((w/tradmenuDivisions)-0.1, 4-0.1), new THREE.MeshBasicMaterial({visible: false}))
+            ));
+        var stDis = getMenuDisabledTitleMesh((tradmenuDivisions-11)*w/(tradmenuDivisions*2), 2,2, './img/menu/disabled_st_icon.png', menuList[4].buttons[4] );
         stDis.visible = false;
         menuGroup.add(stDis );
 
-        menuGroup.add( getMenuTitleMesh( 15*w/(bardivisions*2), 1.5, 'SL', menuList[4].buttons[1], false ) );
-        var slDis = getMenuDisabledTitleMesh( 15*w/(bardivisions*2), 14, 14, './img/menu/disabled_sl_icon.png', menuList[4].buttons[5] );
+        menuGroup.add( 
+            getMenuTitleMesh(
+                (tradmenuDivisions-9)*w/(tradmenuDivisions*2),
+                1.5,
+                'SL',
+                menuList[4].buttons[1],
+                false,
+                new THREE.Mesh( new THREE.PlaneGeometry((w/tradmenuDivisions)-0.1, 4-0.1), new THREE.MeshBasicMaterial({visible: false}))
+            ));
+        var slDis = getMenuDisabledTitleMesh( (tradmenuDivisions-9)*w/(tradmenuDivisions*2), 2,2, './img/menu/disabled_sl_icon.png', menuList[4].buttons[5] );
         slDis.visible = false;
         menuGroup.add( slDis );
 
-        menuGroup.add( getMenuTitleMesh( 17*w/(bardivisions*2), 1.5, 'AD', menuList[4].buttons[2], false ) );
-        var adDis = getMenuDisabledTitleMesh( 17*w/(bardivisions*2), 14, 14, './img/menu/disabled_ad_icon.png', menuList[4].buttons[6] );
+        menuGroup.add( 
+            getMenuTitleMesh(
+                (tradmenuDivisions-7)*w/(tradmenuDivisions*2),
+                1.5,
+                'AD',
+                menuList[4].buttons[2],
+                false,
+                new THREE.Mesh( new THREE.PlaneGeometry((w/tradmenuDivisions)-0.1, 4-0.1), new THREE.MeshBasicMaterial({visible: false}))
+            ));
+        var adDis = getMenuDisabledTitleMesh((tradmenuDivisions-7)*w/(tradmenuDivisions*2), 2,2, './img/menu/disabled_ad_icon.png', menuList[4].buttons[6] );
         adDis.visible = false;
         menuGroup.add( adDis );
 
-        menuGroup.add( getMenuTitleMesh( 19*w/(bardivisions*2), 1.5, 'AST', menuList[4].buttons[3], false ) );
-        var astDis = getMenuDisabledTitleMesh( 19*w/(bardivisions*2), 18, 14, './img/menu/disabled_ast_icon.png', menuList[4].buttons[7] );
+        menuGroup.add(
+            getMenuTitleMesh(
+                (tradmenuDivisions-5)*w/(tradmenuDivisions*2), 
+                1.5, 
+                'AST', 
+                menuList[4].buttons[3], 
+                false, 
+                new THREE.Mesh( new THREE.PlaneGeometry((w/tradmenuDivisions)-0.1, 4-0.1), new THREE.MeshBasicMaterial({visible: false}))
+            ));
+        var astDis = getMenuDisabledTitleMesh((tradmenuDivisions-5)*w/(tradmenuDivisions*2), 3,2, './img/menu/disabled_ast_icon.png', menuList[4].buttons[7] );
         astDis.visible = false;
         menuGroup.add( astDis );
 
+        menuGroup.name = name;
         return menuGroup;
     }
 
@@ -596,10 +627,197 @@ THREE.SecondaryMenuManager = function () {
         var w = backgroundmenu.geometry.parameters.width;
         var h = backgroundmenu.geometry.parameters.height;
 
-        backgroundmenu.add( createMultiOptionsMenuTraditional(w,h, "multiOptionsTrad") );
+        backgroundmenu.add( createMultiOptionsMenuTraditional(w,h, menuList[4].name) );
         backgroundmenu.add( createSettingsCardboardMenuTraditional(w,h, "settingsCardboardTrad") );
             
     };
+
+    var activeSecondaryMenuTrad;
+
+    this.getActiveSecondaryMenuTrad = function()
+    {
+        return activeSecondaryMenuTrad;
+    }
+
+    this.setActiveSecondaryMenuTrad = function(name)
+    {
+        activeSecondaryMenuTrad = name;
+    }
+
+    this.createListBackground = function(xPos, yPos, w, h, title, submenu, options)
+    {
+        if(!camera.getObjectByName(submenu.name))
+        {
+            if(activeSecondaryMenuTrad)
+            {
+                activeSecondaryMenuTrad.buttons.forEach(function(elem){
+                    interController.removeInteractiveObject(elem);
+                }); 
+              camera.remove(camera.getObjectByName(activeSecondaryMenuTrad.name));
+                
+            } 
+            secMMgr.setActiveSecondaryMenuTrad(submenu); 
+
+            var listBg = menuData.getBackgroundMesh(w, h, 0x333333, 0.8);
+
+            listBg.position.set(xPos, yPos, -60);
+
+            var menuGroup =  new THREE.Group();
+
+            var listHeight = (h - h/(options.length+1));
+            var height = listHeight/2;
+
+            var dropdowmTitle = getMenuTextMesh( height, title, 1, title, true);
+
+
+            var onButton = menuData.getPlaneImageMesh( 4.5, 2.5, './img/menu/toggle_on.png', submenu.buttons[0], 4 );
+            onButton.position.set( -w/2+onButton.geometry.parameters.width/2+2,height, menuElementsZ );
+            onButton.onexecute = MenuFunctionsManager.getSubOnOffFunc( false );
+
+            var offButton = menuData.getPlaneImageMesh( 4.5, 2.5, './img/menu/toggle_off.png', submenu.buttons[1], 4 );
+            offButton.position.set( -w/2+offButton.geometry.parameters.width/2+2, height, menuElementsZ );
+            offButton.onexecute = MenuFunctionsManager.getSubOnOffFunc( true );
+
+            menuGroup.add( onButton );
+            menuGroup.add( offButton );
+
+            var line = menuData.createLine( 0xffffff, new THREE.Vector3(  w/2, h/2 - listHeight/options.length, 0), new THREE.Vector3( -w/2, h/2 - listHeight/options.length, 0) );
+
+            menuGroup.add(dropdowmTitle);
+            for(var i = 0; i<options.length; i++)
+            {
+                height = height - listHeight/options.length;
+                var coliderMesh = new THREE.Mesh( new THREE.PlaneGeometry(w, heigthDropdownOption-0.1), new THREE.MeshBasicMaterial({visible: false})); //{color: 0x00ff00}
+
+                var option = getMenuTextMesh( height, options[i], 1, submenu.buttons[i+2], true, null, coliderMesh);
+                option.position.x = -w/2+option.geometry.boundingBox.max.x+2;
+                coliderMesh.position.x = +w/2-option.geometry.boundingBox.max.x-2;
+
+                var next = menuData.getNextIconMesh(heigthDropdownOption/6, heigthDropdownOption/6, 0xffffff, 0, "next");
+                next.position.x = w-option.geometry.boundingBox.max.x-4;
+                option.add(next);
+                menuGroup.add(option );
+            }
+
+            listBg.add(line)
+
+            listBg.add(menuGroup);
+            listBg.name = submenu.name;
+
+            camera.add(listBg);
+
+
+            submenu.buttons.forEach(function(elem){
+                if(camera.getObjectByName(elem))
+                interController.addInteractiveObject(camera.getObjectByName(elem));
+            }); 
+        }
+        else
+        {
+            secMMgr.removeSubTradMenu('');
+        } 
+    }
+
+    this.openTradSubMenuDropdown = function(index, submenu, title, options, indexInitSubmenuButton, previousOptions)
+    {
+        secMMgr.removeSubTradMenu(submenu.submenus[index]);
+
+        var w = 30;
+        var h = (options.length+1) * heigthDropdownOption;
+        var x = (scene.getObjectByName("traditionalMenuBackground").geometry.parameters.width-w)/2;
+        var y = (scene.getObjectByName("traditionalMenuBackground").position.y+(scene.getObjectByName("traditionalMenuBackground").geometry.parameters.height + h)/2)+1+scene.getObjectByName("bgTimeline").geometry.parameters.height;
+
+
+        var listBg = menuData.getBackgroundMesh(w,h, 0x333333, 0.8);
+        listBg.position.set(x, y, -60);
+
+        var menuGroup =  new THREE.Group();
+
+        var listHeight = (h - h/(options.length+1));
+        var height = listHeight/2;
+
+        var coliderMesh = new THREE.Mesh( new THREE.PlaneGeometry(w, heigthDropdownOption-0.1), new THREE.MeshBasicMaterial({visible: false}))
+        var dropdowmTitle = getMenuTextMesh( height, title, 1,"back", true, secMMgr.goBack(previousOptions), coliderMesh);
+        interController.addInteractiveObject(dropdowmTitle);
+        var back = menuData.getNextIconMesh(heigthDropdownOption/6, heigthDropdownOption/6, 0xffffff, Math.PI, "back");
+
+        back.position.x = -w/2+2;
+        dropdowmTitle.add(back);
+
+        menuGroup.add(dropdowmTitle);
+
+        var line = menuData.createLine( 0xffffff, new THREE.Vector3( w/2, h/2 - listHeight/options.length, 0), new THREE.Vector3( -w/2, h/2 - listHeight/options.length, 0));
+        listBg.add(line)
+        
+
+        for(var i = 0; i<submenu.submenus[index].buttons.length; i++)
+        {
+            height = height - listHeight/options.length;
+            var coliderMesh = new THREE.Mesh( new THREE.PlaneGeometry(w, heigthDropdownOption-0.1), new THREE.MeshBasicMaterial({visible: false})); //{color: 0x00ff00}
+
+            var option = getMenuTextMesh( height, options[i], 1, submenu.submenus[index].buttons[i], true, null, coliderMesh);
+            option.position.x = -w/2+option.geometry.boundingBox.max.x+2;
+            coliderMesh.position.x = +w/2-option.geometry.boundingBox.max.x-2;
+
+            menuGroup.add( option );
+        }
+
+        listBg.add(menuGroup);
+        
+        listBg.name = submenu.submenus[index].name;
+
+        camera.add(listBg)
+
+        submenu.submenus[index].buttons.forEach(function(elem){
+            if(camera.getObjectByName(elem))
+            interController.addInteractiveObject(camera.getObjectByName(elem));
+        }); 
+
+    }
+
+    this.removeSubTradMenu = function(newAvtiveSubMenu)
+    {
+         secMMgr.getActiveSecondaryMenuTrad().buttons.forEach(function(elem){
+            interController.removeInteractiveObject(elem);
+        }); 
+        camera.remove(camera.getObjectByName(secMMgr.getActiveSecondaryMenuTrad().name)); 
+        secMMgr.setActiveSecondaryMenuTrad(newAvtiveSubMenu);  
+    }
+
+    this.goBack = function(multiOptionsMenuList)
+    {
+        return function()
+        {
+            var w = 30;
+            var h = (multiOptionsMenuList.length+1) * heigthDropdownOption;
+            var x = (scene.getObjectByName("traditionalMenuBackground").geometry.parameters.width-w)/2;
+            var y = (scene.getObjectByName("traditionalMenuBackground").position.y+(scene.getObjectByName("traditionalMenuBackground").geometry.parameters.height + h)/2)+1+scene.getObjectByName("bgTimeline").geometry.parameters.height;
+            secMMgr.createListBackground(x, y, w, h,"Subtitles", menuList[6], multiOptionsMenuList);
+        }
+    }
+
+    this.scaleTimeLine = function(totalTime, currentTime, w, currentTimeMesh, bgTimelineMesh)
+    {
+        var newWidth = (currentTime*w)/totalTime;
+
+        secMMgr.timelineScale = newWidth/w;
+        currentTimeMesh.scale.set(secMMgr.timelineScale, 1,1);
+        bgTimelineMesh.scale.set(1-secMMgr.timelineScale, 1,1);
+
+        if( ! currentTimeMesh.geometry.boundingBox ) currentTimeMesh.geometry.computeBoundingBox();
+        if( ! bgTimelineMesh.geometry.boundingBox ) bgTimelineMesh.geometry.computeBoundingBox();
+
+        var widthCurrent = currentTimeMesh.geometry.boundingBox.max.x - currentTimeMesh.geometry.boundingBox.min.x;
+        var widthBg = bgTimelineMesh.geometry.boundingBox.max.x - bgTimelineMesh.geometry.boundingBox.min.x;
+
+        currentTimeMesh.position.x = (-widthCurrent + widthCurrent * (secMMgr.timelineScale)) / 2 ;
+        bgTimelineMesh.position.x = (widthBg - widthCurrent * (1-secMMgr.timelineScale)) / 2 ;
+
+        var currentTime = menuData.getMenuTextMesh(ppMMgr.getPlayoutTime(moData.getListOfVideoContents()[0].vid.currentTime), 1.25, 0xffffff, "currentTime", null, null);
+        currentTime.position.x =  -(tradmenuDivisions-15)*scene.getObjectByName("traditionalMenuBackground").geometry.parameters.width/(tradmenuDivisions*2);
+
+        scene.getObjectByName("playoutTime").add(currentTime);
+    }
 }
 
 THREE.SecondaryMenuManager.prototype.constructor = THREE.SecondaryMenuManager;

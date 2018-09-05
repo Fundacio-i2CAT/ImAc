@@ -46,10 +46,16 @@ THREE.InteractionsController = function () {
                 break;
 
             case "openMenuTrad":
-                if(camera.getObjectByName( "traditionalMenu" ))  console.error("Menu already open");
+                if(scene.getObjectByName( "traditionalMenu" ))  console.error("Menu already open");
                 else
                 {
                     MenuManager.openMenuTrad();
+                    var total = moData.getListOfVideoContents()[0].vid.duration;
+                    var current  = moData.getListOfVideoContents()[0].vid.currentTime;
+                    var w = scene.getObjectByName("bgTimeline").geometry.parameters.width;
+                    secMMgr.scaleTimeLine(total,current, w, scene.getObjectByName("currentTimeline"), scene.getObjectByName("bgTimeline"));
+                    scene.getObjectByName("timeline").visible = true;
+
                     //scene.getObjectByName( "openMenu" ).visible = false;
                     scene.getObjectByName( "openMenuTrad" ).visible = false; //EXPERIMENTAL
                     interController.removeInteractiveObject("openMenuTrad" );              
@@ -154,15 +160,9 @@ THREE.InteractionsController = function () {
         		break;
 
         	case "settingsButton":
-                getInteractiveObjectList();
-                if(!_isTradMenuOpen)
+                if(_isTradMenuOpen)//EXPERIMENTAL
                 {
-                    MenuManager.pressButtonFeedback(name);
-                    setTimeout(function(){ MenuManager.openSecondLevelMenu(5); }, clickInteractionTimeout);
-                }
-
-                else//EXPERIMENTAL
-                {
+                    scene.getObjectByName("timeline").visible = false;
                     scene.getObjectByName( "traditionalMenu" ).visible = false;
                     scene.getObjectByName( "openMenuTrad" ).visible = true; 
 
@@ -170,8 +170,15 @@ THREE.InteractionsController = function () {
                     interactiveListObjects = [];
                     camera.remove(camera.getObjectByName( "traditionalMenu" ))
 
+                    var activeSubMenu = secMMgr.getActiveSecondaryMenuTrad();
+                    if(activeSubMenu) secMMgr.removeSubTradMenu('');
+
                     interController.addInteractiveObject(scene.getObjectByName( "openMenuTrad" ));
-                    getInteractiveObjectList();
+                }
+                else
+                {
+                    MenuManager.pressButtonFeedback(name);
+                    setTimeout(function(){ MenuManager.openSecondLevelMenu(5); }, clickInteractionTimeout);
                 }
         		break;
 
@@ -225,49 +232,102 @@ THREE.InteractionsController = function () {
 
             case "showSubtitlesMenuButton":
             case "disabledSubtitlesMenuButton":
-                // show the subtitle configuration menu
-                MenuManager.pressButtonFeedback(name);
-                setTimeout(function(){ 
-                    MenuManager.openSecondLevelMenu(6);
-                    /* function (subMenuIndex, onButtonIndex, offButtonIndex, enabledTitleIndex, disabledTitleIndex) */
-                    MenuManager.showOnOffToggleButton(6, 0, 1, 0, 4);// Indexes from MenuState menuList
-                 }, clickInteractionTimeout);
+            // show the subtitle configuration menu
+                if(_isTradMenuOpen)//EXPERIMENTAL
+                {
+                    console.log("Traditional "+name);
+                    var w = 30;
+                    var h = (STMenuList.length+1) * heigthDropdownOption;
+                    var x = (scene.getObjectByName("traditionalMenuBackground").geometry.parameters.width-w)/2;
+                    var y = (scene.getObjectByName("traditionalMenuBackground").position.y+(scene.getObjectByName("traditionalMenuBackground").geometry.parameters.height + h)/2)+1+scene.getObjectByName("bgTimeline").geometry.parameters.height;
+                    secMMgr.createListBackground(x, y, w, h,"Subtitles", menuList[6], STMenuList);
+                    MenuManager.showOnOffToggleButtonTradMenu(6, 0, 1, 0, 4);
+                }
+                else
+                {
+                    MenuManager.pressButtonFeedback(name);
+                    setTimeout(function(){ 
+                        MenuManager.openSecondLevelMenu(6);
+                        /* function (subMenuIndex, onButtonIndex, offButtonIndex, enabledTitleIndex, disabledTitleIndex) */
+                        MenuManager.showOnOffToggleButton(6, 0, 1, 0, 4);// Indexes from MenuState menuList
+                     }, clickInteractionTimeout);
+                }
                 break;
 
             case "showSignLanguageMenuButton":
             case "disabledSignLanguageMenuButton":
                 // TODO
                 // show the sign language configuration menu
-                MenuManager.pressButtonFeedback(name);
-                setTimeout(function(){ 
-                    MenuManager.openSecondLevelMenu(7);
-                    /* function (subMenuIndex, onButtonIndex, offButtonIndex, enabledTitleIndex, disabledTitleIndex) */
-                    MenuManager.showOnOffToggleButton(7, 0, 1, 1, 5);// Indexes from MenuState menuList
-                 }, clickInteractionTimeout);
+                if(_isTradMenuOpen)//EXPERIMENTAL
+                {
+                    console.log("Traditional "+name);
+                    var w = 30;
+                    var h = (SLMenuList.length+1) * heigthDropdownOption;
+                    var x = (scene.getObjectByName("traditionalMenuBackground").geometry.parameters.width-w)/2;
+                    var y = (scene.getObjectByName("traditionalMenuBackground").position.y+(scene.getObjectByName("traditionalMenuBackground").geometry.parameters.height + h)/2)+1+scene.getObjectByName("bgTimeline").geometry.parameters.height;
+                    secMMgr.createListBackground(x, y, w, h,"Sign Language",menuList[7], SLMenuList);
+                    MenuManager.showOnOffToggleButtonTradMenu(7, 0, 1, 1, 5);
+                }
+                else
+                {
+                    MenuManager.pressButtonFeedback(name);
+                    setTimeout(function(){ 
+                        MenuManager.openSecondLevelMenu(7);
+                        /* function (subMenuIndex, onButtonIndex, offButtonIndex, enabledTitleIndex, disabledTitleIndex) */
+                        MenuManager.showOnOffToggleButton(7, 0, 1, 1, 5);// Indexes from MenuState menuList
+                     }, clickInteractionTimeout);
+                }
                 break;
 
             case "showAudioDescriptionMenuButton":
             case "disabledAudioDescriptionMenuButton":
                 // TODO
                 // show the audio description configuration menu
-                MenuManager.pressButtonFeedback(name);
-                setTimeout(function(){ 
-                    MenuManager.openSecondLevelMenu(8);
-                    /* function (subMenuIndex, onButtonIndex, offButtonIndex, enabledTitleIndex, disabledTitleIndex) */
-                    MenuManager.showOnOffToggleButton(8, 0, 1, 2, 6);// Indexes from MenuState menuList
-                 }, clickInteractionTimeout);
+                if(_isTradMenuOpen)//EXPERIMENTAL
+                {
+                    console.log("Traditional "+name);
+                    var w = 30;
+                    var h = (ADMenuList.length+1) * heigthDropdownOption;
+                    var x = (scene.getObjectByName("traditionalMenuBackground").geometry.parameters.width-w)/2;
+                    var y = (scene.getObjectByName("traditionalMenuBackground").position.y+(scene.getObjectByName("traditionalMenuBackground").geometry.parameters.height + h)/2)+1+scene.getObjectByName("bgTimeline").geometry.parameters.height;
+                    secMMgr.createListBackground(x, y, w, h,"Audio Description",menuList[8], ADMenuList);
+                    MenuManager.showOnOffToggleButtonTradMenu(8, 0, 1, 2, 6);
+                }
+                else
+                {
+                    MenuManager.pressButtonFeedback(name);
+                    setTimeout(function(){ 
+                        MenuManager.openSecondLevelMenu(8);
+                        /* function (subMenuIndex, onButtonIndex, offButtonIndex, enabledTitleIndex, disabledTitleIndex) */
+                        MenuManager.showOnOffToggleButton(8, 0, 1, 2, 6);// Indexes from MenuState menuList
+                     }, clickInteractionTimeout);
+                }
                 break;
 
             case "showAudioSubtitlesMenuButton":
             case "disabledAudioSubtitlesMenuButton":
                 // TODO
                 // show the audio subtitle configuration menu
-                MenuManager.pressButtonFeedback(name);
-                setTimeout(function(){ 
-                    MenuManager.openSecondLevelMenu(9);
-                    /* function (subMenuIndex, onButtonIndex, offButtonIndex, enabledTitleIndex, disabledTitleIndex) */
-                    MenuManager.showOnOffToggleButton(9, 0, 1, 3, 7); // Indexes from MenuState menuList
-                 }, clickInteractionTimeout);
+                if(_isTradMenuOpen)//EXPERIMENTAL
+                {
+                    console.log("Traditional "+name);
+                    var w = 30;
+                    var h = (ASTMenuList.length+1) * heigthDropdownOption;
+                    var x = (scene.getObjectByName("traditionalMenuBackground").geometry.parameters.width-w)/2;
+                    var y = (scene.getObjectByName("traditionalMenuBackground").position.y+(scene.getObjectByName("traditionalMenuBackground").geometry.parameters.height + h)/2)+1+scene.getObjectByName("bgTimeline").geometry.parameters.height;
+                    secMMgr.createListBackground(x, y, w, h,"Audio Subtitles", menuList[9], ASTMenuList);
+                    MenuManager.showOnOffToggleButtonTradMenu(9, 0, 1, 3, 7);
+                }
+                else
+                {
+                    MenuManager.pressButtonFeedback(name);
+                    setTimeout(function(){ 
+                        MenuManager.openSecondLevelMenu(9);
+                        /* function (subMenuIndex, onButtonIndex, offButtonIndex, enabledTitleIndex, disabledTitleIndex) */
+                        MenuManager.showOnOffToggleButton(9, 0, 1, 3, 7); // Indexes from MenuState menuList
+                     }, clickInteractionTimeout);                    
+                }
+
                 break;
 
 //***********************************************************************************************************
@@ -275,24 +335,33 @@ THREE.InteractionsController = function () {
 //                  S U B T I T L E S     M E N U     C O N T R O L S 
 //                  
 //***********************************************************************************************************
-/*
-        // On / Off 
+            case "subtitlesShowLanguagesDropdown":
+                // TODO
+                // mostar el menu con la lista de idiomas seleccionables
+                secMMgr.openTradSubMenuDropdown(0, menuList[6], 'Languages', subtitlesLanguagesArray, 0, STMenuList);
+                break;
 
-        	case "subtitlesOnButton":
+/*// On / Off 
+            case "subtitlesOnButton":
                 subController.disableSubtiles();
                 menuList[6].isEnabled = false;
                 secMMgr.showMultiOptionsButtons(multiOptionsMainSubMenuIndexes.slice(0,1));
+                if(_isTradMenuOpen) MenuManager.showOnOffToggleButtonTradMenu(6, 0, 1, 0, 4); // Indexes from MenuState menuList
+                else MenuManager.showOnOffToggleButton(6, 0, 1, 0, 4);// Indexes from MenuState menuList
 
-                MenuManager.showOnOffToggleButton(6, 0, 1, 0, 4);// Indexes from MenuState menuList
-        		break;
+                break;
 
-        	case "subtitlesOffButton":
+            case "subtitlesOffButton":
                 subController.enableSubtitles();
                 menuList[6].isEnabled = true;
-                secMMgr.showMultiOptionsButtons(multiOptionsMainSubMenuIndexes.slice(0,1));
+                secMMgr.showMultiOptionsButtons(multiOptionsMainSubMenuIndexes.slice(0,1));ç
 
-                MenuManager.showOnOffToggleButton(6, 0, 1, 0, 4); // Indexes from MenuState menuList
-        		break;
+                if(_isTradMenuOpen) MenuManager.showOnOffToggleButtonTradMenu(6, 0, 1, 0, 4); // Indexes from MenuState menuList
+                else MenuManager.showOnOffToggleButton(6, 0, 1, 0, 4); // Indexes from MenuState menuList
+                break;
+
+
+
 
         // Language
 
@@ -482,7 +551,9 @@ THREE.InteractionsController = function () {
                 secMMgr.showMultiOptionsButtons(multiOptionsMainSubMenuIndexes.slice(1,2));
                                 
                 /* function (subMenuIndex, onButtonIndex, offButtonIndex, enabledTitleIndex, disabledTitleIndex) */
-                MenuManager.showOnOffToggleButton(7, 0, 1, 1, 5); // Indexes from MenuState menuList
+                if(_isTradMenuOpen) MenuManager.showOnOffToggleButtonTradMenu(7, 0, 1, 1, 5); // Indexes from MenuState menuList
+                else MenuManager.showOnOffToggleButton(7, 0, 1, 1, 5);// Indexes from MenuState menuList
+
                 break;
 
             case "signLanguageOffButton":
@@ -491,7 +562,8 @@ THREE.InteractionsController = function () {
                 secMMgr.showMultiOptionsButtons(multiOptionsMainSubMenuIndexes.slice(1,2));
                 
                 /* function (subMenuIndex, onButtonIndex, offButtonIndex, enabledTitleIndex, disabledTitleIndex) */
-                MenuManager.showOnOffToggleButton(7, 0, 1, 1, 5); // Indexes from MenuState menuList
+                if(_isTradMenuOpen) MenuManager.showOnOffToggleButtonTradMenu(7, 0, 1, 1, 5); // Indexes from MenuState menuList
+                else MenuManager.showOnOffToggleButton(7, 0, 1, 1, 5);// Indexes from MenuState menuList
                 break;
 
             case "signShowPositionsDropdown":
@@ -519,11 +591,13 @@ THREE.InteractionsController = function () {
 
             case "audioDescriptionOnButton":
             //TODO
+            console.log(name)
                 menuList[8].isEnabled = false;
                 secMMgr.showMultiOptionsButtons(multiOptionsMainSubMenuIndexes.slice(2,3));
 
                 /* function (subMenuIndex, onButtonIndex, offButtonIndex, enabledTitleIndex, disabledTitleIndex) */
-                MenuManager.showOnOffToggleButton(8, 0, 1, 2, 6); // Indexes from MenuState menuList
+                if(_isTradMenuOpen) MenuManager.showOnOffToggleButtonTradMenu(8, 0, 1, 2, 6); // Indexes from MenuState menuList
+                else MenuManager.showOnOffToggleButton(8, 0, 1, 2, 6);// Indexes from MenuState menuList
                 break;
 
             case "audioDescriptionOffButton":
@@ -532,7 +606,8 @@ THREE.InteractionsController = function () {
                 secMMgr.showMultiOptionsButtons(multiOptionsMainSubMenuIndexes.slice(2,3));
 
                 /* function (subMenuIndex, onButtonIndex, offButtonIndex, enabledTitleIndex, disabledTitleIndex) */
-                MenuManager.showOnOffToggleButton(8, 0, 1, 2, 6); // Indexes from MenuState menuList
+                if(_isTradMenuOpen) MenuManager.showOnOffToggleButtonTradMenu(8, 0, 1, 2, 6); // Indexes from MenuState menuList
+                else MenuManager.showOnOffToggleButton(8, 0, 1, 2, 6);// Indexes from MenuState menuList
                 break;
 
 //***********************************************************************************************************
@@ -547,7 +622,8 @@ THREE.InteractionsController = function () {
                 secMMgr.showMultiOptionsButtons(multiOptionsMainSubMenuIndexes.slice(3,4));
 
                 /* function (subMenuIndex, onButtonIndex, offButtonIndex, enabledTitleIndex, disabledTitleIndex) */
-                MenuManager.showOnOffToggleButton(9, 0, 1, 3, 7); // Indexes from MenuState menuList
+                if(_isTradMenuOpen) MenuManager.showOnOffToggleButtonTradMenu(9, 0, 1, 3, 7); // Indexes from MenuState menuList
+                else MenuManager.showOnOffToggleButton(9, 0, 1, 3, 7);// Indexes from MenuState menuList
                 break;
 
             case "audioSubtitlesOffButton":
@@ -556,7 +632,8 @@ THREE.InteractionsController = function () {
                 secMMgr.showMultiOptionsButtons(multiOptionsMainSubMenuIndexes.slice(3,4));
 
                 /* function (subMenuIndex, onButtonIndex, offButtonIndex, enabledTitleIndex, disabledTitleIndex) */
-                MenuManager.showOnOffToggleButton(9, 0, 1, 3, 7); // Indexes from MenuState menuList
+                if(_isTradMenuOpen) MenuManager.showOnOffToggleButtonTradMenu(9, 0, 1, 3, 7); // Indexes from MenuState menuList
+                else MenuManager.showOnOffToggleButton(9, 0, 1, 3, 7);// Indexes from MenuState menuList
                 break;
 
         	default:
@@ -564,6 +641,10 @@ THREE.InteractionsController = function () {
         		break;
         }
 	}
+    this.getInteractiveObjectList = function ()
+    {
+        console.log(interactiveListObjects)
+    }
 
 	function getInteractiveObjectList()
 	{
@@ -641,6 +722,7 @@ THREE.InteractionsController = function () {
 					console.error(intersectedShapeId);
 					break;
 				}
+                else console.log("e")
 			}
             freeInteractionState(300);
     	}
@@ -715,7 +797,6 @@ THREE.InteractionsController = function () {
             controls.setInteractiveObject(object);
         }
         else console.error("Interactivity already exists in the list.")
-		
 	};
 
 	this.removeInteractiveObject = function(name)

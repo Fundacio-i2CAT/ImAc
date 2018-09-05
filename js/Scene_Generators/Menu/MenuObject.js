@@ -214,7 +214,7 @@ THREE.MenuObject = function () {
     }
 
 
-    this.getPlusIconMesh = function(w, h, f, c, name)
+    this.getPlusIconMesh = function(w, h, c, name)
     {
         /* 8x8 Vector points for Plus icon:
                                     
@@ -257,12 +257,11 @@ THREE.MenuObject = function () {
         //interController.addInteractiveObject(coliderMesh);
         plusMesh.add(coliderMesh);
         plusMesh.position.z = menuElementsZ;
-        plusMesh.scale.set(f,f,1);
         
         return plusMesh;
     }
 
-    this.getNextIconMesh = function(w, h,f, c, r, name, parent)
+    this.getNextIconMesh = function(w, h, c, r, name)
     {
         /* 8x8 Vector points for Next icon:
                                 
@@ -300,12 +299,11 @@ THREE.MenuObject = function () {
 
         //interController.addInteractiveObject(coliderMesh);
         nextMesh.add(coliderMesh);
-        nextMesh.scale.set(f,f,1);
 
         return nextMesh;
     }
 
-    this.getCloseIconMesh = function(w, h, f, c, name, parent)
+    this.getCloseIconMesh = function(w, h, c, name)
     {
         /* 8x8 Vector points for Close Icon :
                                 
@@ -350,7 +348,6 @@ THREE.MenuObject = function () {
         coliderMesh.name = name;
         //interController.addInteractiveObject(coliderMesh);
         closeMesh.add(coliderMesh);
-        closeMesh.scale.set(f,f,1);
 
         return closeMesh;
     }
@@ -364,15 +361,15 @@ THREE.MenuObject = function () {
  * @param      {<type>}  name    The name
  * @return     {THREE}   The menu text mesh.
  */
-    this.getMenuTextMesh = function(text, size, color, name, func)
+    this.getMenuTextMesh = function(text, size, color, name, func, coliderMesh)
     {
         var textShape = new THREE.BufferGeometry();
         var textmaterial = new THREE.MeshBasicMaterial( { color: color} );
         var shapes = moData.getFont().generateShapes( text, size);
         var geometry = new THREE.ShapeGeometry( shapes );
 
-        var coliderMesh = new THREE.Mesh( new THREE.PlaneGeometry(size*shapes.length*0.7, size*2), new THREE.MeshBasicMaterial({visible: false}));
-        //var coliderMesh = new THREE.Mesh( new THREE.PlaneGeometry(size*shapes.length*0.7, size*2), new THREE.MeshBasicMaterial({color:0x00ff00}));
+
+        //var coliderMesh = new THREE.Mesh( coliderGeom, new THREE.MeshBasicMaterial({visible: false}));
 
         geometry.computeBoundingBox();
         textShape.fromGeometry( geometry );
@@ -381,21 +378,43 @@ THREE.MenuObject = function () {
         var mesh = new THREE.Mesh(textShape, textmaterial);
 
         mesh.name = name;
-        coliderMesh.name = name;
-        coliderMesh.position.z = 0.06;
 
-        if ( func ) 
+        if(!coliderMesh) coliderMesh = new THREE.Mesh(new THREE.PlaneGeometry(size*shapes.length*0.7, size*2) , new THREE.MeshBasicMaterial({visible: false}));
+        else
         {
-            coliderMesh.onexecute = func;
-        }
+            //else coliderMesh.position.x -= mesh.geometry.boundingBox.max.x;
+            coliderMesh.name = name;
+            coliderMesh.position.z = 0.06;
 
-        mesh.add(coliderMesh);
+            if ( func ) 
+            {
+                coliderMesh.onexecute = func;
+            }
+
+            mesh.add(coliderMesh);
+        }
+        
         mesh.position.z = 0.05;
 
         return mesh;
     }
 
-    
+    /**
+ * Creates a line.
+ *
+ * @param      {<type>}  color        The color
+ * @param      {<type>}  startvector  The startvector
+ * @param      {<type>}  endvector    The endvector
+ * @return     {THREE}   { description_of_the_return_value }
+ */
+    this.createLine = function (color, startvector, endvector)
+    {
+        var material = new THREE.LineBasicMaterial({color: color, linewidth: 1});
+        var geometry = new THREE.Geometry();
+        geometry.vertices.push(startvector,endvector);
+        var line = new THREE.Line( geometry, material );
+        return line;
+    }
 
 /**
  * Creates a line.
@@ -455,6 +474,23 @@ THREE.MenuObject = function () {
 
         return linesMenuGroup;
     }
+
+    this.tradMenuLineHoritzontalDivisions = function(w, h, color, divisions)
+    {
+        var linesMenuGroup =  new THREE.Group();
+        var line;
+        for (var i = 1; i<divisions; i++)
+        {
+            line = createLine( color, new THREE.Vector3(  w/2, h/2-i*h/divisions, 0 ), new THREE.Vector3( -w/2, h/2-i*h/divisions, 0 ) );
+            linesMenuGroup.add( line );
+        }
+
+        linesMenuGroup.position.z = 0.05;
+
+        return linesMenuGroup;
+    }
+
+
 /**
  * Creates the horitzontal lines that divide the menu depending on the indicated row 
  *

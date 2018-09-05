@@ -214,10 +214,9 @@ THREE.MenuManager = function () {
  *
  * @param      {integer}  rotationDir  The rotation direction negative/left positive/right
  */
-    this.menuFollowCameraFOV = function(rotationDir)
+    this.menuFollowCameraFOV = function(rotationDir, menu)
     {
-        var object = scene.getObjectByName(menuList[0].name); // The menu
-        var objRotAngleY = Math.round(Math.degrees(object.rotation.y))%360; // The menu rotation angle in the Y axe.
+        var objRotAngleY = Math.round(Math.degrees(menu.rotation.y))%360; // The menu rotation angle in the Y axe.
         var camRotAngleY = Math.round(Math.degrees(camera.rotation.y))%360; // The camera rotation angle in the Y axe.
         
         // If the difference between the menu and camera angle is over 60 recalculate the new angle
@@ -230,11 +229,11 @@ THREE.MenuManager = function () {
                 menuAngle -= (camRotAngleY - objRotAngleY);
 
                 // Calculate the new distances on the x & z axes with the new angle.
-                object.position.x = Math.sin(Math.radians(menuAngle))*69;
-                object.position.z = -Math.cos(Math.radians(menuAngle))*69;
+                menu.position.x = Math.sin(Math.radians(menuAngle))*69;
+                menu.position.z = -Math.cos(Math.radians(menuAngle))*69;
 
                 // Caculate the new menu rotation in Y adding the diference between the camera and menu rotation.
-                object.rotation.y = object.rotation.y + 1*Math.radians((camRotAngleY - objRotAngleY));
+                menu.rotation.y = menu.rotation.y + 1*Math.radians((camRotAngleY - objRotAngleY));
             }
         }
         else
@@ -243,11 +242,11 @@ THREE.MenuManager = function () {
             {
                 // Add the diference between the menu and camera rotation
                 menuAngle += (objRotAngleY - camRotAngleY);
-                object.position.x = Math.sin(Math.radians(menuAngle))*69;
-                object.position.z = -Math.cos(Math.radians(menuAngle))*69;
+                menu.position.x = Math.sin(Math.radians(menuAngle))*69;
+                menu.position.z = -Math.cos(Math.radians(menuAngle))*69;
 
                 // Caculate the new menu rotation in Y subtracting the diference between the camera and menu rotation.
-                object.rotation.y = object.rotation.y + -1*Math.radians((objRotAngleY - camRotAngleY));
+                menu.rotation.y = menu.rotation.y + -1*Math.radians((objRotAngleY - camRotAngleY));
             }
         }
     }
@@ -345,6 +344,27 @@ THREE.MenuManager = function () {
     }
 
 
+
+    this.showOnOffToggleButtonTradMenu = function (subMenuIndex, onButtonIndex, offButtonIndex, enabledTitleIndex, disabledTitleIndex)
+    {
+        var mainMenuIndex = menuList[subMenuIndex].firstmenuindex;
+        if(menuList[subMenuIndex].isEnabled)
+        {
+            scene.getObjectByName(menuList[subMenuIndex].buttons[onButtonIndex]).visible = true; 
+            scene.getObjectByName(menuList[subMenuIndex].buttons[offButtonIndex]).visible = false; 
+
+            interController.removeInteractiveObject(menuList[subMenuIndex].buttons[offButtonIndex]);
+            interController.addInteractiveObject(scene.getObjectByName(menuList[subMenuIndex].buttons[onButtonIndex])); 
+        }
+        else
+        {
+            scene.getObjectByName(menuList[subMenuIndex].buttons[offButtonIndex]).visible = true; 
+            scene.getObjectByName(menuList[subMenuIndex].buttons[onButtonIndex]).visible = false; 
+
+            interController.removeInteractiveObject(menuList[subMenuIndex].buttons[onButtonIndex]);
+            interController.addInteractiveObject(scene.getObjectByName(menuList[subMenuIndex].buttons[offButtonIndex])); 
+        }
+    }
 
 //************************************************************************************
 //
@@ -455,10 +475,10 @@ THREE.MenuManager = function () {
 
     this.createMenuTrad = function()
     {
-        var bgWidth = Math.round(visibleWidthAtZDepth( 60, camera )-20)/24;
+        var bgWidth = Math.round(visibleWidthAtZDepth( 60, camera )-tradMenuMargin)/tradmenuDivisions;
         var bg = menuData.getBackgroundMesh(bgWidth, 4, 0x333333, 0.75);
         
-        bg.position.set(23*bgWidth/2, (-visibleHeightAtZDepth( 60, camera )/2)+2+5,-60);
+        bg.position.set((tradmenuDivisions-1)*bgWidth/2, (-visibleHeightAtZDepth( 60, camera )/2)+2+5,-60);
         var x = menuData.getImageMesh( 0, 2, 2, './img/menu/settings_icon.png', 'right', 'openMenuTrad' );
         bg.add( x );  
         bg.name = 'openMenuTrad';
@@ -490,18 +510,39 @@ THREE.MenuManager = function () {
     this.openMenuTrad = function()
     {
         _isTradMenuOpen = true;
-        bardivisions = 24;
+        
+        var menuTrad =  new THREE.Group();
 
-        var bgWidth = Math.round(visibleWidthAtZDepth( 60, camera )-20);
-        var bg = menuData.getBackgroundMesh(bgWidth, 4, 0x333333, 0.75);
+        var bgWidth = Math.round(visibleWidthAtZDepth( 60, camera )-tradMenuMargin);
+        var bg = menuData.getBackgroundMesh(bgWidth, 4, 0x333333, 0.8);
         bg.position.set(0, (-visibleHeightAtZDepth( 60, camera )/2)+2+5,-60);
+        bg.name = "traditionalMenuBackground"
+
+        var timeline =  new THREE.Group();
+        timeline.name = "timeline";
+        timeline.visible = false;
+        
+        var currentTimeline = menuData.getBackgroundMesh(bgWidth, 0.5, 0xff0000, 1);
+        currentTimeline.position.set(0, bg.position.y+bg.geometry.parameters.height/2+currentTimeline.geometry.parameters.height/2,-60);
+        currentTimeline.name = "currentTimeline";
+        
+
+        var bgTimeline = menuData.getBackgroundMesh(bgWidth, 0.5, 0x888888, 0.8);
+        bgTimeline.position.set(0, bg.position.y+bg.geometry.parameters.height/2+bgTimeline.geometry.parameters.height/2,-60);
+        bgTimeline.name = "bgTimeline";
+
+        currentTimeline.scale.set(secMMgr.timelineScale, 1,1);
+        bgTimeline.scale.set(1-secMMgr.timelineScale, 1,1);
+        
+        timeline.add(bgTimeline);
+        timeline.add(currentTimeline);
 
         var playSeekGroup =  new THREE.Group();
         //posX, w, h, img, iname, name
-        var playbutton = menuData.getImageMesh(-21*bgWidth/(bardivisions*2) , 2,2 , './img/menu/play_icon.png', 'right', menuList[1].buttons[0]); // menuList.
-        var pausebutton = menuData.getImageMesh( -21*bgWidth/(bardivisions*2), 2,2, './img/menu/pause_icon.png', 'right', menuList[1].buttons[1]); // menuList.
-        var seekBarL = menuData.getImageMesh( -23*bgWidth/(bardivisions*2), 2,1, './img/menu/seek_icon.png', 'right', menuList[1].buttons[2]); // menuList.
-        var seekBarR = menuData.getImageMesh( -19*bgWidth/(bardivisions*2), 2,1 , './img/menu/seek_icon.png',menuList[1].buttons[3], menuList[1].buttons[3]); // menuList.
+        var seekBarL = menuData.getImageMesh( -(tradmenuDivisions-1)*bgWidth/(tradmenuDivisions*2), 2,1, './img/menu/seek_icon.png', 'right', menuList[1].buttons[2]); // menuList.
+        var playbutton = menuData.getImageMesh(-(tradmenuDivisions-3)*bgWidth/(tradmenuDivisions*2) , 2,2 , './img/menu/play_icon.png', 'right', menuList[1].buttons[0]); // menuList.
+        var pausebutton = menuData.getImageMesh( -(tradmenuDivisions-3)*bgWidth/(tradmenuDivisions*2), 2,2, './img/menu/pause_icon.png', 'right', menuList[1].buttons[1]); // menuList.
+        var seekBarR = menuData.getImageMesh( -(tradmenuDivisions-5)*bgWidth/(tradmenuDivisions*2), 2,1 , './img/menu/seek_icon.png',menuList[1].buttons[3], menuList[1].buttons[3]); // menuList.
         
         playbutton.position.z = menuElementsZ;
         pausebutton.position.z = menuElementsZ;
@@ -518,17 +559,13 @@ THREE.MenuManager = function () {
 
 
 
-
-
-
         //The 4 main buttons are created inside a group 'volumeChangeGroup'
         var volumeChangeGroup =  new THREE.Group();
         //var plusVolume = menuData.getPlusIconMesh( volumeLevelButtonWidth, volumeLevelButtonHeight,factorScale, menuDefaultColor,  menuList[2].buttons[1]);
-        var audioMuteIcon = menuData.getImageMesh( -14*bgWidth/(24*2),2,2, './img/menu/volume_mute_icon.png', 'right', menuList[2].buttons[3]); // menuList.volumeChangeMenu.muteVolumeButton
-        var audioUnmuteIcon = menuData.getImageMesh( -14*bgWidth/(24*2),2,2 , './img/menu/volume_unmute_icon.png','right', menuList[2].buttons[2]); // menuList.volumeChangeMenu.unmuteVolumeButton
-        
-        var minusVolume = menuData.getImageMesh( -16*bgWidth/(24*2), 1.5, 1.5, './img/menu/minus_icon.png','right', menuList[2].buttons[0]); // menuList.volumeChangeMenu.
-        var plusVolume = menuData.getImageMesh( -12*bgWidth/(24*2), 1.5, 1.5 , './img/menu/plus_icon.png','right', menuList[2].buttons[1]); // menuList.volumeChangeMenu.
+        var minusVolume = menuData.getImageMesh( -(tradmenuDivisions-8)*bgWidth/(tradmenuDivisions*2), 1.5, 1.5, './img/menu/minus_icon.png','right', menuList[2].buttons[0]); // menuList.volumeChangeMenu.
+        var audioMuteIcon = menuData.getImageMesh( -(tradmenuDivisions-10)*bgWidth/(tradmenuDivisions*2),2,2, './img/menu/volume_mute_icon.png', 'right', menuList[2].buttons[3]); // menuList.volumeChangeMenu.muteVolumeButton
+        var audioUnmuteIcon = menuData.getImageMesh( -(tradmenuDivisions-10)*bgWidth/(tradmenuDivisions*2),2,2 , './img/menu/volume_unmute_icon.png','right', menuList[2].buttons[2]); // menuList.volumeChangeMenu.unmuteVolumeButton
+        var plusVolume = menuData.getImageMesh( -(tradmenuDivisions-12)*bgWidth/(tradmenuDivisions*2), 1.5, 1.5 , './img/menu/plus_icon.png','right', menuList[2].buttons[1]); // menuList.volumeChangeMenu.
 
         volumeChangeGroup.add( plusVolume );
         volumeChangeGroup.add( audioMuteIcon );
@@ -536,32 +573,52 @@ THREE.MenuManager = function () {
         volumeChangeGroup.add( minusVolume );
 
         volumeChangeGroup.name = menuList[2].name; // menuList.volumeChangeMenu
+        bg.add(volumeChangeGroup);
 
+
+        var playoutTime =  new THREE.Group();
+        playoutTime.name = "playoutTime";
+
+        //text, size, color, name, func, coliderMesh
+
+        //var currentTime = menuData.getMenuTextMesh(ppMMgr.getPlayoutTime(moData.getListOfVideoContents()[0].vid.currentTime), 1.25, 0xffffff, "currentPlayoutTime", null, null);
+        var slash = menuData.getMenuTextMesh("/", 1.25, 0xffffff,"/", null, null);
+        var durationTime = menuData.getMenuTextMesh(ppMMgr.getPlayoutTime(moData.getListOfVideoContents()[0].vid.duration), 1.25, 0xffffff,"durationTime", null, null);
+
+        //currentTime.position.x =  -(tradmenuDivisions-15)*bgWidth/(tradmenuDivisions*2);
+        durationTime.position.x =  -(tradmenuDivisions-17.5)*bgWidth/(tradmenuDivisions*2);
+        
+        slash.position.x =  -(tradmenuDivisions-16.25)*bgWidth/(tradmenuDivisions*2);
+
+        playoutTime.add(slash)
+        //playoutTime.add(currentTime)
+        playoutTime.add(durationTime)
+        playoutTime.position.set(0, (-visibleHeightAtZDepth( 60, camera )/2)+2+5,-60);
+
+        menuTrad.add(playoutTime);;
 
         secMMgr.createSecondaryMenusTraditional(bg);
 
-        //var linesTest = menuData.menuLineVerticalDivisions(bgWidth, 4, 0xffffff, bardivisions)
-        
-
+        //var linesTest = menuData.menuLineVerticalDivisions(bgWidth, 4, 0xffffff, tradmenuDivisions)
         //bg.add(linesTest); //DESIGN PURPOSE
+        
+        menuTrad.add(timeline);
+        menuTrad.add(bg);
+        menuTrad.name = "traditionalMenu";
 
-        bg.add(playSeekGroup);
-        bg.add(volumeChangeGroup);
-
-        bg.name = "traditionalMenu"
-
-        camera.add(bg);
-
+        if ( _isHMD ) scene.add(menuTrad);
+        else camera.add(menuTrad);
+        
         menuList.forEach(function(menu, index){
             if(index > 0 && index < 5 )
             {
                 menu.buttons.forEach(function(elem){interController.addInteractiveObject(scene.getObjectByName(elem))}); 
             }
         });
-        ppMMgr.showPlayPauseButton();
-        volMMgr.showMuteUnmuteButton()
-        secMMgr.showMultiOptionsButtons(multiOptionsMainSubMenuIndexes);
 
+        ppMMgr.showPlayPauseButton();
+        volMMgr.showMuteUnmuteButton();
+        secMMgr.showMultiOptionsButtons(multiOptionsMainSubMenuIndexes);
     }
 
 

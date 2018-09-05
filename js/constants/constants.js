@@ -89,4 +89,9 @@ var secondarySubIndex = 0;
 var _isHMD = false;
 var autopositioning = false;
 
-//var _mainLanguage = 'en';
+
+/* TRADITIONAL MENU */
+
+var tradMenuMargin = 10;
+var tradmenuDivisions = 24;
+var heigthDropdownOption = 3;

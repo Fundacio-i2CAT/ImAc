@@ -1,29 +1,22 @@
 
 function runDemo() 
 {
-  	console.log("Running demo " + demoId)
+    AudioManager.initializeAudio( moData.getListOfVideoContents()[0].vid, list_contents[demoId].audioChannels, camera.matrixWorld.elements );
 
-  	var listVideoContent = moData.getListOfVideoContents();
-    var _videoElement = listVideoContent[0].vid;
-    var audioChannels =  list_contents[demoId].audioChannels;
-    
-    AudioManager.initializeAudio( _videoElement, audioChannels, camera.matrixWorld.elements );
+    MenuManager.createMenu(true);
 
-    var menu = MenuManager.createMenu();
-    interController.addInteractiveObject(menu);
+    /*var menuTrad = MenuManager.createMenuTrad();
+    interController.addInteractiveObject(menuTrad);*/
+    MenuDictionary.setSubtitleLanguagesArray( list_contents[demoId].subtitles[0] );
+    MenuDictionary.setSignerLanguagesArray( list_contents[demoId].signer[0] );
 
-    var menuTrad = MenuManager.createMenuTrad();
-    interController.addInteractiveObject(menuTrad);
+    moData.createPointer();
 
     subController.enableSubtitles();
-    subController.initSubtitle( 70, 0, -1, 'none' );
-
+    subController.initSubtitle( 70, 0, -1, 'arrow' );
     subController.setSubtitle( list_contents[demoId].subtitles[0]['en'] );
 
-    //subController.enableAutoPositioning()
-
-    //moData.createPointer();
-
+    subController.setSignerContent( list_contents[demoId].signer[0]['en'] );
 
     ppMMgr.playAll();
 }

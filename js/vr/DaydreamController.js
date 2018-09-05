@@ -136,7 +136,7 @@ THREE.DaydreamController = function (object, domElement) {
         mouse3D.y = 0;
 				
 		//moData.isPausedById(0) ? moData.playAll() : moData.pauseAll();
-		if (_isHMD) interController.checkInteraction(mouse3D, camera, 'onDocumentMouseDown');
+		//if (_isHMD) interController.checkInteraction(mouse3D, camera, 'onDocumentMouseDown');
 		
 	}.bind( this );
 

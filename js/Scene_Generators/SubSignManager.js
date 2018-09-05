@@ -9,27 +9,27 @@ SubSignManager = function() {
 	var imsc1doc;
 
 	var textListMemory = [];
-
-	var viewArea = 50;
 	var autoPositioning = false;
 
 	// [ST] subtitle vars 
-	var subtitleEnabled = false;
+	var subtitleEnabled = false; // boolean
 	var subPosX = 0; // start = left = -1, center = 0, end = right = 1 
 	var subPosY = -1; // before = top = 1, center = 0, after = bottom = -1 
 	var subtitleIndicator = 'none'; // none, arrow, compass, move
 	var subSize = 1; // small = 0.6, medium = 0.8, large = 1
 	var subLang; // TODO - string (Eng, De, Cat, Esp)
-	var subBackground = 0.8; // TODO - (semi-transparent, outline)
-	var subEasy = false; // TODO - boolean
+	var subBackground = 0.8; // semi-transparent = 0.8, outline = 0
+	var subEasy = false; // boolean
 	var subArea = 50; // small = 50, medium = 60, large = 70
 
 	// [SL] signer vars
-	var signEnabled = false;
+	var signerContent; // URL
+	var signEnabled = false; // boolean
 	var signPosX = 1; // left = -1, center = 0, right = 1
 	var signPosY = -1; // bottom = -1, center = 0, top = 1
 	var signIndicator = 'none';	 // none, arrow, move (forced prespective)
-	var signArea; // small = 50, medium = 60, large = 70
+	var signArea = 70; // small = 50, medium = 60, large = 70
+	var signLang; // TODO - string (Eng, De, Cat, Esp)
 
 
 //************************************************************************************
@@ -129,7 +129,7 @@ SubSignManager = function() {
 		var difPosition = getViewDifPosition( isdImac );
 	  	var position;
 
-	  	if ( difPosition < camera.fov && difPosition > -camera.fov ) 
+	  	if ( !isdImac || ( difPosition < camera.fov && difPosition > -camera.fov ) )
 	  	{
 	  		position = 'center';
 	  	}
@@ -157,7 +157,6 @@ SubSignManager = function() {
 	  	else
 	  	{
 	  		difPosition = difPosition < 0 ? difPosition + 360 : difPosition;
-
 	    	position = ( difPosition > 0 && difPosition <= 180 ) ? -1 : 1;
 	  	}
       	var rotaionValue = 0;
@@ -171,15 +170,54 @@ SubSignManager = function() {
         	if ( position * rotaionValue >= difff || position == 0 ) 
         	{
         		clearInterval( rotationInterval );
-        		autoPositioning = true;
+        		if ( moData.getListOfVideoContents()[0].vid.currentTime < moData.getListOfVideoContents()[0].vid.duration - 10 ) autoPositioning = true;
+        		else {
+        			AplicationManager.enableVR();
+        			autopositioning = false;
+        			if ( _isHMD ) CameraParentObject.rotation.set(0,0,0);
+        		}
         	}
         	else 
         	{
-          		rotaionValue += position*3;
+          		rotaionValue += position*2;
           		CameraParentObject.rotation.y = initY / ( -180 / Math.PI )%360 + rotaionValue * ( -Math.PI / 180 );
         	}
-      	}, 30);
+      	}, 20);
 	}	
+
+	function createSigner()
+	{
+	    var latitud = 30 * signPosY; 
+	    var longitud = 53 * signPosX; 
+
+	    var posX = 42 * Math.sin( Math.radians( longitud ) ) * signArea/100;
+	    var posY = 30 * Math.sin( Math.radians( latitud ) ) * signArea/100;
+	    var posZ = 40;
+
+		var conf = {
+			size: 15 * 70/100, // signArea/100
+			signIndicator: signIndicator,
+			x: posX,
+			y: posY,
+			z: posZ
+		};
+
+      	moData.createSignVideo( signerContent, 'sign', conf );
+      	ppMMgr.playAll();
+	}
+
+	function updateSignerPosition()
+	{
+		var latitud = 30 * signPosY; 
+	    var longitud = 53 * signPosX; 
+
+	    var posX = 42 * Math.sin( Math.radians( longitud ) ) * signArea/100;
+	    var posY = 30 * Math.sin( Math.radians( latitud ) ) * signArea/100;
+	    var posZ = 40;
+
+	    scene.getObjectByName("sign").position.x = posX;
+	    scene.getObjectByName("sign").position.y = posY;
+	}
 
 //************************************************************************************
 // Utils
@@ -307,12 +345,31 @@ SubSignManager = function() {
 	{
 		signPosX = x;
 		signPosY = y;
+
+		//updateSignerPosition();
+	};
+
+	this.setSignerArea = function(size)
+	{
+		signArea = size;
+
+		//updateSignerPosition();
 	};
 
 	this.setSubIndicator = function(ind)
 	{
 		subtitleIndicator = ind;
 		textListMemory = [];
+	};
+
+	this.setSignerIndicator = function(ind)
+	{
+		signIndicator = ind;
+	};
+
+	this.setSignerContent = function(url)
+	{
+		signerContent = url;
 	};
 
 
@@ -362,5 +419,11 @@ SubSignManager = function() {
 	this.disableAutoPositioning = function()
 	{
 		autoPositioning = false;
+	};
+
+	this.switchSigner = function(enable)
+	{
+		signerEnabled = enable;
+		enable ? createSigner() : moData.removeSignVideo();
 	};
 }

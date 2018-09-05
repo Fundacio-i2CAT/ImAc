@@ -1,7 +1,7 @@
 
 // GLOBAL VARS
 
-var _PlayerVersion = 'v0.02.0';
+var _PlayerVersion = 'v0.04.0';
 
 var AplicationManager = new AplicationManager();
 var MenuFunctionsManager = new MenuFunctionsManager();
@@ -9,12 +9,10 @@ var moData = new THREE.MediaObject();
 var menuData = new THREE.MenuObject();
 
 var MenuManager = new THREE.MenuManager();
+var MenuController = new THREE.MenuController();
+var MenuDictionary = new MenuDictionary();
 
 var ppMMgr = new THREE.PlayPauseMenuManager();
-var volMMgr = new THREE.VolumeMenuManager();
-//var setcarMMgr = new THREE.SettingsCardboardMenuManager();
-//var mloptMMgr = new THREE.MultiOptionsMenuManager();
-
 
 var secMMgr = new THREE.SecondaryMenuManager();
 
@@ -53,7 +51,7 @@ function init_webplayer()
   $.getJSON('./content.json', function(json)
   {
     list_contents = json.contents;
-		
+		//console.error(list_contents)
     for (var i = 0; i < list_contents.length; i++) 
     {
       var id = i;
@@ -88,10 +86,10 @@ function selectXML(id)
        
 function startAllVideos()
 {
-  
   setTimeout(function() {
     runDemo(); 
   },500);
+  
 
   //moData.playAll();
 }

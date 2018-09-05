@@ -21042,14 +21042,14 @@
             poseObject.matrix.copy( standingMatrix );
             poseObject.matrix.decompose( poseObject.position, poseObject.quaternion, poseObject.scale );
 
-            if ( pose.orientation !== null ) {
+            if ( pose.orientation !== null && !autopositioning ) {  // i2cat
 
                 tempQuaternion.fromArray( pose.orientation );
                 poseObject.quaternion.multiply( tempQuaternion );
 
             }
 
-            if ( pose.position !== null ) {
+            if ( pose.position !== null && !autopositioning ) {  // i2cat
 
                 tempQuaternion.setFromRotationMatrix( standingMatrix );
                 tempPosition.fromArray( pose.position );

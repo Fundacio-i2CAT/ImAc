@@ -10,6 +10,8 @@ THREE.InteractionsController = function () {
 	var nameMenuActive;
 
     var subtitlesActive = false;
+    var signerActive = false;
+    var pointerState = true;
 
 
 //************************************************************************************
@@ -37,14 +39,11 @@ THREE.InteractionsController = function () {
 //                  
 //***********************************************************************************************************
 
-        	case "openMenu":
-                subtitlesActive = subController.getSubtitleEnabled();
-                console.error(subtitlesActive)
-                if ( subtitlesActive ) subController.disableSubtiles();
-                MenuManager.openMenu();
+            case "openMenuTrad":
+                MenuManager.openMenuTrad();
                 scene.getObjectByName( "openMenu" ).visible = false;
                 //scene.getObjectByName( "openMenuTrad" ).visible = false; //EXPERIMENTAL
-				break;
+                break;
 
             case "openMenuTrad":
                 if(camera.getObjectByName( "traditionalMenu" ))  console.error("Menu already open");
@@ -569,6 +568,7 @@ THREE.InteractionsController = function () {
 	function getInteractiveObjectList()
 	{
 		console.log(interactiveListObjects)
+        return interactiveListObjects;
 	}
 
     function freeInteractionState(time)
@@ -576,6 +576,15 @@ THREE.InteractionsController = function () {
         var myVar = setTimeout(function()
         {
             interactionState = true;
+            clearTimeout(myVar);
+        },time); 
+    }
+
+    function freePointerState(time)
+    {
+        var myVar = setTimeout(function()
+        {
+            pointerState = true;
             clearTimeout(myVar);
         },time); 
     }
@@ -607,20 +616,19 @@ THREE.InteractionsController = function () {
 // Public Functions
 //************************************************************************************
 
-	this.checkInteraction = function(mouse3D, camera) 
+	this.checkInteraction = function(mouse3D, camera, type) 
 	{
-
     	raycaster.setFromCamera( mouse3D, camera );
     	var intersects = raycaster.intersectObjects( interactiveListObjects, true ); // false
 
-    	if ( intersects[0] && interactionState )
+    	if ( intersects[0] && interactionState && type != 'onDocumentMouseMove')
     	{
             interactionState = false;
     		var intersectedShapeId;
 			for(var inter = 0; inter < intersects.length; inter++)
 	        {
 	        	//if ( intersects[inter].object.type == 'Mesh' || intersects[inter].object.type == 'Group' ) 
-                if ( intersects[inter].object.type == 'Mesh' && intersects[inter].object.onexecute) 
+                if ( intersects[inter].object.type == 'Mesh' && intersects[inter].object.onexecute ) 
                 {
                     intersects[inter].object.onexecute();
                     break;
@@ -636,22 +644,76 @@ THREE.InteractionsController = function () {
 			}
             freeInteractionState(300);
     	}
-    	else
+        else if ( _isHMD && intersects[0] && interactionState && pointerState )
+        {
+            //console.error('intersect')
+            if ( scene.getObjectByName( "pointer" ) ) scene.getObjectByName( "pointer" ).visible = true;
+            pointerState = false;
+            freePointerState(600);
+        }
+    	else if ( _isHMD && pointerState )
     	{
     		// TODO
+            if ( scene.getObjectByName( "pointer" ) ) scene.getObjectByName( "pointer" ).visible = false;
     	}
 	};
+
+    this.checkVRInteraction = function(origin, direction) 
+    {
+        raycaster.set( origin, direction );
+
+        var intersects = raycaster.intersectObjects( interactiveListObjects, true ); // false
+
+        if ( intersects[0] && interactionState )
+        {
+            interactionState = false;
+            var intersectedShapeId;
+            for(var inter = 0; inter < intersects.length; inter++)
+            {
+                //if ( intersects[inter].object.type == 'Mesh' || intersects[inter].object.type == 'Group' ) 
+                if ( intersects[inter].object.type == 'Mesh' && intersects[inter].object.onexecute ) 
+                {
+                    intersects[inter].object.onexecute();
+                    break;
+                }
+            }
+            freeInteractionState(300);
+        }
+    };
+
+    this.closeMenu = function()
+    {
+        checkInteractionByName( "closeMenuButton" );
+    };
+
+    this.getSubtitlesActive = function()
+    {
+        return subtitlesActive;
+    };
+
+    this.getSignerActive = function()
+    {
+        return signerActive;
+    };
 
     this.setSubtitlesActive = function(activated)
     {
         subtitlesActive = activated;
     };
 
+    this.setSignerActive = function(activated)
+    {
+        signerActive = activated;
+    };
+
 	this.addInteractiveObject = function(object)
 	{
         var index = interactiveListObjects.map(function(e) { return e.name; }).indexOf(object);
 
-        if(index < 0) interactiveListObjects.push(object);
+        if (index < 0) {
+            interactiveListObjects.push(object);
+            controls.setInteractiveObject(object);
+        }
         else console.error("Interactivity already exists in the list.")
 		
 	};
@@ -659,6 +721,7 @@ THREE.InteractionsController = function () {
 	this.removeInteractiveObject = function(name)
 	{
 		interactiveListObjects = interactiveListObjects.filter(e => e.name != name);
+        controls.removeInteractiveObject(name);
 	}
 }
 

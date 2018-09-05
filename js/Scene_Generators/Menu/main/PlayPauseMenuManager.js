@@ -60,23 +60,6 @@ this.getPlayoutTime = function(secs, format) {
         }
     };
 
-
-	/**
- * { function_description }
- */
-    this.playButtonInteraction = function()
-    {   
-        ppMMgr.isPausedById(0) ? ppMMgr.playAll() : ppMMgr.pauseAll();
-    }
-
-/**
- * { function_description }
- */
-    this.pauseButtonInteraction = function()
-    {
-        ppMMgr.isPausedById(0) ? ppMMgr.playAll() : ppMMgr.pauseAll();
-    }
-
 /**
  * Shows/Hides the play pause button depeding on the activeVideo status ppMMgr.isPausedById(0) = true/false
  */
@@ -118,7 +101,7 @@ this.getPlayoutTime = function(secs, format) {
 
             if(isPlay)
             {
-                timeoutFactor = 2;
+                timeoutFactor = 1;
                 playoutTimeout =setTimeout(function(){    
                     createPlayoutTimeFeedback(
                         menuData.getMenuTextMesh(ppMMgr.getPlayoutTime(moData.getListOfVideoContents()[0].vid.currentTime), 

@@ -528,7 +528,7 @@ THREE.DeviceOrientationAndTouchController = function( object, objectPather, domE
 
 	this.update = function() {
 		
-		if (this.isAndroid && !autopositioning) 
+		if (this.isAndroid && !autopositioning && _isHMD) 
 		{
 			this.updateDeviceMove();		
 		}

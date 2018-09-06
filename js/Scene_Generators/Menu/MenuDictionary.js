@@ -150,6 +150,11 @@ MenuDictionary = function() {
         //console.error(availableSubLanguages)
     };
 
+    this.getSubtitleLanguagesArray = function()
+    {
+        return getSubtitleLanguages();
+    }
+
     this.setSignerLanguagesArray = function(subList)
     {
         menuList[7].submenus[0].buttons = [];

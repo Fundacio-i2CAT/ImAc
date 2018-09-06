@@ -479,12 +479,14 @@ THREE.MenuManager = function () {
         var bg = menuData.getBackgroundMesh(bgWidth, 4, 0x333333, 0.75);
         
         bg.position.set((tradmenuDivisions-1)*bgWidth/2, (-visibleHeightAtZDepth( 60, camera )/2)+2+5,-60);
-        var x = menuData.getImageMesh( 0, 2, 2, './img/menu/settings_icon.png', 'right', 'openMenuTrad' );
-        bg.add( x );  
+
+        var openMenuTradButton = menuData.getImageMesh( 0, 2, 2, './img/menu/settings_icon.png', 'openMenuTrad', MenuFunctionsManager.getOpenTradMenuFunc(), bgWidth, 4);
+        
+        bg.add( openMenuTradButton);  
         bg.name = 'openMenuTrad';
         camera.add( bg );
 
-        return x;
+        return bg;
     };
 
    function visibleHeightAtZDepth ( depth, camera )
@@ -539,10 +541,10 @@ THREE.MenuManager = function () {
 
         var playSeekGroup =  new THREE.Group();
         //posX, w, h, img, iname, name
-        var seekBarL = menuData.getImageMesh( -(tradmenuDivisions-1)*bgWidth/(tradmenuDivisions*2), 2,1, './img/menu/seek_icon.png', 'right', menuList[1].buttons[2]); // menuList.
-        var playbutton = menuData.getImageMesh(-(tradmenuDivisions-3)*bgWidth/(tradmenuDivisions*2) , 2,2 , './img/menu/play_icon.png', 'right', menuList[1].buttons[0]); // menuList.
-        var pausebutton = menuData.getImageMesh( -(tradmenuDivisions-3)*bgWidth/(tradmenuDivisions*2), 2,2, './img/menu/pause_icon.png', 'right', menuList[1].buttons[1]); // menuList.
-        var seekBarR = menuData.getImageMesh( -(tradmenuDivisions-5)*bgWidth/(tradmenuDivisions*2), 2,1 , './img/menu/seek_icon.png',menuList[1].buttons[3], menuList[1].buttons[3]); // menuList.
+        var seekBarL = menuData.getImageMesh( -(tradmenuDivisions-1)*bgWidth/(tradmenuDivisions*2), 2,1, './img/menu/seek_icon.png', menuList[1].buttons[2], MenuFunctionsManager.getSeekFunc(false, menuList[1].buttons[2]), bgWidth/tradmenuDivisions, 4); // menuList.
+        var playbutton = menuData.getImageMesh(-(tradmenuDivisions-3)*bgWidth/(tradmenuDivisions*2) , 2,2 , './img/menu/play_icon.png', menuList[1].buttons[0], MenuFunctionsManager.getPlayPauseFunc(menuList[1].buttons[0]),bgWidth/tradmenuDivisions, 4); // menuList.
+        var pausebutton = menuData.getImageMesh( -(tradmenuDivisions-3)*bgWidth/(tradmenuDivisions*2), 2,2, './img/menu/pause_icon.png', menuList[1].buttons[1], MenuFunctionsManager.getPlayPauseFunc(menuList[1].buttons[1]), bgWidth/tradmenuDivisions, 4); // menuList.
+        var seekBarR = menuData.getImageMesh( -(tradmenuDivisions-5)*bgWidth/(tradmenuDivisions*2), 2,1 , './img/menu/seek_icon.png', menuList[1].buttons[3], MenuFunctionsManager.getSeekFunc(true, menuList[1].buttons[3]), bgWidth/tradmenuDivisions, 4); // menuList.
         
         playbutton.position.z = menuElementsZ;
         pausebutton.position.z = menuElementsZ;
@@ -562,10 +564,10 @@ THREE.MenuManager = function () {
         //The 4 main buttons are created inside a group 'volumeChangeGroup'
         var volumeChangeGroup =  new THREE.Group();
         //var plusVolume = menuData.getPlusIconMesh( volumeLevelButtonWidth, volumeLevelButtonHeight,factorScale, menuDefaultColor,  menuList[2].buttons[1]);
-        var minusVolume = menuData.getImageMesh( -(tradmenuDivisions-8)*bgWidth/(tradmenuDivisions*2), 1.5, 1.5, './img/menu/minus_icon.png','right', menuList[2].buttons[0]); // menuList.volumeChangeMenu.
-        var audioMuteIcon = menuData.getImageMesh( -(tradmenuDivisions-10)*bgWidth/(tradmenuDivisions*2),2,2, './img/menu/volume_mute_icon.png', 'right', menuList[2].buttons[3]); // menuList.volumeChangeMenu.muteVolumeButton
-        var audioUnmuteIcon = menuData.getImageMesh( -(tradmenuDivisions-10)*bgWidth/(tradmenuDivisions*2),2,2 , './img/menu/volume_unmute_icon.png','right', menuList[2].buttons[2]); // menuList.volumeChangeMenu.unmuteVolumeButton
-        var plusVolume = menuData.getImageMesh( -(tradmenuDivisions-12)*bgWidth/(tradmenuDivisions*2), 1.5, 1.5 , './img/menu/plus_icon.png','right', menuList[2].buttons[1]); // menuList.volumeChangeMenu.
+        var minusVolume = menuData.getImageMesh( -(tradmenuDivisions-8)*bgWidth/(tradmenuDivisions*2), 1.5, 1.5, './img/menu/minus_icon.png', menuList[2].buttons[0], MenuFunctionsManager.getChangeVolumeFunc(false,menuList[2].buttons[0]), bgWidth/tradmenuDivisions, 4); // menuList.volumeChangeMenu.
+        var audioMuteIcon = menuData.getImageMesh( -(tradmenuDivisions-10)*bgWidth/(tradmenuDivisions*2),2,2, './img/menu/volume_mute_icon.png', menuList[2].buttons[3], MenuFunctionsManager.getMuteVolumeFunc(menuList[2].buttons[3]), bgWidth/tradmenuDivisions, 4); // menuList.volumeChangeMenu.muteVolumeButton
+        var audioUnmuteIcon = menuData.getImageMesh( -(tradmenuDivisions-10)*bgWidth/(tradmenuDivisions*2),2,2 , './img/menu/volume_unmute_icon.png', menuList[2].buttons[2], MenuFunctionsManager.getUnMuteVolumeFunc(menuList[2].buttons[2]), bgWidth/tradmenuDivisions, 4); // menuList.volumeChangeMenu.unmuteVolumeButton
+        var plusVolume = menuData.getImageMesh( -(tradmenuDivisions-12)*bgWidth/(tradmenuDivisions*2), 1.5, 1.5 , './img/menu/plus_icon.png', menuList[2].buttons[1], MenuFunctionsManager.getChangeVolumeFunc(true,menuList[2].buttons[1]), bgWidth/tradmenuDivisions, 4); // menuList.volumeChangeMenu.
 
         volumeChangeGroup.add( plusVolume );
         volumeChangeGroup.add( audioMuteIcon );
@@ -612,13 +614,16 @@ THREE.MenuManager = function () {
         menuList.forEach(function(menu, index){
             if(index > 0 && index < 5 )
             {
-                menu.buttons.forEach(function(elem){interController.addInteractiveObject(scene.getObjectByName(elem))}); 
+                menu.buttons.forEach(function(elem){
+                    if(scene.getObjectByName(elem)) interController.addInteractiveObject(scene.getObjectByName(elem));
+                    //else console.error(elem);
+                }); 
             }
         });
 
         ppMMgr.showPlayPauseButton();
-        volMMgr.showMuteUnmuteButton();
-        secMMgr.showMultiOptionsButtons(multiOptionsMainSubMenuIndexes);
+        MenuController.showMuteUnmuteButton();
+        MenuController.showMultiOptionsButtons(multiOptionsMainSubMenuIndexes);
     }
 
 

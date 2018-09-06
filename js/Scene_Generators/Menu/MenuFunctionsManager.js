@@ -212,6 +212,78 @@ MenuFunctionsManager = function() {
         }
     };
 
+    this.getOpenTradMenuFunc = function()
+    {
+
+        return function() {
+            if(scene.getObjectByName( "traditionalMenu" ))  console.error("Menu already open");
+            else
+            {
+                MenuManager.openMenuTrad();
+                scene.getObjectByName( "traditionalMenu" ).visible = false; // Removes the blink of elemnts not created on time
+                
+                var total = moData.getListOfVideoContents()[0].vid.duration;
+                var current  = moData.getListOfVideoContents()[0].vid.currentTime;
+                var w = scene.getObjectByName("bgTimeline").geometry.parameters.width;
+                secMMgr.scaleTimeLine(total,current, w, scene.getObjectByName("currentTimeline"), scene.getObjectByName("bgTimeline"));
+                scene.getObjectByName("timeline").visible = true;
+                
+                interController.removeInteractiveObject("openMenuTrad" );  
+                
+                setTimeout(function(){ 
+                    scene.getObjectByName( "openMenuTrad" ).visible = false;
+                    scene.getObjectByName( "traditionalMenu" ).visible = true; // Onces all the elements are created show the menu
+                }, 50);    
+            }
+        }
+    }
+
+    this.getCloseTradMenuFunc = function()
+    {
+        return function() {
+            scene.getObjectByName( "openMenuTrad" ).visible = true; 
+
+            interController.clearInteractiveObjectList();
+            interController.addInteractiveObject(scene.getObjectByName( "openMenuTrad" ))
+            
+            camera.remove(camera.getObjectByName( "traditionalMenu" ))
+
+            var activeSubMenu = secMMgr.getActiveSecondaryMenuTrad();
+            if(activeSubMenu) secMMgr.removeSubTradMenu('');            
+        }
+    }
+
+
+     this.getMultiOptionsMenuFunc = function(name)
+    {
+        switch ( name )
+        {
+            case "subtitlesLanguages":
+                return function() { secMMgr.openTradSubMenuDropdown(0, menuList[6], STMenuList[0], MenuDictionary.getSubtitleLanguagesArray(), 0, STMenuList)};
+
+            case "subtitlesEasyRead":
+                return function() { secMMgr.openTradSubMenuDropdown(1, menuList[6], STMenuList[1], subtitlesEasyArray, 0, STMenuList)};
+
+            case "subtitlesShowPositions":
+                return function() { secMMgr.openTradSubMenuDropdown(2, menuList[6], STMenuList[2], subtitlesPositionArray, 0, STMenuList)};
+
+            case "subtitlesBackground":
+                return function() { secMMgr.openTradSubMenuDropdown(3, menuList[6], STMenuList[3], subtitlesBackgroundArray, 0, STMenuList)};
+
+            case "subtitlesSizes":
+                return function() { secMMgr.openTradSubMenuDropdown(4, menuList[6], STMenuList[4], subtitlesSizeArray, 0, STMenuList)};
+
+            case "subtitlesIndicator":
+                return function() { secMMgr.openTradSubMenuDropdown(5, menuList[6], STMenuList[5], subtitlesIndicatorArray, 0, STMenuList)};
+
+            case "subtitlesAreas":
+                return function() { secMMgr.openTradSubMenuDropdown(6, menuList[6], STMenuList[6], subtitlesSizeArray, 0, STMenuList)};
+
+            default: 
+                return undefined;
+        }
+    };  
+
     this.getSTMenuFunc = function(name)
     {       
         return function() {

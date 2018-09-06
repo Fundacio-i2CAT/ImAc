@@ -94,4 +94,5 @@ var autopositioning = false;
 
 var tradMenuMargin = 10;
 var tradmenuDivisions = 24;
-var heigthDropdownOption = 3;
+var heigthDropdownOption = 4;
+var tradMenuLetterSize = 1.5;

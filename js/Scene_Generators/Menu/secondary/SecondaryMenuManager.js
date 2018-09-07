@@ -253,16 +253,16 @@ THREE.SecondaryMenuManager = function () {
         menuGroup.add( getOnMenuButton( w, h, menuList[7].buttons[0] ) );
         menuGroup.add( getOffMenuButton( w, h, menuList[7].buttons[1] ) );
 
-        menuGroup.add( getMenuTextMesh( 3*h/8, STMenuList[0], 5, menuList[7].buttons[2], true, MenuFunctionsManager.getSubShowDropdownFunc( 0, menuList[7].buttons[2] ) ) );
+        menuGroup.add( getMenuTextMesh( 3*h/8, STMenuList[0], 5, menuList[7].buttons[2], true, MenuFunctionsManager.getSubShowDropdownFunc( 0, menuList[7].buttons[2] ), w/3, h/4 ));
         menuGroup.add( createDropdownSubMenu( w, h, menuList[7].submenus[0], signerLanguagesArray ) ); // read xml num of subtitle languages
 
-        menuGroup.add( getMenuTextMesh( h/8, SLMenuList[1], 5, menuList[7].buttons[3], true, MenuFunctionsManager.getSubShowDropdownFunc( 1, menuList[7].buttons[3] ) ) );
+        menuGroup.add( getMenuTextMesh( h/8, SLMenuList[1], 5, menuList[7].buttons[3], true, MenuFunctionsManager.getSubShowDropdownFunc( 1, menuList[7].buttons[3] ), w/3, h/4 ));
         menuGroup.add( createDropdownSubMenu( w, h, menuList[7].submenus[1], subtitlesPositionArray ) );
 
-        menuGroup.add( getMenuTextMesh( -h/8, SLMenuList[2], 5, menuList[7].buttons[4], true, MenuFunctionsManager.getSubShowDropdownFunc( 2, menuList[7].buttons[4] ) ) );
+        menuGroup.add( getMenuTextMesh( -h/8, SLMenuList[2], 5, menuList[7].buttons[4], true, MenuFunctionsManager.getSubShowDropdownFunc( 2, menuList[7].buttons[4] ), w/3, h/4 ));
         menuGroup.add( createDropdownSubMenu( w, h, menuList[7].submenus[2], signerIndicatorArray ) );
 
-        menuGroup.add( getMenuTextMesh( -3*h/8, SLMenuList[3], 5, menuList[7].buttons[5], true, MenuFunctionsManager.getSubShowDropdownFunc( 3, menuList[7].buttons[5] ) ) );
+        menuGroup.add( getMenuTextMesh( -3*h/8, SLMenuList[3], 5, menuList[7].buttons[5], true, MenuFunctionsManager.getSubShowDropdownFunc( 3, menuList[7].buttons[5] ), w/3, h/4 ));
         menuGroup.add( createDropdownSubMenu( w, h, menuList[7].submenus[3], subtitlesSizeArray ) );
 
         interController.removeInteractiveObject( menuList[4].buttons[1] );
@@ -291,10 +291,10 @@ THREE.SecondaryMenuManager = function () {
 
         menuGroup.add( createVolumeChangeSubMenu( w, h/3,  menuList[8].buttons[4] ) );
 
-        menuGroup.add( getMenuTextMesh( 0, ADMenuList[0], 5, menuList[8].buttons[2], true, MenuFunctionsManager.getSubShowDropdownFunc( 0, menuList[8].buttons[2] ) ) );
+        menuGroup.add( getMenuTextMesh( 0, ADMenuList[0], 5, menuList[8].buttons[2], true, MenuFunctionsManager.getSubShowDropdownFunc( 0, menuList[8].buttons[2] ),w/3, h/3 ) );
         menuGroup.add( createDropdownSubMenu( w, h, menuList[8].submenus[0], ADLanguagesArray ) );
 
-        menuGroup.add( getMenuTextMesh( -h/3, ADMenuList[1], 5, menuList[8].buttons[3], true, MenuFunctionsManager.getSubShowDropdownFunc( 1, menuList[8].buttons[3] ) ) );
+        menuGroup.add( getMenuTextMesh( -h/3, ADMenuList[1], 5, menuList[8].buttons[3], true, MenuFunctionsManager.getSubShowDropdownFunc( 1, menuList[8].buttons[3] ),w/3, h/3 ) );
         menuGroup.add( createDropdownSubMenu( w, h, menuList[8].submenus[1], ADPresentationArray ) );
 
         interController.removeInteractiveObject( menuList[4].buttons[2] );
@@ -323,10 +323,10 @@ THREE.SecondaryMenuManager = function () {
 
         menuGroup.add( createVolumeChangeSubMenu( w, h/3,  menuList[9].buttons[4] ) );
 
-        menuGroup.add( getMenuTextMesh( 0, ASTMenuList[0], 5, menuList[9].buttons[2], true, MenuFunctionsManager.getSubShowDropdownFunc( 0, menuList[9].buttons[2] ) ) );
+        menuGroup.add( getMenuTextMesh( 0, ASTMenuList[0], 5, menuList[9].buttons[2], true, MenuFunctionsManager.getSubShowDropdownFunc( 0, menuList[9].buttons[2] ), w/3, h/3 ) );
         menuGroup.add( createDropdownSubMenu( w, h, menuList[9].submenus[0], ASTLanguagesArray ) );
 
-        menuGroup.add( getMenuTextMesh( -h/3, ASTMenuList[1], 5, menuList[9].buttons[3], true, MenuFunctionsManager.getSubShowDropdownFunc( 1, menuList[9].buttons[3] ) ) );
+        menuGroup.add( getMenuTextMesh( -h/3, ASTMenuList[1], 5, menuList[9].buttons[3], true, MenuFunctionsManager.getSubShowDropdownFunc( 1, menuList[9].buttons[3] ), w/3, h/3 ) );
         menuGroup.add( createDropdownSubMenu( w, h, menuList[9].submenus[1], ASTEasyArray ) );
 
         interController.removeInteractiveObject( menuList[4].buttons[3] );
@@ -653,6 +653,7 @@ THREE.SecondaryMenuManager = function () {
         var submenu = menuList[submenuIndex];
         if(!scene.getObjectByName(submenu.name))
         {
+            subController.switchSigner( false );
             if(activeSecondaryMenuTrad)
             {
                 activeSecondaryMenuTrad.buttons.forEach(function(elem){
@@ -713,7 +714,11 @@ THREE.SecondaryMenuManager = function () {
             MenuController.showOnOffToggleButton(submenuIndex, submenu.buttons[0], submenu.buttons[1], null, null);
 
         }
-        else secMMgr.removeSubTradMenu(undefined);
+        else
+        {
+            subController.switchSigner( interController.getSignerActive() );
+            secMMgr.removeSubTradMenu(undefined);
+        } 
     }
 
     this.openTradSubMenuDropdown = function(index, submenuIndex, title, options, previousOptions)

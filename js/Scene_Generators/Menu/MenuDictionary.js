@@ -299,7 +299,7 @@ MenuDictionary = function() {
             ASTLanguagesArray = ['English', 'Spanish', 'German', 'Catalan'];
             ASTEasyArray = ['On', 'Off'];
 
-            STMenuList = ['Languages', 'Easy read', 'Position', 'Background', 'Size', 'Indicator', 'Area'];
+            STMenuList = ['Languages', 'Easy to read', 'Position', 'Background', 'Size', 'Indicator', 'Area'];
             SLMenuList = ['Languages', 'Position', 'Indicator', 'Area'];
             ADMenuList = ['Languages', 'Presentation'];
             ASTMenuList = ['Languages', 'Easy read'];
@@ -312,137 +312,127 @@ MenuDictionary = function() {
 
     var wordList = {
 
-        Top: { ca: 'Superior', de: 'Oben', en: 'Top', es: 'Arriba' },
+        top: { ca: 'Superior', de: 'Oben', en: 'Top', es: 'Arriba' },
 
-        Bottom: { ca: 'Inferior', de: 'Unten', en: 'Bottom', es: 'Abajo' },
+        bottom: { ca: 'Inferior', de: 'Unten', en: 'Bottom', es: 'Abajo' },
 
-        Small: {
+        small: {
+            ca: '',
+            de: '',
+            en: 'Small',
+            es: ''
+        },
+
+        medium: {
+            ca: '',
+            de: '',
+            en: 'Medium',
+            es: ''
+        },
+
+        large: {
+            ca: '',
+            de: '',
+            en: 'Large',
+            es: ''
+        },
+
+        none: {
+            ca: '',
+            de: '',
+            en: 'None',
+            es: ''
+        },
+
+        arrow: {
+            ca: '',
+            de: '',
+            en: 'Arrow',
+            es: ''
+        },
+
+        radar: {
+            ca: '',
+            de: '',
+            en: 'Radar',
+            es: ''
+        },
+
+        auto: {
+            ca: '',
+            de: '',
+            en: 'Auto',
+            es: ''
+        },
+
+        semitrans: {
+            ca: '',
+            de: '',
+            en: 'Semi-Trans',
+            es: ''
+        },
+
+        outline: {
+            ca: '',
+            de: '',
+            en: 'Outline',
+            es: ''
+        },
+
+        on: {
+            ca: '',
+            de: '',
+            en: 'On',
+            es: ''
+        },
+
+        off: {
+            ca: '',
+            de: '',
+            en: 'Off',
+            es: ''
+        },
+
+        en: {
+            ca: '',
+            de: 'Englisch',
+            en: 'English',
+            es: ''
+        },
+
+        es: { ca: 'Espanyol', de: 'Spanisch', en: 'Spanish', es: 'Español' },
+
+        ca: {
+            ca: '',
+            de: '',
+            en: 'Catalan',
+            es: ''
+        },
+
+        de: { ca: 'Alemany', de: 'Deutsch', en: 'German', es: 'Alemán' },
+
+        prespective: {
             ca: '',
             de: '',
             en: '',
             es: ''
         },
 
-        Medium: {
+        anchored: {
             ca: '',
             de: '',
             en: '',
             es: ''
         },
 
-        Large: {
+        classic: {
             ca: '',
             de: '',
             en: '',
             es: ''
         },
 
-        None: {
-            ca: '',
-            de: '',
-            en: '',
-            es: ''
-        },
-
-        Arrow: {
-            ca: '',
-            de: '',
-            en: '',
-            es: ''
-        },
-
-        Radar: {
-            ca: '',
-            de: '',
-            en: '',
-            es: ''
-        },
-
-        Auto: {
-            ca: '',
-            de: '',
-            en: '',
-            es: ''
-        },
-
-        SemiTrans: {
-            ca: '',
-            de: '',
-            en: '',
-            es: ''
-        },
-
-        Outline: {
-            ca: '',
-            de: '',
-            en: '',
-            es: ''
-        },
-
-        On: {
-            ca: '',
-            de: '',
-            en: '',
-            es: ''
-        },
-
-        Off: {
-            ca: '',
-            de: '',
-            en: '',
-            es: ''
-        },
-
-        English: {
-            ca: '',
-            de: '',
-            en: '',
-            es: ''
-        },
-
-        Spanish: {
-            ca: '',
-            de: '',
-            en: '',
-            es: ''
-        },
-
-        Catalan: {
-            ca: '',
-            de: '',
-            en: '',
-            es: ''
-        },
-
-        German: {
-            ca: '',
-            de: '',
-            en: '',
-            es: ''
-        },
-
-        Prespective: {
-            ca: '',
-            de: '',
-            en: '',
-            es: ''
-        },
-
-        Anchored: {
-            ca: '',
-            de: '',
-            en: '',
-            es: ''
-        },
-
-        Classic: {
-            ca: '',
-            de: '',
-            en: '',
-            es: ''
-        },
-
-        Panorama: {
+        panorama: {
             ca: '',
             de: '',
             en: '',
@@ -453,7 +443,8 @@ MenuDictionary = function() {
 
     this.translate = function(word)
     {
-        return wordList[word] ? wordList[word][_mainLanguage] : undefined;
+        var res = word.toLowerCase();
+        return wordList[ res ] ? wordList[ res ][ _mainLanguage ] : word;
     };
 }
 

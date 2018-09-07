@@ -75,7 +75,7 @@ var ADPresentationArray = ['Prespective', 'Anchored', 'Classic', 'Panorama'];
 var ASTLanguagesArray = ['English', 'Spanish', 'German', 'Catalan'];
 var ASTEasyArray = ['On', 'Off'];
 
-var STMenuList = ['Languages', 'Easy read', 'Position', 'Background', 'Size', 'Indicator', 'Area'];
+var STMenuList = ['Languages', 'Easy to read', 'Position', 'Background', 'Size', 'Indicator', 'Area'];
 var SLMenuList = ['Languages', 'Position', 'Indicator', 'Area'];
 var ADMenuList = ['Languages', 'Presentation'];
 var ASTMenuList = ['Languages', 'Easy read'];

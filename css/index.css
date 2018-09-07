@@ -124,7 +124,11 @@ label {
 
 
 .options {
-  text-align: center;
+  margin-left: 1rem;
+  border: 1px black;
+  border-style: dotted;
+  color: #000;
+  background-color: #d2d1d159;
 }
 
 .links-group {

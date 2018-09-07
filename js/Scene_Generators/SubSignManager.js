@@ -129,7 +129,7 @@ SubSignManager = function() {
 		var difPosition = getViewDifPosition( isdImac );
 	  	var position;
 
-	  	if ( !isdImac || ( difPosition < camera.fov && difPosition > -camera.fov ) )
+	  	if ( isdImac == undefined || ( difPosition < camera.fov && difPosition > -camera.fov ) )
 	  	{
 	  		position = 'center';
 	  	}

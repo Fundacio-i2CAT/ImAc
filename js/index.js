@@ -72,6 +72,17 @@ function blockContainer()
 
 function selectXML(id)
 {
+    var radios = document.getElementsByName('gender');
+
+    for (var i = 0, length = radios.length; i < length; i++)
+    {
+        if (radios[i].checked)
+        {
+            menuType = radios[i].value;
+            break;
+        }
+    }
+
   //mainContentURL = id == 2 ? './resources/cam_2_2k.mp4' : './resources/rapzember-young-hurn_edit.mp4';
   enterfullscreen();
   mainContentURL = list_contents[id].url;

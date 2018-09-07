@@ -3,23 +3,20 @@ function runDemo()
 {
     AudioManager.initializeAudio( moData.getListOfVideoContents()[0].vid, list_contents[demoId].audioChannels, camera.matrixWorld.elements );
 
-    /*switch ( menuType )
+    switch ( menuType )
     {
-        case 1:
+        case "LS_button":
         default:
             MenuManager.createMenu(true);
             break;
-        case 2:
+        case "LS_area":
             MenuManager.createMenu(false);
             break;
-        case 3:
+        case "Traditional":
             var menuTrad = MenuManager.createMenuTrad();
             interController.addInteractiveObject(menuTrad);
             break;
-    }*/
-
-    var menuTrad = MenuManager.createMenuTrad();
-    interController.addInteractiveObject(menuTrad);
+    }
 
     MenuDictionary.setSubtitleLanguagesArray( list_contents[demoId].subtitles[0] );
     MenuDictionary.setSignerLanguagesArray( list_contents[demoId].signer[0] );

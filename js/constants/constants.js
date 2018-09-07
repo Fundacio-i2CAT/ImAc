@@ -1,3 +1,5 @@
+var menuType = "LS_button";
+
 var clickInteractionTimeout = 300;
 var visualFeedbackTimeout = 1000;
 

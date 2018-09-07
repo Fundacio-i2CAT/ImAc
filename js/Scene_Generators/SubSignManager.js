@@ -359,6 +359,11 @@ SubSignManager = function() {
 		//updateSignerPosition();
 	};
 
+	this.getSignerPosition = function()
+	{
+		return signPosX;
+	}
+
 	this.setSignerArea = function(size)
 	{
 		signArea = size;

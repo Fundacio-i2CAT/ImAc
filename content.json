@@ -37,14 +37,15 @@
     "subtitles": [
     {
       "en": "./resources/liceu/LICEU_ENG.xml",
-      "es": "./resources/liceu/LICEU_CAST.xml"
+      "es": "./resources/liceu/LICEU_CAST.xml",
+      "de": "./resources/liceu/LICEU_DE.xml"
     }],
     "signer": [
     {
-      "en": "./resources/liceu/Liceu_Signer.mp4",
-      "es": "./resources/liceu/Liceu_Signer.mp4",
-      "ca": "./resources/liceu/Liceu_Signer.mp4",
-      "de": "./resources/liceu/Liceu_Signer.mp4"
+      "en": "./resources/liceu/Dash/SL_ENG/stream.mpd",
+      "es": "./resources/liceu/Dash/SL_ESP/stream.mpd",
+      "ca": "./resources/liceu/Dash/SL_CAT/stream.mpd",
+      "de": "./resources/liceu/Dash/SL_GER/stream.mpd"
     }],
     "ad": [
     {
@@ -65,6 +66,30 @@
     "subtitles": [
     {
       "en": "./resources/rbb/RBB_Abendschau_short_subtitles_angles.xml"
+    }],
+    "signer": [
+    {
+      "en": "./resources/liceu/Liceu_Signer.mp4"
+    }],
+    "ad": [
+    {
+      "en": "",
+      "ca": ""
+    }],
+    "ast": [
+    {
+      "en": "",
+      "ca": ""
+    }]
+  }, 
+  {
+    "name": "Video 4: Demo RBB_I",
+    "thumbnail": "img/LOGO-IMAC.png",
+    "url": "./resources/RBB_I/dash/stream.mpd",
+    "audioChannels": 2,
+    "subtitles": [
+    {
+      "en": "./resources/RBB_I/RBB_IPhilip_subtitles_angles.xml"
     }],
     "signer": [
     {

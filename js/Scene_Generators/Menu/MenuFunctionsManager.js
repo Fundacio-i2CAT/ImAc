@@ -113,7 +113,7 @@ MenuFunctionsManager = function() {
     {       
         return function() {
             interController.setSignerActive( isEnabled );
-            if(_isTradMenuOpen) subController.switchSigner( isEnabled );
+            //if(_isTradMenuOpen) subController.switchSigner( isEnabled );
             menuList[7].isEnabled = isEnabled;
             MenuController.showMultiOptionsButtons( multiOptionsMainSubMenuIndexes.slice(1,2) );
             MenuController.showOnOffToggleButton( 7, menuList[7].buttons[0], menuList[7].buttons[1], 1, 5 );
@@ -173,7 +173,7 @@ MenuFunctionsManager = function() {
         return function() {
             subController.setSignerArea( area );
             MenuManager.selectFinalDropdownOption( name );
-            subtitlesArea = name;
+            signerArea = name;
         }
     }
 
@@ -250,7 +250,8 @@ MenuFunctionsManager = function() {
             camera.remove(camera.getObjectByName( "traditionalMenu" ))
 
             var activeSubMenu = secMMgr.getActiveSecondaryMenuTrad();
-            if(activeSubMenu) secMMgr.removeSubTradMenu('');            
+            if(activeSubMenu) secMMgr.removeSubTradMenu('');  
+            subController.switchSigner( interController.getSignerActive() );          
         }
     }
 
@@ -313,25 +314,25 @@ MenuFunctionsManager = function() {
         switch ( name )
         {
             case "subtitlesLanguages":
-                return function() {console.log(secMMgr.getActiveSecondaryMenuTrad()); secMMgr.openTradSubMenuDropdown(0, 6, STMenuList[0], MenuDictionary.getSubtitleLanguagesList(), STMenuList)};
+                return function() { secMMgr.openTradSubMenuDropdown(0, 6, STMenuList[0], MenuDictionary.getSubtitleLanguagesList(), STMenuList)};
 
             case "subtitlesEasyRead":
-                return function() {console.log(secMMgr.getActiveSecondaryMenuTrad()); secMMgr.openTradSubMenuDropdown(1, 6, STMenuList[1], subtitlesEasyArray, STMenuList)};
+                return function() { secMMgr.openTradSubMenuDropdown(1, 6, STMenuList[1], subtitlesEasyArray, STMenuList)};
 
             case "subtitlesShowPositions":
-                return function() {console.log(secMMgr.getActiveSecondaryMenuTrad()); secMMgr.openTradSubMenuDropdown(2, 6, STMenuList[2], subtitlesPositionArray, STMenuList)};
+                return function() { secMMgr.openTradSubMenuDropdown(2, 6, STMenuList[2], subtitlesPositionArray, STMenuList)};
 
             case "subtitlesBackground":
-                return function() {console.log(secMMgr.getActiveSecondaryMenuTrad()); secMMgr.openTradSubMenuDropdown(3, 6, STMenuList[3], subtitlesBackgroundArray, STMenuList)};
+                return function() { secMMgr.openTradSubMenuDropdown(3, 6, STMenuList[3], subtitlesBackgroundArray, STMenuList)};
 
             case "subtitlesSizes":
-                return function() {console.log(secMMgr.getActiveSecondaryMenuTrad()); secMMgr.openTradSubMenuDropdown(4, 6, STMenuList[4], subtitlesSizeArray, STMenuList)};
+                return function() { secMMgr.openTradSubMenuDropdown(4, 6, STMenuList[4], subtitlesSizeArray, STMenuList)};
 
             case "subtitlesIndicator":
-                return function() {console.log(secMMgr.getActiveSecondaryMenuTrad()); secMMgr.openTradSubMenuDropdown(5, 6, STMenuList[5], subtitlesIndicatorArray, STMenuList)};
+                return function() { secMMgr.openTradSubMenuDropdown(5, 6, STMenuList[5], subtitlesIndicatorArray, STMenuList)};
 
             case "subtitlesAreas":
-                return function() {console.log(secMMgr.getActiveSecondaryMenuTrad()); secMMgr.openTradSubMenuDropdown(6, 6, STMenuList[6], subtitlesSizeArray, STMenuList)};
+                return function() { secMMgr.openTradSubMenuDropdown(6, 6, STMenuList[6], subtitlesSizeArray, STMenuList)};
 
             case "signerLanguages":
                 return function() { secMMgr.openTradSubMenuDropdown(0, 7, SLMenuList[0], MenuDictionary.getSignerLanguagesList(), SLMenuList)};

@@ -513,6 +513,7 @@ THREE.MediaObject = function () {
 
     this.createSignVideo = function(url, name, config) 
     {
+        if(signMesh) moData.removeSignVideo();
         var geometry = new THREE.PlaneGeometry( config.size, config.size );
         var plane = getVideoMesh( geometry, url, name, 1 );
 

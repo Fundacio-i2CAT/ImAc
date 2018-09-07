@@ -126,7 +126,7 @@ var menuList =
             ]
         },                                                       
 /*6*/   { 
-            name: 'subtitlesMenu', isEnabled: true, firstmenuindex: 4,
+            name: 'subtitlesMenu', title:'Subtitles', isEnabled: true, firstmenuindex: 4,
             submenus:
             [
                 { 
@@ -208,7 +208,7 @@ var menuList =
             ]
         },                                   
 /*7*/   { 
-            name: 'signLanguageMenu', isEnabled: false, firstmenuindex: 4, 
+            name: 'signLanguageMenu', title: 'Sign Language', isEnabled: false, firstmenuindex: 4, 
             submenus:[
                 { 
                     name: 'signerLanguages', 
@@ -258,7 +258,7 @@ var menuList =
             ]
         },
 /*8*/   { 
-            name: 'audioDescriptionMenu', isEnabled: false, firstmenuindex: 4, 
+            name: 'audioDescriptionMenu', title:'Audio Description', isEnabled: false, firstmenuindex: 4, 
             submenus:[
                 { 
                     name: 'audioDescriptionLanguages', 
@@ -298,7 +298,7 @@ var menuList =
             ]
         },
 /*9*/   { 
-            name: 'audioSubtitlesMenu', isEnabled: false, firstmenuindex: 4, 
+            name: 'audioSubtitlesMenu', title:'Audio Subtitles', isEnabled: false, firstmenuindex: 4, 
             submenus:[
                 { 
                     name: 'audioSubtitlesLanguages', 

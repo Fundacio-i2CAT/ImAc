@@ -135,7 +135,7 @@ THREE.SecondaryMenuManager = function () {
         subMenuData.buttons.forEach(function( elem, index )
         {
             var factor = (index*2)+1;
-            var option = menuData.getMenuTextMesh( dataArray[index], subMenuTextSize, menuDefaultColor, elem, MenuFunctionsManager.getButtonFunctionByName( elem ) )
+            var option = menuData.getMenuTextMesh( dataArray[index], subMenuTextSize, menuDefaultColor, elem, MenuFunctionsManager.getButtonFunctionByName( elem ), w/3, h/(subMenuDataLength*2));
             option.position.set( w/3, ( h/2-factor*h/(subMenuDataLength*2) ), menuElementsZ );                    
             
             // CHANGE TO A SEPARATE FUNCTION
@@ -181,25 +181,25 @@ THREE.SecondaryMenuManager = function () {
         menuGroup.add( getUpDownMesh( 7*h/16, -Math.PI/2, menuList[6].buttons[9], MenuFunctionsManager.getSubUpDownFunc( false ) ) );
         menuGroup.add( getUpDownMesh( -7*h/16, Math.PI/2, menuList[6].buttons[10], MenuFunctionsManager.getSubUpDownFunc( true ) ) );
 
-        menuGroup.add( getMenuTextMesh( h/4, STMenuList[0], 5, menuList[6].buttons[2], true, MenuFunctionsManager.getSubShowDropdownFunc( 0, menuList[6].buttons[2] ) ) );
+        menuGroup.add( getMenuTextMesh( h/4, STMenuList[0], 5, menuList[6].buttons[2], true, MenuFunctionsManager.getSubShowDropdownFunc( 0, menuList[6].buttons[2] ), w/3, h/4 ) );
         menuGroup.add( createDropdownSubMenu( w, h, menuList[6].submenus[0], subtitlesLanguagesArray ) ); // read xml num of subtitle languages
 
-        menuGroup.add( getMenuTextMesh( 0, STMenuList[1], 5, menuList[6].buttons[3], true, MenuFunctionsManager.getSubShowDropdownFunc( 1, menuList[6].buttons[3] ) ) );
+        menuGroup.add( getMenuTextMesh( 0, STMenuList[1], 5, menuList[6].buttons[3], true, MenuFunctionsManager.getSubShowDropdownFunc( 1, menuList[6].buttons[3] ), w/3, h/4 ) );
         menuGroup.add( createDropdownSubMenu( w, h, menuList[6].submenus[1], subtitlesEasyArray ) ); 
 
-        menuGroup.add( getMenuTextMesh( -h/4, STMenuList[2], 5, menuList[6].buttons[4], true, MenuFunctionsManager.getSubShowDropdownFunc( 2, menuList[6].buttons[4] ) ) );
+        menuGroup.add( getMenuTextMesh( -h/4, STMenuList[2], 5, menuList[6].buttons[4], true, MenuFunctionsManager.getSubShowDropdownFunc( 2, menuList[6].buttons[4] ), w/3, h/4 ) );
         menuGroup.add( createDropdownSubMenu( w, h, menuList[6].submenus[2], subtitlesPositionArray ) );
 
-        menuGroup.add( getMenuTextMesh( -2*h/4, STMenuList[3], 5, menuList[6].buttons[5], false, MenuFunctionsManager.getSubShowDropdownFunc( 3, menuList[6].buttons[5] ) ) );
+        menuGroup.add( getMenuTextMesh( -2*h/4, STMenuList[3], 5, menuList[6].buttons[5], false, MenuFunctionsManager.getSubShowDropdownFunc( 3, menuList[6].buttons[5] ), w/3, h/4 ) );
         menuGroup.add( createDropdownSubMenu( w, h, menuList[6].submenus[3], subtitlesBackgroundArray ) );
 
-        menuGroup.add( getMenuTextMesh( -3*h/4, STMenuList[4], 5, menuList[6].buttons[6], false, MenuFunctionsManager.getSubShowDropdownFunc( 4, menuList[6].buttons[6] ) ) );
+        menuGroup.add( getMenuTextMesh( -3*h/4, STMenuList[4], 5, menuList[6].buttons[6], false, MenuFunctionsManager.getSubShowDropdownFunc( 4, menuList[6].buttons[6] ), w/3, h/4 ) );
         menuGroup.add( createDropdownSubMenu( w, h, menuList[6].submenus[4], subtitlesSizeArray ) );
 
-        menuGroup.add( getMenuTextMesh( 3*h/4, STMenuList[5], 5, menuList[6].buttons[7], false, MenuFunctionsManager.getSubShowDropdownFunc( 5, menuList[6].buttons[7] ) ) );
+        menuGroup.add( getMenuTextMesh( 3*h/4, STMenuList[5], 5, menuList[6].buttons[7], false, MenuFunctionsManager.getSubShowDropdownFunc( 5, menuList[6].buttons[7] ), w/3, h/4 ) );
         menuGroup.add( createDropdownSubMenu( w, h, menuList[6].submenus[5], subtitlesIndicatorArray ) );
 
-        menuGroup.add( getMenuTextMesh( 2*h/4, STMenuList[6], 5, menuList[6].buttons[8], false, MenuFunctionsManager.getSubShowDropdownFunc( 6, menuList[6].buttons[8] ) ) );
+        menuGroup.add( getMenuTextMesh( 2*h/4, STMenuList[6], 5, menuList[6].buttons[8], false, MenuFunctionsManager.getSubShowDropdownFunc( 6, menuList[6].buttons[8] ), w/3, h/4 ) );
         menuGroup.add( createDropdownSubMenu( w, h, menuList[6].submenus[6], subtitlesSizeArray ) );
 
         interController.removeInteractiveObject( menuList[4].buttons[0] );
@@ -401,11 +401,11 @@ THREE.SecondaryMenuManager = function () {
                 'ST', 
                 menuList[4].buttons[0], 
                 false, 
-                undefined,
+                MenuFunctionsManager.getMultiOptionsMenuFunc(menuList[4].buttons[0]),
                 w/tradmenuDivisions,
                 4
             ));
-        var stDis = menuData.getImageMesh((tradmenuDivisions-11)*w/(tradmenuDivisions*2), 2,2, './img/menu/disabled_st_icon.png', menuList[4].buttons[4], undefined, w/tradmenuDivisions,4);
+        var stDis = menuData.getImageMesh((tradmenuDivisions-11)*w/(tradmenuDivisions*2), 2,2, './img/menu/disabled_st_icon.png', menuList[4].buttons[4], MenuFunctionsManager.getMultiOptionsMenuFunc(menuList[4].buttons[4]), w/tradmenuDivisions,4);
         stDis.visible = false;
         menuGroup.add(stDis );
 
@@ -416,11 +416,11 @@ THREE.SecondaryMenuManager = function () {
                 'SL',
                 menuList[4].buttons[1],
                 false,
-                undefined,
+                MenuFunctionsManager.getMultiOptionsMenuFunc(menuList[4].buttons[1]),
                 w/tradmenuDivisions,
                 4
             ));
-        var slDis = menuData.getImageMesh( (tradmenuDivisions-9)*w/(tradmenuDivisions*2), 2,2, './img/menu/disabled_sl_icon.png', menuList[4].buttons[5], undefined, w/tradmenuDivisions,4 );
+        var slDis = menuData.getImageMesh( (tradmenuDivisions-9)*w/(tradmenuDivisions*2), 2,2, './img/menu/disabled_sl_icon.png', menuList[4].buttons[5], MenuFunctionsManager.getMultiOptionsMenuFunc(menuList[4].buttons[5]), w/tradmenuDivisions,4 );
         slDis.visible = false;
         menuGroup.add( slDis );
 
@@ -431,11 +431,11 @@ THREE.SecondaryMenuManager = function () {
                 'AD',
                 menuList[4].buttons[2],
                 false,
-                undefined,
+                MenuFunctionsManager.getMultiOptionsMenuFunc(menuList[4].buttons[2]),
                 w/tradmenuDivisions,
                 4
             ));
-        var adDis = menuData.getImageMesh((tradmenuDivisions-7)*w/(tradmenuDivisions*2), 2,2, './img/menu/disabled_ad_icon.png', menuList[4].buttons[6], undefined, w/tradmenuDivisions,4 );
+        var adDis = menuData.getImageMesh((tradmenuDivisions-7)*w/(tradmenuDivisions*2), 2,2, './img/menu/disabled_ad_icon.png', menuList[4].buttons[6], MenuFunctionsManager.getMultiOptionsMenuFunc(menuList[4].buttons[6]), w/tradmenuDivisions,4 );
         adDis.visible = false;
         menuGroup.add( adDis );
 
@@ -446,11 +446,11 @@ THREE.SecondaryMenuManager = function () {
                 'AST', 
                 menuList[4].buttons[3], 
                 false, 
-                undefined,
+                MenuFunctionsManager.getMultiOptionsMenuFunc(menuList[4].buttons[3]),
                 w/tradmenuDivisions,
                 4
             ));
-        var astDis = menuData.getImageMesh((tradmenuDivisions-5)*w/(tradmenuDivisions*2), 3,2, './img/menu/disabled_ast_icon.png', menuList[4].buttons[7], undefined, w/tradmenuDivisions,4 );
+        var astDis = menuData.getImageMesh((tradmenuDivisions-5)*w/(tradmenuDivisions*2), 3,2, './img/menu/disabled_ast_icon.png', menuList[4].buttons[7], MenuFunctionsManager.getMultiOptionsMenuFunc(menuList[4].buttons[7]), w/tradmenuDivisions,4 );
         astDis.visible = false;
         menuGroup.add( astDis );
 
@@ -648,9 +648,10 @@ THREE.SecondaryMenuManager = function () {
         activeSecondaryMenuTrad = name;
     }
 
-    this.createListBackground = function(xPos, yPos, w, h, title, submenu, options)
+    this.createListBackground = function(xPos, yPos, w, h, title, submenuIndex, options)
     {
-        if(!camera.getObjectByName(submenu.name))
+        var submenu = menuList[submenuIndex];
+        if(!scene.getObjectByName(submenu.name))
         {
             if(activeSecondaryMenuTrad)
             {
@@ -685,22 +686,23 @@ THREE.SecondaryMenuManager = function () {
             menuGroup.add( onButton );
             menuGroup.add( offButton );
 
-            var line = menuData.createLine( 0xffffff, new THREE.Vector3(  w/2, h/2 - listHeight/options.length, 0), new THREE.Vector3( -w/2, h/2 - listHeight/options.length, 0) );
+            var opt_length = options.length;
+
+            var line = menuData.createLine( 0xffffff, new THREE.Vector3(  w/2, h/2 - listHeight/options.length, 0), new THREE.Vector3( -w/2, h/2 - listHeight/opt_length, 0) );
 
             menuGroup.add(dropdowmTitle);
-            for(var i = 0; i<options.length; i++)
-            {
-                height = height - listHeight/options.length;
 
-                var option = getMenuTextMesh( height, options[i], tradMenuLetterSize, submenu.buttons[i+2], true, MenuFunctionsManager.getMultiOptionsMenuFunc(submenu.submenus[i].name), w, heigthDropdownOption);
+            options.forEach(function(opt, i){
+                height = height - listHeight/opt_length;
+                var option = getMenuTextMesh( height, opt, tradMenuLetterSize, submenu.buttons[i+2], true, MenuFunctionsManager.getMultiOptionsSubMenuFunc(submenu.submenus[i].name), w, heigthDropdownOption);
                 option.position.x = -w/2+option.geometry.boundingBox.max.x+2;
                 option.children[0].position.x = +w/2-option.geometry.boundingBox.max.x-2;
-
+                interController.addInteractiveObject(option);
+                menuGroup.add(option);
                 var next = menuData.getNextIconMesh(heigthDropdownOption/6, heigthDropdownOption/6, 0xffffff, 0, "next");
                 next.position.x = w-option.geometry.boundingBox.max.x-4;
-                option.add(next);
-                menuGroup.add(option );
-            }
+                option.add(next);      
+            });
 
             listBg.add(line)
 
@@ -708,30 +710,25 @@ THREE.SecondaryMenuManager = function () {
             listBg.name = submenu.name;
 
             camera.add(listBg);
+            MenuController.showOnOffToggleButton(submenuIndex, submenu.buttons[0], submenu.buttons[1], null, null);
 
-
-            submenu.buttons.forEach(function(elem){
-                if(camera.getObjectByName(elem))
-                interController.addInteractiveObject(camera.getObjectByName(elem));
-            }); 
         }
-        else
-        {
-            secMMgr.removeSubTradMenu('');
-        } 
+        else secMMgr.removeSubTradMenu(undefined);
     }
 
-    this.openTradSubMenuDropdown = function(index, submenu, title, options, indexInitSubmenuButton, previousOptions)
+    this.openTradSubMenuDropdown = function(index, submenuIndex, title, options, previousOptions)
     {
+        var submenu = menuList[submenuIndex];
+        MenuManager.setSubmenuNameActive(submenu.submenus[index].name);
         secMMgr.removeSubTradMenu(submenu.submenus[index]);
 
-        var w = 30;
+        var tradMenuBg = scene.getObjectByName("traditionalMenuBackground");
         var h = (options.length+1) * heigthDropdownOption;
-        var x = (scene.getObjectByName("traditionalMenuBackground").geometry.parameters.width-w)/2;
-        var y = (scene.getObjectByName("traditionalMenuBackground").position.y+(scene.getObjectByName("traditionalMenuBackground").geometry.parameters.height + h)/2)+1+scene.getObjectByName("bgTimeline").geometry.parameters.height;
+        var x = (tradMenuBg.geometry.parameters.width-tradMenuWidth)/2;
+        var y = (tradMenuBg.position.y+(tradMenuBg.geometry.parameters.height + h)/2)+1+scene.getObjectByName("bgTimeline").geometry.parameters.height;
 
 
-        var listBg = menuData.getBackgroundMesh(w,h, 0x333333, 0.8);
+        var listBg = menuData.getBackgroundMesh(tradMenuWidth,h, 0x333333, 0.8);
         listBg.position.set(x, y, -60);
 
         var menuGroup =  new THREE.Group();
@@ -739,16 +736,17 @@ THREE.SecondaryMenuManager = function () {
         var listHeight = (h - h/(options.length+1));
         var height = listHeight/2;
 
-        var dropdowmTitle = getMenuTextMesh( height, title, tradMenuLetterSize,"back", true, secMMgr.goBack(previousOptions), w, heigthDropdownOption);
+        //posY, text, textSize, name, visible, func, cw, ch
+        var dropdowmTitle = getMenuTextMesh( height, title, tradMenuLetterSize,"back", true, secMMgr.goBack(previousOptions, submenuIndex), tradMenuWidth, heigthDropdownOption);
         interController.addInteractiveObject(dropdowmTitle);
         var back = menuData.getNextIconMesh(heigthDropdownOption/6, heigthDropdownOption/6, 0xffffff, Math.PI, "back");
 
-        back.position.x = -w/2+2;
+        back.position.x = -tradMenuWidth/2+2;
         dropdowmTitle.add(back);
 
         menuGroup.add(dropdowmTitle);
 
-        var line = menuData.createLine( 0xffffff, new THREE.Vector3( w/2, h/2 - listHeight/options.length, 0), new THREE.Vector3( -w/2, h/2 - listHeight/options.length, 0));
+        var line = menuData.createLine( 0xffffff, new THREE.Vector3( tradMenuWidth/2, h/2 - listHeight/options.length, 0), new THREE.Vector3( -tradMenuWidth/2, h/2 - listHeight/options.length, 0));
         listBg.add(line)
         
 
@@ -756,9 +754,9 @@ THREE.SecondaryMenuManager = function () {
         {
             height = height - listHeight/options.length;
 
-            var option = getMenuTextMesh( height, options[i], tradMenuLetterSize, submenu.submenus[index].buttons[i], true, null, w, heigthDropdownOption);
-            option.position.x = -w/2+option.geometry.boundingBox.max.x+2;
-            option.children[0].position.x = +w/2-option.geometry.boundingBox.max.x-2;
+            var option = getMenuTextMesh( height, options[i], tradMenuLetterSize, submenu.submenus[index].buttons[i], true, MenuFunctionsManager.getButtonFunctionByName(submenu.submenus[index].buttons[i]), tradMenuWidth, heigthDropdownOption);
+            option.position.x = -tradMenuWidth/2+option.geometry.boundingBox.max.x+2;
+            option.children[0].position.x = +tradMenuWidth/2-option.geometry.boundingBox.max.x-2;
 
             menuGroup.add( option );
         }
@@ -772,28 +770,44 @@ THREE.SecondaryMenuManager = function () {
         submenu.submenus[index].buttons.forEach(function(elem){
             if(camera.getObjectByName(elem))
             interController.addInteractiveObject(camera.getObjectByName(elem));
+            // CHANGE TO A SEPARATE FUNCTION
+            if ( settingsLanguage == elem 
+                || subtitlesLanguage == elem 
+                || subtitlesEasy == elem 
+                || subtitlesPosition == elem 
+                || subtitlesSize == elem 
+                || subtitlesIndicator == elem
+                || subtitlesBackground == elem
+                || subtitlesArea == elem
+                || signerPosition == elem
+                || signerIndicator == elem
+                || signerArea == elem 
+                || signerLanguage == elem ) 
+            {
+                scene.getObjectByName(elem).material.color.set( menuButtonActiveColor ); 
+            }
         }); 
-
     }
 
-    this.removeSubTradMenu = function(newAvtiveSubMenu)
+    this.removeSubTradMenu = function(newActiveSubMenu)
     {
          secMMgr.getActiveSecondaryMenuTrad().buttons.forEach(function(elem){
             interController.removeInteractiveObject(elem);
         }); 
         camera.remove(camera.getObjectByName(secMMgr.getActiveSecondaryMenuTrad().name)); 
-        secMMgr.setActiveSecondaryMenuTrad(newAvtiveSubMenu);  
+        secMMgr.setActiveSecondaryMenuTrad(newActiveSubMenu);  
     }
 
-    this.goBack = function(multiOptionsMenuList)
+    this.goBack = function(multiOptionsMenuList, prevIndex)
     {
         return function()
         {
-            var w = 30;
+            interController.removeInteractiveObject("back");
+            var tradMenuBg = scene.getObjectByName("traditionalMenuBackground");
             var h = (multiOptionsMenuList.length+1) * heigthDropdownOption;
-            var x = (scene.getObjectByName("traditionalMenuBackground").geometry.parameters.width-w)/2;
-            var y = (scene.getObjectByName("traditionalMenuBackground").position.y+(scene.getObjectByName("traditionalMenuBackground").geometry.parameters.height + h)/2)+1+scene.getObjectByName("bgTimeline").geometry.parameters.height;
-            secMMgr.createListBackground(x, y, w, h,"Subtitles", menuList[6], multiOptionsMenuList);
+            var x = (tradMenuBg.geometry.parameters.width-tradMenuWidth)/2;
+            var y = (tradMenuBg.position.y+(tradMenuBg.geometry.parameters.height + h)/2)+1+scene.getObjectByName("bgTimeline").geometry.parameters.height;
+            secMMgr.createListBackground(x, y, tradMenuWidth, h, menuList[prevIndex].title, prevIndex, multiOptionsMenuList);
         }
     }
 

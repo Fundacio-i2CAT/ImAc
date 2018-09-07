@@ -118,9 +118,6 @@ THREE.MenuObject = function () {
         var shapes = moData.getFont().generateShapes( text, size);
         var geometry = new THREE.ShapeGeometry( shapes );
 
-
-        //var coliderMesh = new THREE.Mesh( coliderGeom, new THREE.MeshBasicMaterial({visible: false}));
-
         geometry.computeBoundingBox();
         textShape.fromGeometry( geometry );
         textShape.center();

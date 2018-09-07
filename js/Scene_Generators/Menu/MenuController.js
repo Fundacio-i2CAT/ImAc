@@ -35,33 +35,39 @@ THREE.MenuController = function () {
         }
     };
 
-    this.showOnOffToggleButton = function (subMenuIndex, onButtonIndex, offButtonIndex, enabledTitleIndex, disabledTitleIndex)
+    this.showOnOffToggleButton = function (subMenuIndex, onButtonName, offButtonName, enabledTitleIndex, disabledTitleIndex)
     {
         var mainMenuIndex = menuList[subMenuIndex].firstmenuindex;
         if ( menuList[subMenuIndex].isEnabled )
         {
-            scene.getObjectByName( menuList[subMenuIndex].buttons[onButtonIndex] ).visible = true; 
-            scene.getObjectByName( menuList[subMenuIndex].buttons[offButtonIndex] ).visible = false; 
+            scene.getObjectByName( onButtonName ).visible = true; 
+            scene.getObjectByName( offButtonName ).visible = false; 
 
-
-            scene.getObjectByName( menuList[subMenuIndex].name ).getObjectByName( menuList[mainMenuIndex].buttons[enabledTitleIndex] ).visible = true; 
-            scene.getObjectByName( menuList[subMenuIndex].name ).getObjectByName( menuList[mainMenuIndex].buttons[disabledTitleIndex] ).visible = false; 
-
-            interController.removeInteractiveObject( menuList[subMenuIndex].buttons[offButtonIndex]);
-            interController.addInteractiveObject( scene.getObjectByName( menuList[subMenuIndex].buttons[onButtonIndex] ) ); 
+            if(!_isTradMenuOpen)
+            {
+                scene.getObjectByName( menuList[subMenuIndex].name ).getObjectByName( menuList[mainMenuIndex].buttons[enabledTitleIndex] ).visible = true; 
+                scene.getObjectByName( menuList[subMenuIndex].name ).getObjectByName( menuList[mainMenuIndex].buttons[disabledTitleIndex] ).visible = false; 
+            }
+            
+            interController.removeInteractiveObject( offButtonName);
+            interController.addInteractiveObject( scene.getObjectByName( onButtonName ) ); 
         }
         else
         {
-            scene.getObjectByName( menuList[subMenuIndex].buttons[offButtonIndex] ).visible = true; 
-            scene.getObjectByName( menuList[subMenuIndex].buttons[onButtonIndex] ).visible = false; 
+            scene.getObjectByName( offButtonName ).visible = true; 
+            scene.getObjectByName( onButtonName ).visible = false; 
 
-            scene.getObjectByName( menuList[subMenuIndex].name ).getObjectByName( menuList[mainMenuIndex].buttons[enabledTitleIndex] ).visible = false; 
-            scene.getObjectByName( menuList[subMenuIndex].name ).getObjectByName( menuList[mainMenuIndex].buttons[disabledTitleIndex] ).visible = true; 
+            if(!_isTradMenuOpen)
+            {
+                scene.getObjectByName( menuList[subMenuIndex].name ).getObjectByName( menuList[mainMenuIndex].buttons[enabledTitleIndex] ).visible = false; 
+                scene.getObjectByName( menuList[subMenuIndex].name ).getObjectByName( menuList[mainMenuIndex].buttons[disabledTitleIndex] ).visible = true; 
+            }
 
-            interController.removeInteractiveObject( menuList[subMenuIndex].buttons[onButtonIndex] );
-            interController.addInteractiveObject( scene.getObjectByName( menuList[subMenuIndex].buttons[offButtonIndex] ) ); 
+            interController.removeInteractiveObject( onButtonName );
+            interController.addInteractiveObject( scene.getObjectByName( offButtonName ) ); 
         }
     };
+
 
     this.showMuteUnmuteButton = function()
     {

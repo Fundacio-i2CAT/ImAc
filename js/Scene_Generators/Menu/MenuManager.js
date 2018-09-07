@@ -344,28 +344,6 @@ THREE.MenuManager = function () {
     }
 
 
-
-    this.showOnOffToggleButtonTradMenu = function (subMenuIndex, onButtonIndex, offButtonIndex, enabledTitleIndex, disabledTitleIndex)
-    {
-        var mainMenuIndex = menuList[subMenuIndex].firstmenuindex;
-        if(menuList[subMenuIndex].isEnabled)
-        {
-            scene.getObjectByName(menuList[subMenuIndex].buttons[onButtonIndex]).visible = true; 
-            scene.getObjectByName(menuList[subMenuIndex].buttons[offButtonIndex]).visible = false; 
-
-            interController.removeInteractiveObject(menuList[subMenuIndex].buttons[offButtonIndex]);
-            interController.addInteractiveObject(scene.getObjectByName(menuList[subMenuIndex].buttons[onButtonIndex])); 
-        }
-        else
-        {
-            scene.getObjectByName(menuList[subMenuIndex].buttons[offButtonIndex]).visible = true; 
-            scene.getObjectByName(menuList[subMenuIndex].buttons[onButtonIndex]).visible = false; 
-
-            interController.removeInteractiveObject(menuList[subMenuIndex].buttons[onButtonIndex]);
-            interController.addInteractiveObject(scene.getObjectByName(menuList[subMenuIndex].buttons[offButtonIndex])); 
-        }
-    }
-
 //************************************************************************************
 //
 //                  P R I V A T E       F U N C T I O N S 

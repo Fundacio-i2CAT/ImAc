@@ -184,105 +184,105 @@ THREE.InteractionsController = function () {
 //                  
 //***********************************************************************************************************
 
-            case "showSubtitlesMenuButton":
-            case "disabledSubtitlesMenuButton":
-            // show the subtitle configuration menu
-                if(_isTradMenuOpen)//EXPERIMENTAL
-                {
-                    console.log("Traditional "+name);
-                    var w = 30;
-                    var h = (STMenuList.length+1) * heigthDropdownOption;
-                    var x = (scene.getObjectByName("traditionalMenuBackground").geometry.parameters.width-w)/2;
-                    var y = (scene.getObjectByName("traditionalMenuBackground").position.y+(scene.getObjectByName("traditionalMenuBackground").geometry.parameters.height + h)/2)+1+scene.getObjectByName("bgTimeline").geometry.parameters.height;
-                    secMMgr.createListBackground(x, y, w, h,"Subtitles", menuList[6], STMenuList);
-                    MenuManager.showOnOffToggleButtonTradMenu(6, 0, 1, 0, 4);
-                }
-                else
-                {
-                    MenuManager.pressButtonFeedback(name);
-                    setTimeout(function(){ 
-                        MenuManager.openSecondLevelMenu(6);
-                        /* function (subMenuIndex, onButtonIndex, offButtonIndex, enabledTitleIndex, disabledTitleIndex) */
-                        MenuManager.showOnOffToggleButton(6, 0, 1, 0, 4);// Indexes from MenuState menuList
-                     }, clickInteractionTimeout);
-                }
-                break;
+            // case "showSubtitlesMenuButton":
+            // case "disabledSubtitlesMenuButton":
+            // // show the subtitle configuration menu
+            //     if(_isTradMenuOpen)//EXPERIMENTAL
+            //     {
+            //         console.log("Traditional "+name);
+            //         var w = 30;
+            //         var h = (STMenuList.length+1) * heigthDropdownOption;
+            //         var x = (scene.getObjectByName("traditionalMenuBackground").geometry.parameters.width-w)/2;
+            //         var y = (scene.getObjectByName("traditionalMenuBackground").position.y+(scene.getObjectByName("traditionalMenuBackground").geometry.parameters.height + h)/2)+1+scene.getObjectByName("bgTimeline").geometry.parameters.height;
+            //         secMMgr.createListBackground(x, y, w, h,"Subtitles", menuList[6], STMenuList);
+            //         MenuManager.showOnOffToggleButtonTradMenu(6, 0, 1, 0, 4);
+            //     }
+            //     else
+            //     {
+            //         MenuManager.pressButtonFeedback(name);
+            //         setTimeout(function(){ 
+            //             MenuManager.openSecondLevelMenu(6);
+            //             /* function (subMenuIndex, onButtonIndex, offButtonIndex, enabledTitleIndex, disabledTitleIndex) */
+            //             MenuManager.showOnOffToggleButton(6, 0, 1, 0, 4);// Indexes from MenuState menuList
+            //          }, clickInteractionTimeout);
+            //     }
+            //     break;
 
-            case "showSignLanguageMenuButton":
-            case "disabledSignLanguageMenuButton":
-                // TODO
-                // show the sign language configuration menu
-                if(_isTradMenuOpen)//EXPERIMENTAL
-                {
-                    console.log("Traditional "+name);
-                    var w = 30;
-                    var h = (SLMenuList.length+1) * heigthDropdownOption;
-                    var x = (scene.getObjectByName("traditionalMenuBackground").geometry.parameters.width-w)/2;
-                    var y = (scene.getObjectByName("traditionalMenuBackground").position.y+(scene.getObjectByName("traditionalMenuBackground").geometry.parameters.height + h)/2)+1+scene.getObjectByName("bgTimeline").geometry.parameters.height;
-                    secMMgr.createListBackground(x, y, w, h,"Sign Language",menuList[7], SLMenuList);
-                    MenuManager.showOnOffToggleButtonTradMenu(7, 0, 1, 1, 5);
-                }
-                else
-                {
-                    MenuManager.pressButtonFeedback(name);
-                    setTimeout(function(){ 
-                        MenuManager.openSecondLevelMenu(7);
-                        /* function (subMenuIndex, onButtonIndex, offButtonIndex, enabledTitleIndex, disabledTitleIndex) */
-                        MenuManager.showOnOffToggleButton(7, 0, 1, 1, 5);// Indexes from MenuState menuList
-                     }, clickInteractionTimeout);
-                }
-                break;
+            // case "showSignLanguageMenuButton":
+            // case "disabledSignLanguageMenuButton":
+            //     // TODO
+            //     // show the sign language configuration menu
+            //     if(_isTradMenuOpen)//EXPERIMENTAL
+            //     {
+            //         console.log("Traditional "+name);
+            //         var w = 30;
+            //         var h = (SLMenuList.length+1) * heigthDropdownOption;
+            //         var x = (scene.getObjectByName("traditionalMenuBackground").geometry.parameters.width-w)/2;
+            //         var y = (scene.getObjectByName("traditionalMenuBackground").position.y+(scene.getObjectByName("traditionalMenuBackground").geometry.parameters.height + h)/2)+1+scene.getObjectByName("bgTimeline").geometry.parameters.height;
+            //         secMMgr.createListBackground(x, y, w, h,"Sign Language",menuList[7], SLMenuList);
+            //         MenuManager.showOnOffToggleButtonTradMenu(7, 0, 1, 1, 5);
+            //     }
+            //     else
+            //     {
+            //         MenuManager.pressButtonFeedback(name);
+            //         setTimeout(function(){ 
+            //             MenuManager.openSecondLevelMenu(7);
+            //             /* function (subMenuIndex, onButtonIndex, offButtonIndex, enabledTitleIndex, disabledTitleIndex) */
+            //             MenuManager.showOnOffToggleButton(7, 0, 1, 1, 5);// Indexes from MenuState menuList
+            //          }, clickInteractionTimeout);
+            //     }
+            //     break;
 
-            case "showAudioDescriptionMenuButton":
-            case "disabledAudioDescriptionMenuButton":
-                // TODO
-                // show the audio description configuration menu
-                if(_isTradMenuOpen)//EXPERIMENTAL
-                {
-                    console.log("Traditional "+name);
-                    var w = 30;
-                    var h = (ADMenuList.length+1) * heigthDropdownOption;
-                    var x = (scene.getObjectByName("traditionalMenuBackground").geometry.parameters.width-w)/2;
-                    var y = (scene.getObjectByName("traditionalMenuBackground").position.y+(scene.getObjectByName("traditionalMenuBackground").geometry.parameters.height + h)/2)+1+scene.getObjectByName("bgTimeline").geometry.parameters.height;
-                    secMMgr.createListBackground(x, y, w, h,"Audio Description",menuList[8], ADMenuList);
-                    MenuManager.showOnOffToggleButtonTradMenu(8, 0, 1, 2, 6);
-                }
-                else
-                {
-                    MenuManager.pressButtonFeedback(name);
-                    setTimeout(function(){ 
-                        MenuManager.openSecondLevelMenu(8);
-                        /* function (subMenuIndex, onButtonIndex, offButtonIndex, enabledTitleIndex, disabledTitleIndex) */
-                        MenuManager.showOnOffToggleButton(8, 0, 1, 2, 6);// Indexes from MenuState menuList
-                     }, clickInteractionTimeout);
-                }
-                break;
+            // case "showAudioDescriptionMenuButton":
+            // case "disabledAudioDescriptionMenuButton":
+            //     // TODO
+            //     // show the audio description configuration menu
+            //     if(_isTradMenuOpen)//EXPERIMENTAL
+            //     {
+            //         console.log("Traditional "+name);
+            //         var w = 30;
+            //         var h = (ADMenuList.length+1) * heigthDropdownOption;
+            //         var x = (scene.getObjectByName("traditionalMenuBackground").geometry.parameters.width-w)/2;
+            //         var y = (scene.getObjectByName("traditionalMenuBackground").position.y+(scene.getObjectByName("traditionalMenuBackground").geometry.parameters.height + h)/2)+1+scene.getObjectByName("bgTimeline").geometry.parameters.height;
+            //         secMMgr.createListBackground(x, y, w, h,"Audio Description",menuList[8], ADMenuList);
+            //         MenuManager.showOnOffToggleButtonTradMenu(8, 0, 1, 2, 6);
+            //     }
+            //     else
+            //     {
+            //         MenuManager.pressButtonFeedback(name);
+            //         setTimeout(function(){ 
+            //             MenuManager.openSecondLevelMenu(8);
+            //             /* function (subMenuIndex, onButtonIndex, offButtonIndex, enabledTitleIndex, disabledTitleIndex) */
+            //             MenuManager.showOnOffToggleButton(8, 0, 1, 2, 6);// Indexes from MenuState menuList
+            //          }, clickInteractionTimeout);
+            //     }
+            //     break;
 
-            case "showAudioSubtitlesMenuButton":
-            case "disabledAudioSubtitlesMenuButton":
-                // TODO
-                // show the audio subtitle configuration menu
-                if(_isTradMenuOpen)//EXPERIMENTAL
-                {
-                    console.log("Traditional "+name);
-                    var w = 30;
-                    var h = (ASTMenuList.length+1) * heigthDropdownOption;
-                    var x = (scene.getObjectByName("traditionalMenuBackground").geometry.parameters.width-w)/2;
-                    var y = (scene.getObjectByName("traditionalMenuBackground").position.y+(scene.getObjectByName("traditionalMenuBackground").geometry.parameters.height + h)/2)+1+scene.getObjectByName("bgTimeline").geometry.parameters.height;
-                    secMMgr.createListBackground(x, y, w, h,"Audio Subtitles", menuList[9], ASTMenuList);
-                    MenuManager.showOnOffToggleButtonTradMenu(9, 0, 1, 3, 7);
-                }
-                else
-                {
-                    MenuManager.pressButtonFeedback(name);
-                    setTimeout(function(){ 
-                        MenuManager.openSecondLevelMenu(9);
-                        /* function (subMenuIndex, onButtonIndex, offButtonIndex, enabledTitleIndex, disabledTitleIndex) */
-                        MenuManager.showOnOffToggleButton(9, 0, 1, 3, 7); // Indexes from MenuState menuList
-                     }, clickInteractionTimeout);                    
-                }
+            // case "showAudioSubtitlesMenuButton":
+            // case "disabledAudioSubtitlesMenuButton":
+            //     // TODO
+            //     // show the audio subtitle configuration menu
+            //     if(_isTradMenuOpen)//EXPERIMENTAL
+            //     {
+            //         console.log("Traditional "+name);
+            //         var w = 30;
+            //         var h = (ASTMenuList.length+1) * heigthDropdownOption;
+            //         var x = (scene.getObjectByName("traditionalMenuBackground").geometry.parameters.width-w)/2;
+            //         var y = (scene.getObjectByName("traditionalMenuBackground").position.y+(scene.getObjectByName("traditionalMenuBackground").geometry.parameters.height + h)/2)+1+scene.getObjectByName("bgTimeline").geometry.parameters.height;
+            //         secMMgr.createListBackground(x, y, w, h,"Audio Subtitles", menuList[9], ASTMenuList);
+            //         MenuManager.showOnOffToggleButtonTradMenu(9, 0, 1, 3, 7);
+            //     }
+            //     else
+            //     {
+            //         MenuManager.pressButtonFeedback(name);
+            //         setTimeout(function(){ 
+            //             MenuManager.openSecondLevelMenu(9);
+            //             /* function (subMenuIndex, onButtonIndex, offButtonIndex, enabledTitleIndex, disabledTitleIndex) */
+            //             MenuManager.showOnOffToggleButton(9, 0, 1, 3, 7); // Indexes from MenuState menuList
+            //          }, clickInteractionTimeout);                    
+            //     }
 
-                break;
+            //     break;
 
 //***********************************************************************************************************
 //
@@ -465,7 +465,6 @@ THREE.InteractionsController = function () {
     		var intersectedShapeId;
 			for(var inter = 0; inter < intersects.length; inter++)
 	        {
-	        	//if ( intersects[inter].object.type == 'Mesh' || intersects[inter].object.type == 'Group' ) 
                 if ( intersects[inter].object.type == 'Mesh' && intersects[inter].object.onexecute ) 
                 {
                     intersects[inter].object.onexecute();

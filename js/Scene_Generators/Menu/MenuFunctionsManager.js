@@ -102,9 +102,10 @@ MenuFunctionsManager = function() {
     {       
         return function() {
             interController.setSubtitlesActive( isEnabled );
+            if(_isTradMenuOpen) subController.switchSubtitles(isEnabled);
             menuList[6].isEnabled = isEnabled;
             MenuController.showMultiOptionsButtons( multiOptionsMainSubMenuIndexes.slice(0,1) );
-            MenuController.showOnOffToggleButton( 6, 0, 1, 0, 4 );
+            MenuController.showOnOffToggleButton( 6, menuList[6].buttons[0], menuList[6].buttons[1], 0, 4 );
         }
     }
 
@@ -112,10 +113,10 @@ MenuFunctionsManager = function() {
     {       
         return function() {
             interController.setSignerActive( isEnabled );
-            //subController.switchSigner( isEnabled );
+            if(_isTradMenuOpen) subController.switchSigner( isEnabled );
             menuList[7].isEnabled = isEnabled;
             MenuController.showMultiOptionsButtons( multiOptionsMainSubMenuIndexes.slice(1,2) );
-            MenuController.showOnOffToggleButton( 7, 0, 1, 1, 5 );
+            MenuController.showOnOffToggleButton( 7, menuList[7].buttons[0], menuList[7].buttons[1], 1, 5 );
         }
     }
 
@@ -125,7 +126,7 @@ MenuFunctionsManager = function() {
             //TODO AD functionality
             menuList[8].isEnabled = isEnabled;
             MenuController.showMultiOptionsButtons( multiOptionsMainSubMenuIndexes.slice(2,3) );
-            MenuController.showOnOffToggleButton( 8, 0, 1, 2, 6 );
+            MenuController.showOnOffToggleButton( 8, menuList[8].buttons[0], menuList[8].buttons[1], 2, 6 );
         }
     }
 
@@ -135,7 +136,7 @@ MenuFunctionsManager = function() {
             //TODO AST functionality
             menuList[9].isEnabled = isEnabled;
             MenuController.showMultiOptionsButtons( multiOptionsMainSubMenuIndexes.slice(3,4) );
-            MenuController.showOnOffToggleButton( 9, 0, 1, 3, 7 );
+            MenuController.showOnOffToggleButton( 9, menuList[9].buttons[0], menuList[9].buttons[1], 3, 7 );
         }
     }
 
@@ -253,31 +254,96 @@ MenuFunctionsManager = function() {
         }
     }
 
-
      this.getMultiOptionsMenuFunc = function(name)
     {
         switch ( name )
         {
+            case "showSubtitlesMenuButton":
+            case "disabledSubtitlesMenuButton":
+                return function() 
+                {
+                    interController.setActiveMenuName( menuList[6].name );
+                    var tradMenuBg = scene.getObjectByName("traditionalMenuBackground");
+                    var h = (STMenuList.length+1) * heigthDropdownOption;
+                    var x = (tradMenuBg.geometry.parameters.width-tradMenuWidth)/2;
+                    var y = (tradMenuBg.position.y+(tradMenuBg.geometry.parameters.height + h)/2)+1+scene.getObjectByName("bgTimeline").geometry.parameters.height;
+                    secMMgr.createListBackground(x, y, tradMenuWidth, h,"Subtitles", 6, STMenuList);
+                };
+
+            case "showSignLanguageMenuButton":
+            case "disabledSignLanguageMenuButton":
+                return function() 
+                {
+                    interController.setActiveMenuName( menuList[7].name );
+                    var tradMenuBg = scene.getObjectByName("traditionalMenuBackground");
+                    var h = (SLMenuList.length+1) * heigthDropdownOption;
+                    var x = (tradMenuBg.geometry.parameters.width-tradMenuWidth)/2;
+                    var y = (tradMenuBg.position.y+(tradMenuBg.geometry.parameters.height + h)/2)+1+scene.getObjectByName("bgTimeline").geometry.parameters.height;
+                    secMMgr.createListBackground(x, y, tradMenuWidth, h,"Sign Language", 7, SLMenuList);
+                }
+
+            case "showAudioDescriptionMenuButton":
+            case "disabledAudioDescriptionMenuButton":
+                return function() 
+                {
+                    interController.setActiveMenuName( menuList[8].name );
+                    var tradMenuBg = scene.getObjectByName("traditionalMenuBackground");
+                    var h = (ADMenuList.length+1) * heigthDropdownOption;
+                    var x = (tradMenuBg.geometry.parameters.width-tradMenuWidth)/2;
+                    var y = (tradMenuBg.position.y+(tradMenuBg.geometry.parameters.height + h)/2)+1+scene.getObjectByName("bgTimeline").geometry.parameters.height;
+                    secMMgr.createListBackground(x, y, tradMenuWidth, h,"Audio Description",8, ADMenuList);
+                }
+
+            case "showAudioSubtitlesMenuButton":
+            case "disabledAudioSubtitlesMenuButton":
+                return function() 
+                {
+                    interController.setActiveMenuName( menuList[9].name );
+                    var tradMenuBg = scene.getObjectByName("traditionalMenuBackground");
+                    var h = (ASTMenuList.length+1) * heigthDropdownOption;
+                    var x = (tradMenuBg.geometry.parameters.width-tradMenuWidth)/2;
+                    var y = (tradMenuBg.position.y+(tradMenuBg.geometry.parameters.height + h)/2)+1+scene.getObjectByName("bgTimeline").geometry.parameters.height;
+                    secMMgr.createListBackground(x, y, tradMenuWidth, h,"Audio Subtitles", 9, ASTMenuList);
+                }
+        }
+    };  
+
+     this.getMultiOptionsSubMenuFunc = function(name)
+    {
+        switch ( name )
+        {
             case "subtitlesLanguages":
-                return function() { secMMgr.openTradSubMenuDropdown(0, menuList[6], STMenuList[0], MenuDictionary.getSubtitleLanguagesArray(), 0, STMenuList)};
+                return function() {console.log(secMMgr.getActiveSecondaryMenuTrad()); secMMgr.openTradSubMenuDropdown(0, 6, STMenuList[0], MenuDictionary.getSubtitleLanguagesList(), STMenuList)};
 
             case "subtitlesEasyRead":
-                return function() { secMMgr.openTradSubMenuDropdown(1, menuList[6], STMenuList[1], subtitlesEasyArray, 0, STMenuList)};
+                return function() {console.log(secMMgr.getActiveSecondaryMenuTrad()); secMMgr.openTradSubMenuDropdown(1, 6, STMenuList[1], subtitlesEasyArray, STMenuList)};
 
             case "subtitlesShowPositions":
-                return function() { secMMgr.openTradSubMenuDropdown(2, menuList[6], STMenuList[2], subtitlesPositionArray, 0, STMenuList)};
+                return function() {console.log(secMMgr.getActiveSecondaryMenuTrad()); secMMgr.openTradSubMenuDropdown(2, 6, STMenuList[2], subtitlesPositionArray, STMenuList)};
 
             case "subtitlesBackground":
-                return function() { secMMgr.openTradSubMenuDropdown(3, menuList[6], STMenuList[3], subtitlesBackgroundArray, 0, STMenuList)};
+                return function() {console.log(secMMgr.getActiveSecondaryMenuTrad()); secMMgr.openTradSubMenuDropdown(3, 6, STMenuList[3], subtitlesBackgroundArray, STMenuList)};
 
             case "subtitlesSizes":
-                return function() { secMMgr.openTradSubMenuDropdown(4, menuList[6], STMenuList[4], subtitlesSizeArray, 0, STMenuList)};
+                return function() {console.log(secMMgr.getActiveSecondaryMenuTrad()); secMMgr.openTradSubMenuDropdown(4, 6, STMenuList[4], subtitlesSizeArray, STMenuList)};
 
             case "subtitlesIndicator":
-                return function() { secMMgr.openTradSubMenuDropdown(5, menuList[6], STMenuList[5], subtitlesIndicatorArray, 0, STMenuList)};
+                return function() {console.log(secMMgr.getActiveSecondaryMenuTrad()); secMMgr.openTradSubMenuDropdown(5, 6, STMenuList[5], subtitlesIndicatorArray, STMenuList)};
 
             case "subtitlesAreas":
-                return function() { secMMgr.openTradSubMenuDropdown(6, menuList[6], STMenuList[6], subtitlesSizeArray, 0, STMenuList)};
+                return function() {console.log(secMMgr.getActiveSecondaryMenuTrad()); secMMgr.openTradSubMenuDropdown(6, 6, STMenuList[6], subtitlesSizeArray, STMenuList)};
+
+            case "signerLanguages":
+                return function() { secMMgr.openTradSubMenuDropdown(0, 7, SLMenuList[0], MenuDictionary.getSignerLanguagesList(), SLMenuList)};
+            
+            case "signerShowPositions":
+                return function() { secMMgr.openTradSubMenuDropdown(1, 7, SLMenuList[1], subtitlesPositionArray, SLMenuList)};
+            
+            case "signerIndicator":
+                return function() { secMMgr.openTradSubMenuDropdown(2, 7, SLMenuList[2], signerIndicatorArray, SLMenuList)};
+            
+            case "signerAreas":
+                return function() { secMMgr.openTradSubMenuDropdown(3, 7, SLMenuList[3], subtitlesSizeArray, SLMenuList)};
 
             default: 
                 return undefined;
@@ -290,7 +356,7 @@ MenuFunctionsManager = function() {
             MenuManager.pressButtonFeedback( name );
             setTimeout(function(){ 
                 MenuManager.openSecondLevelMenu(6);
-                MenuController.showOnOffToggleButton(6, 0, 1, 0, 4);// Indexes from MenuState menuList
+                MenuController.showOnOffToggleButton(6, menuList[6].buttons[0], menuList[6].buttons[1], 0, 4);// Indexes from MenuState menuList
             }, clickInteractionTimeout);
         }
     };
@@ -301,7 +367,7 @@ MenuFunctionsManager = function() {
             MenuManager.pressButtonFeedback( name );
             setTimeout(function(){ 
                 MenuManager.openSecondLevelMenu(7);
-                MenuController.showOnOffToggleButton(7, 0, 1, 1, 5);// Indexes from MenuState menuList
+                MenuController.showOnOffToggleButton(7, menuList[7].buttons[0], menuList[7].buttons[1], 1, 5);// Indexes from MenuState menuList
             }, clickInteractionTimeout);
         }
     };
@@ -312,7 +378,7 @@ MenuFunctionsManager = function() {
             MenuManager.pressButtonFeedback( name );
             setTimeout(function(){ 
                 MenuManager.openSecondLevelMenu(8);
-                MenuController.showOnOffToggleButton(8, 0, 1, 2, 6);// Indexes from MenuState menuList
+                MenuController.showOnOffToggleButton(8, menuList[8].buttons[0], menuList[8].buttons[1], 2, 6);// Indexes from MenuState menuList
             }, clickInteractionTimeout);
         }
     };
@@ -323,7 +389,7 @@ MenuFunctionsManager = function() {
             MenuManager.pressButtonFeedback( name );
             setTimeout(function(){ 
                 MenuManager.openSecondLevelMenu(9);
-                MenuController.showOnOffToggleButton(9, 0, 1, 3, 7);// Indexes from MenuState menuList
+                MenuController.showOnOffToggleButton(9, menuList[9].buttons[0], menuList[9].buttons[1], 3, 7);// Indexes from MenuState menuList
             }, clickInteractionTimeout);
         }
     };

@@ -53,10 +53,10 @@ THREE.InteractionsController = function () {
                 if ( subtitlesActive ) subController.enableSubtitles();
                 MenuManager.pressButtonFeedback(name);
                 setTimeout(function(){
-                 MenuManager.closeMenu(); 
-                 scene.getObjectByName( "openMenu" ).visible = true;
+                    MenuManager.closeMenu(); 
+                    scene.getObjectByName( "openMenu" ).visible = true;
                  //scene.getObjectByName( "openMenuTrad" ).visible = true; //EXPERIMENTAL
-             }, clickInteractionTimeout);
+                }, clickInteractionTimeout);
                 
         		break;
 
@@ -389,6 +389,18 @@ THREE.InteractionsController = function () {
     		// TODO
             if ( scene.getObjectByName( "pointer" ) ) scene.getObjectByName( "pointer" ).visible = false;
     	}
+        else
+        {
+            var activeSecondaryMenuTrad = secMMgr.getActiveSecondaryMenuTrad();
+            if(activeSecondaryMenuTrad)
+            {
+                activeSecondaryMenuTrad.buttons.forEach(function(elem){
+                    interController.removeInteractiveObject(elem);
+                }); 
+              camera.remove(camera.getObjectByName(activeSecondaryMenuTrad.name));
+                
+            } 
+        }
 	};
 
     this.checkVRInteraction = function(origin, direction) 

@@ -88,11 +88,11 @@ this.getPlayoutTime = function(secs, format) {
             var timeoutFactor = 1;
             clearTimeout(playoutTimeout);
 
-            scene.getObjectByName(menuList[1].buttons[0]).visible = false; //menuList.
-            interController.removeInteractiveObject(menuList[1].buttons[0]); //menuList.
+            scene.getObjectByName(menuList[1].buttons[0]).visible = false; 
+            interController.removeInteractiveObject(menuList[1].buttons[0]); 
 
-            scene.getObjectByName(menuList[1].buttons[1]).visible = false; //menuList.
-            interController.removeInteractiveObject(menuList[1].buttons[1]); //menuList.
+            scene.getObjectByName(menuList[1].buttons[1]).visible = false; 
+            interController.removeInteractiveObject(menuList[1].buttons[1]);
 
             createPlayoutTimeFeedback(
                 menuData.getMenuTextMesh(ppMMgr.getPlayoutTime(moData.getListOfVideoContents()[0].vid.currentTime), 

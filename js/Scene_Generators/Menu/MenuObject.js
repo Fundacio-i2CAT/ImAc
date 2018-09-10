@@ -14,7 +14,7 @@ THREE.MenuObject = function () {
 
         if ( name == menuList[1].buttons[3] ) mesh.rotation.z = Math.PI;
 
-        var coliderMesh = new THREE.Mesh( new THREE.PlaneGeometry(cw-0.1, ch-0.1), new THREE.MeshBasicMaterial({visible: false}));
+        var coliderMesh = new THREE.Mesh( new THREE.PlaneGeometry(cw, ch), new THREE.MeshBasicMaterial({visible: false}));
         
         coliderMesh.name = name;
         coliderMesh.position.z = menuElementsZ+0.01;
@@ -125,7 +125,7 @@ THREE.MenuObject = function () {
         var mesh = new THREE.Mesh(textShape, textmaterial);
 
         mesh.name = name;
-        var coliderMesh = new THREE.Mesh( new THREE.PlaneGeometry(cw-0.1, ch-0.1), new THREE.MeshBasicMaterial({visible: false})); //{visible: false}));
+        var coliderMesh = new THREE.Mesh( new THREE.PlaneGeometry(cw, ch), new THREE.MeshBasicMaterial({visible: false})); //{visible: false}));
         
         coliderMesh.name = name;
         coliderMesh.position.z = menuElementsZ+0.01;

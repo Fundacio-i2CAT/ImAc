@@ -73,35 +73,42 @@ THREE.MenuController = function () {
     {
         if(AudioManager.getVolume()>0)
         {
-            scene.getObjectByName( menuList[2].buttons[2] ).visible = false; //menuList.volumeChangeMenu.unmuteVolumeButton
-            scene.getObjectByName( menuList[2].buttons[3] ).visible = true; //menuList.volumeChangeMenu.muteVolumeButton
-            interController.removeInteractiveObject( menuList[2].buttons[2] ); //menuList.volumeChangeMenu.unmuteVolumeButton
-            interController.addInteractiveObject( scene.getObjectByName( menuList[2].buttons[3] ) ); //menuList.volumeChangeMenu.muteVolumeButton
+            scene.getObjectByName( menuList[2].buttons[2] ).visible = false;
+            scene.getObjectByName( menuList[2].buttons[3] ).visible = true; 
+            interController.removeInteractiveObject( menuList[2].buttons[2] );
+            interController.addInteractiveObject( scene.getObjectByName( menuList[2].buttons[3] ) );
         }
         else
         {
-            scene.getObjectByName( menuList[2].buttons[3] ).visible = false; //menuList.volumeChangeMenu.muteVolumeButton
-            scene.getObjectByName( menuList[2].buttons[2] ).visible = true; //menuList.volumeChangeMenu.unmuteVolumeButton
-            interController.removeInteractiveObject( menuList[2].buttons[3] ); //menuList.volumeChangeMenu.muteVolumeButton
-            interController.addInteractiveObject( scene.getObjectByName( menuList[2].buttons[2] ) ); //menuList.volumeChangeMenu.unMuteVolumeButton
+            scene.getObjectByName( menuList[2].buttons[3] ).visible = false;
+            scene.getObjectByName( menuList[2].buttons[2] ).visible = true; 
+            interController.removeInteractiveObject( menuList[2].buttons[3] );
+            interController.addInteractiveObject( scene.getObjectByName( menuList[2].buttons[2] ) );
         }
     };
 
     this.volumeLevelDisplayLogic = function()
     {
+        scene.getObjectByName(menuList[2].buttons[2]).visible = false; 
+        interController.removeInteractiveObject(menuList[2].buttons[2]); 
+
+        scene.getObjectByName(menuList[2].buttons[3]).visible = false; 
+        interController.removeInteractiveObject(menuList[2].buttons[3]); 
+
+        var oldText = scene.getObjectByName('volumeLevel');
+        scene.getObjectByName('volumeChangeMenu').remove(oldText);
+
         if(!_isTradMenuOpen) 
         {
-            scene.getObjectByName(menuList[2].buttons[2]).visible = false; //menuList.volumeChangeMenu.unmuteVolumeButton
-            interController.removeInteractiveObject(menuList[2].buttons[2]); //menuList.volumeChangeMenu.unmuteVolumeButton
-
-            scene.getObjectByName(menuList[2].buttons[3]).visible = false; //menuList.volumeChangeMenu.muteVolumeButton
-            interController.removeInteractiveObject(menuList[2].buttons[3]); //menuList.volumeChangeMenu.muteVolumeButton
-
-            scene.getObjectByName('volumeChangeMenu').remove(scene.getObjectByName('volumeLevel'));
             var newText = menuData.getMenuTextMesh(AudioManager.getVolume()*100+'%', volFeedbackMenuTextSize, menuDefaultColor, 'volumeLevel');
-            scene.getObjectByName('volumeChangeMenu').add(newText)
-            scene.getObjectByName('volumeLevel').visible = true;
         }
+        else
+        {
+            var newText = menuData.getMenuTextMesh(AudioManager.getVolume()*100+'%', 1.25, menuDefaultColor, 'volumeLevel');
+            newText.position.x  = oldText.position.x;
+        }
+        scene.getObjectByName('volumeChangeMenu').add(newText)
+        scene.getObjectByName('volumeLevel').visible = true;
 
         setTimeout(function(){ 
             MenuController.showMuteUnmuteButton();

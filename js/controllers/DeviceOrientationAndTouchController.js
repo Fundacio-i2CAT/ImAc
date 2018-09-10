@@ -564,7 +564,8 @@ THREE.DeviceOrientationAndTouchController = function( object, objectPather, domE
                 p2.scale.set( dist/10,dist/10,dist/10 )
             }
 		}
-		else {
+		else if(_isHMD)
+		{
 			var mouse3D = new THREE.Vector3( 0, 0, 0 );
 			interController.checkInteraction(mouse3D, scope.object, 'onDocumentMouseMove');
 		}

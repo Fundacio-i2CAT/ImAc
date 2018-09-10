@@ -139,7 +139,7 @@ function AplicationManager()
         camera.name = 'perspectivecamera';
 
 
- 		var openMenuText = menuData.getMenuTextMesh("Menu", 22, 0xff0000, "openmenutext");
+ 		var openMenuText = menuData.getMenuTextMesh("Menu", 22, 0xe15517, "openmenutext"); 
  		openMenuText.position.y = 6;
  		openMenuText.position.z = -60;
  		openMenuText.scale.set(0.15, 0.15, 1)
@@ -262,7 +262,7 @@ scene.add( new THREE.HemisphereLight( 0x909090, 0x404040 ))
 			fuse: {
 				visible: false,
 				duration: 3,
-				color: 0xff0000,
+				color: 0x4669a7,
 				innerRadius: 0.045,
 				outerRadius: 0.06,
 				vibrate: 100, //Set to 0 or [] to disable
@@ -304,7 +304,8 @@ scene.add( new THREE.HemisphereLight( 0x909090, 0x404040 ))
 					display.isPresenting ? display.exitPresent() : display.requestPresent( [ { source: renderer.domElement } ] ).then(
 						function () { 
 							isVRtested=true; 
-							_isHMD = true; 							
+							_isHMD = true; 	
+							createMenus();						
 						});
 				};
 
@@ -355,6 +356,8 @@ scene.add( new THREE.HemisphereLight( 0x909090, 0x404040 ))
 						else
 						{
 							//controls = new THREE.DeviceOrientationAndTouchController( camera, CameraParentObject, renderer.domElement, renderer );
+							createMenus();	
+
 						}
 					} );
 
@@ -392,6 +395,8 @@ scene.add( new THREE.HemisphereLight( 0x909090, 0x404040 ))
 					isVRtested=true; 
 					//startAllVideos(); 
 					_isHMD = false; 
+
+					createMenus();
 
 				};
 			}
@@ -435,4 +440,22 @@ function stylizeElement( element )
 	element.style.opacity = '0.8';
 	element.style.outline = 'none';
 	element.style.zIndex = '999';
+}
+
+function createMenus ()
+{
+	    switch ( menuType )
+    {
+        case "LS_button":
+        default:
+            MenuManager.createMenu(true);
+            break;
+        case "LS_area":
+            MenuManager.createMenu(false);
+            break;
+        case "Traditional":
+            var menuTrad = MenuManager.createMenuTrad();
+            interController.addInteractiveObject(menuTrad);
+            break;
+    }
 }

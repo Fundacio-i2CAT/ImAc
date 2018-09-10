@@ -225,13 +225,13 @@ THREE.SecondaryMenuManager = function () {
 
         menuGroup.add( getImageMesh( -w/3, 34, 34, './img/menu/settings_icon.png', menuList[3].buttons[0] ) );
 
-        menuGroup.add( getMenuTextMesh( h/3, SettingsMenuList[0], 5, menuList[5].buttons[0], true, MenuFunctionsManager.getSubShowDropdownFunc( 0, menuList[5].buttons[0] ) ) );
+        menuGroup.add( getMenuTextMesh( h/3, SettingsMenuList[0], 5, menuList[5].buttons[0], true, MenuFunctionsManager.getSubShowDropdownFunc( 0, menuList[5].buttons[0] ), w/3, h/3 ) );
         menuGroup.add( createDropdownSubMenu( w, h, menuList[5].submenus[0], settingsLanguagesArray ) );
 
-        menuGroup.add( getMenuTextMesh( 0, SettingsMenuList[1], 5, menuList[5].buttons[1], true, MenuFunctionsManager.getSubShowDropdownFunc( 1, menuList[5].buttons[1] ) ) ); 
+        menuGroup.add( getMenuTextMesh( 0, SettingsMenuList[1], 5, menuList[5].buttons[1], true, MenuFunctionsManager.getSubShowDropdownFunc( 1, menuList[5].buttons[1] ),  w/3, h/3) ); 
         menuGroup.add( createDropdownSubMenu( w, h, menuList[5].submenus[1], settingsVoiceControlArray ) );
 
-        menuGroup.add( getMenuTextMesh( -h/3, SettingsMenuList[2], 5, menuList[5].buttons[2], true, MenuFunctionsManager.getSubShowDropdownFunc( 2, menuList[5].buttons[2] ) ) ); 
+        menuGroup.add( getMenuTextMesh( -h/3, SettingsMenuList[2], 5, menuList[5].buttons[2], true, MenuFunctionsManager.getSubShowDropdownFunc( 2, menuList[5].buttons[2] ), w/3, h/3) ); 
         menuGroup.add( createDropdownSubMenu( w, h, menuList[5].submenus[2], settingsUserProfileArray ) );
      
         menuGroup.name = name;
@@ -673,7 +673,7 @@ THREE.SecondaryMenuManager = function () {
             var listHeight = (h - h/(options.length+1));
             var height = listHeight/2;
 
-            var dropdowmTitle = getMenuTextMesh( height, title, tradMenuLetterSize, title, true);
+            var dropdowmTitle = getMenuTextMesh( height, title, tradMenuLetterSize, title, true, null, w, heigthDropdownOption);
 
 
             var onButton = menuData.getPlaneImageMesh( 4.5, 2.5, './img/menu/toggle_on.png', submenu.buttons[0], 4 );

@@ -398,6 +398,7 @@ THREE.InteractionsController = function () {
                     interController.removeInteractiveObject(elem);
                 }); 
               camera.remove(camera.getObjectByName(activeSecondaryMenuTrad.name));
+              subController.switchSigner( interController.getSignerActive() );
                 
             } 
         }

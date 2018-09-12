@@ -349,7 +349,7 @@ scene.add( new THREE.HemisphereLight( 0x909090, 0x404040 ))
 
 						_display = displays;
 
-						if ( displays.length > 0) 
+						if ( displays.length > 0 && menuType != "Traditional") 
 						{
 							showEnterVR( displays[ 0 ] );
 						}
@@ -411,7 +411,7 @@ scene.add( new THREE.HemisphereLight( 0x909090, 0x404040 ))
 
 				navigator.getVRDisplays().then( function ( displays ) 
 				{
-					if ( displays.length > 0) 
+					if ( displays.length > 0 && menuType != "Traditional") 
 					{
 						showEnterVR();
 					}

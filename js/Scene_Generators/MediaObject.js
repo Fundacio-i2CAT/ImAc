@@ -735,7 +735,7 @@ THREE.MediaObject = function () {
             );
         var pointer1 = new THREE.Mesh(
                 new THREE.SphereBufferGeometry( 0.04, 32, 8 ),
-                new THREE.MeshBasicMaterial( { color: 0xDB3236 } )
+                new THREE.MeshBasicMaterial( { color: 0xffff00 } )
             );
 
         pointer.add(pointer1)

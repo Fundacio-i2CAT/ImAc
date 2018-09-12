@@ -139,7 +139,7 @@ function AplicationManager()
         camera.name = 'perspectivecamera';
 
 
- 		var openMenuText = menuData.getMenuTextMesh("Menu", 22, 0xe15517, "openmenutext"); 
+ 		var openMenuText = menuData.getMenuTextMesh("Menu", 22, 0xffff00, "openmenutext"); 
  		openMenuText.position.y = 6;
  		openMenuText.position.z = -60;
  		openMenuText.scale.set(0.15, 0.15, 1)

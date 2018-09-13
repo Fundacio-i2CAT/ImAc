@@ -454,8 +454,29 @@ function createMenus ()
             MenuManager.createMenu(false);
             break;
         case "Traditional":
-            var menuTrad = MenuManager.createMenuTrad();
-            interController.addInteractiveObject(menuTrad);
+
+        /*    var menuTrad = MenuManager.createMenuTrad();
+            interController.addInteractiveObject(menuTrad);*/
+			//var InteraInteractiveElement = export('../js/Models/InteraInteractiveElementModel.js')
+            var data = {
+
+	            "width": 50,
+				"height" :10,
+				"name" : "test",
+				"type": "text",
+				"value" :"This is a test button",
+				"color" :0xffffff,
+				"textSize": 15,
+				"disabled" :false,
+				"position" :new THREE.Vector3(0,0, -15),
+				"interactiveArea": new THREE.Mesh( new THREE.PlaneGeometry(10, 10), new THREE.MeshBasicMaterial({visible: false})),
+				"onexecute" : function(){ return console.log("This is a test button"); }
+            }
+
+            var button = new InteractiveElement(data);
+
+            console.log(button)
+
             break;
     }
 }

@@ -1,39 +1,48 @@
 
 
-var InteractiveElement =  function (data) {
+/*function InteractiveElementModel() {
 
-	this.width = data.width;
-	this.height = data.height;
+	this.name;
+	this.type;
+	this.value;
+	this.color;
+	this.textSize;
+	this.disabled;
+	this.position;
+	this.interactiveArea;
+	this.onexecute;
+}*/
+
+function InteractiveElementModel(data) {
+
 	this.name = data.name;
 	this.type = data.type;
 	this.value = data.value;
 	this.color = data.color;
 	this.textSize = data.textSize;
-	this.disabled = data.disabled;
-	this.position = new THREE.Vector3(data.position);
-	this.interactiveArea = new THREE.Mesh( new THREE.PlaneGeometry(data.width, data.height), new THREE.MeshBasicMaterial({visible: false}));
-	this.onexecute = function(){ return data.function; }
-
+	this.visible = data.visible;
+	this.interactiveArea = data.interactiveArea;
+	this.onexecute = data.onexecute;
 }
 
-InteractiveElement.prototype.create = function(){
+InteractiveElementModel.prototype.create = function(){
 
 	switch(this.type){
 
 		case "icon":
 		default:
-			return createImageIE()
+			return createImageIE(this)
 
 		case "text":
-			return createTextIE();
+			return createTextIE(this);
 	}
 }
 
-function createTextIE (){
+function createTextIE (element){
 
     var shape = new THREE.BufferGeometry();
-    var material = new THREE.MeshBasicMaterial( { color: this.color} );
-    var shapes = moData.getFont().generateShapes( this.value, this.textSize);
+    var material = new THREE.MeshBasicMaterial( { color: element.color} );
+    var shapes = moData.getFont().generateShapes( element.value, element.textSize);
     var geometry = new THREE.ShapeGeometry( shapes );
 
     geometry.computeBoundingBox();
@@ -41,33 +50,34 @@ function createTextIE (){
     shape.center();
 	var mesh = new THREE.Mesh(shape, material);
 
-    return addColiderMesh(mesh);
+    return addColiderMesh(element, mesh);
 }
 
-function createImageIE(){
+function createImageIE(element){
 
-	var geometry = new THREE.PlaneGeometry(this.width, this.height);
+	var geometry = new THREE.PlaneGeometry(element.width, element.height);
     var loader = new THREE.TextureLoader();
-    var texture = loader.load(this.value);
+    var texture = loader.load(element.value);
     texture.minFilter = THREE.LinearFilter;
     texture.format = THREE.RGBAFormat;
     var material = new THREE.MeshBasicMaterial( { map: texture, transparent: true, side: THREE.FrontSide } );
     var mesh = new THREE.Mesh( geometry, material );
 
-    return addColiderMesh(mesh);
+    return addColiderMesh(element, mesh);
 }
 
-function addColiderMesh(mesh){
-
-	var coliderMesh = this.interactiveArea;
-    coliderMesh.name = this.name;
-    coliderMesh.position.z = this.position.z+0.01;
-	coliderMesh.onexecute = this.onexecute;
+function addColiderMesh(element, mesh){
+	var coliderMesh = element.interactiveArea;
+    coliderMesh.name = element.name;
+    coliderMesh.position.z = element.position.z+0.01;
+	coliderMesh.onexecute = element.onexecute;
     
-    mesh.name = name;
-    mesh.position = this.position;
+    mesh.name = element.name;
+    mesh.position = element.position;
 
 	mesh.add(coliderMesh);
+
+	mesh.visible = element.visible;
 
 	return mesh;
 }

@@ -7,7 +7,16 @@
 
 THREE.SecondaryMenuManager = function () {
 
+   /* var menu =  new THREE.Group();
     this.timelineScale = 0;
+    
+    init(){
+        var menu =  new THREE.Group();
+        menu.name = "menu"
+
+        scene.add(menu)
+
+    }*/
 //************************************************************************************
 // Private Functions
 //************************************************************************************
@@ -462,7 +471,7 @@ THREE.SecondaryMenuManager = function () {
     {
         var menuGroup =  new THREE.Group();
 
-        menuGroup.add( getImageMesh( 3*w/8, 22.5, 22.5, './img/menu/plus_icon.png', menuList[2].buttons[1], MenuFunctionsManager.getChangeVolumeFunc( true, menuList[2].buttons[1] ) ) );
+        scene.getObjectByName('plus') =  menuGroup.add( getImageMesh( 3*w/8, 22.5, 22.5, './img/menu/plus_icon.png', menuList[2].buttons[1], MenuFunctionsManager.getChangeVolumeFunc( true, menuList[2].buttons[1] ) ) );
         menuGroup.add( getImageMesh( 0, 56, 56, './img/menu/volume_mute_icon.png', menuList[2].buttons[3], MenuFunctionsManager.getMuteVolumeFunc( menuList[2].buttons[3] ) ) );
         menuGroup.add( getImageMesh( 0, 56, 56, './img/menu/volume_unmute_icon.png', menuList[2].buttons[2], MenuFunctionsManager.getUnMuteVolumeFunc( menuList[2].buttons[2] ) ) );
         menuGroup.add( getImageMesh( -3*w/8, 22.5, 22.5, './img/menu/minus_icon.png', menuList[2].buttons[0], MenuFunctionsManager.getChangeVolumeFunc( false, menuList[2].buttons[0] ) ) );

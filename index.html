@@ -73,7 +73,20 @@
 
 	<script src="js/pilot1.js"></script>
 	<script src="js/index.js"></script>
+
+	<script src="js/Data/PlayPauseLSMenuData.js"></script>
+
 	<script src="js/Models/InteractiveElementModel.js"></script>
+	<script src="js/Models/PlayPauseLSMenuModel.js"></script>
+
+	<script src="js/Views/PlayPauseLSMenuView.js"></script>
+
+	<script src="js/Controllers/PlayPauseLSMenuController.js"></script>
+
+	
+
+	<script src="js/Managers/MenuManager.js"></script>
+
 </head>
 
 <body onload="init_webplayer()">
@@ -90,9 +103,9 @@
 		<div class="col-xs-2 options">
 			<h3>Menu Type</h3>
 			<form id="myform">
-			  <input type="radio" name="gender" value="LS_button" checked> Low-sighted (button)<br>
+			  <input type="radio" name="gender" value="LS_button"> Low-sighted (button)<br>
 			  <input type="radio" name="gender" value="LS_area"> Low-sighted (area)<br>
-			  <input type="radio" name="gender" value="Traditional"> Traditional  
+			  <input type="radio" name="gender" value="Traditional" checked> Traditional  
 			</form> 
 			<br>
 			

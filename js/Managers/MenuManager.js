@@ -1,7 +1,7 @@
 function MenuManager2() {
 
 
-	this.createPlayPauseMenu = function(){
+	this.createPlayPauseMenuView = function(){
 
 		var menu =  new THREE.Group();
 		menu.name = 'playpausemenu';

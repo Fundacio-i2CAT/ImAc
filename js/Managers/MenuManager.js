@@ -3,11 +3,12 @@ function MenuManager() {
     var menuParent;
     var controllers = [];
     var actualCtrl;
+    var menuActivationElement;
 
     var playpauseCtrl;
     var volumeCtrl;
     var settingsCtrl;
-    // TODO var multiOptionsCtrl;
+    var multiOptionsCtrl;
     
     this.Init = function()
     {
@@ -37,15 +38,13 @@ function MenuManager() {
         menuParent.add(createSettingsLSMenuViewStructure());
         settingsCtrl.Init();
 
-//TODO
-        /*multiOptionsCtrl = new MultiOptionsLSMenuController();
+        multiOptionsCtrl = new MultiOptionsLSMenuController();
         controllers.push(multiOptionsCtrl);
         menuParent.add(createMultiOptionsLSMenuViewStructure());
-        multiOptionsCtrl.Init();*/
+        multiOptionsCtrl.Init();
 
         ResetViews();
 
-        Load(playpauseCtrl);
     }
 
     this.NavigateForwardMenu = function()
@@ -59,6 +58,9 @@ function MenuManager() {
                 return Load(settingsCtrl)
 
             case settingsCtrl.getLSMenuName():
+                return Load(multiOptionsCtrl)
+
+            case multiOptionsCtrl.getLSMenuName():
                 return Load(playpauseCtrl)
         }
     }
@@ -68,13 +70,16 @@ function MenuManager() {
         switch(actualCtrl.getLSMenuName())
         {
             case playpauseCtrl.getLSMenuName():
-                return Load(settingsCtrl);
+                return Load(multiOptionsCtrl);
 
             case volumeCtrl.getLSMenuName():
                 return Load(playpauseCtrl)
 
             case settingsCtrl.getLSMenuName():
                 return Load(volumeCtrl)
+
+            case multiOptionsCtrl.getLSMenuName():
+                return Load(settingsCtrl)
         }
     }
 
@@ -83,12 +88,22 @@ function MenuManager() {
         if(actualCtrl) actualCtrl.Exit();
 
         actualCtrl = controller;
+        
+        //CREATE A FUNCTIONS WHERE ALL THE MULTIOPTIONS ARE DISABLED
+
+        interController.setSubtitlesActive( subController.getSubtitleEnabled() ); // TODO CHANGE THIS  FUNCTION
+
+        if ( interController.getSubtitlesActive() ) subController.disableSubtiles(); // TODO CHANGE THIS  FUNCTION
+
+        //subController.switchSigner( false ); // TODO CHANGE THIS  FUNCTION
+
+        MenuDictionary.initGlobalArraysByLanguage();
 
         actualCtrl.Init();
     }
 
 /**
- * Resets the visibility to false in all the low sighted menus
+ * Resets the visibility to false in all the low sighted menus and shows the menu activation area
  *
  * @class      ResetViews (name)
  */
@@ -97,7 +112,45 @@ function MenuManager() {
         controllers.forEach(function(controller){
             controller.Exit();
         });
+
+        if(menuActivationElement) menuActivationElement.visible = true;
+
+        //CREATE A FUNCTIONS WHERE ALL THE MULTIOPTIONS ARE ENABLED
+        if ( interController.getSubtitlesActive() ) subController.enableSubtitles(); // TODO CHANGE THIS  FUNCTION
     }
+
+    this.createMenuActivationElement = function()
+    {
+        var geometry = new THREE.SphereGeometry( 99, 64, 16, Math.PI/2, Math.PI * 2,  7*Math.PI/20,  -Math.PI/12 );
+        var material = new THREE.MeshBasicMaterial( {color: 0xffffff, side: THREE.FrontSide, transparent: true, opacity:0.05} );
+        menuActivationElement = new THREE.Mesh( geometry, material );
+        menuActivationElement.name = 'openMenu';
+
+        Reticulum.add( menuActivationElement, {
+            reticleHoverColor: 0x4669a7,
+            fuseDuration: 2, // Overrides global fuse duration
+            fuseVisible: true,
+            onGazeOver: function(){
+                // do something when user targets object
+                scene.getObjectByName("openmenutext").visible = true;
+                this.material.color.setHex( 0xffffff );
+            },
+            onGazeOut: function(){
+                // do something when user moves reticle off targeted object
+                scene.getObjectByName("openmenutext").visible = false;
+                this.material.color.setHex( 0xffffff );
+            },
+            onGazeLong: function(){
+                menuActivationElement.visible = false;
+                scene.getObjectByName( "openmenutext" ).visible = false;
+                Load(playpauseCtrl);
+            }/*,
+            onGazeClick: MenuFunctionsManager.getOpenMenuFunc()*/
+        });
+
+        scene.add(menuActivationElement)
+    }
+
 
 /*******************************************************************************************************
  *
@@ -370,10 +423,146 @@ function MenuManager() {
         return settingsmenu;
     }
 
-//TODO
+/**
+ * Creates the MULTI OPTIONS low sighted menu structure.
+ *
+ * @return     {mesh}  { the multi options menu mesh }
+ */
     function createMultiOptionsLSMenuViewStructure()
     {
+        var multioptionsmenu = createLSMenuBaseViewStructure('multioptionsmenu');
 
+// SUBTITLES
+        var subtitlesButton = new InteractiveElementModel();
+        subtitlesButton.width = 20;
+        subtitlesButton.height = 20;
+        subtitlesButton.name = 'showSubtitlesMenuButton';
+        subtitlesButton.type =  'text';
+        subtitlesButton.value = 'SL';
+        subtitlesButton.color = 0xffffff;
+        subtitlesButton.visible = true;
+        subtitlesButton.textSize=  12;
+        subtitlesButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(subtitlesButton.width, subtitlesButton.height), new THREE.MeshBasicMaterial({visible: false}));
+        subtitlesButton.onexecute =  function(){ return console.log("This is the ST button"); };
+        subtitlesButton.position = new THREE.Vector3(-3*125/8, 0, 0.01);
+
+        multioptionsmenu.add(subtitlesButton.create());
+
+// SUBTITLES DISABLED
+        var subtitlesDisabledButton = new InteractiveElementModel();
+        subtitlesDisabledButton.width = 20;
+        subtitlesDisabledButton.height = 20;
+        subtitlesDisabledButton.name = 'disabledSubtitlesMenuButton';
+        subtitlesDisabledButton.type =  'icon';
+        subtitlesDisabledButton.value = './img/menu/disabled_st_icon.png';
+        subtitlesDisabledButton.color = 0xffffff;
+        subtitlesDisabledButton.visible = false;
+        subtitlesDisabledButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(subtitlesDisabledButton.width, subtitlesDisabledButton.height), new THREE.MeshBasicMaterial({visible: false}));
+        subtitlesDisabledButton.onexecute =  function(){ return console.log("This is the disabled ST button"); };
+        subtitlesDisabledButton.position = new THREE.Vector3(-3*125/8, 0, 0.01);
+
+        multioptionsmenu.add(subtitlesDisabledButton.create());
+
+//SIGN LANGUAGE
+        var signLanguageButton = new InteractiveElementModel();
+        signLanguageButton.width = 20;
+        signLanguageButton.height = 20;
+        signLanguageButton.name = 'showSignLanguageMenuButton';
+        signLanguageButton.type =  'text';
+        signLanguageButton.value = 'SL';
+        signLanguageButton.color = 0xffffff;
+        signLanguageButton.visible = true;
+        signLanguageButton.textSize=  12;
+        signLanguageButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(signLanguageButton.width, signLanguageButton.height), new THREE.MeshBasicMaterial({visible: false}));
+        signLanguageButton.onexecute =  function(){ return console.log("This is the SL button"); };
+        signLanguageButton.position = new THREE.Vector3(-1*125/8, 0, 0.01);
+
+        multioptionsmenu.add(signLanguageButton.create());
+
+//SIGN LANGUAGE DISABLED
+        var signLanguageDisabledButton = new InteractiveElementModel();
+        signLanguageDisabledButton.width = 20;
+        signLanguageDisabledButton.height = 20;
+        signLanguageDisabledButton.name = 'disabledSignLanguageMenuButton';
+        signLanguageDisabledButton.type =  'icon';
+        signLanguageDisabledButton.value = './img/menu/disabled_sl_icon.png';
+        signLanguageDisabledButton.color = 0xffffff;
+        signLanguageDisabledButton.visible = false;
+        signLanguageDisabledButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(signLanguageDisabledButton.width, signLanguageDisabledButton.height), new THREE.MeshBasicMaterial({visible: false}));
+        signLanguageDisabledButton.onexecute =  function(){ return console.log("This is the disabled SL button"); };
+        signLanguageDisabledButton.position = new THREE.Vector3(-1*125/8, 0, 0.01);
+
+        multioptionsmenu.add(signLanguageDisabledButton.create());
+
+//AUDIO DESCRIPTION
+        var audioDescriptionButton = new InteractiveElementModel();
+        audioDescriptionButton.width = 20;
+        audioDescriptionButton.height = 20;
+        audioDescriptionButton.name = 'showAudioDescriptionMenuButton';
+        audioDescriptionButton.type =  'text';
+        audioDescriptionButton.value = 'AD';
+        audioDescriptionButton.color = 0xffffff;
+        audioDescriptionButton.visible = true;
+        audioDescriptionButton.textSize=  12;
+        audioDescriptionButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(audioDescriptionButton.width, audioDescriptionButton.height), new THREE.MeshBasicMaterial({visible: false}));
+        audioDescriptionButton.onexecute =  function(){ return console.log("This is the AD button"); };
+        audioDescriptionButton.position = new THREE.Vector3(1*125/8, 0, 0.01);
+
+        multioptionsmenu.add(audioDescriptionButton.create());
+
+//AUDIO DESCRIPTION DISABLED
+        var audioDescriptionDisabledButton = new InteractiveElementModel();
+        audioDescriptionDisabledButton.width = 20;
+        audioDescriptionDisabledButton.height = 20;
+        audioDescriptionDisabledButton.name = 'disabledAudioDescriptionMenuButton';
+        audioDescriptionDisabledButton.type =  'icon';
+        audioDescriptionDisabledButton.value = './img/menu/disabled_ad_icon.png';
+        audioDescriptionDisabledButton.color = 0xffffff;
+        audioDescriptionDisabledButton.visible = false;
+        audioDescriptionDisabledButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(audioDescriptionDisabledButton.width, audioDescriptionDisabledButton.height), new THREE.MeshBasicMaterial({visible: false}));
+        audioDescriptionDisabledButton.onexecute =  function(){ return console.log("This is the disabled AD button"); };
+        audioDescriptionDisabledButton.position = new THREE.Vector3(1*125/8, 0, 0.01);
+
+        multioptionsmenu.add(audioDescriptionDisabledButton.create());
+
+//AUDIO SUBTITLES
+        var audioSubtitlesButton = new InteractiveElementModel();
+        audioSubtitlesButton.width = 30;
+        audioSubtitlesButton.height = 20;
+        audioSubtitlesButton.name = 'showAudioSubtitlesMenuButton';
+        audioSubtitlesButton.type =  'text';
+        audioSubtitlesButton.value = 'AST';
+        audioSubtitlesButton.color = 0xffffff;
+        audioSubtitlesButton.visible = true;
+        audioSubtitlesButton.textSize =  12;
+        audioSubtitlesButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(audioSubtitlesButton.width, audioSubtitlesButton.height), new THREE.MeshBasicMaterial({visible: false}));
+        audioSubtitlesButton.onexecute =  function(){ return console.log("This is the AST button"); };
+        audioSubtitlesButton.position = new THREE.Vector3(3*125/8, 0, 0.01);
+
+        multioptionsmenu.add(audioSubtitlesButton.create());
+
+//AUDIO SUBTITLES DISABLED
+        var audioSubtitlesDisabledButton = new InteractiveElementModel();
+        audioSubtitlesDisabledButton.width = 20;
+        audioSubtitlesDisabledButton.height = 20;
+        audioSubtitlesDisabledButton.name = 'disabledAudioSubtitlesMenuButton';
+        audioSubtitlesDisabledButton.type =  'icon';
+        audioSubtitlesDisabledButton.value = './img/menu/disabled_ast_icon.png';
+        audioSubtitlesDisabledButton.color = 0xffffff;
+        audioSubtitlesDisabledButton.visible = false;
+        audioSubtitlesDisabledButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(audioSubtitlesDisabledButton.width, audioSubtitlesDisabledButton.height), new THREE.MeshBasicMaterial({visible: false}));
+        audioSubtitlesDisabledButton.onexecute =  function(){ return console.log("This is the disabled AST button"); };
+        audioSubtitlesDisabledButton.position = new THREE.Vector3(3*125/8, 0, 0.01);
+
+        multioptionsmenu.add(audioSubtitlesDisabledButton.create());
+
+        return multioptionsmenu;
+
+    }
+
+    function createOptionLSMenuViewStructure()
+    {
+        var lsoptionmenu = createLSMenuBaseViewStructure('lsoptionmenu');
     }
 
 }

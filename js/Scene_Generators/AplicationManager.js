@@ -455,7 +455,8 @@ function createMenus ()
             break;
         case "Traditional":
 
-			menumanager.Init();
+        	menumanager.Init();
+			menumanager.createMenuActivationElement();
 
             break;
     }

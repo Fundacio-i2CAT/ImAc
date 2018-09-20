@@ -8,7 +8,8 @@ var MenuFunctionsManager = new MenuFunctionsManager();
 var moData = new THREE.MediaObject();
 var menuData = new THREE.MenuObject();
 
-var MenuManager = new THREE.MenuManager();
+var menumanager = new MenuManager();
+//var MenuManager = new THREE.MenuManager();
 var MenuController = new THREE.MenuController();
 var MenuDictionary = new MenuDictionary();
 

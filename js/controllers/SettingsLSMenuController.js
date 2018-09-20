@@ -1,5 +1,5 @@
 
-function PlayPauseLSMenuController() {
+function SettingsLSMenuController() {
 
 	var data;
 	var view;
@@ -13,7 +13,7 @@ function PlayPauseLSMenuController() {
 		viewStructure = scene.getObjectByName(data.name);
 		viewStructure.visible = true;
 
-		view = new PlayPauseLSMenuView();
+		view = new SettingsLSMenuView();
 		view.UpdateView(data); 
 
 		AddInteractivityToMenuElements();
@@ -39,7 +39,7 @@ function PlayPauseLSMenuController() {
 	{
 	    if (data == null)
 	    {
-	        data = new PlayPauseLSMenuModel();
+	        data = new SettingsLSMenuModel();
 	    }
 	    return data;
 	}
@@ -47,7 +47,6 @@ function PlayPauseLSMenuController() {
 
 	function UpdateData(data)
     {
-		data.isPaused = ppMMgr.isPausedById(0);
 		data.backMenuButtonfunc = function(){ menumanager.NavigateBackMenu()};
 		data.forwardMenuButtonFunc = function(){ menumanager.NavigateForwardMenu()};
     }

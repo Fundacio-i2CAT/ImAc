@@ -444,7 +444,7 @@ function stylizeElement( element )
 
 function createMenus ()
 {
-	    switch ( menuType )
+    switch ( menuType )
     {
         case "LS_button":
         default:
@@ -455,14 +455,7 @@ function createMenus ()
             break;
         case "Traditional":
 
-        /*    var menuTrad = MenuManager.createMenuTrad();
-            interController.addInteractiveObject(menuTrad);*/
-			//var InteraInteractiveElement = export('../js/Models/InteraInteractiveElementModel.js')
-			var menu = new MenuManager2();
-
-			console.log(menu)
-
-			console.log(menu.createPlayPauseMenu());
+			menumanager.Init();
 
             break;
     }

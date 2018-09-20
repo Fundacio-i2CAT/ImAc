@@ -1,5 +1,5 @@
 
-function PlayPauseLSMenuController() {
+function VolumeLSMenuController() {
 
 	var data;
 	var view;
@@ -13,7 +13,7 @@ function PlayPauseLSMenuController() {
 		viewStructure = scene.getObjectByName(data.name);
 		viewStructure.visible = true;
 
-		view = new PlayPauseLSMenuView();
+		view = new VolumeLSMenuView();
 		view.UpdateView(data); 
 
 		AddInteractivityToMenuElements();
@@ -30,7 +30,7 @@ function PlayPauseLSMenuController() {
     	}
     }
 
-    this.getLSMenuName = function()
+	this.getLSMenuName = function()
     {
     	return data.name;
     }
@@ -39,7 +39,7 @@ function PlayPauseLSMenuController() {
 	{
 	    if (data == null)
 	    {
-	        data = new PlayPauseLSMenuModel();
+	        data = new VolumeLSMenuModel();
 	    }
 	    return data;
 	}
@@ -47,7 +47,7 @@ function PlayPauseLSMenuController() {
 
 	function UpdateData(data)
     {
-		data.isPaused = ppMMgr.isPausedById(0);
+		data.isMuted = AudioManager.isAudioMuted();
 		data.backMenuButtonfunc = function(){ menumanager.NavigateBackMenu()};
 		data.forwardMenuButtonFunc = function(){ menumanager.NavigateForwardMenu()};
     }

@@ -1,28 +1,18 @@
 
+function InteractiveElementModel() {
 
-/*function InteractiveElementModel() {
-
+	this.width;
+	this.height;
+	this.rotation;
 	this.name;
 	this.type;
 	this.value;
 	this.color;
 	this.textSize;
-	this.disabled;
+	this.visible;
 	this.position;
 	this.interactiveArea;
 	this.onexecute;
-}*/
-
-function InteractiveElementModel(data) {
-
-	this.name = data.name;
-	this.type = data.type;
-	this.value = data.value;
-	this.color = data.color;
-	this.textSize = data.textSize;
-	this.visible = data.visible;
-	this.interactiveArea = data.interactiveArea;
-	this.onexecute = data.onexecute;
 }
 
 InteractiveElementModel.prototype.create = function(){
@@ -48,6 +38,7 @@ function createTextIE (element){
     geometry.computeBoundingBox();
     shape.fromGeometry( geometry );
     shape.center();
+
 	var mesh = new THREE.Mesh(shape, material);
 
     return addColiderMesh(element, mesh);
@@ -58,26 +49,35 @@ function createImageIE(element){
 	var geometry = new THREE.PlaneGeometry(element.width, element.height);
     var loader = new THREE.TextureLoader();
     var texture = loader.load(element.value);
+
     texture.minFilter = THREE.LinearFilter;
     texture.format = THREE.RGBAFormat;
     var material = new THREE.MeshBasicMaterial( { map: texture, transparent: true, side: THREE.FrontSide } );
+    
     var mesh = new THREE.Mesh( geometry, material );
+    if(element.rotation) mesh.rotation.z = element.rotation;
 
     return addColiderMesh(element, mesh);
 }
 
 function addColiderMesh(element, mesh){
-	var coliderMesh = element.interactiveArea;
-    coliderMesh.name = element.name;
-    coliderMesh.position.z = element.position.z+0.01;
-	coliderMesh.onexecute = element.onexecute;
-    
-    mesh.name = element.name;
-    mesh.position = element.position;
+	if(element.interactiveArea)
+	{
+		var coliderMesh = element.interactiveArea;
+	    coliderMesh.name = element.name;
+	    coliderMesh.position.z = 0.01
+		coliderMesh.onexecute = element.onexecute;
+		mesh.onexecute = element.onexecute;
+		mesh.add(coliderMesh);
+	}
 
-	mesh.add(coliderMesh);
+	mesh.visible = element.visible;	
+	mesh.position.set(element.position.x, element.position.y, element.position.z );
+	mesh.name = element.name;
+	mesh.renderOrder = 5;
+	
 
-	mesh.visible = element.visible;
-
+	//if(element.visible) interController.addInteractiveObject(mesh);
+	
 	return mesh;
 }

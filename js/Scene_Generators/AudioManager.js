@@ -9,7 +9,8 @@ AudioManager = function() {
     var volume; // Variable for volume level state saving;
     var foaRenderer,
         isAmbisonics,
-        activeVideoElement;  // Video element been reproduced.
+        activeVideoElement,
+        isMuted;  // Video element been reproduced.
 
     function getFOARenderer(audioContext)
     {
@@ -80,12 +81,14 @@ AudioManager = function() {
 
     this.setmute = function()
     {
+        isMuted = true;
         volume = activeVideoElement.volume;
         activeVideoElement.volume = 0;
     };
 
     this.setunmute = function()
     {
+        isMuted = false;
         activeVideoElement.volume = volume > 0 ? volume : volumeChangeStep;
     };
 
@@ -119,5 +122,10 @@ AudioManager = function() {
     this.getVolume = function()
     {
         return Math.round(activeVideoElement.volume * 100) / 100
+    }
+
+    this.isAudioMuted = function()
+    {
+        return isMuted;
     }
 }

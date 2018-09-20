@@ -400,7 +400,7 @@ THREE.SecondaryMenuManager = function () {
 
         menuGroup.add( 
             getMenuTitleMesh(
-                (tradmenuDivisions-11)*w/(tradmenuDivisions*2), 
+                (tradmenuDivisions-13)*w/(tradmenuDivisions*2), 
                 1.5, 
                 'ST', 
                 menuList[4].buttons[0], 
@@ -409,13 +409,13 @@ THREE.SecondaryMenuManager = function () {
                 w/tradmenuDivisions,
                 4
             ));
-        var stDis = menuData.getImageMesh((tradmenuDivisions-11)*w/(tradmenuDivisions*2), 2,2, './img/menu/disabled_st_icon.png', menuList[4].buttons[4], MenuFunctionsManager.getMultiOptionsMenuFunc(menuList[4].buttons[4]), w/tradmenuDivisions,4);
+        var stDis = menuData.getImageMesh((tradmenuDivisions-13)*w/(tradmenuDivisions*2), 2,2, './img/menu/disabled_st_icon.png', menuList[4].buttons[4], MenuFunctionsManager.getMultiOptionsMenuFunc(menuList[4].buttons[4]), w/tradmenuDivisions,4);
         stDis.visible = false;
         menuGroup.add(stDis );
 
         menuGroup.add( 
             getMenuTitleMesh(
-                (tradmenuDivisions-9)*w/(tradmenuDivisions*2),
+                (tradmenuDivisions-11)*w/(tradmenuDivisions*2),
                 1.5,
                 'SL',
                 menuList[4].buttons[1],
@@ -424,13 +424,13 @@ THREE.SecondaryMenuManager = function () {
                 w/tradmenuDivisions,
                 4
             ));
-        var slDis = menuData.getImageMesh( (tradmenuDivisions-9)*w/(tradmenuDivisions*2), 2,2, './img/menu/disabled_sl_icon.png', menuList[4].buttons[5], MenuFunctionsManager.getMultiOptionsMenuFunc(menuList[4].buttons[5]), w/tradmenuDivisions,4 );
+        var slDis = menuData.getImageMesh( (tradmenuDivisions-11)*w/(tradmenuDivisions*2), 2,2, './img/menu/disabled_sl_icon.png', menuList[4].buttons[5], MenuFunctionsManager.getMultiOptionsMenuFunc(menuList[4].buttons[5]), w/tradmenuDivisions,4 );
         slDis.visible = false;
         menuGroup.add( slDis );
 
         menuGroup.add( 
             getMenuTitleMesh(
-                (tradmenuDivisions-7)*w/(tradmenuDivisions*2),
+                (tradmenuDivisions-9)*w/(tradmenuDivisions*2),
                 1.5,
                 'AD',
                 menuList[4].buttons[2],
@@ -439,13 +439,13 @@ THREE.SecondaryMenuManager = function () {
                 w/tradmenuDivisions,
                 4
             ));
-        var adDis = menuData.getImageMesh((tradmenuDivisions-7)*w/(tradmenuDivisions*2), 2,2, './img/menu/disabled_ad_icon.png', menuList[4].buttons[6], MenuFunctionsManager.getMultiOptionsMenuFunc(menuList[4].buttons[6]), w/tradmenuDivisions,4 );
+        var adDis = menuData.getImageMesh((tradmenuDivisions-9)*w/(tradmenuDivisions*2), 2,2, './img/menu/disabled_ad_icon.png', menuList[4].buttons[6], MenuFunctionsManager.getMultiOptionsMenuFunc(menuList[4].buttons[6]), w/tradmenuDivisions,4 );
         adDis.visible = false;
         menuGroup.add( adDis );
 
         menuGroup.add(
             getMenuTitleMesh(
-                (tradmenuDivisions-5)*w/(tradmenuDivisions*2), 
+                (tradmenuDivisions-7)*w/(tradmenuDivisions*2), 
                 1.5, 
                 'AST', 
                 menuList[4].buttons[3], 
@@ -454,9 +454,13 @@ THREE.SecondaryMenuManager = function () {
                 w/tradmenuDivisions,
                 4
             ));
-        var astDis = menuData.getImageMesh((tradmenuDivisions-5)*w/(tradmenuDivisions*2), 3,2, './img/menu/disabled_ast_icon.png', menuList[4].buttons[7], MenuFunctionsManager.getMultiOptionsMenuFunc(menuList[4].buttons[7]), w/tradmenuDivisions,4 );
+        var astDis = menuData.getImageMesh((tradmenuDivisions-7)*w/(tradmenuDivisions*2), 3,2, './img/menu/disabled_ast_icon.png', menuList[4].buttons[7], MenuFunctionsManager.getMultiOptionsMenuFunc(menuList[4].buttons[7]), w/tradmenuDivisions,4 );
         astDis.visible = false;
         menuGroup.add( astDis );
+
+
+        var settings = menuData.getImageMesh((tradmenuDivisions-4)*w/(tradmenuDivisions*2), 2,2, './img/menu/settings_icon.png', menuList[3].buttons[0], function(){console.log("This is the settings bitton")}, w/tradmenuDivisions,4 );
+        menuGroup.add( settings );
 
         menuGroup.name = name;
         return menuGroup;

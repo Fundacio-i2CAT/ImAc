@@ -22,7 +22,7 @@ THREE.MenuManager = function () {
         return activationElement;
     }
 
-    function getOpenMenuAreaButton()
+    function getOpenMenuAreaButton(_isMenuTrad)
     {
         //var geometry = new THREE.SphereGeometry( 99, 64, 16, Math.PI/2, Math.PI * 2,  7*Math.PI/20,  -Math.PI/12 );
         var geometry = new THREE.SphereGeometry( 99, 32, 16, Math.PI/2, Math.PI * 2,  2.15,  0.4 );
@@ -46,8 +46,8 @@ THREE.MenuManager = function () {
                 scene.getObjectByName("openmenutext").visible = false;
                 this.material.color.setHex( 0xffffff );
             },
-            onGazeLong: MenuFunctionsManager.getOpenMenuFunc(),
-            onGazeClick: MenuFunctionsManager.getOpenMenuFunc()
+            onGazeLong: MenuFunctionsManager.getOpenMenuFunc(_isMenuTrad)
+            //onGazeClick: MenuFunctionsManager.getOpenMenuFunc(_isMenuTrad)
         });
 
         return activationElement;
@@ -100,10 +100,10 @@ THREE.MenuManager = function () {
 // Public Functions
 //************************************************************************************
 
-    this.createMenu = function(_isMenuOpenButton)
+    this.createMenu = function(_isMenuTrad)
     {
         MenuDictionary.initGlobalArraysByLanguage();
-        var activationElement = _isMenuOpenButton ? getOpenMenuButton() : getOpenMenuAreaButton();
+        var activationElement = getOpenMenuAreaButton(_isMenuTrad); 
         scene.add( activationElement );
     };  
 

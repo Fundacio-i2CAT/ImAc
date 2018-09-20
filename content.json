@@ -2,35 +2,7 @@
   "title": "ImAc",
   "contents": [
   {
-    "name": "Video 1: Demo radio",
-    "thumbnail": "img/LOGO-IMAC.png",
-    "url": "./resources/rapzember-young-hurn_edit.mp4",
-    "audioChannels": 2,
-    "subtitles": [
-    {
-      "en": "./resources/Rapzember3.ebu-tt.xml",
-      "de": "./resources/Rapzember3.ebu-tt.xml",
-      "ca": "./resources/Rapzember_Cat.xml"
-    }],
-    "signer": [
-    {
-      "en": "./resources/signer_rbb_new.mp4",
-      "ca": "./resources/signer_rbb_new.mp4",
-      "de": "./resources/signer_rbb_new.mp4"
-    }],
-    "ad": [
-    {
-      "en": "",
-      "ca": ""
-    }],
-    "ast": [
-    {
-      "en": "",
-      "ca": ""
-    }]
-  }, 
-  {
-    "name": "Video 2: Demo liceu",
+    "name": "Video 1: Opera Video",
     "thumbnail": "img/LOGO-IMAC.png",
     "url": "./resources/liceu/cam_2_2k.mp4",
     "audioChannels": 4,
@@ -59,7 +31,7 @@
     }]
   }, 
   {
-    "name": "Video 3: Demo RBB",
+    "name": "Video 2: RBB Video",
     "thumbnail": "img/LOGO-IMAC.png",
     "url": "./resources/rbb/dash/stream.mpd",
     "audioChannels": 2,
@@ -83,7 +55,7 @@
     }]
   }, 
   {
-    "name": "Video 4: Demo RBB_I",
+    "name": "Video 3: ARTE Video",
     "thumbnail": "img/LOGO-IMAC.png",
     "url": "./resources/RBB_I/dash/stream.mpd",
     "audioChannels": 2,

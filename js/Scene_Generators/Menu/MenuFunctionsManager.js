@@ -200,14 +200,15 @@ MenuFunctionsManager = function() {
 // Public Functions
 //************************************************************************************
 
-    this.getOpenMenuFunc = function()
+    this.getOpenMenuFunc = function(_isMenuTrad)
     {       
         return function() {
             interController.setSubtitlesActive( subController.getSubtitleEnabled() );
-            if ( interController.getSubtitlesActive() ) subController.disableSubtiles();
+            if ( interController.getSubtitlesActive()) subController.disableSubtiles();
             subController.switchSigner( false );
             MenuDictionary.initGlobalArraysByLanguage();
-            MenuFunctionsManager.getOpenTradMenuFunc();
+            if(_isMenuTrad) MenuFunctionsManager.getOpenTradMenuFunc();
+            else MenuManager.openMenu();
             //MenuManager.openMenu();
             //MenuManager.openMenuTrad();
             scene.getObjectByName( "openMenu" ).visible = false;
@@ -240,6 +241,7 @@ MenuFunctionsManager = function() {
     this.getCloseTradMenuFunc = function()
     {
         return function() {
+            if ( interController.getSubtitlesActive() ) subController.enableSubtitles();
             scene.getObjectByName( "openMenu" ).visible = true;
 
             interController.clearInteractiveObjectList();

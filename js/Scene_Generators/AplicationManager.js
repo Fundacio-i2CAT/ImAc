@@ -446,16 +446,12 @@ function createMenus ()
 {
 	    switch ( menuType )
     {
-        case "LS_button":
-        default:
-            MenuManager.createMenu(true);
-            break;
         case "LS_area":
             MenuManager.createMenu(false);
             break;
         case "Traditional":
-            var menuTrad = MenuManager.createMenuTrad();
-            interController.addInteractiveObject(menuTrad);
+        default:
+			MenuManager.createMenu(true);
             break;
     }
 }

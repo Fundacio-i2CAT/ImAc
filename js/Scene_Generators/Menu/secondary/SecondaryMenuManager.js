@@ -360,9 +360,13 @@ THREE.SecondaryMenuManager = function () {
     function createSettingsCardboardMenuTraditional(w, h, name)
     {
         var menuGroup =  new THREE.Group();
+        var closeButton = menuData.getImageMesh((tradmenuDivisions-1)*w/(tradmenuDivisions*2), 2, 2, './img/menu/plus_icon.png', "closeMenuButton", MenuFunctionsManager.getCloseTradMenuFunc(), w/tradmenuDivisions, 4);
+        closeButton.rotation.z = Math.PI/4;       
+        menuGroup.add( closeButton );
 
-        menuGroup.add( menuData.getImageMesh((tradmenuDivisions-1)*w/(tradmenuDivisions*2), 2, 2, './img/menu/settings_icon.png', menuList[3].buttons[0], MenuFunctionsManager.getCloseTradMenuFunc(), w/tradmenuDivisions, 4));
-        menuGroup.name = name;
+        interController.addInteractiveObject(closeButton)
+        
+        menuGroup.name = "closeMenuButton";
 
         return menuGroup;
     }
@@ -659,14 +663,16 @@ THREE.SecondaryMenuManager = function () {
                 activeSecondaryMenuTrad.buttons.forEach(function(elem){
                     interController.removeInteractiveObject(elem);
                 }); 
-              camera.remove(camera.getObjectByName(activeSecondaryMenuTrad.name));
+              
+            if ( _isHMD ) scene.remove(scene.getObjectByName(activeSecondaryMenuTrad.name));
+            else camera.remove(scene.getObjectByName(activeSecondaryMenuTrad.name));
                 
             } 
             secMMgr.setActiveSecondaryMenuTrad(submenu); 
 
             var listBg = menuData.getBackgroundMesh(w, h, 0x333333, 0.8);
 
-            listBg.position.set(xPos, yPos, -60);
+            listBg.position.set(xPos, yPos, -69);
 
             var menuGroup =  new THREE.Group();
 
@@ -699,10 +705,11 @@ THREE.SecondaryMenuManager = function () {
                 option.position.x = -w/2+option.geometry.boundingBox.max.x+2;
                 option.children[0].position.x = +w/2-option.geometry.boundingBox.max.x-2;
                 interController.addInteractiveObject(option);
-                menuGroup.add(option);
+                
                 var next = menuData.getNextIconMesh(heigthDropdownOption/6, heigthDropdownOption/6, 0xffffff, 0, "next");
                 next.position.x = w-option.geometry.boundingBox.max.x-4;
-                option.add(next);      
+                option.add(next); 
+                menuGroup.add(option);     
             });
 
             listBg.add(line)
@@ -710,7 +717,8 @@ THREE.SecondaryMenuManager = function () {
             listBg.add(menuGroup);
             listBg.name = submenu.name;
 
-            camera.add(listBg);
+            if ( _isHMD ) scene.add(listBg);
+            else camera.add(listBg);
             MenuController.showOnOffToggleButton(submenuIndex, submenu.buttons[0], submenu.buttons[1], null, null);
 
         }
@@ -734,7 +742,7 @@ THREE.SecondaryMenuManager = function () {
 
 
         var listBg = menuData.getBackgroundMesh(tradMenuWidth,h, 0x333333, 0.8);
-        listBg.position.set(x, y, -60);
+        listBg.position.set(x, y, -69);
 
         var menuGroup =  new THREE.Group();
 
@@ -770,11 +778,12 @@ THREE.SecondaryMenuManager = function () {
         
         listBg.name = submenu.submenus[index].name;
 
-        camera.add(listBg)
+        if ( _isHMD ) scene.add(listBg);
+        else camera.add(listBg);
 
         submenu.submenus[index].buttons.forEach(function(elem){
-            if(camera.getObjectByName(elem))
-            interController.addInteractiveObject(camera.getObjectByName(elem));
+            if(scene.getObjectByName(elem))
+            interController.addInteractiveObject(scene.getObjectByName(elem));
             // CHANGE TO A SEPARATE FUNCTION
             if ( settingsLanguage == elem 
                 || subtitlesLanguage == elem 
@@ -799,7 +808,9 @@ THREE.SecondaryMenuManager = function () {
          secMMgr.getActiveSecondaryMenuTrad().buttons.forEach(function(elem){
             interController.removeInteractiveObject(elem);
         }); 
-        camera.remove(camera.getObjectByName(secMMgr.getActiveSecondaryMenuTrad().name)); 
+        if ( _isHMD ) scene.remove(scene.getObjectByName(secMMgr.getActiveSecondaryMenuTrad().name)); 
+        else camera.remove(scene.getObjectByName(secMMgr.getActiveSecondaryMenuTrad().name)); 
+        
         secMMgr.setActiveSecondaryMenuTrad(newActiveSubMenu);  
     }
 

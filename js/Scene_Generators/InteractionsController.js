@@ -381,8 +381,8 @@ THREE.InteractionsController = function () {
         {
             //console.error('intersect')
             if ( scene.getObjectByName( "pointer" ) ) scene.getObjectByName( "pointer" ).visible = true;
-            pointerState = false;
-            freePointerState(600);
+            //pointerState = false;
+            //freePointerState(600);
         }
     	else if ( _isHMD && pointerState )
     	{
@@ -397,7 +397,9 @@ THREE.InteractionsController = function () {
                 activeSecondaryMenuTrad.buttons.forEach(function(elem){
                     interController.removeInteractiveObject(elem);
                 }); 
-              camera.remove(camera.getObjectByName(activeSecondaryMenuTrad.name));
+                   
+                camera.remove(scene.getObjectByName(activeSecondaryMenuTrad.name));
+                
               subController.switchSigner( interController.getSignerActive() );
                 
             } 
@@ -459,7 +461,7 @@ THREE.InteractionsController = function () {
             interactiveListObjects.push(object);
             controls.setInteractiveObject(object);
         }
-        else console.error("Interactivity already exists in the list.")
+        else alert("Interactivity already exists in the list.")
 	};
 
 	this.removeInteractiveObject = function(name)

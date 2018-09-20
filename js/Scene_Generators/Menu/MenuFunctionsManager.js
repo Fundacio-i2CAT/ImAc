@@ -207,7 +207,9 @@ MenuFunctionsManager = function() {
             if ( interController.getSubtitlesActive() ) subController.disableSubtiles();
             subController.switchSigner( false );
             MenuDictionary.initGlobalArraysByLanguage();
-            MenuManager.openMenu();
+            MenuFunctionsManager.getOpenTradMenuFunc();
+            //MenuManager.openMenu();
+            //MenuManager.openMenuTrad();
             scene.getObjectByName( "openMenu" ).visible = false;
             scene.getObjectByName( "openmenutext" ).visible = false;
         }
@@ -216,8 +218,7 @@ MenuFunctionsManager = function() {
     this.getOpenTradMenuFunc = function()
     {
 
-        return function() {
-            if(scene.getObjectByName( "traditionalMenu" ))  console.error("Menu already open");
+        if(scene.getObjectByName( "traditionalMenu" ))  console.error("Menu already open");
             else
             {
                 MenuManager.openMenuTrad();
@@ -228,26 +229,23 @@ MenuFunctionsManager = function() {
                 var w = scene.getObjectByName("bgTimeline").geometry.parameters.width;
                 secMMgr.scaleTimeLine(total,current, w, scene.getObjectByName("currentTimeline"), scene.getObjectByName("bgTimeline"));
                 scene.getObjectByName("timeline").visible = true;
-                
-                interController.removeInteractiveObject("openMenuTrad" );  
-                
+                                
                 setTimeout(function(){ 
-                    scene.getObjectByName( "openMenuTrad" ).visible = false;
+                    //scene.getObjectByName( "openMenuTrad" ).visible = false;
                     scene.getObjectByName( "traditionalMenu" ).visible = true; // Onces all the elements are created show the menu
                 }, 50);    
             }
-        }
     }
 
     this.getCloseTradMenuFunc = function()
     {
         return function() {
-            scene.getObjectByName( "openMenuTrad" ).visible = true; 
+            scene.getObjectByName( "openMenu" ).visible = true;
 
             interController.clearInteractiveObjectList();
-            interController.addInteractiveObject(scene.getObjectByName( "openMenuTrad" ))
-            
-            camera.remove(camera.getObjectByName( "traditionalMenu" ))
+
+            if ( _isHMD ) scene.remove(scene.getObjectByName( "traditionalMenu" ))
+            else camera.remove(scene.getObjectByName( "traditionalMenu" ))
 
             var activeSubMenu = secMMgr.getActiveSecondaryMenuTrad();
             if(activeSubMenu) secMMgr.removeSubTradMenu('');  

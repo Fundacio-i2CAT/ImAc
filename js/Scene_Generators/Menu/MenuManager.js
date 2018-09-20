@@ -24,7 +24,9 @@ THREE.MenuManager = function () {
 
     function getOpenMenuAreaButton()
     {
-        var geometry = new THREE.SphereGeometry( 99, 64, 16, Math.PI/2, Math.PI * 2,  7*Math.PI/20,  -Math.PI/12 );
+        //var geometry = new THREE.SphereGeometry( 99, 64, 16, Math.PI/2, Math.PI * 2,  7*Math.PI/20,  -Math.PI/12 );
+        var geometry = new THREE.SphereGeometry( 99, 32, 16, Math.PI/2, Math.PI * 2,  2.15,  0.4 );
+        geometry.scale( - 1, 1, 1 );
         //var material = new THREE.MeshBasicMaterial( {color: 0x13ec56, side: THREE.FrontSide, colorWrite: false});
         var material = new THREE.MeshBasicMaterial( {color: 0xffffff, side: THREE.FrontSide, transparent: true, opacity:0.05} );
         var activationElement = new THREE.Mesh( geometry, material );
@@ -475,7 +477,7 @@ THREE.MenuManager = function () {
     function visibleWidthAtZDepth ( depth, camera ) 
     {
       const height = visibleHeightAtZDepth( depth, camera );
-      return height * camera.aspect;
+      return height * 16/9;
     };
 
     this.openMenuTrad = function()
@@ -484,9 +486,10 @@ THREE.MenuManager = function () {
         
         var menuTrad =  new THREE.Group();
 
-        var bgWidth = Math.round(visibleWidthAtZDepth( 60, camera )-tradMenuMargin);
+        //var bgWidth = Math.round(visibleWidthAtZDepth( 60, camera )-tradMenuMargin)*0.8;
+        var bgWidth = Math.round(visibleWidthAtZDepth( 60, camera )-tradMenuMargin)*0.8;
         var bg = menuData.getBackgroundMesh(bgWidth, 4, 0x333333, 0.8);
-        bg.position.set(0, (-visibleHeightAtZDepth( 60, camera )/2)+2+2,-60);
+        bg.position.set(0, (-visibleHeightAtZDepth( 60, camera )/2)+2+2,-69);
         bg.name = "traditionalMenuBackground"
 
         var timeline =  new THREE.Group();
@@ -494,12 +497,12 @@ THREE.MenuManager = function () {
         timeline.visible = false;
         
         var currentTimeline = menuData.getBackgroundMesh(bgWidth, 0.5, 0xff0000, 1);
-        currentTimeline.position.set(0, bg.position.y+bg.geometry.parameters.height/2+currentTimeline.geometry.parameters.height/2,-60);
+        currentTimeline.position.set(0, bg.position.y+bg.geometry.parameters.height/2+currentTimeline.geometry.parameters.height/2,-69);
         currentTimeline.name = "currentTimeline";
         
 
         var bgTimeline = menuData.getBackgroundMesh(bgWidth, 0.5, 0x888888, 0.8);
-        bgTimeline.position.set(0, bg.position.y+bg.geometry.parameters.height/2+bgTimeline.geometry.parameters.height/2,-60);
+        bgTimeline.position.set(0, bg.position.y+bg.geometry.parameters.height/2+bgTimeline.geometry.parameters.height/2,-69);
         bgTimeline.name = "bgTimeline";
 
         currentTimeline.scale.set(secMMgr.timelineScale, 1,1);
@@ -561,14 +564,14 @@ THREE.MenuManager = function () {
         var durationTime = menuData.getMenuTextMesh(ppMMgr.getPlayoutTime(moData.getListOfVideoContents()[0].vid.duration), 1.25, 0xffffff,"durationTime", null, null);
 
         //currentTime.position.x =  -(tradmenuDivisions-15)*bgWidth/(tradmenuDivisions*2);
-        durationTime.position.x =  -(tradmenuDivisions-17.5)*bgWidth/(tradmenuDivisions*2);
+        durationTime.position.x =  -(tradmenuDivisions-18)*bgWidth/(tradmenuDivisions*2);
         
-        slash.position.x =  -(tradmenuDivisions-16.25)*bgWidth/(tradmenuDivisions*2);
+        slash.position.x =  -(tradmenuDivisions-16.5)*bgWidth/(tradmenuDivisions*2);
 
         playoutTime.add(slash)
         //playoutTime.add(currentTime)
         playoutTime.add(durationTime)
-        playoutTime.position.set(0, bg.position.y,-60);
+        playoutTime.position.set(0, bg.position.y,-69);
 
         menuTrad.add(playoutTime);;
 

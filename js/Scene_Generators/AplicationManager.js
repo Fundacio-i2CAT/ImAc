@@ -119,10 +119,10 @@ function AplicationManager()
     	if(_isTradMenuOpen) menu = scene.getObjectByName( "traditionalMenu" );
     	else menu  = scene.getObjectByName(menuList[0].name)
 
-	    if(_isHMD && menu)
+	    /*if(_isHMD && menu)
 	    {
 	        MenuManager.menuFollowCameraFOV(Math.sign(Math.round(Math.degrees(camera.rotation.y))%360), menu);
-	    } 
+	    } */
 
 		Reticulum.update();
     }

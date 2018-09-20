@@ -129,7 +129,6 @@ function MenuManager() {
         closeMenuButton.type=  'icon';
         closeMenuButton.value = './img/menu/plus_icon.png';
         closeMenuButton.color = 0xffffff;
-        closeMenuButton.textSize =  null;
         closeMenuButton.visible = true;
         closeMenuButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(closeMenuButton.width, closeMenuButton.height), new THREE.MeshBasicMaterial({visible:  false}));
         closeMenuButton.onexecute =  function(){ return ResetViews(); };
@@ -146,7 +145,6 @@ function MenuManager() {
         forwardMenuButton.type=  'icon';
         forwardMenuButton.value = './img/menu/less_than_icon.png';
         forwardMenuButton.color = 0xffffff;
-        forwardMenuButton.textSize =  null;
         forwardMenuButton.visible = true;
         forwardMenuButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(forwardMenuButton.width, forwardMenuButton.height), new THREE.MeshBasicMaterial({visible:  false}));
         forwardMenuButton.onexecute =  function(){ return console.log("This is the forward menu button"); };
@@ -162,7 +160,6 @@ function MenuManager() {
         backMenuButton.type=  'icon';
         backMenuButton.value = './img/menu/less_than_icon.png';
         backMenuButton.color = 0xffffff;
-        backMenuButton.textSize =  null;
         backMenuButton.visible = true;
         backMenuButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(backMenuButton.width, backMenuButton.height), new THREE.MeshBasicMaterial({visible:  false}));
         backMenuButton.onexecute =  function(){ return console.log("This is the back menu button"); };

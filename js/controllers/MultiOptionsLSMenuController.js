@@ -46,7 +46,7 @@ function MultiOptionsLSMenuController() {
 
 	function UpdateData(data)
     {
-		data.isSTenabled = true;
+		data.isSTenabled = true; //NEED FUNCTIONS THAT RETURNS IF THE OPTION IS ENABLED OR DISABLED
 		data.isSLenabled = true;
 		data.isADenabled = true;
 		data.isASTenabled = true;

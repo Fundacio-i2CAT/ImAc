@@ -1,6 +1,6 @@
 
-function InteractiveElementModel() {
-
+function InteractiveElementModel()
+{
 	this.width;
 	this.height;
 	this.rotation;
@@ -15,8 +15,8 @@ function InteractiveElementModel() {
 	this.onexecute;
 }
 
-InteractiveElementModel.prototype.create = function(){
-
+InteractiveElementModel.prototype.create = function()
+{
 	switch(this.type){
 
 		case "icon":
@@ -28,8 +28,8 @@ InteractiveElementModel.prototype.create = function(){
 	}
 }
 
-function createTextIE (element){
-
+function createTextIE (element)
+{
     var shape = new THREE.BufferGeometry();
     var material = new THREE.MeshBasicMaterial( { color: element.color} );
     var shapes = moData.getFont().generateShapes( element.value, element.textSize);
@@ -44,8 +44,8 @@ function createTextIE (element){
     return addColiderMesh(element, mesh);
 }
 
-function createImageIE(element){
-
+function createImageIE(element)
+{
 	var geometry = new THREE.PlaneGeometry(element.width, element.height);
     var loader = new THREE.TextureLoader();
     var texture = loader.load(element.value);
@@ -60,7 +60,8 @@ function createImageIE(element){
     return addColiderMesh(element, mesh);
 }
 
-function addColiderMesh(element, mesh){
+function addColiderMesh(element, mesh)
+{
 	if(element.interactiveArea)
 	{
 		var coliderMesh = element.interactiveArea;
@@ -75,9 +76,6 @@ function addColiderMesh(element, mesh){
 	mesh.position.set(element.position.x, element.position.y, element.position.z );
 	mesh.name = element.name;
 	mesh.renderOrder = 5;
-	
-
-	//if(element.visible) interController.addInteractiveObject(mesh);
-	
+		
 	return mesh;
 }

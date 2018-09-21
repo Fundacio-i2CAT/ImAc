@@ -7,10 +7,10 @@ AudioManager = function() {
     var audioResources = Array();
     var audioResources_order_1 = Array();
     var volume; // Variable for volume level state saving;
+    var isMuted = false;
     var foaRenderer,
         isAmbisonics,
-        activeVideoElement,
-        isMuted;  // Video element been reproduced.
+        activeVideoElement;  // Video element been reproduced.
 
     function getFOARenderer(audioContext)
     {

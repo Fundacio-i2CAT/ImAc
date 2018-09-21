@@ -126,18 +126,16 @@ SubSignManager = function() {
 
 	function checkSpeakerPosition(isdImac)
 	{
-		var difPosition = getViewDifPosition( isdImac );
+		var difPosition = getViewDifPosition( isdImac, camera.fov );
 	  	var position;
 
-	  	if ( isdImac == undefined || ( difPosition < camera.fov && difPosition > -camera.fov ) )
+	  	if ( isdImac == undefined || difPosition == 0 )
 	  	{
 	  		position = 'center';
 	  	}
 	  	else
 	  	{
-	  		difPosition = difPosition < 0 ? difPosition + 360 : difPosition;
-
-	    	position = ( difPosition > 0 && difPosition <= 180 ) ? 'left' : 'right';
+	    	position = difPosition < 0 ? 'left' : 'right';
 	  	}
 
 	  	checkSubtitleIdicator( position );
@@ -147,18 +145,8 @@ SubSignManager = function() {
 	function changePositioning(isdImac)
 	{
 		autoPositioning = false;
-		var difPosition = Math.round(getViewDifPosition( isdImac ));
-		var position;
+		var position = Math.round(getViewDifPosition( isdImac, 3 ));
 
-	  	if ( difPosition <= 3  && difPosition >= -3 ) 
-	  	{
-	  		position = 0;
-	  	}
-	  	else
-	  	{
-	  		difPosition = difPosition < 0 ? difPosition + 360 : difPosition;
-	    	position = ( difPosition > 0 && difPosition <= 180 ) ? -1 : 1;
-	  	}
       	var rotaionValue = 0;
       	var initY = Math.round( CameraParentObject.rotation.y * (-180/Math.PI)%360 );
 
@@ -228,7 +216,7 @@ SubSignManager = function() {
     	return ( rgb && rgb.length === 4 ) ? "rgb(" + rgb[0] + "," + rgb[1] + "," + rgb[2] + ")" : '';
 	}
 
-    function getViewDifPosition(sp)
+    function getViewDifPosition(sp, fov)
     {
     	var target = new THREE.Vector3();
     	var camView = camera.getWorldDirection( target );
@@ -236,8 +224,11 @@ SubSignManager = function() {
 
     	var lon = Math.degrees( Math.atan( camView.x/camView.z ) ) + offset;
 
-    	//return lon >= 0 ? sp - lon : sp - ( lon + 360 );
-    	return lon >= 0 ? 360 - sp - lon : - sp - lon;	
+    	lon = lon > 0 ? 360 - lon : - lon;
+
+    	if ( ( lon - sp + 360 )%360 > fov && ( lon - sp + 360 )%360 <= 180 ) return -1; 
+    	else if ( ( lon - sp + 360 )%360 > 180 && ( lon - sp + 360 )%360 <= 360 - fov ) return 1;
+    	else return 0;
     }
 
 //************************************************************************************

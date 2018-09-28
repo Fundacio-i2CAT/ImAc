@@ -570,7 +570,9 @@ THREE.DeviceOrientationAndTouchController = function( object, objectPather, domE
 			interController.checkInteraction(mouse3D, scope.object, 'onDocumentMouseMove');
 		}
 
-		if (AudioManager.isAmbisonics) AudioManager.updateRotationMatrix( camera.matrixWorld.elements );
+		AudioManager.updateRotationMatrix( camera.matrixWorld.elements );
+
+		//subController.updateRadar();
 	};
 	
 	this.connect = function() {

@@ -40,8 +40,8 @@ THREE.MenuController = function () {
         var mainMenuIndex = menuList[subMenuIndex].firstmenuindex;
         if ( menuList[subMenuIndex].isEnabled )
         {
-            scene.getObjectByName( onButtonName ).visible = true; 
-            scene.getObjectByName( offButtonName ).visible = false; 
+            if (scene.getObjectByName( onButtonName )) scene.getObjectByName( onButtonName ).visible = true; 
+            if (scene.getObjectByName( offButtonName )) scene.getObjectByName( offButtonName ).visible = false; 
 
             if(!_isTradMenuOpen)
             {
@@ -54,8 +54,8 @@ THREE.MenuController = function () {
         }
         else
         {
-            scene.getObjectByName( offButtonName ).visible = true; 
-            scene.getObjectByName( onButtonName ).visible = false; 
+            if (scene.getObjectByName( offButtonName )) scene.getObjectByName( offButtonName ).visible = true; 
+            if (scene.getObjectByName( onButtonName )) scene.getObjectByName( onButtonName ).visible = false; 
 
             if(!_isTradMenuOpen)
             {
@@ -126,6 +126,77 @@ THREE.MenuController = function () {
             //scene.getObjectByName( "openMenuTrad" ).visible = true; //EXPERIMENTAL
         }, clickInteractionTimeout);
     };
+
+
+    var playoutTimeout;
+  
+
+/**
+ * Shows/Hides the play pause button depeding on the activeVideo status ppMMgr.isPausedById(0) = true/false
+ */
+    this.showPlayPauseButton = function ()
+    {
+        if(VideoController.isPausedById(0))
+        {
+            scene.getObjectByName(menuList[1].buttons[0]).visible = true; //menuList.playSeekMenu.playButton
+            scene.getObjectByName(menuList[1].buttons[1]).visible = false; //menuList.playSeekMenu.pauseButton
+            interController.removeInteractiveObject(menuList[1].buttons[1]);
+            interController.addInteractiveObject(scene.getObjectByName(menuList[1].buttons[0])); //menuList.playSeekMenu.playButton
+        }
+        else
+        {
+            scene.getObjectByName(menuList[1].buttons[1]).visible = true; //menuList.playSeekMenu.pauseButton
+            scene.getObjectByName(menuList[1].buttons[0]).visible = false; //menuList.playSeekMenu.playButton
+            interController.removeInteractiveObject(menuList[1].buttons[0]);
+            interController.addInteractiveObject(scene.getObjectByName(menuList[1].buttons[1])); //menuList.playSeekMenu.pauseButton
+        }
+    }
+
+    this.playoutTimeDisplayLogic = function(isPlay)
+    {
+        if(!_isTradMenuOpen)
+        {
+            var timeoutFactor = 1;
+            clearTimeout(playoutTimeout);
+
+            scene.getObjectByName(menuList[1].buttons[0]).visible = false; 
+            interController.removeInteractiveObject(menuList[1].buttons[0]); 
+
+            scene.getObjectByName(menuList[1].buttons[1]).visible = false; 
+            interController.removeInteractiveObject(menuList[1].buttons[1]);
+
+            createPlayoutTimeFeedback(
+                menuData.getMenuTextMesh(VideoController.getPlayoutTime(VideoController.getListOfVideoContents()[0].vid.currentTime), 
+                    playoutFeedbackMenuTextSize, 
+                    menuDefaultColor, 'playouttime'));
+
+            if(isPlay)
+            {
+                timeoutFactor = 1;
+                playoutTimeout =setTimeout(function(){    
+                    createPlayoutTimeFeedback(
+                        menuData.getMenuTextMesh(VideoController.getPlayoutTime(VideoController.getListOfVideoContents()[0].vid.currentTime), 
+                            playoutFeedbackMenuTextSize, 
+                            menuDefaultColor, 'playouttime'));
+                }, visualFeedbackTimeout);
+            }
+        }
+
+
+        playoutTimeout = setTimeout(function(){ 
+            scene.getObjectByName('playSeekMenu').remove(scene.getObjectByName('playouttime'));
+            MenuController.showPlayPauseButton();
+        }, timeoutFactor*visualFeedbackTimeout);
+    }
+
+
+
+    function createPlayoutTimeFeedback(newTime)
+    {
+        scene.getObjectByName('playSeekMenu').remove(scene.getObjectByName('playouttime'));           
+        scene.getObjectByName('playSeekMenu').add(newTime)
+        scene.getObjectByName('playouttime').visible = true;
+    }
 
 }
 

@@ -25,5 +25,3 @@ function createListGroup(i, imagePath, dataName)
 		.append('</div>')
 	)
 }
-
-

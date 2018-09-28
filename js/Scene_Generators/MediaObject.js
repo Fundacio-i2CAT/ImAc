@@ -4,77 +4,15 @@
 
 THREE.MediaObject = function () {
 
-    var listOfVideoContents = [];
-    var mainMesh,
-        imageMesh, 
-        signMesh, 
-        subtitleMesh,
-        subtitleFont;
+    var subtitleFont;
 
 //************************************************************************************
 // Private Functions
 //************************************************************************************
-
-    function getVideObject(id, url) 
-    {
-        var vid = document.createElement( "video" );     
-        vid.muted = true;
-        vid.autoplay = false;
-        vid.loop = true;
-
-        var type = getMediaType( url );
-
-        if ( type == 'mpd' )
-        {
-            var player = dashjs.MediaPlayer().create();
-
-            player.initialize( vid, url, true );
-            if (window.screen.availWidth <= 1920 ) {
-                player.setMaxAllowedBitrateFor('video', 13000);
-            }
-        else if (window.screen.availWidth <= 2300 ) {
-            player.setMaxAllowedBitrateFor('video', 12000);
-        }
-            player.getDebug().setLogToBrowserConsole( false );
-            
-            var objVideo = { id: id, vid: vid, dash: player };
-        }
-        else if ( type == 'm3u8' )
-        {
-            if ( Hls.isSupported() ) 
-            {
-                var hls = new Hls();
-                hls.loadSource( url );
-                hls.attachMedia( vid );
-                hls.on( Hls.Events.MANIFEST_PARSED, function() { vid.play() } );
-                var objVideo = { id: id, vid: vid };
-            }
-            else if ( vid.canPlayType( 'application/vnd.apple.mpegurl' ) ) 
-            {
-                vid.src = url;
-                vid.addEventListener( 'loadedmetadata', function() { vid.play() } );
-                var objVideo = { id: id, vid: vid };
-            }           
-        }
-        else
-        {
-            vid.src = url;
-            var objVideo = { id: id, vid: vid };
-        }
-
-        listOfVideoContents.push( objVideo );
-
-        return vid;
-    }
-
-    function getMediaType(url)
-    {
-        return url.split('.').pop();
-    }
     
     function getVideoMesh(geometry, url, name, order) 
     {
-        var texture = new THREE.VideoTexture( getVideObject( name, url ) );
+        var texture = new THREE.VideoTexture( VideoController.getVideObject( name, url ) );
         texture.minFilter = THREE.LinearFilter;
         //texture.minFilter = THREE.NearestFilter;
         texture.format = THREE.RGBAFormat;
@@ -104,7 +42,7 @@ THREE.MediaObject = function () {
         return mesh;
     }
 
-//***********CODE REPITED IN MENU MANAGER *****************
+    //***********CODE REPITED IN MENU MANAGER *****************
     function getBackgroundMesh(w, h, c, o)
     {
         var material = new THREE.MeshBasicMaterial( { color: c, transparent: true, opacity: o } );
@@ -269,25 +207,14 @@ THREE.MediaObject = function () {
         return mesh;
     }
 
-    function removeContentById(id)
-    {
-        for ( var i = 0, len = listOfVideoContents.length; i < len; i++ )
-        {
-            if ( listOfVideoContents[i].id == id )
-            {
-                listOfVideoContents.splice( i, 1 );
-                break;
-            }
-        }
-    }
 
 //************************************************************************************
 // Experimental
 //************************************************************************************
 
-    function getCubeGeometryByVertexUVs(f, l, r, t, b, bo)
+    function getCubeGeometryByVertexUVs(size, f, l, r, t, b, bo)
     {
-        var geometry = new THREE.BoxGeometry( -200, 200, 200 );
+        var geometry = new THREE.BoxGeometry( -size, size, size );
         
         geometry.faceVertexUvs[0] = []; // cleans the geometry UVs
         // front
@@ -312,7 +239,7 @@ THREE.MediaObject = function () {
         return geometry;
     }
 
-    function getCubeGeometry65()
+    function getCubeGeometry65(size)
     {
         /* 6x5 Texture UV vertices map:
          //////////////////////////////////////////////////////////////////////
@@ -381,10 +308,10 @@ THREE.MediaObject = function () {
         var face_right = [ _52a, _51b, _61b, _62b ];
         var face_left = [ _51a, _50b, _60, _61a ]; 
 
-        return getCubeGeometryByVertexUVs( face_front, face_left, face_right, face_top, face_back, face_bottom );
+        return getCubeGeometryByVertexUVs( size, face_front, face_left, face_right, face_top, face_back, face_bottom );
     }
 
-    function getCubeGeometry116()
+    function getCubeGeometry116(size)
     {
         /* 11x6 Texture UV vertices map:
          /// 
@@ -451,7 +378,7 @@ THREE.MediaObject = function () {
         var face_back = [ _94a, _92b, _112b, _114a ];
         var face_bottom = [ _112a, _92a, _90, _110 ];
 
-        return getCubeGeometryByVertexUVs( face_front, face_left, face_right, face_top, face_back, face_bottom );
+        return getCubeGeometryByVertexUVs( size, face_front, face_left, face_right, face_top, face_back, face_bottom );
     }
 
 //************************************************************************************
@@ -461,26 +388,6 @@ THREE.MediaObject = function () {
     this.getFont = function()
     {
         return subtitleFont;
-    };
-
-    this.getListOfVideoContents = function()
-    {
-        return listOfVideoContents;
-    };
-
-    this.getMainMesh = function()
-    {
-        return mainMesh;
-    };
-
-    this.getSignMesh = function()
-    {
-        return signMesh;
-    };
-
-    this.getSubtitleMesh = function()
-    {
-        return subtitleMesh;
     };
 
 //************************************************************************************
@@ -506,14 +413,13 @@ THREE.MediaObject = function () {
         geometry.scale( - 1, 1, 1 );
         var sphere = getVideoMesh( geometry, url, name, 0 );
 
-        mainMesh = sphere;
+        //mainMesh = sphere;
 
         scene.add( sphere );
     };
 
-    this.createSignVideo = function(url, name, config) 
+    this.getSignVideoMesh = function(url, name, config) 
     {
-        if(signMesh) moData.removeSignVideo();
         var geometry = new THREE.PlaneGeometry( config.size, config.size );
         var plane = getVideoMesh( geometry, url, name, 1 );
 
@@ -545,31 +451,10 @@ THREE.MediaObject = function () {
         plane.position.x = config.x;
         plane.position.y = config.y;
 
-        signMesh = plane;
-
-        camera.add( plane );
+        return plane;
     };
 
-    this.createImageInCamera = function(url, name, config) 
-    {
-        var geometry = new THREE.PlaneGeometry( config.w, config.h );
-        var plane = getImageMesh( geometry, url, name, 5 );
-        plane.position.z = -0.5;
-        plane.visible = config.visible;
-
-        if ( imageMesh ) {
-            var imgMesh = imageMesh;
-            setTimeout(function() {
-                camera.remove( imgMesh );
-            }, 300);
-        }
-
-        imageMesh = plane;
-
-        camera.add( plane );
-    };
-
-    this.createSubtitle = function(textList, config)
+    this.getSubtitleMesh = function(textList, config)
     {
         var group = new THREE.Group();
 
@@ -577,80 +462,13 @@ THREE.MediaObject = function () {
         {
             config.x = config.textAlign == 0 ? 0 : config.textAlign == -1 ? -config.size : config.size;
 
-            var mesh = getSubMesh( textList[i], config, config.opacity, len, i );            
+            var mesh = getSubMesh( textList[i], config, config.opacity, len, i );
             mesh.name = i;
 
             group.add( mesh );
         }
         
-        subtitleMesh = group;
-
-        camera.add( group );
-    };
-
-//************************************************************************************
-// Media Object Destructors
-//************************************************************************************
-
-    this.removeSubtitle = function()
-    {
-        camera.remove( subtitleMesh );
-        subtitleMesh = undefined;
-    };
-
-    this.removeSignVideo = function()
-    {
-        if ( signMesh ) 
-        {
-            removeContentById( signMesh.name );
-            camera.remove( signMesh );
-            signMesh = undefined;
-        }
-    };
-
-    this.removeInfoImage = function()
-    {
-        camera.remove( imageMesh );
-        imageMesh = undefined;
-    };
-
-//************************************************************************************
-// Media Object Position Controller
-//************************************************************************************
-
-    this.changeSubtitleIndicator = function(pos)
-    {
-        if ( subtitleMesh )
-        {
-            for ( var i = 0, li = subtitleMesh.children.length; i < li; ++i ) 
-            {
-                for ( var j = 0, lj = subtitleMesh.children[i].children.length; j < lj; ++j )
-                {
-                    if ( subtitleMesh.children[i].children[j].name == 'left' ) subtitleMesh.children[i].children[j].visible = pos == 'left' ? true : false;
-                    else if ( subtitleMesh.children[i].children[j].name == 'right' ) subtitleMesh.children[i].children[j].visible = pos == 'right' ? true : false;
-                }
-            }
-        }
-    };
-
-    this.changeSignIndicator = function(pos)
-    {
-        if ( signMesh )
-        {
-            for ( var i = 0, l = signMesh.children.length; i < l; ++i ) 
-            {
-                if ( signMesh.children[i].name == 'left' ) signMesh.children[i].visible = pos == 'left' ? true : false;
-                else if ( signMesh.children[i].name == 'right' ) signMesh.children[i].visible = pos == 'right' ? true : false;
-            }
-        }
-    };
-
-    this.changeSignPosition = function(pos) 
-    {
-        if ( signMesh && ( ( pos == 'left' && signMesh.position.x > 0 ) || ( pos == 'right' && signMesh.position.x < 0 ) ) )
-        {
-            signMesh.position.x = signMesh.position.x * -1;
-        }
+        return group;
     };
 
 //************************************************************************************
@@ -662,7 +480,7 @@ THREE.MediaObject = function () {
         var geometry = getCubeGeometry65();  
         var cube = getVideoMesh( geometry, url, name, 0 );
 
-        mainMesh = cube;
+        //mainMesh = cube;
 
         scene.add( cube );
     };
@@ -672,46 +490,9 @@ THREE.MediaObject = function () {
         var geometry = getCubeGeometry116();  
         var cube = getVideoMesh( geometry, url, name, 0 );      
 
-        mainMesh = cube;
+        //mainMesh = cube;
 
         scene.add( cube );
-    };
-
-    this.createControlBar = function()
-    {
-        var geometry = new THREE.CircleGeometry( 8, 32 );
-        var material = new THREE.MeshBasicMaterial( { color: 0xffffff } );
-        var circle = new THREE.Mesh( geometry, material );
-
-        var playbutton = getPlayMesh(10, 10, 0x000000);
-        var seekBarR = getSeekBarMesh(15, 10, 0xffffff);
-        var seekBarL = getSeekBarMesh(15, 10, 0xffffff);
-
-        seekBarR.name = 'btnSeekR';
-        seekBarL.name = 'btnSeekL';
-
-        seekBarL.rotation.z = Math.PI;
-        seekBarR.position.x = 16;
-        seekBarL.position.x = -16;
-
-        circle.add( playbutton );
-        circle.add( seekBarR );
-        circle.add( seekBarL );
-
-        circle.scale.set( 0.05,0.05,1 );
-
-        circle.position.z = -10;
-        circle.position.x = 0;
-        circle.position.y = 0;
-
-        circle.lookAt(new THREE.Vector3(0, 0, 0));
-
-        circle.renderOrder = 5;
-        circle.name = 'playpause';
-
-        scene.add( circle );
-
-        return circle;
     };
 
     this.createPointer = function()
@@ -729,6 +510,7 @@ THREE.MediaObject = function () {
 
     this.createPointer2 = function()
     {
+
         var pointer = new THREE.Mesh(
                 new THREE.SphereBufferGeometry( 0.002, 16, 8 ),
                 new THREE.MeshBasicMaterial( { color: 0xffff00 } )
@@ -750,48 +532,90 @@ THREE.MediaObject = function () {
         scene.add( pointer );
     }
 
-    this.createCube = function()
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+    this.getRadarMesh = function()
     {
-        var material = new THREE.LineBasicMaterial( { color: 0x0000ff } );
-        var geometry = new THREE.Geometry();
-        geometry.vertices.push(new THREE.Vector3( 0, 0, 0) );
-        geometry.vertices.push(new THREE.Vector3( 0, 0, -10) );
-        var line = new THREE.Line( geometry, material );
+        var size = 14
+        var imgGeometry = new THREE.PlaneGeometry( size, size );
 
-        // material
-          var material = new THREE.MeshBasicMaterial({
-            color: 0xffffff,
-            vertexColors: THREE.FaceColors
-          });
+        var loader = new THREE.TextureLoader();
+        var texture = loader.load( './img/radar1.png' );
+        texture.minFilter = THREE.LinearFilter;
+        texture.format = THREE.RGBAFormat;
 
-          // geometry
-          geometry = new THREE.BoxGeometry(0.5, 0.5, 0.5);
+        var material = new THREE.MeshBasicMaterial( { map: texture, transparent: true, side: THREE.FrontSide } );
+        var mesh = new THREE.Mesh( imgGeometry, material );
 
-          // colors
-          red = new THREE.Color(1, 0, 0);
-          green = new THREE.Color(0, 1, 0);
-          blue = new THREE.Color(0, 0, 1);
-          blue2 = new THREE.Color(0, 1, 1);
-          blue3 = new THREE.Color(1, 0, 1);
-          blue4 = new THREE.Color(1, 1, 0);
-          var colors = [red, green, blue, blue2, blue3, blue4];
-          
-          for (var i = 0; i < 6; i++) {
-            geometry.faces[ 2*i ].color = colors[i];
-            geometry.faces[ 2*i + 1 ].color = colors[i];
+        mesh.position.x = _isHMD ? 35 : 40
+        mesh.position.y = _isHMD ? -2 : -22
+        mesh.position.z = -76.001;
+
+        mesh.name = 'radar';
+        mesh.renderOrder = 3;
+
+        return mesh;
+    }
+
+     this.getSpeakerRadarMesh = function(color, pos)
+    {
+
+        var size = 14
+        var imgGeometry = new THREE.PlaneGeometry( size, size );
+
+        var loader = new THREE.TextureLoader();
+        var texture = loader.load( './img/radar2.png' );
+        texture.minFilter = THREE.LinearFilter;
+        texture.format = THREE.RGBAFormat;
+
+        var material = new THREE.MeshBasicMaterial( { map: texture, transparent: true, side: THREE.FrontSide } );
+
+        material.color.set( color ); 
+
+        var mesh = new THREE.Mesh( imgGeometry, material );
+
+        mesh.position.x = _isHMD ? 35 : 40
+        mesh.position.y = _isHMD ? -2 : -22
+        mesh.position.z = -76;
+
+        mesh.rotation.z = Math.radians(360-pos);
+
+        mesh.name = 'radar2';
+        mesh.renderOrder = 3;
+
+        return mesh;
+    }
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    this.createCastShadows = function()
+    {
+        //  This shortcut will be useful for later on down the road...
+        applyDown = function( obj, key, value ){
+          obj[ key ] = value
+          if( obj.children !== undefined && obj.children.length > 0 ){
+            obj.children.forEach( function( child ){
+              applyDown( child, key, value )
+            })
           }
+        }
+        castShadows = function( obj ){
+          applyDown( obj, 'castShadow', true )
+        }
+        receiveShadows = function( obj ){
+          applyDown( obj, 'receiveShadow', true )
+        }
 
-          // mesh
+        var light = new THREE.DirectionalLight( 0xFFFFFF, 1, 1000 )
+        light.position.set(  1, 100, -0.5 )
+        light.castShadow = true
+        light.shadow.mapSize.width  = 2048
+        light.shadow.mapSize.height = 2048
+        light.shadow.camera.near    =    1
+        light.shadow.camera.far     =   1200
+        scene.add( light )
 
-        var cube = new THREE.Mesh( geometry, material );
-
-        cube.position.z = -4;
-        cube.name = 'cube';
-        cube.visible = true;
-
-        cube.add(line)
-
-        scene.add( cube );
+        scene.add( new THREE.HemisphereLight( 0x909090, 0x404040 ))
     }
 }
 

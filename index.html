@@ -37,34 +37,26 @@
 	<script src="js/Scene_Generators/MediaObject.js"></script>
 	<script src="js/Scene_Generators/AudioManager.js"></script>
 
+	<script src="js/Scene_Generators/VideoController.js"></script>
+
 <!--MENU MANAGER -->
 	<script src="js/Scene_Generators/Menu/MenuState.js"></script>
 	<script src="js/Scene_Generators/Menu/MenuDictionary.js"></script>
 	<script src="js/Scene_Generators/Menu/MenuManager.js"></script>
 	<script src="js/Scene_Generators/Menu/MenuController.js"></script>
 	<script src="js/Scene_Generators/Menu/MenuObject.js"></script>
-	
-<!-- MAIN MENUS -->
-	<script src="js/Scene_Generators/Menu/main/PlayPauseMenuManager.js"></script>
-	<!--script src="js/Scene_Generators/Menu/main/VolumeMenuManager.js"></script-->
-
 
 	<script src="js/Scene_Generators/Menu/MenuFunctionsManager.js"></script>
 
 <!-- SECONDARY MENUS -->
-	<script src="js/Scene_Generators/Menu/secondary/SecondaryMenuManager.js"></script>
-
-	<script src="https://cdn.rawgit.com/dataarts/dat.guiVR/master/build/datguivr.js"></script>
-	
+	<script src="js/Scene_Generators/Menu/secondary/SecondaryMenuManager.js"></script>	
 	
 	<script src="js/Scene_Generators/SubSignManager.js"></script>
 	<script src="js/Scene_Generators/InteractionsController.js"></script>
 
 	<script src="js/controllers/DeviceOrientationAndTouchController.js"></script>
 	<script src="js/controllers/FullScreenController.js"></script>
-	<!--script src="js/controllers/VREffect.js"></script-->
-
-	<script src="js/vr/VRController.js"></script>
+	<script src="js/controllers/VRController.js"></script>
 
 	<script src="js/Utils/elementsGenerator.js"></script>
 	<script src="js/Utils/logger.js"></script>
@@ -81,18 +73,24 @@
 	</div>
 
 	<div  id="content_area" class="col-xs-12">
-		<h2>ImAc Player</h2>
+		<h2>Tests on Presentation Modes</h2>
 		<div class="col-xs-9">
 			<div class="list-group" id="list_group"></div>
 		</div>
 		<div id="clips-display"></div>
-		<div class="col-xs-2 options">
+		<div class="col-xs-3 options">
 			<h3>Menu Type</h3>
 			<form id="myform">
-			  <input type="radio" name="gender" value="LS_area"> Low-sighted<br>
-			  <input type="radio" name="gender" value="Traditional" checked> Traditional  
+              	<input type="radio" name="gender" value="Traditional" checked> Traditional <br>
+              	<input type="radio" name="gender" value="LS_area"> Enhanced-Accessibility
 			</form> 
 			<br>
+      <h3>Language</h3>
+      <form id="myform2">
+                <input type="radio" name="lang" value="de" checked> Deutsch <br>
+                <input type="radio" name="lang" value="ca"> Català
+      </form> 
+      <br>
 			
 		</div>
 		<!--div class="col-xs-12 links-group">

@@ -30,6 +30,7 @@ THREE.InteractionsController = function () {
 
 	function checkInteractionByName(name)
 	{
+        console.warn('[InteractionsController] Deprecated function')
 		switch ( name )
         {
 
@@ -68,26 +69,26 @@ THREE.InteractionsController = function () {
 
         	case "playButton":
                 MenuManager.pressButtonFeedback(name);
-                ppMMgr.playButtonInteraction();
-                setTimeout(function(){ ppMMgr.playoutTimeDisplayLogic(true); }, clickInteractionTimeout);
+                MenuController.playButtonInteraction();
+                setTimeout(function(){ MenuController.playoutTimeDisplayLogic(true); }, clickInteractionTimeout);
         		break;
 
         	case "pauseButton":
                 MenuManager.pressButtonFeedback(name);
-                ppMMgr.pauseButtonInteraction();
-                setTimeout(function(){ ppMMgr.playoutTimeDisplayLogic(false); }, clickInteractionTimeout);     
+                MenuController.pauseButtonInteraction();
+                setTimeout(function(){ MenuController.playoutTimeDisplayLogic(false); }, clickInteractionTimeout);     
         		break;
 
         	case "backSeekButton":
                 MenuManager.pressButtonFeedback(name);
-        		ppMMgr.seekAll( -seekTime );
-                ppMMgr.playoutTimeDisplayLogic(true);
+        		VideoController.seekAll( -seekTime );
+                MenuController.playoutTimeDisplayLogic(true);
         		break;
 
         	case "forwardSeekButton":
                 MenuManager.pressButtonFeedback(name);
-        		ppMMgr.seekAll( seekTime );
-                ppMMgr.playoutTimeDisplayLogic(true);
+        		VideoController.seekAll( seekTime );
+                MenuController.playoutTimeDisplayLogic(true);
         		break;
 
 //***********************************************************************************************************
@@ -397,10 +398,8 @@ THREE.InteractionsController = function () {
                 activeSecondaryMenuTrad.buttons.forEach(function(elem){
                     interController.removeInteractiveObject(elem);
                 }); 
-                   
-                camera.remove(scene.getObjectByName(activeSecondaryMenuTrad.name));
-                
-              subController.switchSigner( interController.getSignerActive() );
+              camera.remove(camera.getObjectByName(activeSecondaryMenuTrad.name));
+              //subController.switchSigner( interController.getSignerActive() );
                 
             } 
         }
@@ -461,7 +460,7 @@ THREE.InteractionsController = function () {
             interactiveListObjects.push(object);
             controls.setInteractiveObject(object);
         }
-        else alert("Interactivity already exists in the list.")
+        else console.error("Interactivity already exists in the list.")
 	};
 
 	this.removeInteractiveObject = function(name)

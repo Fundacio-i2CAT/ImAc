@@ -2,7 +2,7 @@
  * @author isaac.fraile@i2cat.net
  */
 
- // This library needs to use the THREE.MediaObject and imsc_i2cat.js functions
+ // This library needs to use the MediaObject.js and imsc_i2cat.js functions
 
 SubSignManager = function() {
 
@@ -11,13 +11,18 @@ SubSignManager = function() {
 	var textListMemory = [];
 	var autoPositioning = false;
 
+	var subtitleMesh;
+	var signerMesh;
+	var radarMesh;
+	var speakerMesh;
+
 	// [ST] subtitle vars 
 	var subtitleEnabled = false; // boolean
 	var subPosX = 0; // start = left = -1, center = 0, end = right = 1 
 	var subPosY = -1; // before = top = 1, center = 0, after = bottom = -1 
-	var subtitleIndicator = 'none'; // none, arrow, compass, move
+	var subtitleIndicator = 'none'; // none, arrow, radar, move
 	var subSize = 1; // small = 0.6, medium = 0.8, large = 1
-	var subLang; // TODO - string (Eng, De, Cat, Esp)
+	var subLang; // TODO - string (En, De, Ca, Es)
 	var subBackground = 0.8; // semi-transparent = 0.8, outline = 0
 	var subEasy = false; // boolean
 	var subArea = 50; // small = 50, medium = 60, large = 70
@@ -27,9 +32,9 @@ SubSignManager = function() {
 	var signEnabled = false; // boolean
 	var signPosX = 1; // left = -1, center = 0, right = 1
 	var signPosY = -1; // bottom = -1, center = 0, top = 1
-	var signIndicator = 'none';	 // none, arrow, move (forced prespective)
+	var signIndicator = 'none';	 // none, arrow, move
 	var signArea = 70; // small = 50, medium = 60, large = 70
-	var signLang; // TODO - string (Eng, De, Cat, Esp)
+	var signLang; // TODO - string (En, De, Ca, Ep)
 
 
 //************************************************************************************
@@ -43,13 +48,13 @@ SubSignManager = function() {
 		if ( isd.contents.length > 0 ) 
 	  	{
 	  		if ( autoPositioning ) changePositioning( isd.imac );
-	    	if ( subtitleEnabled ) print3DText( isd.contents[0] );
+	    	if ( subtitleEnabled ) print3DText( isd.contents[0], isd.imac );
 
 	    	checkSpeakerPosition( isd.imac );
 	  	}
 	}
 
-	function print3DText(isdContent) 
+	function print3DText(isdContent, isdImac) 
 	{
 	  	if ( isdContent.contents.length > 0 )
 	  	{
@@ -72,12 +77,12 @@ SubSignManager = function() {
 
 	    	if ( textList.length > 0 && ( textListMemory.length == 0 || textListMemory.length > 0 && textList[0].text != textListMemory[0].text ) ) 
 	    	{
-	      		moData.removeSubtitle();
+	      		removeSubtitle();
 
 	      		var latitud = subPosY == 1 ? 30 * subArea/100 : -30 * subArea/100; 
-	      		var posY = _isHMD ? 80 * Math.sin( Math.radians( latitud ) ) : 69 * Math.sin( Math.radians( latitud ) );
-	      		var subAjust = _isHMD ? 1 : 0.45;
-	      		var posZ = _isHMD ? 75 : 38;
+	      		var posY = _isHMD ? 80 * Math.sin( Math.radians( latitud ) ) : 135 * Math.sin( Math.radians( latitud ) );
+	      		var subAjust = _isHMD ? 1 : 0.97;
+	      		var posZ = 75;
 
 	      		var conf = {
 			        subtitleIndicator: subtitleIndicator,
@@ -91,7 +96,9 @@ SubSignManager = function() {
 			        z: posZ
 			    };
 
-	      		moData.createSubtitle( textList, conf );
+	      		createSubtitle( textList, conf );
+
+	      		if ( subtitleIndicator == 'radar' ) createSpeakerRadar( textList[0].color, isdImac );
 
 	      		textListMemory = textList;     
 	    	}   
@@ -99,7 +106,8 @@ SubSignManager = function() {
 	  	else 
 	  	{
 	    	textListMemory = [];
-	    	moData.removeSubtitle();
+	    	removeSubtitle();
+	    	removeSpeakerRadar();
 	  	}
 	}
 
@@ -111,8 +119,7 @@ SubSignManager = function() {
 		  	{
 		  		position = signPosX == -1 ? 'left' : 'right';
 		  	}
-
-			signIndicator != 'move' ? moData.changeSignIndicator( position ) : moData.changeSignPosition( position );
+			signIndicator != 'move' ? changeSignIndicator( position ) : changeSignPosition( position );
 		}
 	}
 
@@ -120,24 +127,22 @@ SubSignManager = function() {
 	{
 		if ( subtitleIndicator != 'none' ) 
 		{
-			subtitleIndicator != 'move' ? moData.changeSubtitleIndicator( position ) : textListMemory = [];
+			subtitleIndicator != 'move' ? changeSubtitleIndicator( position ) : textListMemory = [];
 		}  	
 	}
 
 	function checkSpeakerPosition(isdImac)
 	{
-		var difPosition = getViewDifPosition( isdImac );
+		var difPosition = getViewDifPosition( isdImac, camera.fov );
 	  	var position;
 
-	  	if ( isdImac == undefined || ( difPosition < camera.fov && difPosition > -camera.fov ) )
+	  	if ( isdImac == undefined || difPosition == 0 )
 	  	{
 	  		position = 'center';
 	  	}
 	  	else
 	  	{
-	  		difPosition = difPosition < 0 ? difPosition + 360 : difPosition;
-
-	    	position = ( difPosition > 0 && difPosition <= 180 ) ? 'left' : 'right';
+	    	position = difPosition < 0 ? 'left' : 'right';
 	  	}
 
 	  	checkSubtitleIdicator( position );
@@ -147,18 +152,8 @@ SubSignManager = function() {
 	function changePositioning(isdImac)
 	{
 		autoPositioning = false;
-		var difPosition = Math.round(getViewDifPosition( isdImac ));
-		var position;
+		var position = Math.round(getViewDifPosition( isdImac, 3 ));
 
-	  	if ( difPosition <= 3  && difPosition >= -3 ) 
-	  	{
-	  		position = 0;
-	  	}
-	  	else
-	  	{
-	  		difPosition = difPosition < 0 ? difPosition + 360 : difPosition;
-	    	position = ( difPosition > 0 && difPosition <= 180 ) ? -1 : 1;
-	  	}
       	var rotaionValue = 0;
       	var initY = Math.round( CameraParentObject.rotation.y * (-180/Math.PI)%360 );
 
@@ -170,7 +165,7 @@ SubSignManager = function() {
         	if ( position * rotaionValue >= difff || position == 0 ) 
         	{
         		clearInterval( rotationInterval );
-        		if ( moData.getListOfVideoContents()[0].vid.currentTime < moData.getListOfVideoContents()[0].vid.duration - 10 ) autoPositioning = true;
+        		if ( VideoController.getListOfVideoContents()[0].vid.currentTime < VideoController.getListOfVideoContents()[0].vid.duration - 10 ) autoPositioning = true;
         		else {
         			AplicationManager.enableVR();
         			autopositioning = false;
@@ -190,20 +185,20 @@ SubSignManager = function() {
 	    var latitud = 30 * signPosY; 
 	    var longitud = 53 * signPosX; 
 
-	    var posX = 42 * Math.sin( Math.radians( longitud ) ) * signArea/100;
-	    var posY = 30 * Math.sin( Math.radians( latitud ) ) * signArea/100;
-	    var posZ = 40;
+	    var posX = _isHMD ? 60 * Math.sin( Math.radians( longitud ) ) * signArea/100 : 80 * Math.sin( Math.radians( longitud ) ) * signArea/100;
+	    var posY = 50 * Math.sin( Math.radians( latitud ) ) * signArea/100;
+	    var posZ = 76;
 
 		var conf = {
-			size: 15 * 70/100, // signArea/100
+			size: 30 * 70/100, // signArea/100
 			signIndicator: signIndicator,
 			x: posX,
 			y: posY,
 			z: posZ
 		};
 
-      	moData.createSignVideo( signerContent, 'sign', conf );
-      	ppMMgr.playAll();
+      	createSignVideo( signerContent, 'sign', conf );
+      	VideoController.playAll();
 	}
 
 	function updateSignerPosition()
@@ -211,13 +206,124 @@ SubSignManager = function() {
 		var latitud = 30 * signPosY; 
 	    var longitud = 53 * signPosX; 
 
-	    var posX = 42 * Math.sin( Math.radians( longitud ) ) * signArea/100;
-	    var posY = 30 * Math.sin( Math.radians( latitud ) ) * signArea/100;
-	    var posZ = 40;
+	    var posX = _isHMD ? 60 * Math.sin( Math.radians( longitud ) ) * signArea/100 : 80 * Math.sin( Math.radians( longitud ) ) * signArea/100;
+	    var posY = 50 * Math.sin( Math.radians( latitud ) ) * signArea/100;
+	    var posZ = 76;
 
 	    scene.getObjectByName("sign").position.x = posX;
 	    scene.getObjectByName("sign").position.y = posY;
 	}
+
+    function createSubtitle(textList, config)
+    {
+        subtitleMesh = moData.getSubtitleMesh( textList, config );
+
+        camera.add( subtitleMesh );
+    }
+
+    function createSignVideo(url, name, config)
+    {
+    	removeSignVideo();
+
+        signerMesh = moData.getSignVideoMesh( url, name, config );
+        camera.add( signerMesh );
+    }
+
+    function createRadar()
+    {
+    	if ( radarMesh ) removeRadar();
+    	radarMesh = moData.getRadarMesh();
+    	camera.add( radarMesh );
+    }
+
+    function createSpeakerRadar(color, pos)
+    {
+    	if ( !radarMesh ) createRadar();
+
+    	if ( pos != undefined && speakerMesh )
+        {
+            speakerMesh.rotation.z = Math.radians( 360-pos );
+            speakerMesh.material.color.set( color ); 
+        }
+        else if ( pos != undefined ) 
+        {
+            speakerMesh = moData.getSpeakerRadarMesh( color, pos );
+            camera.add( speakerMesh );
+        }
+        else removeSpeakerRadar();
+    }
+
+//************************************************************************************
+// Media Object Destructors
+//************************************************************************************
+
+    function removeSubtitle()
+    {
+        camera.remove( subtitleMesh );
+        subtitleMesh = undefined;
+    }
+
+    function removeSignVideo()
+    {
+        if ( signerMesh ) 
+        {
+            VideoController.removeContentById( signerMesh.name );
+            camera.remove( signerMesh );
+            signerMesh = undefined;
+        }
+    }
+
+    function removeRadar()
+    {
+    	removeSpeakerRadar();
+    	camera.remove( radarMesh );
+    	radarMesh = undefined;
+    }
+
+    function removeSpeakerRadar()
+    {
+    	camera.remove( speakerMesh );
+    	speakerMesh = undefined;
+    }
+
+//************************************************************************************
+// Media Object Position Controller 
+//************************************************************************************
+
+    function changeSubtitleIndicator(pos)
+    {
+        if ( subtitleMesh )
+        {
+        	subtitleMesh.children.forEach( function( elem ) 
+        	{ 
+        		elem.children.forEach( function( e ) 
+        		{
+        			if ( e.name == 'left' ) e.visible = pos == 'left' ? true : false;
+                    else if ( e.name == 'right' ) e.visible = pos == 'right' ? true : false;
+                }); 
+        	}); 
+        }
+    }
+
+    function changeSignIndicator(pos)
+    {
+        if ( signerMesh )
+        {
+        	subtitleMesh.children.forEach( function( e ) 
+        	{
+        		if ( e.name == 'left' ) e.visible = pos == 'left' ? true : false;
+                else if ( e.name == 'right' ) e.visible = pos == 'right' ? true : false;
+            }); 
+        }
+    }
+
+    function changeSignPosition(pos) 
+    {
+        if ( signerMesh && ( ( pos == 'left' && signerMesh.position.x > 0 ) || ( pos == 'right' && signerMesh.position.x < 0 ) ) )
+        {
+            signerMesh.position.x = signerMesh.position.x * -1;
+        }
+    }
 
 //************************************************************************************
 // Utils
@@ -228,7 +334,7 @@ SubSignManager = function() {
     	return ( rgb && rgb.length === 4 ) ? "rgb(" + rgb[0] + "," + rgb[1] + "," + rgb[2] + ")" : '';
 	}
 
-    function getViewDifPosition(sp)
+    function getViewDifPosition(sp, fov)
     {
     	var target = new THREE.Vector3();
     	var camView = camera.getWorldDirection( target );
@@ -236,27 +342,69 @@ SubSignManager = function() {
 
     	var lon = Math.degrees( Math.atan( camView.x/camView.z ) ) + offset;
 
-    	//return lon >= 0 ? sp - lon : sp - ( lon + 360 );
-    	return lon >= 0 ? 360 - sp - lon : - sp - lon;	
+    	lon = lon > 0 ? 360 - lon : - lon;
+
+    	if ( ( lon - sp + 360 )%360 > fov && ( lon - sp + 360 )%360 <= 180 ) return -1; 
+    	else if ( ( lon - sp + 360 )%360 > 180 && ( lon - sp + 360 )%360 <= 360 - fov ) return 1;
+    	else return 0;
     }
 
 //************************************************************************************
-// Public Getters
+// Public Subtitle Getters
 //************************************************************************************
 
-	this.getSubArea = function()
+	this.getSubtitleEnabled = function()
 	{
-		return subArea;
+		return subtitleEnabled;
 	};
 
 	this.getSubPosition = function()
 	{
 		var position = {
-			x: signPosX,
-			y: signPosY
+			x: subPosX,
+			y: subPosY
 		};
 
 		return position;
+	};
+
+	this.getSubIndicator = function()
+	{
+		return subtitleIndicator;
+	};
+
+	this.getSubSize = function()
+	{
+		return subSize;
+	};
+
+	this.getSubLanguage = function()
+	{
+		return subLang;
+	};
+
+	this.getSubBackground = function()
+	{
+		return subBackground;
+	};
+
+	this.getSubEasy = function()
+	{
+		return subEasy;
+	};
+
+	this.getSubArea = function()
+	{
+		return subArea;
+	};	
+
+//************************************************************************************
+// Public Signer Getters
+//************************************************************************************
+
+	this.getSignerEnabled = function()
+	{
+		return signEnabled;
 	};
 
 	this.getSignerPosition = function()
@@ -269,24 +417,23 @@ SubSignManager = function() {
 		return position;
 	};
 
-	this.getSubIndicator = function()
-	{
-		return subtitleIndicator;
-	};
-
 	this.getSignerIndicator = function()
 	{
 		return signIndicator;
 	};
 
-	this.getSubtitleEnabled = function()
+	this.getSignerArea = function()
 	{
-		return subtitleEnabled;
+		return signArea;
 	};
 
+	this.getSignerLanguage = function()
+	{
+		return signLang;
+	};
 
 //************************************************************************************
-// Public Setters
+// Public Subtitle Setters
 //************************************************************************************
 
 	this.setSubtitle = function(xml)
@@ -299,32 +446,17 @@ SubSignManager = function() {
 	        if ( r.readyState === 4 && r.status === 200 ) 
 	        {
 	            imsc1doc = imsc.fromXML( r.responseText );
-
-	            var listVideoContent = moData.getListOfVideoContents();
-	  
-				listVideoContent[0].vid.ontimeupdate = function() 
-				{
-				    updateISD( listVideoContent[0].vid.currentTime );
-
-		    		if(scene.getObjectByName("timeline"))
-					{
-						var total = moData.getListOfVideoContents()[0].vid.duration;
-						var current  = moData.getListOfVideoContents()[0].vid.currentTime;
-						var w = scene.getObjectByName("bgTimeline").geometry.parameters.width;
-						secMMgr.scaleTimeLine(total,current, w, scene.getObjectByName("currentTimeline"), scene.getObjectByName("bgTimeline"));
-						scene.getObjectByName("timeline").visible = true;
-						scene.getObjectByName("playoutTime").remove(scene.getObjectByName("currentTime"));		
-					}
-				};
 	        }
 	    };
 	    r.send();
 	};
 
-	this.setSubArea = function(size)
+	this.setSubIndicator = function(ind)
 	{
-		subArea = size;
+		subtitleIndicator = ind;
 		textListMemory = [];
+
+		if ( ind != 'radar' ) removeRadar(); 
 	};
 
 	this.setSubSize = function(size)
@@ -351,46 +483,49 @@ SubSignManager = function() {
 		textListMemory = [];
 	};
 
+	this.setSubArea = function(size)
+	{
+		subArea = size;
+		textListMemory = [];
+	};
+
+//************************************************************************************
+// Public Signer Setters
+//************************************************************************************
+
 	this.setSignerPosition = function(x, y)
 	{
 		signPosX = x;
 		signPosY = y;
-
-		//updateSignerPosition();
-	};
-
-	this.getSignerPosition = function()
-	{
-		return signPosX;
-	}
+		updateSignerPosition();
+	};	
 
 	this.setSignerArea = function(size)
 	{
 		signArea = size;
-
-		//updateSignerPosition();
-	};
-
-	this.setSubIndicator = function(ind)
-	{
-		subtitleIndicator = ind;
-		textListMemory = [];
+		updateSignerPosition();
 	};
 
 	this.setSignerIndicator = function(ind)
 	{
 		signIndicator = ind;
+		updateSignerPosition();
 	};
 
 	this.setSignerContent = function(url)
 	{
 		signerContent = url;
-	};
-
+		if ( signEnabled ) createSigner();
+	};	
 
 //************************************************************************************
 // Public functions
 //************************************************************************************
+
+	this.updateSubtitleByTime = function(time)
+	{
+		if ( imsc1doc ) updateISD( time );
+	};
 
     this.initSubtitle = function(fov, x, y, ind)
 	{
@@ -416,13 +551,14 @@ SubSignManager = function() {
 
 	this.disableSubtiles = function()
 	{
-		moData.removeSubtitle();
+		removeSubtitle();
+		removeRadar();
 		subtitleEnabled = false;
 	};
 
 	this.switchSubtitles = function(enable)
 	{
-		if ( !enable ) moData.removeSubtitle();
+		if ( !enable ) removeSubtitle();
 		subtitleEnabled = enable;
 	}
 
@@ -438,7 +574,21 @@ SubSignManager = function() {
 
 	this.switchSigner = function(enable)
 	{
-		signerEnabled = enable;
-		enable ? createSigner() : moData.removeSignVideo();
+		signEnabled = enable;
+		enable ? createSigner() : removeSignVideo();
 	};
+
+	this.updateRadar = function()
+    {
+        if ( radarMesh ) 
+        {
+            var target = new THREE.Vector3();
+            var camView = camera.getWorldDirection( target );
+            var offset = camView.z >= 0 ? 180 : -0;
+
+            var lon = Math.degrees( Math.atan( camView.x/camView.z ) ) + offset;
+
+            radarMesh.rotation.z = Math.radians( lon );
+        }
+    };
 }

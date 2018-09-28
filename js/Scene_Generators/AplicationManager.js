@@ -24,7 +24,8 @@ function AplicationManager()
 
     this.switchDevice = function()
     {
-    	if ( _display.length > 0 ) 
+    	console.error('Deprecated function: switchDevice')
+    	/*if ( _display.length > 0 ) 
     	{
     		if ( _isHMD )
     		{
@@ -51,9 +52,11 @@ function AplicationManager()
 				renderer.vr.setDevice( _display[ 0 ] );
 
     		}
-		}
+		}*/
     };
 
+
+    // Used when autopositioning is activated
     this.enableVR = function()
     {
     	renderer.vr.setDevice( _display[ 0 ] );
@@ -66,7 +69,7 @@ function AplicationManager()
 
 	function waitSesionManager()
 	{ 
-		if (isVRtested == true)
+		if ( isVRtested == true )
 		{
 			activateLogger();
 			haveVrDisplay ? renderer.animate( render ) : update(); 
@@ -79,7 +82,7 @@ function AplicationManager()
 
 	function activateLogger()
 	{
-		if (loggerActivated)
+		if ( loggerActivated )
 		{
 			setInterval(function(){
 				statObj.add(new StatElements());
@@ -89,7 +92,7 @@ function AplicationManager()
 
 	function update() 
 	{	
-		if(controls) controls.update();
+		if ( controls ) controls.update();
 		effect.render( scene, camera );
 		requestAnimationFrame( update );		
     }
@@ -98,10 +101,9 @@ function AplicationManager()
     {
     	THREE.VRController.update()
     	if ( controls ) controls.update();
-    	//THREE.VRController.update()
     	renderer.render( scene, camera );
 
-    	if ( AudioManager.isAmbisonics ) AudioManager.updateRotationMatrix( camera.matrixWorld.elements );
+    	AudioManager.updateRotationMatrix( camera.matrixWorld.elements );
 
     	if( THREE.VRController.getTouchPadState() && _isHMD ) 
     	{
@@ -109,20 +111,10 @@ function AplicationManager()
 	        mouse3D.x = 0;
 	        mouse3D.y = 0;
 					
-			//moData.isPausedById(0) ? moData.playAll() : moData.pauseAll();
 			interController.checkInteraction(mouse3D, camera, 'onDocumentMouseDown');
 		}
 
-		// If the device is in HMD mode and the menu is open, the menu will follow the FoV of the user
-
-		var menu;
-    	if(_isTradMenuOpen) menu = scene.getObjectByName( "traditionalMenu" );
-    	else menu  = scene.getObjectByName(menuList[0].name)
-
-	    /*if(_isHMD && menu)
-	    {
-	        MenuManager.menuFollowCameraFOV(Math.sign(Math.round(Math.degrees(camera.rotation.y))%360), menu);
-	    } */
+		subController.updateRadar();
 
 		Reticulum.update();
     }
@@ -173,44 +165,7 @@ function AplicationManager()
 
         moData.createSphericalVideoInScene( mainContentURL, 'contentsphere' );
 
-
-
-
-        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-//moData.createPointer2();
-
-
-        /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//  This shortcut will be useful for later on down the road...
-applyDown = function( obj, key, value ){
-  obj[ key ] = value
-  if( obj.children !== undefined && obj.children.length > 0 ){
-    obj.children.forEach( function( child ){
-      applyDown( child, key, value )
-    })
-  }
-}
-castShadows = function( obj ){
-  applyDown( obj, 'castShadow', true )
-}
-receiveShadows = function( obj ){
-  applyDown( obj, 'receiveShadow', true )
-}
-
-
-var light = new THREE.DirectionalLight( 0xFFFFFF, 1, 1000 )
-light.position.set(  1, 100, -0.5 )
-light.castShadow = true
-light.shadow.mapSize.width  = 2048
-light.shadow.mapSize.height = 2048
-light.shadow.camera.near    =    1
-light.shadow.camera.far     =   1200
-scene.add( light )
-
-scene.add( new THREE.HemisphereLight( 0x909090, 0x404040 ))
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		moData.createCastShadows();
 
         //moData.createCubeGeometry116('./resources/cubemap3.jpg', 'name');
         //moData.createCubeGeometry65('./resources/dagomi_cube_603_edit.mp4', 'name');
@@ -228,18 +183,12 @@ scene.add( new THREE.HemisphereLight( 0x909090, 0x404040 ))
 				haveVrDisplay = true;
 				renderer.vr.enabled = true;
 				isVRtested = true; 
-				ppMMgr.playAll();
+				VideoController.playAll();
 			} );
         }
         else
         {
-        	startAllVideos();
-			isVRtested = true;
-
-			effect = new THREE.StereoEffect(renderer);
-			effect.setSize(window.innerWidth, window.innerHeight);
-
-			//controls = new THREE.DeviceOrientationAndTouchController(camera, CameraParentObject, renderer.domElement, renderer);
+        	alert("This browser don't support VR content")
         }
 
 		Reticulum.init(camera, {
@@ -283,23 +232,15 @@ scene.add( new THREE.HemisphereLight( 0x909090, 0x404040 ))
 
 				button.style.display = '';
 
-				button.style.cursor = 'pointer';
 				button.style.left = 'calc(50% - 110px)';
-				button.style.width = '100px';
-
 				button.textContent = 'VR';
 
-				button.onmouseenter = function () { button.style.opacity = '1.0'; button.style.color = '#ff0'; button.style.border = '2px solid #ff0';};
-				button.onmouseleave = function () { button.style.opacity = '0.8'; button.style.color = '#fff'; button.style.border = '2px solid #fff';};
-
-				button.onclick = function () {
+				button.onclick = function() {
 
 					button1.style.display = 'none';
 					button2.style.display = 'none';
 
-					ppMMgr.playAll();
-
-					//controls = new THREE.DeviceOrientationAndTouchController( camera, CameraParentObject, renderer.domElement, renderer );
+					VideoController.playAll();
 
 					display.isPresenting ? display.exitPresent() : display.requestPresent( [ { source: renderer.domElement } ] ).then(
 						function () { 
@@ -330,7 +271,7 @@ scene.add( new THREE.HemisphereLight( 0x909090, 0x404040 ))
 					
 					//if (!event.display.isPresenting) window.history.back();
 					if (event.display) {
-						button.textContent = event.display.isPresenting ? 'EXIT VR' : 'ENTER VR';
+						//button.textContent = event.display.isPresenting ? 'EXIT VR' : 'ENTER VR';
 
 						if (!event.display.isPresenting) location.reload();
 					}
@@ -349,13 +290,12 @@ scene.add( new THREE.HemisphereLight( 0x909090, 0x404040 ))
 
 						_display = displays;
 
-						if ( displays.length > 0 && menuType != "Traditional") 
+						if ( displays.length > 0 ) 
 						{
 							showEnterVR( displays[ 0 ] );
 						}
 						else
 						{
-							//controls = new THREE.DeviceOrientationAndTouchController( camera, CameraParentObject, renderer.domElement, renderer );
 							createMenus();	
 
 						}
@@ -374,23 +314,16 @@ scene.add( new THREE.HemisphereLight( 0x909090, 0x404040 ))
 
 				button.style.display = '';
 
-				button.style.cursor = 'pointer';
 				button.style.left = 'calc(50% + 10px)';
-				button.style.width = '100px';
-
 				button.textContent = 'NO VR';
 
-				button.onmouseenter = function () { button.style.opacity = '1.0'; button.style.color = '#ff0'; button.style.border = '2px solid #ff0';};
-				button.onmouseleave = function () { button.style.opacity = '0.8'; button.style.color = '#fff'; button.style.border = '2px solid #fff';};
 
 				button.onclick = function () {
 
 					button1.style.display = 'none';
 					button2.style.display = 'none';
 
-					ppMMgr.playAll();
-
-					//controls = new THREE.DeviceOrientationAndTouchController( camera, CameraParentObject, renderer.domElement, renderer );
+					VideoController.playAll();
 					
 					isVRtested=true; 
 					//startAllVideos(); 
@@ -411,7 +344,7 @@ scene.add( new THREE.HemisphereLight( 0x909090, 0x404040 ))
 
 				navigator.getVRDisplays().then( function ( displays ) 
 				{
-					if ( displays.length > 0 && menuType != "Traditional") 
+					if ( displays.length > 0 ) 
 					{
 						showEnterVR();
 					}
@@ -426,32 +359,16 @@ scene.add( new THREE.HemisphereLight( 0x909090, 0x404040 ))
 	};
 }
 
-function stylizeElement( element ) 
-{
-	element.style.position = 'absolute';
-	element.style.bottom = '200px';
-	element.style.padding = '12px 6px';
-	element.style.border = '2px solid #fff';
-	element.style.borderRadius = '4px';
-	element.style.background = '#000';
-	element.style.color = '#fff';
-	element.style.font = 'bold 24px sans-serif';
-	element.style.textAlign = 'center';
-	element.style.opacity = '0.8';
-	element.style.outline = 'none';
-	element.style.zIndex = '999';
-}
-
 function createMenus ()
 {
-	    switch ( menuType )
+	switch ( menuType )
     {
         case "LS_area":
             MenuManager.createMenu(false);
             break;
-        case "Traditional":
         default:
-			MenuManager.createMenu(true);
+            MenuManager.createMenu(true);
+
             break;
     }
 }

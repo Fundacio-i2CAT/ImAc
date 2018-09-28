@@ -12,8 +12,6 @@ var MenuManager = new THREE.MenuManager();
 var MenuController = new THREE.MenuController();
 var MenuDictionary = new MenuDictionary();
 
-var ppMMgr = new THREE.PlayPauseMenuManager();
-
 var secMMgr = new THREE.SecondaryMenuManager();
 
 var AudioManager = new AudioManager();
@@ -21,6 +19,8 @@ var subController = new SubSignManager();
 var interController = new THREE.InteractionsController();
 var polyfill = new WebVRPolyfill();
 var statObj = new StatObject();
+
+var VideoController = new VideoController();
 
 
 var loggerActivated = false;
@@ -83,6 +83,17 @@ function selectXML(id)
         }
     }
 
+    var radios2 = document.getElementsByName('lang');
+
+    for (var i = 0, length = radios2.length; i < length; i++)
+    {
+        if (radios2[i].checked)
+        {
+            MenuDictionary.setMainLanguage( radios2[i].value );
+            break;
+        }
+    }
+
   //mainContentURL = id == 2 ? './resources/cam_2_2k.mp4' : './resources/rapzember-young-hurn_edit.mp4';
   enterfullscreen();
   mainContentURL = list_contents[id].url;
@@ -100,9 +111,6 @@ function startAllVideos()
   setTimeout(function() {
     runDemo(); 
   },500);
-  
-
-  //moData.playAll();
 }
 
 

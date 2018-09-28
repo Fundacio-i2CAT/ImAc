@@ -24,11 +24,10 @@ THREE.MenuManager = function () {
 
     function getOpenMenuAreaButton(_isMenuTrad)
     {
-        //var geometry = new THREE.SphereGeometry( 99, 64, 16, Math.PI/2, Math.PI * 2,  7*Math.PI/20,  -Math.PI/12 );
-        var geometry = new THREE.SphereGeometry( 99, 32, 16, Math.PI/2, Math.PI * 2,  2.15,  0.4 );
+        var geometry = new THREE.SphereGeometry( 99, 32, 16, Math.PI/2, Math.PI * 2,  2.35,  0.4 );
         geometry.scale( - 1, 1, 1 );
         //var material = new THREE.MeshBasicMaterial( {color: 0x13ec56, side: THREE.FrontSide, colorWrite: false});
-        var material = new THREE.MeshBasicMaterial( {color: 0xffffff, side: THREE.FrontSide, transparent: true, opacity:0.05} );
+        var material = new THREE.MeshBasicMaterial( {color: 0xffffff, side: THREE.FrontSide, transparent: true, opacity:0} );
         var activationElement = new THREE.Mesh( geometry, material );
         activationElement.name = 'openMenu';
 
@@ -48,6 +47,7 @@ THREE.MenuManager = function () {
             },
             onGazeLong: MenuFunctionsManager.getOpenMenuFunc(_isMenuTrad)
             //onGazeClick: MenuFunctionsManager.getOpenMenuFunc(_isMenuTrad)
+
         });
 
         return activationElement;
@@ -103,6 +103,7 @@ THREE.MenuManager = function () {
     this.createMenu = function(_isMenuTrad)
     {
         MenuDictionary.initGlobalArraysByLanguage();
+        //var activationElement = _isMenuOpenButton ? getOpenMenuButton() : getOpenMenuAreaButton();
         var activationElement = getOpenMenuAreaButton(_isMenuTrad); 
         scene.add( activationElement );
     };  
@@ -117,7 +118,7 @@ THREE.MenuManager = function () {
 
         secMMgr.createMenu();
         checkMenuInteractions();
-        ppMMgr.showPlayPauseButton();
+        MenuController.showPlayPauseButton();
         MenuController.showMultiOptionsButtons( multiOptionsMainSubMenuIndexes );  
     
     };
@@ -168,7 +169,7 @@ THREE.MenuManager = function () {
         // If the next menu is PLAY/PAUSE or volume change MUTE/UNMUTE remove the nonactive button interactivity from the list.
         if(newIndex == 1)
         {
-            if(ppMMgr.isPausedById(0)) interController.removeInteractiveObject(menuList[1].buttons[1]);
+            if(VideoController.isPausedById(0)) interController.removeInteractiveObject(menuList[1].buttons[1]);
             else interController.removeInteractiveObject(menuList[1].buttons[0]);
         }
         else if(newIndex == 2)
@@ -444,22 +445,6 @@ THREE.MenuManager = function () {
 
     
 
-    this.createMenuTrad = function()
-    {
-        var bgWidth = Math.round(visibleWidthAtZDepth( 60, camera )-tradMenuMargin)/tradmenuDivisions;
-        var bg = menuData.getBackgroundMesh(bgWidth, 4, 0x333333, 0.75);
-        
-        bg.position.set((tradmenuDivisions-1)*bgWidth/2, (-visibleHeightAtZDepth( 60, camera )/2)+2+2,-60);
-
-        var openMenuTradButton = menuData.getImageMesh( 0, 2, 2, './img/menu/settings_icon.png', 'openMenuTrad', MenuFunctionsManager.getOpenTradMenuFunc(), bgWidth, 4);
-        
-        bg.add( openMenuTradButton);  
-        bg.name = 'openMenuTrad';
-        camera.add( bg );
-
-        return bg;
-    };
-
    function visibleHeightAtZDepth ( depth, camera )
    {
       // compensate for cameras not positioned at z=0
@@ -486,8 +471,7 @@ THREE.MenuManager = function () {
         
         var menuTrad =  new THREE.Group();
 
-        //var bgWidth = Math.round(visibleWidthAtZDepth( 60, camera )-tradMenuMargin)*0.8;
-        var bgWidth = Math.round(visibleWidthAtZDepth( 60, camera )-tradMenuMargin)*0.8;
+        var bgWidth = Math.round(visibleWidthAtZDepth( 60, camera )-tradMenuMargin);
         var bg = menuData.getBackgroundMesh(bgWidth, 4, 0x333333, 0.8);
         bg.position.set(0, (-visibleHeightAtZDepth( 60, camera )/2)+2+2,-69);
         bg.name = "traditionalMenuBackground"
@@ -561,7 +545,7 @@ THREE.MenuManager = function () {
 
         //var currentTime = menuData.getMenuTextMesh(ppMMgr.getPlayoutTime(moData.getListOfVideoContents()[0].vid.currentTime), 1.25, 0xffffff, "currentPlayoutTime", null, null);
         var slash = menuData.getMenuTextMesh("/", 1.25, 0xffffff,"/", null, null);
-        var durationTime = menuData.getMenuTextMesh(ppMMgr.getPlayoutTime(moData.getListOfVideoContents()[0].vid.duration), 1.25, 0xffffff,"durationTime", null, null);
+        var durationTime = menuData.getMenuTextMesh(VideoController.getPlayoutTime(VideoController.getListOfVideoContents()[0].vid.duration), 1.25, 0xffffff,"durationTime", null, null);
 
         //currentTime.position.x =  -(tradmenuDivisions-15)*bgWidth/(tradmenuDivisions*2);
         durationTime.position.x =  -(tradmenuDivisions-18)*bgWidth/(tradmenuDivisions*2);
@@ -573,7 +557,7 @@ THREE.MenuManager = function () {
         playoutTime.add(durationTime)
         playoutTime.position.set(0, bg.position.y,-69);
 
-        menuTrad.add(playoutTime);;
+        menuTrad.add(playoutTime);
 
         secMMgr.createSecondaryMenusTraditional(bg);
 
@@ -584,7 +568,12 @@ THREE.MenuManager = function () {
         menuTrad.add(bg);
         menuTrad.name = "traditionalMenu";
 
-        if ( _isHMD ) scene.add(menuTrad);
+        menuTrad.renderOrder = 2;
+
+        if ( _isHMD ) {
+            menuTrad.scale.set( 0.7, 0.7, 1 );
+            scene.add(menuTrad);
+        }
         else camera.add(menuTrad);
         
         menuList.forEach(function(menu, index){
@@ -597,7 +586,7 @@ THREE.MenuManager = function () {
             }
         });
 
-        ppMMgr.showPlayPauseButton();
+        MenuController.showPlayPauseButton();
         MenuController.showMuteUnmuteButton();
         MenuController.showMultiOptionsButtons(multiOptionsMainSubMenuIndexes);
     }

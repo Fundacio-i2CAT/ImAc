@@ -7,14 +7,12 @@ var secondColumnActiveButton;
 
 var initialVolumeLevel = 0.5;
 
-var settingsLanguage = 'settingsLanguageEngButton';
-
 var isSubtitlesActive = true;
 var isSignLanguageActive = false;
 var isAudioDescriptionActive = false;
 var isAudioSubtitleActive = false;
 
-var subtitlesLanguage = 'subtitlesEngButton';
+var subtitlesLanguage = 'subtitlesGerButton';
 var subtitlesPosition = 'subtitlesBottomButton';
 var subtitlesSize = 'subtitlesLargeSizeButton';
 var subtitlesIndicator = 'subtitlesIndicatorArrowButton';
@@ -96,7 +94,7 @@ var menuList =
 // SECOND LEVEL MENUS
 
 /*5*/   { 
-            name: 'settingsMenu', isEnabled: true, firstmenuindex: 3, 
+            name: 'settingsMenu', title:'Settings', isEnabled: true, firstmenuindex: 3, 
             submenus:
             [
                 { 
@@ -208,7 +206,7 @@ var menuList =
             ]
         },                                   
 /*7*/   { 
-            name: 'signLanguageMenu', title: 'Sign Language', isEnabled: false, firstmenuindex: 4, 
+            name: 'signLanguageMenu', title: 'SignLanguage', isEnabled: false, firstmenuindex: 4, 
             submenus:[
                 { 
                     name: 'signerLanguages', 
@@ -258,7 +256,7 @@ var menuList =
             ]
         },
 /*8*/   { 
-            name: 'audioDescriptionMenu', title:'Audio Description', isEnabled: false, firstmenuindex: 4, 
+            name: 'audioDescriptionMenu', title:'AudioDescription', isEnabled: false, firstmenuindex: 4, 
             submenus:[
                 { 
                     name: 'audioDescriptionLanguages', 
@@ -298,7 +296,7 @@ var menuList =
             ]
         },
 /*9*/   { 
-            name: 'audioSubtitlesMenu', title:'Audio Subtitles', isEnabled: false, firstmenuindex: 4, 
+            name: 'audioSubtitlesMenu', title:'AudioSubtitles', isEnabled: false, firstmenuindex: 4, 
             submenus:[
                 { 
                     name: 'audioSubtitlesLanguages', 

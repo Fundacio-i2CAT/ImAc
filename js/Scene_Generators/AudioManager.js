@@ -113,7 +113,7 @@ AudioManager = function() {
 
     this.updateRotationMatrix = function(m)
     {
-        updateMatrix4( m );
+        if ( isAmbisonics ) updateMatrix4( m );
     };
 
     this.getVolume = function()

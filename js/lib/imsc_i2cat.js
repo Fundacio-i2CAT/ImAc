@@ -963,7 +963,7 @@
     }
 
     function elementGetXMLImacPos(node) {
-        return node && 'imac:equirectangularLongitude' in node.attributes ? node.attributes['imac:equirectangularLongitude'].value || null : null;
+        return node && 'imac:equirectangularLongitude' in node.attributes ? node.attributes['imac:equirectangularLongitude'].value : undefined;
     }
 
     function elementGetRegionID(node) {
@@ -2502,7 +2502,7 @@ ctx.fillText("Hello World",20,50);
      * @returns {Object} Opaque in-memory representation of an ISD
      */
 
-    var _imac = 0;
+    var _imac = undefined;
 
     imscISD.generateISD = function (tt, offset, errorHandler) {
 
@@ -2525,7 +2525,7 @@ ctx.fillText("Hello World",20,50);
                 /* add the region to the ISD */
 
                 isd.contents.push(c.element);
-                isd.imac = _imac >= 0 ? _imac : _imac + 360;
+                isd.imac = _imac;// >= 0 ? _imac : _imac + 360;
             }
 
 
@@ -2828,7 +2828,7 @@ ctx.fillText("Hello World",20,50);
 
             var elist = [];
 
-            _imac = parseInt(isd_element.equirectangularLongitude);
+            _imac = isd_element.equirectangularLongitude ? parseInt(isd_element.equirectangularLongitude) : undefined;
 
             constructSpanList(isd_element, elist);
 
@@ -2992,8 +2992,8 @@ ctx.fillText("Hello World",20,50);
 
     function ISD(tt) {
         this.contents = [];
-        this.aspectRatio = tt.aspectRatio;
-        this.imac = 0;
+        this.aspectRatio = tt.aspectRatio || 16/9;
+        this.imac = undefined;
     }
 
     function ISDContentElement(ttelem) {
@@ -3005,7 +3005,7 @@ ctx.fillText("Hello World",20,50);
         //ptp manipulation
         if(this.kind === 'p'){
             this.id = ttelem.id || '';
-            this.equirectangularLongitude = ttelem.equirectangularLongitude || '0';
+            this.equirectangularLongitude = ttelem.equirectangularLongitude;
         }
 
         /* deep copy of style attributes */

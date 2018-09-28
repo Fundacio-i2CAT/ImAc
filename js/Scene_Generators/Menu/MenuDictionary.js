@@ -7,6 +7,7 @@ MenuDictionary = function() {
 	var _mainLanguage = 'en';
     var availableSubLanguages = [];
     var availableSignerLanguages = [];
+    var availableSettingsLanguages = [];
 
 
     this.EnabledButtons = [];
@@ -42,34 +43,7 @@ MenuDictionary = function() {
     {
         var ST_Languages = [];
         availableSubLanguages.forEach(function(lang) {
-            if ( _mainLanguage == 'de' )
-            {
-                if ( lang == 'de' ) ST_Languages.push('Deutsch');
-                else if ( lang == 'es' ) ST_Languages.push('Spanisch');
-                else if ( lang == 'en' ) ST_Languages.push('Englisch');
-                else if ( lang == 'ca' ) ST_Languages.push('katalanisch');
-            }
-            else if ( _mainLanguage == 'es' )
-            {
-                if ( lang == 'de' ) ST_Languages.push('Alemán');
-                else if ( lang == 'es' ) ST_Languages.push('Español');
-                else if ( lang == 'en' ) ST_Languages.push('Ingles');
-                else if ( lang == 'ca' ) ST_Languages.push('Catalán');
-            }
-            else if ( _mainLanguage == 'en' )
-            {
-                if ( lang == 'de' ) ST_Languages.push('German');
-                else if ( lang == 'es' ) ST_Languages.push('Spanish');
-                else if ( lang == 'en' ) ST_Languages.push('English');
-                else if ( lang == 'ca' ) ST_Languages.push('Catalan');
-            }
-            else if ( _mainLanguage == 'ca' )
-            {
-                if ( lang == 'de' ) ST_Languages.push('Alemany');
-                else if ( lang == 'es' ) ST_Languages.push('Espanyol');
-                else if ( lang == 'en' ) ST_Languages.push('Angles');
-                else if ( lang == 'ca' ) ST_Languages.push('Català');
-            }
+            ST_Languages.push( wordList[ lang ][ lang ] );
         });
 
         return ST_Languages;
@@ -78,36 +52,22 @@ MenuDictionary = function() {
     function getSignerLanguages()
     {
         var ST_Languages = [];
+
         availableSignerLanguages.forEach(function(lang) {
-            if ( _mainLanguage == 'de' )
-            {
-                if ( lang == 'de' ) ST_Languages.push('Deutsch');
-                else if ( lang == 'es' ) ST_Languages.push('Spanisch');
-                else if ( lang == 'en' ) ST_Languages.push('Englisch');
-                else if ( lang == 'ca' ) ST_Languages.push('katalanisch');
-            }
-            else if ( _mainLanguage == 'es' )
-            {
-                if ( lang == 'de' ) ST_Languages.push('Alemán');
-                else if ( lang == 'es' ) ST_Languages.push('Español');
-                else if ( lang == 'en' ) ST_Languages.push('Ingles');
-                else if ( lang == 'ca' ) ST_Languages.push('Catalán');
-            }
-            else if ( _mainLanguage == 'en' )
-            {
-                if ( lang == 'de' ) ST_Languages.push('German');
-                else if ( lang == 'es' ) ST_Languages.push('Spanish');
-                else if ( lang == 'en' ) ST_Languages.push('English');
-                else if ( lang == 'ca' ) ST_Languages.push('Catalan');
-            }
-            else if ( _mainLanguage == 'ca' )
-            {
-                if ( lang == 'de' ) ST_Languages.push('Alemany');
-                else if ( lang == 'es' ) ST_Languages.push('Espanyol');
-                else if ( lang == 'en' ) ST_Languages.push('Angles');
-                else if ( lang == 'ca' ) ST_Languages.push('Català');
-            }
+            ST_Languages.push( wordList[ lang ][ lang ] );
         });
+
+        return ST_Languages;
+    }
+
+    function getSettingsLanguages()
+    {
+        var ST_Languages = [];
+
+        ST_Languages.push( wordList[ 'en' ][ 'en' ] );
+        ST_Languages.push( wordList[ 'es' ][ 'es' ] );
+        ST_Languages.push( wordList[ 'de' ][ 'de' ] );
+        ST_Languages.push( wordList[ 'ca' ][ 'ca' ] );
 
         return ST_Languages;
     }
@@ -120,6 +80,11 @@ MenuDictionary = function() {
 	this.setMainLanguage = function(language)
 	{
 		_mainLanguage = language;
+
+        if ( language == 'en') mainLanguage = 'settingsLanguageEngButton';
+        else if ( language == 'de') mainLanguage = 'settingsLanguageGerButton';
+        else if ( language == 'es') mainLanguage = 'settingsLanguageEspButton';
+        else if ( language == 'ca') mainLanguage = 'settingsLanguageCatButton';
 	};
 
     this.setSubtitleLanguagesArray = function(subList)
@@ -146,8 +111,6 @@ MenuDictionary = function() {
             menuList[6].submenus[0].buttons.push( 'subtitlesCatButton' );
             availableSubLanguages.push('ca');
         }
-
-        //console.error(availableSubLanguages)
     };
 
     this.getSubtitleLanguagesList = function()
@@ -158,6 +121,11 @@ MenuDictionary = function() {
     this.getSignerLanguagesList = function()
     {
         return getSignerLanguages();
+    }
+
+    this.getSettingsLanguagesList = function()
+    {
+        return getSettingsLanguages();
     }
 
     this.setSignerLanguagesArray = function(subList)
@@ -190,264 +158,148 @@ MenuDictionary = function() {
 
 	this.initGlobalArraysByLanguage = function(language)
     {
+        console.warn('Deprecated function!')
     	if ( language ) _mainLanguage = language;
 
-        if ( _mainLanguage == 'de' )
-        {
-            subtitlesLanguagesArray = getSubtitleLanguages(); //['Englisch', 'Spanisch', 'Deutsch', 'katalanisch'];
-            subtitlesPositionArray = ['Oben', 'Unten'];
-            subtitlesSizeArray = ['Klein', 'Mittel', 'Groß'];
-            subtitlesIndicatorArray = ['Keine', 'Pfeil', 'Radar', 'Auto'];
-            subtitlesBackgroundArray = ['Kasten', 'Umrandung'];
-            subtitlesEasyArray = ['An', 'Aus'];
+        subtitlesLanguagesArray = getSubtitleLanguages(); //['English', 'Spanish', 'German', 'Catalan'];
+        subtitlesPositionArray = [ wordList[ 'top' ][ _mainLanguage ], wordList[ 'bottom' ][ _mainLanguage ] ];
+        subtitlesSizeArray = [ wordList[ 'small' ][ _mainLanguage ], wordList[ 'medium' ][ _mainLanguage ], wordList[ 'large' ][ _mainLanguage ] ];
+        subtitlesIndicatorArray = [ wordList[ 'none' ][ _mainLanguage ], wordList[ 'arrow' ][ _mainLanguage ], wordList[ 'radar' ][ _mainLanguage ], wordList[ 'auto' ][ _mainLanguage ] ];
+        subtitlesBackgroundArray = [ wordList[ 'semitrans' ][ _mainLanguage ], wordList[ 'outline' ][ _mainLanguage ] ];
+        subtitlesEasyArray = [ wordList[ 'on' ][ _mainLanguage ], wordList[ 'off' ][ _mainLanguage ] ];
 
-            settingsLanguagesArray = ['Englisch', 'Spanisch', 'Deutsch', 'katalanisch'];
-            settingsVoiceControlArray = ['option 1'];
-            settingsUserProfileArray = ['option 1', 'option 2'];
+        settingsLanguagesArray = [ 'English', 'Spanish', 'German', 'Catalan'];
+        settingsVoiceControlArray = ['option 1'];
+        settingsUserProfileArray = ['option 1', 'option 2'];
 
-            signerLanguagesArray = getSignerLanguages();
-            signerIndicatorArray = ['Keine', 'Pfeil', 'Forced'];
+        signerLanguagesArray = getSignerLanguages();
+        signerIndicatorArray = [ wordList[ 'none' ][ _mainLanguage ], wordList[ 'arrow' ][ _mainLanguage ], wordList[ 'auto' ][ _mainLanguage ] ];
 
-            ADLanguagesArray = ['Englisch', 'Spanisch', 'Deutsche', 'Catalan'];
-            ADPresentationArray = ['Prespective', 'Anchored', 'Classic', 'Panorama'];
+        ADLanguagesArray = ['English', 'Spanish', 'German', 'Catalan'];
+        ADPresentationArray = [ wordList[ 'prespective' ][ _mainLanguage ], wordList[ 'anchored' ][ _mainLanguage ], wordList[ 'classic' ][ _mainLanguage ], wordList[ 'panorama' ][ _mainLanguage ] ];
 
-            ASTLanguagesArray = ['Englisch', 'Spanisch', 'Deutsch', 'katalanisch'];
-            ASTEasyArray = ['An', 'Aus'];
+        ASTLanguagesArray = ['English', 'Spanish', 'German', 'Catalan'];
+        ASTEasyArray = [ wordList[ 'on' ][ _mainLanguage ], wordList[ 'off' ][ _mainLanguage ] ];
 
-            STMenuList = ['Sprache', 'Einfache', 'Position', 'Hintergrund', 'Größe', 'Indikator', 'Bereich'];
-            SLMenuList = ['Sprache', 'Position', 'Indikator', 'Bereich'];
-            ADMenuList = ['Sprache', 'Präsentation'];
-            ASTMenuList = ['Sprache', 'Einfache'];
-            SettingsMenuList = ['Sprache', 'Sprachsteuerung', 'Profil'];
+        STMenuList = [ wordList[ 'language' ][ _mainLanguage ], wordList[ 'easytoread' ][ _mainLanguage ], wordList[ 'position' ][ _mainLanguage ], wordList[ 'background' ][ _mainLanguage ], wordList[ 'size' ][ _mainLanguage ], wordList[ 'indicator' ][ _mainLanguage ], wordList[ 'area' ][ _mainLanguage ] ];
+        SLMenuList = [ wordList[ 'language' ][ _mainLanguage ], wordList[ 'position' ][ _mainLanguage ], wordList[ 'indicator' ][ _mainLanguage ], wordList[ 'area' ][ _mainLanguage ] ];
+        ADMenuList = [ wordList[ 'language' ][ _mainLanguage ], wordList[ 'presentation' ][ _mainLanguage ] ];
+        ASTMenuList = [ wordList[ 'language' ][ _mainLanguage ], wordList[ 'easytoread' ][ _mainLanguage ] ];
+        SettingsMenuList = [ wordList[ 'language' ][ _mainLanguage ], wordList[ 'voicecontrol' ][ _mainLanguage ], wordList[ 'userprofile' ][ _mainLanguage ] ];
 
-            MOMenuButtonsArray = ['./img/menu_ai_icons/UT.png', './img/menu_ai_icons/DGS.png', './img/menu_ai_icons/AD.png', './img/menu_ai_icons/VO.png'];
-            MOMenuDisabledButtonsArray = ['./img/menu_ai_icons/UT_strike.png', './img/menu_ai_icons/DGS_strike.png', './img/menu_ai_icons/AD_strike.png', './img/menu_ai_icons/VO_strike.png'];
-        }
-        else if ( _mainLanguage == 'es' )
-        {
-            subtitlesLanguagesArray = getSubtitleLanguages(); //['Ingles', 'Español', 'Aleman', 'Catalán'];
-            subtitlesPositionArray = ['Arriba', 'Abajo'];
-            subtitlesSizeArray = ['Pequeño', 'Mediano', 'Grande'];
-            subtitlesIndicatorArray = ['Ninguno', 'Flecha', 'Radar', 'Auto'];
-            subtitlesBackgroundArray = ['Semi-Trans', 'Borde'];
-            subtitlesEasyArray = ['Activa', 'Desactiva'];
-
-            settingsLanguagesArray = ['Ingles', 'Español', 'Aleman', 'Catalán'];
-            settingsVoiceControlArray = ['option 1'];
-            settingsUserProfileArray = ['option 1', 'option 2'];
-
-            signerLanguagesArray = getSignerLanguages();
-            signerIndicatorArray = ['Ninguno', 'Flecha', 'Forzado'];
-
-            ADLanguagesArray = ['Ingles', 'Español', 'Aleman', 'Catalán'];
-            ADPresentationArray = ['Prespectiva', 'Anchored', 'Clásico', 'Panorama'];
-
-            ASTLanguagesArray = ['Ingles', 'Español', 'Aleman', 'Catalán'];
-            ASTEasyArray = ['Activa', 'Desactiva'];
-
-            STMenuList = ['Idiomas', 'Lectura', 'Posición', 'Fondo', 'Tamaño', 'Indicador', 'Area'];
-            SLMenuList = ['Idiomas', 'Posición', 'Indicador', 'Area'];
-            ADMenuList = ['Idiomas', 'Presentation'];
-            ASTMenuList = ['Idiomas', 'Lectura'];
-            SettingsMenuList = ['Idiomas', 'Control voz', 'Perfil'];
-
-            MOMenuButtonsArray = ['./img/menu_ai_icons/SUB.png', './img/menu_ai_icons/SL.png', './img/menu_ai_icons/AD.png', './img/menu_ai_icons/AST.png'];
-            MOMenuDisabledButtonsArray = ['./img/menu_ai_icons/SUB_strike.png', './img/menu_ai_icons/SL_strike.png', './img/menu_ai_icons/AD_strike.png', './img/menu_ai_icons/AST_strike.png'];
-        }
-        else if ( _mainLanguage == 'ca' )
-        {
-            subtitlesLanguagesArray = getSubtitleLanguages(); //['Angles', 'Espanyol', 'Alemany', 'Català'];
-            subtitlesPositionArray = ['Superior', 'Inferior'];
-            subtitlesSizeArray = ['Petita', 'Mitjana', 'Gran'];
-            subtitlesIndicatorArray = ['No', 'Fletxa', 'Radar', 'Auto'];
-            subtitlesBackgroundArray = ['Semi-Trans', 'Borde'];
-            subtitlesEasyArray = ['Activa', 'Desactiva'];
-
-            settingsLanguagesArray = ['Angles', 'Espanyol', 'Alemany', 'Català'];
-            settingsVoiceControlArray = ['option 1'];
-            settingsUserProfileArray = ['option 1', 'option 2'];
-
-            signerLanguagesArray = getSignerLanguages();
-            signerIndicatorArray = ['No', 'Fletxa', 'Forçat'];
-
-            ADLanguagesArray = ['Angles', 'Espanyol', 'Alemany', 'Català'];
-            ADPresentationArray = ['Prespectiva', 'Anclay', 'Classic', 'Panorama'];
-
-            ASTLanguagesArray = ['Angles', 'Espanyol', 'Alemany', 'Català'];
-            ASTEasyArray = ['Activa', 'Desactiva'];
-
-            STMenuList = ['Idioma', 'Lectura', 'Posició', 'Fons', 'Mida', 'Indicador', 'Àrea'];
-            SLMenuList = ['Idioma', 'Posició', 'Indicador', 'Àrea'];
-            ADMenuList = ['Idioma', 'Presentatió'];
-            ASTMenuList = ['Idioma', 'Lectura'];
-            SettingsMenuList = ['Idioma', 'Control veu', 'Perfil'];
-
-            MOMenuButtonsArray = ['./img/menu_ai_icons/SUB.png', './img/menu_ai_icons/SL.png', './img/menu_ai_icons/AD.png', './img/menu_ai_icons/AST.png'];
-            MOMenuDisabledButtonsArray = ['./img/menu_ai_icons/SUB_strike.png', './img/menu_ai_icons/SL_strike.png', './img/menu_ai_icons/AD_strike.png', './img/menu_ai_icons/AST_strike.png'];
-        }
-        else
-        {
-            _mainLanguage = 'en';
-
-            subtitlesLanguagesArray = getSubtitleLanguages(); //['English', 'Spanish', 'German', 'Catalan'];
-            subtitlesPositionArray = ['Top', 'Bottom'];
-            subtitlesSizeArray = ['Small', 'Medium', 'Large'];
-            subtitlesIndicatorArray = ['None', 'Arrow', 'Radar', 'Auto'];
-            subtitlesBackgroundArray = ['Semi-Trans', 'Outline'];
-            subtitlesEasyArray = ['On', 'Off'];
-
-            settingsLanguagesArray = ['English', 'Spanish', 'German', 'Catalan'];
-            settingsVoiceControlArray = ['option 1'];
-            settingsUserProfileArray = ['option 1', 'option 2'];
-
-            signerLanguagesArray = getSignerLanguages();
-            signerIndicatorArray = ['None', 'Arrow', 'Forced'];
-
-            ADLanguagesArray = ['English', 'Spanish', 'German', 'Catalan'];
-            ADPresentationArray = ['Prespective', 'Anchored', 'Classic', 'Panorama'];
-
-            ASTLanguagesArray = ['English', 'Spanish', 'German', 'Catalan'];
-            ASTEasyArray = ['On', 'Off'];
-
-            STMenuList = ['Languages', 'Easy to read', 'Position', 'Background', 'Size', 'Indicator', 'Area'];
-            SLMenuList = ['Languages', 'Position', 'Indicator', 'Area'];
-            ADMenuList = ['Languages', 'Presentation'];
-            ASTMenuList = ['Languages', 'Easy read'];
-            SettingsMenuList = ['Languages', 'Voice control', 'User Profile'];
-
-            MOMenuButtonsArray = ['./img/menu_ai_icons/ST.png', './img/menu_ai_icons/SL.png', './img/menu_ai_icons/AD.png', './img/menu_ai_icons/AST.png'];
-            MOMenuDisabledButtonsArray = ['./img/menu_ai_icons/ST_strike.png', './img/menu_ai_icons/SL_strike.png', './img/menu_ai_icons/AD_strike.png', './img/menu_ai_icons/AST_strike.png'];
-        }
+        MOMenuButtonsArray = [ wordList[ 'st' ][ _mainLanguage ], wordList[ 'sl' ][ _mainLanguage ], wordList[ 'ad' ][ _mainLanguage ], wordList[ 'ast' ][ _mainLanguage ] ];
+        MOMenuDisabledButtonsArray = [ wordList[ 'st_strike' ][ _mainLanguage ], wordList[ 'sl_strike' ][ _mainLanguage ], wordList[ 'ad_strike' ][ _mainLanguage ], wordList[ 'ast_strike' ][ _mainLanguage ] ];
     };
+
+    var imgURL = './img/menu_ai_icons/';
 
     var wordList = {
 
-        top: { ca: 'Superior', de: 'Oben', en: 'Top', es: 'Arriba' },
-
-        bottom: { ca: 'Inferior', de: 'Unten', en: 'Bottom', es: 'Abajo' },
-
-        small: {
-            ca: '',
-            de: '',
-            en: 'Small',
-            es: ''
-        },
-
-        medium: {
-            ca: '',
-            de: '',
-            en: 'Medium',
-            es: ''
-        },
-
-        large: {
-            ca: '',
-            de: '',
-            en: 'Large',
-            es: ''
-        },
-
-        none: {
-            ca: '',
-            de: '',
-            en: 'None',
-            es: ''
-        },
-
-        arrow: {
-            ca: '',
-            de: '',
-            en: 'Arrow',
-            es: ''
-        },
-
-        radar: {
-            ca: '',
-            de: '',
-            en: 'Radar',
-            es: ''
-        },
-
-        auto: {
-            ca: '',
-            de: '',
-            en: 'Auto',
-            es: ''
-        },
-
-        semitrans: {
-            ca: '',
-            de: '',
-            en: 'Semi-Trans',
-            es: ''
-        },
-
-        outline: {
-            ca: '',
-            de: '',
-            en: 'Outline',
-            es: ''
-        },
-
-        on: {
-            ca: '',
-            de: '',
-            en: 'On',
-            es: ''
-        },
-
-        off: {
-            ca: '',
-            de: '',
-            en: 'Off',
-            es: ''
-        },
-
-        en: {
-            ca: '',
-            de: 'Englisch',
-            en: 'English',
-            es: ''
-        },
-
-        es: { ca: 'Espanyol', de: 'Spanisch', en: 'Spanish', es: 'Español' },
-
-        ca: {
-            ca: '',
-            de: '',
-            en: 'Catalan',
-            es: ''
-        },
-
-        de: { ca: 'Alemany', de: 'Deutsch', en: 'German', es: 'Alemán' },
-
-        prespective: {
-            ca: '',
-            de: '',
-            en: '',
-            es: ''
-        },
-
-        anchored: {
-            ca: '',
-            de: '',
-            en: '',
-            es: ''
-        },
-
-        classic: {
-            ca: '',
-            de: '',
-            en: '',
-            es: ''
-        },
-
-        panorama: {
-            ca: '',
-            de: '',
-            en: '',
-            es: ''
-        }
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //                   ||                        ||                        ||                        ||                        ||
+    //     KEY WORDS     ||         Català         ||        Deutsch         ||        English         ||        Español         ||
+    //                   ||                        ||                        ||                        ||                        ||
+    //-------------------||------------------------||------------------------||------------------------||------------------------||
+    //                   ||                        ||                        ||                        ||                        ||
+        anchored:        { ca: 'Anchored'          , de: 'Anchored'          , en: 'Anchored'          , es: 'Anchored'          },
+    //                   ||                        ||                        ||                        ||                        ||
+        area:            { ca: 'Àrea'              , de: 'Bereich'           , en: 'Area'              , es: 'Area'              },
+    //                   ||                        ||                        ||                        ||                        ||
+        arrow:           { ca: 'Fletxa'            , de: 'Pfeil'             , en: 'Arrow'             , es: 'Flecha'            },
+    //                   ||                        ||                        ||                        ||                        ||
+        audiodescription:{ ca: 'Audio descripció'  , de: 'Audiodeskription'  , en: 'Audio description' , es: 'Audio descripción' },
+    //                   ||                        ||                        ||                        ||                        ||
+        audiosubtitles:  { ca: 'Audio subtitols'   , de: 'Audiountertitel'   , en: 'Audio subtitles'   , es: 'Audio subtitulos'  },
+    //                   ||                        ||                        ||                        ||                        ||
+        auto:            { ca: 'Auto'              , de: 'Auto'              , en: 'Auto'              , es: 'Auto'              },
+    //                   ||                        ||                        ||                        ||                        ||
+        background:      { ca: 'Fons'              , de: 'Hintergrund'       , en: 'Background'        , es: 'Fondo'             },
+    //                   ||                        ||                        ||                        ||                        ||
+        bottom:          { ca: 'Inferior'          , de: 'Unten'             , en: 'Bottom'            , es: 'Abajo'             },
+    //                   ||                        ||                        ||                        ||                        ||
+        ca:              { ca: 'Català'            , de: 'katalanisch'       , en: 'Catalan'           , es: 'Catalán'           },
+    //                   ||                        ||                        ||                        ||                        ||
+        catalan:         { ca: 'Català'            , de: 'katalanisch'       , en: 'Catalan'           , es: 'Catalán'           },
+    //                   ||                        ||                        ||                        ||                        ||
+        classic:         { ca: 'Clàssic'           , de: 'Classic'           , en: 'Classic'           , es: 'Clásico'           },
+    //                   ||                        ||                        ||                        ||                        ||
+        de:              { ca: 'Alemany'           , de: 'Deutsch'           , en: 'German'            , es: 'Alemán'            },
+    //                   ||                        ||                        ||                        ||                        ||
+        easytoread:      { ca: 'Lectura fàcil'     , de: 'Einfache Sprache'  , en: 'Easy To Read'      , es: 'Lectura fácil'     },
+    //                   ||                        ||                        ||                        ||                        ||
+        en:              { ca: 'Anglés'            , de: 'Englisch'          , en: 'English'           , es: 'Inglés'            },
+    //                   ||                        ||                        ||                        ||                        ||
+        english:         { ca: 'Anglés'            , de: 'Englisch'          , en: 'English'           , es: 'Inglés'            },
+    //                   ||                        ||                        ||                        ||                        ||
+        es:              { ca: 'Espanyol'          , de: 'Spanisch'          , en: 'Spanish'           , es: 'Español'           },
+    //                   ||                        ||                        ||                        ||                        ||
+        german:          { ca: 'Alemany'           , de: 'Deutsch'           , en: 'German'            , es: 'Alemán'            },
+    //                   ||                        ||                        ||                        ||                        ||
+        indicator:       { ca: 'Indicador'         , de: 'Indikator'         , en: 'Indicator'         , es: 'Indicador'         },
+    //                   ||                        ||                        ||                        ||                        ||
+        language:        { ca: 'Idioma'            , de: 'Sprache'           , en: 'Language'          , es: 'Idioma'            },
+    //                   ||                        ||                        ||                        ||                        ||
+        large:           { ca: 'Gran'              , de: 'Groß'              , en: 'Large'             , es: 'Grande'            },
+    //                   ||                        ||                        ||                        ||                        ||
+        medium:          { ca: 'Mitjana'           , de: 'Mittel'            , en: 'Medium'            , es: 'Mediana'           },
+    //                   ||                        ||                        ||                        ||                        ||
+        none:            { ca: 'No'                , de: 'Kein'              , en: 'None'              , es: 'Ninguno'           },
+    //                   ||                        ||                        ||                        ||                        ||
+        off:             { ca: 'Desactiva'         , de: 'Aus'               , en: 'Off'               , es: 'Desactiva'         },
+    //                   ||                        ||                        ||                        ||                        ||
+        on:              { ca: 'Activa'            , de: 'An'                , en: 'On'                , es: 'Activa'            },
+    //                   ||                        ||                        ||                        ||                        ||
+        outline:         { ca: 'Contorn'           , de: 'Umrandung'         , en: 'Outline'           , es: 'Contorno'          },
+    //                   ||                        ||                        ||                        ||                        ||
+        panorama:        { ca: 'Panorama'          , de: 'Panorama'          , en: 'Panorama'          , es: 'Panorama'          },
+    //                   ||                        ||                        ||                        ||                        ||
+        position:        { ca: 'Posició'           , de: 'Position'          , en: 'Position'          , es: 'Posición'          },
+    //                   ||                        ||                        ||                        ||                        ||
+        presentation:    { ca: 'Presentació'       , de: 'Präsentation'      , en: 'Presentation'      , es: 'Presentación'      },
+    //                   ||                        ||                        ||                        ||                        ||
+        prespective:     { ca: 'Prespectiva'       , de: 'Prespective'       , en: 'Prespective'       , es: 'Prespectiva'       },
+    //                   ||                        ||                        ||                        ||                        ||
+        radar:           { ca: 'Radar'             , de: 'Radar'             , en: 'Radar'             , es: 'Radar'             },
+    //                   ||                        ||                        ||                        ||                        ||
+        semitrans:       { ca: 'Semi-Trans'        , de: 'Kasten'            , en: 'Semi-Trans'        , es: 'Semi-Trans'        },
+    //                   ||                        ||                        ||                        ||                        ||
+        settings:        { ca: 'Configuració'      , de: 'Einstellungen'     , en: 'Settings'          , es: 'Ajustes'           },
+    //                   ||                        ||                        ||                        ||                        ||
+        signlanguage:    { ca: 'Llenguatge signes' , de: 'Zeichensprache'    , en: 'Sign language'     , es: 'Lenguage signos'   },
+    //                   ||                        ||                        ||                        ||                        ||
+        size:            { ca: 'Mida'              , de: 'Größe'             , en: 'Size'              , es: 'Tamaño'            },
+    //                   ||                        ||                        ||                        ||                        ||
+        small:           { ca: 'Petita'            , de: 'Klein'             , en: 'Small'             , es: 'Pequeña'           },
+    //                   ||                        ||                        ||                        ||                        ||
+        spanish:         { ca: 'Espanyol'          , de: 'Spanisch'          , en: 'Spanish'           , es: 'Español'           },
+    //                   ||                        ||                        ||                        ||                        ||
+        subtitles:       { ca: 'Subtitols'         , de: 'Untertitel'        , en: 'Subtitles'         , es: 'Subtítulos'        },
+    //                   ||                        ||                        ||                        ||                        ||
+        top:             { ca: 'Superior'          , de: 'Oben'              , en: 'Top'               , es: 'Arriba'            },
+    //                   ||                        ||                        ||                        ||                        ||
+        userprofile:     { ca: 'Perfil usuari'     , de: 'Benutzerprofil'    , en: 'User profile'      , es: 'Perfil usuario'    },
+    //                   ||                        ||                        ||                        ||                        ||
+        voicecontrol:    { ca: 'Audio control'     , de: 'Sprachsteuerung'   , en: 'Voice control'     , es: 'Audio control'     },
+    //                   ||                        ||                        ||                        ||                        ||
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //                   ||                              ||                              ||                              ||                              ||
+        st:              { ca: imgURL + 'SUB.png'        , de: imgURL + 'UT.png'         , en: imgURL + 'ST.png'         , es: imgURL + 'SUB.png'        },
+    //                   ||                              ||                              ||                              ||                              ||
+        st_strike:       { ca: imgURL + 'SUB_strike.png' , de: imgURL + 'UT_strike.png'  , en: imgURL + 'ST_strike.png'  , es: imgURL + 'SUB_strike.png' },
+    //                   ||                              ||                              ||                              ||                              ||
+        sl:              { ca: imgURL + 'SL.png'         , de: imgURL + 'DGS.png'        , en: imgURL + 'SL.png'         , es: imgURL + 'SL.png'         },
+    //                   ||                              ||                              ||                              ||                              ||
+        sl_strike:       { ca: imgURL + 'SL_strike.png'  , de: imgURL + 'DGS_strike.png' , en: imgURL + 'SL_strike.png'  , es: imgURL + 'SL_strike.png'  },
+    //                   ||                              ||                              ||                              ||                              ||
+        ad:              { ca: imgURL + 'AD.png'         , de: imgURL + 'AD.png'         , en: imgURL + 'AD.png'         , es: imgURL + 'AD.png'         },
+    //                   ||                              ||                              ||                              ||                              ||
+        ad_strike:       { ca: imgURL + 'AD_strike.png'  , de: imgURL + 'AD_strike.png'  , en: imgURL + 'AD_strike.png'  , es: imgURL + 'AD_strike.png'  },
+    //                   ||                              ||                              ||                              ||                              ||
+        ast:             { ca: imgURL + 'AST.png'        , de: imgURL + 'VO.png'         , en: imgURL + 'AST.png'        , es: imgURL + 'AST.png'        },
+    //                   ||                              ||                              ||                              ||                              ||
+        ast_strike:      { ca: imgURL + 'AST_strike.png' , de: imgURL + 'VO_strike.png'  , en: imgURL + 'AST_strike.png' , es: imgURL + 'AST_strike.png' }
+    //                   ||                              ||                              ||                              ||                              ||
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     }
 

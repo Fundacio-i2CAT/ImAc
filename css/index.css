@@ -40,7 +40,7 @@ html {
 }
 
 .list-group img {
-    width: 95%;
+    width: 88%;
     height: 9vw;
     border-style: ridge;
     border-color: #2581c4;
@@ -124,7 +124,6 @@ label {
 
 
 .options {
-  margin-left: 1rem;
   border: 1px black;
   border-style: dotted;
   color: #000;

@@ -9,7 +9,7 @@ function VolumeLSMenuController() {
 	this.Init = function(){
 
 		data = GetData();
-		UpdateData(data);
+		UpdateData();
 		viewStructure = scene.getObjectByName(data.name);
 		viewStructure.visible = true;
 
@@ -45,9 +45,12 @@ function VolumeLSMenuController() {
 	}
 
 
-	function UpdateData(data)
+	function UpdateData()
     {
 		data.isMuted = AudioManager.isAudioMuted();
+		data.muteUnmuteMenuButtonfunc = function(){ MuteUnmuteVolumeFunc() };
+		data.plusVolumeMenuButtonfunc = function(){ ChangeVolumeFunc(true) };
+		data.minusVolumeMenuButtonfunc = function(){ ChangeVolumeFunc(false) };
 		data.backMenuButtonfunc = function(){ menumanager.NavigateBackMenu()};
 		data.forwardMenuButtonFunc = function(){ menumanager.NavigateForwardMenu()};
     }
@@ -62,4 +65,27 @@ function VolumeLSMenuController() {
     		}
     	})
     }
+
+	function ChangeVolumeFunc(plus)
+    {
+    	var sign = plus ? 1 : -1;
+        //MenuManager.pressButtonFeedback( name );
+        AudioManager.changeVolume( sign*volumeChangeStep );
+        //MenuController.volumeLevelDisplayLogic();
+    };
+
+    function MuteUnmuteVolumeFunc()
+    {
+        //MenuManager.pressButtonFeedback( name );
+
+		AudioManager.isAudioMuted() ? AudioManager.setunmute() : AudioManager.setmute();
+        
+		UpdateData();
+		view.UpdateView(data);
+    	AddInteractivityToMenuElements();
+
+       /* setTimeout(function() { 
+            MenuController.showMuteUnmuteButton(); 
+        }, clickInteractionTimeout); */
+    };
 }

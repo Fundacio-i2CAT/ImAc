@@ -9,7 +9,7 @@ function SettingsLSMenuController() {
 	this.Init = function(){
 
 		data = GetData();
-		UpdateData(data);
+		UpdateData();
 		viewStructure = scene.getObjectByName(data.name);
 		viewStructure.visible = true;
 
@@ -45,7 +45,7 @@ function SettingsLSMenuController() {
 	}
 
 
-	function UpdateData(data)
+	function UpdateData()
     {
 		data.backMenuButtonfunc = function(){ menumanager.NavigateBackMenu()};
 		data.forwardMenuButtonFunc = function(){ menumanager.NavigateForwardMenu()};

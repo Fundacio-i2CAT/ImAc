@@ -15,9 +15,45 @@ function OptionLSMenuView() {
 		submenu.getObjectByName('forwardMenuButton').visible = false;
 		submenu.getObjectByName('backMenuButton').children[0].onexecute = data.backMenuButtonfunc;
 
+		submenu.getObjectByName('upDropdownButton').children[0].onexecute = data.upDropdownButtonfunc;
+		submenu.getObjectByName('downDropdownButton').children[0].onexecute = data.downDropdownButtonfunc;
+
 		data.firstColumnDropdown.forEach(function(element){
+			element.material.color.set( 0xffffff );
 			submenu.getObjectByName('firstcolumndropdown').add(element)		
 		});
+
+		submenu.getObjectByName('upDropdownButton').visible = data.isUpDownArrowsVisible;
+		submenu.getObjectByName('downDropdownButton').visible = data.isUpDownArrowsVisible;
+
+		if(data.firstColumnHoritzontalLineDivisions)
+		{
+			data.firstColumnHoritzontalLineDivisions.forEach(function(element){
+				submenu.getObjectByName('firstcolumnhoritzontallines').add(element)		
+			});
+		}
+		
+		
+		if(data.secondColumnDropdown)
+		{
+			submenu.getObjectByName(data.firstColumnActiveOpt).material.color.set( 0xffff00 ); 
+			submenu.getObjectByName('secondcolumndropdown').children = [];
+			data.secondColumnDropdown.forEach(function(element){
+				submenu.getObjectByName('secondcolumndropdown').add(element)		
+			});
+
+			if(data.secondColumnActiveOpt)
+			{
+				data.secondColumnDropdown.forEach(function(element){
+					element.material.color.set( 0xffffff );
+				});
+				submenu.getObjectByName(data.secondColumnActiveOpt).material.color.set( 0xffff00 ); 
+			} 
+			submenu.getObjectByName('secondcolumnhoritzontallines').children = [];
+			data.secondColumnHoritzontalLineDivisions.forEach(function(element){
+				submenu.getObjectByName('secondcolumnhoritzontallines').add(element)		
+			});
+		}
 	}
 
 	function UpdateImageIEMaterial(newData)

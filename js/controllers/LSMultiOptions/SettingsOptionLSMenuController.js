@@ -1,19 +1,32 @@
-function ASTOptionLSMenuController() {
+function SettingsOptionLSMenuController() {
 
 	var data;
 	var view;
 	var viewStructure;
 
-	var firstColumnDropdownElements = [ 
-									{name: 'audioSubtitlesLanguages', value: 'Languages'}, 
-									{name: 'audioSubtitlesEasy', value: 'Easy read'},
-									{name: 'audioSubtitlesVolume', value: 'Volume (i)'}];
-	
+	var settingsLanguagesArray =  [
+									{name: 'settingsLanguageEngButton', value: 'English', default: true}, 
+									{name: 'settingsLanguageEspButton', value: 'Spanish', default: false}, 
+									{name: 'settingsLanguageGerButton', value: 'German', default: false}, 
+									{name: 'settingsLanguageCatButton', value: 'Catalan', default: false}];
 
+	var voiceControlArray = [
+									{name: 'vc1', value: 'Option 1', default: true}];
+
+	var settingsUserProfileArray = [
+									{name: 'up1', value: 'Option 1', default: true}, 
+									{name: 'up2', value: 'Option 2', default: false}];
+
+    var firstColumnDropdownElements = [ 
+                                    {name: 'settingsLanguages', value: 'Languages', options: settingsLanguagesArray},
+                                    {name: 'settingsVoiceControl', value: 'Voice Control', options: voiceControlArray},
+                                    {name: 'settingsUserProfile', value: 'User Profile', options: settingsUserProfileArray}]
+	
 	this.Init = function(){
 
 		data = GetData();
-		UpdateData(data);
+        data.name = 'settingsoptmenu';
+		UpdateData();
 		viewStructure = scene.getObjectByName(data.name);
 		viewStructure.visible = true;
 
@@ -31,9 +44,12 @@ function ASTOptionLSMenuController() {
 	    	viewStructure.children.forEach(function(intrElement){
 	    		interController.removeInteractiveObject(intrElement.name);
 	    	});
+
+	    	viewStructure.getObjectByName('firstcolumndropdown').children = [];
 	    	viewStructure.getObjectByName('firstcolumndropdown').children = [];
 	    	viewStructure.getObjectByName('secondcolumndropdown').children = [];
 	    	viewStructure.getObjectByName('firstcolumnhoritzontallines').children = [];
+	    	viewStructure.getObjectByName('secondcolumnhoritzontallines').children = [];
     	}
     }
 
@@ -56,16 +72,13 @@ function ASTOptionLSMenuController() {
     {
 		data.isLSOptEnabled = true;
 
-		data.lsOptEnabledLabelName = 'showAudioSubtitlesMenuButton';
-		data.lsOptEnabledLabelValue = './img/menu_ai_icons/AST.png';
-
-		data.lsOptDisbledLabelName = 'disabledAudioSubtitlesMenuButton';
-		data.lsOptDisbledLabelValue = './img/menu_ai_icons/AST_strike.png';
+		data.lsOptEnabledLabelName = 'settingsButton';
+		data.lsOptEnabledLabelValue = './img/menu/settings_icon.png';
 
 		data.isUpDownArrowsVisible = firstColumnDropdownElements.length > 4 ? true : false;
 		
 		data.firstColumnHoritzontalLineDivisions = getHoritzontalLineDivisions(125, 125*9/16, 0xffffff, 3, 1);	
-		
+												
 		if(!data.firstColumnDropdown) data.firstColumnDropdown = AddDropdownElements(firstColumnDropdownElements);
 
 		data.backMenuButtonfunc = function(){ menumanager.NavigateBackMenu()};
@@ -87,44 +100,49 @@ function ASTOptionLSMenuController() {
     function AddDropdownElements(elements)
     {
     	var dropdownInteractiveElements =  [];
-    	var h = 125*9/16;
+    	var h;
     	elements.forEach(function(element, index){
     		var factor = (index*2)+1;
 
     		var dropdownIE = new InteractiveElementModel();
-	        dropdownIE.width = 125/3;
-	        dropdownIE.height = h/elements.length;
-	        dropdownIE.name = element.name;
-	        dropdownIE.type =  'text';
-	        dropdownIE.value = element.value; //AudioManager.getVolume();
-	        dropdownIE.color = 0xffffff;
-	        dropdownIE.textSize =  5;
-	        dropdownIE.visible = true;
-            dropdownIE.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(dropdownIE.width, dropdownIE.height), new THREE.MeshBasicMaterial({visible:  false}));
-        	
-        	if(element.options) dropdownIE.onexecute =  function()
-        	{
-        		data.activeOpt = element.name;
-        		data.secondColumnDropdown = AddDropdownElements(element.options); 
-        		UpdateData();
-        		setTimeout(function(){view.UpdateView(data)}, 100);
-        		
-        	};
-        	else
+
+            if(element.options)
             {
+                h = 125*9/16;
+                dropdownIE.onexecute =  function()
+                {
+                    data.firstColumnActiveOpt = element.name;
+                    data.secondColumnDropdown = AddDropdownElements(element.options); 
+                    data.secondColumnHoritzontalLineDivisions = getHoritzontalLineDivisions(125, 4*(125*9/16)/6, 0xffffff, element.options.length, 2); 
+                    UpdateData();
+                    setTimeout(function(){view.UpdateView(data)}, 100);    
+                };
+            } 
+            else 
+            {
+                h = 4*(125*9/16)/6;
                 dropdownIE.onexecute =  function(){
                     UpdateDefaultLSMenuOption(elements,index);
                     data.secondColumnActiveOpt = element.name;
                     console.log("Click on "+element.value+ " final option");
                     setTimeout(function(){view.UpdateView(data)}, 100);
                 };
-            }
+            } 
+
+	        dropdownIE.width = 125/3;
+	        dropdownIE.height =  elements.length>4 ? h/4 : h/elements.length;
+	        dropdownIE.name = element.name;
+	        dropdownIE.type =  'text';
+	        dropdownIE.value = element.value; //AudioManager.getVolume();
+            dropdownIE.color = element.default ? 0xffff00: 0xffffff;
+	        dropdownIE.textSize =  5;
+	        dropdownIE.visible = true;
+            dropdownIE.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(dropdownIE.width, dropdownIE.height), new THREE.MeshBasicMaterial({visible:  false}));
         	
-	        dropdownIE.position = new THREE.Vector3(0, (h/2-factor*h/(elements.length*2) ), 0.01);
+	        dropdownIE.position = new THREE.Vector3(0, ( h/2-factor*h/(elements.length>4 ? 4*2 : elements.length*2) ), 0.01);
 
 	        dropdownInteractiveElements.push(dropdownIE.create())
     	});
-
 
     	return dropdownInteractiveElements
     }

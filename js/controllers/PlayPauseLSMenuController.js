@@ -9,7 +9,7 @@ function PlayPauseLSMenuController() {
 	this.Init = function(){
 
 		data = GetData();
-		UpdateData(data);
+		UpdateData();
 		viewStructure = scene.getObjectByName(data.name);
 		viewStructure.visible = true;
 
@@ -45,9 +45,12 @@ function PlayPauseLSMenuController() {
 	}
 
 
-	function UpdateData(data)
+	function UpdateData()
     {
 		data.isPaused = ppMMgr.isPausedById(0);
+		data.playpauseMenuButtonfunc = function(){ PlayPauseFunc() };
+		data.seekForwardMenuButtonfunc = function(){ SeekFunc(true) };
+		data.seekBackMenuButtonfunc = function(){ SeekFunc(false) };
 		data.backMenuButtonfunc = function(){ menumanager.NavigateBackMenu()};
 		data.forwardMenuButtonFunc = function(){ menumanager.NavigateForwardMenu()};
     }
@@ -61,5 +64,29 @@ function PlayPauseLSMenuController() {
     			interController.addInteractiveObject(intrElement);
     		}
     	})
+    }
+
+//TODO
+	function PlayPauseFunc()
+    {
+        //MenuManager.pressButtonFeedback( name );
+        ppMMgr.isPausedById(0) ? ppMMgr.playAll() : ppMMgr.pauseAll();
+        
+		UpdateData();
+		view.UpdateView(data);
+    	AddInteractivityToMenuElements();
+        /*setTimeout(function() { 
+            ppMMgr.playoutTimeDisplayLogic( ppMMgr.isPausedById(0) ); 
+        }, clickInteractionTimeout);*/
+    }
+
+    function SeekFunc(plus)
+    {
+        var sign = plus ? 1 : -1;
+		//MenuManager.pressButtonFeedback( name );
+        ppMMgr.seekAll( sign*seekTime );
+        UpdateData();
+		view.UpdateView(data);
+        //ppMMgr.playoutTimeDisplayLogic( true );
     }
 }

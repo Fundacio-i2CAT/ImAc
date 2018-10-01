@@ -2,8 +2,8 @@
 function OptionLSMenuModel() {
 	
 	this.name = 'lowsightedoptmenu';
-	this.isLSOptEnabled;
 
+	this.isLSOptEnabled;
 	this.lsOptEnabledLabelName;
 	this.lsOptEnabledLabelValue;
 
@@ -15,4 +15,14 @@ function OptionLSMenuModel() {
 	this.offLSOptButtonfunc;
 
 	this.firstColumnDropdown;
+	this.firstColumnActiveOpt;
+	this.firstColumnHoritzontalLineDivisions;
+	this.isUpDownArrowsVisible;
+
+	this.secondColumnDropdown;
+	this.secondColumnActiveOpt;
+	this.secondColumnHoritzontalLineDivisions;
+
+	this.upDropdownButtonfunc;
+	this.downDropdownButtonfunc;
 }

@@ -436,6 +436,7 @@ MenuFunctionsManager = function() {
         }
     };
 
+// DEPRECATED CHANGED TO PlayPauseLSMenuController.js
     this.getPlayPauseFunc = function(name)
     {
         return function() {

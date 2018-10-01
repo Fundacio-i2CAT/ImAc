@@ -52,8 +52,8 @@ function createImageIE(element)
 
     texture.minFilter = THREE.LinearFilter;
     texture.format = THREE.RGBAFormat;
-    var material = new THREE.MeshBasicMaterial( { map: texture, transparent: true, side: THREE.FrontSide } );
     
+    var material = new THREE.MeshBasicMaterial( { map: texture, transparent: true, side: THREE.FrontSide } );
     var mesh = new THREE.Mesh( geometry, material );
     if(element.rotation) mesh.rotation.z = element.rotation;
 
@@ -65,6 +65,7 @@ function addColiderMesh(element, mesh)
 	if(element.interactiveArea)
 	{
 		var coliderMesh = element.interactiveArea;
+		if(element.rotation) coliderMesh.rotation.z = -element.rotation;
 	    coliderMesh.name = element.name;
 	    coliderMesh.position.z = 0.01
 		coliderMesh.onexecute = element.onexecute;

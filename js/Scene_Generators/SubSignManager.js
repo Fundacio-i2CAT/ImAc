@@ -2,7 +2,33 @@
  * @author isaac.fraile@i2cat.net
  */
 
- // This library needs to use the MediaObject.js and imsc_i2cat.js functions
+/************************************************************************************
+	
+	SubSignManager.js  
+		* Library used to manage Subtitle and Signer elements
+
+	This library needs to use external libs:
+		* MediaObject.js  -->  To create the subtilte, signer and radar meshs
+		* imsc_i2cat.js   -->  To parse the xml subtiles
+		* THREE.js        -->  To modify the mesh attributes such as visiblity
+
+	This library needs to use the global vars:
+		* camera
+		* scene
+	
+	FUNCTIONALITIES:
+		* Getters of all subtitle [ST] and signer [SL] attributes
+		* Setters of all subtitle [ST] and signer [SL] attributes
+		* enableSubtitles / disableSubtiles
+		* enableAutoPositioning / disableAutoPositioning
+		* updateSubtitleByTime = function( time )    --> Update the subtiltes using a 'time' in secongs such as currentTime
+		* initSubtitle = function( fov, x, y, ind )  --> Initialize subtitle attr ( Area, position.x, position.y, indicator )
+		* initSigner = function( fov, x, y, ind )    --> Initialize signer attr ( Area, position.x, position.y, indicator )
+		* switchSubtitles = function( enable )       --> Enable or disable the subtitles using the boolean 'enable'
+		* switchSigner = function( enable )          --> Enable or disable the signer using the boolean 'enable'
+		* updateRadar = function()                   --> Update the radar orientation using the camera orientation
+
+************************************************************************************/
 
 SubSignManager = function() {
 
@@ -22,7 +48,7 @@ SubSignManager = function() {
 	var subPosY = -1; // before = top = 1, center = 0, after = bottom = -1 
 	var subtitleIndicator = 'none'; // none, arrow, radar, move
 	var subSize = 1; // small = 0.6, medium = 0.8, large = 1
-	var subLang; // TODO - string (En, De, Ca, Es)
+	var subLang; // string (en, de, ca, es)
 	var subBackground = 0.8; // semi-transparent = 0.8, outline = 0
 	var subEasy = false; // boolean
 	var subArea = 50; // small = 50, medium = 60, large = 70
@@ -34,7 +60,7 @@ SubSignManager = function() {
 	var signPosY = -1; // bottom = -1, center = 0, top = 1
 	var signIndicator = 'none';	 // none, arrow, move
 	var signArea = 70; // small = 50, medium = 60, large = 70
-	var signLang; // TODO - string (En, De, Ca, Ep)
+	var signLang; // string (en, de, ca, es)
 
 
 //************************************************************************************
@@ -436,7 +462,7 @@ SubSignManager = function() {
 // Public Subtitle Setters
 //************************************************************************************
 
-	this.setSubtitle = function(xml)
+	this.setSubtitle = function(xml, lang)
 	{
 		var r = new XMLHttpRequest();
 
@@ -445,6 +471,7 @@ SubSignManager = function() {
 	    {
 	        if ( r.readyState === 4 && r.status === 200 ) 
 	        {
+	        	subLang = lang;
 	            imsc1doc = imsc.fromXML( r.responseText );
 	        }
 	    };
@@ -512,9 +539,10 @@ SubSignManager = function() {
 		updateSignerPosition();
 	};
 
-	this.setSignerContent = function(url)
+	this.setSignerContent = function(url, lang)
 	{
 		signerContent = url;
+		signLang = lang;
 		if ( signEnabled ) createSigner();
 	};	
 
@@ -558,7 +586,11 @@ SubSignManager = function() {
 
 	this.switchSubtitles = function(enable)
 	{
-		if ( !enable ) removeSubtitle();
+		if ( !enable ) 
+		{
+			removeSubtitle();
+			removeRadar();
+		}
 		subtitleEnabled = enable;
 	}
 
@@ -582,6 +614,9 @@ SubSignManager = function() {
     {
         if ( radarMesh ) 
         {
+        	radarMesh.position.x = _isHMD ? 35 : 40
+        	radarMesh.position.y = _isHMD ? -2 : -22
+
             var target = new THREE.Vector3();
             var camView = camera.getWorldDirection( target );
             var offset = camView.z >= 0 ? 180 : -0;

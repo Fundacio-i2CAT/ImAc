@@ -513,7 +513,7 @@ THREE.MediaObject = function () {
 
         var pointer = new THREE.Mesh(
                 new THREE.SphereBufferGeometry( 0.002, 16, 8 ),
-                new THREE.MeshBasicMaterial( { color: 0xffff00 } )
+                new THREE.MeshBasicMaterial( { color: 0xffff00, transparent: true, opacity: 0 } )
             );
         var pointer1 = new THREE.Mesh(
                 new THREE.SphereBufferGeometry( 0.04, 32, 8 ),
@@ -616,6 +616,17 @@ THREE.MediaObject = function () {
         scene.add( light )
 
         scene.add( new THREE.HemisphereLight( 0x909090, 0x404040 ))
+    }
+
+    this.createOpenMenuMesh = function()
+    {
+        var openMenuText = menuData.getMenuTextMesh("Menu", 22, 0xffff00, "openmenutext"); 
+        openMenuText.position.y = 6;
+        openMenuText.position.z = -60;
+        openMenuText.scale.set( 0.15, 0.15, 1 )
+        openMenuText.visible = false;
+
+        camera.add(openMenuText);
     }
 }
 

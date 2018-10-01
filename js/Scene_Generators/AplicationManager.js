@@ -7,11 +7,11 @@ var controls;
 function AplicationManager()
 {
     //var controls;
-    var container;
+    //var container;
     var renderer;
-    var effect;
-    var isVRtested = false;
-    var haveVrDisplay = false;
+    //var effect;
+    //var isVRtested = false;
+    //var haveVrDisplay = false;
 
     var _display;
 
@@ -19,42 +19,8 @@ function AplicationManager()
     this.init_AplicationManager = function()
     {
         init();
-		waitSesionManager();	
+		//waitSesionManager();	
     };
-
-    this.switchDevice = function()
-    {
-    	console.error('Deprecated function: switchDevice')
-    	/*if ( _display.length > 0 ) 
-    	{
-    		if ( _isHMD )
-    		{
-    			ppMMgr.playAll();
-    			_isHMD = false;
-    			_display[ 0 ].isPresenting ? _display[ 0 ].exitPresent() : _display[ 0 ].requestPresent( [ { source: renderer.domElement } ] ).then(
-				function () { 
-					isVRtested=true; 
-					startAllVideos(); 
-					//controls = new THREE.DeviceOrientationAndTouchController( camera, CameraParentObject, renderer.domElement, renderer );
-				});
-    		}
-    		else
-    		{
-    			ppMMgr.playAll();
-    			_isHMD = true;;
-    			//controls = undefined;
-    			_display[ 0 ].isPresenting ? _display[ 0 ].exitPresent() : _display[ 0 ].requestPresent( [ { source: renderer.domElement } ] ).then(
-				function () { 
-					isVRtested=true; 
-					startAllVideos(); 
-				});
-
-				renderer.vr.setDevice( _display[ 0 ] );
-
-    		}
-		}*/
-    };
-
 
     // Used when autopositioning is activated
     this.enableVR = function()
@@ -67,19 +33,6 @@ function AplicationManager()
     	renderer.vr.setDevice( null );
     };
 
-	function waitSesionManager()
-	{ 
-		if ( isVRtested == true )
-		{
-			activateLogger();
-			haveVrDisplay ? renderer.animate( render ) : update(); 
-		}
-		else
-		{
-			requestAnimationFrame( waitSesionManager );
-		}
-	}
-
 	function activateLogger()
 	{
 		if ( loggerActivated )
@@ -90,12 +43,12 @@ function AplicationManager()
 		}
 	}
 
-	function update() 
+	/*function update() 
 	{	
 		if ( controls ) controls.update();
 		effect.render( scene, camera );
 		requestAnimationFrame( update );		
-    }
+    }*/
 
     function render()
     {
@@ -125,19 +78,12 @@ function AplicationManager()
 	
 		blockContainer();
 			
-		container = document.getElementById( 'container' );
+		var container = document.getElementById( 'container' );
 	
         camera = new THREE.PerspectiveCamera( 60.0, window.innerWidth / window.innerHeight, 0.05, 1000 );
         camera.name = 'perspectivecamera';
 
-
- 		var openMenuText = menuData.getMenuTextMesh("Menu", 22, 0xffff00, "openmenutext"); 
- 		openMenuText.position.y = 6;
- 		openMenuText.position.z = -60;
- 		openMenuText.scale.set(0.15, 0.15, 1)
- 		openMenuText.visible = false;
-
- 		camera.add(openMenuText);
+ 		moData.createOpenMenuMesh();
 
         this.CameraParentObject = new THREE.Object3D();
         this.CameraParentObject.name = 'parentcamera';
@@ -156,7 +102,7 @@ function AplicationManager()
 
 		renderer.sortObjects = true;
 
-		renderer.setPixelRatio(Math.floor(window.devicePixelRatio));
+		renderer.setPixelRatio( Math.floor( window.devicePixelRatio ) );
 		renderer.setSize( window.innerWidth, window.innerHeight );
 
 		controls = new THREE.DeviceOrientationAndTouchController( camera, CameraParentObject, renderer.domElement, renderer );
@@ -180,9 +126,13 @@ function AplicationManager()
         	navigator.getVRDisplays().then( function ( displays ) 
         	{
 				_display = displays;
-				haveVrDisplay = true;
+				//haveVrDisplay = true;
 				renderer.vr.enabled = true;
-				isVRtested = true; 
+				//isVRtested = true; 
+				activateLogger();
+
+				renderer.animate( render );
+
 				VideoController.playAll();
 			} );
         }
@@ -191,34 +141,7 @@ function AplicationManager()
         	alert("This browser don't support VR content")
         }
 
-		Reticulum.init(camera, {
-			proximity: false,
-			clickevents: true,
-			reticle: {
-				visible: false,
-				restPoint: 50, //Defines the reticle's resting point when no object has been targeted
-				color: 0xffff00,
-				innerRadius: 0.0004,
-				outerRadius: 0.003,
-				hover: {
-					color: 0x13ec56,
-					innerRadius: 0.02,
-					outerRadius: 0.024,
-					speed: 5,
-					vibrate: 50 //Set to 0 or [] to disable
-				}
-			},
-			fuse: {
-				visible: false,
-				duration: 3,
-				color: 0x4669a7,
-				innerRadius: 0.045,
-				outerRadius: 0.06,
-				vibrate: 100, //Set to 0 or [] to disable
-				clickCancelFuse: false //If users clicks on targeted object fuse is canceled
-			}
-		});
-
+        initReticulum( camera );
 	}
 
 	var WEBVR = {
@@ -244,7 +167,7 @@ function AplicationManager()
 
 					display.isPresenting ? display.exitPresent() : display.requestPresent( [ { source: renderer.domElement } ] ).then(
 						function () { 
-							isVRtested=true; 
+							//isVRtested=true; 
 							_isHMD = true; 	
 							createMenus();						
 						});
@@ -254,35 +177,32 @@ function AplicationManager()
 
 			}
 
-			if ( 'getVRDisplays' in navigator ) {
+			//if ( 'getVRDisplays' in navigator ) {
 
 				var button = document.createElement( 'button' );
-				button.style.display = 'none';
+				//button.style.display = 'none';
 
 				stylizeElement( button );
 
-				window.addEventListener( 'vrdisplayconnect', function ( event ) {
+				/*window.addEventListener( 'vrdisplayconnect', function ( event ) {
 
 					showEnterVR( event.display );
 
-				}, false );
+				}, false );*/
 
 				window.addEventListener( 'vrdisplaypresentchange', function ( event ) {
-					
-					//if (!event.display.isPresenting) window.history.back();
+			
 					if (event.display) {
-						//button.textContent = event.display.isPresenting ? 'EXIT VR' : 'ENTER VR';
-
 						if (!event.display.isPresenting) location.reload();
 					}
 
 				}, false );
 
-				window.addEventListener( 'vrdisplayactivate', function ( event ) {
+				/*window.addEventListener( 'vrdisplayactivate', function ( event ) {
 
 					event.display.requestPresent( [ { source: renderer.domElement } ] ).then(function () { isVRtested = true; startAllVideos(); });
 
-				}, false );
+				}, false );*/
 
 
 				navigator.getVRDisplays()
@@ -305,7 +225,7 @@ function AplicationManager()
 
 				return button;
 
-			}
+			//}
 		},
 
 		createButton2: function ( renderer ) {
@@ -317,7 +237,6 @@ function AplicationManager()
 				button.style.left = 'calc(50% + 10px)';
 				button.textContent = 'NO VR';
 
-
 				button.onclick = function () {
 
 					button1.style.display = 'none';
@@ -325,8 +244,7 @@ function AplicationManager()
 
 					VideoController.playAll();
 					
-					isVRtested=true; 
-					//startAllVideos(); 
+					//isVRtested=true;  
 					_isHMD = false; 
 
 					createMenus();
@@ -335,12 +253,12 @@ function AplicationManager()
 			}
 
 			var button = document.createElement( 'button' );
-			button.style.display = 'none';
+			//button.style.display = 'none';
 
 			stylizeElement( button );
 
 
-			if ( 'getVRDisplays' in navigator ) {
+			//if ( 'getVRDisplays' in navigator ) {
 
 				navigator.getVRDisplays().then( function ( displays ) 
 				{
@@ -353,7 +271,7 @@ function AplicationManager()
 				button2 = button;
 
 				return button;
-			}
+			//}
 
 		}
 	};

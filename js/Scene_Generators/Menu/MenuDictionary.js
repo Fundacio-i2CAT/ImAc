@@ -81,10 +81,22 @@ MenuDictionary = function() {
 	{
 		_mainLanguage = language;
 
-        if ( language == 'en') mainLanguage = 'settingsLanguageEngButton';
-        else if ( language == 'de') mainLanguage = 'settingsLanguageGerButton';
-        else if ( language == 'es') mainLanguage = 'settingsLanguageEspButton';
-        else if ( language == 'ca') mainLanguage = 'settingsLanguageCatButton';
+        if ( language == 'en') 
+        {
+            mainLanguage = 'settingsLanguageEngButton';
+        }
+        else if ( language == 'de') 
+        {
+            mainLanguage = 'settingsLanguageGerButton';
+        }
+        else if ( language == 'es') 
+        {
+            mainLanguage = 'settingsLanguageEspButton';
+        }
+        else if ( language == 'ca') 
+        {
+            mainLanguage = 'settingsLanguageCatButton';
+        }
 	};
 
     this.setSubtitleLanguagesArray = function(subList)

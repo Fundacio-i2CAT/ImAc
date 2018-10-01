@@ -11,10 +11,10 @@ MenuFunctionsManager = function() {
 // Subtitle Functions
 //************************************************************************************
 
-    function getSubLanguageFunc(xml, name)
+    function getSubLanguageFunc(xml, lang, name)
     {    
         return function() {
-            subController.setSubtitle( xml );
+            subController.setSubtitle( xml, lang );
             MenuManager.selectFinalDropdownOption( name );
             subtitlesLanguage = name;
         }
@@ -217,10 +217,10 @@ MenuFunctionsManager = function() {
         }
     }
 
-    function getSignerLanguageFunc(url, name)
+    function getSignerLanguageFunc(url, lang, name)
     {    
         return function() {
-            subController.setSignerContent( url );
+            subController.setSignerContent( url, lang );
             MenuManager.selectFinalDropdownOption( name );
             signerLanguage = name;
         }
@@ -571,9 +571,10 @@ MenuFunctionsManager = function() {
             //if ( interController.getSubtitlesActive() ) subController.enableSubtitles();
             //subController.switchSigner( interController.getSignerActive() );
             setTimeout(function() {
-                MenuManager.closeMenu(); 
+                console.error('Deprecated function! getCardboardFunc')
+                /*MenuManager.closeMenu(); 
                 AplicationManager.switchDevice();
-                scene.getObjectByName( "openMenu" ).visible = true;
+                scene.getObjectByName( "openMenu" ).visible = true;*/
              }, clickInteractionTimeout);
         }
     };
@@ -617,16 +618,16 @@ MenuFunctionsManager = function() {
         {
         // Subtitles
             case "subtitlesEngButton":
-                return getSubLanguageFunc( list_contents[demoId].subtitles[0]['en'], name );
+                return getSubLanguageFunc( list_contents[demoId].subtitles[0]['en'], 'en', name );
 
             case "subtitlesEspButton":
-                return getSubLanguageFunc( list_contents[demoId].subtitles[0]['es'], name );
+                return getSubLanguageFunc( list_contents[demoId].subtitles[0]['es'], 'es', name );
 
             case "subtitlesGerButton":
-                return getSubLanguageFunc( list_contents[demoId].subtitles[0]['de'], name );
+                return getSubLanguageFunc( list_contents[demoId].subtitles[0]['de'], 'de', name );
 
             case "subtitlesCatButton":
-                return getSubLanguageFunc( list_contents[demoId].subtitles[0]['ca'], name );
+                return getSubLanguageFunc( list_contents[demoId].subtitles[0]['ca'], 'ca', name );
 
             case "subtitlesEasyOn":
                 return getSubEasyOnOffFunc( true, name );
@@ -678,16 +679,16 @@ MenuFunctionsManager = function() {
 
         // Signer
             case "signerEngButton":
-                return getSignerLanguageFunc( list_contents[demoId].signer[0]['en'], name );
+                return getSignerLanguageFunc( list_contents[demoId].signer[0]['en'], 'en', name );
 
             case "signerEspButton":
-                return getSignerLanguageFunc( list_contents[demoId].signer[0]['es'], name );
+                return getSignerLanguageFunc( list_contents[demoId].signer[0]['es'], 'es', name );
 
             case "signerGerButton":
-                return getSignerLanguageFunc( list_contents[demoId].signer[0]['de'], name );
+                return getSignerLanguageFunc( list_contents[demoId].signer[0]['de'], 'de', name );
 
             case "signerCatButton":
-                return getSignerLanguageFunc( list_contents[demoId].signer[0]['ca'], name );
+                return getSignerLanguageFunc( list_contents[demoId].signer[0]['ca'], 'ca', name );
 
             case "signerTopButton":
                 return getSignerPositionFunc( 1, name );

@@ -23,6 +23,8 @@ function convertAngular_toCartesian(latitud, longitud)
 
 function stylizeElement( element ) 
 {
+    element.style.display = 'none';
+
     element.style.position = 'absolute';
     element.style.bottom = '200px';
     element.style.padding = '12px 6px';
@@ -54,6 +56,36 @@ function stylizeElement( element )
     };
 }
 
+function initReticulum(cam)
+{
+    Reticulum.init(cam, {
+        proximity: false,
+        clickevents: true,
+        reticle: {
+            visible: false,
+            restPoint: 50, //Defines the reticle's resting point when no object has been targeted
+            color: 0xffff00,
+            innerRadius: 0.0004,
+            outerRadius: 0.003,
+            hover: {
+                color: 0x13ec56,
+                innerRadius: 0.02,
+                outerRadius: 0.024,
+                speed: 5,
+                vibrate: 50 //Set to 0 or [] to disable
+            }
+        },
+        fuse: {
+            visible: false,
+            duration: 3,
+            color: 0x4669a7,
+            innerRadius: 0.045,
+            outerRadius: 0.06,
+            vibrate: 100, //Set to 0 or [] to disable
+            clickCancelFuse: false //If users clicks on targeted object fuse is canceled
+        }
+    });
+}
 
 // Converts from degrees to radians.
 Math.radians = function(degrees) {

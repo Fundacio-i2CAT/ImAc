@@ -6,13 +6,7 @@ var controls;
 
 function AplicationManager()
 {
-    //var controls;
-    //var container;
     var renderer;
-    //var effect;
-    //var isVRtested = false;
-    //var haveVrDisplay = false;
-
     var _display;
 
 

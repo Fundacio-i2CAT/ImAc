@@ -1,16 +1,151 @@
 {
   "title": "ImAc",
   "contents": [
-  {
-    "name": "Video 1: Opera Video",
+   {
+    "name": "1: ARTE Part-1 Arrow",
     "thumbnail": "img/LOGO-IMAC.png",
-    "url": "./resources/liceu/cam_2_2k.mp4",
+    "url": "http://84.88.32.46/imac_content/pilot_1/RBB_Iphilip/stream.mpd",
+    "audioChannels": 2,
+    "subtitles": [
+    {
+      "de": "http://84.88.32.46/imac_content/pilot_1/RBB_Iphilip/RBB_IPhilip_subtitles_DE.xml",
+      "ca": "http://84.88.32.46/imac_content/pilot_1/RBB_Iphilip/RBB_IPhilip_subtitles_CAT.xml",
+      "en": "http://84.88.32.46/imac_content/pilot_1/RBB_Iphilip/RBB_IPhilip_subtitles_EN.xml"
+    },
+    {
+      "de": "http://84.88.32.46/imac_content/pilot_1/RBB_Iphilip/RBB_IPhilip_subtitles_DE.xml",
+      "ca": "http://84.88.32.46/imac_content/pilot_1/RBB_Iphilip/RBB_IPhilip_subtitles_CAT.xml",
+      "en": "http://84.88.32.46/imac_content/pilot_1/RBB_Iphilip/RBB_IPhilip_subtitles_EN.xml"
+    }],
+    "signer": [
+    {
+      "de": "http://84.88.32.46/imac_content/liceu/Liceu_Signer.mp4",
+      "ca": "http://84.88.32.46/imac_content/liceu/Liceu_Signer.mp4"
+    }],
+    "ad": [
+    {
+      "en": "",
+      "ca": ""
+    }],
+    "ast": [
+    {
+      "en": "",
+      "ca": ""
+    }]
+  }, 
+  {
+    "name": "2: ARTE Part-1 Radar",
+    "thumbnail": "img/LOGO-IMAC.png",
+    "url": "http://84.88.32.46/imac_content/pilot_1/RBB_Iphilip/stream.mpd",
+    "audioChannels": 2,
+    "subtitles": [
+    {
+      "de": "http://84.88.32.46/imac_content/pilot_1/RBB_Iphilip/RBB_IPhilip_subtitles_DE.xml",
+      "ca": "http://84.88.32.46/imac_content/pilot_1/RBB_Iphilip/RBB_IPhilip_subtitles_CAT.xml",
+      "en": "http://84.88.32.46/imac_content/pilot_1/RBB_Iphilip/RBB_IPhilip_subtitles_EN.xml"
+    },
+    {
+      "de": "http://84.88.32.46/imac_content/pilot_1/RBB_Iphilip/RBB_IPhilip_subtitles_DE.xml",
+      "ca": "http://84.88.32.46/imac_content/pilot_1/RBB_Iphilip/RBB_IPhilip_subtitles_CAT.xml",
+      "en": "http://84.88.32.46/imac_content/pilot_1/RBB_Iphilip/RBB_IPhilip_subtitles_EN.xml"
+    }],
+    "signer": [
+    {
+      "de": "http://84.88.32.46/imac_content/liceu/Liceu_Signer.mp4",
+      "ca": "http://84.88.32.46/imac_content/liceu/Liceu_Signer.mp4"
+    }],
+    "ad": [
+    {
+      "en": "",
+      "ca": ""
+    }],
+    "ast": [
+    {
+      "en": "",
+      "ca": ""
+    }]
+  }, 
+  {
+    "name": "3: ARTE Part-2 Arrow",
+    "thumbnail": "img/LOGO-IMAC.png",
+    "url": "http://84.88.32.46/imac_content/pilot_1/RBB_Iphilip/stream.mpd",
+    "audioChannels": 2,
+    "subtitles": [
+    {
+      "de": "http://84.88.32.46/imac_content/pilot_1/RBB_Iphilip/RBB_IPhilip_subtitles_DE.xml",
+      "ca": "http://84.88.32.46/imac_content/pilot_1/RBB_Iphilip/RBB_IPhilip_subtitles_CAT.xml",
+      "en": "http://84.88.32.46/imac_content/pilot_1/RBB_Iphilip/RBB_IPhilip_subtitles_EN.xml"
+    },
+    {
+      "de": "http://84.88.32.46/imac_content/pilot_1/RBB_Iphilip/RBB_IPhilip_subtitles_DE.xml",
+      "ca": "http://84.88.32.46/imac_content/pilot_1/RBB_Iphilip/RBB_IPhilip_subtitles_CAT.xml",
+      "en": "http://84.88.32.46/imac_content/pilot_1/RBB_Iphilip/RBB_IPhilip_subtitles_EN.xml"
+    }],
+    "signer": [
+    {
+      "de": "http://84.88.32.46/imac_content/liceu/Liceu_Signer.mp4",
+      "ca": "http://84.88.32.46/imac_content/liceu/Liceu_Signer.mp4"
+    }],
+    "ad": [
+    {
+      "en": "",
+      "ca": ""
+    }],
+    "ast": [
+    {
+      "en": "",
+      "ca": ""
+    }]
+  }, 
+  {
+    "name": "4: ARTE Part-2 Radar",
+    "thumbnail": "img/LOGO-IMAC.png",
+    "url": "http://84.88.32.46/imac_content/pilot_1/RBB_Iphilip/stream.mpd",
+    "audioChannels": 2,
+    "subtitles": [
+    {
+      "de": "http://84.88.32.46/imac_content/pilot_1/RBB_Iphilip/RBB_IPhilip_subtitles_DE.xml",
+      "ca": "http://84.88.32.46/imac_content/pilot_1/RBB_Iphilip/RBB_IPhilip_subtitles_CAT.xml",
+      "en": "http://84.88.32.46/imac_content/pilot_1/RBB_Iphilip/RBB_IPhilip_subtitles_EN.xml"
+    },
+    {
+      "de": "http://84.88.32.46/imac_content/pilot_1/RBB_Iphilip/RBB_IPhilip_subtitles_DE.xml",
+      "ca": "http://84.88.32.46/imac_content/pilot_1/RBB_Iphilip/RBB_IPhilip_subtitles_CAT.xml",
+      "en": "http://84.88.32.46/imac_content/pilot_1/RBB_Iphilip/RBB_IPhilip_subtitles_EN.xml"
+    }],
+    "signer": [
+    {
+      "de": "http://84.88.32.46/imac_content/liceu/Liceu_Signer.mp4",
+      "ca": "http://84.88.32.46/imac_content/liceu/Liceu_Signer.mp4"
+    }],
+    "ad": [
+    {
+      "en": "",
+      "ca": ""
+    }],
+    "ast": [
+    {
+      "en": "",
+      "ca": ""
+    }]
+  }, 
+  {
+    "name": "5: Opera-1 Arrow",
+    "thumbnail": "img/LOGO-IMAC.png",
+    "url": "http://84.88.32.46/imac_content/pilot_1/OPERALICEU_01/stream.mpd",
     "audioChannels": 4,
     "subtitles": [
     {
-      "en": "http://84.88.32.46/imac_content/liceu/LICEU_ENG.xml",
-      "es": "http://84.88.32.46/imac_content/liceu/LICEU_CAST.xml",
-      "de": "http://84.88.32.46/imac_content/liceu/LICEU_DE.xml"
+      "de": "http://84.88.32.46/imac_content/pilot_1/OPERALICEU_01/CCMA_OPERALICEU01_subtitles_DE.xml",
+      "ca": "http://84.88.32.46/imac_content/pilot_1/OPERALICEU_01/CCMA_OPERALICEU01_subtitles_CAT.xml",
+      "en": "http://84.88.32.46/imac_content/pilot_1/OPERALICEU_01/CCMA_OPERALICEU01_subtitles_EN.xml",
+      "es": "http://84.88.32.46/imac_content/pilot_1/OPERALICEU_01/CCMA_OPERALICEU01_subtitles_CAST.xml"
+    },
+    {
+      "de": "http://84.88.32.46/imac_content/pilot_1/OPERALICEU_01/LICEU_CAST_E2R.xml",
+      "ca": "http://84.88.32.46/imac_content/pilot_1/OPERALICEU_01/LICEU_CAST_E2R.xml",
+      "en": "http://84.88.32.46/imac_content/pilot_1/OPERALICEU_01/LICEU_CAST_E2R.xml",
+      "es": "http://84.88.32.46/imac_content/pilot_1/OPERALICEU_01/LICEU_CAST_E2R.xml"
     }],
     "signer": [
     {
@@ -31,17 +166,29 @@
     }]
   }, 
   {
-    "name": "Video 2: RBB Video",
+    "name": "6: Opera-1 Radar",
     "thumbnail": "img/LOGO-IMAC.png",
-    "url": "http://84.88.32.46/imac_content/rbb/dash/stream.mpd",
-    "audioChannels": 2,
+    "url": "http://84.88.32.46/imac_content/pilot_1/OPERALICEU_01/stream.mpd",
+    "audioChannels": 4,
     "subtitles": [
     {
-      "de": "http://84.88.32.46/imac_content/rbb/RBB_Abendschau_short_subtitles_angles.xml"
+      "de": "http://84.88.32.46/imac_content/pilot_1/OPERALICEU_01/CCMA_OPERALICEU01_subtitles_DE.xml",
+      "ca": "http://84.88.32.46/imac_content/pilot_1/OPERALICEU_01/CCMA_OPERALICEU01_subtitles_CAT.xml",
+      "en": "http://84.88.32.46/imac_content/pilot_1/OPERALICEU_01/CCMA_OPERALICEU01_subtitles_EN.xml",
+      "es": "http://84.88.32.46/imac_content/pilot_1/OPERALICEU_01/CCMA_OPERALICEU01_subtitles_CAST.xml"
+    },
+    {
+      "de": "http://84.88.32.46/imac_content/pilot_1/OPERALICEU_01/LICEU_CAST_E2R.xml",
+      "ca": "http://84.88.32.46/imac_content/pilot_1/OPERALICEU_01/LICEU_CAST_E2R.xml",
+      "en": "http://84.88.32.46/imac_content/pilot_1/OPERALICEU_01/LICEU_CAST_E2R.xml",
+      "es": "http://84.88.32.46/imac_content/pilot_1/OPERALICEU_01/LICEU_CAST_E2R.xml"
     }],
     "signer": [
     {
-      "de": "./resources/liceu/Liceu_Signer.mp4"
+      "en": "http://84.88.32.46/imac_content/liceu/Dash/SL_ENG/stream.mpd",
+      "es": "http://84.88.32.46/imac_content/liceu/Dash/SL_ESP/stream.mpd",
+      "ca": "http://84.88.32.46/imac_content/liceu/Dash/SL_CAT/stream.mpd",
+      "de": "http://84.88.32.46/imac_content/liceu/Dash/SL_GER/stream.mpd"
     }],
     "ad": [
     {
@@ -55,18 +202,23 @@
     }]
   }, 
   {
-    "name": "Video 3: ARTE Part-1 Arrow",
+    "name": "7: Opera-2 Arrow",
     "thumbnail": "img/LOGO-IMAC.png",
-    "url": "http://84.88.32.46/imac_content/RBB_I/dash/stream.mpd",
-    "audioChannels": 2,
+    "url": "http://84.88.32.46/imac_content/pilot_1/OPERALICEU_02/stream.mpd",
+    "audioChannels": 4,
     "subtitles": [
     {
-      "de": "http://84.88.32.46/imac_content/RBB_I/RBB_IPhilip_subtitles_alemany.xml",
-      "ca": "http://84.88.32.46/imac_content/RBB_I/Catalan_CCMA_IPhilip_subtitles.xml"
+      "de": "http://84.88.32.46/imac_content/pilot_1/OPERALICEU_02/CCMA_OPERALICEU02_subtitles_DE.xml",
+      "ca": "http://84.88.32.46/imac_content/pilot_1/OPERALICEU_02/CCMA_OPERALICEU02_subtitles_CAT.xml"
+    },
+    {
+      "de": "http://84.88.32.46/imac_content/pilot_1/OPERALICEU_02/CCMA_OPERALICEU02_subtitles_DE.xml",
+      "ca": "http://84.88.32.46/imac_content/pilot_1/OPERALICEU_02/CCMA_OPERALICEU02_subtitles_CAT.xml"
     }],
     "signer": [
     {
-      "en": "http://84.88.32.46/imac_content/liceu/Liceu_Signer.mp4"
+      "de": "http://84.88.32.46/imac_content/liceu/Liceu_Signer.mp4",
+      "ca": "http://84.88.32.46/imac_content/liceu/Liceu_Signer.mp4"
     }],
     "ad": [
     {
@@ -80,68 +232,23 @@
     }]
   }, 
   {
-    "name": "Video 4: ARTE Part-1 Radar",
+    "name": "8: Opera-2 Radar",
     "thumbnail": "img/LOGO-IMAC.png",
-    "url": "http://84.88.32.46/imac_content/RBB_I/dash/stream.mpd",
-    "audioChannels": 2,
+    "url": "http://84.88.32.46/imac_content/pilot_1/OPERALICEU_02/stream.mpd",
+    "audioChannels": 4,
     "subtitles": [
     {
-      "de": "http://84.88.32.46/imac_content/RBB_I/RBB_IPhilip_subtitles_alemany.xml",
-      "ca": "http://84.88.32.46/imac_content/RBB_I/Catalan_CCMA_IPhilip_subtitles.xml"
+      "de": "http://84.88.32.46/imac_content/pilot_1/OPERALICEU_02/CCMA_OPERALICEU02_subtitles_DE.xml",
+      "ca": "http://84.88.32.46/imac_content/pilot_1/OPERALICEU_02/CCMA_OPERALICEU02_subtitles_CAT.xml"
+    },
+    {
+      "de": "http://84.88.32.46/imac_content/pilot_1/OPERALICEU_02/CCMA_OPERALICEU02_subtitles_DE.xml",
+      "ca": "http://84.88.32.46/imac_content/pilot_1/OPERALICEU_02/CCMA_OPERALICEU02_subtitles_CAT.xml"
     }],
     "signer": [
     {
-      "en": "http://84.88.32.46/imac_content/liceu/Liceu_Signer.mp4"
-    }],
-    "ad": [
-    {
-      "en": "",
-      "ca": ""
-    }],
-    "ast": [
-    {
-      "en": "",
-      "ca": ""
-    }]
-  }, 
-  {
-    "name": "Video 5: ARTE Part-2 Arrow",
-    "thumbnail": "img/LOGO-IMAC.png",
-    "url": "http://84.88.32.46/imac_content/RBB_I/dash/stream.mpd",
-    "audioChannels": 2,
-    "subtitles": [
-    {
-      "de": "http://84.88.32.46/imac_content/RBB_I/RBB_IPhilip_subtitles_alemany.xml",
-      "ca": "http://84.88.32.46/imac_content/RBB_I/Catalan_CCMA_IPhilip_subtitles.xml"
-    }],
-    "signer": [
-    {
-      "en": "http://84.88.32.46/imac_content/liceu/Liceu_Signer.mp4"
-    }],
-    "ad": [
-    {
-      "en": "",
-      "ca": ""
-    }],
-    "ast": [
-    {
-      "en": "",
-      "ca": ""
-    }]
-  }, 
-  {
-    "name": "Video 6: ARTE Part-2 Radar",
-    "thumbnail": "img/LOGO-IMAC.png",
-    "url": "http://84.88.32.46/imac_content/RBB_I/dash/stream.mpd",
-    "audioChannels": 2,
-    "subtitles": [
-    {
-      "de": "http://84.88.32.46/imac_content/RBB_I/RBB_IPhilip_subtitles_alemany.xml",
-      "ca": "http://84.88.32.46/imac_content/RBB_I/Catalan_CCMA_IPhilip_subtitles.xml"
-    }],
-    "signer": [
-    {
-      "en": "http://84.88.32.46/imac_content/liceu/Liceu_Signer.mp4"
+      "de": "http://84.88.32.46/imac_content/liceu/Liceu_Signer.mp4",
+      "ca": "http://84.88.32.46/imac_content/liceu/Liceu_Signer.mp4"
     }],
     "ad": [
     {

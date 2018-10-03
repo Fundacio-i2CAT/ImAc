@@ -104,7 +104,7 @@ AudioManager = function() {
         
         activeVideoElement.volume = newVolume;
         volume = activeVideoElement.volume;
-    }
+    };
 
     this.isAmbisonics = function()
     {
@@ -119,5 +119,15 @@ AudioManager = function() {
     this.getVolume = function()
     {
         return Math.round(activeVideoElement.volume * 100) / 100
+    };
+
+    this.getAudiContext = function()
+    {
+        return foaRenderer._context;
+    };
+
+    this.removeAudio = function()
+    {
+        foaRenderer = undefined;
     }
 }

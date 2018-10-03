@@ -109,12 +109,13 @@ SubSignManager = function() {
 	      		var posY = _isHMD ? 80 * Math.sin( Math.radians( latitud ) ) : 135 * Math.sin( Math.radians( latitud ) );
 	      		var subAjust = _isHMD ? 1 : 0.97;
 	      		var posZ = 75;
+	      		var esaySizeAjust = subEasy ? 1.25 : 1;
 
 	      		var conf = {
 			        subtitleIndicator: subtitleIndicator,
 			        displayAlign: subPosY,
 			        textAlign: subPosX,
-			        size: subSize * subAjust,
+			        size: subSize * subAjust * esaySizeAjust,
 			        area: subArea/130,
 			        opacity: subBackground,
 			        x: 0,
@@ -335,7 +336,7 @@ SubSignManager = function() {
     {
         if ( signerMesh )
         {
-        	subtitleMesh.children.forEach( function( e ) 
+        	signerMesh.children.forEach( function( e ) 
         	{
         		if ( e.name == 'left' ) e.visible = pos == 'left' ? true : false;
                 else if ( e.name == 'right' ) e.visible = pos == 'right' ? true : false;
@@ -498,9 +499,11 @@ SubSignManager = function() {
 		textListMemory = [];
 	};
 
-	this.setSubEasy = function(easy)
+	this.setSubEasy = function(easy, xml)
 	{
 		subEasy = easy;
+		this.setSubtitle( xml, subLang );
+		textListMemory = [];
 	};
 
 	this.setSubPosition = function(x, y)

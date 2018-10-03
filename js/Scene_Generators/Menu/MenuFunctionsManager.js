@@ -20,10 +20,10 @@ MenuFunctionsManager = function() {
         }
     }
 
-    function getSubEasyOnOffFunc(enable, name)
+    function getSubEasyOnOffFunc(enable, xml, name)
     {       
         return function() {
-            subController.setSubEasy( enable );
+            subController.setSubEasy( enable, xml );
             MenuManager.selectFinalDropdownOption( name );
             subtitlesEasy = name;
         }
@@ -618,22 +618,26 @@ MenuFunctionsManager = function() {
         {
         // Subtitles
             case "subtitlesEngButton":
-                return getSubLanguageFunc( list_contents[demoId].subtitles[0]['en'], 'en', name );
+                var e2r = subController.getSubEasy() ? 1 : 0;
+                return getSubLanguageFunc( list_contents[demoId].subtitles[e2r]['en'], 'en', name );
 
             case "subtitlesEspButton":
-                return getSubLanguageFunc( list_contents[demoId].subtitles[0]['es'], 'es', name );
+                var e2r = subController.getSubEasy() ? 1 : 0;
+                return getSubLanguageFunc( list_contents[demoId].subtitles[e2r]['es'], 'es', name );
 
             case "subtitlesGerButton":
-                return getSubLanguageFunc( list_contents[demoId].subtitles[0]['de'], 'de', name );
+                var e2r = subController.getSubEasy() ? 1 : 0;
+                return getSubLanguageFunc( list_contents[demoId].subtitles[e2r]['de'], 'de', name );
 
             case "subtitlesCatButton":
-                return getSubLanguageFunc( list_contents[demoId].subtitles[0]['ca'], 'ca', name );
+                var e2r = subController.getSubEasy() ? 1 : 0;
+                return getSubLanguageFunc( list_contents[demoId].subtitles[e2r]['ca'], 'ca', name );
 
             case "subtitlesEasyOn":
-                return getSubEasyOnOffFunc( true, name );
+                return getSubEasyOnOffFunc( true, list_contents[demoId].subtitles[1][subController.getSubLanguage()], name );
 
             case "subtitlesEasyOff":
-                return getSubEasyOnOffFunc( false, name );
+                return getSubEasyOnOffFunc( false, list_contents[demoId].subtitles[0][subController.getSubLanguage()], name );
 
             case "subtitlesTopButton":
                 return getSubPositionFunc( 1, name );

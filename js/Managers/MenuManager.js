@@ -1,5 +1,7 @@
 function MenuManager() {
 
+    var mmgr = this;
+
     var menuParent;
     var controllers = [];
     var actualCtrl;
@@ -37,8 +39,27 @@ function MenuManager() {
             menuParent = camera;
         }
 
+// T R  A D I T I O N A L 
+
+        menuParent.add(createTraditionalViewStructure('traditionalmenu'));
+        
         playpauseCtrl = new PlayPauseLSMenuController();
         controllers.push(playpauseCtrl);
+        playpauseCtrl.Init();
+
+        volumeCtrl = new VolumeLSMenuController();
+        controllers.push(volumeCtrl);
+        volumeCtrl.Init();
+
+        multiOptionsCtrl = new MultiOptionsLSMenuController();
+        controllers.push(multiOptionsCtrl);
+        multiOptionsCtrl.Init();
+     
+
+// L O W    S I G H T E D 
+
+        /*playpauseCtrl = new PlayPauseLSMenuController();
+        controllers.push(playpauseCtrl);     
         menuParent.add(createPlayPauseLSMenuViewStructure('playpausemenu'));
         playpauseCtrl.Init();
 
@@ -79,9 +100,9 @@ function MenuManager() {
         
         SettingsOptionCtrl = new SettingsOptionLSMenuController();
         controllers.push(SettingsOptionCtrl);
-        SettingsOptionCtrl.Init();
+        SettingsOptionCtrl.Init();*/
 
-        ResetViews();
+        mmgr.ResetViews();
 
     }
 
@@ -90,16 +111,16 @@ function MenuManager() {
         switch(actualCtrl.getLSMenuName())
         {
             case playpauseCtrl.getLSMenuName():
-                return Load(volumeCtrl);
+                return mmgr.Load(volumeCtrl);
 
             case volumeCtrl.getLSMenuName():
-                return Load(settingsCtrl)
+                return mmgr.Load(settingsCtrl)
 
             case settingsCtrl.getLSMenuName():
-                return Load(multiOptionsCtrl)
+                return mmgr.Load(multiOptionsCtrl)
 
             case multiOptionsCtrl.getLSMenuName():
-                return Load(playpauseCtrl)
+                return mmgr.Load(playpauseCtrl)
         }
     }
 
@@ -108,29 +129,39 @@ function MenuManager() {
         switch(actualCtrl.getLSMenuName())
         {
             case playpauseCtrl.getLSMenuName():
-                return Load(multiOptionsCtrl);
+                return mmgr.Load(multiOptionsCtrl);
 
             case volumeCtrl.getLSMenuName():
-                return Load(playpauseCtrl)
+                return mmgr.Load(playpauseCtrl)
 
             case settingsCtrl.getLSMenuName():
-                return Load(volumeCtrl)
+                return mmgr.Load(volumeCtrl)
 
             case multiOptionsCtrl.getLSMenuName():
-                return Load(settingsCtrl)   
+                return mmgr.Load(settingsCtrl)   
 
             case STOptionCtrl.getLSMenuName():
             case SLOptionCtrl.getLSMenuName():
             case ADOptionCtrl.getLSMenuName():
             case ASTOptionCtrl.getLSMenuName():
-                return Load(multiOptionsCtrl)
+                return mmgr.Load(multiOptionsCtrl)
 
             case SettingsOptionCtrl.getLSMenuName():
-                return Load(settingsCtrl)
-        }
+                return mmgr.Load(settingsCtrl)
+        } 
     }
 
-    function Load(controller)
+    function LoadTrad()
+    {
+       //IF TRADITIONAL 
+        controllers.forEach(function(controller){
+            controller.Init();
+        });
+
+        menuParent.getObjectByName('traditionalmenu').visible = true;
+    }
+
+    this.Load = function (controller)
     {
         if(actualCtrl) actualCtrl.Exit();
 
@@ -154,11 +185,15 @@ function MenuManager() {
  *
  * @class      ResetViews (name)
  */
-    function ResetViews()
-    {
+    this.ResetViews = function()
+    {  
         controllers.forEach(function(controller){
             controller.Exit();
         });
+
+        //TRADITIONAL
+        if(menuParent.getObjectByName('traditionalmenu')) menuParent.getObjectByName('traditionalmenu').visible = false;
+
 
         if(menuActivationElement) menuActivationElement.visible = true;
 
@@ -190,12 +225,14 @@ function MenuManager() {
             onGazeLong: function(){
                 menuActivationElement.visible = false;
                 scene.getObjectByName( "openmenutext" ).visible = false;
-                Load(playpauseCtrl);
+                //mmgr.Load(playpauseCtrl);
+                LoadTrad();
+
             }/*,
             onGazeClick: MenuFunctionsManager.getOpenMenuFunc()*/
         });
 
-        scene.add(menuActivationElement)
+        scene.add(menuActivationElement);
     }
 
 
@@ -206,14 +243,327 @@ function MenuManager() {
  ******************************************************************************************************/
 
 
+    function createTradMenuBaseViewStructure(name) 
+    {
+        var material = new THREE.MeshBasicMaterial( { color: 0x333333, transparent: true, opacity: 0.8 }); 
+        var geometry = new THREE.PlaneGeometry( menuWidth, menuHeight/12 );
+        var menuTrad =  new THREE.Mesh( geometry, material);
+
+        
+        menuTrad.position.set( 0, -menuHeight/2.5 - 5, -67 );
+        menuTrad.name = name;
+
+        var menuBackground = new THREE.Mesh( new THREE.PlaneGeometry( menuWidth, menuHeight ), new THREE.MeshBasicMaterial( {visible:  false} ) );
+
+        menuBackground.position.set( 0, menuHeight/2, 0.01 );
+
+        menuTrad.add(menuBackground);
+
+        return menuTrad;
+    }
+
+// TODO
+
+    function createOptionTraditionalMenuViewStructure(name)
+    {
+        //var tradMenuOptionMenu =  new THREE.Mesh( new THREE.PlaneGeometry( 30, 30 ), new THREE.MeshBasicMaterial({ color: 0x333333, transparent: true, opacity: 0.8 }));
+        
+        var  tradOptionMenu =  new THREE.Mesh( new THREE.PlaneGeometry( 0, 0 ), new THREE.MeshBasicMaterial({ color: 0x333333, transparent: true, opacity: 0.8 }));
+        tradOptionMenu.name = 'tradoptionmenu'; 
+
+        var  tradOptionMenuTitle =  new THREE.Group();
+        tradOptionMenuTitle.name = 'tradoptionmenutitle';
+
+        var  tradOptionMenuDropdown =  new THREE.Group();
+        tradOptionMenuDropdown.name = 'tradoptionmenudropdown';
+
+// MODEL
+       /* var x = (menuWidth-30)/2;
+        var y = ((-menuHeight/2.5-5)+(menuHeight + 30)/2)+2;
+        tradMenuDropdown.position.set(x, y, 0.01);
+
+        menuTrad.add(tradMenuDropdown);^*/
+
+        return 
+    }
+
+
+    function createTraditionalViewStructure(name)
+    {
+        var traditionalmenu = createTradMenuBaseViewStructure(name);
+
+        var  playpausemenu =  new THREE.Group();
+        playpausemenu.name = 'playpausemenu';
+
+        // Create the seekBackButton by loading a new InteractiveElement model and injecting the seekBackButtonData
+        var seekBackButton = new InteractiveElementModel();
+
+        seekBackButton.width = 2;
+        seekBackButton.height = 1;
+        seekBackButton.name =  'backSeekButton';
+        seekBackButton.type =  'icon';
+        seekBackButton.value = './img/menu/seek_icon.png';
+        seekBackButton.color = 0xffffff;
+        seekBackButton.visible = true;
+        seekBackButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(seekBackButton.width, seekBackButton.height), new THREE.MeshBasicMaterial({visible:  false}));
+        seekBackButton.onexecute =  function(){ console.log("This is a seek back button"); }
+        seekBackButton.position = new THREE.Vector3(-(tradmenuDivisions-1)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
+        
+        playpausemenu.add(seekBackButton.create());
+
+        // Create the playbutton by loading a new InteractiveElement model and injecting the playButtonData
+        var playButton = new InteractiveElementModel();
+        playButton.width = 2;
+        playButton.height = 2;
+        playButton.name =  'playButton';
+        playButton.type =  'icon';
+        playButton.value = './img/menu/play_icon.png';
+        playButton.color = 0xffffff;
+        playButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(playButton.width, playButton.height), new THREE.MeshBasicMaterial({visible:  false}));
+        playButton.onexecute =  function(){ console.log("This is the play button"); }
+        playButton.position = new THREE.Vector3(-(tradmenuDivisions-3)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
+        
+        playpausemenu.add(playButton.create());
+
+        // Create the pauseButton by loading a new InteractiveElement model and injecting the pauseButtonData
+        var pauseButton = new InteractiveElementModel();
+        pauseButton.width = 2;
+        pauseButton.height = 2;
+        pauseButton.name =  'pauseButton';
+        pauseButton.type =  'icon';
+        pauseButton.value = './img/menu/pause_icon.png';
+        pauseButton.color = 0xffffff;
+        pauseButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(pauseButton.width, pauseButton.height), new THREE.MeshBasicMaterial({visible:  false}));
+        pauseButton.onexecute =  function(){ console.log("This is the pause button"); }
+        pauseButton.position = new THREE.Vector3(-(tradmenuDivisions-3)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
+        
+        playpausemenu.add(pauseButton.create());
+
+        // Create the seekForwardButton by loading a new InteractiveElement model and injecting the seekForwardButtonData
+        var seekForwardButton = new InteractiveElementModel();
+        seekForwardButton.width = 2;
+        seekForwardButton.height = 1;
+        seekForwardButton.rotation = Math.PI;
+        seekForwardButton.name =  'forwardSeekButton';
+        seekForwardButton.type =  'icon';
+        seekForwardButton.value = './img/menu/seek_icon.png';
+        seekForwardButton.color = 0xffffff;
+        seekForwardButton.visible = true;
+        seekForwardButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(seekForwardButton.width, seekForwardButton.height), new THREE.MeshBasicMaterial({visible: false}));
+        seekForwardButton.onexecute =  function(){ console.log("This is a seek forward button"); }
+        seekForwardButton.position = new THREE.Vector3(-(tradmenuDivisions-5)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
+        
+        playpausemenu.add(seekForwardButton.create());
+
+        traditionalmenu.add(playpausemenu);
+
+
+        var  volumemenu =  new THREE.Group();
+        volumemenu.name = 'volumemenu';
+
+        // Create the minusVolumeButton by loading a new InteractiveElement model and ijecting the minusVolumeButtonData
+        var minusVolumeButton = new InteractiveElementModel();
+        minusVolumeButton.width = 1.5;
+        minusVolumeButton.height = 1.5;
+        minusVolumeButton.name = 'minusVolumeButton';
+        minusVolumeButton.type =  'icon';
+        minusVolumeButton.value = './img/menu/minus_icon.png';
+        minusVolumeButton.color = 0xffffff;
+        minusVolumeButton.visible = true;
+        minusVolumeButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(minusVolumeButton.width, minusVolumeButton.height), new THREE.MeshBasicMaterial({visible:  false}));
+        minusVolumeButton.onexecute =  function(){ console.log("This is the minus volume button"); };
+        minusVolumeButton.position = new THREE.Vector3(-(tradmenuDivisions-8)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
+
+        volumemenu.add(minusVolumeButton.create());
+
+        // Create the playbutton by loading a new InteractiveElement model and ijecting the playButtonData
+        var plusVolumeButton = new InteractiveElementModel();
+        plusVolumeButton.width = 1.5;
+        plusVolumeButton.height = 1.5;
+        plusVolumeButton.name = 'plusVolumeButton';
+        plusVolumeButton.type =  'icon';
+        plusVolumeButton.value = './img/menu/plus_icon.png';
+        plusVolumeButton.color = 0xffffff;
+        plusVolumeButton.visible = true;
+        plusVolumeButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(plusVolumeButton.width, plusVolumeButton.height), new THREE.MeshBasicMaterial({visible:  false}));
+        plusVolumeButton.onexecute =  function(){ console.log("This is the plus volume button"); };
+        plusVolumeButton.position = new THREE.Vector3(-(tradmenuDivisions-12)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
+
+        volumemenu.add(plusVolumeButton.create());
+
+        // Create the pauseButton by loading a new InteractiveElement model and ijecting the pauseButtonData
+        var unmuteVolumeButton = new InteractiveElementModel();
+        unmuteVolumeButton.width = 2;
+        unmuteVolumeButton.height = 2;
+        unmuteVolumeButton.name = 'unmuteVolumeButton';
+        unmuteVolumeButton.type =  'icon';
+        unmuteVolumeButton.value = './img/menu/volume_unmute_icon.png';
+        unmuteVolumeButton.color = 0xffffff;
+        unmuteVolumeButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(unmuteVolumeButton.width, unmuteVolumeButton.height), new THREE.MeshBasicMaterial({visible:  false}));
+        unmuteVolumeButton.onexecute =  function(){ console.log("This is the unmute volume button"); };
+        unmuteVolumeButton.position = new THREE.Vector3(-(tradmenuDivisions-10)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
+
+        volumemenu.add(unmuteVolumeButton.create());
+
+        // Create the plusVolumeButton by loading a new InteractiveElement model and ijecting the plusVolumeButtonData
+        var muteVolumeButton = new InteractiveElementModel();
+        muteVolumeButton.width = 2;
+        muteVolumeButton.height = 2;
+        muteVolumeButton.name = 'muteVolumeButton';
+        muteVolumeButton.type =  'icon';
+        muteVolumeButton.value = './img/menu/volume_mute_icon.png';
+        muteVolumeButton.color = 0xffffff;
+        muteVolumeButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(muteVolumeButton.width, muteVolumeButton.height), new THREE.MeshBasicMaterial({visible:  false}));
+        muteVolumeButton.onexecute =  function(){ console.log("This is the mute volume button"); };
+        muteVolumeButton.position = new THREE.Vector3(-(tradmenuDivisions-10)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
+
+        volumemenu.add(muteVolumeButton.create());
+
+        var volumeLevel = new InteractiveElementModel();
+        volumeLevel.width = 35;
+        volumeLevel.height = 35;
+        volumeLevel.name = 'volumeLevel';
+        volumeLevel.type =  'text';
+        volumeLevel.value = '50'; //AudioManager.getVolume()*100+'%';
+        volumeLevel.color = 0xffffff;
+        volumeLevel.textSize =  1.25;
+        volumeLevel.visible = false;
+        volumeLevel.position = new THREE.Vector3(-(tradmenuDivisions-10)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
+
+        volumemenu.add(volumeLevel.create());
+
+        traditionalmenu.add(volumemenu);
+
+
+        var  multioptionsmenu =  new THREE.Group();
+        multioptionsmenu.name = 'multioptionsmenu';
+
+// SUBTITLES
+        var subtitlesButton = new InteractiveElementModel();
+        subtitlesButton.width = 4;
+        subtitlesButton.height = 4;
+        subtitlesButton.name = 'showSubtitlesMenuButton';
+        subtitlesButton.type =  'icon';
+        subtitlesButton.value = './img/menu_ai_icons/ST.png';
+        subtitlesButton.color = 0xffffff;
+        subtitlesButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(subtitlesButton.width, subtitlesButton.height), new THREE.MeshBasicMaterial({visible: false}));
+        subtitlesButton.onexecute =  function(){ console.log("Open ST submenu") };
+        subtitlesButton.position = new THREE.Vector3((tradmenuDivisions-11)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
+
+        multioptionsmenu.add(subtitlesButton.create());
+
+// SUBTITLES DISABLED
+        var subtitlesDisabledButton = new InteractiveElementModel();
+        subtitlesDisabledButton.width = 4;
+        subtitlesDisabledButton.height = 4;
+        subtitlesDisabledButton.name = 'disabledSubtitlesMenuButton';
+        subtitlesDisabledButton.type =  'icon';
+        subtitlesDisabledButton.value = './img/menu_ai_icons/ST_strike.png';
+        subtitlesDisabledButton.color = 0xffffff;
+        subtitlesDisabledButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(subtitlesDisabledButton.width, subtitlesDisabledButton.height), new THREE.MeshBasicMaterial({visible: false}));
+        subtitlesDisabledButton.onexecute =  function(){ console.log("Open ST submenu") };
+        subtitlesDisabledButton.position = new THREE.Vector3((tradmenuDivisions-11)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
+
+        multioptionsmenu.add(subtitlesDisabledButton.create());
+
+//SIGN LANGUAGE
+        var signLanguageButton = new InteractiveElementModel();
+        signLanguageButton.width = 4;
+        signLanguageButton.height = 4;
+        signLanguageButton.name = 'showSignLanguageMenuButton';
+        signLanguageButton.type =  'icon';
+        signLanguageButton.value = './img/menu_ai_icons/SL.png';
+        signLanguageButton.color = 0xffffff;
+        signLanguageButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(signLanguageButton.width, signLanguageButton.height), new THREE.MeshBasicMaterial({visible: false}));
+        signLanguageButton.onexecute =  function(){ console.log("Open SL submenu")};
+        signLanguageButton.position = new THREE.Vector3((tradmenuDivisions-9)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
+
+        multioptionsmenu.add(signLanguageButton.create());
+
+//SIGN LANGUAGE DISABLED
+        var signLanguageDisabledButton = new InteractiveElementModel();
+        signLanguageDisabledButton.width = 4;
+        signLanguageDisabledButton.height = 4;
+        signLanguageDisabledButton.name = 'disabledSignLanguageMenuButton';
+        signLanguageDisabledButton.type =  'icon';
+        signLanguageDisabledButton.value = './img/menu_ai_icons/SL_strike.png';
+        signLanguageDisabledButton.color = 0xffffff;
+        signLanguageDisabledButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(signLanguageDisabledButton.width, signLanguageDisabledButton.height), new THREE.MeshBasicMaterial({visible: false}));
+        signLanguageDisabledButton.onexecute =  function(){ console.log("Open SL submenu") };
+        signLanguageDisabledButton.position = new THREE.Vector3((tradmenuDivisions-9)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
+
+        multioptionsmenu.add(signLanguageDisabledButton.create());
+
+//AUDIO DESCRIPTION
+        var audioDescriptionButton = new InteractiveElementModel();
+        audioDescriptionButton.width = 4;
+        audioDescriptionButton.height = 4;
+        audioDescriptionButton.name = 'showAudioDescriptionMenuButton';
+        audioDescriptionButton.type =  'icon';
+        audioDescriptionButton.value = './img/menu_ai_icons/AD.png';
+        audioDescriptionButton.color = 0xffffff;
+        audioDescriptionButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(audioDescriptionButton.width, audioDescriptionButton.height), new THREE.MeshBasicMaterial({visible: false}));
+        audioDescriptionButton.onexecute =  function(){ console.log("Open AD submenu") };
+        audioDescriptionButton.position = new THREE.Vector3((tradmenuDivisions-7)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
+
+        multioptionsmenu.add(audioDescriptionButton.create());
+
+//AUDIO DESCRIPTION DISABLED
+        var audioDescriptionDisabledButton = new InteractiveElementModel();
+        audioDescriptionDisabledButton.width = 4;
+        audioDescriptionDisabledButton.height = 4;
+        audioDescriptionDisabledButton.name = 'disabledAudioDescriptionMenuButton';
+        audioDescriptionDisabledButton.type =  'icon';
+        audioDescriptionDisabledButton.value = './img/menu_ai_icons/AD_strike.png';
+        audioDescriptionDisabledButton.color = 0xffffff;
+        audioDescriptionDisabledButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(audioDescriptionDisabledButton.width, audioDescriptionDisabledButton.height), new THREE.MeshBasicMaterial({visible: false}));
+        audioDescriptionDisabledButton.onexecute =  function(){ console.log("Open AD submenu") };
+        audioDescriptionDisabledButton.position = new THREE.Vector3((tradmenuDivisions-7)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
+
+        multioptionsmenu.add(audioDescriptionDisabledButton.create());
+
+//AUDIO SUBTITLES
+        var audioSubtitlesButton = new InteractiveElementModel();
+        audioSubtitlesButton.width = 4;
+        audioSubtitlesButton.height = 4;
+        audioSubtitlesButton.name = 'showAudioSubtitlesMenuButton';
+        audioSubtitlesButton.type =  'icon';
+        audioSubtitlesButton.value = './img/menu_ai_icons/AST.png';
+        audioSubtitlesButton.color = 0xffffff;
+        audioSubtitlesButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(audioSubtitlesButton.width, audioSubtitlesButton.height), new THREE.MeshBasicMaterial({visible: false}));
+        audioSubtitlesButton.onexecute =  function(){ console.log("Open AST submenu") };
+        audioSubtitlesButton.position = new THREE.Vector3((tradmenuDivisions-5)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
+
+        multioptionsmenu.add(audioSubtitlesButton.create());
+
+//AUDIO SUBTITLES DISABLED
+        var audioSubtitlesDisabledButton = new InteractiveElementModel();
+        audioSubtitlesDisabledButton.width = 4;
+        audioSubtitlesDisabledButton.height = 4;
+        audioSubtitlesDisabledButton.name = 'disabledAudioSubtitlesMenuButton';
+        audioSubtitlesDisabledButton.type =  'icon';
+        audioSubtitlesDisabledButton.value = './img/menu_ai_icons/AST_strike.png';
+        audioSubtitlesDisabledButton.color = 0xffffff;
+        audioSubtitlesDisabledButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(audioSubtitlesDisabledButton.width, audioSubtitlesDisabledButton.height), new THREE.MeshBasicMaterial({visible: false}));
+        audioSubtitlesDisabledButton.onexecute =  function(){ console.log("Open AST submenu") };
+        audioSubtitlesDisabledButton.position = new THREE.Vector3((tradmenuDivisions-5)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
+
+        multioptionsmenu.add(audioSubtitlesDisabledButton.create());
+
+        traditionalmenu.add(multioptionsmenu);
+
+        return traditionalmenu;
+    }
+
+
 /**
 * Creates the background of the lowsighted menu with the close and navigation icons.
 *
 * @param      {string}  name    The menu name
 * @return     {mesh}   { returns the background menu mesh }
 */
-    function createLSMenuBaseViewStructure (name){
-
+    function createLSMenuBaseViewStructure (name)
+    {
         var material = new THREE.MeshBasicMaterial( { color: 0x000000, transparent: true, opacity: 1 } );
         var geometry = new THREE.PlaneGeometry( menuWidth, menuHeight ); 
         var menu = new THREE.Mesh( geometry, material );
@@ -231,7 +581,7 @@ function MenuManager() {
         closeMenuButton.color = 0xffffff;
         closeMenuButton.visible = true;
         closeMenuButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(closeMenuButton.width, closeMenuButton.height), new THREE.MeshBasicMaterial({visible:  false}));
-        closeMenuButton.onexecute =  function(){ ResetViews(); };
+        closeMenuButton.onexecute =  function(){ console.log('Close menu button clicked') };
         closeMenuButton.position = new THREE.Vector3(57, 30, 0.01);
 
         menu.add(closeMenuButton.create());
@@ -242,7 +592,7 @@ function MenuManager() {
         forwardMenuButton.height = 8.4;
         forwardMenuButton.rotation = Math.PI;
         forwardMenuButton.name = 'forwardMenuButton';
-        forwardMenuButton.type=  'icon';
+        forwardMenuButton.type =  'icon';
         forwardMenuButton.value = './img/menu/less_than_icon.png';
         forwardMenuButton.color = 0xffffff;
         forwardMenuButton.visible = true;
@@ -257,7 +607,7 @@ function MenuManager() {
         backMenuButton.width = 8.4;
         backMenuButton.height = 8.4;
         backMenuButton.name = 'backMenuButton';
-        backMenuButton.type=  'icon';
+        backMenuButton.type =  'icon';
         backMenuButton.value = './img/menu/less_than_icon.png';
         backMenuButton.color = 0xffffff;
         backMenuButton.visible = true;
@@ -285,12 +635,12 @@ function MenuManager() {
         seekBackButton.width = 30;
         seekBackButton.height = 15;
         seekBackButton.name =  'backSeekButton';
-        seekBackButton.type=  'icon';
+        seekBackButton.type =  'icon';
         seekBackButton.value = './img/menu/seek_icon.png';
         seekBackButton.color = 0xffffff;
         seekBackButton.visible = true;
-        seekBackButton.interactiveArea=  new THREE.Mesh( new THREE.PlaneGeometry(seekBackButton.width, seekBackButton.height), new THREE.MeshBasicMaterial({visible:  false}));
-        seekBackButton.onexecute=  function(){ console.log("This is a seek back button"); }
+        seekBackButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(seekBackButton.width, seekBackButton.height), new THREE.MeshBasicMaterial({visible:  false}));
+        seekBackButton.onexecute =  function(){ console.log("This is a seek back button"); }
         seekBackButton.position = new THREE.Vector3(-45, 0, 0.01);
         
         playpausemenu.add(seekBackButton.create());
@@ -300,11 +650,11 @@ function MenuManager() {
         playButton.width = 50;
         playButton.height = 50;
         playButton.name =  'playButton';
-        playButton.type=  'icon';
+        playButton.type =  'icon';
         playButton.value = './img/menu/play_icon.png';
         playButton.color = 0xffffff;
-        playButton.interactiveArea=  new THREE.Mesh( new THREE.PlaneGeometry(playButton.width, playButton.height), new THREE.MeshBasicMaterial({visible:  false}));
-        playButton.onexecute=  function(){ console.log("This is the play button"); }
+        playButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(playButton.width, playButton.height), new THREE.MeshBasicMaterial({visible:  false}));
+        playButton.onexecute =  function(){ console.log("This is the play button"); }
         playButton.position = new THREE.Vector3(0, 0, 0.01);
         
         playpausemenu.add(playButton.create());
@@ -314,11 +664,11 @@ function MenuManager() {
         pauseButton.width = 50;
         pauseButton.height = 50;
         pauseButton.name =  'pauseButton';
-        pauseButton.type=  'icon';
+        pauseButton.type =  'icon';
         pauseButton.value = './img/menu/pause_icon.png';
         pauseButton.color = 0xffffff;
-        pauseButton.interactiveArea=  new THREE.Mesh( new THREE.PlaneGeometry(pauseButton.width, pauseButton.height), new THREE.MeshBasicMaterial({visible:  false}));
-        pauseButton.onexecute=  function(){ console.log("This is the pause button"); }
+        pauseButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(pauseButton.width, pauseButton.height), new THREE.MeshBasicMaterial({visible:  false}));
+        pauseButton.onexecute =  function(){ console.log("This is the pause button"); }
         pauseButton.position = new THREE.Vector3(0, 0, 0.01);
         
         playpausemenu.add(pauseButton.create());
@@ -329,12 +679,12 @@ function MenuManager() {
         seekForwardButton.height = 15;
         seekForwardButton.rotation = Math.PI;
         seekForwardButton.name =  'forwardSeekButton';
-        seekForwardButton.type=  'icon';
+        seekForwardButton.type =  'icon';
         seekForwardButton.value = './img/menu/seek_icon.png';
         seekForwardButton.color = 0xffffff;
         seekForwardButton.visible = true;
-        seekForwardButton.interactiveArea=  new THREE.Mesh( new THREE.PlaneGeometry(seekForwardButton.width, seekForwardButton.height), new THREE.MeshBasicMaterial({visible: false}));
-        seekForwardButton.onexecute=  function(){ console.log("This is a seek forward button"); }
+        seekForwardButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(seekForwardButton.width, seekForwardButton.height), new THREE.MeshBasicMaterial({visible: false}));
+        seekForwardButton.onexecute =  function(){ console.log("This is a seek forward button"); }
         seekForwardButton.position = new THREE.Vector3(45, 0, 0.01);
         
         playpausemenu.add(seekForwardButton.create());
@@ -371,12 +721,12 @@ function MenuManager() {
         plusVolumeButton.width = 22.5;
         plusVolumeButton.height = 22.5;
         plusVolumeButton.name = 'plusVolumeButton';
-        plusVolumeButton.type=  'icon';
+        plusVolumeButton.type =  'icon';
         plusVolumeButton.value = './img/menu/plus_icon.png';
         plusVolumeButton.color = 0xffffff;
         plusVolumeButton.visible = true;
         plusVolumeButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(plusVolumeButton.width, plusVolumeButton.height), new THREE.MeshBasicMaterial({visible:  false}));
-        plusVolumeButton.onexecute=  function(){ console.log("This is the plus volume button"); };
+        plusVolumeButton.onexecute =  function(){ console.log("This is the plus volume button"); };
         plusVolumeButton.position = new THREE.Vector3(45, 0, 0.01);
 
         volumemenu.add(plusVolumeButton.create());
@@ -386,7 +736,7 @@ function MenuManager() {
         unmuteVolumeButton.width = 50;
         unmuteVolumeButton.height = 50;
         unmuteVolumeButton.name = 'unmuteVolumeButton';
-        unmuteVolumeButton.type=  'icon';
+        unmuteVolumeButton.type =  'icon';
         unmuteVolumeButton.value = './img/menu/volume_unmute_icon.png';
         unmuteVolumeButton.color = 0xffffff;
         unmuteVolumeButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(unmuteVolumeButton.width, unmuteVolumeButton.height), new THREE.MeshBasicMaterial({visible:  false}));
@@ -400,11 +750,11 @@ function MenuManager() {
         muteVolumeButton.width = 50;
         muteVolumeButton.height = 50;
         muteVolumeButton.name = 'muteVolumeButton';
-        muteVolumeButton.type=  'icon';
+        muteVolumeButton.type =  'icon';
         muteVolumeButton.value = './img/menu/volume_mute_icon.png';
         muteVolumeButton.color = 0xffffff;
         muteVolumeButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(muteVolumeButton.width, muteVolumeButton.height), new THREE.MeshBasicMaterial({visible:  false}));
-        muteVolumeButton.onexecute=  function(){ console.log("This is the mute volume button"); };
+        muteVolumeButton.onexecute =  function(){ console.log("This is the mute volume button"); };
         muteVolumeButton.position = new THREE.Vector3(0, 0, 0.01);
 
         volumemenu.add(muteVolumeButton.create());
@@ -416,7 +766,7 @@ function MenuManager() {
         volumeLevel.type =  'text';
         volumeLevel.value = '50'; //AudioManager.getVolume();
         volumeLevel.color = 0xffffff;
-        volumeLevel.textSize=  18;
+        volumeLevel.textSize =  18;
         volumeLevel.visible = false;
         volumeLevel.position = new THREE.Vector3(0, 0, 0.01);
 
@@ -453,12 +803,12 @@ function MenuManager() {
         cardboardButton.width = 45;
         cardboardButton.height = 28;
         cardboardButton.name = 'cardboardButton';
-        cardboardButton.type=  'icon';
+        cardboardButton.type =  'icon';
         cardboardButton.value = './img/menu/cardboard_icon.png';
         cardboardButton.color = 0xffffff;
         cardboardButton.visible = true;
         cardboardButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(cardboardButton.width, cardboardButton.height), new THREE.MeshBasicMaterial({visible:  false}));
-        cardboardButton.onexecute=  function(){ console.log("This is the cardboard button"); };
+        cardboardButton.onexecute =  function(){ console.log("This is the cardboard button"); };
         cardboardButton.position = new THREE.Vector3(30, 0, 0.01);
 
         settingsmenu.add(cardboardButton.create());
@@ -483,7 +833,7 @@ function MenuManager() {
         subtitlesButton.type =  'icon';
         subtitlesButton.value = './img/menu_ai_icons/ST.png';
         subtitlesButton.color = 0xffffff;
-        subtitlesButton.textSize=  12;
+        subtitlesButton.textSize =  12;
         subtitlesButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(subtitlesButton.width, subtitlesButton.height), new THREE.MeshBasicMaterial({visible: false}));
         subtitlesButton.onexecute =  function(){ Load(STOptionCtrl) };
         subtitlesButton.position = new THREE.Vector3(-3*menuWidth/8, 0, 0.01);
@@ -512,7 +862,6 @@ function MenuManager() {
         signLanguageButton.type =  'icon';
         signLanguageButton.value = './img/menu_ai_icons/SL.png';
         signLanguageButton.color = 0xffffff;
-        signLanguageButton.textSize=  12;
         signLanguageButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(signLanguageButton.width, signLanguageButton.height), new THREE.MeshBasicMaterial({visible: false}));
         signLanguageButton.onexecute =  function(){ Load(SLOptionCtrl) };
         signLanguageButton.position = new THREE.Vector3(-1*menuWidth/8, 0, 0.01);
@@ -541,7 +890,6 @@ function MenuManager() {
         audioDescriptionButton.type =  'icon';
         audioDescriptionButton.value = './img/menu_ai_icons/AD.png';
         audioDescriptionButton.color = 0xffffff;
-        audioDescriptionButton.textSize=  12;
         audioDescriptionButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(audioDescriptionButton.width, audioDescriptionButton.height), new THREE.MeshBasicMaterial({visible: false}));
         audioDescriptionButton.onexecute =  function(){ Load(ADOptionCtrl) };
         audioDescriptionButton.position = new THREE.Vector3(1*menuWidth/8, 0, 0.01);
@@ -570,7 +918,6 @@ function MenuManager() {
         audioSubtitlesButton.type =  'icon';
         audioSubtitlesButton.value = './img/menu_ai_icons/AST.png';
         audioSubtitlesButton.color = 0xffffff;
-        audioSubtitlesButton.textSize =  12;
         audioSubtitlesButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(audioSubtitlesButton.width, audioSubtitlesButton.height), new THREE.MeshBasicMaterial({visible: false}));
         audioSubtitlesButton.onexecute =  function(){ Load(ASTOptionCtrl) };
         audioSubtitlesButton.position = new THREE.Vector3(3*menuWidth/8, 0, 0.01);

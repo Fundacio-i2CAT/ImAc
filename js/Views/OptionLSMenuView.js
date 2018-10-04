@@ -9,14 +9,21 @@ function OptionLSMenuView() {
 		submenu.getObjectByName('onlsoptbutton').visible = data.isLSOptEnabled;
 		submenu.getObjectByName('offlsoptbutton').visible = !data.isLSOptEnabled;
 
+		
+		submenu.getObjectByName('onlsoptbutton').children[0].onexecute = data.onLSOptButtonfunc;
+		submenu.getObjectByName('offlsoptbutton').children[0].onexecute = data.offLSOptButtonfunc;
+
 		if(data.isLSOptEnabled) submenu.getObjectByName('lsOptEnabledLabel').material = UpdateImageIEMaterial(data.lsOptEnabledLabelValue);
 		else submenu.getObjectByName('lsOptDisabledLabel').material = UpdateImageIEMaterial(data.lsOptDisbledLabelValue);
 
 		submenu.getObjectByName('forwardMenuButton').visible = false;
 		submenu.getObjectByName('backMenuButton').children[0].onexecute = data.backMenuButtonfunc;
 
+		if(submenu.getObjectByName('closeMenuButton')) submenu.getObjectByName('closeMenuButton').children[0].onexecute = data.closeMenuButtonFunc;
+
 		submenu.getObjectByName('upDropdownButton').children[0].onexecute = data.upDropdownButtonfunc;
 		submenu.getObjectByName('downDropdownButton').children[0].onexecute = data.downDropdownButtonfunc;
+
 
 		data.firstColumnDropdown.forEach(function(element){
 			element.material.color.set( 0xffffff );
@@ -55,6 +62,25 @@ function OptionLSMenuView() {
 			});
 		}
 	}
+
+    this.pressButtonFeedback = function(data)
+    {   
+    	var submenu = scene.getObjectByName(data.name);
+        interController.removeInteractiveObject(data.clickedButtonName);
+
+        var sceneElement = submenu.getObjectByName(data.clickedButtonName)
+        var initScale = sceneElement.scale;
+
+        sceneElement.material.color.set( menuButtonActiveColor );
+        sceneElement.scale.set( initScale.x*0.8, initScale.y*0.8, 1 );
+
+        // Set color 'menuDefaultColor' (white), size to initial and add interactivity within 300ms to sceneElement;
+       setTimeout(function() { 
+            sceneElement.material.color.set( menuDefaultColor );
+            sceneElement.scale.set( initScale.x*1.25, initScale.y*1.25, 1 ); 
+            interController.addInteractiveObject( sceneElement );
+        }, 300);
+    };
 
 	function UpdateImageIEMaterial(newData)
 	{

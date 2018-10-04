@@ -4,7 +4,6 @@ function PlayPauseLSMenuController() {
 	var data;
 	var view;
 	var viewStructure;
-	
 
 	this.Init = function(){
 
@@ -48,11 +47,12 @@ function PlayPauseLSMenuController() {
 	function UpdateData()
     {
 		data.isPaused = ppMMgr.isPausedById(0);
-		data.playpauseMenuButtonfunc = function(){ PlayPauseFunc() };
-		data.seekForwardMenuButtonfunc = function(){ SeekFunc(true) };
-		data.seekBackMenuButtonfunc = function(){ SeekFunc(false) };
-		data.backMenuButtonfunc = function(){ menumanager.NavigateBackMenu()};
-		data.forwardMenuButtonFunc = function(){ menumanager.NavigateForwardMenu()};
+		data.playpauseMenuButtonfunc = function(){ AddVisualFeedbackOnClick(ppMMgr.isPausedById(0) ? 'playButton' : 'pauseButton', function(){ PlayPauseFunc()} )};
+		data.seekForwardMenuButtonfunc = function(){ AddVisualFeedbackOnClick('forwardSeekButton',  function(){ SeekFunc(true)} )};
+		data.seekBackMenuButtonfunc = function(){ AddVisualFeedbackOnClick('backSeekButton',  function(){ SeekFunc(false)} )};
+        data.backMenuButtonfunc = function(){ AddVisualFeedbackOnClick('backMenuButton', function(){ menumanager.NavigateBackMenu()} )};
+        data.forwardMenuButtonFunc = function(){ AddVisualFeedbackOnClick('forwardMenuButton', function(){menumanager.NavigateForwardMenu()} )};
+        data.closeMenuButtonFunc = function(){ AddVisualFeedbackOnClick('closeMenuButton', function(){ menumanager.ResetViews()} )};
     }
 
 
@@ -66,15 +66,23 @@ function PlayPauseLSMenuController() {
     	})
     }
 
-//TODO
+    function AddVisualFeedbackOnClick(buttonName, callback)
+    {
+        data.clickedButtonName = buttonName;
+        view.pressButtonFeedback(data);
+        setTimeout(callback, 300);
+    }
+    
+
 	function PlayPauseFunc()
     {
-        //MenuManager.pressButtonFeedback( name );
         ppMMgr.isPausedById(0) ? ppMMgr.playAll() : ppMMgr.pauseAll();
-        
 		UpdateData();
 		view.UpdateView(data);
     	AddInteractivityToMenuElements();
+
+    	//TODO
+
         /*setTimeout(function() { 
             ppMMgr.playoutTimeDisplayLogic( ppMMgr.isPausedById(0) ); 
         }, clickInteractionTimeout);*/
@@ -83,10 +91,12 @@ function PlayPauseLSMenuController() {
     function SeekFunc(plus)
     {
         var sign = plus ? 1 : -1;
-		//MenuManager.pressButtonFeedback( name );
         ppMMgr.seekAll( sign*seekTime );
         UpdateData();
 		view.UpdateView(data);
+
+		//TODO
+
         //ppMMgr.playoutTimeDisplayLogic( true );
     }
 }

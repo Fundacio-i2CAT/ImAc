@@ -81,9 +81,11 @@ function SettingsOptionLSMenuController() {
 												
 		if(!data.firstColumnDropdown) data.firstColumnDropdown = AddDropdownElements(firstColumnDropdownElements);
 
-		data.backMenuButtonfunc = function(){ menumanager.NavigateBackMenu()};
 		data.onLSOptButtonfunc = function(){};
 		data.offLSOptButtonfunc = function(){};
+
+        data.backMenuButtonfunc = function(){ AddVisualFeedbackOnClick('backMenuButton', function(){ menumanager.NavigateBackMenu()} )};
+        data.closeMenuButtonFunc = function(){ AddVisualFeedbackOnClick('closeMenuButton', function(){ menumanager.ResetViews()} )};
     }
 
 
@@ -95,6 +97,13 @@ function SettingsOptionLSMenuController() {
     			interController.addInteractiveObject(intrElement);
     		}
     	})
+    }
+
+    function AddVisualFeedbackOnClick(buttonName, callback)
+    {
+        data.clickedButtonName = buttonName;
+        view.pressButtonFeedback(data);
+        setTimeout(callback, 300);
     }
 
     function AddDropdownElements(elements)

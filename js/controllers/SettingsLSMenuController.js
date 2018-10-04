@@ -4,7 +4,6 @@ function SettingsLSMenuController() {
 	var data;
 	var view;
 	var viewStructure;
-	
 
 	this.Init = function(){
 
@@ -17,6 +16,7 @@ function SettingsLSMenuController() {
 		view.UpdateView(data); 
 
 		AddInteractivityToMenuElements();
+
 	}
 
 	this.Exit = function()
@@ -47,8 +47,10 @@ function SettingsLSMenuController() {
 
 	function UpdateData()
     {
-		data.backMenuButtonfunc = function(){ menumanager.NavigateBackMenu()};
-		data.forwardMenuButtonFunc = function(){ menumanager.NavigateForwardMenu()};
+    	data.setiingsMenuButtonFunc = function(){ AddVisualFeedbackOnClick('settingsButton', function(){ menumanager.Load(new SettingsOptionLSMenuController())} )}; 	
+		data.backMenuButtonfunc = function(){ AddVisualFeedbackOnClick('backMenuButton', function(){ menumanager.NavigateBackMenu()} )};
+		data.forwardMenuButtonFunc = function(){ AddVisualFeedbackOnClick('forwardMenuButton', function(){menumanager.NavigateForwardMenu()} )};
+		data.closeMenuButtonFunc = function(){ AddVisualFeedbackOnClick('closeMenuButton', function(){ menumanager.ResetViews()} )};
     }
 
 
@@ -60,5 +62,12 @@ function SettingsLSMenuController() {
     			interController.addInteractiveObject(intrElement);
     		}
     	})
+    }
+
+    function AddVisualFeedbackOnClick(buttonName, callback)
+    {
+    	data.clickedButtonName = buttonName;
+		view.pressButtonFeedback(data);
+		setTimeout(callback, 300);
     }
 }

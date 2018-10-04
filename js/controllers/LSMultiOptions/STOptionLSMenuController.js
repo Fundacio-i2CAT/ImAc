@@ -39,8 +39,7 @@ function STOptionLSMenuController() {
                                     {name: 'subtitlesBackground', value: 'Background', options: subtitlesBackgroundArray, visible: true}, 
                                     {name: 'subtitlesSizes', value: 'Size', options: subtitlesSizeArray, visible: false}, 
                                     {name: 'subtitlesIndicator', value: 'Indicator', options: subtitlesIndicatorArray, visible: false}, 
-                                    {name: 'subtitlesAreas', value: 'Area', options: subtitlesAreasArray, visible: false}
-                                ];
+                                    {name: 'subtitlesAreas', value: 'Area', options: subtitlesAreasArray, visible: false}];
 	
 	this.Init = function(){
 
@@ -97,8 +96,11 @@ function STOptionLSMenuController() {
 		data.lsOptDisbledLabelName = 'disabledSubtitlesMenuButton';
 		data.lsOptDisbledLabelValue = './img/menu_ai_icons/ST_strike.png';
 
-		// value: dictionary.translate('language')
 		
+        data.onLSOptButtonfunc = function(){changeOnOffLSOptionState(data.isLSOptEnabled)};
+        data.offLSOptButtonfunc = function(){changeOnOffLSOptionState(data.isLSOptEnabled)};
+
+        // ONLY FOR LOW SIGHTED MENU 
 
 		data.isUpDownArrowsVisible = firstColumnDropdownElements.length > 4 ? true : false;
 
@@ -106,12 +108,11 @@ function STOptionLSMenuController() {
 
 		if(!data.firstColumnDropdown) data.firstColumnDropdown = AddDropdownElements(firstColumnDropdownElements);	
 
-		data.backMenuButtonfunc = function(){ menumanager.NavigateBackMenu()};
-		data.onLSOptButtonfunc = function(){};
-		data.offLSOptButtonfunc = function(){};
-
         data.upDropdownButtonfunc = function(){ DropdownUpDownFunc(false) };
         data.downDropdownButtonfunc = function(){ DropdownUpDownFunc(true) };
+
+        data.backMenuButtonfunc = function(){ AddVisualFeedbackOnClick('backMenuButton', function(){ menumanager.NavigateBackMenu()} )};
+        data.closeMenuButtonFunc = function(){ AddVisualFeedbackOnClick('closeMenuButton', function(){ menumanager.ResetViews()} )};
     }
 
 
@@ -123,6 +124,13 @@ function STOptionLSMenuController() {
     			interController.addInteractiveObject(intrElement);
     		}
     	})
+    }
+
+    function AddVisualFeedbackOnClick(buttonName, callback)
+    {
+        data.clickedButtonName = buttonName;
+        view.pressButtonFeedback(data);
+        setTimeout(callback, 300);
     }
 
     function AddDropdownElements(elements)
@@ -154,8 +162,7 @@ function STOptionLSMenuController() {
                     data.secondColumnDropdown = AddDropdownElements(element.options);
                     data.secondColumnHoritzontalLineDivisions = getHoritzontalLineDivisions(125, 4*(125*9/16)/6, 0xffffff, element.options.length, 2); 
                     UpdateData();
-                    setTimeout(function(){view.UpdateView(data)}, 100);
-                    
+                    setTimeout(function(){view.UpdateView(data)}, 100);  
                 };
             } 
         	else dropdownIE.onexecute =  function()
@@ -261,4 +268,11 @@ function STOptionLSMenuController() {
         });
         setTimeout(function(){view.UpdateView(data)}, 100);
     };
+
+    function changeOnOffLSOptionState(state)
+    {
+        data.isLSOptEnabled = !state;
+        view.UpdateView(data); 
+        AddInteractivityToMenuElements();
+    }
 }

@@ -68,9 +68,11 @@ function ASTOptionLSMenuController() {
 		
 		if(!data.firstColumnDropdown) data.firstColumnDropdown = AddDropdownElements(firstColumnDropdownElements);
 
-		data.backMenuButtonfunc = function(){ menumanager.NavigateBackMenu()};
-		data.onLSOptButtonfunc = function(){};
-		data.offLSOptButtonfunc = function(){};
+        data.onLSOptButtonfunc = function(){changeOnOffLSOptionState(data.isLSOptEnabled)};
+        data.offLSOptButtonfunc = function(){changeOnOffLSOptionState(data.isLSOptEnabled)};
+
+        data.backMenuButtonfunc = function(){ AddVisualFeedbackOnClick('backMenuButton', function(){ menumanager.NavigateBackMenu()} )};
+        data.closeMenuButtonFunc = function(){ AddVisualFeedbackOnClick('closeMenuButton', function(){ menumanager.ResetViews()} )};
     }
 
 
@@ -82,6 +84,13 @@ function ASTOptionLSMenuController() {
     			interController.addInteractiveObject(intrElement);
     		}
     	})
+    }
+
+    function AddVisualFeedbackOnClick(buttonName, callback)
+    {
+        data.clickedButtonName = buttonName;
+        view.pressButtonFeedback(data);
+        setTimeout(callback, 300);
     }
 
     function AddDropdownElements(elements)
@@ -194,5 +203,12 @@ function ASTOptionLSMenuController() {
             default:
                 return linesHoritzontalGroup;
         }
+    }
+
+    function changeOnOffLSOptionState(state)
+    {
+        data.isLSOptEnabled = !state;
+        view.UpdateView(data); 
+        AddInteractivityToMenuElements();
     }
 }

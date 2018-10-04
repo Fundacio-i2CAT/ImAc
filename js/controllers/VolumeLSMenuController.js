@@ -48,11 +48,12 @@ function VolumeLSMenuController() {
 	function UpdateData()
     {
 		data.isMuted = AudioManager.isAudioMuted();
-		data.muteUnmuteMenuButtonfunc = function(){ MuteUnmuteVolumeFunc() };
-		data.plusVolumeMenuButtonfunc = function(){ ChangeVolumeFunc(true) };
-		data.minusVolumeMenuButtonfunc = function(){ ChangeVolumeFunc(false) };
-		data.backMenuButtonfunc = function(){ menumanager.NavigateBackMenu()};
-		data.forwardMenuButtonFunc = function(){ menumanager.NavigateForwardMenu()};
+		data.muteUnmuteMenuButtonfunc = function(){ AddVisualFeedbackOnClick(AudioManager.isAudioMuted() ? 'unmuteVolumeButton' : 'muteVolumeButton', function(){ MuteUnmuteVolumeFunc()} )}; 
+		data.plusVolumeMenuButtonfunc = function(){ AddVisualFeedbackOnClick('plusVolumeButton', function(){ ChangeVolumeFunc(true)} )};
+		data.minusVolumeMenuButtonfunc = function(){ AddVisualFeedbackOnClick('minusVolumeButton', function(){ ChangeVolumeFunc(false)} )};
+		data.backMenuButtonfunc = function(){ AddVisualFeedbackOnClick('backMenuButton', function(){ menumanager.NavigateBackMenu()} )};
+		data.forwardMenuButtonFunc = function(){ AddVisualFeedbackOnClick('forwardMenuButton', function(){ menumanager.NavigateForwardMenu()} )};
+		data.closeMenuButtonFunc = function(){ AddVisualFeedbackOnClick('closeMenuButton', function(){ menumanager.ResetViews()} )};
     }
 
 
@@ -66,23 +67,32 @@ function VolumeLSMenuController() {
     	})
     }
 
+	function AddVisualFeedbackOnClick(buttonName, callback)
+    {
+    	data.clickedButtonName = buttonName;
+		view.pressButtonFeedback(data);
+		setTimeout(callback, 300);
+    }
+
 	function ChangeVolumeFunc(plus)
     {
     	var sign = plus ? 1 : -1;
-        //MenuManager.pressButtonFeedback( name );
         AudioManager.changeVolume( sign*volumeChangeStep );
+
+        // TODO
+
         //MenuController.volumeLevelDisplayLogic();
     };
 
     function MuteUnmuteVolumeFunc()
     {
-        //MenuManager.pressButtonFeedback( name );
-
 		AudioManager.isAudioMuted() ? AudioManager.setunmute() : AudioManager.setmute();
         
 		UpdateData();
 		view.UpdateView(data);
     	AddInteractivityToMenuElements();
+
+    	// TODO
 
        /* setTimeout(function() { 
             MenuController.showMuteUnmuteButton(); 

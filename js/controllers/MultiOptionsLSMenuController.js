@@ -48,11 +48,18 @@ function MultiOptionsLSMenuController() {
     {
 		data.isSTenabled = true; //NEED FUNCTIONS THAT RETURNS IF THE OPTION IS ENABLED OR DISABLED
 		data.isSLenabled = true;
-		data.isADenabled = true;
-		data.isASTenabled = true;
-		data.backMenuButtonfunc = function(){ menumanager.NavigateBackMenu()};
-		data.forwardMenuButtonFunc = function(){ menumanager.NavigateForwardMenu()};
-    }
+		data.isADenabled = false;
+		data.isASTenabled = false;
+
+		data.openSTMenuButtonFunc = function(){ AddVisualFeedbackOnClick( data.isSTenabled ? 'showSubtitlesMenuButton' : 'disabledSubtitlesMenuButton', function(){ menumanager.Load(new STOptionLSMenuController()) })};
+		data.openSLMenuButtonFunc = function(){ AddVisualFeedbackOnClick( data.isSLenabled ? 'showSignLanguageMenuButton' : 'disabledSignLanguageMenuButton', function(){ menumanager.Load(new SLOptionLSMenuController()) })};
+		data.openADMenuButtonFunc = function(){ AddVisualFeedbackOnClick( data.isADenabled ? 'showAudioDescriptionMenuButton' : 'disabledAudioDescriptionMenuButton', function(){ menumanager.Load(new ADOptionLSMenuController()) })};	
+		data.openASTMenuButtonFunc = function(){ AddVisualFeedbackOnClick( data.isASTenabled ? 'showAudioSubtitlesMenuButton' : 'disabledAudioSubtitlesMenuButton', function(){ menumanager.Load(new ASTOptionLSMenuController()) })};
+
+		data.backMenuButtonfunc = function(){ AddVisualFeedbackOnClick('backMenuButton', function(){ menumanager.NavigateBackMenu()} )};
+		data.forwardMenuButtonFunc = function(){ AddVisualFeedbackOnClick('forwardMenuButton', function(){menumanager.NavigateForwardMenu()} )};
+		data.closeMenuButtonFunc = function(){ AddVisualFeedbackOnClick('closeMenuButton', function(){ menumanager.ResetViews()} )};
+	}
 
 
     function AddInteractivityToMenuElements()
@@ -63,5 +70,12 @@ function MultiOptionsLSMenuController() {
     			interController.addInteractiveObject(intrElement);
     		}
     	})
+    }
+
+	function AddVisualFeedbackOnClick(buttonName, callback)
+    {
+    	data.clickedButtonName = buttonName;
+		view.pressButtonFeedback(data);
+		setTimeout(callback, 300);
     }
 }

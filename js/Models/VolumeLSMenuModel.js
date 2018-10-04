@@ -7,4 +7,8 @@ function VolumeLSMenuModel() {
 	this.minusVolumeMenuButtonfunc;
 	this.backMenuButtonfunc;
 	this.forwardMenuButtonFunc;
+
+	this.closeMenuButtonFunc;
+
+	this.clickedButtonName;
 }

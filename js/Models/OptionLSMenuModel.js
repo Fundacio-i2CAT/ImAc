@@ -25,4 +25,8 @@ function OptionLSMenuModel() {
 
 	this.upDropdownButtonfunc;
 	this.downDropdownButtonfunc;
+
+	this.closeMenuButtonFunc;
+
+	this.clickedButtonName;
 }

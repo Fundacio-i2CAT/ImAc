@@ -8,4 +8,8 @@ function PlayPauseLSMenuModel() {
 	this.seekBackMenuButtonfunc;
 	this.backMenuButtonfunc;
 	this.forwardMenuButtonFunc;
+
+	this.closeMenuButtonFunc;
+
+	this.clickedButtonName;
 }

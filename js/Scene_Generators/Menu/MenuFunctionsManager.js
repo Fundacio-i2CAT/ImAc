@@ -311,6 +311,8 @@ MenuFunctionsManager = function() {
         switch ( name )
         {
             case "showSubtitlesMenuButton":
+            case "overSTbutton":
+            case "disabledoverSTbutton":
             case "disabledSubtitlesMenuButton":
                 return function() 
                 {
@@ -527,7 +529,7 @@ MenuFunctionsManager = function() {
         var sign = plus ? 1 : -1;
         return function() {
             MenuManager.pressButtonFeedback( name );
-            AudioManager.changeVolume( sign*volumeChangeStep );
+            _AudioManager.changeVolume( sign*volumeChangeStep );
             MenuController.volumeLevelDisplayLogic();
         }
     };
@@ -536,7 +538,7 @@ MenuFunctionsManager = function() {
     {
         return function() {
             MenuManager.pressButtonFeedback( name );
-            AudioManager.setmute();
+            _AudioManager.setmute();
             setTimeout(function() { 
                 MenuController.showMuteUnmuteButton(); 
             }, clickInteractionTimeout); 
@@ -547,7 +549,7 @@ MenuFunctionsManager = function() {
     {
         return function() {
             MenuManager.pressButtonFeedback( name );
-            AudioManager.setunmute();
+            _AudioManager.setunmute();
             setTimeout(function() { 
                 MenuController.showMuteUnmuteButton(); 
             }, clickInteractionTimeout); 
@@ -567,15 +569,7 @@ MenuFunctionsManager = function() {
     this.getCardboardFunc = function()
     {
         return function() {
-            //interController.closeMenu();
-            //if ( interController.getSubtitlesActive() ) subController.enableSubtitles();
-            //subController.switchSigner( interController.getSignerActive() );
-            setTimeout(function() {
-                console.error('Deprecated function! getCardboardFunc')
-                /*MenuManager.closeMenu(); 
-                AplicationManager.switchDevice();
-                scene.getObjectByName( "openMenu" ).visible = true;*/
-             }, clickInteractionTimeout);
+            console.error('Deprecated function! getCardboardFunc')
         }
     };
 

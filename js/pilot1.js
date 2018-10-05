@@ -1,12 +1,12 @@
 
 function runDemo() 
 {
-    AudioManager.initializeAudio( VideoController.getListOfVideoContents()[0].vid, list_contents[demoId].audioChannels, camera.matrixWorld.elements );
+    _AudioManager.initializeAudio( VideoController.getListOfVideoContents()[0].vid, list_contents[demoId].audioChannels, camera.matrixWorld.elements );
 
     MenuDictionary.setSubtitleLanguagesArray( list_contents[demoId].subtitles[0] );
     MenuDictionary.setSignerLanguagesArray( list_contents[demoId].signer[0] );
 
-    moData.createPointer();
+    _moData.createPointer();
 
     var lang = MenuDictionary.getMainLanguage();
 

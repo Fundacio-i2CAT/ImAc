@@ -453,7 +453,7 @@ THREE.DeviceOrientationAndTouchController = function( object, objectPather, domE
 
 	var onVRControllerUpdate = function()
 	{
-		moData.createPointer2();
+		_moData.createPointer2();
 
 		var controller = event.detail
 		controller.name = "controller"
@@ -524,7 +524,8 @@ THREE.DeviceOrientationAndTouchController = function( object, objectPather, domE
 			controller.parent.remove( controller )
 		})
 	};
-	
+
+var stover = false;	
 
 	this.update = function() {
 		
@@ -549,6 +550,18 @@ THREE.DeviceOrientationAndTouchController = function( object, objectPather, domE
 
 	        var intersects = raycaster.intersectObjects( interList, true ); // false
 
+	        /*if ( !stover && intersects[0] && intersects[0].object && intersects[0].object.name == 'showSubtitlesMenuButton') {
+	        	stover = true;
+	        	scene.getObjectByName( 'showSubtitlesMenuButton' ).visible = false; 
+            	scene.getObjectByName( 'overSTbutton' ).visible = true; 
+	        }
+	        else if (stover && ( ( intersects[0] && intersects[0].object && intersects[0].object.name != 'showSubtitlesMenuButton' && intersects[0].object.name != 'overSTbutton' ) ) )
+	        {
+	        	stover = false;
+	        	scene.getObjectByName( 'showSubtitlesMenuButton' ).visible = true; 
+            	scene.getObjectByName( 'overSTbutton' ).visible = false;
+	        }*/
+
 	        var dist = intersects[0] ? intersects[0].distance : 50;
 
 	        var direction2 = new THREE.Vector3( 0, 0, -dist );
@@ -570,7 +583,7 @@ THREE.DeviceOrientationAndTouchController = function( object, objectPather, domE
 			interController.checkInteraction(mouse3D, scope.object, 'onDocumentMouseMove');
 		}
 
-		AudioManager.updateRotationMatrix( camera.matrixWorld.elements );
+		_AudioManager.updateRotationMatrix( camera.matrixWorld.elements );
 
 		//subController.updateRadar();
 	};

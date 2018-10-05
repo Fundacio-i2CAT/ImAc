@@ -9,40 +9,10 @@ MenuDictionary = function() {
     var availableSignerLanguages = [];
     var availableSettingsLanguages = [];
 
-
-    this.EnabledButtons = [];
-    this.DisabledButtons = [];
-
-    this.On_Off = [];
-
-    this.ST_List = [];
-    //this.ST_Languages = [];
-    this.ST_Positions = [];
-    this.ST_Sizes = [];
-    this.ST_Indicators = [];
-    this.ST_Backgrounds = [];
-
-    this.SL_List = [];
-    this.SL_Languages = [];
-    this.SL_Positions = [];
-    this.SL_Indicators = [];
-    this.SL_Areas = [];
-
-    this.AD_List = [];
-    this.AD_Languages = [];
-    this.AD_Presentations =[];
-
-    this.AST_List = [];
-    this.AST_Languages = [];
-
-    this.Settings_List = [];
-    this.Settings_Languages = [];
-    this.Settings_UserProfiles = [];
-
     function getSubtitleLanguages()
     {
         var ST_Languages = [];
-        availableSubLanguages.forEach(function(lang) {
+        availableSubLanguages.forEach(function( lang ) {
             ST_Languages.push( wordList[ lang ][ lang ] );
         });
 
@@ -51,25 +21,25 @@ MenuDictionary = function() {
 
     function getSignerLanguages()
     {
-        var ST_Languages = [];
+        var SL_Languages = [];
 
-        availableSignerLanguages.forEach(function(lang) {
-            ST_Languages.push( wordList[ lang ][ lang ] );
+        availableSignerLanguages.forEach(function( lang ) {
+            SL_Languages.push( wordList[ lang ][ lang ] );
         });
 
-        return ST_Languages;
+        return SL_Languages;
     }
 
     function getSettingsLanguages()
     {
-        var ST_Languages = [];
+        var _Languages = [];
 
-        ST_Languages.push( wordList[ 'en' ][ 'en' ] );
-        ST_Languages.push( wordList[ 'es' ][ 'es' ] );
-        ST_Languages.push( wordList[ 'de' ][ 'de' ] );
-        ST_Languages.push( wordList[ 'ca' ][ 'ca' ] );
+        _Languages.push( wordList[ 'en' ][ 'en' ] );
+        _Languages.push( wordList[ 'es' ][ 'es' ] );
+        _Languages.push( wordList[ 'de' ][ 'de' ] );
+        _Languages.push( wordList[ 'ca' ][ 'ca' ] );
 
-        return ST_Languages;
+        return _Languages;
     }
 
 	this.getMainLanguage = function()
@@ -170,7 +140,7 @@ MenuDictionary = function() {
 
 	this.initGlobalArraysByLanguage = function(language)
     {
-        console.warn('Deprecated function!')
+        console.warn('Future deprecated function!')
     	if ( language ) _mainLanguage = language;
 
         subtitlesLanguagesArray = getSubtitleLanguages(); //['English', 'Spanish', 'German', 'Catalan'];

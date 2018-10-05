@@ -87,6 +87,92 @@ function initReticulum(cam)
     });
 }
 
+function createVRButton_1(renderer)
+{
+    function showEnterVR(display) 
+    {
+        button.style.display = '';
+        button.style.left = 'calc(50% - 110px)';
+        button.textContent = 'VR';
+
+        button.onclick = function() {
+
+            AplicationManager.disableVRButtons();
+            VideoController.playAll();
+
+            display.isPresenting ? display.exitPresent() : display.requestPresent( [ { source: renderer.domElement } ] ).then(
+                function () { 
+                    _isHMD = true;  
+                    createMenus();                      
+                });
+        };
+        renderer.vr.setDevice( display );
+    }
+
+    var button = document.createElement( 'button' );
+
+    stylizeElement( button );
+
+    window.addEventListener( 'vrdisplaypresentchange', function ( event ) 
+    {
+        if ( event.display && !event.display.isPresenting ) location.reload();
+    }, false );
+
+    navigator.getVRDisplays().then( function ( displays ) 
+    {
+        AplicationManager.setDisplays( displays );
+        displays.length > 0 ? showEnterVR( displays[ 0 ] ) : createMenus();
+    });
+
+    AplicationManager.setVRButton1( button );
+
+    return button;
+}
+
+function createVRButton_2(renderer)
+{
+    function showEnterVR() 
+    {
+        button.style.display = '';
+        button.style.left = 'calc(50% + 10px)';
+        button.textContent = 'NO VR';
+        button.onclick = function () {
+
+            AplicationManager.disableVRButtons();
+            VideoController.playAll();     
+            _isHMD = false; 
+            createMenus();
+        };
+    }
+
+    var button = document.createElement( 'button' );
+
+    stylizeElement( button );
+
+    navigator.getVRDisplays().then( function ( displays ) 
+    {
+        if ( displays.length > 0 ) showEnterVR();
+    });
+
+    AplicationManager.setVRButton2( button );
+
+    return button;
+}
+
+function createMenus ()
+{
+    switch ( menuType )
+    {
+        case "LS_area":
+            MenuManager.createMenu(false);
+            break;
+        default:
+            MenuManager.createMenu(true);
+
+            break;
+    }
+}
+
 // Converts from degrees to radians.
 Math.radians = function(degrees) {
     return degrees * (Math.PI / 180);

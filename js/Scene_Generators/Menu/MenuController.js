@@ -71,7 +71,7 @@ THREE.MenuController = function () {
 
     this.showMuteUnmuteButton = function()
     {
-        if(AudioManager.getVolume()>0)
+        if(_AudioManager.getVolume()>0)
         {
             scene.getObjectByName( menuList[2].buttons[2] ).visible = false;
             scene.getObjectByName( menuList[2].buttons[3] ).visible = true; 
@@ -100,11 +100,11 @@ THREE.MenuController = function () {
 
         if(!_isTradMenuOpen) 
         {
-            var newText = menuData.getMenuTextMesh(AudioManager.getVolume()*100+'%', volFeedbackMenuTextSize, menuDefaultColor, 'volumeLevel');
+            var newText = _moData.getMenuTextMesh(_AudioManager.getVolume()*100+'%', volFeedbackMenuTextSize, menuDefaultColor, 'volumeLevel');
         }
         else
         {
-            var newText = menuData.getMenuTextMesh(AudioManager.getVolume()*100+'%', 1.25, menuDefaultColor, 'volumeLevel');
+            var newText = _moData.getMenuTextMesh(_AudioManager.getVolume()*100+'%', 1.25, menuDefaultColor, 'volumeLevel');
             newText.position.x  = oldText.position.x;
         }
         scene.getObjectByName('volumeChangeMenu').add(newText)
@@ -166,7 +166,7 @@ THREE.MenuController = function () {
             interController.removeInteractiveObject(menuList[1].buttons[1]);
 
             createPlayoutTimeFeedback(
-                menuData.getMenuTextMesh(VideoController.getPlayoutTime(VideoController.getListOfVideoContents()[0].vid.currentTime), 
+                _moData.getMenuTextMesh(VideoController.getPlayoutTime(VideoController.getListOfVideoContents()[0].vid.currentTime), 
                     playoutFeedbackMenuTextSize, 
                     menuDefaultColor, 'playouttime'));
 
@@ -175,7 +175,7 @@ THREE.MenuController = function () {
                 timeoutFactor = 1;
                 playoutTimeout =setTimeout(function(){    
                     createPlayoutTimeFeedback(
-                        menuData.getMenuTextMesh(VideoController.getPlayoutTime(VideoController.getListOfVideoContents()[0].vid.currentTime), 
+                        _moData.getMenuTextMesh(VideoController.getPlayoutTime(VideoController.getListOfVideoContents()[0].vid.currentTime), 
                             playoutFeedbackMenuTextSize, 
                             menuDefaultColor, 'playouttime'));
                 }, visualFeedbackTimeout);

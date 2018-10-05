@@ -8,13 +8,15 @@
 		* Library used to manage Subtitle and Signer elements
 
 	This library needs to use external libs:
-		* MediaObject.js  -->  To create the subtilte, signer and radar meshs
-		* imsc_i2cat.js   -->  To parse the xml subtiles
-		* THREE.js        -->  To modify the mesh attributes such as visiblity
+		* MediaObject.js        -->  To create the subtilte, signer and radar meshs
+		* AplicationManager.js  -->  To enable the VR when autopositioning ends
+		* imsc_i2cat.js         -->  To parse the xml subtiles
+		* THREE.js              -->  To modify the mesh attributes such as visiblity
 
 	This library needs to use the global vars:
 		* camera
 		* scene
+		* CameraParentObject
 	
 	FUNCTIONALITIES:
 		* Getters of all subtitle [ST] and signer [SL] attributes
@@ -243,7 +245,7 @@ SubSignManager = function() {
 
     function createSubtitle(textList, config)
     {
-        subtitleMesh = moData.getSubtitleMesh( textList, config );
+        subtitleMesh = _moData.getSubtitleMesh( textList, config );
 
         camera.add( subtitleMesh );
     }
@@ -252,14 +254,14 @@ SubSignManager = function() {
     {
     	removeSignVideo();
 
-        signerMesh = moData.getSignVideoMesh( url, name, config );
+        signerMesh = _moData.getSignVideoMesh( url, name, config );
         camera.add( signerMesh );
     }
 
     function createRadar()
     {
     	if ( radarMesh ) removeRadar();
-    	radarMesh = moData.getRadarMesh();
+    	radarMesh = _moData.getRadarMesh();
     	camera.add( radarMesh );
     }
 
@@ -274,7 +276,7 @@ SubSignManager = function() {
         }
         else if ( pos != undefined ) 
         {
-            speakerMesh = moData.getSpeakerRadarMesh( color, pos );
+            speakerMesh = _moData.getSpeakerRadarMesh( color, pos );
             camera.add( speakerMesh );
         }
         else removeSpeakerRadar();
@@ -474,6 +476,10 @@ SubSignManager = function() {
 	        {
 	        	subLang = lang;
 	            imsc1doc = imsc.fromXML( r.responseText );
+	        }
+	        else if ( r.readyState === 4 ) 
+	        {
+	        	console.error('Status = ' + r.status + ' xml = ' + xml);
 	        }
 	    };
 	    r.send();

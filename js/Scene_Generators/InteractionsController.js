@@ -99,25 +99,25 @@ THREE.InteractionsController = function () {
 
         	case "minusVolumeButton":
                 MenuManager.pressButtonFeedback(name);
-        		AudioManager.changeVolume( -volumeChangeStep );      
+        		_AudioManager.changeVolume( -volumeChangeStep );      
                 volMMgr.volumeLevelDisplayLogic();              
         		break;
 
         	case "plusVolumeButton":
                 MenuManager.pressButtonFeedback(name);
-        		AudioManager.changeVolume( volumeChangeStep );
+        		_AudioManager.changeVolume( volumeChangeStep );
                 volMMgr.volumeLevelDisplayLogic();
                 break;
 
         	case "muteVolumeButton":
                 MenuManager.pressButtonFeedback(name);
-        		AudioManager.setmute();
+        		_AudioManager.setmute();
                 setTimeout(function(){ volMMgr.showMuteUnmuteButton(); }, clickInteractionTimeout);                
         		break;
 
         	case "unmuteVolumeButton":
                 MenuManager.pressButtonFeedback(name);
-        		AudioManager.setunmute();
+        		_AudioManager.setunmute();
                 setTimeout(function(){ volMMgr.showMuteUnmuteButton(); }, clickInteractionTimeout);
         		break;
 
@@ -128,13 +128,7 @@ THREE.InteractionsController = function () {
 //***********************************************************************************************************
 
         	case "cardboardButton":
-                MenuManager.closeMenu();
-                setTimeout(function(){
-                 
-                 //MenuManager.pressButtonFeedback(name); 
-                    AplicationManager.switchDevice();
-                scene.getObjectByName( "openMenu" ).visible = true;
-             }, clickInteractionTimeout);
+                console.error('Deprecated')
         		break;
 
 //***********************************************************************************************************
@@ -179,17 +173,6 @@ THREE.InteractionsController = function () {
                 settingsLanguage = name;
                 break;
 
-//***********************************************************************************************************
-//
-//                  M U L T I - O P T I O N S     M E N U     C O N T R O L S 
-//                  
-//***********************************************************************************************************
-
-//***********************************************************************************************************
-//
-//                  S U B T I T L E S     M E N U     C O N T R O L S 
-//                  
-//***********************************************************************************************************
 
 //***********************************************************************************************************
 //

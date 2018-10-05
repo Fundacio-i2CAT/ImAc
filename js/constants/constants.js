@@ -86,6 +86,8 @@ var SettingsMenuList = ['Languages', 'Voice control', 'User Profile'];
 var MOMenuButtonsArray = ['./img/menu_ai_icons/ST.png', './img/menu_ai_icons/SL.png', './img/menu_ai_icons/AD.png', './img/menu_ai_icons/AST.png'];
 var MOMenuDisabledButtonsArray = ['./img/menu_ai_icons/ST_strike.png', './img/menu_ai_icons/SL_strike.png', './img/menu_ai_icons/AD_strike.png', './img/menu_ai_icons/AST_strike.png'];
 
+var MOMenuOverButtonsArray = ['./img/menu_ai_icons/=.png', './img/menu_ai_icons/-.png', './img/menu_ai_icons/-.yellow.png', './img/menu_ai_icons/o.png'];
+
 var secondarySubIndex = 0;
 
 var _isHMD = false;

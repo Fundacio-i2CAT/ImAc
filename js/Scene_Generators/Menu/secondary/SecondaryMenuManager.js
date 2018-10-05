@@ -23,8 +23,8 @@ THREE.SecondaryMenuManager = function () {
  */
     function getMenuLines(w, h, numDiv, rows)
     {
-        var linesMenuGroup = menuData.getVerticalLineDivisions( w, h, menuDefaultColor );
-        linesMenuGroup.add( menuData.getHoritzontalLineDivisions( w, h, menuDefaultColor, numDiv, rows ) );
+        var linesMenuGroup = _moData.getVerticalLineDivisions( w, h, menuDefaultColor );
+        linesMenuGroup.add( _moData.getHoritzontalLineDivisions( w, h, menuDefaultColor, numDiv, rows ) );
 
         return linesMenuGroup;
     }
@@ -39,7 +39,7 @@ THREE.SecondaryMenuManager = function () {
  */
     function getOnMenuButton(w, h, name)
     {
-        var onButton = menuData.getPlaneImageMesh( 22.5, 12.6, './img/menu/toggle_on.png', name, 4 );
+        var onButton = _moData.getPlaneImageMesh( 22.5, 12.6, './img/menu/toggle_on.png', name, 4 );
         onButton.position.set( -w/3, 3*h/8, menuElementsZ );
         onButton.onexecute = MenuFunctionsManager.getOnOffFunc( name );
 
@@ -56,7 +56,7 @@ THREE.SecondaryMenuManager = function () {
  */
     function getOffMenuButton(w, h, name)
     {
-        var onButton = menuData.getPlaneImageMesh( 22.5, 12.6, './img/menu/toggle_off.png', name, 4 ); 
+        var onButton = _moData.getPlaneImageMesh( 22.5, 12.6, './img/menu/toggle_off.png', name, 4 ); 
         onButton.position.set( -w/3, 3*h/8, menuElementsZ );
         onButton.onexecute = MenuFunctionsManager.getOnOffFunc( name );
 
@@ -65,7 +65,7 @@ THREE.SecondaryMenuManager = function () {
 
     function getMenuTextMesh(posY, text, textSize, name, visible, func, cw, ch)
     {
-        var menuTextMesh = menuData.getMenuTextMesh( text, textSize, menuDefaultColor, name, func, cw,ch);
+        var menuTextMesh = _moData.getMenuTextMesh( text, textSize, menuDefaultColor, name, func, cw,ch);
         menuTextMesh.position.y = posY;
         menuTextMesh.visible = visible;
 
@@ -74,7 +74,7 @@ THREE.SecondaryMenuManager = function () {
 
     function getMenuTitleMesh(posX, size, text, name, setColor, func, cw, ch)
     {
-        var title = menuData.getMenuTextMesh( text, size, menuDefaultColor, name, func, cw, ch);
+        var title = _moData.getMenuTextMesh( text, size, menuDefaultColor, name, func, cw, ch);
 
         if ( setColor ) title.material.color.set( 0xffff00 );
         title.position.x = posX;
@@ -86,7 +86,7 @@ THREE.SecondaryMenuManager = function () {
     function getMenuDisabledTitleMesh(posX, w, h, img, name, func)
     {
         console.error('deprecated function')
-        var disabledTitle = menuData.getPlaneImageMesh( w, h, img, name, 4 );
+        var disabledTitle = _moData.getPlaneImageMesh( w, h, img, name, 4 );
 
         disabledTitle.position.x = posX;
         disabledTitle.position.z = menuElementsZ;
@@ -98,7 +98,7 @@ THREE.SecondaryMenuManager = function () {
 
     function getUpDownMesh(posY, rotZ, name, func)
     {
-        var mesh = menuData.getPlaneImageMesh( backgroundChangeMenuButtonWidth*9/32, backgroundChangeMenuButtonHeight*9/16, './img/menu/less_than_icon.png', name, 4 ); 
+        var mesh = _moData.getPlaneImageMesh( backgroundChangeMenuButtonWidth*9/32, backgroundChangeMenuButtonHeight*9/16, './img/menu/less_than_icon.png', name, 4 ); 
 
         mesh.position.y = posY;
         mesh.rotation.z = rotZ;
@@ -111,7 +111,7 @@ THREE.SecondaryMenuManager = function () {
 
     function getImageMesh(posX, w, h, img, name, func)
     {
-        var mesh = menuData.getPlaneImageMesh( w, h, img, name, 4 ); 
+        var mesh = _moData.getPlaneImageMesh( w, h, img, name, 4 ); 
 
         mesh.position.x = posX;
         mesh.position.z = menuElementsZ;
@@ -129,13 +129,13 @@ THREE.SecondaryMenuManager = function () {
         var secondColumGroup = new THREE.Group();
         var subMenuDataLength = subMenuData.buttons.length;
 
-        var secondColumnLines = menuData.getHoritzontalLineDivisions( w, h, menuDefaultColor, subMenuDataLength, 2 );
+        var secondColumnLines = _moData.getHoritzontalLineDivisions( w, h, menuDefaultColor, subMenuDataLength, 2 );
         
         secondColumGroup.add( secondColumnLines );
         subMenuData.buttons.forEach(function( elem, index )
         {
             var factor = (index*2)+1;
-            var option = menuData.getMenuTextMesh( dataArray[index], subMenuTextSize, menuDefaultColor, elem, MenuFunctionsManager.getButtonFunctionByName( elem ), w/3, h/(subMenuDataLength*2));
+            var option = _moData.getMenuTextMesh( dataArray[index], subMenuTextSize, menuDefaultColor, elem, MenuFunctionsManager.getButtonFunctionByName( elem ), w/3, h/(subMenuDataLength*2));
             option.position.set( w/3, ( h/2-factor*h/(subMenuDataLength*2) ), menuElementsZ );                    
             
             // CHANGE TO A SEPARATE FUNCTION
@@ -361,7 +361,7 @@ THREE.SecondaryMenuManager = function () {
     {
         var menuGroup =  new THREE.Group();
 
-        var closeButton = menuData.getImageMesh((tradmenuDivisions-1)*w/(tradmenuDivisions*2), 2, 2, './img/menu/plus_icon.png', "closeMenuButton", MenuFunctionsManager.getCloseTradMenuFunc(), w/tradmenuDivisions, 4);
+        var closeButton = _moData.getImageMesh((tradmenuDivisions-1)*w/(tradmenuDivisions*2), 2, 2, './img/menu/plus_icon.png', "closeMenuButton", MenuFunctionsManager.getCloseTradMenuFunc(), w/tradmenuDivisions, 4);
         closeButton.rotation.z = Math.PI/4;       
         menuGroup.add( closeButton );
 
@@ -379,6 +379,12 @@ THREE.SecondaryMenuManager = function () {
 
         menuGroup.add( getImageMesh( -3*w/8, 25, 25, MOMenuButtonsArray[0], menuList[4].buttons[0], MenuFunctionsManager.getSTMenuFunc( menuList[4].buttons[0] ) ) );
         menuGroup.add( getImageMesh( -3*w/8, 25, 25, MOMenuDisabledButtonsArray[0], menuList[4].buttons[4], MenuFunctionsManager.getSTMenuFunc( menuList[4].buttons[4] ) ) );
+
+        /*var stov = getImageMesh( -3*w/8, 25, 25, MOMenuOverButtonsArray[0], 'overSTbutton', MenuFunctionsManager.getSTMenuFunc( 'overSTbutton' ) );
+        stov.visible = false;
+        interController.addInteractiveObject(stov)
+        menuGroup.add( stov );*/
+
 
         menuGroup.add( getImageMesh( -w/8, 25, 25, MOMenuButtonsArray[1], menuList[4].buttons[1], MenuFunctionsManager.getSLMenuFunc( menuList[4].buttons[1] ) ) );
         menuGroup.add( getImageMesh( -w/8, 25, 25, MOMenuDisabledButtonsArray[1], menuList[4].buttons[5], MenuFunctionsManager.getSLMenuFunc( menuList[4].buttons[5] ) ) );
@@ -401,7 +407,7 @@ THREE.SecondaryMenuManager = function () {
         var menuGroup =  new THREE.Group();
 
         menuGroup.add( 
-            menuData.getImageMesh(
+            _moData.getImageMesh(
                 (tradmenuDivisions-13)*w/(tradmenuDivisions*2), 
                 4, 
                 4, 
@@ -412,12 +418,16 @@ THREE.SecondaryMenuManager = function () {
                 4
             ));
         
-        var stDis = menuData.getImageMesh((tradmenuDivisions-13)*w/(tradmenuDivisions*2), 4, 4, MOMenuDisabledButtonsArray[0], menuList[4].buttons[4], MenuFunctionsManager.getMultiOptionsMenuFunc(menuList[4].buttons[4]), w/tradmenuDivisions,4);
+        var stDis = _moData.getImageMesh((tradmenuDivisions-13)*w/(tradmenuDivisions*2), 4, 4, MOMenuDisabledButtonsArray[0], menuList[4].buttons[4], MenuFunctionsManager.getMultiOptionsMenuFunc(menuList[4].buttons[4]), w/tradmenuDivisions,4);
         stDis.visible = false;
         menuGroup.add(stDis );
 
+        /*var stOv = _moData.getImageMesh((tradmenuDivisions-13)*w/(tradmenuDivisions*2), 4, 4, MOMenuOverButtonsArray[0], 'overSTbutton', MenuFunctionsManager.getMultiOptionsMenuFunc(menuList[4].buttons[0]), w/tradmenuDivisions,4);
+        stOv.visible = false;
+        menuGroup.add(stOv );*/
+
         menuGroup.add( 
-            menuData.getImageMesh(
+            _moData.getImageMesh(
                 (tradmenuDivisions-11)*w/(tradmenuDivisions*2), 
                 4, 
                 4, 
@@ -428,12 +438,12 @@ THREE.SecondaryMenuManager = function () {
                 4
             ));
 
-        var slDis = menuData.getImageMesh( (tradmenuDivisions-11)*w/(tradmenuDivisions*2), 4, 4, MOMenuDisabledButtonsArray[1], menuList[4].buttons[5], MenuFunctionsManager.getMultiOptionsMenuFunc(menuList[4].buttons[5]), w/tradmenuDivisions,4 );
+        var slDis = _moData.getImageMesh( (tradmenuDivisions-11)*w/(tradmenuDivisions*2), 4, 4, MOMenuDisabledButtonsArray[1], menuList[4].buttons[5], MenuFunctionsManager.getMultiOptionsMenuFunc(menuList[4].buttons[5]), w/tradmenuDivisions,4 );
         slDis.visible = false;
         menuGroup.add( slDis );
 
         menuGroup.add( 
-            menuData.getImageMesh(
+            _moData.getImageMesh(
                 (tradmenuDivisions-9)*w/(tradmenuDivisions*2), 
                 4, 
                 4, 
@@ -444,12 +454,12 @@ THREE.SecondaryMenuManager = function () {
                 4
             ));
 
-        var adDis = menuData.getImageMesh((tradmenuDivisions-9)*w/(tradmenuDivisions*2), 4, 4, MOMenuDisabledButtonsArray[2], menuList[4].buttons[6], MenuFunctionsManager.getMultiOptionsMenuFunc(menuList[4].buttons[6]), w/tradmenuDivisions,4 );
+        var adDis = _moData.getImageMesh((tradmenuDivisions-9)*w/(tradmenuDivisions*2), 4, 4, MOMenuDisabledButtonsArray[2], menuList[4].buttons[6], MenuFunctionsManager.getMultiOptionsMenuFunc(menuList[4].buttons[6]), w/tradmenuDivisions,4 );
         adDis.visible = false;
         menuGroup.add( adDis );
 
         menuGroup.add( 
-            menuData.getImageMesh(
+            _moData.getImageMesh(
                 (tradmenuDivisions-7)*w/(tradmenuDivisions*2), 
                 4, 
                 4, 
@@ -460,11 +470,11 @@ THREE.SecondaryMenuManager = function () {
                 4
             ));
 
-        var astDis = menuData.getImageMesh((tradmenuDivisions-7)*w/(tradmenuDivisions*2), 4, 4, MOMenuDisabledButtonsArray[3], menuList[4].buttons[7], MenuFunctionsManager.getMultiOptionsMenuFunc(menuList[4].buttons[7]), w/tradmenuDivisions,4 );
+        var astDis = _moData.getImageMesh((tradmenuDivisions-7)*w/(tradmenuDivisions*2), 4, 4, MOMenuDisabledButtonsArray[3], menuList[4].buttons[7], MenuFunctionsManager.getMultiOptionsMenuFunc(menuList[4].buttons[7]), w/tradmenuDivisions,4 );
         astDis.visible = false;
         menuGroup.add( astDis );
 
-        var settings = menuData.getImageMesh((tradmenuDivisions-4)*w/(tradmenuDivisions*2), 2,2, './img/menu/settings_icon.png', menuList[3].buttons[0], MenuFunctionsManager.getMultiOptionsMenuFunc(menuList[3].buttons[0]), w/tradmenuDivisions,4 );
+        var settings = _moData.getImageMesh((tradmenuDivisions-4)*w/(tradmenuDivisions*2), 2,2, './img/menu/settings_icon.png', menuList[3].buttons[0], MenuFunctionsManager.getMultiOptionsMenuFunc(menuList[3].buttons[0]), w/tradmenuDivisions,4 );
         menuGroup.add( settings );
 
 
@@ -482,7 +492,7 @@ THREE.SecondaryMenuManager = function () {
         menuGroup.add( getImageMesh( 0, 56, 56, './img/menu/volume_unmute_icon.png', menuList[2].buttons[2], MenuFunctionsManager.getUnMuteVolumeFunc( menuList[2].buttons[2] ) ) );
         menuGroup.add( getImageMesh( -3*w/8, 22.5, 22.5, './img/menu/minus_icon.png', menuList[2].buttons[0], MenuFunctionsManager.getChangeVolumeFunc( false, menuList[2].buttons[0] ) ) );
 
-        menuGroup.add( getMenuTextMesh( 0, AudioManager.getVolume()*100+'%', 18, 'volumeLevel', false ) );
+        menuGroup.add( getMenuTextMesh( 0, _AudioManager.getVolume()*100+'%', 18, 'volumeLevel', false ) );
 
         menuGroup.name = name;
         menuGroup.visible = false; //Not the first menu. Visibility false.
@@ -499,7 +509,7 @@ THREE.SecondaryMenuManager = function () {
         menuGroup.add( getImageMesh( 0, 35, 35, './img/menu/volume_unmute_icon.png', menuList[2].buttons[2] ) );
         menuGroup.add( getImageMesh( -3*w/8, 22.5, 22.5, './img/menu/minus_icon.png', menuList[2].buttons[0] ) );
 
-        menuGroup.add( getMenuTextMesh( 0, AudioManager.getVolume()*100+'%', 18, 'volumeLevel', false ) );
+        menuGroup.add( getMenuTextMesh( 0, _AudioManager.getVolume()*100+'%', 18, 'volumeLevel', false ) );
 
         menuGroup.name = name;
         menuGroup.visible = true; //Not the first menu. Visibility false.
@@ -599,7 +609,7 @@ THREE.SecondaryMenuManager = function () {
         var menuGroup =  new THREE.Group();
 
         var linesHoritzontalGroup =  new THREE.Group();
-        var linesMenuGroup = menuData.menuLineVerticalDivisions(w, h, 0xffffff, 16)
+        var linesMenuGroup = _moData.menuLineVerticalDivisions(w, h, 0xffffff, 16)
 
         menuGroup.add( linesMenuGroup );
     
@@ -616,7 +626,7 @@ THREE.SecondaryMenuManager = function () {
 
     this.createMenu = function()
     {
-        var menu = menuData.getBackgroundMesh( 125, 125*9/16, backgroundMenuColor, 1 );
+        var menu = _moData.getBackgroundMesh( 125, 125*9/16, backgroundMenuColor, 1 );
 
         menu.add( createCloseButtonMenu( menuList[0].buttons[0] ) );
         menu.add( createNextRButtonMenu( menuList[0].buttons[1] ) );
@@ -682,7 +692,7 @@ THREE.SecondaryMenuManager = function () {
             } 
             secMMgr.setActiveSecondaryMenuTrad(submenu); 
 
-            var listBg = menuData.getBackgroundMesh(w, h, 0x333333, 0.8);
+            var listBg = _moData.getBackgroundMesh(w, h, 0x333333, 0.8);
 
             if ( _isHMD ) {
 
@@ -700,11 +710,11 @@ THREE.SecondaryMenuManager = function () {
 
 if( title != MenuDictionary.translate("settings") )
 {
-            var onButton = menuData.getPlaneImageMesh( 4.5, 2.5, './img/menu/toggle_on.png', submenu.buttons[0], 4 );
+            var onButton = _moData.getPlaneImageMesh( 4.5, 2.5, './img/menu/toggle_on.png', submenu.buttons[0], 4 );
             onButton.position.set( -w/2+onButton.geometry.parameters.width/2+2,height, menuElementsZ );
             onButton.onexecute = MenuFunctionsManager.getOnOffFunc( submenu.buttons[0] );
 
-            var offButton = menuData.getPlaneImageMesh( 4.5, 2.5, './img/menu/toggle_off.png', submenu.buttons[1], 4 );
+            var offButton = _moData.getPlaneImageMesh( 4.5, 2.5, './img/menu/toggle_off.png', submenu.buttons[1], 4 );
             offButton.position.set( -w/2+offButton.geometry.parameters.width/2+2, height, menuElementsZ );
             offButton.onexecute = MenuFunctionsManager.getOnOffFunc( submenu.buttons[1] );
 
@@ -713,7 +723,7 @@ if( title != MenuDictionary.translate("settings") )
 }
             var opt_length = options.length;
 
-            var line = menuData.createLine( 0xffffff, new THREE.Vector3(  w/2, h/2 - listHeight/options.length, 0), new THREE.Vector3( -w/2, h/2 - listHeight/opt_length, 0) );
+            var line = _moData.createLine( 0xffffff, new THREE.Vector3(  w/2, h/2 - listHeight/options.length, 0), new THREE.Vector3( -w/2, h/2 - listHeight/opt_length, 0) );
 
             menuGroup.add(dropdowmTitle);
 
@@ -724,7 +734,7 @@ if( title != MenuDictionary.translate("settings") )
                 option.children[0].position.x = +w/2-option.geometry.boundingBox.max.x-2;
                 interController.addInteractiveObject(option);
                 //menuGroup.add(option);
-                var next = menuData.getNextIconMesh(heigthDropdownOption/6, heigthDropdownOption/6, 0xffffff, 0, "next");
+                var next = _moData.getNextIconMesh(heigthDropdownOption/6, heigthDropdownOption/6, 0xffffff, 0, "next");
                 next.position.x = w-option.geometry.boundingBox.max.x-4;
                 option.add(next);  
                 menuGroup.add(option);    
@@ -763,7 +773,7 @@ if( title != MenuDictionary.translate("settings") )
         var y = (tradMenuBg.position.y+(tradMenuBg.geometry.parameters.height + h)/2)+1+scene.getObjectByName("bgTimeline").geometry.parameters.height;
 
 
-        var listBg = menuData.getBackgroundMesh(tradMenuWidth,h, 0x333333, 0.8);
+        var listBg = _moData.getBackgroundMesh(tradMenuWidth,h, 0x333333, 0.8);
         
         if ( _isHMD ) {
 
@@ -780,14 +790,14 @@ if( title != MenuDictionary.translate("settings") )
         //posY, text, textSize, name, visible, func, cw, ch
         var dropdowmTitle = getMenuTextMesh( height, title, tradMenuLetterSize,"back", true, secMMgr.goBack(previousOptions, submenuIndex), tradMenuWidth, heigthDropdownOption);
         interController.addInteractiveObject(dropdowmTitle);
-        var back = menuData.getNextIconMesh(heigthDropdownOption/6, heigthDropdownOption/6, 0xffffff, Math.PI, "back");
+        var back = _moData.getNextIconMesh(heigthDropdownOption/6, heigthDropdownOption/6, 0xffffff, Math.PI, "back");
 
         back.position.x = -tradMenuWidth/2+2;
         dropdowmTitle.add(back);
 
         menuGroup.add(dropdowmTitle);
 
-        var line = menuData.createLine( 0xffffff, new THREE.Vector3( tradMenuWidth/2, h/2 - listHeight/options.length, 0), new THREE.Vector3( -tradMenuWidth/2, h/2 - listHeight/options.length, 0));
+        var line = _moData.createLine( 0xffffff, new THREE.Vector3( tradMenuWidth/2, h/2 - listHeight/options.length, 0), new THREE.Vector3( -tradMenuWidth/2, h/2 - listHeight/options.length, 0));
         listBg.add(line)
         
 
@@ -877,7 +887,7 @@ if( title != MenuDictionary.translate("settings") )
         currentTimeMesh.position.x = (-widthCurrent + widthCurrent * (secMMgr.timelineScale)) / 2 ;
         bgTimelineMesh.position.x = (widthBg - widthCurrent * (1-secMMgr.timelineScale)) / 2 ;
 
-        var currentTime = menuData.getMenuTextMesh(VideoController.getPlayoutTime(VideoController.getListOfVideoContents()[0].vid.currentTime), 1.25, 0xffffff, "currentTime", null, null);
+        var currentTime = _moData.getMenuTextMesh(VideoController.getPlayoutTime(VideoController.getListOfVideoContents()[0].vid.currentTime), 1.25, 0xffffff, "currentTime", null, null);
         currentTime.position.x =  -(tradmenuDivisions-15)*scene.getObjectByName("traditionalMenuBackground").geometry.parameters.width/(tradmenuDivisions*2);
 
         scene.getObjectByName("playoutTime").add(currentTime);

@@ -1,12 +1,15 @@
 
 // GLOBAL VARS
 
-var _PlayerVersion = 'v0.04.0';
+var _PlayerVersion = 'v0.05.0';
 
 var AplicationManager = new AplicationManager();
 var MenuFunctionsManager = new MenuFunctionsManager();
-var moData = new THREE.MediaObject();
-var menuData = new THREE.MenuObject();
+//var moData = new THREE.MediaObject();
+
+var _moData = new THREE.MediaObjectData();
+
+//var menuData = new THREE.MenuObject();
 
 var MenuManager = new THREE.MenuManager();
 var MenuController = new THREE.MenuController();
@@ -14,7 +17,7 @@ var MenuDictionary = new MenuDictionary();
 
 var secMMgr = new THREE.SecondaryMenuManager();
 
-var AudioManager = new AudioManager();
+var _AudioManager = new AudioManager();
 var subController = new SubSignManager();
 var interController = new THREE.InteractionsController();
 var polyfill = new WebVRPolyfill();
@@ -25,14 +28,12 @@ var VideoController = new VideoController();
 
 var loggerActivated = false;
 
-
 var demoId = 1;
 
 var mainContentURL = './resources/rapzember-young-hurn_edit.mp4';
 //var _selected_content = 'Radio';
 
 var list_contents;
-
 
 
 
@@ -44,8 +45,8 @@ function init_webplayer()
 {
 	console.log('Version: ' + _PlayerVersion);
 
-  AudioManager.initAmbisonicResources();
-  moData.setFont('./css/fonts/TiresiasScreenfont_Regular.json');
+  _AudioManager.initAmbisonicResources();
+  _moData.setFont('./css/fonts/TiresiasScreenfont_Regular.json');
   //moData.setFont('./css/fonts/helvetiker_bold.typeface.json');
 
   $.getJSON('./content.json', function(json)
@@ -94,15 +95,12 @@ function selectXML(id)
         }
     }
 
-  //mainContentURL = id == 2 ? './resources/cam_2_2k.mp4' : './resources/rapzember-young-hurn_edit.mp4';
   enterfullscreen();
   mainContentURL = list_contents[id].url;
  
   demoId = id;
 
-  setTimeout(function(){ AplicationManager.init_AplicationManager(); }, 100);
-
-  //AplicationManager.init_AplicationManager();
+  setTimeout(function(){ AplicationManager.init(); }, 100);
 
 }
        

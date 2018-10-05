@@ -30,7 +30,7 @@ function SettingsLSMenuController() {
     	}
     }
 
-    this.getLSMenuName = function()
+    this.getMenuName = function()
     {
     	return data.name;
     }
@@ -47,8 +47,8 @@ function SettingsLSMenuController() {
 
 	function UpdateData()
     {
-    	data.setiingsMenuButtonFunc = function(){ AddVisualFeedbackOnClick('settingsButton', function(){ menumanager.Load(new SettingsOptionLSMenuController())} )}; 	
-		data.backMenuButtonfunc = function(){ AddVisualFeedbackOnClick('backMenuButton', function(){ menumanager.NavigateBackMenu()} )};
+    	data.settingsMenuButtonFunc = function(){ AddVisualFeedbackOnClick('settingsButton', function(){ menumanager.Load(new SettingsOptionMenuController())} )}; 	
+		data.backMenuButtonFunc = function(){ AddVisualFeedbackOnClick('backMenuButton', function(){ menumanager.NavigateBackMenu()} )};
 		data.forwardMenuButtonFunc = function(){ AddVisualFeedbackOnClick('forwardMenuButton', function(){menumanager.NavigateForwardMenu()} )};
 		data.closeMenuButtonFunc = function(){ AddVisualFeedbackOnClick('closeMenuButton', function(){ menumanager.ResetViews()} )};
     }

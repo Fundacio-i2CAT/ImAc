@@ -6,14 +6,14 @@ function PlayPauseLSMenuView() {
 		submenu.getObjectByName('playButton').visible = data.isPaused;
 		submenu.getObjectByName('pauseButton').visible = !data.isPaused;
 
-		submenu.getObjectByName('playButton').children[0].onexecute = data.playpauseMenuButtonfunc;
-		submenu.getObjectByName('pauseButton').children[0].onexecute = data.playpauseMenuButtonfunc;
+		submenu.getObjectByName('playButton').children[0].onexecute = data.playpauseMenuButtonFunc;
+		submenu.getObjectByName('pauseButton').children[0].onexecute = data.playpauseMenuButtonFunc;
 
-		submenu.getObjectByName('forwardSeekButton').children[0].onexecute = data.seekForwardMenuButtonfunc;
-		submenu.getObjectByName('backSeekButton').children[0].onexecute = data.seekBackMenuButtonfunc;
+		submenu.getObjectByName('forwardSeekButton').children[0].onexecute = data.seekForwardMenuButtonFunc;
+		submenu.getObjectByName('backSeekButton').children[0].onexecute = data.seekBackMenuButtonFunc;
 
 		if(submenu.getObjectByName('forwardMenuButton')) submenu.getObjectByName('forwardMenuButton').children[0].onexecute = data.forwardMenuButtonFunc;
-		if(submenu.getObjectByName('backMenuButton')) submenu.getObjectByName('backMenuButton').children[0].onexecute = data.backMenuButtonfunc;
+		if(submenu.getObjectByName('backMenuButton')) submenu.getObjectByName('backMenuButton').children[0].onexecute = data.backMenuButtonFunc;
 
         if(submenu.getObjectByName('closeMenuButton')) submenu.getObjectByName('closeMenuButton').children[0].onexecute = data.closeMenuButtonFunc;
 

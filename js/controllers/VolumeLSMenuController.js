@@ -30,7 +30,7 @@ function VolumeLSMenuController() {
     	}
     }
 
-	this.getLSMenuName = function()
+	this.getMenuName = function()
     {
     	return data.name;
     }
@@ -48,10 +48,10 @@ function VolumeLSMenuController() {
 	function UpdateData()
     {
 		data.isMuted = AudioManager.isAudioMuted();
-		data.muteUnmuteMenuButtonfunc = function(){ AddVisualFeedbackOnClick(AudioManager.isAudioMuted() ? 'unmuteVolumeButton' : 'muteVolumeButton', function(){ MuteUnmuteVolumeFunc()} )}; 
-		data.plusVolumeMenuButtonfunc = function(){ AddVisualFeedbackOnClick('plusVolumeButton', function(){ ChangeVolumeFunc(true)} )};
-		data.minusVolumeMenuButtonfunc = function(){ AddVisualFeedbackOnClick('minusVolumeButton', function(){ ChangeVolumeFunc(false)} )};
-		data.backMenuButtonfunc = function(){ AddVisualFeedbackOnClick('backMenuButton', function(){ menumanager.NavigateBackMenu()} )};
+		data.muteUnmuteMenuButtonFunc = function(){ AddVisualFeedbackOnClick(AudioManager.isAudioMuted() ? 'unmuteVolumeButton' : 'muteVolumeButton', function(){ MuteUnmuteVolumeFunc()} )}; 
+		data.plusVolumeMenuButtonFunc = function(){ AddVisualFeedbackOnClick('plusVolumeButton', function(){ ChangeVolumeFunc(true)} )};
+		data.minusVolumeMenuButtonFunc = function(){ AddVisualFeedbackOnClick('minusVolumeButton', function(){ ChangeVolumeFunc(false)} )};
+		data.backMenuButtonFunc = function(){ AddVisualFeedbackOnClick('backMenuButton', function(){ menumanager.NavigateBackMenu()} )};
 		data.forwardMenuButtonFunc = function(){ AddVisualFeedbackOnClick('forwardMenuButton', function(){ menumanager.NavigateForwardMenu()} )};
 		data.closeMenuButtonFunc = function(){ AddVisualFeedbackOnClick('closeMenuButton', function(){ menumanager.ResetViews()} )};
     }

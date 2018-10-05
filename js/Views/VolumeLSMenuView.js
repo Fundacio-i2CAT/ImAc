@@ -7,14 +7,14 @@ function VolumeLSMenuView() {
 		submenu.getObjectByName('unmuteVolumeButton').visible = data.isMuted;
 		submenu.getObjectByName('muteVolumeButton').visible = !data.isMuted;
 
-		submenu.getObjectByName('unmuteVolumeButton').children[0].onexecute = data.muteUnmuteMenuButtonfunc;
-		submenu.getObjectByName('muteVolumeButton').children[0].onexecute = data.muteUnmuteMenuButtonfunc;
+		submenu.getObjectByName('unmuteVolumeButton').children[0].onexecute = data.muteUnmuteMenuButtonFunc;
+		submenu.getObjectByName('muteVolumeButton').children[0].onexecute = data.muteUnmuteMenuButtonFunc;
 
-		submenu.getObjectByName('plusVolumeButton').children[0].onexecute = data.plusVolumeMenuButtonfunc;
-		submenu.getObjectByName('minusVolumeButton').children[0].onexecute = data.minusVolumeMenuButtonfunc;
+		submenu.getObjectByName('plusVolumeButton').children[0].onexecute = data.plusVolumeMenuButtonFunc;
+		submenu.getObjectByName('minusVolumeButton').children[0].onexecute = data.minusVolumeMenuButtonFunc;
 
 		if(submenu.getObjectByName('forwardMenuButton')) submenu.getObjectByName('forwardMenuButton').children[0].onexecute = data.forwardMenuButtonFunc;
-		if(submenu.getObjectByName('backMenuButton')) submenu.getObjectByName('backMenuButton').children[0].onexecute = data.backMenuButtonfunc;
+		if(submenu.getObjectByName('backMenuButton')) submenu.getObjectByName('backMenuButton').children[0].onexecute = data.backMenuButtonFunc;
 
         if(submenu.getObjectByName('closeMenuButton')) submenu.getObjectByName('closeMenuButton').children[0].onexecute = data.closeMenuButtonFunc;
 	}

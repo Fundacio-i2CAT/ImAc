@@ -10,55 +10,55 @@ function OptionLSMenuView() {
 		submenu.getObjectByName('offlsoptbutton').visible = !data.isLSOptEnabled;
 
 		
-		submenu.getObjectByName('onlsoptbutton').children[0].onexecute = data.onLSOptButtonfunc;
-		submenu.getObjectByName('offlsoptbutton').children[0].onexecute = data.offLSOptButtonfunc;
+		submenu.getObjectByName('onlsoptbutton').children[0].onexecute = data.onLSOptButtonFunc;
+		submenu.getObjectByName('offlsoptbutton').children[0].onexecute = data.offLSOptButtonFunc;
 
 		if(data.isLSOptEnabled) submenu.getObjectByName('lsOptEnabledLabel').material = UpdateImageIEMaterial(data.lsOptEnabledLabelValue);
 		else submenu.getObjectByName('lsOptDisabledLabel').material = UpdateImageIEMaterial(data.lsOptDisbledLabelValue);
 
 		submenu.getObjectByName('forwardMenuButton').visible = false;
-		submenu.getObjectByName('backMenuButton').children[0].onexecute = data.backMenuButtonfunc;
+		submenu.getObjectByName('backMenuButton').children[0].onexecute = data.backMenuButtonFunc;
 
 		if(submenu.getObjectByName('closeMenuButton')) submenu.getObjectByName('closeMenuButton').children[0].onexecute = data.closeMenuButtonFunc;
 
-		submenu.getObjectByName('upDropdownButton').children[0].onexecute = data.upDropdownButtonfunc;
-		submenu.getObjectByName('downDropdownButton').children[0].onexecute = data.downDropdownButtonfunc;
+		submenu.getObjectByName('upDropdownButton').children[0].onexecute = data.upDropdownButtonFunc;
+		submenu.getObjectByName('downDropdownButton').children[0].onexecute = data.downDropdownButtonFunc;
 
 
-		data.firstColumnDropdown.forEach(function(element){
+		data.parentColumnDropdown.forEach(function(element){
 			element.material.color.set( 0xffffff );
-			submenu.getObjectByName('firstcolumndropdown').add(element)		
+			submenu.getObjectByName('parentcolumndropdown').add(element)		
 		});
 
 		submenu.getObjectByName('upDropdownButton').visible = data.isUpDownArrowsVisible;
 		submenu.getObjectByName('downDropdownButton').visible = data.isUpDownArrowsVisible;
 
-		if(data.firstColumnHoritzontalLineDivisions)
+		if(data.parentColumnHoritzontalLineDivisions)
 		{
-			data.firstColumnHoritzontalLineDivisions.forEach(function(element){
-				submenu.getObjectByName('firstcolumnhoritzontallines').add(element)		
+			data.parentColumnHoritzontalLineDivisions.forEach(function(element){
+				submenu.getObjectByName('parentcolumnhoritzontallines').add(element)		
 			});
 		}
 		
 		
-		if(data.secondColumnDropdown)
+		if(data.childColumnDropdown)
 		{
-			submenu.getObjectByName(data.firstColumnActiveOpt).material.color.set( 0xffff00 ); 
-			submenu.getObjectByName('secondcolumndropdown').children = [];
-			data.secondColumnDropdown.forEach(function(element){
-				submenu.getObjectByName('secondcolumndropdown').add(element)		
+			submenu.getObjectByName(data.parentColumnActiveOpt).material.color.set( 0xffff00 ); 
+			submenu.getObjectByName('childcolumndropdown').children = [];
+			data.childColumnDropdown.forEach(function(element){
+				submenu.getObjectByName('childcolumndropdown').add(element)		
 			});
 
-			if(data.secondColumnActiveOpt)
+			if(data.childColumnActiveOpt)
 			{
-				data.secondColumnDropdown.forEach(function(element){
+				data.childColumnDropdown.forEach(function(element){
 					element.material.color.set( 0xffffff );
 				});
-				submenu.getObjectByName(data.secondColumnActiveOpt).material.color.set( 0xffff00 ); 
+				submenu.getObjectByName(data.childColumnActiveOpt).material.color.set( 0xffff00 ); 
 			} 
-			submenu.getObjectByName('secondcolumnhoritzontallines').children = [];
-			data.secondColumnHoritzontalLineDivisions.forEach(function(element){
-				submenu.getObjectByName('secondcolumnhoritzontallines').add(element)		
+			submenu.getObjectByName('childcolumnhoritzontallines').children = [];
+			data.childColumnHoritzontalLineDivisions.forEach(function(element){
+				submenu.getObjectByName('childcolumnhoritzontallines').add(element)		
 			});
 		}
 	}

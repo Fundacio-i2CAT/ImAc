@@ -1,4 +1,4 @@
-function STOptionLSMenuController() {
+function STOptionMenuController() {
 
 	var data;
 	var view;
@@ -32,7 +32,7 @@ function STOptionLSMenuController() {
 									{name: 'subtitlesEasyOn', value: 'On', default: false},
 									{name: 'subtitlesEasyOff', value: 'Off', default: true}];
 
-    var firstColumnDropdownElements = [ 
+    var parentColumnDropdownElements = [ 
                                     {name: 'subtitlesLanguages', value: 'Languages', options: subtitlesLanguagesArray, visible: true},
                                     {name: 'subtitlesEasyRead', value: 'Easy to read', options: subtitlesEasyArray,visible: true}, 
                                     {name: 'subtitlesShowPositions', value: 'Position', options: subtitlesPositionArray, visible: true},
@@ -41,14 +41,29 @@ function STOptionLSMenuController() {
                                     {name: 'subtitlesIndicator', value: 'Indicator', options: subtitlesIndicatorArray, visible: false}, 
                                     {name: 'subtitlesAreas', value: 'Area', options: subtitlesAreasArray, visible: false}];
 	
-	this.Init = function(){
+	this.Init = function(menuType)
+    {
+        data = GetData(menuType);
+        UpdateData(menuType);
 
-		data = GetData();
-		UpdateData();
+        switch(menuType)
+        {
+            // LOW SIGHTED
+            case 1: 
+            default:
+                data.name = 'lowsightedoptmenu';
+                view = new OptionLSMenuView();
+                break;
+
+            // TRADITIONAL
+            case 2:
+                data.name = 'tradoptionmenu';
+                view = new OptionTradMenuView();
+                break;
+        }
+
 		viewStructure = scene.getObjectByName(data.name);
 		viewStructure.visible = true;
-
-		view = new OptionLSMenuView();
 		view.UpdateView(data); 
 
 		AddInteractivityToMenuElements();
@@ -64,55 +79,65 @@ function STOptionLSMenuController() {
 	    		interController.removeInteractiveObject(intrElement.name);
 	    	});
 
-	    	viewStructure.getObjectByName('firstcolumndropdown').children = [];
-	    	viewStructure.getObjectByName('secondcolumndropdown').children = [];
-	    	viewStructure.getObjectByName('firstcolumnhoritzontallines').children = [];
-	    	viewStructure.getObjectByName('secondcolumnhoritzontallines').children = [];
+	    	viewStructure.getObjectByName('parentcolumndropdown').children = [];
+	    	viewStructure.getObjectByName('childcolumndropdown').children = [];
+	    	viewStructure.getObjectByName('parentcolumnhoritzontallines').children = [];
+	    	viewStructure.getObjectByName('childcolumnhoritzontallines').children = [];
     	}
     }
 
-    this.getLSMenuName = function()
+    this.getMenuName = function()
     {
     	return data.name;
     }
 
-    function GetData()
+    function GetData(menuType)
 	{
 	    if (data == null)
 	    {
-	        data = new OptionLSMenuModel();
+            data = new OptionMenuModel();    
 	    }
 	    return data;
 	}
 
-
 	function UpdateData()
     {
-		data.isLSOptEnabled = true;
 
-		data.lsOptEnabledLabelName = 'showSubtitlesMenuButton';
-		data.lsOptEnabledLabelValue = './img/menu_ai_icons/ST.png';
+        data.isLSOptEnabled = true;
 
-		data.lsOptDisbledLabelName = 'disabledSubtitlesMenuButton';
-		data.lsOptDisbledLabelValue = './img/menu_ai_icons/ST_strike.png';
+        data.lsOptEnabledLabelName = 'showSubtitlesMenuButton';
+        data.lsOptEnabledLabelValue = './img/menu_ai_icons/ST.png';
 
-		
-        data.onLSOptButtonfunc = function(){changeOnOffLSOptionState(data.isLSOptEnabled)};
-        data.offLSOptButtonfunc = function(){changeOnOffLSOptionState(data.isLSOptEnabled)};
+        data.lsOptDisbledLabelName = 'disabledSubtitlesMenuButton';
+        data.lsOptDisbledLabelValue = './img/menu_ai_icons/ST_strike.png';
 
-        // ONLY FOR LOW SIGHTED MENU 
+        
+        data.onLSOptButtonFunc = function(){changeOnOffLSOptionState(data.isLSOptEnabled)};
+        data.offLSOptButtonFunc = function(){changeOnOffLSOptionState(data.isLSOptEnabled)};
 
-		data.isUpDownArrowsVisible = firstColumnDropdownElements.length > 4 ? true : false;
+        switch(menuType)
+        {
+            // LOW SIGHTED
+            case 1: 
+            default:
+                data.isUpDownArrowsVisible = parentColumnDropdownElements.length > 4 ? true : false;
 
-		data.firstColumnHoritzontalLineDivisions = getHoritzontalLineDivisions(125, 4*(125*9/16)/6, 0xffffff, 4, 1);
+                data.parentColumnHoritzontalLineDivisions = getHoritzontalLineDivisions(125, 4*(125*9/16)/6, 0xffffff, 4, 1);
 
-		if(!data.firstColumnDropdown) data.firstColumnDropdown = AddDropdownElements(firstColumnDropdownElements);	
+                if(!data.parentColumnDropdown) data.parentColumnDropdown = AddDropdownElements(parentColumnDropdownElements);  
 
-        data.upDropdownButtonfunc = function(){ DropdownUpDownFunc(false) };
-        data.downDropdownButtonfunc = function(){ DropdownUpDownFunc(true) };
+                data.upDropdownButtonFunc = function(){ DropdownUpDownFunc(false) };
+                data.downDropdownButtonFunc = function(){ DropdownUpDownFunc(true) };
 
-        data.backMenuButtonfunc = function(){ AddVisualFeedbackOnClick('backMenuButton', function(){ menumanager.NavigateBackMenu()} )};
-        data.closeMenuButtonFunc = function(){ AddVisualFeedbackOnClick('closeMenuButton', function(){ menumanager.ResetViews()} )};
+                data.backMenuButtonFunc = function(){ AddVisualFeedbackOnClick('backMenuButton', function(){ menumanager.NavigateBackMenu()} )};
+                data.closeMenuButtonFunc = function(){ AddVisualFeedbackOnClick('closeMenuButton', function(){ menumanager.ResetViews()} )};
+                break;
+
+            // TRADITIONAL
+            case 2: 
+                view = new OptionTradMenuView();
+                break;
+        }	
     }
 
 
@@ -157,10 +182,10 @@ function STOptionLSMenuController() {
                 dropdownIE.visible = element.visible;
                 dropdownIE.onexecute =  function()
                 {
-                    data.secondColumnActiveOpt = undefined;
-                    data.firstColumnActiveOpt = element.name;
-                    data.secondColumnDropdown = AddDropdownElements(element.options);
-                    data.secondColumnHoritzontalLineDivisions = getHoritzontalLineDivisions(125, 4*(125*9/16)/6, 0xffffff, element.options.length, 2); 
+                    data.childColumnActiveOpt = undefined;
+                    data.parentColumnActiveOpt = element.name;
+                    data.childColumnDropdown = AddDropdownElements(element.options);
+                    data.childColumnHoritzontalLineDivisions = getHoritzontalLineDivisions(125, 4*(125*9/16)/6, 0xffffff, element.options.length, 2); 
                     UpdateData();
                     setTimeout(function(){view.UpdateView(data)}, 100);  
                 };
@@ -168,7 +193,7 @@ function STOptionLSMenuController() {
         	else dropdownIE.onexecute =  function()
             {
                 UpdateDefaultLSMenuOption(elements,index);
-                data.secondColumnActiveOpt = element.name;
+                data.childColumnActiveOpt = element.name;
                 console.log("Click on "+element.value+ " final option");
                 setTimeout(function(){view.UpdateView(data)}, 100);
             };
@@ -254,7 +279,7 @@ function STOptionLSMenuController() {
     {            
         var h = 125*9/16;
     
-        data.firstColumnDropdown.forEach( function( elem )
+        data.parentColumnDropdown.forEach( function( elem )
         {
             elem.position.y = isDown ? elem.position.y - h/6 : elem.position.y + h/6;
 

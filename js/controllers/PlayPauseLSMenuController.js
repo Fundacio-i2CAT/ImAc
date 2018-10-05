@@ -29,7 +29,7 @@ function PlayPauseLSMenuController() {
     	}
     }
 
-    this.getLSMenuName = function()
+    this.getMenuName = function()
     {
     	return data.name;
     }
@@ -47,10 +47,10 @@ function PlayPauseLSMenuController() {
 	function UpdateData()
     {
 		data.isPaused = ppMMgr.isPausedById(0);
-		data.playpauseMenuButtonfunc = function(){ AddVisualFeedbackOnClick(ppMMgr.isPausedById(0) ? 'playButton' : 'pauseButton', function(){ PlayPauseFunc()} )};
-		data.seekForwardMenuButtonfunc = function(){ AddVisualFeedbackOnClick('forwardSeekButton',  function(){ SeekFunc(true)} )};
-		data.seekBackMenuButtonfunc = function(){ AddVisualFeedbackOnClick('backSeekButton',  function(){ SeekFunc(false)} )};
-        data.backMenuButtonfunc = function(){ AddVisualFeedbackOnClick('backMenuButton', function(){ menumanager.NavigateBackMenu()} )};
+		data.playpauseMenuButtonFunc = function(){ AddVisualFeedbackOnClick(ppMMgr.isPausedById(0) ? 'playButton' : 'pauseButton', function(){ PlayPauseFunc()} )};
+		data.seekForwardMenuButtonFunc = function(){ AddVisualFeedbackOnClick('forwardSeekButton',  function(){ SeekFunc(true)} )};
+		data.seekBackMenuButtonFunc = function(){ AddVisualFeedbackOnClick('backSeekButton',  function(){ SeekFunc(false)} )};
+        data.backMenuButtonFunc = function(){ AddVisualFeedbackOnClick('backMenuButton', function(){ menumanager.NavigateBackMenu()} )};
         data.forwardMenuButtonFunc = function(){ AddVisualFeedbackOnClick('forwardMenuButton', function(){menumanager.NavigateForwardMenu()} )};
         data.closeMenuButtonFunc = function(){ AddVisualFeedbackOnClick('closeMenuButton', function(){ menumanager.ResetViews()} )};
     }

@@ -1,23 +1,60 @@
-function ASTOptionLSMenuController() {
+function SLOptionMenuController() {
 
 	var data;
 	var view;
 	var viewStructure;
 
-	var firstColumnDropdownElements = [ 
-									{name: 'audioSubtitlesLanguages', value: 'Languages'}, 
-									{name: 'audioSubtitlesEasy', value: 'Easy read'},
-									{name: 'audioSubtitlesVolume', value: 'Volume (i)'}];
+	var signerLanguagesArray =  [
+									{name: 'signerEngButton', value: 'English'}, 
+									{name: 'signerEspButton', value: 'Spanish'}, 
+									{name: 'signerGerButton', value: 'German'}, 
+									{name: 'signerCatButton', value: 'Catalan'}];
+
+	var signerIndicatorArray = [
+									{name: 'signerIndicatorNoneButton', value: 'None'}, 
+									{name: 'signerIndicatorArrowButton', value: 'Arrow'}, 
+									{name: 'signerIndicatorRadarButton', value: 'Radar'}];
+
+	var signerPositionArray = [
+									{name: 'signerTopButton', value: 'Top'}, 
+									{name: 'signerBottomButton', value: 'Bottom'}];
+
+	var signerAreasArray = [
+									{name: 'signerSmallAreaButton', value: 'Small'}, 
+									{name: 'signerMediumlAreaButton', value: 'Medium'},
+									{name: 'signerLargeAreaButton', value: 'Large'}];
+
+    var parentColumnDropdownElements = [ 
+                                    {name: 'signerLanguages', value: 'Languages', options: signerLanguagesArray},
+                                    {name: 'signerShowPositions', value: 'Position', options: signerPositionArray},
+                                    {name: 'signerIndicator', value: 'Indicator', options: signerIndicatorArray},
+                                    {name: 'signerAreas', value: 'Area', options: signerAreasArray}]
 	
 
-	this.Init = function(){
+	this.Init = function(menuType){
 
 		data = GetData();
-		UpdateData(data);
+		UpdateData();
+
+        switch(menuType)
+        {
+            // LOW SIGHTED
+            case 1: 
+            default:
+                data.name = 'lowsightedoptmenu';
+                view = new OptionLSMenuView();
+                break;
+
+            // TRADITIONAL
+            case 2:
+                data.name = 'tradoptionmenu';
+                view = new OptionTradMenuView();
+                break;
+        }
+
 		viewStructure = scene.getObjectByName(data.name);
 		viewStructure.visible = true;
 
-		view = new OptionLSMenuView();
 		view.UpdateView(data); 
 
 		AddInteractivityToMenuElements();
@@ -31,13 +68,16 @@ function ASTOptionLSMenuController() {
 	    	viewStructure.children.forEach(function(intrElement){
 	    		interController.removeInteractiveObject(intrElement.name);
 	    	});
-	    	viewStructure.getObjectByName('firstcolumndropdown').children = [];
-	    	viewStructure.getObjectByName('secondcolumndropdown').children = [];
-	    	viewStructure.getObjectByName('firstcolumnhoritzontallines').children = [];
+
+	    	viewStructure.getObjectByName('parentcolumndropdown').children = [];
+	    	viewStructure.getObjectByName('parentcolumndropdown').children = [];
+	    	viewStructure.getObjectByName('childcolumndropdown').children = [];
+	    	viewStructure.getObjectByName('parentcolumnhoritzontallines').children = [];
+	    	viewStructure.getObjectByName('childcolumnhoritzontallines').children = [];
     	}
     }
 
-    this.getLSMenuName = function()
+    this.getMenuName = function()
     {
     	return data.name;
     }
@@ -46,7 +86,7 @@ function ASTOptionLSMenuController() {
 	{
 	    if (data == null)
 	    {
-	        data = new OptionLSMenuModel();
+	        data = new OptionMenuModel();
 	    }
 	    return data;
 	}
@@ -56,22 +96,22 @@ function ASTOptionLSMenuController() {
     {
 		data.isLSOptEnabled = true;
 
-		data.lsOptEnabledLabelName = 'showAudioSubtitlesMenuButton';
-		data.lsOptEnabledLabelValue = './img/menu_ai_icons/AST.png';
+		data.lsOptEnabledLabelName = 'showSignLanguageMenuButton';
+		data.lsOptEnabledLabelValue = './img/menu_ai_icons/SL.png';;
 
-		data.lsOptDisbledLabelName = 'disabledAudioSubtitlesMenuButton';
-		data.lsOptDisbledLabelValue = './img/menu_ai_icons/AST_strike.png';
+		data.lsOptDisbledLabelName = 'disabledSignLanguageMenuButton';
+		data.lsOptDisbledLabelValue = './img/menu_ai_icons/SL_strike.png';
 
-		data.isUpDownArrowsVisible = firstColumnDropdownElements.length > 4 ? true : false;
+		data.isUpDownArrowsVisible = parentColumnDropdownElements.length > 4 ? true : false;
 		
-		data.firstColumnHoritzontalLineDivisions = getHoritzontalLineDivisions(125, 125*9/16, 0xffffff, 3, 1);	
-		
-		if(!data.firstColumnDropdown) data.firstColumnDropdown = AddDropdownElements(firstColumnDropdownElements);
+		data.parentColumnHoritzontalLineDivisions = getHoritzontalLineDivisions(125, 125*9/16, 0xffffff, 4, 1);	
+												
+		if(!data.parentColumnDropdown) data.parentColumnDropdown = AddDropdownElements(parentColumnDropdownElements);
 
-        data.onLSOptButtonfunc = function(){changeOnOffLSOptionState(data.isLSOptEnabled)};
-        data.offLSOptButtonfunc = function(){changeOnOffLSOptionState(data.isLSOptEnabled)};
+        data.onLSOptButtonFunc = function(){changeOnOffLSOptionState(data.isLSOptEnabled)};
+        data.offLSOptButtonFunc = function(){changeOnOffLSOptionState(data.isLSOptEnabled)};
 
-        data.backMenuButtonfunc = function(){ AddVisualFeedbackOnClick('backMenuButton', function(){ menumanager.NavigateBackMenu()} )};
+        data.backMenuButtonFunc = function(){ AddVisualFeedbackOnClick('backMenuButton', function(){ menumanager.NavigateBackMenu()} )};
         data.closeMenuButtonFunc = function(){ AddVisualFeedbackOnClick('closeMenuButton', function(){ menumanager.ResetViews()} )};
     }
 
@@ -96,13 +136,38 @@ function ASTOptionLSMenuController() {
     function AddDropdownElements(elements)
     {
     	var dropdownInteractiveElements =  [];
-    	var h = 125*9/16;
+    	var h;
     	elements.forEach(function(element, index){
     		var factor = (index*2)+1;
 
     		var dropdownIE = new InteractiveElementModel();
+
+            if(element.options)
+            {
+                h = 125*9/16;
+                dropdownIE.onexecute =  function()
+                {
+                    data.parentColumnActiveOpt = element.name;
+                    data.childColumnDropdown = AddDropdownElements(element.options); 
+                    data.childColumnHoritzontalLineDivisions = getHoritzontalLineDivisions(125, 4*(125*9/16)/6, 0xffffff, element.options.length, 2); 
+                    UpdateData();
+                    setTimeout(function(){view.UpdateView(data)}, 100);
+                    
+                };
+            } 
+            else
+            {
+                h = 4*(125*9/16)/6;
+                dropdownIE.onexecute =  function(){
+                    UpdateDefaultLSMenuOption(elements,index);
+                    data.childColumnActiveOpt = element.name;
+                    console.log("Click on "+element.value+ " final option");
+                    setTimeout(function(){view.UpdateView(data)}, 100);
+                };
+            } 
+
 	        dropdownIE.width = 125/3;
-	        dropdownIE.height = h/elements.length;
+	        dropdownIE.height =  elements.length>4 ? h/4 : h/elements.length;
 	        dropdownIE.name = element.name;
 	        dropdownIE.type =  'text';
 	        dropdownIE.value = element.value; //AudioManager.getVolume();
@@ -111,29 +176,10 @@ function ASTOptionLSMenuController() {
 	        dropdownIE.visible = true;
             dropdownIE.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(dropdownIE.width, dropdownIE.height), new THREE.MeshBasicMaterial({visible:  false}));
         	
-        	if(element.options) dropdownIE.onexecute =  function()
-        	{
-        		data.activeOpt = element.name;
-        		data.secondColumnDropdown = AddDropdownElements(element.options); 
-        		UpdateData();
-        		setTimeout(function(){view.UpdateView(data)}, 100);
-        		
-        	};
-        	else
-            {
-                dropdownIE.onexecute =  function(){
-                    UpdateDefaultLSMenuOption(elements,index);
-                    data.secondColumnActiveOpt = element.name;
-                    console.log("Click on "+element.value+ " final option");
-                    setTimeout(function(){view.UpdateView(data)}, 100);
-                };
-            }
-        	
-	        dropdownIE.position = new THREE.Vector3(0, (h/2-factor*h/(elements.length*2) ), 0.01);
+	        dropdownIE.position = new THREE.Vector3(0, ( h/2-factor*h/(elements.length>4 ? 4*2 : elements.length*2) ), 0.01);
 
 	        dropdownInteractiveElements.push(dropdownIE.create())
     	});
-
 
     	return dropdownInteractiveElements
     }

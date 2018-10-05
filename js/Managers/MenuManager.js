@@ -41,7 +41,7 @@ function MenuManager() {
 
 // T R  A D I T I O N A L 
 
-        menuParent.add(createTraditionalViewStructure('traditionalmenu'));
+       /* menuParent.add(createTraditionalViewStructure('traditionalmenu'));
         
         playpauseCtrl = new PlayPauseLSMenuController();
         controllers.push(playpauseCtrl);
@@ -53,54 +53,54 @@ function MenuManager() {
 
         multiOptionsCtrl = new MultiOptionsLSMenuController();
         controllers.push(multiOptionsCtrl);
-        multiOptionsCtrl.Init();
+        multiOptionsCtrl.Init();*/
      
 
 // L O W    S I G H T E D 
 
-        /*playpauseCtrl = new PlayPauseLSMenuController();
+        playpauseCtrl = new PlayPauseLSMenuController();
         controllers.push(playpauseCtrl);     
         menuParent.add(createPlayPauseLSMenuViewStructure('playpausemenu'));
-        playpauseCtrl.Init();
+        playpauseCtrl.Init(1);
 
         volumeCtrl = new VolumeLSMenuController();
         controllers.push(volumeCtrl);
         menuParent.add(createVolumeLSMenuViewStructure('volumemenu'));
-        volumeCtrl.Init();
+        volumeCtrl.Init(1);
 
         settingsCtrl = new SettingsLSMenuController();
         controllers.push(settingsCtrl);
         menuParent.add(createSettingsLSMenuViewStructure('settingsmenu'));
-        settingsCtrl.Init();
+        settingsCtrl.Init(1);
 
         multiOptionsCtrl = new MultiOptionsLSMenuController();
         controllers.push(multiOptionsCtrl);
         menuParent.add(createMultiOptionsLSMenuViewStructure('multioptionsmenu'));
-        multiOptionsCtrl.Init();
+        multiOptionsCtrl.Init(1);
 
         menuParent.add(createOptionLSMenuViewStructure('lowsightedoptmenu'));
 
-        STOptionCtrl = new STOptionLSMenuController();
+        STOptionCtrl = new STOptionMenuController();
         controllers.push(STOptionCtrl);
-        STOptionCtrl.Init();
+        STOptionCtrl.Init(1);
 
-        SLOptionCtrl = new SLOptionLSMenuController();
+        SLOptionCtrl = new SLOptionMenuController();
         controllers.push(SLOptionCtrl);
-        SLOptionCtrl.Init();
+        SLOptionCtrl.Init(1);
 
-        ADOptionCtrl = new ADOptionLSMenuController();
+        ADOptionCtrl = new ADOptionMenuController();
         controllers.push(ADOptionCtrl);
-        ADOptionCtrl.Init();
+        ADOptionCtrl.Init(1);
 
-        ASTOptionCtrl = new ASTOptionLSMenuController();
+        ASTOptionCtrl = new ASTOptionMenuController();
         controllers.push(ASTOptionCtrl);
-        ASTOptionCtrl.Init();
+        ASTOptionCtrl.Init(1);
 
         menuParent.add(createOptionLSMenuViewStructure('settingsoptmenu'));
         
-        SettingsOptionCtrl = new SettingsOptionLSMenuController();
+        SettingsOptionCtrl = new SettingsOptionMenuController();
         controllers.push(SettingsOptionCtrl);
-        SettingsOptionCtrl.Init();*/
+        SettingsOptionCtrl.Init(1);
 
         mmgr.ResetViews();
 
@@ -108,45 +108,45 @@ function MenuManager() {
 
     this.NavigateForwardMenu = function()
     {
-        switch(actualCtrl.getLSMenuName())
+        switch(actualCtrl.getMenuName())
         {
-            case playpauseCtrl.getLSMenuName():
+            case playpauseCtrl.getMenuName():
                 return mmgr.Load(volumeCtrl);
 
-            case volumeCtrl.getLSMenuName():
+            case volumeCtrl.getMenuName():
                 return mmgr.Load(settingsCtrl)
 
-            case settingsCtrl.getLSMenuName():
+            case settingsCtrl.getMenuName():
                 return mmgr.Load(multiOptionsCtrl)
 
-            case multiOptionsCtrl.getLSMenuName():
+            case multiOptionsCtrl.getMenuName():
                 return mmgr.Load(playpauseCtrl)
         }
     }
 
     this.NavigateBackMenu = function()
     {
-        switch(actualCtrl.getLSMenuName())
+        switch(actualCtrl.getMenuName())
         {
-            case playpauseCtrl.getLSMenuName():
+            case playpauseCtrl.getMenuName():
                 return mmgr.Load(multiOptionsCtrl);
 
-            case volumeCtrl.getLSMenuName():
+            case volumeCtrl.getMenuName():
                 return mmgr.Load(playpauseCtrl)
 
-            case settingsCtrl.getLSMenuName():
+            case settingsCtrl.getMenuName():
                 return mmgr.Load(volumeCtrl)
 
-            case multiOptionsCtrl.getLSMenuName():
+            case multiOptionsCtrl.getMenuName():
                 return mmgr.Load(settingsCtrl)   
 
-            case STOptionCtrl.getLSMenuName():
-            case SLOptionCtrl.getLSMenuName():
-            case ADOptionCtrl.getLSMenuName():
-            case ASTOptionCtrl.getLSMenuName():
+            case STOptionCtrl.getMenuName():
+            case SLOptionCtrl.getMenuName():
+            case ADOptionCtrl.getMenuName():
+            case ASTOptionCtrl.getMenuName():
                 return mmgr.Load(multiOptionsCtrl)
 
-            case SettingsOptionCtrl.getLSMenuName():
+            case SettingsOptionCtrl.getMenuName():
                 return mmgr.Load(settingsCtrl)
         } 
     }
@@ -225,8 +225,8 @@ function MenuManager() {
             onGazeLong: function(){
                 menuActivationElement.visible = false;
                 scene.getObjectByName( "openmenutext" ).visible = false;
-                //mmgr.Load(playpauseCtrl);
-                LoadTrad();
+                mmgr.Load(playpauseCtrl);
+                //LoadTrad();
 
             }/*,
             onGazeClick: MenuFunctionsManager.getOpenMenuFunc()*/
@@ -259,32 +259,28 @@ function MenuManager() {
 
         menuTrad.add(menuBackground);
 
+        menuTrad.add(createOptionTraditionalMenuViewStructure())
+
         return menuTrad;
     }
 
 // TODO
 
-    function createOptionTraditionalMenuViewStructure(name)
-    {
-        //var tradMenuOptionMenu =  new THREE.Mesh( new THREE.PlaneGeometry( 30, 30 ), new THREE.MeshBasicMaterial({ color: 0x333333, transparent: true, opacity: 0.8 }));
-        
-        var  tradOptionMenu =  new THREE.Mesh( new THREE.PlaneGeometry( 0, 0 ), new THREE.MeshBasicMaterial({ color: 0x333333, transparent: true, opacity: 0.8 }));
-        tradOptionMenu.name = 'tradoptionmenu'; 
+    function createOptionTraditionalMenuViewStructure()
+    {   
+        var  tradOptionMenu =  new THREE.Mesh( new THREE.PlaneGeometry( 30, 30 ), new THREE.MeshBasicMaterial({ color: 0x333333, transparent: true, opacity: 0.8 }));
+        tradOptionMenu.name = 'tradoptionmenu';
+        tradOptionMenu.position.set((menuWidth-30)/2, ((-menuHeight/2.5-5)+(menuHeight + 30)/2)+2 , 0.01);
 
         var  tradOptionMenuTitle =  new THREE.Group();
         tradOptionMenuTitle.name = 'tradoptionmenutitle';
+        tradOptionMenu.add(tradOptionMenuTitle);
 
         var  tradOptionMenuDropdown =  new THREE.Group();
         tradOptionMenuDropdown.name = 'tradoptionmenudropdown';
+        tradOptionMenu.add(tradOptionMenuDropdown);
 
-// MODEL
-       /* var x = (menuWidth-30)/2;
-        var y = ((-menuHeight/2.5-5)+(menuHeight + 30)/2)+2;
-        tradMenuDropdown.position.set(x, y, 0.01);
-
-        menuTrad.add(tradMenuDropdown);^*/
-
-        return 
+        return tradOptionMenu;
     }
 
 
@@ -1047,29 +1043,29 @@ function MenuManager() {
         linesMenuGroup.add(line3);
         linesMenuGroup.add(line4);*/
 
-        var firstColumnHoritzontalLines = new THREE.Group();
-        firstColumnHoritzontalLines.position.set(0,0,0.01)
-        firstColumnHoritzontalLines.name = 'firstcolumnhoritzontallines';
+        var parentColumnHoritzontalLines = new THREE.Group();
+        parentColumnHoritzontalLines.position.set(0,0,0.01)
+        parentColumnHoritzontalLines.name = 'parentcolumnhoritzontallines';
 
-        lowsightedoptmenu.add(firstColumnHoritzontalLines);
+        lowsightedoptmenu.add(parentColumnHoritzontalLines);
 
-        var secondColumnHoritzontalLines = new THREE.Group();
-        secondColumnHoritzontalLines.position.set(0,0,0.01)
-        secondColumnHoritzontalLines.name = 'secondcolumnhoritzontallines';
+        var childColumnHoritzontalLines = new THREE.Group();
+        childColumnHoritzontalLines.position.set(0,0,0.01)
+        childColumnHoritzontalLines.name = 'childcolumnhoritzontallines';
 
-        lowsightedoptmenu.add(secondColumnHoritzontalLines)
+        lowsightedoptmenu.add(childColumnHoritzontalLines)
 
-        var firstColumnDropdown =  new THREE.Group();
-        firstColumnDropdown.name = 'firstcolumndropdown';
+        var parentColumnDropdown =  new THREE.Group();
+        parentColumnDropdown.name = 'parentcolumndropdown';
         
-        lowsightedoptmenu.add(firstColumnDropdown);
+        lowsightedoptmenu.add(parentColumnDropdown);
 
-        var secondColumnDropdown =  new THREE.Group();
-        secondColumnDropdown.name = 'secondcolumndropdown'; 
+        var childColumnDropdown =  new THREE.Group();
+        childColumnDropdown.name = 'childcolumndropdown'; 
 
-        secondColumnDropdown.position.set(menuWidth/3,0,0.01)       
+        childColumnDropdown.position.set(menuWidth/3,0,0.01)       
 
-        lowsightedoptmenu.add(secondColumnDropdown);
+        lowsightedoptmenu.add(childColumnDropdown);
 
         return lowsightedoptmenu;
     }

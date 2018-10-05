@@ -1,9 +1,9 @@
 function SettingsLSMenuModel() {
 	
 	this.name = 'settingsmenu';
-	this.setiingsMenuButtonFunc;
+	this.settingsMenuButtonFunc;
 
-	this.backMenuButtonfunc;
+	this.backMenuButtonFunc;
 	this.forwardMenuButtonFunc;
 
 	this.closeMenuButtonFunc;

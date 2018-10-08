@@ -1,4 +1,4 @@
-function ADOptionMenuController() {
+function ADOptionMenuController(menuType) {
 
 	var data;
 	var view;
@@ -12,7 +12,7 @@ function ADOptionMenuController() {
 									{name: 'audioDescriptionPresentation', value: 'Presentation', options: ADPresentationArray},
 									{name: 'audioDescriptionVolume', value: 'Volume (i)'}];
 
-	this.Init = function(menuType){
+	this.Init = function(){
 
 		data = GetData();
 		UpdateData();
@@ -48,14 +48,22 @@ function ADOptionMenuController() {
 	    	viewStructure.children.forEach(function(intrElement){
 	    		interController.removeInteractiveObject(intrElement.name);
 	    	});
-	    	viewStructure.getObjectByName('parentcolumndropdown').children = [];
-	    	viewStructure.getObjectByName('childcolumndropdown').children = [];
+            
+            if(viewStructure.getObjectByName('parentcolumndropdown')) viewStructure.getObjectByName('parentcolumndropdown').children = [];
+            if(viewStructure.getObjectByName('childcolumndropdown')) viewStructure.getObjectByName('childcolumndropdown').children = [];
+            if(viewStructure.getObjectByName('parentcolumnhoritzontallines')) viewStructure.getObjectByName('parentcolumnhoritzontallines').children = [];
+            if(viewStructure.getObjectByName('childcolumnhoritzontallines')) viewStructure.getObjectByName('childcolumnhoritzontallines').children = [];
     	}
     }
 
     this.getMenuName = function()
     {
     	return data.name;
+    }
+
+    this.getMenuIndex = function()
+    {
+        return 3;
     }
 
     function GetData()
@@ -70,7 +78,7 @@ function ADOptionMenuController() {
 
 	function UpdateData()
     {
-		data.isLSOptEnabled = true;
+		data.isOptEnabled = true;
 
 		data.lsOptEnabledLabelName = 'showAudioDescriptionMenuButton';
 		data.lsOptEnabledLabelValue = './img/menu_ai_icons/AD.png';
@@ -78,17 +86,33 @@ function ADOptionMenuController() {
 		data.lsOptDisbledLabelName = 'disabledAudioDescriptionMenuButton';
 		data.lsOptDisbledLabelValue = './img/menu_ai_icons/AD_strike.png';
 
-		data.isUpDownArrowsVisible = parentColumnDropdownElements.length > 4 ? true : false;
+        data.onOptButtonFunc = function(){changeOnOffLSOptionState(data.isOptEnabled)};
+        data.offOptButtonFunc = function(){changeOnOffLSOptionState(data.isOptEnabled)};
 
-		data.parentColumnHoritzontalLineDivisions = getHoritzontalLineDivisions(125, 125*9/16, 0xffffff, 3, 1);	
+        switch(menuType)
+        {
+            // LOW SIGHTED
+            case 1: 
+            default:
 
-		if(!data.parentColumnDropdown) data.parentColumnDropdown = AddDropdownElements(parentColumnDropdownElements);
+                data.isUpDownArrowsVisible = parentColumnDropdownElements.length > 4 ? true : false;
 
-        data.onLSOptButtonFunc = function(){changeOnOffLSOptionState(data.isLSOptEnabled)};
-        data.offLSOptButtonFunc = function(){changeOnOffLSOptionState(data.isLSOptEnabled)};
+                data.parentColumnHoritzontalLineDivisions = getHoritzontalLineDivisions(125, 125*9/16, 0xffffff, 3, 1); 
 
-        data.backMenuButtonFunc = function(){ AddVisualFeedbackOnClick('backMenuButton', function(){ menumanager.NavigateBackMenu()} )};
-        data.closeMenuButtonFunc = function(){ AddVisualFeedbackOnClick('closeMenuButton', function(){ menumanager.ResetViews()} )};
+                if(!data.parentColumnDropdown) data.parentColumnDropdown = AddDropdownElementsLS(parentColumnDropdownElements);
+
+
+                data.backMenuButtonFunc = function(){ AddVisualFeedbackOnClick('backMenuButton', function(){ menumanager.NavigateBackMenu()} )};
+                data.closeMenuButtonFunc = function(){ AddVisualFeedbackOnClick('closeMenuButton', function(){ menumanager.ResetViews()} )};
+
+            // TRADITIONAL
+            case 2: 
+                data.title = 'Audio Description';
+                data.titleHeight = parentColumnDropdownElements.length * 5;
+                data.parentColumnDropdown = AddDropdownElementsTrad(parentColumnDropdownElements);  
+                break;
+        }       
+
     }
 
 
@@ -109,7 +133,7 @@ function ADOptionMenuController() {
         setTimeout(callback, 300);
     }
 
-    function AddDropdownElements(elements)
+    function AddDropdownElementsLS(elements)
     {
     	var dropdownInteractiveElements =  [];
     	var h = 125*9/16;
@@ -130,7 +154,7 @@ function ADOptionMenuController() {
         	if(element.options) dropdownIE.onexecute =  function()
         	{
         		data.activeOpt = element.name;
-        		data.childColumnDropdown = AddDropdownElements(element.options); 
+        		data.childColumnDropdown = AddDropdownElementsLS(element.options); 
         		UpdateData();
         		setTimeout(function(){view.UpdateView(data)}, 100);
         		
@@ -152,6 +176,56 @@ function ADOptionMenuController() {
 
 
     	return dropdownInteractiveElements
+    }
+
+    function AddDropdownElementsTrad(elements)
+    {
+        var dropdownInteractiveElements =  [];
+        var h = 5*elements.length;
+
+        elements.forEach(function(element, index){
+            var factor = (index+1);
+
+            var dropdownIE = new InteractiveElementModel();
+            dropdownIE.width = 30;
+            dropdownIE.height =  4;
+            dropdownIE.name = element.name;
+            dropdownIE.type =  'text';
+            dropdownIE.value = element.value; //AudioManager.getVolume();
+            dropdownIE.color = element.default ? 0xffff00 : 0xffffff;
+            dropdownIE.textSize =  1.5;
+            dropdownIE.visible = true;
+            
+            dropdownIE.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(dropdownIE.width, dropdownIE.height), new THREE.MeshBasicMaterial({visible:  false}));
+            
+            /*if(element.options)
+            {
+                dropdownIE.visible = element.visible;
+                dropdownIE.onexecute =  function()
+                {
+                    data.childColumnActiveOpt = undefined;
+                    data.parentColumnActiveOpt = element.name;
+                    data.childColumnDropdown = AddDropdownElementsLS(element.options);
+                    data.childColumnHoritzontalLineDivisions = getHoritzontalLineDivisions(125, 4*(125*9/16)/6, 0xffffff, element.options.length, 2); 
+                    UpdateData();
+                    setTimeout(function(){view.UpdateView(data)}, 100);  
+                };
+            } 
+            else dropdownIE.onexecute =  function()
+            {
+                UpdateDefaultLSMenuOption(elements,index);
+                data.childColumnActiveOpt = element.name;
+                console.log("Click on "+element.value+ " final option"); // ADD HERE THE FUNCTION 
+                setTimeout(function(){view.UpdateView(data)}, 100);
+            };*/
+            
+            dropdownIE.position = new THREE.Vector3(0, h - factor*5, 0.01);
+
+            dropdownInteractiveElements.push(dropdownIE.create())
+        });
+
+
+        return dropdownInteractiveElements
     }
 
     function UpdateDefaultLSMenuOption(options, newActiveOptionIndex)
@@ -223,7 +297,7 @@ function ADOptionMenuController() {
 
     function changeOnOffLSOptionState(state)
     {
-        data.isLSOptEnabled = !state;
+        data.isOptEnabled = !state;
         view.UpdateView(data); 
         AddInteractivityToMenuElements();
     }

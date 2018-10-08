@@ -3,15 +3,15 @@ function OptionLSMenuView() {
 	this.UpdateView = function(data){
 		var submenu = scene.getObjectByName(data.name);
 
-		submenu.getObjectByName('lsOptEnabledLabel').visible = data.isLSOptEnabled;
-		submenu.getObjectByName('lsOptDisabledLabel').visible = !data.isLSOptEnabled;
+		submenu.getObjectByName('lsOptEnabledLabel').visible = data.isOptEnabled;
+		submenu.getObjectByName('lsOptDisabledLabel').visible = !data.isOptEnabled;
 
-		submenu.getObjectByName('onlsoptbutton').visible = data.isLSOptEnabled;
-		submenu.getObjectByName('offlsoptbutton').visible = !data.isLSOptEnabled;
+		submenu.getObjectByName('onlsoptbutton').visible = data.isOptEnabled;
+		submenu.getObjectByName('offlsoptbutton').visible = !data.isOptEnabled;
 
 		
-		submenu.getObjectByName('onlsoptbutton').children[0].onexecute = data.onLSOptButtonFunc;
-		submenu.getObjectByName('offlsoptbutton').children[0].onexecute = data.offLSOptButtonFunc;
+		submenu.getObjectByName('onlsoptbutton').children[0].onexecute = data.onOptButtonFunc;
+		submenu.getObjectByName('offlsoptbutton').children[0].onexecute = data.offOptButtonFunc;
 
 		if(data.isLSOptEnabled) submenu.getObjectByName('lsOptEnabledLabel').material = UpdateImageIEMaterial(data.lsOptEnabledLabelValue);
 		else submenu.getObjectByName('lsOptDisabledLabel').material = UpdateImageIEMaterial(data.lsOptDisbledLabelValue);
@@ -23,7 +23,6 @@ function OptionLSMenuView() {
 
 		submenu.getObjectByName('upDropdownButton').children[0].onexecute = data.upDropdownButtonFunc;
 		submenu.getObjectByName('downDropdownButton').children[0].onexecute = data.downDropdownButtonFunc;
-
 
 		data.parentColumnDropdown.forEach(function(element){
 			element.material.color.set( 0xffffff );

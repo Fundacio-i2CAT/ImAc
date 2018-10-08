@@ -1,4 +1,4 @@
-function STOptionMenuController() {
+function STOptionMenuController(menuType) {
 
 	var data;
 	var view;
@@ -41,10 +41,10 @@ function STOptionMenuController() {
                                     {name: 'subtitlesIndicator', value: 'Indicator', options: subtitlesIndicatorArray, visible: false}, 
                                     {name: 'subtitlesAreas', value: 'Area', options: subtitlesAreasArray, visible: false}];
 	
-	this.Init = function(menuType)
+	this.Init = function()
     {
-        data = GetData(menuType);
-        UpdateData(menuType);
+        data = GetData();
+        UpdateData();
 
         switch(menuType)
         {
@@ -57,7 +57,9 @@ function STOptionMenuController() {
 
             // TRADITIONAL
             case 2:
+                //data.name = 'traditionalmenu';
                 data.name = 'tradoptionmenu';
+                
                 view = new OptionTradMenuView();
                 break;
         }
@@ -79,10 +81,10 @@ function STOptionMenuController() {
 	    		interController.removeInteractiveObject(intrElement.name);
 	    	});
 
-	    	viewStructure.getObjectByName('parentcolumndropdown').children = [];
-	    	viewStructure.getObjectByName('childcolumndropdown').children = [];
-	    	viewStructure.getObjectByName('parentcolumnhoritzontallines').children = [];
-	    	viewStructure.getObjectByName('childcolumnhoritzontallines').children = [];
+	    	if(viewStructure.getObjectByName('parentcolumndropdown')) viewStructure.getObjectByName('parentcolumndropdown').children = [];
+	    	if(viewStructure.getObjectByName('childcolumndropdown')) viewStructure.getObjectByName('childcolumndropdown').children = [];
+	    	if(viewStructure.getObjectByName('parentcolumnhoritzontallines')) viewStructure.getObjectByName('parentcolumnhoritzontallines').children = [];
+	    	if(viewStructure.getObjectByName('childcolumnhoritzontallines')) viewStructure.getObjectByName('childcolumnhoritzontallines').children = [];
     	}
     }
 
@@ -91,7 +93,12 @@ function STOptionMenuController() {
     	return data.name;
     }
 
-    function GetData(menuType)
+    this.getMenuIndex = function()
+    {
+        return 1;
+    }
+
+    function GetData()
 	{
 	    if (data == null)
 	    {
@@ -103,7 +110,7 @@ function STOptionMenuController() {
 	function UpdateData()
     {
 
-        data.isLSOptEnabled = true;
+        data.isOptEnabled = true;
 
         data.lsOptEnabledLabelName = 'showSubtitlesMenuButton';
         data.lsOptEnabledLabelValue = './img/menu_ai_icons/ST.png';
@@ -112,8 +119,8 @@ function STOptionMenuController() {
         data.lsOptDisbledLabelValue = './img/menu_ai_icons/ST_strike.png';
 
         
-        data.onLSOptButtonFunc = function(){changeOnOffLSOptionState(data.isLSOptEnabled)};
-        data.offLSOptButtonFunc = function(){changeOnOffLSOptionState(data.isLSOptEnabled)};
+        data.onOptButtonFunc = function(){changeOnOffOptionState(data.isOptEnabled)};
+        data.offOptButtonFunc = function(){changeOnOffOptionState(data.isOptEnabled)};
 
         switch(menuType)
         {
@@ -124,7 +131,7 @@ function STOptionMenuController() {
 
                 data.parentColumnHoritzontalLineDivisions = getHoritzontalLineDivisions(125, 4*(125*9/16)/6, 0xffffff, 4, 1);
 
-                if(!data.parentColumnDropdown) data.parentColumnDropdown = AddDropdownElements(parentColumnDropdownElements);  
+                if(!data.parentColumnDropdown) data.parentColumnDropdown = AddDropdownElementsLS(parentColumnDropdownElements);  
 
                 data.upDropdownButtonFunc = function(){ DropdownUpDownFunc(false) };
                 data.downDropdownButtonFunc = function(){ DropdownUpDownFunc(true) };
@@ -135,11 +142,12 @@ function STOptionMenuController() {
 
             // TRADITIONAL
             case 2: 
-                view = new OptionTradMenuView();
+                data.title = 'Subtitles';
+                data.titleHeight = parentColumnDropdownElements.length * 5;
+                data.parentColumnDropdown = AddDropdownElementsTrad(parentColumnDropdownElements);  
                 break;
         }	
     }
-
 
     function AddInteractivityToMenuElements()
     {
@@ -158,7 +166,7 @@ function STOptionMenuController() {
         setTimeout(callback, 300);
     }
 
-    function AddDropdownElements(elements)
+    function AddDropdownElementsLS(elements)
     {
     	var dropdownInteractiveElements =  [];
     	var h = 4*(125*9/16)/6;
@@ -184,7 +192,7 @@ function STOptionMenuController() {
                 {
                     data.childColumnActiveOpt = undefined;
                     data.parentColumnActiveOpt = element.name;
-                    data.childColumnDropdown = AddDropdownElements(element.options);
+                    data.childColumnDropdown = AddDropdownElementsLS(element.options);
                     data.childColumnHoritzontalLineDivisions = getHoritzontalLineDivisions(125, 4*(125*9/16)/6, 0xffffff, element.options.length, 2); 
                     UpdateData();
                     setTimeout(function(){view.UpdateView(data)}, 100);  
@@ -194,7 +202,7 @@ function STOptionMenuController() {
             {
                 UpdateDefaultLSMenuOption(elements,index);
                 data.childColumnActiveOpt = element.name;
-                console.log("Click on "+element.value+ " final option");
+                console.log("Click on "+element.value+ " final option"); // ADD HERE THE FUNCTION 
                 setTimeout(function(){view.UpdateView(data)}, 100);
             };
         	
@@ -205,6 +213,56 @@ function STOptionMenuController() {
 
 
     	return dropdownInteractiveElements
+    }
+
+    function AddDropdownElementsTrad(elements)
+    {
+        var dropdownInteractiveElements =  [];
+        var h = 5*elements.length;
+
+        elements.forEach(function(element, index){
+            var factor = (index+1);
+
+            var dropdownIE = new InteractiveElementModel();
+            dropdownIE.width = 30;
+            dropdownIE.height =  4;
+            dropdownIE.name = element.name;
+            dropdownIE.type =  'text';
+            dropdownIE.value = element.value; //AudioManager.getVolume();
+            dropdownIE.color = element.default ? 0xffff00 : 0xffffff;
+            dropdownIE.textSize =  1.5;
+            dropdownIE.visible = true;
+            
+            dropdownIE.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(dropdownIE.width, dropdownIE.height), new THREE.MeshBasicMaterial({visible:  false}));
+            
+            /*if(element.options)
+            {
+                dropdownIE.visible = element.visible;
+                dropdownIE.onexecute =  function()
+                {
+                    data.childColumnActiveOpt = undefined;
+                    data.parentColumnActiveOpt = element.name;
+                    data.childColumnDropdown = AddDropdownElementsLS(element.options);
+                    data.childColumnHoritzontalLineDivisions = getHoritzontalLineDivisions(125, 4*(125*9/16)/6, 0xffffff, element.options.length, 2); 
+                    UpdateData();
+                    setTimeout(function(){view.UpdateView(data)}, 100);  
+                };
+            } 
+            else dropdownIE.onexecute =  function()
+            {
+                UpdateDefaultLSMenuOption(elements,index);
+                data.childColumnActiveOpt = element.name;
+                console.log("Click on "+element.value+ " final option"); // ADD HERE THE FUNCTION 
+                setTimeout(function(){view.UpdateView(data)}, 100);
+            };*/
+            
+            dropdownIE.position = new THREE.Vector3(0, h - factor*5, 0.01);
+
+            dropdownInteractiveElements.push(dropdownIE.create())
+        });
+
+
+        return dropdownInteractiveElements
     }
 
     function UpdateDefaultLSMenuOption(options, newActiveOptionIndex)
@@ -294,9 +352,9 @@ function STOptionMenuController() {
         setTimeout(function(){view.UpdateView(data)}, 100);
     };
 
-    function changeOnOffLSOptionState(state)
+    function changeOnOffOptionState(state)
     {
-        data.isLSOptEnabled = !state;
+        data.isOptEnabled = !state;
         view.UpdateView(data); 
         AddInteractivityToMenuElements();
     }

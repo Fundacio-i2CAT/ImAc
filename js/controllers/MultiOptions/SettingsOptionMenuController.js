@@ -85,7 +85,6 @@ function SettingsOptionMenuController() {
 
 	function UpdateData()
     {
-		data.isLSOptEnabled = true;
 
 		data.lsOptEnabledLabelName = 'settingsButton';
 		data.lsOptEnabledLabelValue = './img/menu/settings_icon.png';
@@ -94,10 +93,7 @@ function SettingsOptionMenuController() {
 		
 		data.parentColumnHoritzontalLineDivisions = getHoritzontalLineDivisions(125, 125*9/16, 0xffffff, 3, 1);	
 												
-		if(!data.parentColumnDropdown) data.parentColumnDropdown = AddDropdownElements(parentColumnDropdownElements);
-
-		data.onLSOptButtonFunc = function(){};
-		data.offLSOptButtonFunc = function(){};
+		if(!data.parentColumnDropdown) data.parentColumnDropdown = AddDropdownElementsLS(parentColumnDropdownElements);
 
         data.backMenuButtonFunc = function(){ AddVisualFeedbackOnClick('backMenuButton', function(){ menumanager.NavigateBackMenu()} )};
         data.closeMenuButtonFunc = function(){ AddVisualFeedbackOnClick('closeMenuButton', function(){ menumanager.ResetViews()} )};
@@ -121,7 +117,7 @@ function SettingsOptionMenuController() {
         setTimeout(callback, 300);
     }
 
-    function AddDropdownElements(elements)
+    function AddDropdownElementsLS(elements)
     {
     	var dropdownInteractiveElements =  [];
     	var h;
@@ -136,7 +132,7 @@ function SettingsOptionMenuController() {
                 dropdownIE.onexecute =  function()
                 {
                     data.parentColumnActiveOpt = element.name;
-                    data.childColumnDropdown = AddDropdownElements(element.options); 
+                    data.childColumnDropdown = AddDropdownElementsLS(element.options); 
                     data.childColumnHoritzontalLineDivisions = getHoritzontalLineDivisions(125, 4*(125*9/16)/6, 0xffffff, element.options.length, 2); 
                     UpdateData();
                     setTimeout(function(){view.UpdateView(data)}, 100);    
@@ -169,6 +165,56 @@ function SettingsOptionMenuController() {
     	});
 
     	return dropdownInteractiveElements
+    }
+
+    function AddDropdownElementsTrad(elements)
+    {
+        var dropdownInteractiveElements =  [];
+        var h = 5*elements.length;
+
+        elements.forEach(function(element, index){
+            var factor = (index+1);
+
+            var dropdownIE = new InteractiveElementModel();
+            dropdownIE.width = 30;
+            dropdownIE.height =  4;
+            dropdownIE.name = element.name;
+            dropdownIE.type =  'text';
+            dropdownIE.value = element.value; //AudioManager.getVolume();
+            dropdownIE.color = element.default ? 0xffff00 : 0xffffff;
+            dropdownIE.textSize =  1.5;
+            dropdownIE.visible = true;
+            
+            dropdownIE.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(dropdownIE.width, dropdownIE.height), new THREE.MeshBasicMaterial({visible:  false}));
+            
+            /*if(element.options)
+            {
+                dropdownIE.visible = element.visible;
+                dropdownIE.onexecute =  function()
+                {
+                    data.childColumnActiveOpt = undefined;
+                    data.parentColumnActiveOpt = element.name;
+                    data.childColumnDropdown = AddDropdownElementsLS(element.options);
+                    data.childColumnHoritzontalLineDivisions = getHoritzontalLineDivisions(125, 4*(125*9/16)/6, 0xffffff, element.options.length, 2); 
+                    UpdateData();
+                    setTimeout(function(){view.UpdateView(data)}, 100);  
+                };
+            } 
+            else dropdownIE.onexecute =  function()
+            {
+                UpdateDefaultLSMenuOption(elements,index);
+                data.childColumnActiveOpt = element.name;
+                console.log("Click on "+element.value+ " final option"); // ADD HERE THE FUNCTION 
+                setTimeout(function(){view.UpdateView(data)}, 100);
+            };*/
+            
+            dropdownIE.position = new THREE.Vector3(0, h - factor*5, 0.01);
+
+            dropdownInteractiveElements.push(dropdownIE.create())
+        });
+
+
+        return dropdownInteractiveElements
     }
 
     function UpdateDefaultLSMenuOption(options, newActiveOptionIndex)

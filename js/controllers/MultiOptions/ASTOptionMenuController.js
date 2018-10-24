@@ -51,6 +51,7 @@ function ASTOptionMenuController(menuType) {
             if(viewStructure.getObjectByName('childcolumndropdown')) viewStructure.getObjectByName('childcolumndropdown').children = [];
             if(viewStructure.getObjectByName('parentcolumnhoritzontallines')) viewStructure.getObjectByName('parentcolumnhoritzontallines').children = [];
             if(viewStructure.getObjectByName('childcolumnhoritzontallines')) viewStructure.getObjectByName('childcolumnhoritzontallines').children = [];
+            data.childColumnActiveOpt = undefined;
     	}
     }
 
@@ -77,6 +78,8 @@ function ASTOptionMenuController(menuType) {
 	function UpdateData()
     {
 		data.isOptEnabled = true;
+        data.isOnOffButtonVisible = true;
+
 
 		data.lsOptEnabledLabelName = 'showAudioSubtitlesMenuButton';
 		data.lsOptEnabledLabelValue = './img/menu_ai_icons/AST.png';
@@ -101,11 +104,11 @@ function ASTOptionMenuController(menuType) {
 
                 data.backMenuButtonFunc = function(){ AddVisualFeedbackOnClick('backMenuButton', function(){ menumanager.NavigateBackMenu()} )};
                 data.closeMenuButtonFunc = function(){ AddVisualFeedbackOnClick('closeMenuButton', function(){ menumanager.ResetViews()} )};
-
+                break;
+                
             // TRADITIONAL
             case 2: 
                 data.title = 'Audio Subtitles';
-                data.titleHeight = parentColumnDropdownElements.length * 5;
                 data.parentColumnDropdown = AddDropdownElementsTrad(parentColumnDropdownElements);  
                 break;
         }       
@@ -179,6 +182,7 @@ function ASTOptionMenuController(menuType) {
     {
         var dropdownInteractiveElements =  [];
         var h = 5*elements.length;
+        data.titleHeight = elements.length * 5;
 
         elements.forEach(function(element, index){
             var factor = (index+1);
@@ -195,26 +199,34 @@ function ASTOptionMenuController(menuType) {
             
             dropdownIE.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(dropdownIE.width, dropdownIE.height), new THREE.MeshBasicMaterial({visible:  false}));
             
-            /*if(element.options)
+            if(element.options)
             {
-                dropdownIE.visible = element.visible;
+                //dropdownIE.visible = element.visible;
+                data.isFinalDrop = false;
                 dropdownIE.onexecute =  function()
                 {
+                    data.title = element.value;
                     data.childColumnActiveOpt = undefined;
                     data.parentColumnActiveOpt = element.name;
-                    data.childColumnDropdown = AddDropdownElementsLS(element.options);
-                    data.childColumnHoritzontalLineDivisions = getHoritzontalLineDivisions(125, 4*(125*9/16)/6, 0xffffff, element.options.length, 2); 
-                    UpdateData();
-                    setTimeout(function(){view.UpdateView(data)}, 100);  
+                    data.parentColumnDropdown = AddDropdownElementsTrad(element.options);
+                    data.isOnOffButtonVisible = false;
+                    //UpdateData();
+                    setTimeout(function(){view.UpdateView(data)}, 100);
                 };
             } 
-            else dropdownIE.onexecute =  function()
+            else
             {
-                UpdateDefaultLSMenuOption(elements,index);
-                data.childColumnActiveOpt = element.name;
-                console.log("Click on "+element.value+ " final option"); // ADD HERE THE FUNCTION 
-                setTimeout(function(){view.UpdateView(data)}, 100);
-            };*/
+                data.isFinalDrop = true;
+                dropdownIE.onexecute =  function()
+                {
+                    console.log(element.value);
+                    
+                   /* UpdateDefaultLSMenuOption(elements,index);
+                    data.childColumnActiveOpt = element.name;
+                    console.log("Click on "+element.value+ " final option"); // ADD HERE THE FUNCTION 
+                    setTimeout(function(){view.UpdateView(data)}, 100);*/
+                };
+            } 
             
             dropdownIE.position = new THREE.Vector3(0, h - factor*5, 0.01);
 

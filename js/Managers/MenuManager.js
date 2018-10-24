@@ -2,6 +2,7 @@ function MenuManager() {
 
     var mmgr = this;
 
+    var menuType;
     var menuParent;
     var controllers = [];
     var actualCtrl;
@@ -42,86 +43,13 @@ function MenuManager() {
         }
 
 // T R  A D I T I O N A L 
-
-        var traditionalmenu = createTraditionalViewStructure('traditionalmenu');
-        menuParent.add(traditionalmenu);
-        
-        playpauseCtrl = new PlayPauseLSMenuController();
-        controllers.push(playpauseCtrl);
-        playpauseCtrl.Init();
-
-        volumeCtrl = new VolumeLSMenuController();
-        controllers.push(volumeCtrl);
-        volumeCtrl.Init();
-
-        multiOptionsCtrl = new MultiOptionsLSMenuController(2);
-        controllers.push(multiOptionsCtrl);
-        multiOptionsCtrl.Init();
-
-
-        traditionalmenu.add(createOptionTraditionalMenuViewStructure('tradoptionmenu'));
-        STOptionCtrl = new STOptionMenuController(2);
-        controllers.push(STOptionCtrl);
-        STOptionCtrl.Init();
-
-        SLOptionCtrl = new SLOptionMenuController(2);
-        controllers.push(SLOptionCtrl);
-        SLOptionCtrl.Init();
-
-        ADOptionCtrl = new ADOptionMenuController(2);
-        controllers.push(ADOptionCtrl);
-        ADOptionCtrl.Init();
-
-        ASTOptionCtrl = new ASTOptionMenuController(2);
-        controllers.push(ASTOptionCtrl);
-        ASTOptionCtrl.Init();
-     
+        menuType = 2;
 
 // L O W    S I G H T E D 
+        //menuType = 1;
 
-        /*playpauseCtrl = new PlayPauseLSMenuController();
-        controllers.push(playpauseCtrl);     
-        menuParent.add(createPlayPauseLSMenuViewStructure('playpausemenu'));
-        playpauseCtrl.Init(1);
-
-        volumeCtrl = new VolumeLSMenuController();
-        controllers.push(volumeCtrl);
-        menuParent.add(createVolumeLSMenuViewStructure('volumemenu'));
-        volumeCtrl.Init(1);
-
-        settingsCtrl = new SettingsLSMenuController();
-        controllers.push(settingsCtrl);
-        menuParent.add(createSettingsLSMenuViewStructure('settingsmenu'));
-        settingsCtrl.Init(1);
-
-        multiOptionsCtrl = new MultiOptionsLSMenuController();
-        controllers.push(multiOptionsCtrl);
-        menuParent.add(createMultiOptionsLSMenuViewStructure('multioptionsmenu'));
-        multiOptionsCtrl.Init(1);
-
-        menuParent.add(createOptionLSMenuViewStructure('lowsightedoptmenu'));
-
-        STOptionCtrl = new STOptionMenuController();
-        controllers.push(STOptionCtrl);
-        STOptionCtrl.Init(1);
-
-        SLOptionCtrl = new SLOptionMenuController();
-        controllers.push(SLOptionCtrl);
-        SLOptionCtrl.Init(1);
-
-        ADOptionCtrl = new ADOptionMenuController();
-        controllers.push(ADOptionCtrl);
-        ADOptionCtrl.Init(1);
-
-        ASTOptionCtrl = new ASTOptionMenuController();
-        controllers.push(ASTOptionCtrl);
-        ASTOptionCtrl.Init(1);
-
-        menuParent.add(createOptionLSMenuViewStructure('settingsoptmenu'));
-        
-        SettingsOptionCtrl = new SettingsOptionMenuController();
-        controllers.push(SettingsOptionCtrl);
-        SettingsOptionCtrl.Init(1);*/
+        addMenuToParent(menuType);
+        InitAllCtrl(menuType);
 
         mmgr.ResetViews();
 
@@ -188,8 +116,9 @@ function MenuManager() {
         SLOptionCtrl.Exit();
         ADOptionCtrl.Exit();
         ASTOptionCtrl.Exit();
+        SettingsOptionCtrl.Exit();
 
-        menuParent.getObjectByName('traditionalmenu').visible = true;
+        menuParent.getObjectByName('traditionalmenu').visible = true;      
     }
 
     this.Load = function (controller)
@@ -208,17 +137,21 @@ function MenuManager() {
         //subController.switchSigner( false ); // TODO CHANGE THIS  FUNCTION
 
         MenuDictionary.initGlobalArraysByLanguage();
-
+        
         // Compare the saved index of the traditional option dropdown with the new controller index. 
         // If the index is deferent change the variable and initialize the doprdown
         if(optActiveIndex != controller.getMenuIndex())
         {
             actualCtrl.Init();
             optActiveIndex = controller.getMenuIndex();
-        } 
+
+        }
 
         // If the index is equal change the variable to 'undefined' in order to open the same dropdown just closed.
-        else if(optActiveIndex == controller.getMenuIndex()) optActiveIndex = undefined;
+        if(optActiveIndex == controller.getMenuIndex()) optActiveIndex = undefined;
+
+        else actualCtrl.Init();
+
     }
 
 /**
@@ -237,7 +170,6 @@ function MenuManager() {
 
         //TRADITIONAL
         if(menuParent.getObjectByName('traditionalmenu')) menuParent.getObjectByName('traditionalmenu').visible = false;
-
 
         if(menuActivationElement) menuActivationElement.visible = true;
 
@@ -277,6 +209,65 @@ function MenuManager() {
         });
 
         scene.add(menuActivationElement);
+    }
+
+
+    function addMenuToParent(menuType)
+    {
+        switch(menuType)
+        {
+            // LOW SIGHTED
+            case 1: 
+            default:
+                menuParent.add(createPlayPauseLSMenuViewStructure('playpausemenu'));
+                menuParent.add(createVolumeLSMenuViewStructure('volumemenu'));
+                menuParent.add(createSettingsLSMenuViewStructure('settingsmenu'));
+                menuParent.add(createMultiOptionsLSMenuViewStructure('multioptionsmenu'));
+                menuParent.add(createOptionLSMenuViewStructure('lowsightedoptmenu'));
+                menuParent.add(createOptionLSMenuViewStructure('settingsoptmenu'));
+                break;
+
+            // TRADITIONAL
+            case 2:
+                var traditionalmenu = createTraditionalViewStructure('traditionalmenu');
+                menuParent.add(traditionalmenu);
+                traditionalmenu.add(createOptionTraditionalMenuViewStructure('tradoptionmenu'));
+                break;
+        }
+    }
+
+    function InitAllCtrl(menuType)
+    {
+        playpauseCtrl = new PlayPauseLSMenuController();
+        controllers.push(playpauseCtrl);  
+
+        volumeCtrl = new VolumeLSMenuController();
+        controllers.push(volumeCtrl);
+
+        settingsCtrl = new SettingsLSMenuController(menuType);
+        controllers.push(settingsCtrl);
+
+        multiOptionsCtrl = new MultiOptionsLSMenuController(menuType);
+        controllers.push(multiOptionsCtrl);
+
+        STOptionCtrl = new STOptionMenuController(menuType);
+        controllers.push(STOptionCtrl);
+
+        SLOptionCtrl = new SLOptionMenuController(menuType);
+        controllers.push(SLOptionCtrl);
+
+        ADOptionCtrl = new ADOptionMenuController(menuType);
+        controllers.push(ADOptionCtrl);
+
+        ASTOptionCtrl = new ASTOptionMenuController(menuType);
+        controllers.push(ASTOptionCtrl);
+
+        SettingsOptionCtrl = new SettingsOptionMenuController(menuType);
+        controllers.push(SettingsOptionCtrl);
+
+        controllers.forEach(function(controller){
+            controller.Init();
+        });
     }
 
 
@@ -332,6 +323,17 @@ function MenuManager() {
 
         tradOptionMenuTitle.add(line)
 
+        var back = new InteractiveElementModel();
+        back.width = 1.5;
+        back.height = 1.5;
+        back.name = 'backMenuButton';
+        back.type =  'icon';
+        back.value = './img/menu/less_than_icon.png';
+        back.color = 0xffffff;
+        back.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(back.width, back.height), new THREE.MeshBasicMaterial({visible: false}));
+        back.position = new THREE.Vector3(-12, 0, 0.01);
+
+        tradOptionMenuTitle.add(back.create());
 
         var onOptButton = new InteractiveElementModel();
         onOptButton.width = 4.5;
@@ -555,7 +557,7 @@ function MenuManager() {
         subtitlesButton.color = 0xffffff;
         subtitlesButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(subtitlesButton.width, subtitlesButton.height), new THREE.MeshBasicMaterial({visible: false}));
         subtitlesButton.onexecute =  function(){ console.log("Open ST submenu") };
-        subtitlesButton.position = new THREE.Vector3((tradmenuDivisions-11)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
+        subtitlesButton.position = new THREE.Vector3((tradmenuDivisions-13)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
 
         multioptionsmenu.add(subtitlesButton.create());
 
@@ -569,7 +571,7 @@ function MenuManager() {
         subtitlesDisabledButton.color = 0xffffff;
         subtitlesDisabledButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(subtitlesDisabledButton.width, subtitlesDisabledButton.height), new THREE.MeshBasicMaterial({visible: false}));
         subtitlesDisabledButton.onexecute =  function(){ console.log("Open ST submenu") };
-        subtitlesDisabledButton.position = new THREE.Vector3((tradmenuDivisions-11)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
+        subtitlesDisabledButton.position = new THREE.Vector3((tradmenuDivisions-13)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
 
         multioptionsmenu.add(subtitlesDisabledButton.create());
 
@@ -583,7 +585,7 @@ function MenuManager() {
         signLanguageButton.color = 0xffffff;
         signLanguageButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(signLanguageButton.width, signLanguageButton.height), new THREE.MeshBasicMaterial({visible: false}));
         signLanguageButton.onexecute =  function(){ console.log("Open SL submenu")};
-        signLanguageButton.position = new THREE.Vector3((tradmenuDivisions-9)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
+        signLanguageButton.position = new THREE.Vector3((tradmenuDivisions-11)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
 
         multioptionsmenu.add(signLanguageButton.create());
 
@@ -597,7 +599,7 @@ function MenuManager() {
         signLanguageDisabledButton.color = 0xffffff;
         signLanguageDisabledButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(signLanguageDisabledButton.width, signLanguageDisabledButton.height), new THREE.MeshBasicMaterial({visible: false}));
         signLanguageDisabledButton.onexecute =  function(){ console.log("Open SL submenu") };
-        signLanguageDisabledButton.position = new THREE.Vector3((tradmenuDivisions-9)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
+        signLanguageDisabledButton.position = new THREE.Vector3((tradmenuDivisions-11)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
 
         multioptionsmenu.add(signLanguageDisabledButton.create());
 
@@ -611,7 +613,7 @@ function MenuManager() {
         audioDescriptionButton.color = 0xffffff;
         audioDescriptionButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(audioDescriptionButton.width, audioDescriptionButton.height), new THREE.MeshBasicMaterial({visible: false}));
         audioDescriptionButton.onexecute =  function(){ console.log("Open AD submenu") };
-        audioDescriptionButton.position = new THREE.Vector3((tradmenuDivisions-7)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
+        audioDescriptionButton.position = new THREE.Vector3((tradmenuDivisions-9)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
 
         multioptionsmenu.add(audioDescriptionButton.create());
 
@@ -625,7 +627,7 @@ function MenuManager() {
         audioDescriptionDisabledButton.color = 0xffffff;
         audioDescriptionDisabledButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(audioDescriptionDisabledButton.width, audioDescriptionDisabledButton.height), new THREE.MeshBasicMaterial({visible: false}));
         audioDescriptionDisabledButton.onexecute =  function(){ console.log("Open AD submenu") };
-        audioDescriptionDisabledButton.position = new THREE.Vector3((tradmenuDivisions-7)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
+        audioDescriptionDisabledButton.position = new THREE.Vector3((tradmenuDivisions-9)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
 
         multioptionsmenu.add(audioDescriptionDisabledButton.create());
 
@@ -639,7 +641,7 @@ function MenuManager() {
         audioSubtitlesButton.color = 0xffffff;
         audioSubtitlesButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(audioSubtitlesButton.width, audioSubtitlesButton.height), new THREE.MeshBasicMaterial({visible: false}));
         audioSubtitlesButton.onexecute =  function(){ console.log("Open AST submenu") };
-        audioSubtitlesButton.position = new THREE.Vector3((tradmenuDivisions-5)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
+        audioSubtitlesButton.position = new THREE.Vector3((tradmenuDivisions-7)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
 
         multioptionsmenu.add(audioSubtitlesButton.create());
 
@@ -653,11 +655,32 @@ function MenuManager() {
         audioSubtitlesDisabledButton.color = 0xffffff;
         audioSubtitlesDisabledButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(audioSubtitlesDisabledButton.width, audioSubtitlesDisabledButton.height), new THREE.MeshBasicMaterial({visible: false}));
         audioSubtitlesDisabledButton.onexecute =  function(){ console.log("Open AST submenu") };
-        audioSubtitlesDisabledButton.position = new THREE.Vector3((tradmenuDivisions-5)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
+        audioSubtitlesDisabledButton.position = new THREE.Vector3((tradmenuDivisions-7)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
 
         multioptionsmenu.add(audioSubtitlesDisabledButton.create());
 
         traditionalmenu.add(multioptionsmenu);
+
+
+//SETTINGS
+        var  settingsmenu =  new THREE.Group();
+        settingsmenu.name = 'settingsmenu';
+
+        var settingsButton = new InteractiveElementModel();
+        settingsButton.width = 2.5;
+        settingsButton.height = 2.5;
+        settingsButton.name = 'settingsButton';
+        settingsButton.type =  'icon';
+        settingsButton.value = './img/menu/settings_icon.png';
+        settingsButton.color = 0xffffff;
+        settingsButton.visible = true;
+        settingsButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(settingsButton.width, settingsButton.height), new THREE.MeshBasicMaterial({visible: false}));
+        settingsButton.onexecute =  function(){ console.log("Open SETTINGS submenu") };
+        settingsButton.position = new THREE.Vector3((tradmenuDivisions-4)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
+
+        settingsmenu.add(settingsButton.create());
+
+        traditionalmenu.add(settingsmenu);
 
         return traditionalmenu;
     }

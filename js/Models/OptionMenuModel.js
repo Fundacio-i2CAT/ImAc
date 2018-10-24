@@ -10,16 +10,19 @@ function OptionMenuModel() {
 
 	this.onOptButtonFunc;
 	this.offOptButtonFunc;
+	this.isOnOffButtonVisible;
+
+	this.backMenuButtonFunc;
 
 // T R A D I T I O N A L
 
 	this.title;
 	this.titleHeight;
+	this.isFinalDrop;
 
 // L O W	S I G H T E D
 
 	this.clickedButtonName;
-	this.backMenuButtonFunc;
 	
 	this.isUpDownArrowsVisible;
 	this.upDropdownButtonFunc;

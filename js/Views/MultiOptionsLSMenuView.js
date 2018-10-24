@@ -2,7 +2,8 @@ function MultiOptionsLSMenuView() {
 
 	this.UpdateView = function(data){
 		var submenu = scene.getObjectByName(data.name);
-		
+
+        console.log(data.activeOptionIndex)
 		submenu.getObjectByName('showSubtitlesMenuButton').visible = data.isSTenabled;
 		submenu.getObjectByName('disabledSubtitlesMenuButton').visible = !data.isSTenabled;
 
@@ -15,23 +16,22 @@ function MultiOptionsLSMenuView() {
 		submenu.getObjectByName('showAudioSubtitlesMenuButton').visible = data.isASTenabled;
 		submenu.getObjectByName('disabledAudioSubtitlesMenuButton').visible = !data.isASTenabled;
 
-        submenu.getObjectByName('showSubtitlesMenuButton').children[0].onexecute = data.openSTMenuButtonFunc;
-        submenu.getObjectByName('disabledSubtitlesMenuButton').children[0].onexecute = data.openSTMenuButtonFunc;
+        submenu.getObjectByName('showSubtitlesMenuButton').children[0].onexecute = (data.activeOptionIndex == 1) ? data.closeSTMenuButtonFunc : data.openSTMenuButtonFunc;
+        submenu.getObjectByName('disabledSubtitlesMenuButton').children[0].onexecute = (data.activeOptionIndex == 1) ? data.closeSTMenuButtonFunc : data.openSTMenuButtonFunc;
 
-        submenu.getObjectByName('showSignLanguageMenuButton').children[0].onexecute = data.openSLMenuButtonFunc;
-        submenu.getObjectByName('disabledSignLanguageMenuButton').children[0].onexecute = data.openSLMenuButtonFunc;
+        submenu.getObjectByName('showSignLanguageMenuButton').children[0].onexecute = (data.activeOptionIndex == 2) ? data.closeSLMenuButtonFunc : data.openSLMenuButtonFunc;
+        submenu.getObjectByName('disabledSignLanguageMenuButton').children[0].onexecute = (data.activeOptionIndex == 2) ? data.closeSLMenuButtonFunc : data.openSLMenuButtonFunc;
 
-        submenu.getObjectByName('showAudioDescriptionMenuButton').children[0].onexecute = data.openADMenuButtonFunc;
-        submenu.getObjectByName('disabledAudioDescriptionMenuButton').children[0].onexecute = data.openADMenuButtonFunc;
+        submenu.getObjectByName('showAudioDescriptionMenuButton').children[0].onexecute = (data.activeOptionIndex == 3) ? data.closeADMenuButtonFunc : data.openADMenuButtonFunc;
+        submenu.getObjectByName('disabledAudioDescriptionMenuButton').children[0].onexecute = (data.activeOptionIndex == 3) ? data.closeADMenuButtonFunc : data.openADMenuButtonFunc;
 
-        submenu.getObjectByName('showAudioSubtitlesMenuButton').children[0].onexecute = data.openASTMenuButtonFunc;
-        submenu.getObjectByName('disabledAudioSubtitlesMenuButton').children[0].onexecute = data.openASTMenuButtonFunc;
+        submenu.getObjectByName('showAudioSubtitlesMenuButton').children[0].onexecute = (data.activeOptionIndex == 4) ? data.closeASTMenuButtonFunc : data.openASTMenuButtonFunc;
+        submenu.getObjectByName('disabledAudioSubtitlesMenuButton').children[0].onexecute = (data.activeOptionIndex == 4) ? data.closeASTMenuButtonFunc : data.openASTMenuButtonFunc;
 
 		if(submenu.getObjectByName('forwardMenuButton')) submenu.getObjectByName('forwardMenuButton').children[0].onexecute = data.forwardMenuButtonFunc;
 		if(submenu.getObjectByName('backMenuButton')) submenu.getObjectByName('backMenuButton').children[0].onexecute = data.backMenuButtonFunc;
 
         if(submenu.getObjectByName('closeMenuButton')) submenu.getObjectByName('closeMenuButton').children[0].onexecute = data.closeMenuButtonFunc;
-  		
 	}
 
     this.pressButtonFeedback = function(data)

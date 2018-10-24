@@ -13,7 +13,7 @@ function OptionLSMenuView() {
 		submenu.getObjectByName('onlsoptbutton').children[0].onexecute = data.onOptButtonFunc;
 		submenu.getObjectByName('offlsoptbutton').children[0].onexecute = data.offOptButtonFunc;
 
-		if(data.isLSOptEnabled) submenu.getObjectByName('lsOptEnabledLabel').material = UpdateImageIEMaterial(data.lsOptEnabledLabelValue);
+		if(data.isOptEnabled) submenu.getObjectByName('lsOptEnabledLabel').material = UpdateImageIEMaterial(data.lsOptEnabledLabelValue);
 		else submenu.getObjectByName('lsOptDisabledLabel').material = UpdateImageIEMaterial(data.lsOptDisbledLabelValue);
 
 		submenu.getObjectByName('forwardMenuButton').visible = false;
@@ -26,7 +26,7 @@ function OptionLSMenuView() {
 
 		data.parentColumnDropdown.forEach(function(element){
 			element.material.color.set( 0xffffff );
-			submenu.getObjectByName('parentcolumndropdown').add(element)		
+			submenu.getObjectByName('parentcolumndropdown').add(element)
 		});
 
 		submenu.getObjectByName('upDropdownButton').visible = data.isUpDownArrowsVisible;
@@ -35,7 +35,7 @@ function OptionLSMenuView() {
 		if(data.parentColumnHoritzontalLineDivisions)
 		{
 			data.parentColumnHoritzontalLineDivisions.forEach(function(element){
-				submenu.getObjectByName('parentcolumnhoritzontallines').add(element)		
+				submenu.getObjectByName('parentcolumnhoritzontallines').add(element)
 			});
 		}
 		

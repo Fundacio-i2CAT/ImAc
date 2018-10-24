@@ -1,5 +1,6 @@
-function SettingsOptionMenuController() {
+function SettingsOptionMenuController(menuType) {
 
+    var set = this;
 	var data;
 	var view;
 	var viewStructure;
@@ -22,7 +23,7 @@ function SettingsOptionMenuController() {
                                     {name: 'settingsVoiceControl', value: 'Voice Control', options: voiceControlArray},
                                     {name: 'settingsUserProfile', value: 'User Profile', options: settingsUserProfileArray}]
 	
-	this.Init = function(menuType){
+	this.Init = function(){
 
 		data = GetData();  
 		UpdateData();
@@ -60,11 +61,11 @@ function SettingsOptionMenuController() {
 	    		interController.removeInteractiveObject(intrElement.name);
 	    	});
 
-	    	viewStructure.getObjectByName('parentcolumndropdown').children = [];
-	    	viewStructure.getObjectByName('parentcolumndropdown').children = [];
-	    	viewStructure.getObjectByName('childcolumndropdown').children = [];
-	    	viewStructure.getObjectByName('parentcolumnhoritzontallines').children = [];
-	    	viewStructure.getObjectByName('childcolumnhoritzontallines').children = [];
+            if(viewStructure.getObjectByName('parentcolumndropdown')) viewStructure.getObjectByName('parentcolumndropdown').children = [];
+            if(viewStructure.getObjectByName('childcolumndropdown')) viewStructure.getObjectByName('childcolumndropdown').children = [];
+            if(viewStructure.getObjectByName('parentcolumnhoritzontallines')) viewStructure.getObjectByName('parentcolumnhoritzontallines').children = [];
+            if(viewStructure.getObjectByName('childcolumnhoritzontallines')) viewStructure.getObjectByName('childcolumnhoritzontallines').children = [];
+            data.childColumnActiveOpt = undefined;
     	}
     }
 
@@ -72,6 +73,12 @@ function SettingsOptionMenuController() {
     {
     	return data.name;
     }
+
+    this.getMenuIndex = function()
+    {
+        return 5;
+    }
+
 
     function GetData()
 	{
@@ -83,22 +90,36 @@ function SettingsOptionMenuController() {
 	}
 
 
-	function UpdateData()
+    function UpdateData()
     {
+        data.isOnOffButtonVisible = false;
 
-		data.lsOptEnabledLabelName = 'settingsButton';
-		data.lsOptEnabledLabelValue = './img/menu/settings_icon.png';
+        data.lsOptEnabledLabelName = 'settingsButton';
+        data.lsOptEnabledLabelValue = './img/menu/settings_icon.png';
 
-		data.isUpDownArrowsVisible = parentColumnDropdownElements.length > 4 ? true : false;
-		
-		data.parentColumnHoritzontalLineDivisions = getHoritzontalLineDivisions(125, 125*9/16, 0xffffff, 3, 1);	
-												
-		if(!data.parentColumnDropdown) data.parentColumnDropdown = AddDropdownElementsLS(parentColumnDropdownElements);
+        switch(menuType)
+        {
+            // LOW SIGHTED
+            case 1: 
+            default:
+                data.isUpDownArrowsVisible = parentColumnDropdownElements.length > 4 ? true : false;
 
-        data.backMenuButtonFunc = function(){ AddVisualFeedbackOnClick('backMenuButton', function(){ menumanager.NavigateBackMenu()} )};
-        data.closeMenuButtonFunc = function(){ AddVisualFeedbackOnClick('closeMenuButton', function(){ menumanager.ResetViews()} )};
+                data.parentColumnHoritzontalLineDivisions = getHoritzontalLineDivisions(125, 4*(125*9/16)/6, 0xffffff, 4, 1);
+
+                if(!data.parentColumnDropdown) data.parentColumnDropdown = AddDropdownElementsLS(parentColumnDropdownElements);  
+
+                data.backMenuButtonFunc = function(){ AddVisualFeedbackOnClick('backMenuButton', function(){ menumanager.NavigateBackMenu()} )};
+                data.closeMenuButtonFunc = function(){ AddVisualFeedbackOnClick('closeMenuButton', function(){ menumanager.ResetViews()} )};
+                break;
+
+            // TRADITIONAL
+            case 2: 
+                data.title = 'Settings';
+                data.parentColumnDropdown = AddDropdownElementsTrad(parentColumnDropdownElements);  
+                data.backMenuButtonFunc = function(){ AddVisualFeedbackOnClick('backMenuButton', function(){ menumanager.Load(set)} )};
+                break;
+        }   
     }
-
 
     function AddInteractivityToMenuElements()
     {
@@ -171,6 +192,7 @@ function SettingsOptionMenuController() {
     {
         var dropdownInteractiveElements =  [];
         var h = 5*elements.length;
+        data.titleHeight = elements.length * 5;
 
         elements.forEach(function(element, index){
             var factor = (index+1);
@@ -187,26 +209,31 @@ function SettingsOptionMenuController() {
             
             dropdownIE.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(dropdownIE.width, dropdownIE.height), new THREE.MeshBasicMaterial({visible:  false}));
             
-            /*if(element.options)
+            if(element.options)
             {
-                dropdownIE.visible = element.visible;
+                //dropdownIE.visible = element.visible;
+                data.isFinalDrop = false;
                 dropdownIE.onexecute =  function()
                 {
+                    data.title = element.value;
                     data.childColumnActiveOpt = undefined;
                     data.parentColumnActiveOpt = element.name;
-                    data.childColumnDropdown = AddDropdownElementsLS(element.options);
-                    data.childColumnHoritzontalLineDivisions = getHoritzontalLineDivisions(125, 4*(125*9/16)/6, 0xffffff, element.options.length, 2); 
-                    UpdateData();
-                    setTimeout(function(){view.UpdateView(data)}, 100);  
+                    data.parentColumnDropdown = AddDropdownElementsTrad(element.options);
+                    //UpdateData();
+                    setTimeout(function(){view.UpdateView(data)}, 100);
                 };
             } 
-            else dropdownIE.onexecute =  function()
+            else
             {
-                UpdateDefaultLSMenuOption(elements,index);
-                data.childColumnActiveOpt = element.name;
-                console.log("Click on "+element.value+ " final option"); // ADD HERE THE FUNCTION 
-                setTimeout(function(){view.UpdateView(data)}, 100);
-            };*/
+                data.isFinalDrop = true;
+                dropdownIE.onexecute =  function()
+                {                    
+                    UpdateDefaultLSMenuOption(elements,index);
+                    data.childColumnActiveOpt = element.name;
+                    console.log("Click on "+element.value+ " final option"); // ADD HERE THE FUNCTION 
+                    setTimeout(function(){view.UpdateView(data)}, 100);
+                };
+            } 
             
             dropdownIE.position = new THREE.Vector3(0, h - factor*5, 0.01);
 

@@ -35,6 +35,11 @@ function VolumeLSMenuController() {
     	return data.name;
     }
 
+	this.getMenuIndex = function()
+    {
+        return -1;
+    }
+    
     function GetData()
 	{
 	    if (data == null)

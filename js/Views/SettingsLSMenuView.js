@@ -2,14 +2,15 @@ function SettingsLSMenuView() {
 
 	this.UpdateView = function(data){
 		var submenu = scene.getObjectByName(data.name);
+                console.log(data.activeOptionIndex)
 
-        submenu.getObjectByName('settingsButton').children[0].onexecute = data.setiingsMenuButtonFunc;
+        submenu.getObjectByName('settingsButton').children[0].onexecute = (data.activeOptionIndex == 5) ? data.closeSettingsMenuButtonFunc : data.openSettingsMenuButtonFunc;
 
 		if(submenu.getObjectByName('forwardMenuButton')) submenu.getObjectByName('forwardMenuButton').children[0].onexecute = data.forwardMenuButtonFunc;
 		if(submenu.getObjectByName('backMenuButton')) submenu.getObjectByName('backMenuButton').children[0].onexecute = data.backMenuButtonFunc;
 
         if(submenu.getObjectByName('closeMenuButton')) submenu.getObjectByName('closeMenuButton').children[0].onexecute = data.closeMenuButtonFunc;
-  
+
 	}
 
     this.pressButtonFeedback = function(data)

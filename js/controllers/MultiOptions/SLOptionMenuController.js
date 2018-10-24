@@ -1,34 +1,35 @@
 function SLOptionMenuController(menuType) {
 
+    var sl = this;
 	var data;
 	var view;
 	var viewStructure;
 
 	var signerLanguagesArray =  [
-									{name: 'signerEngButton', value: 'English'}, 
-									{name: 'signerEspButton', value: 'Spanish'}, 
-									{name: 'signerGerButton', value: 'German'}, 
-									{name: 'signerCatButton', value: 'Catalan'}];
+									{name: 'signerEngButton', value: 'English', default: true}, 
+									{name: 'signerEspButton', value: 'Spanish', default: false}, 
+									{name: 'signerGerButton', value: 'German', default: false}, 
+									{name: 'signerCatButton', value: 'Catalan', default: false}];
 
 	var signerIndicatorArray = [
-									{name: 'signerIndicatorNoneButton', value: 'None'}, 
-									{name: 'signerIndicatorArrowButton', value: 'Arrow'}, 
-									{name: 'signerIndicatorRadarButton', value: 'Radar'}];
+									{name: 'signerIndicatorNoneButton', value: 'None', default: true}, 
+									{name: 'signerIndicatorArrowButton', value: 'Arrow', default: false}, 
+									{name: 'signerIndicatorRadarButton', value: 'Radar', default: false}];
 
 	var signerPositionArray = [
-									{name: 'signerTopButton', value: 'Top'}, 
-									{name: 'signerBottomButton', value: 'Bottom'}];
+									{name: 'signerTopButton', value: 'Top', default: false}, 
+									{name: 'signerBottomButton', value: 'Bottom', default: true}];
 
 	var signerAreasArray = [
-									{name: 'signerSmallAreaButton', value: 'Small'}, 
-									{name: 'signerMediumlAreaButton', value: 'Medium'},
-									{name: 'signerLargeAreaButton', value: 'Large'}];
+									{name: 'signerSmallAreaButton', value: 'Small', default: false}, 
+									{name: 'signerMediumlAreaButton', value: 'Medium', default: false},
+									{name: 'signerLargeAreaButton', value: 'Large', default: true}];
 
     var parentColumnDropdownElements = [ 
-                                    {name: 'signerLanguages', value: 'Languages', options: signerLanguagesArray},
-                                    {name: 'signerShowPositions', value: 'Position', options: signerPositionArray},
-                                    {name: 'signerIndicator', value: 'Indicator', options: signerIndicatorArray},
-                                    {name: 'signerAreas', value: 'Area', options: signerAreasArray}]
+                                    {name: 'signerLanguages', value: 'Languages', options: signerLanguagesArray, visible: true},
+                                    {name: 'signerShowPositions', value: 'Position', options: signerPositionArray, visible: true},
+                                    {name: 'signerIndicator', value: 'Indicator', options: signerIndicatorArray, visible: true},
+                                    {name: 'signerAreas', value: 'Area', options: signerAreasArray, visible: true}];
 	
 
 	this.Init = function(){
@@ -73,6 +74,7 @@ function SLOptionMenuController(menuType) {
             if(viewStructure.getObjectByName('childcolumndropdown')) viewStructure.getObjectByName('childcolumndropdown').children = [];
             if(viewStructure.getObjectByName('parentcolumnhoritzontallines')) viewStructure.getObjectByName('parentcolumnhoritzontallines').children = [];
             if(viewStructure.getObjectByName('childcolumnhoritzontallines')) viewStructure.getObjectByName('childcolumnhoritzontallines').children = [];
+            data.childColumnActiveOpt = undefined;
     	}
     }
 
@@ -99,9 +101,11 @@ function SLOptionMenuController(menuType) {
 	function UpdateData()
     {
 		data.isOptEnabled = true;
+        data.isOnOffButtonVisible = true;
+
 
 		data.lsOptEnabledLabelName = 'showSignLanguageMenuButton';
-		data.lsOptEnabledLabelValue = './img/menu_ai_icons/SL.png';;
+		data.lsOptEnabledLabelValue = './img/menu_ai_icons/SL.png';
 
 		data.lsOptDisbledLabelName = 'disabledSignLanguageMenuButton';
 		data.lsOptDisbledLabelValue = './img/menu_ai_icons/SL_strike.png';
@@ -122,12 +126,13 @@ function SLOptionMenuController(menuType) {
 
                 data.backMenuButtonFunc = function(){ AddVisualFeedbackOnClick('backMenuButton', function(){ menumanager.NavigateBackMenu()} )};
                 data.closeMenuButtonFunc = function(){ AddVisualFeedbackOnClick('closeMenuButton', function(){ menumanager.ResetViews()} )};
+                break;
 
          // TRADITIONAL
             case 2: 
                 data.title = 'Sign Language';
-                data.titleHeight = parentColumnDropdownElements.length * 5;
                 data.parentColumnDropdown = AddDropdownElementsTrad(parentColumnDropdownElements);  
+                data.backMenuButtonFunc = function(){ AddVisualFeedbackOnClick('backMenuButton', function(){ menumanager.Load(sl)} )};
                 break;
         } 		
     }
@@ -157,19 +162,18 @@ function SLOptionMenuController(menuType) {
     	elements.forEach(function(element, index){
     		var factor = (index*2)+1;
 
-    		var dropdownIE = new InteractiveElementModel();
+    		var dropdownIE = new InteractiveElementModel();  
 
             if(element.options)
             {
                 h = 125*9/16;
-                dropdownIE.onexecute =  function()
-                {
+                dropdownIE.onexecute =  function(){
+                    data.childColumnActiveOpt = undefined;  
                     data.parentColumnActiveOpt = element.name;
                     data.childColumnDropdown = AddDropdownElementsLS(element.options); 
                     data.childColumnHoritzontalLineDivisions = getHoritzontalLineDivisions(125, 4*(125*9/16)/6, 0xffffff, element.options.length, 2); 
                     UpdateData();
-                    setTimeout(function(){view.UpdateView(data)}, 100);
-                    
+                    setTimeout(function(){view.UpdateView(data)}, 100);      
                 };
             } 
             else
@@ -182,19 +186,17 @@ function SLOptionMenuController(menuType) {
                     setTimeout(function(){view.UpdateView(data)}, 100);
                 };
             } 
-
-	        dropdownIE.width = 125/3;
-	        dropdownIE.height =  elements.length>4 ? h/4 : h/elements.length;
-	        dropdownIE.name = element.name;
-	        dropdownIE.type =  'text';
-	        dropdownIE.value = element.value; //AudioManager.getVolume();
-	        dropdownIE.color = 0xffffff;
-	        dropdownIE.textSize =  5;
-	        dropdownIE.visible = true;
+            dropdownIE.width = 125/3;
+            dropdownIE.height =  elements.length>4 ? h/4 : h/elements.length;
+            dropdownIE.name = element.name;
+            dropdownIE.type =  'text';
+            dropdownIE.value = element.value;
+            dropdownIE.color = 0xffffff;
+            dropdownIE.textSize =  5;
+            dropdownIE.visible = true;
             dropdownIE.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(dropdownIE.width, dropdownIE.height), new THREE.MeshBasicMaterial({visible:  false}));
-        	
+            
 	        dropdownIE.position = new THREE.Vector3(0, ( h/2-factor*h/(elements.length>4 ? 4*2 : elements.length*2) ), 0.01);
-
 	        dropdownInteractiveElements.push(dropdownIE.create())
     	});
 
@@ -205,6 +207,8 @@ function SLOptionMenuController(menuType) {
     {
         var dropdownInteractiveElements =  [];
         var h = 5*elements.length;
+        data.titleHeight = elements.length * 5;
+
 
         elements.forEach(function(element, index){
             var factor = (index+1);
@@ -214,33 +218,39 @@ function SLOptionMenuController(menuType) {
             dropdownIE.height =  4;
             dropdownIE.name = element.name;
             dropdownIE.type =  'text';
-            dropdownIE.value = element.value; //AudioManager.getVolume();
+            dropdownIE.value = element.value;
             dropdownIE.color = element.default ? 0xffff00 : 0xffffff;
             dropdownIE.textSize =  1.5;
             dropdownIE.visible = true;
             
             dropdownIE.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(dropdownIE.width, dropdownIE.height), new THREE.MeshBasicMaterial({visible:  false}));
             
-            /*if(element.options)
+            if(element.options)
             {
-                dropdownIE.visible = element.visible;
+                //dropdownIE.visible = element.visible;
+                data.isFinalDrop = false;
                 dropdownIE.onexecute =  function()
                 {
+                    data.title = element.value;
                     data.childColumnActiveOpt = undefined;
                     data.parentColumnActiveOpt = element.name;
-                    data.childColumnDropdown = AddDropdownElementsLS(element.options);
-                    data.childColumnHoritzontalLineDivisions = getHoritzontalLineDivisions(125, 4*(125*9/16)/6, 0xffffff, element.options.length, 2); 
-                    UpdateData();
-                    setTimeout(function(){view.UpdateView(data)}, 100);  
+                    data.parentColumnDropdown = AddDropdownElementsTrad(element.options);
+                    data.isOnOffButtonVisible = false;
+                    //UpdateData();
+                    setTimeout(function(){view.UpdateView(data)}, 100);
                 };
             } 
-            else dropdownIE.onexecute =  function()
+            else
             {
-                UpdateDefaultLSMenuOption(elements,index);
-                data.childColumnActiveOpt = element.name;
-                console.log("Click on "+element.value+ " final option"); // ADD HERE THE FUNCTION 
-                setTimeout(function(){view.UpdateView(data)}, 100);
-            };*/
+                data.isFinalDrop = true;
+                dropdownIE.onexecute =  function()
+                {
+                    UpdateDefaultLSMenuOption(elements,index);
+                    data.childColumnActiveOpt = element.name;
+                    console.log("Click on "+element.value+ " final option"); // ADD HERE THE FUNCTION 
+                    setTimeout(function(){view.UpdateView(data)}, 100);
+                };
+            } 
             
             dropdownIE.position = new THREE.Vector3(0, h - factor*5, 0.01);
 

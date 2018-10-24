@@ -1,7 +1,10 @@
 function SettingsLSMenuModel() {
 	
 	this.name = 'settingsmenu';
-	this.settingsMenuButtonFunc;
+	this.openSettingsMenuButtonFunc;
+	this.closeSettingsMenuButtonFunc;
+	this.activeOptionIndex;
+
 
 	this.backMenuButtonFunc;
 	this.forwardMenuButtonFunc;

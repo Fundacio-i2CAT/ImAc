@@ -43,10 +43,10 @@ function MenuManager() {
         }
 
 // T R  A D I T I O N A L 
-        menuType = 2;
+        //menuType = 2;
 
 // L O W    S I G H T E D 
-        //menuType = 1;
+        menuType = 1;
 
         addMenuToParent(menuType);
         InitAllCtrl(menuType);
@@ -123,35 +123,44 @@ function MenuManager() {
 
     this.Load = function (controller)
     {
-
-        if(actualCtrl) actualCtrl.Exit();
-
-        actualCtrl = controller;
-        
-        //CREATE A FUNCTIONS WHERE ALL THE MULTIOPTIONS ARE DISABLED
-
-        interController.setSubtitlesActive(subController.getSubtitleEnabled()); // TODO CHANGE THIS  FUNCTION
-
-        if(interController.getSubtitlesActive()) subController.disableSubtiles(); // TODO CHANGE THIS  FUNCTION
-
-        //subController.switchSigner( false ); // TODO CHANGE THIS  FUNCTION
-
-        MenuDictionary.initGlobalArraysByLanguage();
-        
-        // Compare the saved index of the traditional option dropdown with the new controller index. 
-        // If the index is deferent change the variable and initialize the doprdown
-        if(optActiveIndex != controller.getMenuIndex())
+        if(actualCtrl)
         {
-            actualCtrl.Init();
-            optActiveIndex = controller.getMenuIndex();
+            actualCtrl.Exit();
+        
+            //CREATE A FUNCTIONS WHERE ALL THE MULTIOPTIONS ARE DISABLED
+            interController.setSubtitlesActive(subController.getSubtitleEnabled()); // TODO CHANGE THIS  FUNCTION
+            if(interController.getSubtitlesActive()) subController.disableSubtiles(); // TODO CHANGE THIS  FUNCTION
+            //subController.switchSigner( false ); // TODO CHANGE THIS  FUNCTION
 
+            MenuDictionary.initGlobalArraysByLanguage();
+
+            switch(menuType)
+            {
+                case 1:
+                default:
+                    actualCtrl = controller;
+                    controller.Init();
+                    break;
+
+                case 2:
+                    // Compare the saved index of the traditional option dropdown with the new controller index. 
+                    // If the index is deferent change the variable and initialize the doprdown
+                    if(optActiveIndex != controller.getMenuIndex())
+                    {
+                        controller.Init();
+                        optActiveIndex = controller.getMenuIndex();
+                    }
+                    // If the index is equal change the variable to 'undefined' in order to open the same dropdown just closed.
+                    else optActiveIndex = 0;
+                    break;
+            }
         }
-
-        // If the index is equal change the variable to 'undefined' in order to open the same dropdown just closed.
-        if(optActiveIndex == controller.getMenuIndex()) optActiveIndex = undefined;
-
-        else actualCtrl.Init();
-
+        else
+        {
+            controller.Init();
+            optActiveIndex = controller.getMenuIndex();
+        }
+        actualCtrl = controller;
     }
 
 /**
@@ -162,7 +171,7 @@ function MenuManager() {
     this.ResetViews = function()
     {  
         actualCtrl = '';
-        optActiveIndex = undefined;
+        optActiveIndex = 0;
 
         controllers.forEach(function(controller){
             controller.Exit();
@@ -201,11 +210,19 @@ function MenuManager() {
             onGazeLong: function(){
                 menuActivationElement.visible = false;
                 scene.getObjectByName( "openmenutext" ).visible = false;
-                //mmgr.Load(playpauseCtrl);
-                LoadTrad();
 
-            }/*,
-            onGazeClick: MenuFunctionsManager.getOpenMenuFunc()*/
+                switch(menuType)
+                {
+                    case 1:
+                    default:
+                        mmgr.Load(playpauseCtrl);
+                        break;
+
+                    case 2:
+                        LoadTrad();
+                        break;
+                }  
+            }
         });
 
         scene.add(menuActivationElement);

@@ -38,11 +38,6 @@ function MultiOptionsLSMenuController(menuType) {
     	return data.name;
     }
 
-	this.getMenuIndex = function()
-    {
-        return -1;
-    }
-
     function GetData()
 	{
 	    if (data == null)
@@ -62,33 +57,13 @@ function MultiOptionsLSMenuController(menuType) {
 
 		data.closeMenuButtonFunc = function(){ AddVisualFeedbackOnClick('closeMenuButton', function(){ menumanager.ResetViews()} )};
 
-        switch(menuType)
-        {
-            // LOW SIGHTED
-            case 1: 
-            default:
-        		data.backMenuButtonFunc = function(){ AddVisualFeedbackOnClick('backMenuButton', function(){ menumanager.NavigateBackMenu()} )};
-				data.forwardMenuButtonFunc = function(){ AddVisualFeedbackOnClick('forwardMenuButton', function(){menumanager.NavigateForwardMenu()} )};
+		data.backMenuButtonFunc = function(){ AddVisualFeedbackOnClick('backMenuButton', function(){ menumanager.NavigateBackMenu()} )};
+		data.forwardMenuButtonFunc = function(){ AddVisualFeedbackOnClick('forwardMenuButton', function(){menumanager.NavigateForwardMenu()} )};
 
-				data.openSTMenuButtonFunc = function(){ AddVisualFeedbackOnClick( data.isSTenabled ? 'showSubtitlesMenuButton' : 'disabledSubtitlesMenuButton', function(){ menumanager.Load(STOptionCtrl) })};
-				data.openSLMenuButtonFunc = function(){ AddVisualFeedbackOnClick( data.isSLenabled ? 'showSignLanguageMenuButton' : 'disabledSignLanguageMenuButton', function(){ menumanager.Load(SLOptionCtrl) })};
-				data.openADMenuButtonFunc = function(){ AddVisualFeedbackOnClick( data.isADenabled ? 'showAudioDescriptionMenuButton' : 'disabledAudioDescriptionMenuButton', function(){ menumanager.Load(ADOptionCtrl) })};	
-				data.openASTMenuButtonFunc = function(){ AddVisualFeedbackOnClick( data.isASTenabled ? 'showAudioSubtitlesMenuButton' : 'disabledAudioSubtitlesMenuButton', function(){ menumanager.Load(ASTOptionCtrl) })};
-                break;
-
-            // TRADITIONAL
-            case 2: 
-            	data.openSTMenuButtonFunc = function(){ AddVisualFeedbackOnClick( data.isSTenabled ? 'showSubtitlesMenuButton' : 'disabledSubtitlesMenuButton', function(){ changeOptionMenuOpenState(STOptionCtrl.getMenuIndex()); menumanager.Load(STOptionCtrl) })};
-				data.openSLMenuButtonFunc = function(){ AddVisualFeedbackOnClick( data.isSLenabled ? 'showSignLanguageMenuButton' : 'disabledSignLanguageMenuButton', function(){ changeOptionMenuOpenState(SLOptionCtrl.getMenuIndex()); menumanager.Load(SLOptionCtrl) })};
-				data.openADMenuButtonFunc = function(){ AddVisualFeedbackOnClick( data.isADenabled ? 'showAudioDescriptionMenuButton' : 'disabledAudioDescriptionMenuButton', function(){ changeOptionMenuOpenState(ADOptionCtrl.getMenuIndex()); menumanager.Load(ADOptionCtrl) })};	
-				data.openASTMenuButtonFunc = function(){ AddVisualFeedbackOnClick( data.isASTenabled ? 'showAudioSubtitlesMenuButton' : 'disabledAudioSubtitlesMenuButton', function(){ changeOptionMenuOpenState(ASTOptionCtrl.getMenuIndex()); menumanager.Load(ASTOptionCtrl) })};
-
-				data.closeSTMenuButtonFunc = function(){ AddVisualFeedbackOnClick( data.isSTenabled ? 'showSubtitlesMenuButton' : 'disabledSubtitlesMenuButton', function(){ changeOptionMenuOpenState(0); STOptionCtrl.Exit() })};
-				data.closeSLMenuButtonFunc = function(){ AddVisualFeedbackOnClick( data.isSLenabled ? 'showSignLanguageMenuButton' : 'disabledSignLanguageMenuButton', function(){changeOptionMenuOpenState(0); SLOptionCtrl.Exit() })};
-				data.closeADMenuButtonFunc = function(){ AddVisualFeedbackOnClick( data.isADenabled ? 'showAudioDescriptionMenuButton' : 'disabledAudioDescriptionMenuButton', function(){changeOptionMenuOpenState(0); ADOptionCtrl.Exit() })};	
-				data.closeASTMenuButtonFunc = function(){ AddVisualFeedbackOnClick( data.isASTenabled ? 'showAudioSubtitlesMenuButton' : 'disabledAudioSubtitlesMenuButton', function(){changeOptionMenuOpenState(0); ASTOptionCtrl.Exit() })};
-                break;
-        }
+		data.openSTMenuButtonFunc = function(){ AddVisualFeedbackOnClick( data.isSTenabled ? 'showSubtitlesMenuButton' : 'disabledSubtitlesMenuButton', function(){ menumanager.Load(STOptionCtrl) })};
+		data.openSLMenuButtonFunc = function(){ AddVisualFeedbackOnClick( data.isSLenabled ? 'showSignLanguageMenuButton' : 'disabledSignLanguageMenuButton', function(){ menumanager.Load(SLOptionCtrl) })};
+		data.openADMenuButtonFunc = function(){ AddVisualFeedbackOnClick( data.isADenabled ? 'showAudioDescriptionMenuButton' : 'disabledAudioDescriptionMenuButton', function(){ menumanager.Load(ADOptionCtrl) })};	
+		data.openASTMenuButtonFunc = function(){ AddVisualFeedbackOnClick( data.isASTenabled ? 'showAudioSubtitlesMenuButton' : 'disabledAudioSubtitlesMenuButton', function(){ menumanager.Load(ASTOptionCtrl) })};
 	}
 
 
@@ -107,11 +82,5 @@ function MultiOptionsLSMenuController(menuType) {
     	data.clickedButtonName = buttonName;
 		view.pressButtonFeedback(data);
 		setTimeout(callback, 300);
-    }
-
-    function changeOptionMenuOpenState(index)
-    {
-		data.activeOptionIndex = index;
-        view.UpdateView(data); 
     }
 }

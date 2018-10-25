@@ -67,6 +67,7 @@ function SettingsOptionMenuController(menuType) {
             if(viewStructure.getObjectByName('childcolumnhoritzontallines')) viewStructure.getObjectByName('childcolumnhoritzontallines').children = [];
             data.childColumnActiveOpt = undefined;
     	}
+        
     }
 
     this.getMenuName = function()
@@ -92,6 +93,7 @@ function SettingsOptionMenuController(menuType) {
 
     function UpdateData()
     {
+        data.isOptEnabled = true;
         data.isOnOffButtonVisible = false;
 
         data.lsOptEnabledLabelName = 'settingsButton';
@@ -104,7 +106,7 @@ function SettingsOptionMenuController(menuType) {
             default:
                 data.isUpDownArrowsVisible = parentColumnDropdownElements.length > 4 ? true : false;
 
-                data.parentColumnHoritzontalLineDivisions = getHoritzontalLineDivisions(125, 4*(125*9/16)/6, 0xffffff, 4, 1);
+                data.parentColumnHoritzontalLineDivisions = getHoritzontalLineDivisions(125, 125*9/16, 0xffffff, 3, 1);
 
                 if(!data.parentColumnDropdown) data.parentColumnDropdown = AddDropdownElementsLS(parentColumnDropdownElements);  
 
@@ -116,7 +118,7 @@ function SettingsOptionMenuController(menuType) {
             case 2: 
                 data.title = 'Settings';
                 data.parentColumnDropdown = AddDropdownElementsTrad(parentColumnDropdownElements);  
-                data.backMenuButtonFunc = function(){ AddVisualFeedbackOnClick('backMenuButton', function(){ menumanager.Load(set)} )};
+                data.backMenuButtonFunc = function(){ AddVisualFeedbackOnClick('backMenuButton', function(){ menumanager.setOptActiveIndex(0); menumanager.Load(set)} )};
                 break;
         }   
     }
@@ -140,26 +142,26 @@ function SettingsOptionMenuController(menuType) {
 
     function AddDropdownElementsLS(elements)
     {
-    	var dropdownInteractiveElements =  [];
-    	var h;
-    	elements.forEach(function(element, index){
-    		var factor = (index*2)+1;
+        var dropdownInteractiveElements =  [];
+        var h;
+        elements.forEach(function(element, index){
+            var factor = (index*2)+1;
 
-    		var dropdownIE = new InteractiveElementModel();
+            var dropdownIE = new InteractiveElementModel();  
 
             if(element.options)
             {
                 h = 125*9/16;
-                dropdownIE.onexecute =  function()
-                {
+                dropdownIE.onexecute =  function(){
+                    data.childColumnActiveOpt = undefined;  
                     data.parentColumnActiveOpt = element.name;
                     data.childColumnDropdown = AddDropdownElementsLS(element.options); 
                     data.childColumnHoritzontalLineDivisions = getHoritzontalLineDivisions(125, 4*(125*9/16)/6, 0xffffff, element.options.length, 2); 
                     UpdateData();
-                    setTimeout(function(){view.UpdateView(data)}, 100);    
+                    setTimeout(function(){view.UpdateView(data)}, 100);      
                 };
             } 
-            else 
+            else
             {
                 h = 4*(125*9/16)/6;
                 dropdownIE.onexecute =  function(){
@@ -169,23 +171,21 @@ function SettingsOptionMenuController(menuType) {
                     setTimeout(function(){view.UpdateView(data)}, 100);
                 };
             } 
-
-	        dropdownIE.width = 125/3;
-	        dropdownIE.height =  elements.length>4 ? h/4 : h/elements.length;
-	        dropdownIE.name = element.name;
-	        dropdownIE.type =  'text';
-	        dropdownIE.value = element.value; //AudioManager.getVolume();
-            dropdownIE.color = element.default ? 0xffff00: 0xffffff;
-	        dropdownIE.textSize =  5;
-	        dropdownIE.visible = true;
+            dropdownIE.width = 125/3;
+            dropdownIE.height =  elements.length>4 ? h/4 : h/elements.length;
+            dropdownIE.name = element.name;
+            dropdownIE.type =  'text';
+            dropdownIE.value = element.value;
+            dropdownIE.color = 0xffffff;
+            dropdownIE.textSize =  5;
+            dropdownIE.visible = true;
             dropdownIE.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(dropdownIE.width, dropdownIE.height), new THREE.MeshBasicMaterial({visible:  false}));
-        	
-	        dropdownIE.position = new THREE.Vector3(0, ( h/2-factor*h/(elements.length>4 ? 4*2 : elements.length*2) ), 0.01);
+            
+            dropdownIE.position = new THREE.Vector3(0, ( h/2-factor*h/(elements.length>4 ? 4*2 : elements.length*2) ), 0.01);
+            dropdownInteractiveElements.push(dropdownIE.create())
+        });
 
-	        dropdownInteractiveElements.push(dropdownIE.create())
-    	});
-
-    	return dropdownInteractiveElements
+        return dropdownInteractiveElements
     }
 
     function AddDropdownElementsTrad(elements)

@@ -132,7 +132,7 @@ function SLOptionMenuController(menuType) {
             case 2: 
                 data.title = 'Sign Language';
                 data.parentColumnDropdown = AddDropdownElementsTrad(parentColumnDropdownElements);  
-                data.backMenuButtonFunc = function(){ AddVisualFeedbackOnClick('backMenuButton', function(){ menumanager.Load(sl)} )};
+                data.backMenuButtonFunc = function(){ AddVisualFeedbackOnClick('backMenuButton', function(){ menumanager.setOptActiveIndex(0); menumanager.Load(sl)} )};
                 break;
         } 		
     }

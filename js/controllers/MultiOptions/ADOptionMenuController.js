@@ -1,5 +1,7 @@
 function ADOptionMenuController(menuType) {
 
+    var ad = this;
+
 	var data;
 	var view;
 	var viewStructure;
@@ -97,13 +99,11 @@ function ADOptionMenuController(menuType) {
             // LOW SIGHTED
             case 1: 
             default:
-
                 data.isUpDownArrowsVisible = parentColumnDropdownElements.length > 4 ? true : false;
 
                 data.parentColumnHoritzontalLineDivisions = getHoritzontalLineDivisions(125, 125*9/16, 0xffffff, 3, 1); 
 
                 if(!data.parentColumnDropdown) data.parentColumnDropdown = AddDropdownElementsLS(parentColumnDropdownElements);
-
 
                 data.backMenuButtonFunc = function(){ AddVisualFeedbackOnClick('backMenuButton', function(){ menumanager.NavigateBackMenu()} )};
                 data.closeMenuButtonFunc = function(){ AddVisualFeedbackOnClick('closeMenuButton', function(){ menumanager.ResetViews()} )};
@@ -113,6 +113,7 @@ function ADOptionMenuController(menuType) {
             case 2: 
                 data.title = 'Audio Description';
                 data.parentColumnDropdown = AddDropdownElementsTrad(parentColumnDropdownElements);  
+                data.backMenuButtonFunc = function(){ AddVisualFeedbackOnClick('backMenuButton', function(){ menumanager.setOptActiveIndex(0); menumanager.Load(ad)} )};  
                 break;
         }       
 
@@ -176,7 +177,6 @@ function ADOptionMenuController(menuType) {
 
 	        dropdownInteractiveElements.push(dropdownIE.create())
     	});
-
 
     	return dropdownInteractiveElements
     }

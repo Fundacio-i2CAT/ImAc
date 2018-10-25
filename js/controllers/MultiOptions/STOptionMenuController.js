@@ -70,7 +70,6 @@ function STOptionMenuController(menuType) {
         view.UpdateView(data); 
 
 		AddInteractivityToMenuElements();
-
 	}
 
 	this.Exit = function()
@@ -86,7 +85,7 @@ function STOptionMenuController(menuType) {
 	    	if(viewStructure.getObjectByName('childcolumndropdown')) viewStructure.getObjectByName('childcolumndropdown').children = [];
 	    	if(viewStructure.getObjectByName('parentcolumnhoritzontallines')) viewStructure.getObjectByName('parentcolumnhoritzontallines').children = [];
 	    	if(viewStructure.getObjectByName('childcolumnhoritzontallines')) viewStructure.getObjectByName('childcolumnhoritzontallines').children = [];
-            data.childColumnActiveOpt = undefined;
+            data.childColumnActiveOpt = undefined; 
     	}
     }
 
@@ -147,7 +146,7 @@ function STOptionMenuController(menuType) {
             case 2: 
                 data.title = 'Subtitles';
                 data.parentColumnDropdown = AddDropdownElementsTrad(parentColumnDropdownElements);  
-                data.backMenuButtonFunc = function(){ AddVisualFeedbackOnClick('backMenuButton', function(){ menumanager.Load(st)} )};
+                data.backMenuButtonFunc = function(){ AddVisualFeedbackOnClick('backMenuButton', function(){ menumanager.setOptActiveIndex(0); menumanager.Load(st)} )};
                 break;
         }	
     }

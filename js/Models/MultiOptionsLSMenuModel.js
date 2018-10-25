@@ -3,7 +3,6 @@ function MultiOptionsLSMenuModel()
 	this.name = 'multioptionsmenu';
 	this.backMenuButtonfunc;
 	this.forwardMenuButtonFunc;
-	this.activeOptionIndex;
 
 	this.isSTenabled;
 	this.openSTMenuButtonFunc;

@@ -1,5 +1,7 @@
 function ASTOptionMenuController(menuType) {
 
+    var ast = this;
+
 	var data;
 	var view;
 	var viewStructure;
@@ -109,7 +111,8 @@ function ASTOptionMenuController(menuType) {
             // TRADITIONAL
             case 2: 
                 data.title = 'Audio Subtitles';
-                data.parentColumnDropdown = AddDropdownElementsTrad(parentColumnDropdownElements);  
+                data.parentColumnDropdown = AddDropdownElementsTrad(parentColumnDropdownElements);
+                data.backMenuButtonFunc = function(){ AddVisualFeedbackOnClick('backMenuButton', function(){ menumanager.setOptActiveIndex(0); menumanager.Load(ast)} )};  
                 break;
         }       
 

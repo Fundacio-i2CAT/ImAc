@@ -12,7 +12,6 @@ function SettingsLSMenuController(menuType) {
 		UpdateData();
 		viewStructure = scene.getObjectByName(data.name);
 		viewStructure.visible = true;
-
 		view = new SettingsLSMenuView();
 		view.UpdateView(data); 
 
@@ -21,6 +20,7 @@ function SettingsLSMenuController(menuType) {
 
 	this.Exit = function()
     {
+        menumanager.setOptActiveIndex(0);
     	if(viewStructure)
     	{
 	    	viewStructure.visible = false;
@@ -33,11 +33,6 @@ function SettingsLSMenuController(menuType) {
     this.getMenuName = function()
     {
     	return data.name;
-    }
-
-	this.getMenuIndex = function()
-    {
-        return -1;
     }
     
     function GetData()
@@ -52,27 +47,10 @@ function SettingsLSMenuController(menuType) {
 
 	function UpdateData()
     {
-    	
 		data.closeMenuButtonFunc = function(){ AddVisualFeedbackOnClick('closeMenuButton', function(){ menumanager.ResetViews()} )};
-
-
-		switch(menuType)
-        {
-            // LOW SIGHTED
-            case 1: 
-            default:
-            	data.openSettingsMenuButtonFunc = function(){ AddVisualFeedbackOnClick('settingsButton', function(){menumanager.Load(SettingsOptionCtrl)} )}; 	
-				data.backMenuButtonFunc = function(){ AddVisualFeedbackOnClick('backMenuButton', function(){ menumanager.NavigateBackMenu()} )};
-				data.forwardMenuButtonFunc = function(){ AddVisualFeedbackOnClick('forwardMenuButton', function(){menumanager.NavigateForwardMenu()} )};
-				break;
-
-            // TRADITIONAL
-            case 2: 
-            	data.openSettingsMenuButtonFunc = function(){ AddVisualFeedbackOnClick('settingsButton', function(){ changeOptionMenuOpenState(SettingsOptionCtrl.getMenuIndex()); menumanager.Load(SettingsOptionCtrl) })};
-				data.closeSettingsMenuButtonFunc = function(){ AddVisualFeedbackOnClick('settingsButton', function(){ changeOptionMenuOpenState(0); SettingsOptionCtrl.Exit() })};
-				
-            	break;
-        }
+        data.openSettingsMenuButtonFunc = function(){ AddVisualFeedbackOnClick('settingsButton', function(){ menumanager.Load(SettingsOptionCtrl)} )};   
+        data.backMenuButtonFunc = function(){ AddVisualFeedbackOnClick('backMenuButton', function(){ menumanager.NavigateBackMenu()} )};
+        data.forwardMenuButtonFunc = function(){ AddVisualFeedbackOnClick('forwardMenuButton', function(){menumanager.NavigateForwardMenu()} )};
     }
 
 
@@ -91,11 +69,5 @@ function SettingsLSMenuController(menuType) {
     	data.clickedButtonName = buttonName;
 		view.pressButtonFeedback(data);
 		setTimeout(callback, 300);
-    }
-
-	function changeOptionMenuOpenState(index)
-    {
-		data.activeOptionIndex = index;
-        view.UpdateView(data); 
     }
 }

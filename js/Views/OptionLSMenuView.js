@@ -6,9 +6,8 @@ function OptionLSMenuView() {
 		submenu.getObjectByName('lsOptEnabledLabel').visible = data.isOptEnabled;
 		submenu.getObjectByName('lsOptDisabledLabel').visible = !data.isOptEnabled;
 
-		submenu.getObjectByName('onlsoptbutton').visible = data.isOptEnabled;
-		submenu.getObjectByName('offlsoptbutton').visible = !data.isOptEnabled;
-
+		submenu.getObjectByName('onlsoptbutton').visible = data.isOnOffButtonVisible ? data.isOptEnabled : false;
+		submenu.getObjectByName('offlsoptbutton').visible = data.isOnOffButtonVisible ? !data.isOptEnabled : false;
 		
 		submenu.getObjectByName('onlsoptbutton').children[0].onexecute = data.onOptButtonFunc;
 		submenu.getObjectByName('offlsoptbutton').children[0].onexecute = data.offOptButtonFunc;

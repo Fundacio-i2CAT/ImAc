@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>ImAc Player</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0, shrink-to-fit=no">
+	<meta name="mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+	<link rel="shortcut icon" href="../favicon.ico" type="image/x-icon" />
+
+	<link rel="stylesheet" href="./css/bootstrap.min.css">
+	<link rel="stylesheet" href="./css/index.css">
+
+
+	<script src="./js/lib/jquery-3.2.1.min.js"></script>
+	<script src="./js/lib/bootstrap.min.js"></script>	
+
+	<script src="./js/lib/hls.js"></script>
+
+	<script src="./js/lib/three.js"></script>
+	<script src="./js/lib/reticulum.js"></script>
+	<!--script src="js/lib/StereoEffect.js"></script-->
+	<script src="./js/lib/omnitone_i2cat.js"></script>
+	<script src="./js/lib/webvr-polyfill.js"></script>
+	<script src="./js/lib/bogJS-latest.js"></script>
+	<script src="./js/lib/sax.js"></script>
+    <script src="./js/lib/imsc_i2cat.js"></script>
+    <script src="./js/lib/dash.all.min.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/annyang/2.6.1/annyang.min.js"></script>
+
+    <script src="./js/constants/constants.js"></script>
+    
+
+	<script src="./js/Scene_Generators/AplicationManager.js"></script>
+
+	<script src="./js/Scene_Generators/MediaObjectData.js"></script>
+
+	<script src="./js/Scene_Generators/AudioManager.js"></script>
+
+	<script src="./js/Scene_Generators/VideoController.js"></script>
+
+<!--MENU MANAGER -->
+	<script src="./js/Scene_Generators/Menu/MenuState.js"></script>
+	<script src="./js/Scene_Generators/Menu/MenuDictionary.js"></script>
+	<script src="./js/Scene_Generators/Menu/MenuManager.js"></script>
+	<script src="./js/Scene_Generators/Menu/MenuController.js"></script>
+
+	<script src="./js/Scene_Generators/Menu/MenuFunctionsManager.js"></script>
+
+<!-- SECONDARY MENUS -->
+	<script src="./js/Scene_Generators/Menu/secondary/SecondaryMenuManager.js"></script>	
+	
+	<script src="./js/Scene_Generators/SubSignManager.js"></script>
+	<script src="./js/Scene_Generators/InteractionsController.js"></script>
+
+	<script src="./js/controllers/DeviceOrientationAndTouchController.js"></script>
+	<script src="./js/controllers/FullScreenController.js"></script>
+	<script src="./js/controllers/VRController.js"></script>
+
+	<script src="./js/Utils/elementsGenerator.js"></script>
+	<script src="./js/Utils/logger.js"></script>
+	<script src="./js/Utils/utils.js"></script>
+
+	<script src="./js/pilot1.js"></script>
+	<script src="./js/index.js"></script>
+
+</head>
+
+<body onload="init_webplayer()" id="body-container">
+
+	<div id="container"></div>
+
+</body>	
+</html>

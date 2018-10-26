@@ -9,7 +9,6 @@
 	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
 	<link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />
-	<link rel="manifest" href="./manifest.json">
 
 	<link rel="stylesheet" href="css/bootstrap.min.css">
 	<link rel="stylesheet" href="css/index.css">
@@ -18,62 +17,16 @@
 	<script src="js/lib/jquery-3.2.1.min.js"></script>
 	<script src="js/lib/bootstrap.min.js"></script>	
 
-	<script src="js/lib/hls.js"></script>
-
-	<script src="js/lib/three.js"></script>
-	<script src="js/lib/reticulum.js"></script>
-	<!--script src="js/lib/StereoEffect.js"></script-->
-	<script src="js/lib/omnitone_i2cat.js"></script>
-	<script src="js/lib/webvr-polyfill.js"></script>
-	<script src="js/lib/bogJS-latest.js"></script>
-	<script src="js/lib/sax.js"></script>
-    <script src="js/lib/imsc_i2cat.js"></script>
-    <script src="js/lib/dash.all.min.js"></script>
-
-    <script src="js/constants/constants.js"></script>
-    
-
-	<script src="js/Scene_Generators/AplicationManager.js"></script>
-
-	<script src="js/Scene_Generators/MediaObjectData.js"></script>
-
-	<script src="js/Scene_Generators/AudioManager.js"></script>
-
-	<script src="js/Scene_Generators/VideoController.js"></script>
-
-<!--MENU MANAGER -->
-	<script src="js/Scene_Generators/Menu/MenuState.js"></script>
-	<script src="js/Scene_Generators/Menu/MenuDictionary.js"></script>
-	<script src="js/Scene_Generators/Menu/MenuManager.js"></script>
-	<script src="js/Scene_Generators/Menu/MenuController.js"></script>
-
-	<script src="js/Scene_Generators/Menu/MenuFunctionsManager.js"></script>
-
-<!-- SECONDARY MENUS -->
-	<script src="js/Scene_Generators/Menu/secondary/SecondaryMenuManager.js"></script>	
-	
-	<script src="js/Scene_Generators/SubSignManager.js"></script>
-	<script src="js/Scene_Generators/InteractionsController.js"></script>
-
-	<script src="js/controllers/DeviceOrientationAndTouchController.js"></script>
-	<script src="js/controllers/FullScreenController.js"></script>
-	<script src="js/controllers/VRController.js"></script>
-
-	<script src="js/Utils/elementsGenerator.js"></script>
-	<script src="js/Utils/logger.js"></script>
-	<script src="js/Utils/utils.js"></script>
-
-	<script src="js/pilot1.js"></script>
 	<script src="js/index.js"></script>
 
 </head>
 
-<body onload="init_webplayer()">
+<body onload="init_webplayer()" id="body-container">
 	<div id="header">
 		<!--img id="imac_logo" src="img/LOGO-IMAC.png" alt="imac-logo"-->
 	</div>
 
-	<div  id="content_area" class="col-xs-12">
+	<div id="content_area" class="col-xs-12">
 		<h2>Tests on Presentation Modes</h2>
 		<div class="col-xs-9">
 			<div class="list-group" id="list_group"></div>
@@ -86,28 +39,23 @@
               	<input type="radio" name="gender" value="LS_area"> Enhanced-Accessibility
 			</form> 
 			<br>
-      <h3>Language</h3>
-      <form id="myform2">
-                <input type="radio" name="lang" value="de" checked> Deutsch <br>
-                <input type="radio" name="lang" value="ca"> Català
-      </form> 
-      <br>
-			
+			<h3>Language</h3>
+			<form id="myform2">
+			    <input type="radio" name="lang" value="en" checked> English <br>
+			    <input type="radio" name="lang" value="de"> Deutsch <br>
+			    <input type="radio" name="lang" value="ca"> Català
+			</form> 
+			<br>			
 		</div>
-		<!--div class="col-xs-12 links-group">
-			<h3>AD pre-pilots: Catalan</h3>
-			<button type="button" class="btn btn-primary btn-block" onclick="runADDemo(0)">AD placed on the action (privilege of sound)</button> 
-			<button type="button" class="btn btn-primary btn-block" onclick="runADDemo(1)">AD anchored to head position (voice of God)</button> 
-			<button type="button" class="btn btn-primary btn-block" onclick="runADDemo(2)">AD anchored to soundscape (1st person, past tense)</button>
-		</div--> 
-	</div>
 
-	<div class="col-xs-12" id="loader" align="center">
+		<img class="vc_single_image-img " src="http://imac-project.eu/wp-content/uploads/2017/10/logos-web.png" alt="logos web" title="logos web" width="100%" onclick="window.open('http://www.imac-project.eu/')">
+
+	</div>
+	<!--div class="col-xs-12" id="loader" align="center">
 		<h2> Wait 10 seconds </h2>
 		<div class="loader"></div>
-	</div>
+	</div-->
 
-	<div id="container"></div>
 
 </body>	
 </html>

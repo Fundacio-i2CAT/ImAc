@@ -3,40 +3,6 @@
 
 var _PlayerVersion = 'v0.05.0';
 
-var AplicationManager = new AplicationManager();
-var MenuFunctionsManager = new MenuFunctionsManager();
-//var moData = new THREE.MediaObject();
-
-var _moData = new THREE.MediaObjectData();
-
-//var menuData = new THREE.MenuObject();
-
-var MenuManager = new THREE.MenuManager();
-var MenuController = new THREE.MenuController();
-var MenuDictionary = new MenuDictionary();
-
-var secMMgr = new THREE.SecondaryMenuManager();
-
-var _AudioManager = new AudioManager();
-var subController = new SubSignManager();
-var interController = new THREE.InteractionsController();
-var polyfill = new WebVRPolyfill();
-var statObj = new StatObject();
-
-var VideoController = new VideoController();
-
-
-var loggerActivated = false;
-
-var demoId = 1;
-
-var mainContentURL = './resources/rapzember-young-hurn_edit.mp4';
-//var _selected_content = 'Radio';
-
-var list_contents;
-
-
-
 /**
  * Initializes the web player.
  */	
@@ -45,41 +11,29 @@ function init_webplayer()
 {
 	console.log('Version: ' + _PlayerVersion);
 
-  _AudioManager.initAmbisonicResources();
-  _moData.setFont('./css/fonts/TiresiasScreenfont_Regular.json');
-  //moData.setFont('./css/fonts/helvetiker_bold.typeface.json');
-
-  $.getJSON('./content.json', function(json)
-  {
-    list_contents = json.contents;
-		//console.error(list_contents)
-    for (var i = 0; i < list_contents.length; i++) 
+    $.getJSON('./content.json', function(json)
     {
-      var id = i;
-      var dataText = list_contents[i].name;
+        var list_contents = json.contents;
 
-      createListGroup(id, list_contents[i].thumbnail, dataText);
-    }
-  });
-}
+        for (var i = 0; i < list_contents.length; i++) 
+        {
+            var id = i;
+            var dataText = list_contents[i].name;
 
-
-function blockContainer()
-{
-	document.getElementById("header").style.display = "none";
-	document.getElementById("content_area").style.display = "none";
-	document.getElementById("container").style.display = "block";
+            createListGroup(id, list_contents[i].thumbnail, dataText);
+        }
+    });
 }
 
 function selectXML(id)
-{
+{  
     var radios = document.getElementsByName('gender');
 
     for (var i = 0, length = radios.length; i < length; i++)
     {
         if (radios[i].checked)
         {
-            menuType = radios[i].value;
+            localStorage.ImAc_menuType = radios[i].value;
             break;
         }
     }
@@ -90,32 +44,37 @@ function selectXML(id)
     {
         if (radios2[i].checked)
         {
-            MenuDictionary.setMainLanguage( radios2[i].value );
+            localStorage.ImAc_language = radios2[i].value;
             break;
         }
     }
 
-  enterfullscreen();
-  mainContentURL = list_contents[id].url;
- 
-  demoId = id;
+    localStorage.ImAc_init = id;
 
-  setTimeout(function(){ AplicationManager.init(); }, 100);
+    window.location = window.location.href + 'player/#' + id;
 
 }
-       
-function startAllVideos()
+   
+
+function createListGroup(i, imagePath, dataName) 
 {
-  setTimeout(function() {
-    runDemo(); 
-  },500);
-}
-
-
-(function() {
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker
-              .register('./service-worker.js')
-              .then(function() { console.log('Service Worker Registered'); });
-    }
-})();
+    $("#list_group")
+    .append(
+        $('<div class="img-container-4">')
+        .attr('id','content'+i)
+        .append(
+            $('<img>')
+            .attr('id', i)
+            .attr('src', imagePath)
+            .attr('alt', 'ImAc')
+            .attr('onclick', 'selectXML(this.id)')
+            .append('</img>')
+        )
+        .append(
+            $('<p>')
+            .append(dataName)
+            .append('</p>')
+        )
+        .append('</div>')
+    )
+}    

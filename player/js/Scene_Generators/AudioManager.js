@@ -7,6 +7,7 @@ AudioManager = function() {
     var audioResources = Array();
     var audioResources_order_1 = Array();
     var volume; // Variable for volume level state saving;
+    var isMuted = false;
     var foaRenderer,
         isAmbisonics,
         activeVideoElement;  // Video element been reproduced.
@@ -80,12 +81,14 @@ AudioManager = function() {
 
     this.setmute = function()
     {
+        isMuted = true;
         volume = activeVideoElement.volume;
         activeVideoElement.volume = 0;
     };
 
     this.setunmute = function()
     {
+        isMuted = false;
         activeVideoElement.volume = volume > 0 ? volume : volumeChangeStep;
     };
 
@@ -129,5 +132,10 @@ AudioManager = function() {
     this.removeAudio = function()
     {
         foaRenderer = undefined;
+    }
+
+    this.isAudioMuted = function()
+    {
+        return isMuted;
     }
 }

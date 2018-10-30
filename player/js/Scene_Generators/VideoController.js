@@ -80,7 +80,8 @@ VideoController = function() {
     {
         var vid = document.createElement( "video" );     
         vid.muted = true;
-        vid.autoplay = false;
+        vid.autoplay = true;
+        vid.preload = "auto"; 
         vid.loop = true;
 
         var type = getMediaType( url );
@@ -133,8 +134,11 @@ VideoController = function() {
 
     this.playAll = function()
     {
-    	listOfVideoContents.forEach( function( elem ) { elem.vid.play(); } ); 
-        syncVideos();
+    	listOfVideoContents.forEach( function( elem ) { 
+            if (elem.vid.paused) {
+                elem.vid.play().then( _ => {  syncVideos() }); 
+            }
+        }); 
     };
 
     this.pauseAll = function()

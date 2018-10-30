@@ -137,7 +137,7 @@ function AplicationManager()
 				renderer.vr.enabled = true;
 				activateLogger();
 				renderer.animate( render );
-				VideoController.playAll();
+				//VideoController.playAll();
 			} );
         }
         else alert("This browser don't support VR content");

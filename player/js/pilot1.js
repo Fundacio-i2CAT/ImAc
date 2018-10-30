@@ -12,11 +12,7 @@ function runDemo()
 
     var lang = MenuDictionary.getMainLanguage();
 
-    //subController.enableSubtitles();
-
-    //if ( demoId != 4 && demoId != 6 ) subController.initSubtitle( 70, 0, -1, 'arrow' );
-    //else subController.initSubtitle( 70, 0, -1, 'radar' );
-    menuList[6].isEnabled = false;
+    subController.enableSubtitles();
     subController.initSubtitle( 70, 0, -1, 'none' );
 
     var sublang = list_contents[demoId].subtitles[0][lang] ? lang : Object.keys(list_contents[demoId].subtitles[0])[0];
@@ -28,11 +24,8 @@ function runDemo()
 
     initLanguageButtons(lang, siglang, sublang);
 
-    VideoController.playAll();
+    //VideoController.playAll();
     VideoController.init();
-
-    //if ( demoId == 3 ) VideoController.seekAll( 389 );
-    //else if ( demoId == 2 ) VideoController.seekAll( 30 );
 }
 
 function initLanguageButtons(lang, siglang, sublang)

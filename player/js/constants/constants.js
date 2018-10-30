@@ -92,7 +92,7 @@ var secondarySubIndex = 0;
 
 var _isHMD = false;
 var autopositioning = false;
-
+var radarautopositioning = false;
 
 /* TRADITIONAL MENU */
 

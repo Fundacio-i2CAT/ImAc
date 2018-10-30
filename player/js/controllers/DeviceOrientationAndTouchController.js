@@ -378,7 +378,7 @@ THREE.DeviceOrientationAndTouchController = function( object, objectPather, domE
 			
 			objQuat.copy( tmpQuat );
 
-			if ( appState === CONTROLLER_STATE.MANUAL_ROTATE && !autopositioning ) 
+			if ( appState === CONTROLLER_STATE.MANUAL_ROTATE && !autopositioning) 
 			{	
 				lat = ( startY - currentY ) * scrollSpeedY;
 				lon = ( startX - currentX ) * scrollSpeedX;
@@ -405,7 +405,7 @@ THREE.DeviceOrientationAndTouchController = function( object, objectPather, domE
 
 				scope.objectPather.quaternion.copy( objQuat );
 			} 
-			else if ( appState === CONTROLLER_STATE.MANUAL_ROTATE_DEVICE && !autopositioning ) 
+			else if ( appState === CONTROLLER_STATE.MANUAL_ROTATE_DEVICE && !autopositioning) 
 			{				
 				if ( !_isHMD ) 
 				{

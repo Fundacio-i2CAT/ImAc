@@ -13,6 +13,8 @@ THREE.InteractionsController = function () {
     var signerActive = false;
     var pointerState = true;
 
+    var radarInteraction;
+
 
 //************************************************************************************
 // Private Functions
@@ -446,15 +448,35 @@ THREE.InteractionsController = function () {
         else console.error("Interactivity already exists in the list.")
 	};
 
+    this.addInteractiveRadar = function(object)
+    {
+        radarInteraction = object;
+        var index = interactiveListObjects.map(function(e) { return e.name; }).indexOf(object);
+
+        if (index < 0) {
+            interactiveListObjects.push(object);
+            controls.setInteractiveObject(object);
+        }
+        else console.error("Interactivity already exists in the list.")
+    };
+
 	this.removeInteractiveObject = function(name)
 	{
 		interactiveListObjects = interactiveListObjects.filter(e => e.name != name);
         controls.removeInteractiveObject(name);
 	}
 
+    this.removeInteractiveRadar = function(name)
+    {
+        radarInteraction = undefined;
+        interactiveListObjects = interactiveListObjects.filter(e => e.name != name);
+        controls.removeInteractiveObject(name);
+    }
+
     this.clearInteractiveObjectList = function(name)
     {
         interactiveListObjects = [];
+        if (radarInteraction) this.addInteractiveRadar(radarInteraction);
     }
 }
 

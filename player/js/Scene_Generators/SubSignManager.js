@@ -38,6 +38,7 @@ SubSignManager = function() {
 
 	var textListMemory = [];
 	var autoPositioning = false;
+	var radarAutoPositioning = false;
 
 	var subtitleMesh;
 	var signerMesh;
@@ -76,6 +77,7 @@ SubSignManager = function() {
 		if ( isd.contents.length > 0 ) 
 	  	{
 	  		if ( autoPositioning ) changePositioning( isd.imac );
+	  		if ( radarAutoPositioning ) changeSimplePositioning( isd.imac );
 	    	if ( subtitleEnabled ) print3DText( isd.contents[0], isd.imac );
 
 	    	checkSpeakerPosition( isd.imac );
@@ -207,6 +209,19 @@ SubSignManager = function() {
           		CameraParentObject.rotation.y = initY / ( -180 / Math.PI )%360 + rotaionValue * ( -Math.PI / 180 );
         	}
       	}, 20);
+	}
+
+	function changeSimplePositioning(isdImac)
+	{
+		radarAutoPositioning = false;
+
+		var a = new THREE.Euler( 0, Math.radians(isdImac), 0, 'XYZ' );
+
+		CameraParentObject.quaternion.setFromEuler( a );
+
+		AplicationManager.enableVR();
+
+		//setTimeout(function() {radarautopositioning = false;},500);
 	}	
 
 	function createSigner()
@@ -262,6 +277,13 @@ SubSignManager = function() {
     {
     	if ( radarMesh ) removeRadar();
     	radarMesh = _moData.getRadarMesh();
+
+    	radarMesh.onexecute = function() {
+
+			radarAutoPositioning = true;
+    	}
+
+    	interController.addInteractiveRadar( radarMesh )
     	camera.add( radarMesh );
     }
 
@@ -304,6 +326,7 @@ SubSignManager = function() {
 
     function removeRadar()
     {
+    	interController.removeInteractiveRadar( radarMesh )
     	removeSpeakerRadar();
     	camera.remove( radarMesh );
     	radarMesh = undefined;

@@ -1,19 +1,11 @@
 function MultiOptionsLSMenuView() {
 
+    var submenu;
+
 	this.UpdateView = function(data){
-		var submenu = scene.getObjectByName(data.name);
+		submenu = scene.getObjectByName(data.name);
         
-		submenu.getObjectByName('showSubtitlesMenuButton').visible = data.isSTenabled;
-		submenu.getObjectByName('disabledSubtitlesMenuButton').visible = !data.isSTenabled;
-
-		submenu.getObjectByName('showSignLanguageMenuButton').visible = data.isSLenabled;
-		submenu.getObjectByName('disabledSignLanguageMenuButton').visible = !data.isSLenabled;
-
-		submenu.getObjectByName('showAudioDescriptionMenuButton').visible = data.isADenabled;
-		submenu.getObjectByName('disabledAudioDescriptionMenuButton').visible = !data.isADenabled;
-
-		submenu.getObjectByName('showAudioSubtitlesMenuButton').visible = data.isASTenabled;
-		submenu.getObjectByName('disabledAudioSubtitlesMenuButton').visible = !data.isASTenabled;
+        this.UpdateMultiOptionsIconStatus(data);
 
         submenu.getObjectByName('showSubtitlesMenuButton').children[0].onexecute = data.openSTMenuButtonFunc;
         submenu.getObjectByName('disabledSubtitlesMenuButton').children[0].onexecute = data.openSTMenuButtonFunc;
@@ -35,10 +27,9 @@ function MultiOptionsLSMenuView() {
 
     this.pressButtonFeedback = function(data)
     {   
-    	var submenu = scene.getObjectByName(data.name);
         interController.removeInteractiveObject(data.clickedButtonName);
 
-        var sceneElement = submenu.getObjectByName(data.clickedButtonName)
+        var sceneElement = submenu.getObjectByName(data.clickedButtonName);
         var initScale = sceneElement.scale;
 
         sceneElement.material.color.set( menuButtonActiveColor );
@@ -51,4 +42,19 @@ function MultiOptionsLSMenuView() {
             interController.addInteractiveObject( sceneElement );
         }, 300);
     };
+
+    this.UpdateMultiOptionsIconStatusView = function(data)
+    {
+        submenu.getObjectByName('showSubtitlesMenuButton').visible = data.isSTenabled;
+        submenu.getObjectByName('disabledSubtitlesMenuButton').visible = !data.isSTenabled;
+
+        submenu.getObjectByName('showSignLanguageMenuButton').visible = data.isSLenabled;
+        submenu.getObjectByName('disabledSignLanguageMenuButton').visible = !data.isSLenabled;
+
+        submenu.getObjectByName('showAudioDescriptionMenuButton').visible = data.isADenabled;
+        submenu.getObjectByName('disabledAudioDescriptionMenuButton').visible = !data.isADenabled;
+
+        submenu.getObjectByName('showAudioSubtitlesMenuButton').visible = data.isASTenabled;
+        submenu.getObjectByName('disabledAudioSubtitlesMenuButton').visible = !data.isASTenabled;
+    }
 }

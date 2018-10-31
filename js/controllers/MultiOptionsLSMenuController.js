@@ -83,4 +83,14 @@ function MultiOptionsLSMenuController(menuType) {
 		view.pressButtonFeedback(data);
 		setTimeout(callback, 300);
     }
+
+    this.UpdateMultiOptionsIconStatus = function()
+    {
+		data.isSTenabled = true; 
+		data.isSLenabled = true;
+		data.isADenabled = false;
+		data.isASTenabled = false;
+
+    	view.UpdateMultiOptionsIconStatusView(data)
+    }
 }

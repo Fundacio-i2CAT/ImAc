@@ -1,41 +1,7 @@
 
 // GLOBAL VARS
 
-var _PlayerVersion = 'v0.04.0';
-
-var AplicationManager = new AplicationManager();
-var MenuFunctionsManager = new MenuFunctionsManager();
-var moData = new THREE.MediaObject();
-var menuData = new THREE.MenuObject();
-
-var menumanager = new MenuManager();
-//var MenuManager = new THREE.MenuManager();
-var MenuController = new THREE.MenuController();
-var MenuDictionary = new MenuDictionary();
-
-var ppMMgr = new THREE.PlayPauseMenuManager();
-
-var secMMgr = new THREE.SecondaryMenuManager();
-
-var AudioManager = new AudioManager();
-var subController = new SubSignManager();
-var interController = new THREE.InteractionsController();
-var polyfill = new WebVRPolyfill();
-var statObj = new StatObject();
-
-
-var loggerActivated = false;
-
-
-var demoId = 1;
-
-var mainContentURL = './resources/rapzember-young-hurn_edit.mp4';
-//var _selected_content = 'Radio';
-
-var list_contents;
-
-
-
+var _PlayerVersion = 'v0.05.0';
 
 /**
  * Initializes the web player.
@@ -45,72 +11,70 @@ function init_webplayer()
 {
 	console.log('Version: ' + _PlayerVersion);
 
-  AudioManager.initAmbisonicResources();
-  moData.setFont('./css/fonts/TiresiasScreenfont_Regular.json');
-  //moData.setFont('./css/fonts/helvetiker_bold.typeface.json');
-
-  $.getJSON('./content.json', function(json)
-  {
-    list_contents = json.contents;
-		//console.error(list_contents)
-    for (var i = 0; i < list_contents.length; i++) 
+    $.getJSON('./content.json', function(json)
     {
-      var id = i;
-      var dataText = list_contents[i].name;
+        var list_contents = json.contents;
 
-      createListGroup(id, list_contents[i].thumbnail, dataText);
-    }
-  });
-}
+        for (var i = 0; i < list_contents.length; i++) 
+        {
+            var id = i;
+            var dataText = list_contents[i].name;
 
-
-function blockContainer()
-{
-	document.getElementById("header").style.display = "none";
-	document.getElementById("content_area").style.display = "none";
-	document.getElementById("container").style.display = "block";
+            createListGroup(id, list_contents[i].thumbnail, dataText);
+        }
+    });
 }
 
 function selectXML(id)
-{
+{  
     var radios = document.getElementsByName('gender');
 
     for (var i = 0, length = radios.length; i < length; i++)
     {
         if (radios[i].checked)
         {
-            menuType = radios[i].value;
+            localStorage.ImAc_menuType = radios[i].value;
             break;
         }
     }
 
-  //mainContentURL = id == 2 ? './resources/cam_2_2k.mp4' : './resources/rapzember-young-hurn_edit.mp4';
-  enterfullscreen();
-  mainContentURL = list_contents[id].url;
- 
-  demoId = id;
+    var radios2 = document.getElementsByName('lang');
 
-  setTimeout(function(){ AplicationManager.init_AplicationManager(); }, 100);
-
-  //AplicationManager.init_AplicationManager();
-
-}
-       
-function startAllVideos()
-{
-  setTimeout(function() {
-    runDemo(); 
-  },500);
-  
-
-  //moData.playAll();
-}
-
-
-(function() {
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker
-              .register('./service-worker.js')
-              .then(function() { console.log('Service Worker Registered'); });
+    for (var i = 0, length = radios2.length; i < length; i++)
+    {
+        if (radios2[i].checked)
+        {
+            localStorage.ImAc_language = radios2[i].value;
+            break;
+        }
     }
-})();
+
+    localStorage.ImAc_init = id;
+
+    window.location = window.location.href + 'player/#' + id;
+
+}
+   
+
+function createListGroup(i, imagePath, dataName) 
+{
+    $("#list_group")
+    .append(
+        $('<div class="img-container-4">')
+        .attr('id','content'+i)
+        .append(
+            $('<img>')
+            .attr('id', i)
+            .attr('src', imagePath)
+            .attr('alt', 'ImAc')
+            .attr('onclick', 'selectXML(this.id)')
+            .append('</img>')
+        )
+        .append(
+            $('<p>')
+            .append(dataName)
+            .append('</p>')
+        )
+        .append('</div>')
+    )
+}    

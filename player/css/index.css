@@ -1,0 +1,10 @@
+html {
+  background-color: #FFFFFF;  
+}
+
+#container {
+  position: relative;
+	background-color: black;
+  display: block; 
+  width:100%;
+}

@@ -1,116 +1,8 @@
 {
   "title": "ImAc",
   "contents": [
-   {
-    "name": "1: ARTE Part-1 Arrow",
-    "thumbnail": "img/LOGO-IMAC.png",
-    "url": "http://84.88.32.46/imac_content/pilot_1/RBB_Iphilip/stream.mpd",
-    "audioChannels": 2,
-    "subtitles": [
-    {
-      "de": "http://84.88.32.46/imac_content/pilot_1/RBB_Iphilip/RBB_IPhilip_subtitles_DE.xml",
-      "ca": "http://84.88.32.46/imac_content/pilot_1/RBB_Iphilip/RBB_IPhilip_subtitles_CAT.xml",
-      "en": "http://84.88.32.46/imac_content/pilot_1/RBB_Iphilip/RBB_IPhilip_subtitles_EN.xml"
-    }],
-    "signer": [
-    {
-      "de": "http://84.88.32.46/imac_content/liceu/Liceu_Signer.mp4",
-      "ca": "http://84.88.32.46/imac_content/liceu/Liceu_Signer.mp4"
-    }],
-    "ad": [
-    {
-      "en": "",
-      "ca": ""
-    }],
-    "ast": [
-    {
-      "en": "",
-      "ca": ""
-    }]
-  }, 
   {
-    "name": "2: ARTE Part-1 Radar",
-    "thumbnail": "img/LOGO-IMAC.png",
-    "url": "http://84.88.32.46/imac_content/pilot_1/RBB_Iphilip/stream.mpd",
-    "audioChannels": 2,
-    "subtitles": [
-    {
-      "de": "http://84.88.32.46/imac_content/pilot_1/RBB_Iphilip/RBB_IPhilip_subtitles_DE.xml",
-      "ca": "http://84.88.32.46/imac_content/pilot_1/RBB_Iphilip/RBB_IPhilip_subtitles_CAT.xml",
-      "en": "http://84.88.32.46/imac_content/pilot_1/RBB_Iphilip/RBB_IPhilip_subtitles_EN.xml"
-    }],
-    "signer": [
-    {
-      "de": "http://84.88.32.46/imac_content/liceu/Liceu_Signer.mp4",
-      "ca": "http://84.88.32.46/imac_content/liceu/Liceu_Signer.mp4"
-    }],
-    "ad": [
-    {
-      "en": "",
-      "ca": ""
-    }],
-    "ast": [
-    {
-      "en": "",
-      "ca": ""
-    }]
-  }, 
-  {
-    "name": "3: ARTE Part-2 Arrow",
-    "thumbnail": "img/LOGO-IMAC.png",
-    "url": "http://84.88.32.46/imac_content/pilot_1/RBB_Iphilip/stream.mpd",
-    "audioChannels": 2,
-    "subtitles": [
-    {
-      "de": "http://84.88.32.46/imac_content/pilot_1/RBB_Iphilip/RBB_IPhilip_subtitles_DE.xml",
-      "ca": "http://84.88.32.46/imac_content/pilot_1/RBB_Iphilip/RBB_IPhilip_subtitles_CAT.xml",
-      "en": "http://84.88.32.46/imac_content/pilot_1/RBB_Iphilip/RBB_IPhilip_subtitles_EN.xml"
-    }],
-    "signer": [
-    {
-      "de": "http://84.88.32.46/imac_content/liceu/Liceu_Signer.mp4",
-      "ca": "http://84.88.32.46/imac_content/liceu/Liceu_Signer.mp4"
-    }],
-    "ad": [
-    {
-      "en": "",
-      "ca": ""
-    }],
-    "ast": [
-    {
-      "en": "",
-      "ca": ""
-    }]
-  }, 
-  {
-    "name": "4: ARTE Part-2 Radar",
-    "thumbnail": "img/LOGO-IMAC.png",
-    "url": "http://84.88.32.46/imac_content/pilot_1/RBB_Iphilip/stream.mpd",
-    "audioChannels": 2,
-    "subtitles": [
-    {
-      "de": "http://84.88.32.46/imac_content/pilot_1/RBB_Iphilip/RBB_IPhilip_subtitles_DE.xml",
-      "ca": "http://84.88.32.46/imac_content/pilot_1/RBB_Iphilip/RBB_IPhilip_subtitles_CAT.xml",
-      "en": "http://84.88.32.46/imac_content/pilot_1/RBB_Iphilip/RBB_IPhilip_subtitles_EN.xml"
-    }],
-    "signer": [
-    {
-      "de": "http://84.88.32.46/imac_content/liceu/Liceu_Signer.mp4",
-      "ca": "http://84.88.32.46/imac_content/liceu/Liceu_Signer.mp4"
-    }],
-    "ad": [
-    {
-      "en": "",
-      "ca": ""
-    }],
-    "ast": [
-    {
-      "en": "",
-      "ca": ""
-    }]
-  }, 
-  {
-    "name": "5: Opera-1 Arrow",
+    "name": "1: Opera-1",
     "thumbnail": "img/LOGO-IMAC.png",
     "url": "http://84.88.32.46/imac_content/pilot_1/OPERALICEU_01/stream.mpd",
     "audioChannels": 4,
@@ -120,6 +12,12 @@
       "ca": "http://84.88.32.46/imac_content/pilot_1/OPERALICEU_01/CCMA_OPERALICEU01_subtitles_CAT.xml",
       "en": "http://84.88.32.46/imac_content/pilot_1/OPERALICEU_01/CCMA_OPERALICEU01_subtitles_EN.xml",
       "es": "http://84.88.32.46/imac_content/pilot_1/OPERALICEU_01/CCMA_OPERALICEU01_subtitles_CAST.xml"
+    },
+    {
+      "de": "http://84.88.32.46/imac_content/pilot_1/OPERALICEU_01/LICEU_CAST_E2R.xml",
+      "ca": "http://84.88.32.46/imac_content/pilot_1/OPERALICEU_01/LICEU_CAST_E2R.xml",
+      "en": "http://84.88.32.46/imac_content/pilot_1/OPERALICEU_01/LICEU_ENG_E2R.xml",
+      "es": "http://84.88.32.46/imac_content/pilot_1/OPERALICEU_01/LICEU_CAST_E2R.xml"
     }],
     "signer": [
     {
@@ -138,23 +36,23 @@
       "en": "",
       "ca": ""
     }]
-  }, 
-  {
-    "name": "6: Opera-1 Radar",
+  },
+{
+    "name": "2: Opera-2",
     "thumbnail": "img/LOGO-IMAC.png",
-    "url": "http://84.88.32.46/imac_content/pilot_1/OPERALICEU_01/stream.mpd",
+    "url": "http://84.88.32.46/imac_content/pilot_1/OPERALICEU_02/stream.mpd",
     "audioChannels": 4,
     "subtitles": [
     {
-      "de": "http://84.88.32.46/imac_content/pilot_1/OPERALICEU_01/CCMA_OPERALICEU01_subtitles_DE.xml",
-      "ca": "http://84.88.32.46/imac_content/pilot_1/OPERALICEU_01/CCMA_OPERALICEU01_subtitles_CAT.xml",
-      "en": "http://84.88.32.46/imac_content/pilot_1/OPERALICEU_01/CCMA_OPERALICEU01_subtitles_EN.xml",
-      "es": "http://84.88.32.46/imac_content/pilot_1/OPERALICEU_01/CCMA_OPERALICEU01_subtitles_CAST.xml"
+      "de": "http://84.88.32.46/imac_content/pilot_1/OPERALICEU_02/CCMA_OPERALICEU02_subtitles_DE.xml",
+      "ca": "http://84.88.32.46/imac_content/pilot_1/OPERALICEU_02/CCMA_OPERALICEU02_subtitles_CAT.xml"
+    },
+    {
+      "de": "http://84.88.32.46/imac_content/pilot_1/OPERALICEU_02/CCMA_OPERALICEU02_subtitles_DE.xml",
+      "ca": "http://84.88.32.46/imac_content/pilot_1/OPERALICEU_02/CCMA_OPERALICEU02_subtitles_CAT.xml"
     }],
     "signer": [
     {
-      "en": "http://84.88.32.46/imac_content/liceu/Dash/SL_ENG/stream.mpd",
-      "es": "http://84.88.32.46/imac_content/liceu/Dash/SL_ESP/stream.mpd",
       "ca": "http://84.88.32.46/imac_content/liceu/Dash/SL_CAT/stream.mpd",
       "de": "http://84.88.32.46/imac_content/liceu/Dash/SL_GER/stream.mpd"
     }],
@@ -168,21 +66,26 @@
       "en": "",
       "ca": ""
     }]
-  }, 
+  },
   {
-    "name": "7: Opera-2 Arrow",
+    "name": "3: Desconcert-1",
     "thumbnail": "img/LOGO-IMAC.png",
-    "url": "http://84.88.32.46/imac_content/pilot_1/OPERALICEU_02/stream.mpd",
+    "url": "http://84.88.32.46/imac_content/pilot_1/desconcert_1/stream.mpd",
     "audioChannels": 4,
     "subtitles": [
     {
-      "de": "http://84.88.32.46/imac_content/pilot_1/OPERALICEU_02/CCMA_OPERALICEU02_subtitles_DE.xml",
-      "ca": "http://84.88.32.46/imac_content/pilot_1/OPERALICEU_02/CCMA_OPERALICEU02_subtitles_CAT.xml"
+      "de": "http://84.88.32.46/imac_content/pilot_1/desconcert_1/CCMA_Desconcert_Halldor_Mar_Leyre_subtitles_DE.xml",
+      "ca": "http://84.88.32.46/imac_content/pilot_1/desconcert_1/CCMA_Desconcert_Halldor_Mar_Leyre_subtitles_CAT.xml",
+      "en": "http://84.88.32.46/imac_content/pilot_1/desconcert_1/CCMA_Desconcert_Halldor_Mar_Leyre_subtitles_EN.xml"
+    },
+    {
+      "de": "http://84.88.32.46/imac_content/pilot_1/desconcert_1/CCMA_Desconcert_Halldor_Mar_Leyre_subtitles_DE.xml",
+      "ca": "http://84.88.32.46/imac_content/pilot_1/desconcert_1/CCMA_Desconcert_Halldor_Mar_Leyre_subtitles_CAT.xml",
+      "en": "http://84.88.32.46/imac_content/pilot_1/desconcert_1/CCMA_Desconcert_Halldor_Mar_Leyre_subtitles_EN.xml"
     }],
     "signer": [
     {
-      "de": "http://84.88.32.46/imac_content/liceu/Liceu_Signer.mp4",
-      "ca": "http://84.88.32.46/imac_content/liceu/Liceu_Signer.mp4"
+      "de": "http://84.88.32.46/imac_content/liceu/Dash/SL_GER/stream.mpd"
     }],
     "ad": [
     {
@@ -194,21 +97,81 @@
       "en": "",
       "ca": ""
     }]
-  }, 
+  },
   {
-    "name": "8: Opera-2 Radar",
+    "name": "4: Desconcert-2",
     "thumbnail": "img/LOGO-IMAC.png",
-    "url": "http://84.88.32.46/imac_content/pilot_1/OPERALICEU_02/stream.mpd",
+    "url": "http://84.88.32.46/imac_content/pilot_1/desconcert_2/stream.mpd",
     "audioChannels": 4,
     "subtitles": [
     {
-      "de": "http://84.88.32.46/imac_content/pilot_1/OPERALICEU_02/CCMA_OPERALICEU02_subtitles_DE.xml",
-      "ca": "http://84.88.32.46/imac_content/pilot_1/OPERALICEU_02/CCMA_OPERALICEU02_subtitles_CAT.xml"
+      "de": "http://84.88.32.46/imac_content/pilot_1/desconcert_2/CCMA_Desconcert_Marion_Harrier_Havanna_subtitles_DE.xml",
+      "ca": "http://84.88.32.46/imac_content/pilot_1/desconcert_2/CCMA_Desconcert_Marion_Harrier_Havanna_subtitles_CAT.xml",
+      "en": "http://84.88.32.46/imac_content/pilot_1/desconcert_2/CCMA_Desconcert_Marion_Harrier_Havanna_subtitles_EN.xml"
+    },
+    {
+      "de": "http://84.88.32.46/imac_content/pilot_1/desconcert_2/CCMA_Desconcert_Marion_Harrier_Havanna_subtitles_DE.xml",
+      "ca": "http://84.88.32.46/imac_content/pilot_1/desconcert_2/CCMA_Desconcert_Marion_Harrier_Havanna_subtitles_CAT.xml",
+      "en": "http://84.88.32.46/imac_content/pilot_1/desconcert_2/CCMA_Desconcert_Marion_Harrier_Havanna_subtitles_EN.xml"
     }],
     "signer": [
     {
-      "de": "http://84.88.32.46/imac_content/liceu/Liceu_Signer.mp4",
-      "ca": "http://84.88.32.46/imac_content/liceu/Liceu_Signer.mp4"
+      "de": "http://84.88.32.46/imac_content/liceu/Dash/SL_GER/stream.mpd"
+    }],
+    "ad": [
+    {
+      "en": "",
+      "ca": ""
+    }],
+    "ast": [
+    {
+      "en": "",
+      "ca": ""
+    }]
+  },
+  {
+    "name": "5: Demo RBB",
+    "thumbnail": "img/LOGO-IMAC.png",
+    "url": "http://84.88.32.46/imac_content/rbb/dash/stream.mpd",
+    "audioChannels": 2,
+    "subtitles": [
+    {
+      "de": "http://84.88.32.46/imac_content/rbb/RBB_Abendschau_short_subtitles_angles.xml"
+    }],
+    "signer": [
+    {
+      "en": "http://84.88.32.46/imac_content/liceu/Dash/SL_GER/stream.mpd"
+    }],
+    "ad": [
+    {
+      "en": "",
+      "ca": ""
+    }],
+    "ast": [
+    {
+      "en": "",
+      "ca": ""
+    }]
+  },
+  {
+    "name": "6: ARTE IPhilip",
+    "thumbnail": "img/LOGO-IMAC.png",
+    "url": "http://84.88.32.46/imac_content/pilot_1/RBB_Iphilip/stream.mpd",
+    "audioChannels": 2,
+    "subtitles": [
+    {
+      "de": "http://84.88.32.46/imac_content/pilot_1/RBB_Iphilip/RBB_IPhilip_subtitles_DE.xml",
+      "ca": "http://84.88.32.46/imac_content/pilot_1/RBB_Iphilip/RBB_IPhilip_subtitles_CAT.xml",
+      "en": "http://84.88.32.46/imac_content/pilot_1/RBB_Iphilip/RBB_IPhilip_subtitles_EN.xml"
+    },
+    {
+      "de": "http://84.88.32.46/imac_content/pilot_1/RBB_Iphilip/RBB_IPhilip_subtitles_DE.xml",
+      "ca": "http://84.88.32.46/imac_content/pilot_1/RBB_Iphilip/RBB_IPhilip_subtitles_CAT.xml",
+      "en": "http://84.88.32.46/imac_content/pilot_1/RBB_Iphilip/RBB_IPhilip_subtitles_EN.xml"
+    }],
+    "signer": [
+    {
+      "de": "http://84.88.32.46/imac_content/liceu/Dash/SL_GER/stream.mpd"
     }],
     "ad": [
     {

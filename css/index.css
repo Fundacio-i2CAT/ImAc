@@ -40,7 +40,7 @@ html {
 }
 
 .list-group img {
-    width: 95%;
+    width: 88%;
     height: 9vw;
     border-style: ridge;
     border-color: #2581c4;
@@ -124,7 +124,6 @@ label {
 
 
 .options {
-  margin-left: 1rem;
   border: 1px black;
   border-style: dotted;
   color: #000;
@@ -176,4 +175,54 @@ label {
   left: 0;
   position: absolute;
   display: none;
+}
+
+.vc_single_image-img {
+  background-color: #fff
+}
+
+
+
+#body-container { display:block; }
+
+@media only screen and (orientation:portrait){
+
+  #body-container {
+
+
+    width: 100%;
+
+    -webkit-transform: translate(53%, 70vw) rotate(90deg);
+
+    -moz-transform: translate(53%, 70vw) rotate(90deg);
+
+    -o-transform: translate(53%, 70vw) rotate(90deg);
+
+    -ms-transform: translate(53%, 70vw) rotate(90deg);
+
+    transform: translate(53%, 70vw) rotate(90deg);
+
+  }
+  #content_area {
+    width: 150%;
+  }
+
+}
+
+@media only screen and (orientation:landscape){
+
+  #body-container {
+
+     -webkit-transform: rotate(0deg);
+
+     -moz-transform: rotate(0deg);
+
+     -o-transform: rotate(0deg);
+
+     -ms-transform: rotate(0deg);
+
+     transform: rotate(0deg);
+
+  }
+
 }

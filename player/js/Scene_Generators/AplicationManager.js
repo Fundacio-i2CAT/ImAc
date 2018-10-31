@@ -120,6 +120,7 @@ function AplicationManager()
 		container.appendChild( renderer.domElement );
 
 		_moData.createOpenMenuMesh();
+
         //moData.createSphericalVideoInScene( mainContentURL, 'contentsphere' );
         scene.add( _moData.getSphericalVideoMesh( 100, mainContentURL, 'contentsphere' ) )
 		_moData.createCastShadows();

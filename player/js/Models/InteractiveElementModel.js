@@ -32,7 +32,7 @@ function createTextIE (element)
 {
     var shape = new THREE.BufferGeometry();
     var material = new THREE.MeshBasicMaterial( { color: element.color} );
-    var shapes = moData.getFont().generateShapes( element.value, element.textSize);
+    var shapes = _moData.getFont().generateShapes( element.value, element.textSize);
     var geometry = new THREE.ShapeGeometry( shapes );
 
     geometry.computeBoundingBox();

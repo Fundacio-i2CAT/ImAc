@@ -25,7 +25,7 @@ function MenuManager() {
 
     var optActiveIndex;
     
-    this.Init = function()
+    this.Init = function(type)
     {
 
         menuWidth = 125;
@@ -46,10 +46,10 @@ function MenuManager() {
         //menuType = 2;
 
 // L O W    S I G H T E D 
-        menuType = 1;
+        menuType = type;
 
-        addMenuToParent(menuType);
-        InitAllCtrl(menuType);
+        addMenuToParent();
+        InitAllCtrl();
 
         mmgr.ResetViews();
 
@@ -128,11 +128,11 @@ function MenuManager() {
             actualCtrl.Exit();
         
             //CREATE A FUNCTIONS WHERE ALL THE MULTIOPTIONS ARE DISABLED
-            interController.setSubtitlesActive(subController.getSubtitleEnabled()); // TODO CHANGE THIS  FUNCTION
-            if(interController.getSubtitlesActive()) subController.disableSubtiles(); // TODO CHANGE THIS  FUNCTION
+            //interController.setSubtitlesActive(subController.getSubtitleEnabled()); // TODO CHANGE THIS  FUNCTION
+            //if(interController.getSubtitlesActive()) subController.disableSubtiles(); // TODO CHANGE THIS  FUNCTION
             //subController.switchSigner( false ); // TODO CHANGE THIS  FUNCTION
 
-            MenuDictionary.initGlobalArraysByLanguage();
+            //MenuDictionary.initGlobalArraysByLanguage();
 
             switch(menuType)
             {
@@ -188,8 +188,13 @@ function MenuManager() {
 
     this.createMenuActivationElement = function()
     {
-        var geometry = new THREE.SphereGeometry( 99, 64, 16, Math.PI/2, Math.PI * 2,  7*Math.PI/20,  -Math.PI/12 );
-        var material = new THREE.MeshBasicMaterial( {color: 0xffffff, side: THREE.FrontSide, transparent: true, opacity:0.05} );
+
+        var geometry = new THREE.SphereGeometry( 99, 32, 16, Math.PI/2, Math.PI * 2,  2.35,  0.4 );
+        geometry.scale( - 1, 1, 1 );
+        //var material = new THREE.MeshBasicMaterial( {color: 0x13ec56, side: THREE.FrontSide, colorWrite: false});
+        var material = new THREE.MeshBasicMaterial( {color: 0xffffff, side: THREE.FrontSide, transparent: true, opacity:0} );
+        //var geometry = new THREE.SphereGeometry( 99, 64, 16, Math.PI/2, Math.PI * 2,  7*Math.PI/20,  -Math.PI/12 );
+        //var material = new THREE.MeshBasicMaterial( {color: 0xffffff, side: THREE.FrontSide, transparent: true, opacity:0.05} );
         menuActivationElement = new THREE.Mesh( geometry, material );
         menuActivationElement.name = 'openMenu';
 
@@ -211,25 +216,48 @@ function MenuManager() {
                 menuActivationElement.visible = false;
                 scene.getObjectByName( "openmenutext" ).visible = false;
 
-                switch(menuType)
-                {
-                    case 1:
-                    default:
-                        mmgr.Load(playpauseCtrl);
-                        break;
+                initFirstMenuState(); // Initialize the first menu state when the time has expired.
 
-                    case 2:
-                        LoadTrad();
-                        break;
-                }  
             }
         });
 
         scene.add(menuActivationElement);
     }
 
+    /**
+     * This function return the initial state for the menu.
+     * For the Low Sighted menu the initial state is the PlayPause menu.
+     * For the Traditional menu the initial state is init all the controllers and exit the submenus.
+    */
 
-    function addMenuToParent(menuType)
+    function initFirstMenuState()
+    {
+        switch(menuType)
+        {
+            case 1:
+            default:
+                mmgr.Load(playpauseCtrl);
+                break;
+
+            case 2:
+                controllers.forEach(function(controller){
+                    controller.Init();
+                });
+
+
+                STOptionCtrl.Exit();
+                SLOptionCtrl.Exit();
+                ADOptionCtrl.Exit();
+                ASTOptionCtrl.Exit();
+                SettingsOptionCtrl.Exit();
+
+                menuParent.getObjectByName('traditionalmenu').visible = true;
+                break;
+        }      
+    }
+
+
+    function addMenuToParent()
     {
         switch(menuType)
         {
@@ -253,7 +281,7 @@ function MenuManager() {
         }
     }
 
-    function InitAllCtrl(menuType)
+    function InitAllCtrl()
     {
         playpauseCtrl = new PlayPauseLSMenuController();
         controllers.push(playpauseCtrl);  
@@ -334,7 +362,7 @@ function MenuManager() {
         var tradOptionMenuTitle =  new THREE.Group();
         tradOptionMenuTitle.name = 'tradoptionmenutitle';
 
-        var line = menuData.createLine( 0xffffff, 
+        var line = _moData.createLine( 0xffffff, 
             new THREE.Vector3( -15, -2.5, 0.01 ),
             new THREE.Vector3( 15, -2.5, 0.01 ) );
 
@@ -1095,7 +1123,7 @@ function MenuManager() {
 
         var linesMenuGroup =  new THREE.Group();
         linesMenuGroup.name = 'linesMenuGroup';
-        var line1 = menuData.createLine( 0xffffff, 
+        var line1 = _moData.createLine( 0xffffff, 
             new THREE.Vector3( -menuWidth/6, menuHeight/2, 0 ),
             new THREE.Vector3( -menuWidth/6, -menuHeight/2, 0 ) );
 

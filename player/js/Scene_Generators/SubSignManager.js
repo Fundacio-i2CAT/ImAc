@@ -45,6 +45,8 @@ SubSignManager = function() {
 	var radarMesh;
 	var speakerMesh;
 
+	var areaMesh;
+
 	// [ST] subtitle vars 
 	var subtitleEnabled = false; // boolean
 	var subPosX = 0; // start = left = -1, center = 0, end = right = 1 
@@ -304,6 +306,23 @@ SubSignManager = function() {
         else removeSpeakerRadar();
     }
 
+    function createSubAreaHelper(size)
+    {
+    	if ( areaMesh ) camera.remove( areaMesh );
+
+		var mesh = _moData.getPlaneImageMesh( 1.48*size, 0.82*size, './img/rect5044.png', 'areamesh', 5 ) 
+		mesh.position.z = -70;
+		mesh.autoRemove = function() {
+			var timer = setTimeout(function() {
+	        	camera.remove( mesh );
+	        }, 1000);
+		}
+		areaMesh = mesh;
+        camera.add( mesh );
+
+        mesh.autoRemove();
+    }
+
 //************************************************************************************
 // Media Object Destructors
 //************************************************************************************
@@ -490,6 +509,7 @@ SubSignManager = function() {
 
 	this.setSubtitle = function(xml, lang)
 	{
+		subLang = lang;
 		var r = new XMLHttpRequest();
 
 	  	r.open( "GET", xml );
@@ -497,7 +517,6 @@ SubSignManager = function() {
 	    {
 	        if ( r.readyState === 4 && r.status === 200 ) 
 	        {
-	        	subLang = lang;
 	            imsc1doc = imsc.fromXML( r.responseText );
 	        }
 	        else if ( r.readyState === 4 ) 
@@ -557,6 +576,8 @@ SubSignManager = function() {
 		subArea = size;
 		textListMemory = [];
 
+		createSubAreaHelper( size );
+
 		updateISD( VideoController.getMediaTime() );
 	};
 
@@ -575,6 +596,7 @@ SubSignManager = function() {
 	{
 		signArea = size;
 		updateSignerPosition();
+		createSubAreaHelper( size );
 	};
 
 	this.setSignerIndicator = function(ind)
@@ -588,6 +610,50 @@ SubSignManager = function() {
 		signerContent = url;
 		signLang = lang;
 		if ( signEnabled ) createSigner();
+	};	
+
+//************************************************************************************
+// Public Subtitle Checkers
+//************************************************************************************
+
+	this.checkSubtitleEnabled = function(x)
+	{
+		return x == subtitleEnabled;
+	};
+
+	this.checkSubPosition = function(x)
+	{
+		return x == subPosY;
+	};
+
+	this.checkSubIndicator = function(x)
+	{
+		return x == subtitleIndicator;
+	};
+
+	this.checkSubSize = function(x)
+	{
+		return x == subSize;
+	};
+
+	this.checkSubLanguage = function(x)
+	{
+		return x == subLang;
+	};
+
+	this.checkSubBackground = function(x)
+	{
+		return x == subBackground;
+	};
+
+	this.checkSubEasy = function(x)
+	{
+		return x == subEasy;
+	};
+
+	this.checkSubArea = function(x)
+	{
+		return x == subArea;
 	};	
 
 //************************************************************************************

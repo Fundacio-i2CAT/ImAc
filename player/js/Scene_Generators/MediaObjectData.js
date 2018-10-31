@@ -227,14 +227,14 @@ THREE.MediaObjectData = function () {
         var mesh = getImageMesh( geometry, img, name, 4 ); 
 
         mesh.position.x = posX;
-        mesh.position.z = menuElementsZ;
+        mesh.position.z = 0.05;
 
         if ( name == menuList[1].buttons[3] ) mesh.rotation.z = Math.PI;
 
         var coliderMesh = new THREE.Mesh( new THREE.PlaneGeometry(cw, ch), new THREE.MeshBasicMaterial({visible: false}));
         
         coliderMesh.name = name;
-        coliderMesh.position.z = menuElementsZ+0.01;
+        coliderMesh.position.z = 0.06;
 
         if ( func ) 
         {
@@ -797,7 +797,7 @@ THREE.MediaObjectData = function () {
         var coliderMesh = new THREE.Mesh( new THREE.PlaneGeometry( cw, ch ), new THREE.MeshBasicMaterial( { visible: false } ) );
         
         coliderMesh.name = name;
-        coliderMesh.position.z = menuElementsZ + 0.01;
+        coliderMesh.position.z = 0.06;
 
         if ( func ) 
         {
@@ -806,7 +806,7 @@ THREE.MediaObjectData = function () {
 
         mesh.add( coliderMesh );
         
-        mesh.position.z = menuElementsZ;
+        mesh.position.z = 0.05;
 
         return mesh;
     }

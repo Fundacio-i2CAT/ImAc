@@ -9,7 +9,9 @@ var MenuFunctionsManager = new MenuFunctionsManager();
 
 var _moData = new THREE.MediaObjectData();
 
-var MenuManager = new THREE.MenuManager();
+var menumanager = new MenuManager();
+
+//var MenuManager = new THREE.MenuManager();
 var MenuController = new THREE.MenuController();
 var MenuDictionary = new MenuDictionary();
 
@@ -33,7 +35,7 @@ var mainContentURL = './resources/rapzember-young-hurn_edit.mp4';
 
 var list_contents;
 
-if (annyang) {
+if ( annyang ) {
   // Let's define a command.
   var commands = {
     'hello': function() { console.log('Hello world!'); }

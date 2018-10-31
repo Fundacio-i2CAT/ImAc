@@ -51,8 +51,8 @@ function PlayPauseLSMenuController() {
 
 	function UpdateData()
     {
-		data.isPaused = ppMMgr.isPausedById(0);
-		data.playpauseMenuButtonFunc = function(){ AddVisualFeedbackOnClick(ppMMgr.isPausedById(0) ? 'playButton' : 'pauseButton', function(){ PlayPauseFunc()} )};
+		data.isPaused = VideoController.isPausedById(0);
+		data.playpauseMenuButtonFunc = function(){ AddVisualFeedbackOnClick(VideoController.isPausedById(0) ? 'playButton' : 'pauseButton', function(){ PlayPauseFunc()} )};
 		data.seekForwardMenuButtonFunc = function(){ AddVisualFeedbackOnClick('forwardSeekButton',  function(){ SeekFunc(true)} )};
 		data.seekBackMenuButtonFunc = function(){ AddVisualFeedbackOnClick('backSeekButton',  function(){ SeekFunc(false)} )};
         data.backMenuButtonFunc = function(){ AddVisualFeedbackOnClick('backMenuButton', function(){ menumanager.NavigateBackMenu()} )};
@@ -81,7 +81,7 @@ function PlayPauseLSMenuController() {
 
 	function PlayPauseFunc()
     {
-        ppMMgr.isPausedById(0) ? ppMMgr.playAll() : ppMMgr.pauseAll();
+        VideoController.isPausedById(0) ? VideoController.playAll() : VideoController.pauseAll();
 		UpdateData();
 		view.UpdateView(data);
     	AddInteractivityToMenuElements();
@@ -96,7 +96,7 @@ function PlayPauseLSMenuController() {
     function SeekFunc(plus)
     {
         var sign = plus ? 1 : -1;
-        ppMMgr.seekAll( sign*seekTime );
+        VideoController.seekAll( 5*sign );
         UpdateData();
 		view.UpdateView(data);
 

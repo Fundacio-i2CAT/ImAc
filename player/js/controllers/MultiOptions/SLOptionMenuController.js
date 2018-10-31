@@ -7,14 +7,14 @@ function SLOptionMenuController(menuType) {
 
 	var signerLanguagesArray =  [
 									{name: 'signerEngButton', value: 'English', default: true}, 
-									{name: 'signerEspButton', value: 'Spanish', default: false}, 
-									{name: 'signerGerButton', value: 'German', default: false}, 
-									{name: 'signerCatButton', value: 'Catalan', default: false}];
+									{name: 'signerEspButton', value: 'Español', default: false}, 
+									{name: 'signerGerButton', value: 'Deutsch', default: false}, 
+									{name: 'signerCatButton', value: 'Català', default: false}];
 
 	var signerIndicatorArray = [
 									{name: 'signerIndicatorNoneButton', value: 'None', default: true}, 
 									{name: 'signerIndicatorArrowButton', value: 'Arrow', default: false}, 
-									{name: 'signerIndicatorRadarButton', value: 'Radar', default: false}];
+									{name: 'signerIndicatorRadarButton', value: 'Auto', default: false}];
 
 	var signerPositionArray = [
 									{name: 'signerTopButton', value: 'Top', default: false}, 
@@ -26,7 +26,7 @@ function SLOptionMenuController(menuType) {
 									{name: 'signerLargeAreaButton', value: 'Large', default: true}];
 
     var parentColumnDropdownElements = [ 
-                                    {name: 'signerLanguages', value: 'Languages', options: signerLanguagesArray, visible: true},
+                                    {name: 'signerLanguages', value: 'Language', options: signerLanguagesArray, visible: true},
                                     {name: 'signerShowPositions', value: 'Position', options: signerPositionArray, visible: true},
                                     {name: 'signerIndicator', value: 'Indicator', options: signerIndicatorArray, visible: true},
                                     {name: 'signerAreas', value: 'Area', options: signerAreasArray, visible: true}];
@@ -100,7 +100,7 @@ function SLOptionMenuController(menuType) {
 
 	function UpdateData()
     {
-		data.isOptEnabled = true;
+		data.isOptEnabled = false;
         data.isOnOffButtonVisible = true;
 
 
@@ -110,8 +110,14 @@ function SLOptionMenuController(menuType) {
 		data.lsOptDisbledLabelName = 'disabledSignLanguageMenuButton';
 		data.lsOptDisbledLabelValue = './img/menu_ai_icons/SL_strike.png';
 
-        data.onOptButtonFunc = function(){changeOnOffLSOptionState(data.isOptEnabled)};
-        data.offOptButtonFunc = function(){changeOnOffLSOptionState(data.isOptEnabled)};
+        data.onOptButtonFunc = function() {
+            MenuFunctionsManager.getOnOffFunc('signLanguageOnButton')()
+            changeOnOffLSOptionState(data.isOptEnabled)
+        };
+        data.offOptButtonFunc = function(){
+            MenuFunctionsManager.getOnOffFunc('signLanguageOffButton')()
+            changeOnOffLSOptionState(data.isOptEnabled)
+        };
 
         switch(menuType)
         {
@@ -182,7 +188,10 @@ function SLOptionMenuController(menuType) {
                 dropdownIE.onexecute =  function(){
                     UpdateDefaultLSMenuOption(elements,index);
                     data.childColumnActiveOpt = element.name;
-                    console.log("Click on "+element.value+ " final option");
+
+                    MenuFunctionsManager.getButtonFunctionByName( element.name )();
+
+                    //console.log("Click on "+element.value+ " final option");
                     setTimeout(function(){view.UpdateView(data)}, 100);
                 };
             } 
@@ -190,7 +199,7 @@ function SLOptionMenuController(menuType) {
             dropdownIE.height =  elements.length>4 ? h/4 : h/elements.length;
             dropdownIE.name = element.name;
             dropdownIE.type =  'text';
-            dropdownIE.value = element.value;
+            dropdownIE.value = MenuDictionary.translate( element.value );
             dropdownIE.color = 0xffffff;
             dropdownIE.textSize =  5;
             dropdownIE.visible = true;
@@ -218,7 +227,7 @@ function SLOptionMenuController(menuType) {
             dropdownIE.height =  4;
             dropdownIE.name = element.name;
             dropdownIE.type =  'text';
-            dropdownIE.value = element.value;
+            dropdownIE.value = MenuDictionary.translate( element.value );
             dropdownIE.color = element.default ? 0xffff00 : 0xffffff;
             dropdownIE.textSize =  1.5;
             dropdownIE.visible = true;
@@ -229,6 +238,9 @@ function SLOptionMenuController(menuType) {
             {
                 //dropdownIE.visible = element.visible;
                 data.isFinalDrop = false;
+                data.childColumnActiveOpt = undefined;
+
+                
                 dropdownIE.onexecute =  function()
                 {
                     data.title = element.value;
@@ -247,7 +259,10 @@ function SLOptionMenuController(menuType) {
                 {
                     UpdateDefaultLSMenuOption(elements,index);
                     data.childColumnActiveOpt = element.name;
-                    console.log("Click on "+element.value+ " final option"); // ADD HERE THE FUNCTION 
+
+                    MenuFunctionsManager.getButtonFunctionByName( element.name )();
+
+                    //console.log("Click on "+element.value+ " final option"); // ADD HERE THE FUNCTION 
                     setTimeout(function(){view.UpdateView(data)}, 100);
                 };
             } 

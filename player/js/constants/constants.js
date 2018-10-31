@@ -1,4 +1,4 @@
-var menuType = "Traditional";
+/*var menuType = "Traditional";
 
 var clickInteractionTimeout = 300;
 var visualFeedbackTimeout = 1000;
@@ -9,7 +9,7 @@ var menuButtonActiveColor = 0xffff00;
 var factorScale = 9/16; 
 var menuElementsZ = 0.05;
 
-/* MENU BACKGROUND */
+
 var backgroundMenuColor = 0x000000;
 var menuAspectRatioWidth = 16;
 var menuAspectRatioHeigth = 9;
@@ -23,7 +23,7 @@ var closeButtonMarginY = 10;
 var nextButtonMarginX = 10;
 var nextButtonMarginY = 10;
 
-/* MENU PLAY/PAUSE */
+
 var playPauseButtonWidth = 75;
 var playPauseButtonHeight = 75;
 var seekButtonWidth = 40;
@@ -33,7 +33,7 @@ var playoutFeedbackMenuTextSize = 15;
 
 var seekTime = 5;
 
-/* MENU VOLUME */
+
 var volumeLevelButtonWidth = 40;
 var volumeLevelButtonHeight = 40;
 var muteUnmuteButtonWidth = 100;
@@ -43,19 +43,19 @@ var volFeedbackMenuTextSize = 18;
 
 var volumeChangeStep = 0.1;
 
-/* MENU SETTINGS/CARDBOARD */
+
 var settingsButtonWidth = 80;
 var settingsButtonHeight = 80;
 var cardboardButtonWidth = 80;
 var cardboardButtonHeight = 50;
 var settingsCardboardMarginX = 60;
 
-/* MENU MULTIOPTIONS */
+
 var multioptionsMenuTextSize = 11;
 
 var subMenuTextSize = 5;
 
-/* SUB MENU SIBTITLES */
+
 
 var subtitlesLanguagesArray = ['English', 'Spanish', 'German', 'Catalan'];
 var subtitlesPositionArray = ['Top', 'Bottom'];
@@ -87,7 +87,7 @@ var MOMenuButtonsArray = ['./img/menu_ai_icons/ST.png', './img/menu_ai_icons/SL.
 var MOMenuDisabledButtonsArray = ['./img/menu_ai_icons/ST_strike.png', './img/menu_ai_icons/SL_strike.png', './img/menu_ai_icons/AD_strike.png', './img/menu_ai_icons/AST_strike.png'];
 
 var MOMenuOverButtonsArray = ['./img/menu_ai_icons/=.png', './img/menu_ai_icons/-.png', './img/menu_ai_icons/-.yellow.png', './img/menu_ai_icons/o.png'];
-
+*/
 var secondarySubIndex = 0;
 
 var _isHMD = false;
@@ -101,3 +101,6 @@ var tradmenuDivisions = 24;
 var heigthDropdownOption = 4;
 var tradMenuLetterSize = 1.5;
 var tradMenuWidth = 30;
+
+var menuDefaultColor = 0xffffff;
+var menuButtonActiveColor = 0xffff00;

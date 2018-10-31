@@ -52,8 +52,8 @@ function VolumeLSMenuController() {
 
 	function UpdateData()
     {
-		data.isMuted = AudioManager.isAudioMuted();
-		data.muteUnmuteMenuButtonFunc = function(){ AddVisualFeedbackOnClick(AudioManager.isAudioMuted() ? 'unmuteVolumeButton' : 'muteVolumeButton', function(){ MuteUnmuteVolumeFunc()} )}; 
+		data.isMuted = _AudioManager.isAudioMuted();
+		data.muteUnmuteMenuButtonFunc = function(){ AddVisualFeedbackOnClick(_AudioManager.isAudioMuted() ? 'unmuteVolumeButton' : 'muteVolumeButton', function(){ MuteUnmuteVolumeFunc()} )}; 
 		data.plusVolumeMenuButtonFunc = function(){ AddVisualFeedbackOnClick('plusVolumeButton', function(){ ChangeVolumeFunc(true)} )};
 		data.minusVolumeMenuButtonFunc = function(){ AddVisualFeedbackOnClick('minusVolumeButton', function(){ ChangeVolumeFunc(false)} )};
 		data.backMenuButtonFunc = function(){ AddVisualFeedbackOnClick('backMenuButton', function(){ menumanager.NavigateBackMenu()} )};
@@ -82,7 +82,7 @@ function VolumeLSMenuController() {
 	function ChangeVolumeFunc(plus)
     {
     	var sign = plus ? 1 : -1;
-        AudioManager.changeVolume( sign*volumeChangeStep );
+        _AudioManager.changeVolume( 0.1*sign );
 
         // TODO
 
@@ -91,7 +91,7 @@ function VolumeLSMenuController() {
 
     function MuteUnmuteVolumeFunc()
     {
-		AudioManager.isAudioMuted() ? AudioManager.setunmute() : AudioManager.setmute();
+		_AudioManager.isAudioMuted() ? _AudioManager.setunmute() : _AudioManager.setmute();
         
 		UpdateData();
 		view.UpdateView(data);

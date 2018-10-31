@@ -6,41 +6,41 @@ function STOptionMenuController(menuType) {
 	var viewStructure;
 
 	var subtitlesLanguagesArray = [
-									{name: 'subtitlesEngButton', value: 'English', default: true}, 
-									{name: 'subtitlesEspButton', value: 'Spanish', default: false}, 
-									{name: 'subtitlesCatButton', value: 'Catalan', default: false}, 
-									{name: 'subtitlesGerButton', value: 'German', default: false}];
+									{name: 'subtitlesEngButton', value: 'en', default: subController.checkSubLanguage('en') }, 
+									{name: 'subtitlesEspButton', value: 'es', default: subController.checkSubLanguage('es') }, 
+									{name: 'subtitlesCatButton', value: 'ca', default: subController.checkSubLanguage('ca') }, 
+									{name: 'subtitlesGerButton', value: 'de', default: subController.checkSubLanguage('de') }];
 	var subtitlesPositionArray = [
-									{name: 'subtitlesTopButton', value: 'Top', default: false},
-									{name: 'subtitlesBottomButton', value: 'Bottom', default: true}];
+									{name: 'subtitlesTopButton', value: 'Top', default: subController.checkSubPosition(1) },
+									{name: 'subtitlesBottomButton', value: 'Bottom', default: subController.checkSubPosition(-1)}];
 	var subtitlesSizeArray = [
-									{name: 'subtitlesSmallSizeButton', value: 'Small', default: false},
-									{name: 'subtitlesMediumSizeButton', value: 'Medium', default: false},
-									{name: 'subtitlesLargeSizeButton', value: 'Large', default: true}];
+									{name: 'subtitlesSmallSizeButton', value: 'Small', default: subController.checkSubSize(0.6)},
+									{name: 'subtitlesMediumSizeButton', value: 'Medium', default: subController.checkSubSize(0.8)},
+									{name: 'subtitlesLargeSizeButton', value: 'Large', default: subController.checkSubSize(1)}];
 	var subtitlesAreasArray = [
-									{name: 'subtitlesSmallAreaButton', value: 'Small', default: false},
-									{name: 'subtitlesMediumAreaButton', value: 'Medium', default: false},
-									{name: 'subtitlesLargeAreaButton', value: 'Large', default: true}];
+									{name: 'subtitlesSmallAreaButton', value: 'Small', default: subController.checkSubArea(50)},
+									{name: 'subtitlesMediumAreaButton', value: 'Medium', default: subController.checkSubArea(60)},
+									{name: 'subtitlesLargeAreaButton', value: 'Large', default: subController.checkSubArea(70)}];
 	var subtitlesIndicatorArray = [
-									{name: 'subtitlesIndicatorNoneButton', value: 'None', default: true},
-									{name: 'subtitlesIndicatorArrowButton', value: 'Arrow', default: false},
-									{name: 'subtitlesIndicatorRadarButton', value: 'Radar', default: false},
-									{name: 'subtitlesIndicatorAutoButton', value: 'Auto', default: false}];
+									{name: 'subtitlesIndicatorNoneButton', value: 'None', default: subController.checkSubIndicator('none')},
+									{name: 'subtitlesIndicatorArrowButton', value: 'Arrow', default: subController.checkSubIndicator('arrow')},
+									{name: 'subtitlesIndicatorRadarButton', value: 'Radar', default: subController.checkSubIndicator('radar')},
+									{name: 'subtitlesIndicatorAutoButton', value: 'Auto', default: subController.checkSubIndicator('auto')}];
 	var subtitlesBackgroundArray = [
-									{name: 'subtitlesSemitrans', value: 'Semi-Trans', default: true},
-									{name: 'subtitlesOutline', value: 'Outline', default: false}];
+									{name: 'subtitlesSemitrans', value: 'semitrans', default: subController.checkSubBackground(0.8)},
+									{name: 'subtitlesOutline', value: 'Outline', default: subController.checkSubBackground(0)}];
 	var subtitlesEasyArray = [
-									{name: 'subtitlesEasyOn', value: 'On', default: false},
-									{name: 'subtitlesEasyOff', value: 'Off', default: true}];
+									{name: 'subtitlesEasyOn', value: 'On', default: subController.checkSubEasy(true)},
+									{name: 'subtitlesEasyOff', value: 'Off', default: subController.checkSubEasy(false)}];
 
     var parentColumnDropdownElements = [ 
-                                    {name: 'subtitlesLanguages', value: 'Languages', options: subtitlesLanguagesArray, visible: true},
-                                    {name: 'subtitlesEasyRead', value: 'Easy to read', options: subtitlesEasyArray,visible: true}, 
-                                    {name: 'subtitlesShowPositions', value: 'Position', options: subtitlesPositionArray, visible: true},
-                                    {name: 'subtitlesBackground', value: 'Background', options: subtitlesBackgroundArray, visible: true}, 
-                                    {name: 'subtitlesSizes', value: 'Size', options: subtitlesSizeArray, visible: false}, 
-                                    {name: 'subtitlesIndicator', value: 'Indicator', options: subtitlesIndicatorArray, visible: false}, 
-                                    {name: 'subtitlesAreas', value: 'Area', options: subtitlesAreasArray, visible: false}];
+                                    { name: 'subtitlesLanguages', value: 'Language', options: subtitlesLanguagesArray, visible: true},
+                                    { name: 'subtitlesEasyRead', value: 'Easytoread', options: subtitlesEasyArray,visible: true}, 
+                                    { name: 'subtitlesShowPositions', value: 'Position', options: subtitlesPositionArray, visible: true},
+                                    { name: 'subtitlesBackground', value: 'Background', options: subtitlesBackgroundArray, visible: true}, 
+                                    { name: 'subtitlesSizes', value: 'Size', options: subtitlesSizeArray, visible: false}, 
+                                    { name: 'subtitlesIndicator', value: 'Indicator', options: subtitlesIndicatorArray, visible: false}, 
+                                    { name: 'subtitlesAreas', value: 'Area', options: subtitlesAreasArray, visible: false}];
 	
 	this.Init = function()
     {
@@ -74,6 +74,7 @@ function STOptionMenuController(menuType) {
 
 	this.Exit = function()
     {
+        
     	if(viewStructure)
     	{
 	    	viewStructure.visible = false;
@@ -85,7 +86,8 @@ function STOptionMenuController(menuType) {
 	    	if(viewStructure.getObjectByName('childcolumndropdown')) viewStructure.getObjectByName('childcolumndropdown').children = [];
 	    	if(viewStructure.getObjectByName('parentcolumnhoritzontallines')) viewStructure.getObjectByName('parentcolumnhoritzontallines').children = [];
 	    	if(viewStructure.getObjectByName('childcolumnhoritzontallines')) viewStructure.getObjectByName('childcolumnhoritzontallines').children = [];
-            data.childColumnActiveOpt = undefined; 
+
+            data.childColumnActiveOpt = undefined;            
     	}
     }
 
@@ -121,8 +123,14 @@ function STOptionMenuController(menuType) {
         data.lsOptDisbledLabelValue = './img/menu_ai_icons/ST_strike.png';
 
         
-        data.onOptButtonFunc = function(){changeOnOffOptionState(data.isOptEnabled)};
-        data.offOptButtonFunc = function(){changeOnOffOptionState(data.isOptEnabled)};
+        data.onOptButtonFunc = function() {
+            MenuFunctionsManager.getOnOffFunc('subtitlesOnButton')()
+            changeOnOffOptionState(data.isOptEnabled)
+        };
+        data.offOptButtonFunc = function(){
+            MenuFunctionsManager.getOnOffFunc('subtitlesOffButton')()
+            changeOnOffOptionState(data.isOptEnabled)
+        };
 
         switch(menuType)
         {
@@ -144,7 +152,7 @@ function STOptionMenuController(menuType) {
 
             // TRADITIONAL
             case 2: 
-                data.title = 'Subtitles';
+                data.title = MenuDictionary.translate('Subtitles');
                 data.parentColumnDropdown = AddDropdownElementsTrad(parentColumnDropdownElements);  
                 data.backMenuButtonFunc = function(){ AddVisualFeedbackOnClick('backMenuButton', function(){ menumanager.setOptActiveIndex(0); menumanager.Load(st)} )};
                 break;
@@ -181,7 +189,7 @@ function STOptionMenuController(menuType) {
 	        dropdownIE.height =  elements.length>4 ? h/4 : h/elements.length;
 	        dropdownIE.name = element.name;
 	        dropdownIE.type =  'text';
-	        dropdownIE.value = element.value;
+	        dropdownIE.value = MenuDictionary.translate(element.value);
 	        dropdownIE.color = element.default ? 0xffff00 : 0xffffff;
 	        dropdownIE.textSize =  5;
 	        
@@ -204,7 +212,10 @@ function STOptionMenuController(menuType) {
             {
                 UpdateDefaultLSMenuOption(elements,index);
                 data.childColumnActiveOpt = element.name;
-                console.log("Click on "+element.value+ " final option"); // ADD HERE THE FUNCTION 
+
+                MenuFunctionsManager.getButtonFunctionByName( element.name )();
+                //console.warn("Click on "+element.value+ " final option"); // ADD HERE THE FUNCTION 
+
                 setTimeout(function(){view.UpdateView(data)}, 100);
             };
         	
@@ -231,7 +242,7 @@ function STOptionMenuController(menuType) {
             dropdownIE.height =  4;
             dropdownIE.name = element.name;
             dropdownIE.type =  'text';
-            dropdownIE.value = element.value; //AudioManager.getVolume();
+            dropdownIE.value = MenuDictionary.translate(element.value); 
             dropdownIE.color = element.default ? 0xffff00 : 0xffffff;
             dropdownIE.textSize =  1.5;
             dropdownIE.visible = true;
@@ -242,6 +253,8 @@ function STOptionMenuController(menuType) {
             {
                 //dropdownIE.visible = element.visible;
                 data.isFinalDrop = false;
+                data.childColumnActiveOpt = undefined;
+
                 dropdownIE.onexecute =  function()
                 {
                     data.title = element.value;
@@ -260,7 +273,11 @@ function STOptionMenuController(menuType) {
                 {
                     UpdateDefaultLSMenuOption(elements,index);
                     data.childColumnActiveOpt = element.name;
-                    console.log("Click on "+element.value+ " final option"); // ADD HERE THE FUNCTION 
+
+                    MenuFunctionsManager.getButtonFunctionByName( element.name )();
+
+
+                    //console.log("Click on "+element.value+ " final option"); // ADD HERE THE FUNCTION 
                     setTimeout(function(){view.UpdateView(data)}, 100);
                 };
             } 

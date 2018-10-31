@@ -15,8 +15,8 @@ MenuFunctionsManager = function() {
     {    
         return function() {
             subController.setSubtitle( xml, lang );
-            //MenuManager.selectFinalDropdownOption( name );
-            //subtitlesLanguage = name;
+            MenuManager.selectFinalDropdownOption( name );
+            subtitlesLanguage = name;
         }
     }
 
@@ -24,8 +24,8 @@ MenuFunctionsManager = function() {
     {       
         return function() {
             subController.setSubEasy( enable, xml );
-            //MenuManager.selectFinalDropdownOption( name );
-            //subtitlesEasy = name;
+            MenuManager.selectFinalDropdownOption( name );
+            subtitlesEasy = name;
         }
     }
 
@@ -33,8 +33,8 @@ MenuFunctionsManager = function() {
     {       
         return function() {
             subController.setSubPosition( 0, position );
-            //MenuManager.selectFinalDropdownOption( name );
-            //subtitlesPosition = name;
+            MenuManager.selectFinalDropdownOption( name );
+            subtitlesPosition = name;
         }
     }
 
@@ -42,8 +42,8 @@ MenuFunctionsManager = function() {
     {       
         return function() {
             subController.setSubBackground( index );
-            //MenuManager.selectFinalDropdownOption( name );
-            //subtitlesBackground = name;
+            MenuManager.selectFinalDropdownOption( name );
+            subtitlesBackground = name;
         }
     }
 
@@ -51,8 +51,8 @@ MenuFunctionsManager = function() {
     {       
         return function() {
             subController.setSubSize( size );
-            //MenuManager.selectFinalDropdownOption( name );
-            //subtitlesSize = name;
+            MenuManager.selectFinalDropdownOption( name );
+            subtitlesSize = name;
         }
     }
 
@@ -60,8 +60,8 @@ MenuFunctionsManager = function() {
     {       
         return function() {
             subController.setSubIndicator( indicator );
-            //MenuManager.selectFinalDropdownOption( name );
-            //subtitlesIndicator = name;
+            MenuManager.selectFinalDropdownOption( name );
+            subtitlesIndicator = name;
         }
     }
 
@@ -74,17 +74,16 @@ MenuFunctionsManager = function() {
 
             //if ( interController.getSubtitlesActive() ) subController.enableSubtitles();
             //subController.switchSigner( interController.getSignerActive() );
-            menumanager.ResetViews();
-            //setTimeout(function() {
-                //MenuManager.closeMenu(); 
-                //menumanager.ResetViews();
-                //scene.getObjectByName( "openMenu" ).visible = true;
+
+            setTimeout(function() {
+                MenuManager.closeMenu(); 
+                scene.getObjectByName( "openMenu" ).visible = true;
                 //scene.getObjectByName( "openMenuTrad" ).visible = true; //EXPERIMENTAL
-            //}, clickInteractionTimeout);
+            }, clickInteractionTimeout);
 
             subController.setSubIndicator( 'none' );
             subController.enableAutoPositioning();
-            //MenuManager.selectFinalDropdownOption( name );
+            MenuManager.selectFinalDropdownOption( name );
             //subtitlesIndicator = name;
             autopositioning = true;
         }
@@ -94,8 +93,8 @@ MenuFunctionsManager = function() {
     {       
         return function() {
             subController.setSubArea( area );
-            //MenuManager.selectFinalDropdownOption( name );
-            //subtitlesArea = name;
+            MenuManager.selectFinalDropdownOption( name );
+            subtitlesArea = name;
         }
     }
 
@@ -104,9 +103,9 @@ MenuFunctionsManager = function() {
         return function() {
             //interController.setSubtitlesActive( isEnabled );
             subController.switchSubtitles(isEnabled);
-            //menuList[6].isEnabled = isEnabled;
-            //MenuController.showMultiOptionsButtons( multiOptionsMainSubMenuIndexes.slice(0,1) );
-            //MenuController.showOnOffToggleButton( 6, menuList[6].buttons[0], menuList[6].buttons[1], 0, 4 );
+            menuList[6].isEnabled = isEnabled;
+            MenuController.showMultiOptionsButtons( multiOptionsMainSubMenuIndexes.slice(0,1) );
+            MenuController.showOnOffToggleButton( 6, menuList[6].buttons[0], menuList[6].buttons[1], 0, 4 );
         }
     }
 
@@ -115,9 +114,9 @@ MenuFunctionsManager = function() {
         return function() {
             //interController.setSignerActive( isEnabled );
             subController.switchSigner( isEnabled );
-            //menuList[7].isEnabled = isEnabled;
-            //MenuController.showMultiOptionsButtons( multiOptionsMainSubMenuIndexes.slice(1,2) );
-            //MenuController.showOnOffToggleButton( 7, menuList[7].buttons[0], menuList[7].buttons[1], 1, 5 );
+            menuList[7].isEnabled = isEnabled;
+            MenuController.showMultiOptionsButtons( multiOptionsMainSubMenuIndexes.slice(1,2) );
+            MenuController.showOnOffToggleButton( 7, menuList[7].buttons[0], menuList[7].buttons[1], 1, 5 );
         }
     }
 
@@ -125,7 +124,7 @@ MenuFunctionsManager = function() {
     {       
         return function() {
             //TODO AD functionality
-            //menuList[8].isEnabled = isEnabled;
+            menuList[8].isEnabled = isEnabled;
             MenuController.showMultiOptionsButtons( multiOptionsMainSubMenuIndexes.slice(2,3) );
             MenuController.showOnOffToggleButton( 8, menuList[8].buttons[0], menuList[8].buttons[1], 2, 6 );
         }
@@ -135,7 +134,7 @@ MenuFunctionsManager = function() {
     {       
         return function() {
             //TODO AST functionality
-            //menuList[9].isEnabled = isEnabled;
+            menuList[9].isEnabled = isEnabled;
             MenuController.showMultiOptionsButtons( multiOptionsMainSubMenuIndexes.slice(3,4) );
             MenuController.showOnOffToggleButton( 9, menuList[9].buttons[0], menuList[9].buttons[1], 3, 7 );
         }
@@ -146,17 +145,12 @@ MenuFunctionsManager = function() {
 //************************************************************************************
 
     function getMainLanguageFunc(name, language)
-    {      
+    {       
         return function() {
-            //MenuManager.selectFinalDropdownOption( name );
-            //mainLanguage = name;
-            MenuDictionary.setMainLanguage( language );
-
-            //menumanager.ResetViews();
-
-
-
-            /*setTimeout(function() {
+            MenuManager.selectFinalDropdownOption( name );
+            mainLanguage = name;
+            MenuDictionary.initGlobalArraysByLanguage( language );
+            setTimeout(function() {
 
                 if( menuType == 'Traditional') 
                 {
@@ -192,7 +186,7 @@ MenuFunctionsManager = function() {
                 
                 //scene.getObjectByName( "openMenu" ).visible = true;
                 //scene.getObjectByName( "openMenuTrad" ).visible = true; //EXPERIMENTAL
-            }, 300);*/
+            }, clickInteractionTimeout);
         }
     }
 
@@ -200,8 +194,8 @@ MenuFunctionsManager = function() {
     {       
         return function() {
             subController.setSignerPosition( 1, position );
-            //MenuManager.selectFinalDropdownOption( name );
-            //signerPosition = name;
+            MenuManager.selectFinalDropdownOption( name );
+            signerPosition = name;
         }
     }
 
@@ -209,8 +203,8 @@ MenuFunctionsManager = function() {
     {       
         return function() {
             subController.setSignerArea( area );
-            //MenuManager.selectFinalDropdownOption( name );
-            //signerArea = name;
+            MenuManager.selectFinalDropdownOption( name );
+            signerArea = name;
         }
     }
 
@@ -218,8 +212,8 @@ MenuFunctionsManager = function() {
     {       
         return function() {
             subController.setSignerIndicator( indicator );
-            //MenuManager.selectFinalDropdownOption( name );
-            //signerIndicator = name;
+            MenuManager.selectFinalDropdownOption( name );
+            signerIndicator = name;
         }
     }
 
@@ -227,8 +221,8 @@ MenuFunctionsManager = function() {
     {    
         return function() {
             subController.setSignerContent( url, lang );
-            //MenuManager.selectFinalDropdownOption( name );
-            //signerLanguage = name;
+            MenuManager.selectFinalDropdownOption( name );
+            signerLanguage = name;
         }
     }
 
@@ -252,13 +246,12 @@ MenuFunctionsManager = function() {
 //************************************************************************************
 
     this.getOpenMenuFunc = function(_isMenuTrad)
-    {   
-    console.error('zscasdasasdas')    
+    {       
         return function() {
             /*interController.setSubtitlesActive( subController.getSubtitleEnabled() );
             if ( interController.getSubtitlesActive() ) subController.disableSubtiles();
             subController.switchSigner( false );*/
-            //MenuDictionary.initGlobalArraysByLanguage();
+            MenuDictionary.initGlobalArraysByLanguage();
             //MenuFunctionsManager.getOpenTradMenuFunc();
             if ( _isMenuTrad ) 
             {
@@ -524,7 +517,12 @@ MenuFunctionsManager = function() {
         }
     };
 
+<<<<<<< HEAD:player/js/Scene_Generators/Menu/MenuFunctionsManager.js
     this.getPlayPauseFunc = function(play, name)
+=======
+// DEPRECATED CHANGED TO PlayPauseLSMenuController.js
+    this.getPlayPauseFunc = function(name)
+>>>>>>> refractor/MVC:js/Scene_Generators/Menu/MenuFunctionsManager.js
     {
         return function() {
             if (name) MenuManager.pressButtonFeedback( name );

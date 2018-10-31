@@ -138,12 +138,17 @@ MenuDictionary = function() {
         //console.error(availableSignerLanguages)
     };
 
+    this.setMainLanguage = function(language)
+    {
+        if ( language ) _mainLanguage = language;
+    };
+
 	this.initGlobalArraysByLanguage = function(language)
     {
         console.warn('Future deprecated function!')
     	if ( language ) _mainLanguage = language;
 
-        subtitlesLanguagesArray = getSubtitleLanguages(); //['English', 'Spanish', 'German', 'Catalan'];
+        /*subtitlesLanguagesArray = getSubtitleLanguages(); //['English', 'Spanish', 'German', 'Catalan'];
         subtitlesPositionArray = [ wordList[ 'top' ][ _mainLanguage ], wordList[ 'bottom' ][ _mainLanguage ] ];
         subtitlesSizeArray = [ wordList[ 'small' ][ _mainLanguage ], wordList[ 'medium' ][ _mainLanguage ], wordList[ 'large' ][ _mainLanguage ] ];
         subtitlesIndicatorArray = [ wordList[ 'none' ][ _mainLanguage ], wordList[ 'arrow' ][ _mainLanguage ], wordList[ 'radar' ][ _mainLanguage ], wordList[ 'auto' ][ _mainLanguage ] ];
@@ -170,7 +175,7 @@ MenuDictionary = function() {
         SettingsMenuList = [ wordList[ 'language' ][ _mainLanguage ], wordList[ 'voicecontrol' ][ _mainLanguage ], wordList[ 'userprofile' ][ _mainLanguage ] ];
 
         MOMenuButtonsArray = [ wordList[ 'st' ][ _mainLanguage ], wordList[ 'sl' ][ _mainLanguage ], wordList[ 'ad' ][ _mainLanguage ], wordList[ 'ast' ][ _mainLanguage ] ];
-        MOMenuDisabledButtonsArray = [ wordList[ 'st_strike' ][ _mainLanguage ], wordList[ 'sl_strike' ][ _mainLanguage ], wordList[ 'ad_strike' ][ _mainLanguage ], wordList[ 'ast_strike' ][ _mainLanguage ] ];
+        MOMenuDisabledButtonsArray = [ wordList[ 'st_strike' ][ _mainLanguage ], wordList[ 'sl_strike' ][ _mainLanguage ], wordList[ 'ad_strike' ][ _mainLanguage ], wordList[ 'ast_strike' ][ _mainLanguage ] ];*/
     };
 
     var imgURL = './img/menu_ai_icons/';
@@ -199,21 +204,21 @@ MenuDictionary = function() {
     //                   ||                        ||                        ||                        ||                        ||
         bottom:          { ca: 'Inferior'          , de: 'Unten'             , en: 'Bottom'            , es: 'Abajo'             },
     //                   ||                        ||                        ||                        ||                        ||
-        ca:              { ca: 'Català'            , de: 'katalanisch'       , en: 'Catalan'           , es: 'Catalán'           },
+        ca:              { ca: 'Català'            , de: 'Català'            , en: 'Català'            , es: 'Català'           },
     //                   ||                        ||                        ||                        ||                        ||
         catalan:         { ca: 'Català'            , de: 'katalanisch'       , en: 'Catalan'           , es: 'Catalán'           },
     //                   ||                        ||                        ||                        ||                        ||
         classic:         { ca: 'Clàssic'           , de: 'Classic'           , en: 'Classic'           , es: 'Clásico'           },
     //                   ||                        ||                        ||                        ||                        ||
-        de:              { ca: 'Alemany'           , de: 'Deutsch'           , en: 'German'            , es: 'Alemán'            },
+        de:              { ca: 'Deutsch'           , de: 'Deutsch'           , en: 'Deutsch'           , es: 'Deutsch'           },
     //                   ||                        ||                        ||                        ||                        ||
         easytoread:      { ca: 'Lectura fàcil'     , de: 'Einfache Sprache'  , en: 'Easy To Read'      , es: 'Lectura fácil'     },
     //                   ||                        ||                        ||                        ||                        ||
-        en:              { ca: 'Anglés'            , de: 'Englisch'          , en: 'English'           , es: 'Inglés'            },
+        en:              { ca: 'English'           , de: 'English'           , en: 'English'           , es: 'English'           },
     //                   ||                        ||                        ||                        ||                        ||
-        english:         { ca: 'Anglés'            , de: 'Englisch'          , en: 'English'           , es: 'Inglés'            },
+        english:         { ca: 'English'           , de: 'English'           , en: 'English'           , es: 'English'           },
     //                   ||                        ||                        ||                        ||                        ||
-        es:              { ca: 'Espanyol'          , de: 'Spanisch'          , en: 'Spanish'           , es: 'Español'           },
+        es:              { ca: 'Español'           , de: 'Español'           , en: 'Español'           , es: 'Español'           },
     //                   ||                        ||                        ||                        ||                        ||
         german:          { ca: 'Alemany'           , de: 'Deutsch'           , en: 'German'            , es: 'Alemán'            },
     //                   ||                        ||                        ||                        ||                        ||

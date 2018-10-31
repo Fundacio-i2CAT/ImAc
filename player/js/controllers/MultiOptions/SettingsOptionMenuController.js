@@ -7,9 +7,9 @@ function SettingsOptionMenuController(menuType) {
 
 	var settingsLanguagesArray =  [
 									{name: 'settingsLanguageEngButton', value: 'English', default: true}, 
-									{name: 'settingsLanguageEspButton', value: 'Spanish', default: false}, 
-									{name: 'settingsLanguageGerButton', value: 'German', default: false}, 
-									{name: 'settingsLanguageCatButton', value: 'Catalan', default: false}];
+									{name: 'settingsLanguageEspButton', value: 'Español', default: false}, 
+									{name: 'settingsLanguageGerButton', value: 'Deutsch', default: false}, 
+									{name: 'settingsLanguageCatButton', value: 'Català', default: false}];
 
 	var voiceControlArray = [
 									{name: 'vc1', value: 'Option 1', default: true}];
@@ -19,9 +19,9 @@ function SettingsOptionMenuController(menuType) {
 									{name: 'up2', value: 'Option 2', default: false}];
 
     var parentColumnDropdownElements = [ 
-                                    {name: 'settingsLanguages', value: 'Languages', options: settingsLanguagesArray},
-                                    {name: 'settingsVoiceControl', value: 'Voice Control', options: voiceControlArray},
-                                    {name: 'settingsUserProfile', value: 'User Profile', options: settingsUserProfileArray}]
+                                    {name: 'settingsLanguages', value: 'Language', options: settingsLanguagesArray},
+                                    {name: 'settingsVoiceControl', value: 'Voicecontrol', options: voiceControlArray},
+                                    {name: 'settingsUserProfile', value: 'UserProfile', options: settingsUserProfileArray}]
 	
 	this.Init = function(){
 
@@ -116,7 +116,7 @@ function SettingsOptionMenuController(menuType) {
 
             // TRADITIONAL
             case 2: 
-                data.title = 'Settings';
+                data.title = MenuDictionary.translate('Settings');
                 data.parentColumnDropdown = AddDropdownElementsTrad(parentColumnDropdownElements);  
                 data.backMenuButtonFunc = function(){ AddVisualFeedbackOnClick('backMenuButton', function(){ menumanager.setOptActiveIndex(0); menumanager.Load(set)} )};
                 break;
@@ -167,7 +167,9 @@ function SettingsOptionMenuController(menuType) {
                 dropdownIE.onexecute =  function(){
                     UpdateDefaultLSMenuOption(elements,index);
                     data.childColumnActiveOpt = element.name;
-                    console.log("Click on "+element.value+ " final option");
+
+                    MenuFunctionsManager.getButtonFunctionByName( element.name )();
+                    //console.log("Click on "+element.value+ " final option");
                     setTimeout(function(){view.UpdateView(data)}, 100);
                 };
             } 
@@ -175,7 +177,7 @@ function SettingsOptionMenuController(menuType) {
             dropdownIE.height =  elements.length>4 ? h/4 : h/elements.length;
             dropdownIE.name = element.name;
             dropdownIE.type =  'text';
-            dropdownIE.value = element.value;
+            dropdownIE.value = MenuDictionary.translate( element.value );
             dropdownIE.color = 0xffffff;
             dropdownIE.textSize =  5;
             dropdownIE.visible = true;
@@ -202,7 +204,7 @@ function SettingsOptionMenuController(menuType) {
             dropdownIE.height =  4;
             dropdownIE.name = element.name;
             dropdownIE.type =  'text';
-            dropdownIE.value = element.value; //AudioManager.getVolume();
+            dropdownIE.value = MenuDictionary.translate( element.value ); //AudioManager.getVolume();
             dropdownIE.color = element.default ? 0xffff00 : 0xffffff;
             dropdownIE.textSize =  1.5;
             dropdownIE.visible = true;
@@ -213,6 +215,8 @@ function SettingsOptionMenuController(menuType) {
             {
                 //dropdownIE.visible = element.visible;
                 data.isFinalDrop = false;
+                data.childColumnActiveOpt = undefined;
+                
                 dropdownIE.onexecute =  function()
                 {
                     data.title = element.value;
@@ -230,7 +234,10 @@ function SettingsOptionMenuController(menuType) {
                 {                    
                     UpdateDefaultLSMenuOption(elements,index);
                     data.childColumnActiveOpt = element.name;
-                    console.log("Click on "+element.value+ " final option"); // ADD HERE THE FUNCTION 
+
+                    MenuFunctionsManager.getButtonFunctionByName( element.name )();
+
+                    //console.log("Click on "+element.value+ " final option"); // ADD HERE THE FUNCTION 
                     setTimeout(function(){view.UpdateView(data)}, 100);
                 };
             } 

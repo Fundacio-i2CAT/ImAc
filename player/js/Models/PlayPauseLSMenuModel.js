@@ -9,6 +9,9 @@ function PlayPauseLSMenuModel() {
 	this.backMenuButtonFunc;
 	this.forwardMenuButtonFunc;
 
+	this.playOutTimeText;
+	this.isPlayOutTimeVisible;
+
 	this.closeMenuButtonFunc;
 
 	this.clickedButtonName;

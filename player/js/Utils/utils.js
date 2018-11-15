@@ -169,12 +169,12 @@ function createMenus ()
     {
         case "LS_area":
             //MenuManager.createMenu(false);
-            menumanager.Init(1);
-            menumanager.createMenuActivationElement();
+            menuMgr.Init(1);
+            menuMgr.createMenuActivationElement();
             break;
         default:
-            menumanager.Init(2);
-            menumanager.createMenuActivationElement();
+            menuMgr.Init(2);
+            menuMgr.createMenuActivationElement();
             //MenuManager.createMenu(true);
 
             break;

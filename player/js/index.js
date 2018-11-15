@@ -9,7 +9,8 @@ var MenuFunctionsManager = new MenuFunctionsManager();
 
 var _moData = new THREE.MediaObjectData();
 
-var menumanager = new MenuManager();
+var menuMgr = new MenuManager();
+var settingsMgr = new SettingsManager();
 
 //var MenuManager = new THREE.MenuManager();
 var MenuController = new THREE.MenuController();
@@ -25,6 +26,16 @@ var statObj = new StatObject();
 
 var VideoController = new VideoController();
 
+let playpauseCtrl;
+let volumeCtrl;
+let settingsCtrl;
+let multiOptionsCtrl;
+let STOptionCtrl;
+let SLOptionCtrl;
+let ADOptionCtrl;
+let ASTOptionCtrl;
+let vpbCtrl;
+let SettingsOptionCtrl;
 
 var loggerActivated = false;
 
@@ -38,6 +49,7 @@ var list_contents;
 if ( annyang ) {
   // Let's define a command.
   var commands = {
+    //TEST WITH LOCALHOST
     'hello': function() { console.log('Hello world!'); }
     /*'volume up': MenuFunctionsManager.getChangeVolumeFunc(true),
     'apujar volum': MenuFunctionsManager.getChangeVolumeFunc(true),

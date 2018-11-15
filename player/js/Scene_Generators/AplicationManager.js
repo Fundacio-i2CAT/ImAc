@@ -15,7 +15,7 @@ function AplicationManager()
 
     function initWorld()
     {
-    	camera = new THREE.PerspectiveCamera( 60.0, window.innerWidth / window.innerHeight, 0.05, 1000 );
+    	camera = new THREE.PerspectiveCamera( 60.0, window.innerWidth / window.innerHeight, 1, 1000 );
         camera.name = 'perspectivecamera';
 
         this.CameraParentObject = new THREE.Object3D();

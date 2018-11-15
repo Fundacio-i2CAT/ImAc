@@ -163,17 +163,14 @@ VideoController = function() {
 
     this.init = function()
     {
+
         listOfVideoContents[0].vid.ontimeupdate = function() 
         {
             subController.updateSubtitleByTime( listOfVideoContents[0].vid.currentTime );
-
-            if ( scene.getObjectByName( "timeline" ) )
+            if( scene.getObjectByName( "video-progress-bar" ) && scene.getObjectByName( "video-progress-bar" ).visible )
             {
-                var w = scene.getObjectByName( "bgTimeline" ).geometry.parameters.width;
-                
-                secMMgr.scaleTimeLine( listOfVideoContents[0].vid.duration, listOfVideoContents[0].vid.currentTime, w, scene.getObjectByName( "currentTimeline" ), scene.getObjectByName( "bgTimeline" ) );
-                scene.getObjectByName( "timeline" ).visible = true;
-                scene.getObjectByName( "playoutTime" ).remove( scene.getObjectByName( "currentTime" ) );      
+                vpbCtrl.updatePlayProgressBar();  
+                playpauseCtrl.updatePlayOutTime();   
             }
         };
     };

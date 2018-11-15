@@ -800,6 +800,12 @@ MenuFunctionsManager = function() {
             case "up2":
                 return;
 
+            case "settingsMenuTraditionalButton":
+                return settingsMgr.getChangeMenuTypeFunction(2);
+
+            case "settingsMenuLowSightedButton":
+                return settingsMgr.getChangeMenuTypeFunction(1);
+
         // Default
             default: 
                 return undefined;

@@ -204,7 +204,7 @@ MenuDictionary = function() {
     //                   ||                        ||                        ||                        ||                        ||
         bottom:          { ca: 'Inferior'          , de: 'Unten'             , en: 'Bottom'            , es: 'Abajo'             },
     //                   ||                        ||                        ||                        ||                        ||
-        ca:              { ca: 'Català'            , de: 'Català'            , en: 'Català'            , es: 'Català'           },
+        ca:              { ca: 'Català'            , de: 'Català'            , en: 'Català'            , es: 'Català'            },
     //                   ||                        ||                        ||                        ||                        ||
         catalan:         { ca: 'Català'            , de: 'katalanisch'       , en: 'Catalan'           , es: 'Catalán'           },
     //                   ||                        ||                        ||                        ||                        ||

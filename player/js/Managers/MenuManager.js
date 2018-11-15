@@ -1,24 +1,10 @@
 function MenuManager() {
 
-    var mmgr = this;
-
     var menuType;
     var menuParent;
     var controllers = [];
     var actualCtrl;
     var menuActivationElement;
-
-    var playpauseCtrl;
-    var volumeCtrl;
-    var settingsCtrl;
-    var multiOptionsCtrl;
-
-    var STOptionCtrl;
-    var SLOptionCtrl;
-    var ADOptionCtrl;
-    var ASTOptionCtrl;
-
-    var SettingsOptionCtrl;
 
     var menuHeight;
     var menuWidth;
@@ -27,31 +13,18 @@ function MenuManager() {
     
     this.Init = function(type)
     {
-
         menuWidth = 125;
         menuHeight = 125*9/16;
+        
+        menuParent = _isHMD ? scene : camera;
 
-        if ( _isHMD )
-        {
-            //menu.scale.set( 0.5, 0.5, 1 );
-            menuParent = scene;
-        }
-        else
-        {
-            //LSMenu.scale.set( 1, 1, 1 );
-            menuParent = camera;
-        }
-
-// T R  A D I T I O N A L 
-        //menuType = 2;
-
-// L O W    S I G H T E D 
-        menuType = type;
+        // Low sighted menuType = 1; Traditional menuType = 2;
+        menuMgr.setMenuType(type);
 
         addMenuToParent();
         InitAllCtrl();
 
-        mmgr.ResetViews();
+        menuMgr.ResetViews();
 
     }
 
@@ -60,16 +33,16 @@ function MenuManager() {
         switch(actualCtrl.getMenuName())
         {
             case playpauseCtrl.getMenuName():
-                return mmgr.Load(volumeCtrl);
+                return menuMgr.Load(volumeCtrl);
 
             case volumeCtrl.getMenuName():
-                return mmgr.Load(settingsCtrl)
+                return menuMgr.Load(settingsCtrl)
 
             case settingsCtrl.getMenuName():
-                return mmgr.Load(multiOptionsCtrl)
+                return menuMgr.Load(multiOptionsCtrl)
 
             case multiOptionsCtrl.getMenuName():
-                return mmgr.Load(playpauseCtrl)
+                return menuMgr.Load(playpauseCtrl)
         }
     }
 
@@ -78,31 +51,41 @@ function MenuManager() {
         switch(actualCtrl.getMenuName())
         {
             case playpauseCtrl.getMenuName():
-                return mmgr.Load(multiOptionsCtrl);
+                return menuMgr.Load(multiOptionsCtrl);
 
             case volumeCtrl.getMenuName():
-                return mmgr.Load(playpauseCtrl)
+                return menuMgr.Load(playpauseCtrl)
 
             case settingsCtrl.getMenuName():
-                return mmgr.Load(volumeCtrl)
+                return menuMgr.Load(volumeCtrl)
 
             case multiOptionsCtrl.getMenuName():
-                return mmgr.Load(settingsCtrl)   
+                return menuMgr.Load(settingsCtrl)   
 
             case STOptionCtrl.getMenuName():
             case SLOptionCtrl.getMenuName():
             case ADOptionCtrl.getMenuName():
             case ASTOptionCtrl.getMenuName():
-                return mmgr.Load(multiOptionsCtrl)
+                return menuMgr.Load(multiOptionsCtrl)
 
             case SettingsOptionCtrl.getMenuName():
-                return mmgr.Load(settingsCtrl)
+                return menuMgr.Load(settingsCtrl)
         } 
     }
 
     this.setOptActiveIndex = function(newIndex)
     {
         optActiveIndex = newIndex;
+    }
+
+    this.setMenuType = function(newMenuType)
+    {
+        menuType = newMenuType;
+    }
+
+    this.getMenuType = function()
+    {
+        return menuType;
     }
 
     function LoadTrad()
@@ -126,23 +109,17 @@ function MenuManager() {
         if(actualCtrl)
         {
             actualCtrl.Exit();
-        
-            //CREATE A FUNCTIONS WHERE ALL THE MULTIOPTIONS ARE DISABLED
-            //interController.setSubtitlesActive(subController.getSubtitleEnabled()); // TODO CHANGE THIS  FUNCTION
-            //if(interController.getSubtitlesActive()) subController.disableSubtiles(); // TODO CHANGE THIS  FUNCTION
-            //subController.switchSigner( false ); // TODO CHANGE THIS  FUNCTION
-
-            //MenuDictionary.initGlobalArraysByLanguage();
-
             switch(menuType)
             {
                 case 1:
                 default:
+                {
                     actualCtrl = controller;
                     controller.Init();
                     break;
-
+                };
                 case 2:
+                {
                     // Compare the saved index of the traditional option dropdown with the new controller index. 
                     // If the index is deferent change the variable and initialize the doprdown
                     if(optActiveIndex != controller.getMenuIndex())
@@ -153,6 +130,7 @@ function MenuManager() {
                     // If the index is equal change the variable to 'undefined' in order to open the same dropdown just closed.
                     else optActiveIndex = 0;
                     break;
+                };
             }
         }
         else
@@ -181,9 +159,6 @@ function MenuManager() {
         if(menuParent.getObjectByName('traditionalmenu')) menuParent.getObjectByName('traditionalmenu').visible = false;
 
         if(menuActivationElement) menuActivationElement.visible = true;
-
-        //CREATE A FUNCTIONS WHERE ALL THE MULTIOPTIONS ARE ENABLED
-        if ( interController.getSubtitlesActive() ) subController.enableSubtitles(); // TODO CHANGE THIS  FUNCTION
     }
 
     this.createMenuActivationElement = function()
@@ -213,10 +188,9 @@ function MenuManager() {
                 this.material.color.setHex( 0xffffff );
             },
             onGazeLong: function(){
-                menuActivationElement.visible = false;
-                scene.getObjectByName( "openmenutext" ).visible = false;
+                
 
-                initFirstMenuState(); // Initialize the first menu state when the time has expired.
+                menuMgr.initFirstMenuState(); // Initialize the first menu state when the time has expired.
 
             }
         });
@@ -230,20 +204,24 @@ function MenuManager() {
      * For the Traditional menu the initial state is init all the controllers and exit the submenus.
     */
 
-    function initFirstMenuState()
+    this.initFirstMenuState = function()
     {
+        menuActivationElement.visible = false;
+        scene.getObjectByName( "openmenutext" ).visible = false;
+
         switch(menuType)
         {
-            case 1:
+            case 1: // LOW SIGHTED
             default:
-                mmgr.Load(playpauseCtrl);
+            {
+                menuMgr.Load(playpauseCtrl);
                 break;
-
-            case 2:
+            };
+            case 2: // TRADITIONAL
+            {
                 controllers.forEach(function(controller){
                     controller.Init();
                 });
-
 
                 STOptionCtrl.Exit();
                 SLOptionCtrl.Exit();
@@ -253,7 +231,8 @@ function MenuManager() {
 
                 menuParent.getObjectByName('traditionalmenu').visible = true;
                 break;
-        }      
+            };
+        }   
     }
 
 
@@ -261,9 +240,9 @@ function MenuManager() {
     {
         switch(menuType)
         {
-            // LOW SIGHTED
-            case 1: 
+            case 1: // LOW SIGHTED
             default:
+            {                
                 menuParent.add(createPlayPauseLSMenuViewStructure('playpausemenu'));
                 menuParent.add(createVolumeLSMenuViewStructure('volumemenu'));
                 menuParent.add(createSettingsLSMenuViewStructure('settingsmenu'));
@@ -271,18 +250,45 @@ function MenuManager() {
                 menuParent.add(createOptionLSMenuViewStructure('lowsightedoptmenu'));
                 menuParent.add(createOptionLSMenuViewStructure('settingsoptmenu'));
                 break;
-
-            // TRADITIONAL
-            case 2:
+            };
+            case 2: // TRADITIONAL
+            {
                 var traditionalmenu = createTraditionalViewStructure('traditionalmenu');
                 menuParent.add(traditionalmenu);
                 traditionalmenu.add(createOptionTraditionalMenuViewStructure('tradoptionmenu'));
                 break;
+            };
+        }
+    }
+
+    this.removeMenuFromParent = function()
+    {
+        switch(menuType)
+        {
+            
+            case 1: // LOW SIGHTED
+            default:
+            {
+                menuParent.remove(scene.getObjectByName('playpausemenu'));
+                menuParent.remove(scene.getObjectByName('volumemenu'));
+                menuParent.remove(scene.getObjectByName('settingsmenu'));
+                menuParent.remove(scene.getObjectByName('multioptionsmenu'));
+                menuParent.remove(scene.getObjectByName('lowsightedoptmenu'));
+                menuParent.remove(scene.getObjectByName('settingsoptmenu'));
+                break;
+            };
+            case 2:// TRADITIONAL
+            {
+                menuParent.remove(scene.getObjectByName('traditionalmenu'));
+                break;
+            };
         }
     }
 
     function InitAllCtrl()
     {
+        controllers = [];
+
         playpauseCtrl = new PlayPauseLSMenuController();
         controllers.push(playpauseCtrl);  
 
@@ -310,11 +316,16 @@ function MenuManager() {
         SettingsOptionCtrl = new SettingsOptionMenuController(menuType);
         controllers.push(SettingsOptionCtrl);
 
+        if(menuType == 2)
+        {
+            vpbCtrl = new VideoProgressBarController();
+            controllers.push(vpbCtrl);
+        }
+
         controllers.forEach(function(controller){
             controller.Init();
         });
     }
-
 
 /*******************************************************************************************************
  *
@@ -322,14 +333,12 @@ function MenuManager() {
  *
  ******************************************************************************************************/
 
-
     function createTradMenuBaseViewStructure(name) 
     {
         var material = new THREE.MeshBasicMaterial( { color: 0x333333, transparent: true, opacity: 0.8 }); 
         var geometry = new THREE.PlaneGeometry( menuWidth, menuHeight/12 );
         var menuTrad =  new THREE.Mesh( geometry, material);
 
-        
         menuTrad.position.set( 0, -menuHeight/2.5 - 5, -67 );
         menuTrad.name = name;
 
@@ -345,12 +354,10 @@ function MenuManager() {
 
     function createOptionTraditionalMenuViewStructure(name)
     {   
-
         var tradOptionMenu =  new THREE.Group();
         tradOptionMenu.name = name;
 
-        //tradOptionMenu.position.set((menuWidth-30)/2, ((-menuHeight/2.5-5)+(menuHeight + 30)/2)+2 , 0.01);
-        tradOptionMenu.position.set((menuWidth-30)/2, menuHeight/12 , 0.01);
+        tradOptionMenu.position.set((menuWidth-30)/2, menuHeight/12 + 1, 0.01); // The +1 in height is the height of the video-progress-bar
 
         var material = new THREE.MeshBasicMaterial( { color: 0x333333, transparent: true, opacity: 0.8 });   
         var geometry = new THREE.PlaneGeometry( 30, 5 );
@@ -493,6 +500,18 @@ function MenuManager() {
         
         playpausemenu.add(seekForwardButton.create());
 
+        var playouttime = new InteractiveElementModel();
+        playouttime.width = 35;
+        playouttime.height = 35;
+        playouttime.name = 'playOutTime';
+        playouttime.type =  'text';
+        playouttime.value = '00:00 / 00:00';
+        playouttime.color = 0xffffff;
+        playouttime.textSize =  1.5;
+        playouttime.position = new THREE.Vector3(-(tradmenuDivisions-17)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
+        
+        playpausemenu.add(playouttime.create());
+
         // Create the closeMenuButton by loading a new InteractiveElement model and ijecting the closeMenuButtonData
         var closeMenuButton = new InteractiveElementModel();
         closeMenuButton.width = 3;
@@ -511,7 +530,29 @@ function MenuManager() {
 
         traditionalmenu.add(playpausemenu);
 
+// VIDEO PROGRESS BAR ELEMENT
+        var vpb =  new THREE.Group();
+        vpb.name = "video-progress-bar";
+        vpb.visible = true;
 
+        var vpb_background =  new THREE.Mesh( new THREE.PlaneGeometry( menuWidth, 1 ), new THREE.MeshBasicMaterial( { color:  0x888888, transparent: true, opacity: 0.8 }));
+        vpb_background.position.set( 0, traditionalmenu.geometry.parameters.height/2 + vpb_background.geometry.parameters.height/2, 0.01 );
+        vpb_background.name = "background-progress";
+        vpb.add(vpb_background);
+
+        var vpb_play =  new THREE.Mesh( new THREE.PlaneGeometry( menuWidth, 1 ), new THREE.MeshBasicMaterial( { color:  0xff0000, transparent: true, opacity: 1 }));
+        vpb_play.position.set( 0, traditionalmenu.geometry.parameters.height/2 + vpb_play.geometry.parameters.height/2, 0.02 ); 
+        vpb_play.name = "play-progress";
+        vpb.add(vpb_play);      
+        
+        var vpb_time_slider = new THREE.Mesh( new THREE.CircleGeometry(1,32), new THREE.MeshBasicMaterial( { color: 0xff0000 } ) );
+        vpb_time_slider.position.set( -traditionalmenu.geometry.parameters.width/2, traditionalmenu.geometry.parameters.height/2 + vpb_play.geometry.parameters.height/2, 0.02 ); 
+        vpb_time_slider.name = "slider-progress";
+        vpb.add( vpb_time_slider );
+
+        traditionalmenu.add(vpb);
+
+// VOLUME MENU
         var  volumemenu =  new THREE.Group();
         volumemenu.name = 'volumemenu';
 
@@ -847,6 +888,18 @@ function MenuManager() {
         pauseButton.position = new THREE.Vector3(0, 0, 0.01);
         
         playpausemenu.add(pauseButton.create());
+
+        var playouttime = new InteractiveElementModel();
+        playouttime.width = 50;
+        playouttime.height = 50;
+        playouttime.name = 'playOutTime';
+        playouttime.type =  'text';
+        playouttime.value = '00:00 / 00:00';
+        playouttime.color = 0xffffff;
+        playouttime.textSize =  15;
+        playouttime.position = new THREE.Vector3(0, 0, 0.01);
+        
+        playpausemenu.add(playouttime.create());
 
         // Create the seekForwardButton by loading a new InteractiveElement model and ijecting the seekForwardButtonData
         var seekForwardButton = new InteractiveElementModel();
@@ -1210,17 +1263,6 @@ function MenuManager() {
         downDropdownButton.position = new THREE.Vector3(0, -6*menuHeight/14, 0.01);
 
         lowsightedoptmenu.add(downDropdownButton.create());
-
-// THESE LINES COULD BE REMOVED FOR SOME CASES
-        /*var line3 = menuData.createLine( 0xffffff, 
-            new THREE.Vector3( -menuWidth/6, 5*menuHeight/14, 0 ),
-            new THREE.Vector3( menuWidth/6, 5*menuHeight/14, 0 ) );
-
-        var line4 = menuData.createLine( 0xffffff, 
-            new THREE.Vector3( -menuWidth/6, -5*menuHeight/14, 0 ),
-            new THREE.Vector3( menuWidth/6, -5*menuHeight/14, 0 ) );
-        linesMenuGroup.add(line3);
-        linesMenuGroup.add(line4);*/
 
         var parentColumnHoritzontalLines = new THREE.Group();
         parentColumnHoritzontalLines.position.set(0,0,0.01)

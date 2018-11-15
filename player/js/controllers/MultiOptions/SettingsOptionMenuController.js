@@ -18,10 +18,15 @@ function SettingsOptionMenuController(menuType) {
 									{name: 'up1', value: 'Option 1', default: true}, 
 									{name: 'up2', value: 'Option 2', default: false}];
 
+    var settingsMenuTypeArray =    [
+                                    {name: 'settingsMenuTraditionalButton', value: 'Traditional', default: settingsMgr.checkMenuType(2)}, 
+                                    {name: 'settingsMenuLowSightedButton', value: 'Low Sighted', default: settingsMgr.checkMenuType(1)}];                                    
+
     var parentColumnDropdownElements = [ 
                                     {name: 'settingsLanguages', value: 'Language', options: settingsLanguagesArray},
                                     {name: 'settingsVoiceControl', value: 'Voicecontrol', options: voiceControlArray},
-                                    {name: 'settingsUserProfile', value: 'UserProfile', options: settingsUserProfileArray}]
+                                    {name: 'settingsUserProfile', value: 'UserProfile', options: settingsUserProfileArray},
+                                    {name: 'settingsMenuType', value: 'Menu Type', options: settingsMenuTypeArray}];
 	
 	this.Init = function(){
 
@@ -106,19 +111,19 @@ function SettingsOptionMenuController(menuType) {
             default:
                 data.isUpDownArrowsVisible = parentColumnDropdownElements.length > 4 ? true : false;
 
-                data.parentColumnHoritzontalLineDivisions = getHoritzontalLineDivisions(125, 125*9/16, 0xffffff, 3, 1);
+                data.parentColumnHoritzontalLineDivisions = getHoritzontalLineDivisions(125, 125*9/16, 0xffffff, 4, 1);
 
                 if(!data.parentColumnDropdown) data.parentColumnDropdown = AddDropdownElementsLS(parentColumnDropdownElements);  
 
-                data.backMenuButtonFunc = function(){ AddVisualFeedbackOnClick('backMenuButton', function(){ menumanager.NavigateBackMenu()} )};
-                data.closeMenuButtonFunc = function(){ AddVisualFeedbackOnClick('closeMenuButton', function(){ menumanager.ResetViews()} )};
+                data.backMenuButtonFunc = function(){ AddVisualFeedbackOnClick('backMenuButton', function(){ menuMgr.NavigateBackMenu()} )};
+                data.closeMenuButtonFunc = function(){ AddVisualFeedbackOnClick('closeMenuButton', function(){ menuMgr.ResetViews()} )};
                 break;
 
             // TRADITIONAL
             case 2: 
                 data.title = MenuDictionary.translate('Settings');
                 data.parentColumnDropdown = AddDropdownElementsTrad(parentColumnDropdownElements);  
-                data.backMenuButtonFunc = function(){ AddVisualFeedbackOnClick('backMenuButton', function(){ menumanager.setOptActiveIndex(0); menumanager.Load(set)} )};
+                data.backMenuButtonFunc = function(){ AddVisualFeedbackOnClick('backMenuButton', function(){ menuMgr.setOptActiveIndex(0); menuMgr.Load(set)} )};
                 break;
         }   
     }
@@ -167,10 +172,8 @@ function SettingsOptionMenuController(menuType) {
                 dropdownIE.onexecute =  function(){
                     UpdateDefaultLSMenuOption(elements,index);
                     data.childColumnActiveOpt = element.name;
-
+                    view.UpdateView(data)
                     MenuFunctionsManager.getButtonFunctionByName( element.name )();
-                    //console.log("Click on "+element.value+ " final option");
-                    setTimeout(function(){view.UpdateView(data)}, 100);
                 };
             } 
             dropdownIE.width = 125/3;
@@ -178,7 +181,7 @@ function SettingsOptionMenuController(menuType) {
             dropdownIE.name = element.name;
             dropdownIE.type =  'text';
             dropdownIE.value = MenuDictionary.translate( element.value );
-            dropdownIE.color = 0xffffff;
+            dropdownIE.color = element.default ? 0xffff00 : 0xffffff;
             dropdownIE.textSize =  5;
             dropdownIE.visible = true;
             dropdownIE.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(dropdownIE.width, dropdownIE.height), new THREE.MeshBasicMaterial({visible:  false}));
@@ -223,8 +226,7 @@ function SettingsOptionMenuController(menuType) {
                     data.childColumnActiveOpt = undefined;
                     data.parentColumnActiveOpt = element.name;
                     data.parentColumnDropdown = AddDropdownElementsTrad(element.options);
-                    //UpdateData();
-                    setTimeout(function(){view.UpdateView(data)}, 100);
+                    view.UpdateView(data)
                 };
             } 
             else
@@ -234,11 +236,8 @@ function SettingsOptionMenuController(menuType) {
                 {                    
                     UpdateDefaultLSMenuOption(elements,index);
                     data.childColumnActiveOpt = element.name;
-
+                    view.UpdateView(data)
                     MenuFunctionsManager.getButtonFunctionByName( element.name )();
-
-                    //console.log("Click on "+element.value+ " final option"); // ADD HERE THE FUNCTION 
-                    setTimeout(function(){view.UpdateView(data)}, 100);
                 };
             } 
             

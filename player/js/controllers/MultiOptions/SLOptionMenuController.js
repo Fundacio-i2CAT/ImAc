@@ -100,7 +100,7 @@ function SLOptionMenuController(menuType) {
 
 	function UpdateData()
     {
-		data.isOptEnabled = false;
+		data.isOptEnabled = subController.getSignerEnabled();;
         data.isOnOffButtonVisible = true;
 
 
@@ -112,11 +112,13 @@ function SLOptionMenuController(menuType) {
 
         data.onOptButtonFunc = function() {
             MenuFunctionsManager.getOnOffFunc('signLanguageOnButton')()
-            changeOnOffLSOptionState(data.isOptEnabled)
+            changeOnOffLSOptionState(data.isOptEnabled);
+            multiOptionsCtrl.UpdateMultiOptionsIconStatus();
         };
         data.offOptButtonFunc = function(){
             MenuFunctionsManager.getOnOffFunc('signLanguageOffButton')()
-            changeOnOffLSOptionState(data.isOptEnabled)
+            changeOnOffLSOptionState(data.isOptEnabled);
+            multiOptionsCtrl.UpdateMultiOptionsIconStatus();
         };
 
         switch(menuType)
@@ -130,15 +132,15 @@ function SLOptionMenuController(menuType) {
                                                 
                 if(!data.parentColumnDropdown) data.parentColumnDropdown = AddDropdownElementsLS(parentColumnDropdownElements);
 
-                data.backMenuButtonFunc = function(){ AddVisualFeedbackOnClick('backMenuButton', function(){ menumanager.NavigateBackMenu()} )};
-                data.closeMenuButtonFunc = function(){ AddVisualFeedbackOnClick('closeMenuButton', function(){ menumanager.ResetViews()} )};
+                data.backMenuButtonFunc = function(){ AddVisualFeedbackOnClick('backMenuButton', function(){ menuMgr.NavigateBackMenu()} )};
+                data.closeMenuButtonFunc = function(){ AddVisualFeedbackOnClick('closeMenuButton', function(){ menuMgr.ResetViews()} )};
                 break;
 
          // TRADITIONAL
             case 2: 
                 data.title = 'Sign Language';
                 data.parentColumnDropdown = AddDropdownElementsTrad(parentColumnDropdownElements);  
-                data.backMenuButtonFunc = function(){ AddVisualFeedbackOnClick('backMenuButton', function(){ menumanager.setOptActiveIndex(0); menumanager.Load(sl)} )};
+                data.backMenuButtonFunc = function(){ AddVisualFeedbackOnClick('backMenuButton', function(){ menuMgr.setOptActiveIndex(0); menuMgr.Load(sl)} )};
                 break;
         } 		
     }

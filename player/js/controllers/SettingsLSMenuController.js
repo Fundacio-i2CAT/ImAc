@@ -20,7 +20,7 @@ function SettingsLSMenuController(menuType) {
 
 	this.Exit = function()
     {
-        menumanager.setOptActiveIndex(0);
+        menuMgr.setOptActiveIndex(0);
     	if(viewStructure)
     	{
 	    	viewStructure.visible = false;
@@ -47,10 +47,10 @@ function SettingsLSMenuController(menuType) {
 
 	function UpdateData()
     {
-		data.closeMenuButtonFunc = function(){ AddVisualFeedbackOnClick('closeMenuButton', function(){ menumanager.ResetViews()} )};
-        data.openSettingsMenuButtonFunc = function(){ AddVisualFeedbackOnClick('settingsButton', function(){ menumanager.Load(SettingsOptionCtrl)} )};   
-        data.backMenuButtonFunc = function(){ AddVisualFeedbackOnClick('backMenuButton', function(){ menumanager.NavigateBackMenu()} )};
-        data.forwardMenuButtonFunc = function(){ AddVisualFeedbackOnClick('forwardMenuButton', function(){menumanager.NavigateForwardMenu()} )};
+		data.closeMenuButtonFunc = function(){ AddVisualFeedbackOnClick('closeMenuButton', function(){ menuMgr.ResetViews()} )};
+        data.openSettingsMenuButtonFunc = function(){ AddVisualFeedbackOnClick('settingsButton', function(){ menuMgr.Load(SettingsOptionCtrl)} )};   
+        data.backMenuButtonFunc = function(){ AddVisualFeedbackOnClick('backMenuButton', function(){ menuMgr.NavigateBackMenu()} )};
+        data.forwardMenuButtonFunc = function(){ AddVisualFeedbackOnClick('forwardMenuButton', function(){menuMgr.NavigateForwardMenu()} )};
     }
 
 

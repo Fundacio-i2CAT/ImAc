@@ -46,7 +46,6 @@ function STOptionMenuController(menuType) {
     {
         data = GetData();
         UpdateData();
-
         switch(menuType)
         {
             // LOW SIGHTED
@@ -112,8 +111,7 @@ function STOptionMenuController(menuType) {
 
 	function UpdateData()
     {
-
-        data.isOptEnabled = true;
+        data.isOptEnabled = subController.getSubtitleEnabled();;
         data.isOnOffButtonVisible = true;
 
         data.lsOptEnabledLabelName = 'showSubtitlesMenuButton';
@@ -126,10 +124,12 @@ function STOptionMenuController(menuType) {
         data.onOptButtonFunc = function() {
             MenuFunctionsManager.getOnOffFunc('subtitlesOnButton')()
             changeOnOffOptionState(data.isOptEnabled)
+            multiOptionsCtrl.UpdateMultiOptionsIconStatus();
         };
         data.offOptButtonFunc = function(){
             MenuFunctionsManager.getOnOffFunc('subtitlesOffButton')()
             changeOnOffOptionState(data.isOptEnabled)
+            multiOptionsCtrl.UpdateMultiOptionsIconStatus();
         };
 
         switch(menuType)
@@ -146,15 +146,15 @@ function STOptionMenuController(menuType) {
                 data.upDropdownButtonFunc = function(){ DropdownUpDownFunc(false) };
                 data.downDropdownButtonFunc = function(){ DropdownUpDownFunc(true) };
 
-                data.backMenuButtonFunc = function(){ AddVisualFeedbackOnClick('backMenuButton', function(){ menumanager.NavigateBackMenu()} )};
-                data.closeMenuButtonFunc = function(){ AddVisualFeedbackOnClick('closeMenuButton', function(){ menumanager.ResetViews()} )};
+                data.backMenuButtonFunc = function(){ AddVisualFeedbackOnClick('backMenuButton', function(){ menuMgr.NavigateBackMenu()} )};
+                data.closeMenuButtonFunc = function(){ AddVisualFeedbackOnClick('closeMenuButton', function(){ menuMgr.ResetViews()} )};
                 break;
 
             // TRADITIONAL
             case 2: 
                 data.title = MenuDictionary.translate('Subtitles');
                 data.parentColumnDropdown = AddDropdownElementsTrad(parentColumnDropdownElements);  
-                data.backMenuButtonFunc = function(){ AddVisualFeedbackOnClick('backMenuButton', function(){ menumanager.setOptActiveIndex(0); menumanager.Load(st)} )};
+                data.backMenuButtonFunc = function(){ AddVisualFeedbackOnClick('backMenuButton', function(){ menuMgr.setOptActiveIndex(0); menuMgr.Load(st)} )};
                 break;
         }	
     }

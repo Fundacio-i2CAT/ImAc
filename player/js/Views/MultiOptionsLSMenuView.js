@@ -5,7 +5,7 @@ function MultiOptionsLSMenuView() {
 	this.UpdateView = function(data){
 		submenu = scene.getObjectByName(data.name);
         
-        this.UpdateMultiOptionsIconStatus(data);
+        this.UpdateMultiOptionsIconStatusView(data);
 
         submenu.getObjectByName('showSubtitlesMenuButton').children[0].onexecute = data.openSTMenuButtonFunc;
         submenu.getObjectByName('disabledSubtitlesMenuButton').children[0].onexecute = data.openSTMenuButtonFunc;

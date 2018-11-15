@@ -17,6 +17,8 @@ function PlayPauseLSMenuView() {
 
         if(submenu.getObjectByName('closeMenuButton')) submenu.getObjectByName('closeMenuButton').children[0].onexecute = data.closeMenuButtonFunc;
 
+        submenu.add(refreshPlayOutTime(data));
+        submenu.getObjectByName('playOutTime').visible = data.isPlayOutTimeVisible;
 	}
 
     this.pressButtonFeedback = function(data)
@@ -37,4 +39,22 @@ function PlayPauseLSMenuView() {
             interController.addInteractiveObject( sceneElement );
         }, 300);
     };
+
+    function refreshPlayOutTime(data)
+    {
+        var submenu = scene.getObjectByName(data.name);
+        submenu.remove(scene.getObjectByName('playOutTime'));
+        
+        var playouttime = new InteractiveElementModel();
+        playouttime.width = 35;
+        playouttime.height = 35;
+        playouttime.name = 'playOutTime';
+        playouttime.type =  'text';
+        playouttime.value = data.playOutTimeText;
+        playouttime.textSize = 1.5;
+        playouttime.color = 0xffffff;
+        playouttime.position = new THREE.Vector3(0, 0, 0.01);
+
+        return playouttime.create();
+    }
 }

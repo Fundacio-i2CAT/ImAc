@@ -9,6 +9,9 @@ MenuDictionary = function() {
     var availableSignerLanguages = [];
     var availableSettingsLanguages = [];
 
+    var subtitlesLanguagesArray = [];
+    var signerLanguagesArray =  [];
+
     function getSubtitleLanguages()
     {
         var ST_Languages = [];
@@ -72,28 +75,47 @@ MenuDictionary = function() {
     this.setSubtitleLanguagesArray = function(subList)
     {
         menuList[6].submenus[0].buttons = [];
+        subtitlesLanguagesArray = [];
 
         if ( subList['en'] ) 
         {
+            subtitlesLanguagesArray.push({name: 'subtitlesEngButton', value: 'en', default: subController.checkSubLanguage('en')});
+
             menuList[6].submenus[0].buttons.push( 'subtitlesEngButton' );
             availableSubLanguages.push('en');
         }
         if ( subList['de'] ) 
         {
+            subtitlesLanguagesArray.push({name: 'subtitlesGerButton', value: 'de', default: subController.checkSubLanguage('de') });
+
             menuList[6].submenus[0].buttons.push( 'subtitlesGerButton' );
             availableSubLanguages.push('de');
         }
         if ( subList['es'] ) 
         {
+            subtitlesLanguagesArray.push({name: 'subtitlesEspButton', value: 'es', default: subController.checkSubLanguage('es') });
+
             menuList[6].submenus[0].buttons.push( 'subtitlesEspButton' );
             availableSubLanguages.push('es');
         }
         if ( subList['ca'] ) 
         {
+            subtitlesLanguagesArray.push({name: 'subtitlesCatButton', value: 'ca', default: subController.checkSubLanguage('ca') });
+
             menuList[6].submenus[0].buttons.push( 'subtitlesCatButton' );
             availableSubLanguages.push('ca');
         }
     };
+
+    this.getSubtitlesLanguagesArray = function()
+    {
+        return subtitlesLanguagesArray;
+    }
+
+    this.getSignerLanguagesArray = function()
+    {
+        return signerLanguagesArray;
+    }
 
     this.getSubtitleLanguagesList = function()
     {
@@ -113,24 +135,33 @@ MenuDictionary = function() {
     this.setSignerLanguagesArray = function(subList)
     {
         menuList[7].submenus[0].buttons = [];
+        signerLanguagesArray = [];
 
         if ( subList['en'] ) 
         {
+            signerLanguagesArray.push({name: 'signerEngButton', value: 'English', default: true});
+
             menuList[7].submenus[0].buttons.push( 'signerEngButton' );
             availableSignerLanguages.push('en');
         }
         if ( subList['de'] ) 
         {
+            signerLanguagesArray.push({name: 'signerGerButton', value: 'Deutsch', default: false});
+
             menuList[7].submenus[0].buttons.push( 'signerGerButton' );
             availableSignerLanguages.push('de');
         }
         if ( subList['es'] ) 
         {
+            signerLanguagesArray.push({name: 'signerEspButton', value: 'Español', default: false});
+
             menuList[7].submenus[0].buttons.push( 'signerEspButton' );
             availableSignerLanguages.push('es');
         }
         if ( subList['ca'] ) 
         {
+            signerLanguagesArray.push({name: 'signerCatButton', value: 'Català', default: false});
+
             menuList[7].submenus[0].buttons.push( 'signerCatButton' );
             availableSignerLanguages.push('ca');
         }

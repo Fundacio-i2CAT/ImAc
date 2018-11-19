@@ -5,12 +5,6 @@ function SLOptionMenuController(menuType) {
 	var view;
 	var viewStructure;
 
-	var signerLanguagesArray =  [
-									{name: 'signerEngButton', value: 'English', default: true}, 
-									{name: 'signerEspButton', value: 'Español', default: false}, 
-									{name: 'signerGerButton', value: 'Deutsch', default: false}, 
-									{name: 'signerCatButton', value: 'Català', default: false}];
-
 	var signerIndicatorArray = [
 									{name: 'signerIndicatorNoneButton', value: 'None', default: true}, 
 									{name: 'signerIndicatorArrowButton', value: 'Arrow', default: false}, 
@@ -26,7 +20,7 @@ function SLOptionMenuController(menuType) {
 									{name: 'signerLargeAreaButton', value: 'Large', default: true}];
 
     var parentColumnDropdownElements = [ 
-                                    {name: 'signerLanguages', value: 'Language', options: signerLanguagesArray, visible: true},
+                                    {name: 'signerLanguages', value: 'Language', options: MenuDictionary.getSignerLanguagesArray(), visible: true},
                                     {name: 'signerShowPositions', value: 'Position', options: signerPositionArray, visible: true},
                                     {name: 'signerIndicator', value: 'Indicator', options: signerIndicatorArray, visible: true},
                                     {name: 'signerAreas', value: 'Area', options: signerAreasArray, visible: true}];

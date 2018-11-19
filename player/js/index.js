@@ -12,11 +12,10 @@ var _moData = new THREE.MediaObjectData();
 var menuMgr = new MenuManager();
 var settingsMgr = new SettingsManager();
 
-//var MenuManager = new THREE.MenuManager();
 var MenuController = new THREE.MenuController();
 var MenuDictionary = new MenuDictionary();
 
-var secMMgr = new THREE.SecondaryMenuManager();
+//var secMMgr = new THREE.SecondaryMenuManager();
 
 var _AudioManager = new AudioManager();
 var subController = new SubSignManager();

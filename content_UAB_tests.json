@@ -1,0 +1,151 @@
+/*
+
+    • Subtítulos en Castellano, by default
+    • Bajar un poco los subtítulos
+    • Checkear que no va el TC OUT (sí está en los ficheros)
+    • Checkear la profundidad, hacer un poco más transparente el background box.
+    • Añadir opción en pantalla inicial para selección entre: Background / Outline
+    • Auto-positioning with a speed of 60º/second
+    • Convertir videos a DASH.
+
+*/
+
+
+
+
+
+{
+  "title": "ImAc",
+  "contents": [
+// A0    
+  {
+    "name": "Video 0 – Acclimation [No Subtitles]",
+    "thumbnail": "img/LOGO-IMAC.png",
+    "url": "http://84.88.32.46/imac_content/UAB_tests/Video_0_Acclimation.mp4",
+    "audioChannels": 4,
+    "subtitles": [],
+    "signer": [],
+    "ad": [],
+    "ast": []
+  },
+// A1
+  {
+    "name": "Holy Land 1 [Subtitles fixed-positioned]",
+    "thumbnail": "img/LOGO-IMAC.png",
+    "url": "http://84.88.32.46/imac_content/UAB_tests/Video_1_Holy_Land_1.mp4",
+    "audioChannels": 4,
+    "subtitles": [
+    {
+      "en": "http://84.88.32.46/imac_content/UAB_tests/Holy_Land_1_sub_en.xml",
+      "es": "http://84.88.32.46/imac_content/UAB_tests/Holy_Land_1_sub_es.xml"
+    }],
+    "signer": [],
+    "ad": [],
+    "ast": []
+  },
+// A2
+  {
+    "name": "Holy Land 1 [Subtitles always-visible]",
+    "thumbnail": "img/LOGO-IMAC.png",
+    "url": "http://84.88.32.46/imac_content/UAB_tests/Video_1_Holy_Land_1.mp4",
+    "audioChannels": 4,
+    "subtitles": [
+    {
+      "en": "http://84.88.32.46/imac_content/UAB_tests/Holy_Land_1_sub_en.xml",
+      "es": "http://84.88.32.46/imac_content/UAB_tests/Holy_Land_1_sub_es.xml"
+    }],
+    "signer": [],
+    "ad": [],
+    "ast": []
+  },
+//B1  
+  {
+    "name": "Holy Land 2 [Subtitles fixed-positioned]",
+    "thumbnail": "img/LOGO-IMAC.png",
+    "url": "http://84.88.32.46/imac_content/UAB_tests/Video_1_Holy_Land_2.mp4",
+    "audioChannels": 4,
+    "subtitles": [
+    {
+      "en": "http://84.88.32.46/imac_content/UAB_tests/Holy_Land_2_sub_en.xml",
+      "es": "http://84.88.32.46/imac_content/UAB_tests/Holy_Land_2_sub_es.xml"
+    }],
+    "signer": [],
+    "ad": [],
+    "ast": []
+  },
+//B2
+  {
+    "name": "Holy Land 2 [Subtitles always-visible]",
+    "thumbnail": "img/LOGO-IMAC.png",
+    "url": "http://84.88.32.46/imac_content/UAB_tests/Video_1_Holy_Land_2.mp4",
+    "audioChannels": 4,
+    "subtitles": [
+    {
+      "en": "http://84.88.32.46/imac_content/UAB_tests/Holy_Land_2_sub_en.xml",
+      "es": "http://84.88.32.46/imac_content/UAB_tests/Holy_Land_2_sub_es.xml"
+    }],
+    "signer": [],
+    "ad": [],
+    "ast": []
+  },
+//C1
+  {
+    "name": "Guelaguetza [Subtitles with arrows, from 00:00 to 03:46]",
+    "thumbnail": "img/LOGO-IMAC.png",
+    "url": "http://84.88.32.46/imac_content/UAB_tests/Video_3_Guelaguetza.mp4",
+    "audioChannels": 4,
+    "subtitles": [
+    {
+      "en": "http://84.88.32.46/imac_content/UAB_tests/Guelaguetza_sub_en.xml",
+      "es": "http://84.88.32.46/imac_content/UAB_tests/Guelaguetza_sub_es.xml"
+    }],
+    "signer": [],
+    "ad": [],
+    "ast": []
+  },
+//C2
+  {
+    "name": "Guelaguetza [Subtitles with auto-positioning, from 00:00 to 03:46",
+    "thumbnail": "img/LOGO-IMAC.png",
+    "url": "http://84.88.32.46/imac_content/UAB_tests/Video_3_Guelaguetza.mp4",
+    "audioChannels": 4,
+    "subtitles": [
+    {
+      "en": "http://84.88.32.46/imac_content/UAB_tests/Guelaguetza_sub_en.xml",
+      "es": "http://84.88.32.46/imac_content/UAB_tests/Guelaguetza_sub_es.xml"
+    }],
+    "signer": [],
+    "ad": [],
+    "ast": []
+  },
+//D1
+  {
+    "name": "Guelaguetza [Subtitles with arrows, from 03:46 to 07:16]",
+    "thumbnail": "img/LOGO-IMAC.png",
+    "url": "http://84.88.32.46/imac_content/UAB_tests/Video_3_Guelaguetza.mp4",
+    "audioChannels": 4,
+    "subtitles": [
+    {
+      "en": "http://84.88.32.46/imac_content/UAB_tests/Guelaguetza_sub_en.xml",
+      "es": "http://84.88.32.46/imac_content/UAB_tests/Guelaguetza_sub_es.xml"
+    }],
+    "signer": [],
+    "ad": [],
+    "ast": []
+  },
+//D2
+  {
+    "name": "Guelaguetza [Subtitles with auto-positioning, from 03:46 to 07:16]",
+    "thumbnail": "img/LOGO-IMAC.png",
+    "url": "http://84.88.32.46/imac_content/UAB_tests/Video_3_Guelaguetza.mp4",
+    "audioChannels": 4,
+    "subtitles": [
+    {
+      "en": "http://84.88.32.46/imac_content/UAB_tests/Guelaguetza_sub_en.xml",
+      "es": "http://84.88.32.46/imac_content/UAB_tests/Guelaguetza_sub_es.xml"
+    }],
+    "signer": [],
+    "ad": [],
+    "ast": []
+  }]
+}

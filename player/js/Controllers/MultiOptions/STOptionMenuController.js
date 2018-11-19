@@ -5,11 +5,6 @@ function STOptionMenuController(menuType) {
 	var view;
 	var viewStructure;
 
-	var subtitlesLanguagesArray = [
-									{name: 'subtitlesEngButton', value: 'en', default: subController.checkSubLanguage('en') }, 
-									{name: 'subtitlesEspButton', value: 'es', default: subController.checkSubLanguage('es') }, 
-									{name: 'subtitlesCatButton', value: 'ca', default: subController.checkSubLanguage('ca') }, 
-									{name: 'subtitlesGerButton', value: 'de', default: subController.checkSubLanguage('de') }];
 	var subtitlesPositionArray = [
 									{name: 'subtitlesTopButton', value: 'Top', default: subController.checkSubPosition(1) },
 									{name: 'subtitlesBottomButton', value: 'Bottom', default: subController.checkSubPosition(-1)}];
@@ -34,7 +29,7 @@ function STOptionMenuController(menuType) {
 									{name: 'subtitlesEasyOff', value: 'Off', default: subController.checkSubEasy(false)}];
 
     var parentColumnDropdownElements = [ 
-                                    { name: 'subtitlesLanguages', value: 'Language', options: subtitlesLanguagesArray, visible: true},
+                                    { name: 'subtitlesLanguages', value: 'Language', options: MenuDictionary.getSubtitlesLanguagesArray(), visible: true},
                                     { name: 'subtitlesEasyRead', value: 'Easytoread', options: subtitlesEasyArray,visible: true}, 
                                     { name: 'subtitlesShowPositions', value: 'Position', options: subtitlesPositionArray, visible: true},
                                     { name: 'subtitlesBackground', value: 'Background', options: subtitlesBackgroundArray, visible: true}, 
@@ -212,10 +207,7 @@ function STOptionMenuController(menuType) {
             {
                 UpdateDefaultLSMenuOption(elements,index);
                 data.childColumnActiveOpt = element.name;
-
                 MenuFunctionsManager.getButtonFunctionByName( element.name )();
-                //console.warn("Click on "+element.value+ " final option"); // ADD HERE THE FUNCTION 
-
                 setTimeout(function(){view.UpdateView(data)}, 100);
             };
         	
@@ -273,11 +265,7 @@ function STOptionMenuController(menuType) {
                 {
                     UpdateDefaultLSMenuOption(elements,index);
                     data.childColumnActiveOpt = element.name;
-
                     MenuFunctionsManager.getButtonFunctionByName( element.name )();
-
-
-                    //console.log("Click on "+element.value+ " final option"); // ADD HERE THE FUNCTION 
                     setTimeout(function(){view.UpdateView(data)}, 100);
                 };
             } 

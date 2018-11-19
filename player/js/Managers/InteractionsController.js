@@ -132,7 +132,7 @@ THREE.InteractionsController = function () {
     		// TODO
             if ( scene.getObjectByName( "pointer" ) ) scene.getObjectByName( "pointer" ).visible = false;
     	}
-        else
+        /*else
         {
             var activeSecondaryMenuTrad = secMMgr.getActiveSecondaryMenuTrad();
             if(activeSecondaryMenuTrad)
@@ -144,7 +144,7 @@ THREE.InteractionsController = function () {
               //subController.switchSigner( interController.getSignerActive() );
                 
             } 
-        }
+        }*/
 	};
 
     this.checkVRInteraction = function(origin, direction) 

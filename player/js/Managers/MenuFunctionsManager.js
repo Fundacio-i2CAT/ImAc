@@ -11,113 +11,82 @@ MenuFunctionsManager = function() {
 // Subtitle Functions
 //************************************************************************************
 
-    function getSubLanguageFunc(xml, lang, name)
+    function getSubLanguageFunc(xml, lang)
     {    
         return function() {
             subController.setSubtitle( xml, lang );
-            //MenuManager.selectFinalDropdownOption( name );
-            //subtitlesLanguage = name;
         }
     }
 
-    function getSubEasyOnOffFunc(enable, xml, name)
+    function getSubEasyOnOffFunc(enable, xml)
     {       
         return function() {
             subController.setSubEasy( enable, xml );
-            //MenuManager.selectFinalDropdownOption( name );
-            //subtitlesEasy = name;
         }
     }
 
-    function getSubPositionFunc(position, name)
+    function getSubPositionFunc(position)
     {       
         return function() {
             subController.setSubPosition( 0, position );
-            //MenuManager.selectFinalDropdownOption( name );
-            //subtitlesPosition = name;
         }
     }
 
-    function getSubBackgroundFunc(index, name)
+    function getSubBackgroundFunc(index)
     {       
         return function() {
             subController.setSubBackground( index );
-            //MenuManager.selectFinalDropdownOption( name );
-            //subtitlesBackground = name;
         }
     }
 
-    function getSubSizeFunc(size, name)
+    function getSubSizeFunc(size)
     {       
         return function() {
             subController.setSubSize( size );
-            //MenuManager.selectFinalDropdownOption( name );
-            //subtitlesSize = name;
         }
     }
 
-    function getSubIndicatorFunc(indicator, name)
+    function getSubIndicatorFunc(indicator)
     {       
         return function() {
             subController.setSubIndicator( indicator );
-            //MenuManager.selectFinalDropdownOption( name );
-            //subtitlesIndicator = name;
         }
     }
 
-    function getSubAutoPositioningFunc(name)
+    function getSubAutoPositioningFunc()
     {       
         return function() {
             if ( !_isHMD ) AplicationManager.disableVR();
             camera.rotation.set( 0,0,0 );
             CameraParentObject.quaternion.set(0,0,0,0);
 
-            //if ( interController.getSubtitlesActive() ) subController.enableSubtitles();
-            //subController.switchSigner( interController.getSignerActive() );
-            menumanager.ResetViews();
-            //setTimeout(function() {
-                //MenuManager.closeMenu(); 
-                //menumanager.ResetViews();
-                //scene.getObjectByName( "openMenu" ).visible = true;
-                //scene.getObjectByName( "openMenuTrad" ).visible = true; //EXPERIMENTAL
-            //}, clickInteractionTimeout);
+            menuMgr.ResetViews();
 
             subController.setSubIndicator( 'none' );
             subController.enableAutoPositioning();
-            //MenuManager.selectFinalDropdownOption( name );
-            //subtitlesIndicator = name;
+
             autopositioning = true;
         }
     }
 
-    function getSubAreaFunc(area, name)
+    function getSubAreaFunc(area)
     {       
         return function() {
             subController.setSubArea( area );
-            //MenuManager.selectFinalDropdownOption( name );
-            //subtitlesArea = name;
         }
     }
 
     function getSubOnOffFunc(isEnabled)
     {       
         return function() {
-            //interController.setSubtitlesActive( isEnabled );
             subController.switchSubtitles(isEnabled);
-            //menuList[6].isEnabled = isEnabled;
-            //MenuController.showMultiOptionsButtons( multiOptionsMainSubMenuIndexes.slice(0,1) );
-            //MenuController.showOnOffToggleButton( 6, menuList[6].buttons[0], menuList[6].buttons[1], 0, 4 );
         }
     }
 
     function getSignerOnOffFunc(isEnabled)
     {       
         return function() {
-            //interController.setSignerActive( isEnabled );
             subController.switchSigner( isEnabled );
-            //menuList[7].isEnabled = isEnabled;
-            //MenuController.showMultiOptionsButtons( multiOptionsMainSubMenuIndexes.slice(1,2) );
-            //MenuController.showOnOffToggleButton( 7, menuList[7].buttons[0], menuList[7].buttons[1], 1, 5 );
         }
     }
 
@@ -125,9 +94,7 @@ MenuFunctionsManager = function() {
     {       
         return function() {
             //TODO AD functionality
-            //menuList[8].isEnabled = isEnabled;
-            MenuController.showMultiOptionsButtons( multiOptionsMainSubMenuIndexes.slice(2,3) );
-            MenuController.showOnOffToggleButton( 8, menuList[8].buttons[0], menuList[8].buttons[1], 2, 6 );
+            console.warn('TODO AD functionality')
         }
     }
 
@@ -135,9 +102,7 @@ MenuFunctionsManager = function() {
     {       
         return function() {
             //TODO AST functionality
-            //menuList[9].isEnabled = isEnabled;
-            MenuController.showMultiOptionsButtons( multiOptionsMainSubMenuIndexes.slice(3,4) );
-            MenuController.showOnOffToggleButton( 9, menuList[9].buttons[0], menuList[9].buttons[1], 3, 7 );
+            console.warn('TODO AST functionality')
         }
     }
 
@@ -196,39 +161,31 @@ MenuFunctionsManager = function() {
         }
     }
 
-    function getSignerPositionFunc(position, name)
+    function getSignerPositionFunc(position)
     {       
         return function() {
             subController.setSignerPosition( 1, position );
-            //MenuManager.selectFinalDropdownOption( name );
-            //signerPosition = name;
         }
     }
 
-    function getSignerAreaFunc(area, name)
+    function getSignerAreaFunc(area)
     {       
         return function() {
             subController.setSignerArea( area );
-            //MenuManager.selectFinalDropdownOption( name );
-            //signerArea = name;
         }
     }
 
-    function getSignerIndicatorFunc(indicator, name)
+    function getSignerIndicatorFunc(indicator)
     {       
         return function() {
             subController.setSignerIndicator( indicator );
-            //MenuManager.selectFinalDropdownOption( name );
-            //signerIndicator = name;
         }
     }
 
-    function getSignerLanguageFunc(url, lang, name)
+    function getSignerLanguageFunc(url, lang)
     {    
         return function() {
             subController.setSignerContent( url, lang );
-            //MenuManager.selectFinalDropdownOption( name );
-            //signerLanguage = name;
         }
     }
 
@@ -281,7 +238,7 @@ MenuFunctionsManager = function() {
 
     this.getOpenTradMenuFunc = function()
     {
-
+console.error('ydydydyddydydydyddyy')
         //return function() {
             if(scene.getObjectByName( "traditionalMenu" ))  console.error("Menu already open");
             else
@@ -307,6 +264,7 @@ MenuFunctionsManager = function() {
 
     this.getCloseTradMenuFunc = function()
     {
+        console.error('popopopopopopopopopopopopopop')
         return function() {
             //if ( interController.getSubtitlesActive() ) subController.enableSubtitles();
 
@@ -326,7 +284,7 @@ MenuFunctionsManager = function() {
             //subController.switchSigner( interController.getSignerActive() );          
         }
     }
-
+/*
      this.getMultiOptionsMenuFunc = function(name)
     {
         switch ( name )
@@ -482,14 +440,14 @@ MenuFunctionsManager = function() {
             }, clickInteractionTimeout);
         }
     };
-
+*/
     this.getSubShowDropdownFunc = function(index, name)
     {       
         return function() {
             MenuManager.openSubMenuDropdown( index, name );
         }
     };
-
+/*
     this.getSubUpDownFunc = function(position)
     {
         return function() {
@@ -528,7 +486,7 @@ MenuFunctionsManager = function() {
     {
         return function() {
             if (name) MenuManager.pressButtonFeedback( name );
-            /*VideoController.isPausedById(0)*/play ? VideoController.playAll() : VideoController.pauseAll();
+            play ? VideoController.playAll() : VideoController.pauseAll();
             setTimeout(function() { 
                 MenuController.playoutTimeDisplayLogic( VideoController.isPausedById(0) ); 
             }, clickInteractionTimeout);
@@ -576,7 +534,7 @@ MenuFunctionsManager = function() {
             }, clickInteractionTimeout); 
         }
     };
-
+*/
     this.getSettingsMenuFunc = function(name)
     {
         return function() {
@@ -634,105 +592,105 @@ MenuFunctionsManager = function() {
         // Subtitles
             case "subtitlesEngButton":
                 var e2r = subController.getSubEasy() ? 1 : 0;
-                return getSubLanguageFunc( list_contents[demoId].subtitles[e2r]['en'], 'en', name );
+                return getSubLanguageFunc( list_contents[demoId].subtitles[e2r]['en'], 'en' );
 
             case "subtitlesEspButton":
                 var e2r = subController.getSubEasy() ? 1 : 0;
-                return getSubLanguageFunc( list_contents[demoId].subtitles[e2r]['es'], 'es', name );
+                return getSubLanguageFunc( list_contents[demoId].subtitles[e2r]['es'], 'es' );
 
             case "subtitlesGerButton":
                 var e2r = subController.getSubEasy() ? 1 : 0;
-                return getSubLanguageFunc( list_contents[demoId].subtitles[e2r]['de'], 'de', name );
+                return getSubLanguageFunc( list_contents[demoId].subtitles[e2r]['de'], 'de' );
 
             case "subtitlesCatButton":
                 var e2r = subController.getSubEasy() ? 1 : 0;
-                return getSubLanguageFunc( list_contents[demoId].subtitles[e2r]['ca'], 'ca', name );
+                return getSubLanguageFunc( list_contents[demoId].subtitles[e2r]['ca'], 'ca' );
 
             case "subtitlesEasyOn":
                 var url = getE2RURL();
-                return getSubEasyOnOffFunc( true, url, name );
+                return getSubEasyOnOffFunc( true, url );
 
             case "subtitlesEasyOff":
-                return getSubEasyOnOffFunc( false, list_contents[demoId].subtitles[0][subController.getSubLanguage()], name );
+                return getSubEasyOnOffFunc( false, list_contents[demoId].subtitles[0][subController.getSubLanguage()] );
 
             case "subtitlesTopButton":
-                return getSubPositionFunc( 1, name );
+                return getSubPositionFunc( 1 );
 
             case "subtitlesBottomButton":
-                return getSubPositionFunc( -1, name );
+                return getSubPositionFunc( -1 );
 
             case "subtitlesSemitrans":
-                return getSubBackgroundFunc( 0.8, name );
+                return getSubBackgroundFunc( 0.8 );
 
             case "subtitlesOutline":
-                return getSubBackgroundFunc( 0, name );
+                return getSubBackgroundFunc( 0 );
 
             case "subtitlesSmallSizeButton":
-                return getSubSizeFunc( 0.6, name );
+                return getSubSizeFunc( 0.6 );
 
             case "subtitlesMediumSizeButton":
-                return getSubSizeFunc( 0.8, name );
+                return getSubSizeFunc( 0.8 );
 
             case "subtitlesLargeSizeButton":
-                return getSubSizeFunc( 1, name );
+                return getSubSizeFunc( 1 );
 
             case "subtitlesIndicatorNoneButton":
-                return getSubIndicatorFunc( "none", name );
+                return getSubIndicatorFunc( "none" );
 
             case "subtitlesIndicatorArrowButton":
-                return getSubIndicatorFunc( "arrow", name );
+                return getSubIndicatorFunc( "arrow" );
 
             case "subtitlesIndicatorRadarButton":
-                return getSubIndicatorFunc( "radar", name );
+                return getSubIndicatorFunc( "radar" );
 
             case "subtitlesIndicatorAutoButton":
-                return getSubAutoPositioningFunc( name );
+                return getSubAutoPositioningFunc();
 
             case "subtitlesSmallAreaButton":
-                return getSubAreaFunc( 50, name );
+                return getSubAreaFunc( 50 );
 
             case "subtitlesMediumAreaButton":
-                return getSubAreaFunc( 60, name );
+                return getSubAreaFunc( 60 );
 
             case "subtitlesLargeAreaButton":
-                return getSubAreaFunc( 70, name );
+                return getSubAreaFunc( 70 );
 
         // Signer
             case "signerEngButton":
-                return getSignerLanguageFunc( list_contents[demoId].signer[0]['en'], 'en', name );
+                return getSignerLanguageFunc( list_contents[demoId].signer[0]['en'], 'en' );
 
             case "signerEspButton":
-                return getSignerLanguageFunc( list_contents[demoId].signer[0]['es'], 'es', name );
+                return getSignerLanguageFunc( list_contents[demoId].signer[0]['es'], 'es' );
 
             case "signerGerButton":
-                return getSignerLanguageFunc( list_contents[demoId].signer[0]['de'], 'de', name );
+                return getSignerLanguageFunc( list_contents[demoId].signer[0]['de'], 'de' );
 
             case "signerCatButton":
-                return getSignerLanguageFunc( list_contents[demoId].signer[0]['ca'], 'ca', name );
+                return getSignerLanguageFunc( list_contents[demoId].signer[0]['ca'], 'ca' );
 
             case "signerTopButton":
-                return getSignerPositionFunc( 1, name );
+                return getSignerPositionFunc( 1 );
 
             case "signerBottomButton":
-                return getSignerPositionFunc( -1, name );
+                return getSignerPositionFunc( -1 );
 
             case "signerIndicatorNoneButton":
-                return getSignerIndicatorFunc( "none", name );
+                return getSignerIndicatorFunc( "none" );
 
             case "signerIndicatorArrowButton":
-                return getSignerIndicatorFunc( "arrow", name );
+                return getSignerIndicatorFunc( "arrow" );
 
             case "signerIndicatorRadarButton":
-                return getSubAutoPositioningFunc( name );
+                return getSubAutoPositioningFunc();
 
             case "signerSmallAreaButton":
-                return getSignerAreaFunc( 50, name );
+                return getSignerAreaFunc( 50 );
 
             case "signerMediumlAreaButton":
-                return getSignerAreaFunc( 60, name );
+                return getSignerAreaFunc( 60 );
 
             case "signerLargeAreaButton":
-                return getSignerAreaFunc( 70, name );
+                return getSignerAreaFunc( 70 );
 
         // Audio Description
             case "adEngButton":

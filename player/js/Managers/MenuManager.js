@@ -256,6 +256,8 @@ function MenuManager() {
             case 2: // TRADITIONAL
             {
                 var traditionalmenu = createTraditionalViewStructure('traditionalmenu');
+
+                if (_isHMD) traditionalmenu.scale.set( 0.8, 0.8, 0.8 );
                 menuParent.add(traditionalmenu);
                 traditionalmenu.add(createOptionTraditionalMenuViewStructure('tradoptionmenu'));
                 break;

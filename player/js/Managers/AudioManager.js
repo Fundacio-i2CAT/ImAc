@@ -52,7 +52,7 @@ AudioManager = function() {
 
         activeVideoElement = videoElement;
 
-        activeVideoElement.volume = initialVolumeLevel; // Start volume level in 0.5 
+        activeVideoElement.volume = 0.5; // Start volume level in 0.5 
 
         videoElement.muted = false;
 

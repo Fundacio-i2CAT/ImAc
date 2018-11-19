@@ -108,7 +108,7 @@ function VideoProgressBarController() {
 	    if(Math.sign(time_diff) != 0)
 	    {
 	        let new_seek_time = Math.round(VideoController.getListOfVideoContents()[0].vid.duration*time_diff/norm_vpb_w);
-	        VideoController.seekAll(new_seek_time)
+	        VideoController.seekAll2(new_seek_time)
 	    }
 	    else console.log("You clicked over the slidder")
     }

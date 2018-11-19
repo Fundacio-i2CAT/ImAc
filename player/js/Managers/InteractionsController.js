@@ -88,8 +88,6 @@ THREE.InteractionsController = function () {
 
 	this.checkInteraction = function(mouse3D, camera, type) 
 	{
-
-
     	raycaster.setFromCamera( mouse3D, camera );
     	var intersects = raycaster.intersectObjects( interactiveListObjects, true ); // false
     	if ( intersects[0] && interactionState && type != 'onDocumentMouseMove')
@@ -104,7 +102,7 @@ THREE.InteractionsController = function () {
                     break;
                 }
                 
-                else if ( intersects[inter].object.type == 'Mesh' && intersects[inter].object.parent.name === 'video-progress-bar') 
+                else if ( intersects[inter].object.type == 'Mesh' &&  intersects[inter].object.parent.name === 'video-progress-bar') 
                 {
                     vpbCtrl.onClickSeek(mouse3D)
                     break;
@@ -118,7 +116,7 @@ THREE.InteractionsController = function () {
 				}
                 else console.error("Error in checkInteraction")
 			}
-            freeInteractionState(300);
+            freeInteractionState(500);
     	}
         else if ( _isHMD && intersects[0] && interactionState && pointerState )
         {

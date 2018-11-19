@@ -994,7 +994,7 @@ function MenuManager() {
         volumeLevel.height = 35;
         volumeLevel.name = 'volumeLevel';
         volumeLevel.type =  'text';
-        volumeLevel.value = '50'; //AudioManager.getVolume();
+        volumeLevel.value = ''; //AudioManager.getVolume();
         volumeLevel.color = 0xffffff;
         volumeLevel.textSize =  18;
         volumeLevel.visible = false;

@@ -75,8 +75,6 @@ SubSignManager = function() {
 	function updateISD(offset)
 	{
 		var isd = imsc.generateISD( imsc1doc, offset );
-		console.log(isd.contents.length)
-		console.log(isd.contents)
 		if ( isd.contents.length > 0 ) 
 	  	{
 	  		if ( autoPositioning ) changePositioning( isd.imac );
@@ -91,7 +89,6 @@ SubSignManager = function() {
 	{
 	  	if ( isdContent.contents.length > 0 )
 	  	{
-	  		console.log("IF");
 	    	var isdContentText = isdContent.contents[0].contents[0].contents[0].contents;
 	    	var textList = [];
 
@@ -140,7 +137,6 @@ SubSignManager = function() {
 	  	}
 	  	else 
 	  	{
-	  		console.log("ELSE");
 	    	textListMemory = [];
 	    	removeSubtitle();
 	    	removeSpeakerRadar();

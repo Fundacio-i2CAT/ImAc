@@ -38,6 +38,16 @@ THREE.MediaObjectData = function () {
         return getVideoMesh( geometry, url, name, 0 );
     };
 
+    this.getSphericalColorMesh = function(size, color, name) 
+    {
+        var geometry = new THREE.SphereBufferGeometry( size, 32, 32, Math.PI/2 );
+        geometry.scale( - 1, 1, 1 );
+        var material = new THREE.MeshBasicMaterial( {color: color} );
+        var sphere = new THREE.Mesh( geometry, material );
+        
+        return sphere;
+    };
+
     this.getCubeVideo65Mesh = function(size, url, name) 
     {
         var geometry = getCubeGeometry65( size );
@@ -101,6 +111,56 @@ THREE.MediaObjectData = function () {
 
             group.add( mesh );
         }
+        
+        return group;
+    };
+
+    this.getExpSubtitleMesh = function(textList, config)
+    {
+        var group = new THREE.Group();
+        var group1 = new THREE.Group();
+        var group2 = new THREE.Group();
+        var group3 = new THREE.Group();
+
+        for ( var i = 0, len = textList.length; i < len; ++i ) 
+        {
+            config.x = config.textAlign == 0 ? 0 : config.textAlign == -1 ? -config.size : config.size;
+
+            var mesh = getSubMesh( textList[i], config, config.opacity, len, i );
+            mesh.name = i;
+            if (isLookAt) mesh.lookAt(new THREE.Vector3(0, 0, 0)); 
+
+            group1.add( mesh );
+        }
+
+        for ( var i = 0, len = textList.length; i < len; ++i ) 
+        {
+            config.x = config.textAlign == 0 ? 0 : config.textAlign == -1 ? -config.size : config.size;
+
+            var mesh = getSubMesh( textList[i], config, config.opacity, len, i );
+            mesh.name = i;
+            if (isLookAt) mesh.lookAt(new THREE.Vector3(0, 0, 0)); 
+
+            group2.add( mesh );
+        }
+
+        for ( var i = 0, len = textList.length; i < len; ++i ) 
+        {
+            config.x = config.textAlign == 0 ? 0 : config.textAlign == -1 ? -config.size : config.size;
+
+            var mesh = getSubMesh( textList[i], config, config.opacity, len, i );
+            mesh.name = i;
+            if (isLookAt) mesh.lookAt(new THREE.Vector3(0, 0, 0)); 
+
+            group3.add( mesh );
+        }
+
+        group2.rotation.y = Math.radians( 120 );
+        group3.rotation.y = Math.radians( 240 );
+
+        group.add( group1 );
+        group.add( group2 );
+        group.add( group3 );
         
         return group;
     };
@@ -229,7 +289,7 @@ THREE.MediaObjectData = function () {
         mesh.position.x = posX;
         mesh.position.z = 0.05;
 
-        if ( name == menuList[1].buttons[3] ) mesh.rotation.z = Math.PI;
+        if ( name == 'forwardSeekButton' ) mesh.rotation.z = Math.PI;
 
         var coliderMesh = new THREE.Mesh( new THREE.PlaneGeometry(cw, ch), new THREE.MeshBasicMaterial({visible: false}));
         

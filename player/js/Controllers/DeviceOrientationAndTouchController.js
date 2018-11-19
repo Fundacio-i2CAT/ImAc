@@ -101,7 +101,7 @@ THREE.DeviceOrientationAndTouchController = function( object, objectPather, domE
         mouse3D.y = _isHMD ? 0 : - ( event.clientY / window.innerHeight ) * 2 + 1;
 		
 		//INTERACTIVITY DETECT
-        interController.checkInteraction(mouse3D, scope.object, 'onDocumentMouseDown');
+		interController.checkInteraction(mouse3D, scope.object, 'onDocumentMouseDown');
 		
 		//changing state 
 		appState = CONTROLLER_STATE.MANUAL_ROTATE;

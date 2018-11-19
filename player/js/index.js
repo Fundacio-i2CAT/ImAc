@@ -12,10 +12,8 @@ var _moData = new THREE.MediaObjectData();
 var menuMgr = new MenuManager();
 var settingsMgr = new SettingsManager();
 
-var MenuController = new THREE.MenuController();
+//var MenuController = new THREE.MenuController();
 var MenuDictionary = new MenuDictionary();
-
-//var secMMgr = new THREE.SecondaryMenuManager();
 
 var _AudioManager = new AudioManager();
 var subController = new SubSignManager();
@@ -50,41 +48,52 @@ if ( annyang ) {
   var commands = {
     //TEST WITH LOCALHOST
     'hello': function() { console.log('Hello world!'); }
-    /*'volume up': MenuFunctionsManager.getChangeVolumeFunc(true),
+    /*
+    'volume up': MenuFunctionsManager.getChangeVolumeFunc(true),
     'apujar volum': MenuFunctionsManager.getChangeVolumeFunc(true),
     'subir volumen': MenuFunctionsManager.getChangeVolumeFunc(true),
     'lauter': MenuFunctionsManager.getChangeVolumeFunc(true),
+
     'volume down': MenuFunctionsManager.getChangeVolumeFunc(false),
     'abaixar volum': MenuFunctionsManager.getChangeVolumeFunc(false),
     'bajar volumen': MenuFunctionsManager.getChangeVolumeFunc(false),
     'leiser': MenuFunctionsManager.getChangeVolumeFunc(false),
+
     'play': function() { console.log('play') },
+
     'pause': MenuFunctionsManager.getPlayPauseFunc(false),
     'pausar': MenuFunctionsManager.getPlayPauseFunc(false),
+
     'seek forward': MenuFunctionsManager.getSeekFunc(true),
     'avançar': MenuFunctionsManager.getSeekFunc(true),
     'avanzar': MenuFunctionsManager.getSeekFunc(true),
     'weiter': MenuFunctionsManager.getSeekFunc(true),
+
     'seek back': MenuFunctionsManager.getSeekFunc(false),
     'retrocedir': MenuFunctionsManager.getSeekFunc(false),
     'retroceder': MenuFunctionsManager.getSeekFunc(false),
     'zurück': MenuFunctionsManager.getSeekFunc(false),
+
     'subtitles on': MenuFunctionsManager.getOnOffFunc('subtitlesOffButton'),
     'activar subtitols': MenuFunctionsManager.getOnOffFunc('subtitlesOffButton'),
     'activar subtitulos': MenuFunctionsManager.getOnOffFunc('subtitlesOffButton'),
     'untertitel an': MenuFunctionsManager.getOnOffFunc('subtitlesOffButton'),
+
     'subtitles off': MenuFunctionsManager.getOnOffFunc('subtitlesOnButton'),
     'desactivar subtituls': MenuFunctionsManager.getOnOffFunc('subtitlesOnButton'),
     'desactivar subtitulos': MenuFunctionsManager.getOnOffFunc('subtitlesOnButton'),
     'untertitel aus': MenuFunctionsManager.getOnOffFunc('subtitlesOnButton'),
+
     'open menu': MenuFunctionsManager.getOpenMenuFunc(true),
     'obrir menu': MenuFunctionsManager.getOpenMenuFunc(true),
     'abrir menu': MenuFunctionsManager.getOpenMenuFunc(true),
     'Öffne Menü': MenuFunctionsManager.getOpenMenuFunc(true),
+
     'close menu': MenuFunctionsManager.getCloseTradMenuFunc(),
     'tancar menu': MenuFunctionsManager.getCloseTradMenuFunc(),
     'cerrar menu': MenuFunctionsManager.getCloseTradMenuFunc(),
-    'Schließe Menü': MenuFunctionsManager.getCloseTradMenuFunc()*/
+    'Schließe Menü': MenuFunctionsManager.getCloseTradMenuFunc()
+    */
   };
 
   // Add our commands to annyang

@@ -151,6 +151,18 @@ VideoController = function() {
     	listOfVideoContents.forEach( function( elem ) { elem.vid.currentTime += time; } ); 
     };
 
+    var _freeSeek = true;
+
+    this.seekAll2 = function(time)
+    {
+        if (!_freeSeek) return;
+        else {
+            _freeSeek = false;
+            listOfVideoContents.forEach( function( elem ) { elem.vid.currentTime += time; } );
+            setTimeout(function(){_freeSeek = true;}, 1000);
+        }
+    };
+
     this.isPausedById = function(id)
     {
         return listOfVideoContents[id].vid.paused;

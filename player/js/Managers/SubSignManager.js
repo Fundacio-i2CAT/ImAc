@@ -46,6 +46,7 @@ SubSignManager = function() {
 	var speakerMesh;
 
 	var areaMesh;
+	var isExperimental = false;
 
 	// [ST] subtitle vars 
 	var subtitleEnabled = false; // boolean
@@ -75,6 +76,7 @@ SubSignManager = function() {
 	function updateISD(offset)
 	{
 		var isd = imsc.generateISD( imsc1doc, offset );
+
 		if ( isd.contents.length > 0 ) 
 	  	{
 	  		if ( autoPositioning ) changePositioning( isd.imac );
@@ -82,6 +84,12 @@ SubSignManager = function() {
 	    	if ( subtitleEnabled ) print3DText( isd.contents[0], isd.imac );
 
 	    	checkSpeakerPosition( isd.imac );
+	  	}
+	  	else if ( textListMemory.length > 0 )
+	  	{
+	    	textListMemory = [];
+	    	removeSubtitle();
+	    	removeSpeakerRadar();
 	  	}
 	}
 
@@ -128,7 +136,8 @@ SubSignManager = function() {
 			        z: posZ
 			    };
 
-	      		createSubtitle( textList, conf );
+	      		//createSubtitle( textList, conf );
+	      		isExperimental ? createExpSubtitle( textList, conf ) : createSubtitle( textList, conf );
 
 	      		if ( subtitleIndicator == 'radar' ) createSpeakerRadar( textList[0].color, isdImac );
 
@@ -206,7 +215,7 @@ SubSignManager = function() {
         	}
         	else 
         	{
-          		rotaionValue += position*2;
+          		rotaionValue += position*1.2; // 60 degrees by second
           		CameraParentObject.rotation.y = initY / ( -180 / Math.PI )%360 + rotaionValue * ( -Math.PI / 180 );
         	}
       	}, 20);
@@ -264,6 +273,13 @@ SubSignManager = function() {
         subtitleMesh = _moData.getSubtitleMesh( textList, config );
 
         camera.add( subtitleMesh );
+    }
+
+    function createExpSubtitle(textList, config)
+    {
+    	subtitleMesh = _moData.getExpSubtitleMesh( textList, config );
+
+        scene.add( subtitleMesh );
     }
 
     function createSignVideo(url, name, config)
@@ -735,4 +751,10 @@ SubSignManager = function() {
             radarMesh.rotation.z = Math.radians( lon );
         }
     };
+
+    this.setExperimental = function(exp)
+    {
+    	isExperimental = exp;
+    };
+
 }

@@ -55,7 +55,7 @@ function VolumeLSMenuView() {
         volumeLevel.type =  'text';
         volumeLevel.value = data.volumeLevel*100+'%';
         volumeLevel.color = 0xffffff;
-        volumeLevel.textSize =  (menuMgr.getMenuType() == 1) ? 18 : 1.25;
+        volumeLevel.textSize =  (menuMgr.getMenuType() == 1) ? 18 : 1.5;
         volumeLevel.position = submenu.getObjectByName('unmuteVolumeButton').position;
 
         return volumeLevel.create();

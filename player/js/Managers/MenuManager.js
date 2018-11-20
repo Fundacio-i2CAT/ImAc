@@ -898,7 +898,7 @@ function MenuManager() {
         playouttime.height = 50;
         playouttime.name = 'playOutTime';
         playouttime.type =  'text';
-        playouttime.value = '00:00 / 00:00';
+        playouttime.value = '00:00';
         playouttime.color = 0xffffff;
         playouttime.textSize =  15;
         playouttime.position = new THREE.Vector3(0, 0, 0.01);

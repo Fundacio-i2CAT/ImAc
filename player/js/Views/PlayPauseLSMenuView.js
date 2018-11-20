@@ -3,8 +3,8 @@ function PlayPauseLSMenuView() {
 	this.UpdateView = function(data){
 		var submenu = scene.getObjectByName(data.name);
 
-		submenu.getObjectByName('playButton').visible = data.isPaused;
-		submenu.getObjectByName('pauseButton').visible = !data.isPaused;
+		submenu.getObjectByName('playButton').visible = (menuMgr.getMenuType() == 1 && data.isPlayOutTimeVisible) ? false : data.isPaused;
+		submenu.getObjectByName('pauseButton').visible = (menuMgr.getMenuType() == 1 && data.isPlayOutTimeVisible) ? false : !data.isPaused;
 
 		submenu.getObjectByName('playButton').children[0].onexecute = data.playpauseMenuButtonFunc;
 		submenu.getObjectByName('pauseButton').children[0].onexecute = data.playpauseMenuButtonFunc;
@@ -50,8 +50,8 @@ function PlayPauseLSMenuView() {
         playouttime.height = 35;
         playouttime.name = 'playOutTime';
         playouttime.type =  'text';
-        playouttime.value = data.playOutTimeText;
-        playouttime.textSize = 1.5;
+        playouttime.value = data.playOutTimeText + ((menuMgr.getMenuType() == 1) ? '' : " / "+VideoController.getPlayoutTime(VideoController.getListOfVideoContents()[0].vid.duration));
+        playouttime.textSize = (menuMgr.getMenuType() == 1) ? 15 : 1.5;
         playouttime.color = 0xffffff;
         playouttime.position = new THREE.Vector3(0, 0, 0.01);
 

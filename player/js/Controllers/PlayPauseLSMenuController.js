@@ -52,7 +52,7 @@ function PlayPauseLSMenuController() {
 	function UpdateData()
     {
 		data.isPaused = VideoController.isPausedById(0);
-        data.playOutTimeText = updatePlayOutTime();
+        data.playOutTimeText = VideoController.getPlayoutTime(VideoController.getListOfVideoContents()[0].vid.currentTime);
         data.isPlayOutTimeVisible = (menuMgr.getMenuType() == 1) ? false : true;
 
 		data.playpauseMenuButtonFunc = function(){ AddVisualFeedbackOnClick(VideoController.isPausedById(0) ? 'playButton' : 'pauseButton', function(){ PlayPauseFunc()} )};
@@ -87,7 +87,6 @@ function PlayPauseLSMenuController() {
         setTimeout(callback, 300);
     }
     
-
 	function PlayPauseFunc()
     {
         VideoController.isPausedById(0) ? VideoController.playAll() : VideoController.pauseAll();
@@ -95,11 +94,7 @@ function PlayPauseLSMenuController() {
 		view.UpdateView(data);
     	AddInteractivityToMenuElements();
 
-    	//TODO
-
-        /*setTimeout(function() { 
-            ppMMgr.playoutTimeDisplayLogic( ppMMgr.isPausedById(0) ); 
-        }, clickInteractionTimeout);*/
+        playoutTimeDisplayLogic();
     }
 
     function SeekFunc(plus)
@@ -109,16 +104,21 @@ function PlayPauseLSMenuController() {
         UpdateData();
 		view.UpdateView(data);
 
-		//TODO
-
-        //ppMMgr.playoutTimeDisplayLogic( true );
+        playoutTimeDisplayLogic();
     }
 
-    function updatePlayOutTime()
+    function playoutTimeDisplayLogic()
     {
-        let current = VideoController.getPlayoutTime(VideoController.getListOfVideoContents()[0].vid.currentTime);
-        const total = VideoController.getPlayoutTime(VideoController.getListOfVideoContents()[0].vid.duration);
+        if(menuMgr.getMenuType() == 1)
+        {
+            data.isPlayOutTimeVisible = true;
+            view.UpdateView(data);
 
-        return current+" / "+total;
-    }
+            setTimeout(function(){ 
+                data.isPlayOutTimeVisible = false;
+                view.UpdateView(data);
+            }, 500);    
+        }
+        
+    };
 }

@@ -1,11 +1,15 @@
 function VolumeLSMenuView() {
 
+    var submenu;
+
 	this.UpdateView = function(data){
     
-    	var submenu = scene.getObjectByName(data.name);
+    	submenu = scene.getObjectByName(data.name);
 
-		submenu.getObjectByName('unmuteVolumeButton').visible = data.isMuted;
-		submenu.getObjectByName('muteVolumeButton').visible = !data.isMuted;
+		submenu.getObjectByName('unmuteVolumeButton').visible = data.isVolumeLevelVisible ? false : data.isMuted;
+		submenu.getObjectByName('muteVolumeButton').visible = data.isVolumeLevelVisible ? false : !data.isMuted;
+
+        submenu.getObjectByName('volumeLevel').visible = data.isVolumeLevelVisible;
 
 		submenu.getObjectByName('unmuteVolumeButton').children[0].onexecute = data.muteUnmuteMenuButtonFunc;
 		submenu.getObjectByName('muteVolumeButton').children[0].onexecute = data.muteUnmuteMenuButtonFunc;
@@ -17,6 +21,8 @@ function VolumeLSMenuView() {
 		if(submenu.getObjectByName('backMenuButton')) submenu.getObjectByName('backMenuButton').children[0].onexecute = data.backMenuButtonFunc;
 
         if(submenu.getObjectByName('closeMenuButton')) submenu.getObjectByName('closeMenuButton').children[0].onexecute = data.closeMenuButtonFunc;
+
+        if(data.isVolumeLevelVisible) submenu.add(ChangeVolumeLevelText(data));
 	}
 
     this.pressButtonFeedback = function(data)
@@ -37,4 +43,21 @@ function VolumeLSMenuView() {
             interController.addInteractiveObject( sceneElement );
         }, 300);
     };
+
+    function ChangeVolumeLevelText(data)
+    {
+        submenu.remove(submenu.getObjectByName('volumeLevel'));
+        
+        var volumeLevel = new InteractiveElementModel();
+        volumeLevel.width = (menuMgr.getMenuType() == 1) ? 35 : 4;
+        volumeLevel.height = (menuMgr.getMenuType() == 1) ? 35 : 4;
+        volumeLevel.name = 'volumeLevel';
+        volumeLevel.type =  'text';
+        volumeLevel.value = data.volumeLevel*100+'%';
+        volumeLevel.color = 0xffffff;
+        volumeLevel.textSize =  (menuMgr.getMenuType() == 1) ? 18 : 1.25;
+        volumeLevel.position = submenu.getObjectByName('unmuteVolumeButton').position;
+
+        return volumeLevel.create();
+    }
 }

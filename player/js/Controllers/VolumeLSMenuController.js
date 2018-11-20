@@ -5,7 +5,6 @@ function VolumeLSMenuController() {
 	var view;
 	var viewStructure;
 	
-
 	this.Init = function(){
 
 		data = GetData();
@@ -49,10 +48,12 @@ function VolumeLSMenuController() {
 	    return data;
 	}
 
-
 	function UpdateData()
     {
+    	data.volumeLevel = _AudioManager.getVolume()*100+'%';
+    	data.isVolumeLevelVisible = false;
 		data.isMuted = _AudioManager.isAudioMuted();
+
 		data.muteUnmuteMenuButtonFunc = function(){ AddVisualFeedbackOnClick(_AudioManager.isAudioMuted() ? 'unmuteVolumeButton' : 'muteVolumeButton', function(){ MuteUnmuteVolumeFunc()} )}; 
 		data.plusVolumeMenuButtonFunc = function(){ AddVisualFeedbackOnClick('plusVolumeButton', function(){ ChangeVolumeFunc(true)} )};
 		data.minusVolumeMenuButtonFunc = function(){ AddVisualFeedbackOnClick('minusVolumeButton', function(){ ChangeVolumeFunc(false)} )};
@@ -83,10 +84,7 @@ function VolumeLSMenuController() {
     {
     	var sign = plus ? 1 : -1;
         _AudioManager.changeVolume( 0.1*sign );
-
-        // TODO
-
-        //MenuController.volumeLevelDisplayLogic();
+        volumeLevelDisplayLogic();
     };
 
     function MuteUnmuteVolumeFunc()
@@ -96,11 +94,19 @@ function VolumeLSMenuController() {
 		UpdateData();
 		view.UpdateView(data);
     	AddInteractivityToMenuElements();
+    };
 
-    	// TODO
+    function volumeLevelDisplayLogic()
+    {
+		data.volumeLevel = _AudioManager.getVolume();
+        data.isVolumeLevelVisible =  true;
+        view.UpdateView(data);
 
-       /* setTimeout(function() { 
-            MenuController.showMuteUnmuteButton(); 
-        }, clickInteractionTimeout); */
+        setTimeout(function(){ 
+        	(_AudioManager.getVolume()>0) ? _AudioManager.setunmute() : _AudioManager.setmute();
+        	data.isMuted = _AudioManager.isAudioMuted();
+			data.isVolumeLevelVisible =  false;
+			view.UpdateView(data);
+        }, 500);
     };
 }

@@ -11,4 +11,7 @@ function VolumeLSMenuModel() {
 	this.closeMenuButtonFunc;
 
 	this.clickedButtonName;
+
+	this.volumeLevel;
+	this.isVolumeLevelVisible;
 }

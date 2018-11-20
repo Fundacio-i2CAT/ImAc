@@ -619,11 +619,11 @@ function MenuManager() {
         volumemenu.add(muteVolumeButton.create());
 
         var volumeLevel = new InteractiveElementModel();
-        volumeLevel.width = 35;
-        volumeLevel.height = 35;
+        volumeLevel.width = 4;
+        volumeLevel.height = 4;
         volumeLevel.name = 'volumeLevel';
         volumeLevel.type =  'text';
-        volumeLevel.value = '50'; //AudioManager.getVolume()*100+'%';
+        volumeLevel.value = '';
         volumeLevel.color = 0xffffff;
         volumeLevel.textSize =  1.25;
         volumeLevel.visible = false;
@@ -996,10 +996,9 @@ function MenuManager() {
         volumeLevel.height = 35;
         volumeLevel.name = 'volumeLevel';
         volumeLevel.type =  'text';
-        volumeLevel.value = ''; //AudioManager.getVolume();
+        volumeLevel.value = '';
         volumeLevel.color = 0xffffff;
         volumeLevel.textSize =  18;
-        volumeLevel.visible = false;
         volumeLevel.position = new THREE.Vector3(0, 0, 0.01);
 
         volumemenu.add(volumeLevel.create());

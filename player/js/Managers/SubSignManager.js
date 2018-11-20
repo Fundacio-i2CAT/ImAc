@@ -119,7 +119,7 @@ SubSignManager = function() {
 	      		removeSubtitle();
 
 	      		var latitud = subPosY == 1 ? 30 * subArea/100 : -30 * subArea/100; 
-	      		var posY = _isHMD ? 80 * Math.sin( Math.radians( latitud ) ) : 135 * Math.sin( Math.radians( latitud ) );
+	      		var posY = _isHMD && !isExperimental ? 80 * Math.sin( Math.radians( latitud ) ) : 135 * Math.sin( Math.radians( latitud ) );
 	      		var subAjust = _isHMD ? 1 : 0.97;
 	      		var posZ = 75;
 	      		var esaySizeAjust = subEasy ? 1.25 : 1;
@@ -344,7 +344,7 @@ SubSignManager = function() {
 
     function removeSubtitle()
     {
-        camera.remove( subtitleMesh );
+        isExperimental ? scene.remove( subtitleMesh ) : camera.remove( subtitleMesh );
         subtitleMesh = undefined;
     }
 

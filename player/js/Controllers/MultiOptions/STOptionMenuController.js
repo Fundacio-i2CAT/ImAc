@@ -22,7 +22,7 @@ function STOptionMenuController(menuType) {
 									{name: 'subtitlesIndicatorRadarButton', value: 'Radar', default: subController.checkSubIndicator('radar')},
 									{name: 'subtitlesIndicatorAutoButton', value: 'Auto', default: subController.checkSubIndicator('auto')}];
 	var subtitlesBackgroundArray = [
-									{name: 'subtitlesSemitrans', value: 'semitrans', default: subController.checkSubBackground(0.8)},
+									{name: 'subtitlesSemitrans', value: 'semitrans', default: subController.checkSubBackground(0.5)},
 									{name: 'subtitlesOutline', value: 'Outline', default: subController.checkSubBackground(0)}];
 	var subtitlesEasyArray = [
 									{name: 'subtitlesEasyOn', value: 'On', default: subController.checkSubEasy(true)},

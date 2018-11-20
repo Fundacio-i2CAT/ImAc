@@ -620,7 +620,7 @@ console.error('ydydydyddydydydyddyy')
                 return getSubPositionFunc( -1 );
 
             case "subtitlesSemitrans":
-                return getSubBackgroundFunc( 0.8 );
+                return getSubBackgroundFunc( 0.5 );
 
             case "subtitlesOutline":
                 return getSubBackgroundFunc( 0 );

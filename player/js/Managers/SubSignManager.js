@@ -55,7 +55,7 @@ SubSignManager = function() {
 	var subtitleIndicator = 'none'; // none, arrow, radar, move
 	var subSize = 1; // small = 0.6, medium = 0.8, large = 1
 	var subLang; // string (en, de, ca, es)
-	var subBackground = 0.8; // semi-transparent = 0.8, outline = 0
+	var subBackground = 0.5; // semi-transparent = 0.8, outline = 0
 	var subEasy = false; // boolean
 	var subArea = 50; // small = 50, medium = 60, large = 70
 

@@ -261,6 +261,8 @@ MenuDictionary = function() {
     //                   ||                        ||                        ||                        ||                        ||
         medium:          { ca: 'Mitjana'           , de: 'Mittel'            , en: 'Medium'            , es: 'Mediana'           },
     //                   ||                        ||                        ||                        ||                        ||
+        menutype:        { ca: 'Tipus menú'        , de: 'Menütyp'           , en: 'Menu type'         , es: 'Tipo menú'         },
+    //                   ||                        ||                        ||                        ||                        ||
         none:            { ca: 'No'                , de: 'Kein'              , en: 'None'              , es: 'Ninguno'           },
     //                   ||                        ||                        ||                        ||                        ||
         off:             { ca: 'Desactiva'         , de: 'Aus'               , en: 'Off'               , es: 'Desactiva'         },

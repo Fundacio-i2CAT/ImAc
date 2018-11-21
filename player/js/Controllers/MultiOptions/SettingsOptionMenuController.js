@@ -26,7 +26,7 @@ function SettingsOptionMenuController(menuType) {
                                     {name: 'settingsLanguages', value: 'Language', options: settingsLanguagesArray},
                                     {name: 'settingsVoiceControl', value: 'Voicecontrol', options: voiceControlArray},
                                     {name: 'settingsUserProfile', value: 'UserProfile', options: settingsUserProfileArray},
-                                    {name: 'settingsMenuType', value: 'Menu Type', options: settingsMenuTypeArray}];
+                                    {name: 'settingsMenuType', value: 'MenuType', options: settingsMenuTypeArray}];
 	
 	this.Init = function(){
 

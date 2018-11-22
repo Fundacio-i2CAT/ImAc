@@ -15,6 +15,9 @@ function runDemo()
     subController.enableSubtitles();
     subController.initSubtitle( 70, 0, -1, 'none' );
 
+    var xz = _moData.getPlaneImageMesh(16/2,9/2,'./img/open_menu_banner2.png', 'banner', 6);
+
+
     var sublang = list_contents[demoId].subtitles[0][lang] ? lang : Object.keys(list_contents[demoId].subtitles[0])[0];
     var siglang = list_contents[demoId].signer[0][lang] ? lang : Object.keys(list_contents[demoId].signer[0])[0];
 
@@ -27,11 +30,9 @@ function runDemo()
     //VideoController.playAll();
     VideoController.init();
 
-    (localStorage.ImAc_backgroundSub == "outline") ? subController.setSubBackground(0) : subController.setSubBackground(0.5);
-
-    /*var interval1 = setTimeout( function() { VideoController.pauseAll(); },1000);
+    var interval1 = setTimeout( function() { VideoController.pauseAll(); },1000);
     var xy = _moData.getSphericalColorMesh( 60, 0x000000, 'colorsphere' )
-    var xz = _moData.getPlaneImageMesh(16/2,9/2,'./img/tests/A1_B1.png', 'name', 6);
+    //var xz = _moData.getPlaneImageMesh(16/2,9/2,'./img/tests/A1_B1.png', 'name', 6);
 
     xz.position.z = -10;
     scene.add(xy)
@@ -41,7 +42,8 @@ function runDemo()
         VideoController.playAll();
         scene.remove(xy)
         camera.remove(xz);
-    },6000);*/
+        (localStorage.ImAc_backgroundSub == "outline") ? subController.setSubBackground(0) : subController.setSubBackground(0.5);
+    },6000);
 }
 
 function initLanguageButtons(lang, siglang, sublang)

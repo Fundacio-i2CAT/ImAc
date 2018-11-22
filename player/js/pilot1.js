@@ -27,6 +27,8 @@ function runDemo()
     //VideoController.playAll();
     VideoController.init();
 
+    (localStorage.ImAc_backgroundSub == "outline") ? subController.setSubBackground(0) : subController.setSubBackground(0.5);
+
     /*var interval1 = setTimeout( function() { VideoController.pauseAll(); },1000);
     var xy = _moData.getSphericalColorMesh( 60, 0x000000, 'colorsphere' )
     var xz = _moData.getPlaneImageMesh(16/2,9/2,'./img/tests/A1_B1.png', 'name', 6);

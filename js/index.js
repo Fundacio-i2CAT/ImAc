@@ -49,6 +49,18 @@ function selectXML(id)
         }
     }
 
+    var radios3 = document.getElementsByName('subform');
+
+    for (var i = 0, length = radios3.length; i < length; i++)
+    {
+        if (radios3[i].checked)
+        {
+            localStorage.ImAc_backgroundSub = radios3[i].value;
+            break;
+        }
+    }
+
+
     localStorage.ImAc_init = id;
 
     window.location = window.location.href + 'player/#' + id;

@@ -47,6 +47,7 @@ SubSignManager = function() {
 
 	var areaMesh;
 	var isExperimental = false;
+	var autoHMD = false;
 
 	// [ST] subtitle vars 
 	var subtitleEnabled = false; // boolean
@@ -75,22 +76,25 @@ SubSignManager = function() {
 
 	function updateISD(offset)
 	{
-		var isd = imsc.generateISD( imsc1doc, offset );
+		if ( imsc1doc )
+		{
+			var isd = imsc.generateISD( imsc1doc, offset );
 
-		if ( isd.contents.length > 0 ) 
-	  	{
-	  		if ( autoPositioning ) changePositioning( isd.imac );
-	  		if ( radarAutoPositioning ) changeSimplePositioning( isd.imac );
-	    	if ( subtitleEnabled ) print3DText( isd.contents[0], isd.imac );
+			if ( isd.contents.length > 0 ) 
+		  	{
+		  		if ( autoPositioning ) changePositioning( isd.imac );
+		  		if ( radarAutoPositioning ) changeSimplePositioning( isd.imac );
+		    	if ( subtitleEnabled ) print3DText( isd.contents[0], isd.imac );
 
-	    	checkSpeakerPosition( isd.imac );
-	  	}
-	  	else if ( textListMemory.length > 0 )
-	  	{
-	    	textListMemory = [];
-	    	removeSubtitle();
-	    	removeSpeakerRadar();
-	  	}
+		    	checkSpeakerPosition( isd.imac );
+		  	}
+		  	else if ( textListMemory.length > 0 )
+		  	{
+		    	textListMemory = [];
+		    	removeSubtitle();
+		    	removeSpeakerRadar();
+		  	}
+		}
 	}
 
 	function print3DText(isdContent, isdImac) 
@@ -189,50 +193,54 @@ SubSignManager = function() {
 	  	checkSubtitleIdicator( position );
 	    checkSignIdicator( position );	
 	}
-var autoHMD = false;
+
 	function changePositioning(isdImac)
 	{
 		//console.log(isdImac)
-		if ( isdImac==undefined && _isHMD ) {
+		if ( isdImac == undefined && _isHMD ) 
+		{
 			AplicationManager.enableVR();
-        		autopositioning = false;
-        		CameraParentObject.rotation.set(0,0,0);
+        	autopositioning = false;
+        	CameraParentObject.rotation.set(0,0,0);
 			autoHMD = true;
 		}
-		else {
-			if ( _isHMD && autoHMD ) {
+		else 
+		{
+			if ( _isHMD && autoHMD ) 
+			{
 				camera.rotation.set( 0,0,0 );
-            			CameraParentObject.quaternion.set(0,0,0,0);
+            	CameraParentObject.quaternion.set(0,0,0,0);
 				autoHMD = false;
-autopositioning = true;
+				autopositioning = true;
 			}
-		autoPositioning = false;
-		var position = Math.round(getViewDifPosition( isdImac, 3 ));
+			autoPositioning = false;
+			var position = Math.round(getViewDifPosition( isdImac, 3 ));
 
-      	var rotaionValue = 0;
-      	var initY = Math.round( CameraParentObject.rotation.y * (-180/Math.PI)%360 );
+	      	var rotaionValue = 0;
+	      	var initY = Math.round( CameraParentObject.rotation.y * (-180/Math.PI)%360 );
 
-      	var rotationInterval = setInterval(function() 
-      	{
-      		var difff = isdImac - initY;
-      		if ( difff > 180 ) difff -= 360;
-      		if ( difff < 0 ) difff = -1*difff;
-        	if ( position * rotaionValue >= difff || position == 0 ) 
-        	{
-        		clearInterval( rotationInterval );
-        		if ( VideoController.getListOfVideoContents()[0].vid.currentTime < VideoController.getListOfVideoContents()[0].vid.duration - 10 ) autoPositioning = true;
-        		else {
-        			AplicationManager.enableVR();
-        			autopositioning = false;
-        			if ( _isHMD ) CameraParentObject.rotation.set(0,0,0);
-        		}
-        	}
-        	else 
-        	{
-          		rotaionValue += position*1.2; // 60 degrees by second
-          		CameraParentObject.rotation.y = initY / ( -180 / Math.PI )%360 + rotaionValue * ( -Math.PI / 180 );
-        	}
-      	}, 20); }
+	      	var rotationInterval = setInterval(function() 
+	      	{
+	      		var difff = isdImac - initY;
+	      		if ( difff > 180 ) difff -= 360;
+	      		if ( difff < 0 ) difff = -1*difff;
+	        	if ( position * rotaionValue >= difff || position == 0 ) 
+	        	{
+	        		clearInterval( rotationInterval );
+	        		if ( VideoController.getListOfVideoContents()[0].vid.currentTime < VideoController.getListOfVideoContents()[0].vid.duration - 10 ) autoPositioning = true;
+	        		else {
+	        			AplicationManager.enableVR();
+	        			autopositioning = false;
+	        			if ( _isHMD ) CameraParentObject.rotation.set(0,0,0);
+	        		}
+	        	}
+	        	else 
+	        	{
+	          		rotaionValue += position*1.2; // 60 degrees by second
+	          		CameraParentObject.rotation.y = initY / ( -180 / Math.PI )%360 + rotaionValue * ( -Math.PI / 180 );
+	        	}
+	      	}, 20); 
+	    }
 	}
 
 	function changeSimplePositioning(isdImac)

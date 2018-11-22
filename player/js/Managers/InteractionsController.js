@@ -164,7 +164,7 @@ THREE.InteractionsController = function () {
                 }
                 else if ( intersects[inter].object.type == 'Mesh' &&  intersects[inter].object.parent.name === 'video-progress-bar') 
                 {
-                    vpbCtrl.onClickSeek(mouse3D)
+                    vpbCtrl.onClickSeek(intersects[inter].point.normalize())
                     break;
                 }
 

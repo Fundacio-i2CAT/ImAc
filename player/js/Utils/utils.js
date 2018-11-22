@@ -21,6 +21,23 @@ function convertAngular_toCartesian(latitud, longitud)
     return position;
 }
 
+function cartesianToAngular (x, y, z)
+{
+    var dist = Math.round(Math.sqrt(Math.pow(x,2) + Math.pow(y,2) + Math.pow(z,2))*100)/100;
+    var lat = -Math.round(Math.degrees(Math.asin(y/-dist))*10)/10;
+    var lon = z >= 0 ? Math.round(Math.degrees(Math.atan(x/z))*10)/10 + 180 : Math.round(Math.degrees(Math.atan(x/z))*10)/10;
+
+    if (lon <= 0) lon += 360;
+    lon = 360 - lon;
+
+    var outAng = {
+        latitud : lat,
+        longitud : lon,
+        distance : dist
+    };
+    return outAng;
+}
+
 function stylizeElement( element ) 
 {
     element.style.display = 'none';

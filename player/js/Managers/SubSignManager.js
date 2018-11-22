@@ -55,7 +55,7 @@ SubSignManager = function() {
 	var subtitleIndicator = 'none'; // none, arrow, radar, move
 	var subSize = 1; // small = 0.6, medium = 0.8, large = 1
 	var subLang; // string (en, de, ca, es)
-	var subBackground = 0.5; // semi-transparent = 0.8, outline = 0
+	var subBackground = 0.5; // semi-transparent = 0.5, outline = 0
 	var subEasy = false; // boolean
 	var subArea = 50; // small = 50, medium = 60, large = 70
 
@@ -189,9 +189,23 @@ SubSignManager = function() {
 	  	checkSubtitleIdicator( position );
 	    checkSignIdicator( position );	
 	}
-
+var autoHMD = false;
 	function changePositioning(isdImac)
 	{
+		//console.log(isdImac)
+		if ( isdImac==undefined && _isHMD ) {
+			AplicationManager.enableVR();
+        		autopositioning = false;
+        		CameraParentObject.rotation.set(0,0,0);
+			autoHMD = true;
+		}
+		else {
+			if ( _isHMD && autoHMD ) {
+				camera.rotation.set( 0,0,0 );
+            			CameraParentObject.quaternion.set(0,0,0,0);
+				autoHMD = false;
+autopositioning = true;
+			}
 		autoPositioning = false;
 		var position = Math.round(getViewDifPosition( isdImac, 3 ));
 
@@ -218,7 +232,7 @@ SubSignManager = function() {
           		rotaionValue += position*1.2; // 60 degrees by second
           		CameraParentObject.rotation.y = initY / ( -180 / Math.PI )%360 + rotaionValue * ( -Math.PI / 180 );
         	}
-      	}, 20);
+      	}, 20); }
 	}
 
 	function changeSimplePositioning(isdImac)

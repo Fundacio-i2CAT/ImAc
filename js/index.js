@@ -1,68 +1,7 @@
 
 // GLOBAL VARS
 
-var _PlayerVersion = 'v0.01.3';
-var AplicationManager = new AplicationManager();
-var moData = new THREE.MediaObject();
-var AudioManager = new AudioManager();
-
-//var subController = new SubSignManager();
-
-var viewArea = 30;
-var signArea = 'botRight';
-var subtitleIndicator = 'none';
-var signIndicator = 'none';
-var forcedDisplayAlign = "after"; // before, center, after
-var forcedTextAlign = "center"; //start, center, end
-var autoPositioning = 'disable';
-var isSubtitleEnabled = false;
-var textListMemory = [];
-
-
-var language = "catala";
-
-var isHMD = true;
-var isVRDisplay = true;
-
-
-var demoId = 1;
-
-var mainContentURL = './resources/rapzember-young-hurn_edit.mp4';
-var _selected_content = 'Radio';
-
-var isAndroid = false;
-
-
-
-
-
-
-var polifyConfig = (function() {
-  var config = {};
-  var q = window.location.search.substring(1);
-  if (q === '') {
-    return config;
-  }
-  var params = q.split('&');
-  var param, name, value;
-  for (var i = 0; i < params.length; i++) {
-    param = params[i].split('=');
-    name = param[0];
-    value = param[1];
-    // All config values are either boolean or float
-    config[name] = value === 'true' ? true :
-                   value === 'false' ? false :
-                   parseFloat(value);
-  }
-  return config;
-})();
-
-var polyfill = new WebVRPolyfill(polifyConfig);
-
-
-
-
-
+var _PlayerVersion = 'v0.05.0';
 
 /**
  * Initializes the web player.
@@ -72,98 +11,82 @@ function init_webplayer()
 {
 	console.log('Version: ' + _PlayerVersion);
 
-  isAndroid = navigator.userAgent.toLowerCase().indexOf("android") > -1;
+    $.getJSON('./content.json', function(json)
+    {
+        var list_contents = json.contents;
 
-  AudioManager.initAmbisonicResources();
-  moData.setFont('./css/fonts/TiresiasScreenfont_Regular.json');
-		
-  for (var i = 0; i < 6; i++) 
-  {
-    var id = i + 1;
-    var dataText = ' ';
+        for (var i = 0; i < list_contents.length; i++) 
+        {
+            var id = i;
+            var dataText = list_contents[i].name;
 
-    if (i == 0) dataText = "Video 1: Subtitles - comfort viewing field";
-    else if (i == 1) dataText = "Video 2: Subtitles - guiding to speaker";
-    else if (i == 2) dataText = "Video 3: Signer - comfort viewing field";
-    else if (i == 3) dataText = "Video 4: Signer - guiding to speaker (I)";
-    else if (i == 4) dataText = "Video 5: Signer - guiding to speaker (forced perspective)";
-    else if (i == 5) dataText = "Video 6: Demo opera";
-
-    createListGroup(id, "img/LOGO-IMAC.png", dataText);
-
-  }
-}
-
-
-function blockContainer()
-{
-	document.getElementById("header").style.display = "none";
-	document.getElementById("content_area").style.display = "none";
-	document.getElementById("container").style.display = "block";
-}
-
-function showLoader()
-{
-  document.getElementById("header").style.display = "none";
-  document.getElementById("content_area").style.display = "none";
-  document.getElementById("container").style.display = "none";
-  document.getElementById("loader").style.display = "block";
-}
-
-function clearLoader()
-{
-  document.getElementById("loader").style.display = "none";
+            createListGroup(id, list_contents[i].thumbnail, dataText);
+        }
+    });
 }
 
 function selectXML(id)
-{
-  var myform0 = document.forms['myform0'];
+{  
+    var radios = document.getElementsByName('gender');
 
-  for (i = 0; i < myform0.length; i++) 
-  {
-    if (myform0[i].checked) 
+    for (var i = 0, length = radios.length; i < length; i++)
     {
-      mainContentURL = myform0[i].value == "Liceu" ? './resources/cam_2_2k.mp4' : './resources/rapzember-young-hurn_edit.mp4';
-      _selected_content = myform0[i].value;
+        if (radios[i].checked)
+        {
+            localStorage.ImAc_menuType = radios[i].value;
+            break;
+        }
     }
-  }
 
-  var myform2 = document.forms['myform2'];
+    var radios2 = document.getElementsByName('lang');
 
-  for (i = 0; i < myform2.length; i++) 
-  {
-    if (myform2[i].checked) 
+    for (var i = 0, length = radios2.length; i < length; i++)
     {
-      device = myform2[i].value;
+        if (radios2[i].checked)
+        {
+            localStorage.ImAc_language = radios2[i].value;
+            break;
+        }
     }
-  }
-  if(device == 'Tablet') isHMD = false;
-    
-  demoId = id;
-  //if(demoId > 5) mainContentURL = './resources/sp_c01_cena_01_base_0_edit.mp4';
-  AplicationManager.init_AplicationManager();
-  enterfullscreen();
 
-  var myform = document.forms['myform'];
+    var radios3 = document.getElementsByName('subform');
 
-  for (i = 0; i < myform.length; i++) 
-  {
-    if (myform[i].checked) 
+    for (var i = 0, length = radios3.length; i < length; i++)
     {
-      language = myform[i].value;
+        if (radios3[i].checked)
+        {
+            localStorage.ImAc_backgroundSub = radios3[i].value;
+            break;
+        }
     }
-  }  
+
+
+    localStorage.ImAc_init = id;
+
+    window.location = window.location.href + 'player/#' + id;
+
 }
-       
-function startAllVideos()
-{
-  //subController.addsubtitles("./resources/Rapzember_Cat.xml");  
-  setTimeout(function()
-  {
-    runDemo();
-    addsubtitles(); 
-    //subController.startSubtitles();   
-  },500);
+   
 
-  //moData.playAll();
-}
+function createListGroup(i, imagePath, dataName) 
+{
+    $("#list_group")
+    .append(
+        $('<div class="img-container-4">')
+        .attr('id','content'+i)
+        .append(
+            $('<img>')
+            .attr('id', i)
+            .attr('src', imagePath)
+            .attr('alt', 'ImAc')
+            .attr('onclick', 'selectXML(this.id)')
+            .append('</img>')
+        )
+        .append(
+            $('<p>')
+            .append(dataName)
+            .append('</p>')
+        )
+        .append('</div>')
+    )
+}    

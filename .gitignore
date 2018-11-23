@@ -260,5 +260,6 @@ paket-files/
 *.p12
 *.rc
 
-img/
-resources/
+css/fonts/
+player/resources/
+tests/

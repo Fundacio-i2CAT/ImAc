@@ -694,6 +694,35 @@ SubSignManager = function() {
 	};	
 
 //************************************************************************************
+// Public Signer Checkers
+//************************************************************************************
+
+	this.checkSignEnabled = function(x)
+	{
+		return x == signEnabled;
+	};
+
+	this.checkSignPosition = function(x)
+	{
+		return x == signPosY;
+	};
+
+	this.checkSignIndicator = function(x)
+	{
+		return x == signIndicator;
+	};
+
+	this.checkSignLanguage = function(x)
+	{
+		return x == signLang;
+	};
+
+	this.checkSignArea = function(x)
+	{
+		return x == signArea;
+	};	
+
+//************************************************************************************
 // Public functions
 //************************************************************************************
 

@@ -7,8 +7,8 @@ function ASTOptionMenuController(menuType) {
 	var viewStructure;
 
 	var parentColumnDropdownElements = [ 
-									{name: 'audioSubtitlesLanguages', value: 'Languages'}, 
-									{name: 'audioSubtitlesEasy', value: 'Easy read'},
+									{name: 'audioSubtitlesLanguages', value: 'Language'}, 
+									{name: 'audioSubtitlesEasy', value: 'EasyToread'},
 									{name: 'audioSubtitlesVolume', value: 'Volume (i)'}];
 	
 
@@ -84,10 +84,10 @@ function ASTOptionMenuController(menuType) {
 
 
 		data.lsOptEnabledLabelName = 'showAudioSubtitlesMenuButton';
-		data.lsOptEnabledLabelValue = './img/menu_ai_icons/AST.png';
+		data.lsOptEnabledLabelValue = 'AST';
 
 		data.lsOptDisbledLabelName = 'disabledAudioSubtitlesMenuButton';
-		data.lsOptDisbledLabelValue = './img/menu_ai_icons/AST_strike.png';
+		data.lsOptDisbledLabelValue = 'AST_strike';
 
         data.onOptButtonFunc = function(){changeOnOffLSOptionState(data.isOptEnabled)};
         data.offOptButtonFunc = function(){changeOnOffLSOptionState(data.isOptEnabled)};

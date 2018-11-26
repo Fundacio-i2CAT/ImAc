@@ -14,7 +14,7 @@ function MenuManager() {
     this.Init = function(type)
     {
         MenuDictionary.setSubtitleLanguagesArray(list_contents[demoId].subtitles[0]);
-        MenuDictionary.getSignerLanguagesArray(list_contents[demoId].signer[0]);
+        MenuDictionary.setSignerLanguagesArray(list_contents[demoId].signer[0]);
 
         menuWidth = 125;
         menuHeight = 125*9/16;
@@ -236,7 +236,6 @@ function MenuManager() {
             };
         }   
     }
-
 
     function addMenuToParent()
     {
@@ -643,7 +642,7 @@ function MenuManager() {
         subtitlesButton.height = 4;
         subtitlesButton.name = 'showSubtitlesMenuButton';
         subtitlesButton.type =  'icon';
-        subtitlesButton.value = './img/menu_ai_icons/ST.png';
+        subtitlesButton.value = MenuDictionary.translate('ST');
         subtitlesButton.color = 0xffffff;
         subtitlesButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(subtitlesButton.width, subtitlesButton.height), new THREE.MeshBasicMaterial({visible: false}));
         subtitlesButton.onexecute =  function(){ console.log("Open ST submenu") };
@@ -657,7 +656,7 @@ function MenuManager() {
         subtitlesDisabledButton.height = 4;
         subtitlesDisabledButton.name = 'disabledSubtitlesMenuButton';
         subtitlesDisabledButton.type =  'icon';
-        subtitlesDisabledButton.value = './img/menu_ai_icons/ST_strike.png';
+        subtitlesDisabledButton.value = MenuDictionary.translate('ST_strike');
         subtitlesDisabledButton.color = 0xffffff;
         subtitlesDisabledButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(subtitlesDisabledButton.width, subtitlesDisabledButton.height), new THREE.MeshBasicMaterial({visible: false}));
         subtitlesDisabledButton.onexecute =  function(){ console.log("Open ST submenu") };
@@ -671,7 +670,7 @@ function MenuManager() {
         signLanguageButton.height = 4;
         signLanguageButton.name = 'showSignLanguageMenuButton';
         signLanguageButton.type =  'icon';
-        signLanguageButton.value = './img/menu_ai_icons/SL.png';
+        signLanguageButton.value = MenuDictionary.translate('SL');
         signLanguageButton.color = 0xffffff;
         signLanguageButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(signLanguageButton.width, signLanguageButton.height), new THREE.MeshBasicMaterial({visible: false}));
         signLanguageButton.onexecute =  function(){ console.log("Open SL submenu")};
@@ -685,7 +684,7 @@ function MenuManager() {
         signLanguageDisabledButton.height = 4;
         signLanguageDisabledButton.name = 'disabledSignLanguageMenuButton';
         signLanguageDisabledButton.type =  'icon';
-        signLanguageDisabledButton.value = './img/menu_ai_icons/SL_strike.png';
+        signLanguageDisabledButton.value = MenuDictionary.translate('SL_strike');
         signLanguageDisabledButton.color = 0xffffff;
         signLanguageDisabledButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(signLanguageDisabledButton.width, signLanguageDisabledButton.height), new THREE.MeshBasicMaterial({visible: false}));
         signLanguageDisabledButton.onexecute =  function(){ console.log("Open SL submenu") };
@@ -699,7 +698,7 @@ function MenuManager() {
         audioDescriptionButton.height = 4;
         audioDescriptionButton.name = 'showAudioDescriptionMenuButton';
         audioDescriptionButton.type =  'icon';
-        audioDescriptionButton.value = './img/menu_ai_icons/AD.png';
+        audioDescriptionButton.value = MenuDictionary.translate('AD');
         audioDescriptionButton.color = 0xffffff;
         audioDescriptionButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(audioDescriptionButton.width, audioDescriptionButton.height), new THREE.MeshBasicMaterial({visible: false}));
         audioDescriptionButton.onexecute =  function(){ console.log("Open AD submenu") };
@@ -713,7 +712,7 @@ function MenuManager() {
         audioDescriptionDisabledButton.height = 4;
         audioDescriptionDisabledButton.name = 'disabledAudioDescriptionMenuButton';
         audioDescriptionDisabledButton.type =  'icon';
-        audioDescriptionDisabledButton.value = './img/menu_ai_icons/AD_strike.png';
+        audioDescriptionDisabledButton.value = MenuDictionary.translate('AD_strike');
         audioDescriptionDisabledButton.color = 0xffffff;
         audioDescriptionDisabledButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(audioDescriptionDisabledButton.width, audioDescriptionDisabledButton.height), new THREE.MeshBasicMaterial({visible: false}));
         audioDescriptionDisabledButton.onexecute =  function(){ console.log("Open AD submenu") };
@@ -727,7 +726,7 @@ function MenuManager() {
         audioSubtitlesButton.height = 4;
         audioSubtitlesButton.name = 'showAudioSubtitlesMenuButton';
         audioSubtitlesButton.type =  'icon';
-        audioSubtitlesButton.value = './img/menu_ai_icons/AST.png';
+        audioSubtitlesButton.value = MenuDictionary.translate('AST');
         audioSubtitlesButton.color = 0xffffff;
         audioSubtitlesButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(audioSubtitlesButton.width, audioSubtitlesButton.height), new THREE.MeshBasicMaterial({visible: false}));
         audioSubtitlesButton.onexecute =  function(){ console.log("Open AST submenu") };
@@ -741,7 +740,7 @@ function MenuManager() {
         audioSubtitlesDisabledButton.height = 4;
         audioSubtitlesDisabledButton.name = 'disabledAudioSubtitlesMenuButton';
         audioSubtitlesDisabledButton.type =  'icon';
-        audioSubtitlesDisabledButton.value = './img/menu_ai_icons/AST_strike.png';
+        audioSubtitlesDisabledButton.value = MenuDictionary.translate('AST_strike');
         audioSubtitlesDisabledButton.color = 0xffffff;
         audioSubtitlesDisabledButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(audioSubtitlesDisabledButton.width, audioSubtitlesDisabledButton.height), new THREE.MeshBasicMaterial({visible: false}));
         audioSubtitlesDisabledButton.onexecute =  function(){ console.log("Open AST submenu") };
@@ -1062,7 +1061,7 @@ function MenuManager() {
         subtitlesButton.height = 30;
         subtitlesButton.name = 'showSubtitlesMenuButton';
         subtitlesButton.type =  'icon';
-        subtitlesButton.value = './img/menu_ai_icons/ST.png';
+        subtitlesButton.value = MenuDictionary.translate('ST');
         subtitlesButton.color = 0xffffff;
         subtitlesButton.textSize =  12;
         subtitlesButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(subtitlesButton.width, subtitlesButton.height), new THREE.MeshBasicMaterial({visible: false}));
@@ -1077,7 +1076,7 @@ function MenuManager() {
         subtitlesDisabledButton.height = 30;
         subtitlesDisabledButton.name = 'disabledSubtitlesMenuButton';
         subtitlesDisabledButton.type =  'icon';
-        subtitlesDisabledButton.value = './img/menu_ai_icons/ST_strike.png';
+        subtitlesDisabledButton.value = MenuDictionary.translate('ST_strike');
         subtitlesDisabledButton.color = 0xffffff;
         subtitlesDisabledButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(subtitlesDisabledButton.width, subtitlesDisabledButton.height), new THREE.MeshBasicMaterial({visible: false}));
         subtitlesDisabledButton.onexecute =  function(){ Load(STOptionCtrl) };
@@ -1091,7 +1090,7 @@ function MenuManager() {
         signLanguageButton.height = 30;
         signLanguageButton.name = 'showSignLanguageMenuButton';
         signLanguageButton.type =  'icon';
-        signLanguageButton.value = './img/menu_ai_icons/SL.png';
+        signLanguageButton.value = MenuDictionary.translate('SL');
         signLanguageButton.color = 0xffffff;
         signLanguageButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(signLanguageButton.width, signLanguageButton.height), new THREE.MeshBasicMaterial({visible: false}));
         signLanguageButton.onexecute =  function(){ Load(SLOptionCtrl) };
@@ -1105,7 +1104,7 @@ function MenuManager() {
         signLanguageDisabledButton.height = 30;
         signLanguageDisabledButton.name = 'disabledSignLanguageMenuButton';
         signLanguageDisabledButton.type =  'icon';
-        signLanguageDisabledButton.value = './img/menu_ai_icons/SL_strike.png';
+        signLanguageDisabledButton.value = MenuDictionary.translate('SL_strike');
         signLanguageDisabledButton.color = 0xffffff;
         signLanguageDisabledButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(signLanguageDisabledButton.width, signLanguageDisabledButton.height), new THREE.MeshBasicMaterial({visible: false}));
         signLanguageDisabledButton.onexecute =  function(){ Load(SLOptionCtrl) };
@@ -1119,7 +1118,7 @@ function MenuManager() {
         audioDescriptionButton.height = 30;
         audioDescriptionButton.name = 'showAudioDescriptionMenuButton';
         audioDescriptionButton.type =  'icon';
-        audioDescriptionButton.value = './img/menu_ai_icons/AD.png';
+        audioDescriptionButton.value = MenuDictionary.translate('AD');
         audioDescriptionButton.color = 0xffffff;
         audioDescriptionButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(audioDescriptionButton.width, audioDescriptionButton.height), new THREE.MeshBasicMaterial({visible: false}));
         audioDescriptionButton.onexecute =  function(){ Load(ADOptionCtrl) };
@@ -1133,7 +1132,7 @@ function MenuManager() {
         audioDescriptionDisabledButton.height = 30;
         audioDescriptionDisabledButton.name = 'disabledAudioDescriptionMenuButton';
         audioDescriptionDisabledButton.type =  'icon';
-        audioDescriptionDisabledButton.value = './img/menu_ai_icons/AD_strike.png';
+        audioDescriptionDisabledButton.value = MenuDictionary.translate('AD_strike');
         audioDescriptionDisabledButton.color = 0xffffff;
         audioDescriptionDisabledButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(audioDescriptionDisabledButton.width, audioDescriptionDisabledButton.height), new THREE.MeshBasicMaterial({visible: false}));
         audioDescriptionDisabledButton.onexecute =  function(){ Load(ADOptionCtrl) };
@@ -1147,7 +1146,7 @@ function MenuManager() {
         audioSubtitlesButton.height = 30;
         audioSubtitlesButton.name = 'showAudioSubtitlesMenuButton';
         audioSubtitlesButton.type =  'icon';
-        audioSubtitlesButton.value = './img/menu_ai_icons/AST.png';
+        audioSubtitlesButton.value = MenuDictionary.translate('AST');
         audioSubtitlesButton.color = 0xffffff;
         audioSubtitlesButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(audioSubtitlesButton.width, audioSubtitlesButton.height), new THREE.MeshBasicMaterial({visible: false}));
         audioSubtitlesButton.onexecute =  function(){ Load(ASTOptionCtrl) };
@@ -1161,7 +1160,7 @@ function MenuManager() {
         audioSubtitlesDisabledButton.height = 30;
         audioSubtitlesDisabledButton.name = 'disabledAudioSubtitlesMenuButton';
         audioSubtitlesDisabledButton.type =  'icon';
-        audioSubtitlesDisabledButton.value = './img/menu_ai_icons/AST_strike.png';
+        audioSubtitlesDisabledButton.value = MenuDictionary.translate('AST_strike');
         audioSubtitlesDisabledButton.color = 0xffffff;
         audioSubtitlesDisabledButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(audioSubtitlesDisabledButton.width, audioSubtitlesDisabledButton.height), new THREE.MeshBasicMaterial({visible: false}));
         audioSubtitlesDisabledButton.onexecute =  function(){ Load(ASTOptionCtrl) };

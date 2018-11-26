@@ -6,10 +6,10 @@ function SettingsOptionMenuController(menuType) {
 	var viewStructure;
 
 	var settingsLanguagesArray =  [
-									{name: 'settingsLanguageEngButton', value: 'English', default: true}, 
-									{name: 'settingsLanguageEspButton', value: 'Español', default: false}, 
-									{name: 'settingsLanguageGerButton', value: 'Deutsch', default: false}, 
-									{name: 'settingsLanguageCatButton', value: 'Català', default: false}];
+									{name: 'settingsLanguageEngButton', value: 'English', default: MenuDictionary.checkMainLanguage( 'en' ) }, 
+									{name: 'settingsLanguageEspButton', value: 'Español', default: MenuDictionary.checkMainLanguage( 'es' )}, 
+									{name: 'settingsLanguageGerButton', value: 'Deutsch', default: MenuDictionary.checkMainLanguage( 'de' )}, 
+									{name: 'settingsLanguageCatButton', value: 'Català', default: MenuDictionary.checkMainLanguage( 'ca' )}];
 
 	var voiceControlArray = [
 									{name: 'vc1', value: 'Option 1', default: true}];
@@ -20,7 +20,7 @@ function SettingsOptionMenuController(menuType) {
 
     var settingsMenuTypeArray =    [
                                     {name: 'settingsMenuTraditionalButton', value: 'Traditional', default: settingsMgr.checkMenuType(2)}, 
-                                    {name: 'settingsMenuLowSightedButton', value: 'Low Sighted', default: settingsMgr.checkMenuType(1)}];                                    
+                                    {name: 'settingsMenuLowSightedButton', value: 'Enhanced-Accessibility', default: settingsMgr.checkMenuType(1)}];                                    
 
     var parentColumnDropdownElements = [ 
                                     {name: 'settingsLanguages', value: 'Language', options: settingsLanguagesArray},

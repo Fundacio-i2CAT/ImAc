@@ -99,10 +99,10 @@ function SLOptionMenuController(menuType) {
 
 
 		data.lsOptEnabledLabelName = 'showSignLanguageMenuButton';
-		data.lsOptEnabledLabelValue = './img/menu_ai_icons/SL.png';
+		data.lsOptEnabledLabelValue = 'SL';
 
 		data.lsOptDisbledLabelName = 'disabledSignLanguageMenuButton';
-		data.lsOptDisbledLabelValue = './img/menu_ai_icons/SL_strike.png';
+		data.lsOptDisbledLabelValue = 'SL_strike';
 
         data.onOptButtonFunc = function() {
             MenuFunctionsManager.getOnOffFunc('signLanguageOnButton')()

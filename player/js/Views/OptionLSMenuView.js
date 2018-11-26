@@ -12,8 +12,8 @@ function OptionLSMenuView() {
 		submenu.getObjectByName('onlsoptbutton').children[0].onexecute = data.onOptButtonFunc;
 		submenu.getObjectByName('offlsoptbutton').children[0].onexecute = data.offOptButtonFunc;
 
-		if(data.isOptEnabled) submenu.getObjectByName('lsOptEnabledLabel').material = UpdateImageIEMaterial(data.lsOptEnabledLabelValue);
-		else submenu.getObjectByName('lsOptDisabledLabel').material = UpdateImageIEMaterial(data.lsOptDisbledLabelValue);
+		if(data.isOptEnabled) submenu.getObjectByName('lsOptEnabledLabel').material = UpdateImageIEMaterial( MenuDictionary.translate( data.lsOptEnabledLabelValue ) );
+		else submenu.getObjectByName('lsOptDisabledLabel').material = UpdateImageIEMaterial( MenuDictionary.translate( data.lsOptDisbledLabelValue ) );
 
 		submenu.getObjectByName('forwardMenuButton').visible = false;
 		submenu.getObjectByName('backMenuButton').children[0].onexecute = data.backMenuButtonFunc;

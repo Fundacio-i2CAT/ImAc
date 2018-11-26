@@ -110,10 +110,10 @@ function STOptionMenuController(menuType) {
         data.isOnOffButtonVisible = true;
 
         data.lsOptEnabledLabelName = 'showSubtitlesMenuButton';
-        data.lsOptEnabledLabelValue = './img/menu_ai_icons/ST.png';
+        data.lsOptEnabledLabelValue = 'ST';
 
         data.lsOptDisbledLabelName = 'disabledSubtitlesMenuButton';
-        data.lsOptDisbledLabelValue = './img/menu_ai_icons/ST_strike.png';
+        data.lsOptDisbledLabelValue = 'ST_strike';
 
         
         data.onOptButtonFunc = function() {

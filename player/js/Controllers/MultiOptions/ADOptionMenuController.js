@@ -10,7 +10,7 @@ function ADOptionMenuController(menuType) {
 	var ADPresentationArray = [];
 
 	var parentColumnDropdownElements = [ 
-									{name: 'audioDescriptionLanguages', value: 'Languages', options: ADLanguagesArray},
+									{name: 'audioDescriptionLanguages', value: 'Language', options: ADLanguagesArray},
 									{name: 'audioDescriptionPresentation', value: 'Presentation', options: ADPresentationArray},
 									{name: 'audioDescriptionVolume', value: 'Volume (i)'}];
 
@@ -86,10 +86,10 @@ function ADOptionMenuController(menuType) {
 
 
 		data.lsOptEnabledLabelName = 'showAudioDescriptionMenuButton';
-		data.lsOptEnabledLabelValue = './img/menu_ai_icons/AD.png';
+		data.lsOptEnabledLabelValue = 'AD';
 
 		data.lsOptDisbledLabelName = 'disabledAudioDescriptionMenuButton';
-		data.lsOptDisbledLabelValue = './img/menu_ai_icons/AD_strike.png';
+		data.lsOptDisbledLabelValue = 'AD_strike';
 
         data.onOptButtonFunc = function(){changeOnOffLSOptionState(data.isOptEnabled)};
         data.offOptButtonFunc = function(){changeOnOffLSOptionState(data.isOptEnabled)};

@@ -111,7 +111,7 @@ function ADOptionMenuController(menuType) {
                 
             // TRADITIONAL
             case 2: 
-                data.title = 'Audio Description';
+                data.title = MenuDictionary.translate( 'audiodescription' );
                 data.parentColumnDropdown = AddDropdownElementsTrad(parentColumnDropdownElements);  
                 data.backMenuButtonFunc = function(){ AddVisualFeedbackOnClick('backMenuButton', function(){ menuMgr.setOptActiveIndex(0); menuMgr.Load(ad)} )};  
                 break;
@@ -149,7 +149,7 @@ function ADOptionMenuController(menuType) {
 	        dropdownIE.height = h/elements.length;
 	        dropdownIE.name = element.name;
 	        dropdownIE.type =  'text';
-	        dropdownIE.value = element.value; //AudioManager.getVolume();
+	        dropdownIE.value = MenuDictionary.translate(element.value); //AudioManager.getVolume();
 	        dropdownIE.color = 0xffffff;
 	        dropdownIE.textSize =  5;
 	        dropdownIE.visible = true;
@@ -195,7 +195,7 @@ function ADOptionMenuController(menuType) {
             dropdownIE.height =  4;
             dropdownIE.name = element.name;
             dropdownIE.type =  'text';
-            dropdownIE.value = element.value; //AudioManager.getVolume();
+            dropdownIE.value = MenuDictionary.translate(element.value); //AudioManager.getVolume();
             dropdownIE.color = element.default ? 0xffff00 : 0xffffff;
             dropdownIE.textSize =  1.5;
             dropdownIE.visible = true;
@@ -208,7 +208,7 @@ function ADOptionMenuController(menuType) {
                 data.isFinalDrop = false;
                 dropdownIE.onexecute =  function()
                 {
-                    data.title = element.value;
+                    data.title = MenuDictionary.translate(element.value);
                     data.childColumnActiveOpt = undefined;
                     data.parentColumnActiveOpt = element.name;
                     data.parentColumnDropdown = AddDropdownElementsTrad(element.options);

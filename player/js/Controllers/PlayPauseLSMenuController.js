@@ -5,6 +5,8 @@ function PlayPauseLSMenuController() {
 	var view;
 	var viewStructure;
 
+    var PlayPauseMemory = false;
+
 	this.Init = function(){
 
 		data = GetData();
@@ -89,10 +91,23 @@ function PlayPauseLSMenuController() {
 
     this.pauseAllFunc = function()
     {
+        PlayPauseMemory = true;
         VideoController.pauseAll();
         UpdateData();
         view.UpdateView(data);
         AddInteractivityToMenuElements();
+    }
+
+    this.playAllFunc = function()
+    {
+        if ( PlayPauseMemory )
+        {
+            PlayPauseMemory = false;
+            VideoController.playAll();
+            UpdateData();
+            view.UpdateView(data);
+            //AddInteractivityToMenuElements();
+        }
     }
     
 	function PlayPauseFunc()

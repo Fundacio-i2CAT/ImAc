@@ -157,6 +157,8 @@ function MenuManager() {
             controller.Exit();
         });
 
+        playpauseCtrl.playAllFunc();
+
         //TRADITIONAL
         if(menuParent.getObjectByName('traditionalmenu')) menuParent.getObjectByName('traditionalmenu').visible = false;
 

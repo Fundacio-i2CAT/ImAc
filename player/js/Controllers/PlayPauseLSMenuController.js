@@ -86,6 +86,14 @@ function PlayPauseLSMenuController() {
         view.pressButtonFeedback(data);
         setTimeout(callback, 300);
     }
+
+    this.pauseAllFunc = function()
+    {
+        VideoController.pauseAll();
+        UpdateData();
+        view.UpdateView(data);
+        AddInteractivityToMenuElements();
+    }
     
 	function PlayPauseFunc()
     {

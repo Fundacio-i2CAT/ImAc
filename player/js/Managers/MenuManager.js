@@ -38,12 +38,12 @@ function MenuManager() {
                 return menuMgr.Load(volumeCtrl);
 
             case volumeCtrl.getMenuName():
-                return menuMgr.Load(settingsCtrl)
-
-            case settingsCtrl.getMenuName():
                 return menuMgr.Load(multiOptionsCtrl)
 
             case multiOptionsCtrl.getMenuName():
+                return menuMgr.Load(settingsCtrl)
+
+            case settingsCtrl.getMenuName():
                 return menuMgr.Load(playpauseCtrl)
         }
     }
@@ -53,16 +53,16 @@ function MenuManager() {
         switch(actualCtrl.getMenuName())
         {
             case playpauseCtrl.getMenuName():
-                return menuMgr.Load(multiOptionsCtrl);
+                return menuMgr.Load(settingsCtrl);
 
             case volumeCtrl.getMenuName():
                 return menuMgr.Load(playpauseCtrl)
 
-            case settingsCtrl.getMenuName():
-                return menuMgr.Load(volumeCtrl)
-
             case multiOptionsCtrl.getMenuName():
-                return menuMgr.Load(settingsCtrl)   
+                return menuMgr.Load(volumeCtrl) 
+
+            case settingsCtrl.getMenuName():
+                return menuMgr.Load(multiOptionsCtrl)            
 
             case STOptionCtrl.getMenuName():
             case SLOptionCtrl.getMenuName():
@@ -217,6 +217,8 @@ function MenuManager() {
             default:
             {
                 menuMgr.Load(playpauseCtrl);
+                playpauseCtrl.pauseAllFunc();
+
                 break;
             };
             case 2: // TRADITIONAL
@@ -232,6 +234,7 @@ function MenuManager() {
                 SettingsOptionCtrl.Exit();
 
                 menuParent.getObjectByName('traditionalmenu').visible = true;
+
                 break;
             };
         }   
@@ -1036,7 +1039,7 @@ function MenuManager() {
         cardboardButton.type =  'icon';
         cardboardButton.value = './img/menu/cardboard_icon.png';
         cardboardButton.color = 0xffffff;
-        cardboardButton.visible = true;
+        cardboardButton.visible = false;
         cardboardButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(cardboardButton.width, cardboardButton.height), new THREE.MeshBasicMaterial({visible:  false}));
         cardboardButton.onexecute =  function(){ console.log("This is the cardboard button"); };
         cardboardButton.position = new THREE.Vector3(30, 0, 0.01);

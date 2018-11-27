@@ -353,7 +353,7 @@ function STOptionMenuController(menuType) {
     
         data.parentColumnDropdown.forEach( function( elem )
         {
-            elem.position.y = isDown ? elem.position.y - h/6 : elem.position.y + h/6;
+            elem.position.y = isDown ? elem.position.y + h/6 : elem.position.y - h/6;
 
             if ( elem.position.y < -3*h/4 ) elem.position.y = h/4;
             else if ( elem.position.y > 3*h/4 ) elem.position.y = -h/4;

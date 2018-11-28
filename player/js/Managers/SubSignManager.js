@@ -279,15 +279,18 @@ SubSignManager = function() {
 
 	function updateSignerPosition()
 	{
-		var latitud = 30 * signPosY; 
-	    var longitud = 53 * signPosX; 
+		if ( scene.getObjectByName("sign") )
+		{
+			var latitud = ( 30 - 0.2 * ( 70 - signArea ) ) * signPosY; 
+		    var longitud = ( 53 - 0.35 * ( 70 - signArea ) ) * signPosX; 
 
-	    var posX = _isHMD ? 60 * Math.sin( Math.radians( longitud ) ) * signArea/100 : 80 * Math.sin( Math.radians( longitud ) ) * signArea/100;
-	    var posY = 50 * Math.sin( Math.radians( latitud ) ) * signArea/100;
-	    var posZ = 76;
+		    var posX = _isHMD ? 60 * Math.sin( Math.radians( longitud ) ) * signArea/100 : 80 * Math.sin( Math.radians( longitud ) ) * signArea/100;
+		    var posY = 50 * Math.sin( Math.radians( latitud ) ) * signArea/100;
+		    var posZ = 76;
 
-	    scene.getObjectByName("sign").position.x = posX;
-	    scene.getObjectByName("sign").position.y = posY;
+		    scene.getObjectByName("sign").position.x = posX;
+		    scene.getObjectByName("sign").position.y = posY;
+		}
 	}
 
     function createSubtitle(textList, config)
@@ -691,6 +694,35 @@ SubSignManager = function() {
 	this.checkSubArea = function(x)
 	{
 		return x == subArea;
+	};	
+
+//************************************************************************************
+// Public Signer Checkers
+//************************************************************************************
+
+	this.checkSignEnabled = function(x)
+	{
+		return x == signEnabled;
+	};
+
+	this.checkSignPosition = function(x)
+	{
+		return x == signPosY;
+	};
+
+	this.checkSignIndicator = function(x)
+	{
+		return x == signIndicator;
+	};
+
+	this.checkSignLanguage = function(x)
+	{
+		return x == signLang;
+	};
+
+	this.checkSignArea = function(x)
+	{
+		return x == signArea;
 	};	
 
 //************************************************************************************

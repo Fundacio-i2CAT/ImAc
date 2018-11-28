@@ -30,20 +30,29 @@ function runDemo()
     //VideoController.playAll();
     VideoController.init();
 
-    var interval1 = setTimeout( function() { VideoController.pauseAll(); },1000);
-    var xy = _moData.getSphericalColorMesh( 60, 0x000000, 'colorsphere' )
-    //var xz = _moData.getPlaneImageMesh(16/2,9/2,'./img/tests/A1_B1.png', 'name', 6);
+    if ( !document.cookie.includes('ImAcCookie') )
+    {
+        document.cookie = "ImAcCookie=opened; max-age=3600;"; // 1 hora
 
-    xz.position.z = -10;
-    scene.add(xy)
-    camera.add(xz)
+        var interval1 = setTimeout( function() { VideoController.pauseAll(); },1000);
+        var xy = _moData.getSphericalColorMesh( 60, 0x000000, 'colorsphere' )
+        //var xz = _moData.getPlaneImageMesh(16/2,9/2,'./img/tests/A1_B1.png', 'name', 6);
 
-    var interval2 = setTimeout( function() {
-        VideoController.playAll();
-        scene.remove(xy)
-        camera.remove(xz);
+        xz.position.z = -10;
+        scene.add(xy)
+        camera.add(xz)
+
+        var interval2 = setTimeout( function() {
+            VideoController.playAll();
+            scene.remove(xy)
+            camera.remove(xz);
+            (localStorage.ImAc_backgroundSub == "outline") ? subController.setSubBackground(0) : subController.setSubBackground(0.5);
+        },6000);
+    }
+    else 
+    {     
         (localStorage.ImAc_backgroundSub == "outline") ? subController.setSubBackground(0) : subController.setSubBackground(0.5);
-    },6000);
+    }
 }
 
 function initLanguageButtons(lang, siglang, sublang)

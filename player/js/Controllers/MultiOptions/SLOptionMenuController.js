@@ -99,10 +99,10 @@ function SLOptionMenuController(menuType) {
 
 
 		data.lsOptEnabledLabelName = 'showSignLanguageMenuButton';
-		data.lsOptEnabledLabelValue = './img/menu_ai_icons/SL.png';
+		data.lsOptEnabledLabelValue = 'SL';
 
 		data.lsOptDisbledLabelName = 'disabledSignLanguageMenuButton';
-		data.lsOptDisbledLabelValue = './img/menu_ai_icons/SL_strike.png';
+		data.lsOptDisbledLabelValue = 'SL_strike';
 
         data.onOptButtonFunc = function() {
             MenuFunctionsManager.getOnOffFunc('signLanguageOnButton')()
@@ -132,7 +132,7 @@ function SLOptionMenuController(menuType) {
 
          // TRADITIONAL
             case 2: 
-                data.title = 'Sign Language';
+                data.title = MenuDictionary.translate( 'signlanguage' );
                 data.parentColumnDropdown = AddDropdownElementsTrad(parentColumnDropdownElements);  
                 data.backMenuButtonFunc = function(){ AddVisualFeedbackOnClick('backMenuButton', function(){ menuMgr.setOptActiveIndex(0); menuMgr.Load(sl)} )};
                 break;

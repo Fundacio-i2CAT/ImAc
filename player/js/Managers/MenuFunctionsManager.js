@@ -110,54 +110,17 @@ MenuFunctionsManager = function() {
 // Settings Functions
 //************************************************************************************
 
-    function getMainLanguageFunc(name, language)
+    function getMainLanguageFunc(language)
     {      
         return function() {
-            //MenuManager.selectFinalDropdownOption( name );
-            //mainLanguage = name;
+
             MenuDictionary.setMainLanguage( language );
 
-            //menumanager.ResetViews();
+            menuMgr.removeMenuFromParent();
 
+            localStorage.ImAc_menuType == "LS_area" ? menuMgr.Init(1) : menuMgr.Init(2);
 
-
-            /*setTimeout(function() {
-
-                if( menuType == 'Traditional') 
-                {
-
-                    var activeSecondaryMenuTrad = secMMgr.getActiveSecondaryMenuTrad();
-                    if(activeSecondaryMenuTrad)
-                    {
-                        activeSecondaryMenuTrad.buttons.forEach(function(elem){
-                            interController.removeInteractiveObject(elem);
-                        }); 
-                      camera.remove(camera.getObjectByName(activeSecondaryMenuTrad.name));
-                      //subController.switchSigner( interController.getSignerActive() );
-                        
-                    } 
-
-                    interController.clearInteractiveObjectList();
-
-                    if ( _isHMD ) {
-                        scene.remove(scene.getObjectByName( "traditionalMenu" ))
-                    }
-                    else {
-                        camera.remove(scene.getObjectByName( "traditionalMenu" ))
-                    }
-
-                    MenuFunctionsManager.getOpenTradMenuFunc();
-                }
-                else
-                {
-                    MenuManager.closeMenu(); 
-                    MenuManager.openMenu();
-                }
-
-                
-                //scene.getObjectByName( "openMenu" ).visible = true;
-                //scene.getObjectByName( "openMenuTrad" ).visible = true; //EXPERIMENTAL
-            }, 300);*/
+            menuMgr.initFirstMenuState(); 
         }
     }
 
@@ -208,89 +171,6 @@ MenuFunctionsManager = function() {
 // Public Functions
 //************************************************************************************
 
-    this.getOpenMenuFunc = function(_isMenuTrad)
-    {   
-    console.error('zscasdasasdas')    
-        return function() {
-            /*interController.setSubtitlesActive( subController.getSubtitleEnabled() );
-            if ( interController.getSubtitlesActive() ) subController.disableSubtiles();
-            subController.switchSigner( false );*/
-            //MenuDictionary.initGlobalArraysByLanguage();
-            //MenuFunctionsManager.getOpenTradMenuFunc();
-            if ( _isMenuTrad ) 
-            {
-                MenuFunctionsManager.getOpenTradMenuFunc();
-            }
-            else 
-            {
-                //interController.setSubtitlesActive( subController.getSubtitleEnabled() );
-                //if ( interController.getSubtitlesActive() ) subController.disableSubtiles();
-                //subController.switchSigner( false );
-                MenuManager.openMenu();
-            }
-
-            //MenuManager.openMenu();
-            //MenuManager.openMenuTrad();
-            scene.getObjectByName( "openMenu" ).visible = false;
-            scene.getObjectByName( "openmenutext" ).visible = false;
-        }
-    };
-
-    this.getOpenTradMenuFunc = function()
-    {
-console.error('ydydydyddydydydyddyy')
-        //return function() {
-            if(scene.getObjectByName( "traditionalMenu" ))  console.error("Menu already open");
-            else
-            {
-                MenuManager.openMenuTrad();
-                scene.getObjectByName( "traditionalMenu" ).visible = false; // Removes the blink of elemnts not created on time
-                
-                var total = VideoController.getListOfVideoContents()[0].vid.duration;
-                var current  = VideoController.getListOfVideoContents()[0].vid.currentTime;
-                var w = scene.getObjectByName("bgTimeline").geometry.parameters.width;
-                secMMgr.scaleTimeLine(total,current, w, scene.getObjectByName("currentTimeline"), scene.getObjectByName("bgTimeline"));
-                scene.getObjectByName("timeline").visible = true;
-                
-                //interController.removeInteractiveObject("openMenuTrad" );  
-                
-                setTimeout(function(){ 
-                    //scene.getObjectByName( "openMenuTrad" ).visible = false;
-                    scene.getObjectByName( "traditionalMenu" ).visible = true; // Onces all the elements are created show the menu
-                }, 50);    
-            }
-        //}
-    }
-
-    this.getCloseTradMenuFunc = function()
-    {
-        console.error('popopopopopopopopopopopopopop')
-        return function() {
-            //if ( interController.getSubtitlesActive() ) subController.enableSubtitles();
-
-            //scene.getObjectByName( "openMenuTrad" ).visible = true; 
-            scene.getObjectByName( "openMenu" ).visible = true; 
-
-            interController.clearInteractiveObjectList();
-            //interController.addInteractiveObject(scene.getObjectByName( "openMenuTrad" ))
-            
-            //camera.remove(camera.getObjectByName( "traditionalMenu" ))
-            if ( _isHMD ) scene.remove(scene.getObjectByName( "traditionalMenu" ))
-            else camera.remove(scene.getObjectByName( "traditionalMenu" ))
-
-
-            var activeSubMenu = secMMgr.getActiveSecondaryMenuTrad();
-            if(activeSubMenu) secMMgr.removeSubTradMenu('');  
-            //subController.switchSigner( interController.getSignerActive() );          
-        }
-    }
-
-    this.getSubShowDropdownFunc = function(index, name)
-    {       
-        return function() {
-            MenuManager.openSubMenuDropdown( index, name );
-        }
-    };
 /*
     this.getPlayPauseFunc = function(play, name)
     {
@@ -345,15 +225,6 @@ console.error('ydydydyddydydydyddyy')
         }
     };
 */
-    this.getSettingsMenuFunc = function(name)
-    {
-        return function() {
-            MenuManager.pressButtonFeedback( name );
-            setTimeout(function() { 
-                MenuManager.openSecondLevelMenu(5); 
-            }, clickInteractionTimeout);
-        }
-    };
 
     this.getCardboardFunc = function()
     {
@@ -548,16 +419,16 @@ console.error('ydydydyddydydydyddyy')
 
         // Settings
             case "settingsLanguageEngButton":
-                return getMainLanguageFunc( name, 'en' );
+                return getMainLanguageFunc( 'en' );
 
             case "settingsLanguageEspButton":
-                return getMainLanguageFunc( name, 'es' );
+                return getMainLanguageFunc( 'es' );
 
             case "settingsLanguageGerButton":
-                return getMainLanguageFunc( name, 'de' );
+                return getMainLanguageFunc( 'de' );
 
             case "settingsLanguageCatButton":
-                return getMainLanguageFunc( name, 'ca' );
+                return getMainLanguageFunc( 'ca' );
 
             case "vc1":
                 return;

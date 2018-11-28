@@ -50,11 +50,16 @@ MenuDictionary = function() {
 		return _mainLanguage;
 	};
 
+    this.checkMainLanguage = function(lang)
+    {
+        return _mainLanguage == lang;
+    };
+
 	this.setMainLanguage = function(language)
 	{
 		_mainLanguage = language;
 
-        if ( language == 'en') 
+        /*if ( language == 'en') 
         {
             mainLanguage = 'settingsLanguageEngButton';
         }
@@ -69,40 +74,35 @@ MenuDictionary = function() {
         else if ( language == 'ca') 
         {
             mainLanguage = 'settingsLanguageCatButton';
-        }
+        }*/
 	};
 
     this.setSubtitleLanguagesArray = function(subList)
     {
-        //menuList[6].submenus[0].buttons = [];
         subtitlesLanguagesArray = [];
 
         if ( subList['en'] ) 
         {
             subtitlesLanguagesArray.push({name: 'subtitlesEngButton', value: 'en', default: subController.checkSubLanguage('en')});
 
-            //menuList[6].submenus[0].buttons.push( 'subtitlesEngButton' );
             availableSubLanguages.push('en');
         }
         if ( subList['de'] ) 
         {
             subtitlesLanguagesArray.push({name: 'subtitlesGerButton', value: 'de', default: subController.checkSubLanguage('de') });
 
-            //menuList[6].submenus[0].buttons.push( 'subtitlesGerButton' );
             availableSubLanguages.push('de');
         }
         if ( subList['es'] ) 
         {
             subtitlesLanguagesArray.push({name: 'subtitlesEspButton', value: 'es', default: subController.checkSubLanguage('es') });
 
-            //menuList[6].submenus[0].buttons.push( 'subtitlesEspButton' );
             availableSubLanguages.push('es');
         }
         if ( subList['ca'] ) 
         {
             subtitlesLanguagesArray.push({name: 'subtitlesCatButton', value: 'ca', default: subController.checkSubLanguage('ca') });
 
-            //menuList[6].submenus[0].buttons.push( 'subtitlesCatButton' );
             availableSubLanguages.push('ca');
         }
     };
@@ -134,39 +134,32 @@ MenuDictionary = function() {
 
     this.setSignerLanguagesArray = function(subList)
     {
-        //menuList[7].submenus[0].buttons = [];
         signerLanguagesArray = [];
 
         if ( subList['en'] ) 
         {
-            signerLanguagesArray.push({name: 'signerEngButton', value: 'English', default: true});
+            signerLanguagesArray.push({name: 'signerEngButton', value: 'en', default: subController.checkSignLanguage( 'en' ) });
 
-            //menuList[7].submenus[0].buttons.push( 'signerEngButton' );
             availableSignerLanguages.push('en');
         }
         if ( subList['de'] ) 
         {
-            signerLanguagesArray.push({name: 'signerGerButton', value: 'Deutsch', default: false});
+            signerLanguagesArray.push({name: 'signerGerButton', value: 'de', default: subController.checkSignLanguage( 'de' )});
 
-            //menuList[7].submenus[0].buttons.push( 'signerGerButton' );
             availableSignerLanguages.push('de');
         }
         if ( subList['es'] ) 
         {
-            signerLanguagesArray.push({name: 'signerEspButton', value: 'Español', default: false});
+            signerLanguagesArray.push({name: 'signerEspButton', value: 'es', default: subController.checkSignLanguage( 'es' )});
 
-            //menuList[7].submenus[0].buttons.push( 'signerEspButton' );
             availableSignerLanguages.push('es');
         }
         if ( subList['ca'] ) 
         {
-            signerLanguagesArray.push({name: 'signerCatButton', value: 'Català', default: false});
+            signerLanguagesArray.push({name: 'signerCatButton', value: 'ca', default: subController.checkSignLanguage( 'ca' )});
 
-            //menuList[7].submenus[0].buttons.push( 'signerCatButton' );
             availableSignerLanguages.push('ca');
         }
-
-        //console.error(availableSignerLanguages)
     };
 
     this.setMainLanguage = function(language)
@@ -178,35 +171,6 @@ MenuDictionary = function() {
     {
         console.warn('Future deprecated function!')
     	if ( language ) _mainLanguage = language;
-
-        /*subtitlesLanguagesArray = getSubtitleLanguages(); //['English', 'Spanish', 'German', 'Catalan'];
-        subtitlesPositionArray = [ wordList[ 'top' ][ _mainLanguage ], wordList[ 'bottom' ][ _mainLanguage ] ];
-        subtitlesSizeArray = [ wordList[ 'small' ][ _mainLanguage ], wordList[ 'medium' ][ _mainLanguage ], wordList[ 'large' ][ _mainLanguage ] ];
-        subtitlesIndicatorArray = [ wordList[ 'none' ][ _mainLanguage ], wordList[ 'arrow' ][ _mainLanguage ], wordList[ 'radar' ][ _mainLanguage ], wordList[ 'auto' ][ _mainLanguage ] ];
-        subtitlesBackgroundArray = [ wordList[ 'semitrans' ][ _mainLanguage ], wordList[ 'outline' ][ _mainLanguage ] ];
-        subtitlesEasyArray = [ wordList[ 'on' ][ _mainLanguage ], wordList[ 'off' ][ _mainLanguage ] ];
-
-        settingsLanguagesArray = [ 'English', 'Spanish', 'German', 'Catalan'];
-        settingsVoiceControlArray = ['option 1'];
-        settingsUserProfileArray = ['option 1', 'option 2'];
-
-        signerLanguagesArray = getSignerLanguages();
-        signerIndicatorArray = [ wordList[ 'none' ][ _mainLanguage ], wordList[ 'arrow' ][ _mainLanguage ], wordList[ 'auto' ][ _mainLanguage ] ];
-
-        ADLanguagesArray = ['English', 'Spanish', 'German', 'Catalan'];
-        ADPresentationArray = [ wordList[ 'prespective' ][ _mainLanguage ], wordList[ 'anchored' ][ _mainLanguage ], wordList[ 'classic' ][ _mainLanguage ], wordList[ 'panorama' ][ _mainLanguage ] ];
-
-        ASTLanguagesArray = ['English', 'Spanish', 'German', 'Catalan'];
-        ASTEasyArray = [ wordList[ 'on' ][ _mainLanguage ], wordList[ 'off' ][ _mainLanguage ] ];
-
-        STMenuList = [ wordList[ 'language' ][ _mainLanguage ], wordList[ 'easytoread' ][ _mainLanguage ], wordList[ 'position' ][ _mainLanguage ], wordList[ 'background' ][ _mainLanguage ], wordList[ 'size' ][ _mainLanguage ], wordList[ 'indicator' ][ _mainLanguage ], wordList[ 'area' ][ _mainLanguage ] ];
-        SLMenuList = [ wordList[ 'language' ][ _mainLanguage ], wordList[ 'position' ][ _mainLanguage ], wordList[ 'indicator' ][ _mainLanguage ], wordList[ 'area' ][ _mainLanguage ] ];
-        ADMenuList = [ wordList[ 'language' ][ _mainLanguage ], wordList[ 'presentation' ][ _mainLanguage ] ];
-        ASTMenuList = [ wordList[ 'language' ][ _mainLanguage ], wordList[ 'easytoread' ][ _mainLanguage ] ];
-        SettingsMenuList = [ wordList[ 'language' ][ _mainLanguage ], wordList[ 'voicecontrol' ][ _mainLanguage ], wordList[ 'userprofile' ][ _mainLanguage ] ];
-
-        MOMenuButtonsArray = [ wordList[ 'st' ][ _mainLanguage ], wordList[ 'sl' ][ _mainLanguage ], wordList[ 'ad' ][ _mainLanguage ], wordList[ 'ast' ][ _mainLanguage ] ];
-        MOMenuDisabledButtonsArray = [ wordList[ 'st_strike' ][ _mainLanguage ], wordList[ 'sl_strike' ][ _mainLanguage ], wordList[ 'ad_strike' ][ _mainLanguage ], wordList[ 'ast_strike' ][ _mainLanguage ] ];*/
     };
 
     var imgURL = './img/menu_ai_icons/';
@@ -294,6 +258,8 @@ MenuDictionary = function() {
         spanish:         { ca: 'Espanyol'          , de: 'Spanisch'          , en: 'Spanish'           , es: 'Español'           },
     //                   ||                        ||                        ||                        ||                        ||
         subtitles:       { ca: 'Subtitols'         , de: 'Untertitel'        , en: 'Subtitles'         , es: 'Subtítulos'        },
+    //                   ||                        ||                        ||                        ||                        ||
+        traditional:     { ca: 'Tradicional'       , de: 'Traditional'       , en: 'Traditional'       , es: 'Tradicional'       },
     //                   ||                        ||                        ||                        ||                        ||
         top:             { ca: 'Superior'          , de: 'Oben'              , en: 'Top'               , es: 'Arriba'            },
     //                   ||                        ||                        ||                        ||                        ||

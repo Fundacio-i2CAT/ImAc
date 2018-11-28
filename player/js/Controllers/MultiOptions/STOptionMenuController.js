@@ -110,10 +110,10 @@ function STOptionMenuController(menuType) {
         data.isOnOffButtonVisible = true;
 
         data.lsOptEnabledLabelName = 'showSubtitlesMenuButton';
-        data.lsOptEnabledLabelValue = './img/menu_ai_icons/ST.png';
+        data.lsOptEnabledLabelValue = 'ST';
 
         data.lsOptDisbledLabelName = 'disabledSubtitlesMenuButton';
-        data.lsOptDisbledLabelValue = './img/menu_ai_icons/ST_strike.png';
+        data.lsOptDisbledLabelValue = 'ST_strike';
 
         
         data.onOptButtonFunc = function() {
@@ -353,7 +353,7 @@ function STOptionMenuController(menuType) {
     
         data.parentColumnDropdown.forEach( function( elem )
         {
-            elem.position.y = isDown ? elem.position.y - h/6 : elem.position.y + h/6;
+            elem.position.y = isDown ? elem.position.y + h/6 : elem.position.y - h/6;
 
             if ( elem.position.y < -3*h/4 ) elem.position.y = h/4;
             else if ( elem.position.y > 3*h/4 ) elem.position.y = -h/4;

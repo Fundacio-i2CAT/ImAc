@@ -7,8 +7,8 @@ function ASTOptionMenuController(menuType) {
 	var viewStructure;
 
 	var parentColumnDropdownElements = [ 
-									{name: 'audioSubtitlesLanguages', value: 'Languages'}, 
-									{name: 'audioSubtitlesEasy', value: 'Easy read'},
+									{name: 'audioSubtitlesLanguages', value: 'Language'}, 
+									{name: 'audioSubtitlesEasy', value: 'EasyToread'},
 									{name: 'audioSubtitlesVolume', value: 'Volume (i)'}];
 	
 
@@ -84,10 +84,10 @@ function ASTOptionMenuController(menuType) {
 
 
 		data.lsOptEnabledLabelName = 'showAudioSubtitlesMenuButton';
-		data.lsOptEnabledLabelValue = './img/menu_ai_icons/AST.png';
+		data.lsOptEnabledLabelValue = 'AST';
 
 		data.lsOptDisbledLabelName = 'disabledAudioSubtitlesMenuButton';
-		data.lsOptDisbledLabelValue = './img/menu_ai_icons/AST_strike.png';
+		data.lsOptDisbledLabelValue = 'AST_strike';
 
         data.onOptButtonFunc = function(){changeOnOffLSOptionState(data.isOptEnabled)};
         data.offOptButtonFunc = function(){changeOnOffLSOptionState(data.isOptEnabled)};
@@ -110,7 +110,7 @@ function ASTOptionMenuController(menuType) {
                 
             // TRADITIONAL
             case 2: 
-                data.title = 'Audio Subtitles';
+                data.title = MenuDictionary.translate( 'audiosubtitles' );
                 data.parentColumnDropdown = AddDropdownElementsTrad(parentColumnDropdownElements);
                 data.backMenuButtonFunc = function(){ AddVisualFeedbackOnClick('backMenuButton', function(){ menuMgr.setOptActiveIndex(0); menuMgr.Load(ast)} )};  
                 break;
@@ -148,7 +148,7 @@ function ASTOptionMenuController(menuType) {
 	        dropdownIE.height = h/elements.length;
 	        dropdownIE.name = element.name;
 	        dropdownIE.type =  'text';
-	        dropdownIE.value = element.value; //AudioManager.getVolume();
+	        dropdownIE.value = MenuDictionary.translate(element.value); //AudioManager.getVolume();
 	        dropdownIE.color = 0xffffff;
 	        dropdownIE.textSize =  5;
 	        dropdownIE.visible = true;
@@ -195,7 +195,7 @@ function ASTOptionMenuController(menuType) {
             dropdownIE.height =  4;
             dropdownIE.name = element.name;
             dropdownIE.type =  'text';
-            dropdownIE.value = element.value; //AudioManager.getVolume();
+            dropdownIE.value = MenuDictionary.translate(element.value); //AudioManager.getVolume();
             dropdownIE.color = element.default ? 0xffff00 : 0xffffff;
             dropdownIE.textSize =  1.5;
             dropdownIE.visible = true;
@@ -208,7 +208,7 @@ function ASTOptionMenuController(menuType) {
                 data.isFinalDrop = false;
                 dropdownIE.onexecute =  function()
                 {
-                    data.title = element.value;
+                    data.title = MenuDictionary.translate(element.value);
                     data.childColumnActiveOpt = undefined;
                     data.parentColumnActiveOpt = element.name;
                     data.parentColumnDropdown = AddDropdownElementsTrad(element.options);

@@ -5,17 +5,11 @@
 /************************************************************************************
     
     MenuDictionary.js  
-        * Library used to translate words and control the subtitle and signer language availables
-
-    This library needs to use external libs:
-        * SubSignManager.js  -->  To check the subtilte and signer languages
-
-    This library needs to use the global vars:
-        * subController
+        * Library used to translate words
     
     FUNCTIONALITIES:
-        * Getters of _mainLanguage, subtitlesLanguagesArray and signerLanguagesArray attributes
-        * Setters of _mainLanguage, subtitlesLanguagesArray and signerLanguagesArray attributes
+        * Getters of _mainLanguage attribute
+        * Setters of _mainLanguage attribute
         * Translate function
         * Checker of the _mainLanguage attribute
 
@@ -24,11 +18,7 @@
 MenuDictionary = function() {
 
 	var _mainLanguage = 'en';
-    var subtitlesLanguagesArray = [];
-    var signerLanguagesArray =  [];
-
     var imgURL = './img/menu_ai_icons/';
-
     var wordList = {
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -168,16 +158,6 @@ MenuDictionary = function() {
         return _mainLanguage;
     };
 
-    this.getSubtitlesLanguagesArray = function()
-    {
-        return subtitlesLanguagesArray;
-    };
-
-    this.getSignerLanguagesArray = function()
-    {
-        return signerLanguagesArray;
-    };   
-
 //************************************************************************************
 // Public Setters
 //************************************************************************************
@@ -187,87 +167,4 @@ MenuDictionary = function() {
         if ( language ) _mainLanguage = language;
     };
 
-    this.setSubtitleLanguagesArray = function(subList)
-    {
-        subtitlesLanguagesArray = [];
-
-        if ( subList['en'] ) 
-        {
-            subtitlesLanguagesArray.push( 
-            { 
-                name: 'subtitlesEngButton', 
-                value: 'en', 
-                default: subController.checkSubLanguage( 'en' ) 
-            } );
-        }
-        if ( subList['de'] ) 
-        {
-            subtitlesLanguagesArray.push( 
-            { 
-                name: 'subtitlesGerButton', 
-                value: 'de', 
-                default: subController.checkSubLanguage( 'de' ) 
-            } );
-        }
-        if ( subList['es'] ) 
-        {
-            subtitlesLanguagesArray.push( 
-            { 
-                name: 'subtitlesEspButton', 
-                value: 'es', 
-                default: subController.checkSubLanguage( 'es' ) 
-            } );
-        }
-        if ( subList['ca'] ) 
-        {
-            subtitlesLanguagesArray.push( 
-            { 
-                name: 'subtitlesCatButton', 
-                value: 'ca', 
-                default: subController.checkSubLanguage( 'ca' ) 
-            } );
-        }
-    };
-
-    this.setSignerLanguagesArray = function(subList)
-    {
-        signerLanguagesArray = [];
-
-        if ( subList['en'] ) 
-        {
-            signerLanguagesArray.push(
-            {
-                name: 'signerEngButton', 
-                value: 'en', 
-                default: subController.checkSignLanguage( 'en' ) 
-            } );
-        }
-        if ( subList['de'] ) 
-        {
-            signerLanguagesArray.push(
-            {
-                name: 'signerGerButton', 
-                value: 'de', 
-                default: subController.checkSignLanguage( 'de' )
-            } );
-        }
-        if ( subList['es'] ) 
-        {
-            signerLanguagesArray.push(
-            {
-                name: 'signerEspButton', 
-                value: 'es', 
-                default: subController.checkSignLanguage( 'es' )
-            } );
-        }
-        if ( subList['ca'] ) 
-        {
-            signerLanguagesArray.push(
-            {
-                name: 'signerCatButton', 
-                value: 'ca', 
-                default: subController.checkSignLanguage( 'ca' )
-            } );
-        }
-    };
 }

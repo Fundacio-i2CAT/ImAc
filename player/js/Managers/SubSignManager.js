@@ -67,6 +67,7 @@ SubSignManager = function() {
 	var subBackground = 0.5; // semi-transparent = 0.5, outline = 0
 	var subEasy = false; // boolean
 	var subArea = 50; // small = 50, medium = 60, large = 70
+	var subAvailableLang = []; // Array { name, value, default:bool }
 
 	// [SL] signer vars
 	var signerContent; // URL
@@ -76,6 +77,7 @@ SubSignManager = function() {
 	var signIndicator = 'none';	 // none, arrow, move
 	var signArea = 70; // small = 50, medium = 60, large = 70
 	var signLang; // string (en, de, ca, es)
+	var signAvailableLang = []; // Array { name, value, default:bool }
 
 
 //************************************************************************************
@@ -517,6 +519,11 @@ SubSignManager = function() {
 		return subArea;
 	};	
 
+	this.getSubtitlesLanguagesArray = function()
+    {
+        return subAvailableLang;
+    };
+
 //************************************************************************************
 // Public Signer Getters
 //************************************************************************************
@@ -550,6 +557,11 @@ SubSignManager = function() {
 	{
 		return signLang;
 	};
+
+    this.getSignerLanguagesArray = function()
+    {
+        return signAvailableLang;
+    }; 
 
 //************************************************************************************
 // Public Subtitle Setters
@@ -629,6 +641,48 @@ SubSignManager = function() {
 		updateISD( VideoController.getMediaTime() );
 	};
 
+	this.setSubtitleLanguagesArray = function(subList)
+    {
+        subAvailableLang = [];
+
+        if ( subList['en'] ) 
+        {
+            subAvailableLang.push( 
+            { 
+                name: 'subtitlesEngButton', 
+                value: 'en', 
+                default: ( 'en' == subLang ) 
+            } );
+        }
+        if ( subList['de'] ) 
+        {
+            subAvailableLang.push( 
+            { 
+                name: 'subtitlesGerButton', 
+                value: 'de', 
+                default: ( 'de' == subLang ) 
+            } );
+        }
+        if ( subList['es'] ) 
+        {
+            subAvailableLang.push( 
+            { 
+                name: 'subtitlesEspButton', 
+                value: 'es', 
+                default: ( 'es' == subLang ) 
+            } );
+        }
+        if ( subList['ca'] ) 
+        {
+            subAvailableLang.push( 
+            { 
+                name: 'subtitlesCatButton', 
+                value: 'ca', 
+                default: ( 'ca' == subLang ) 
+            } );
+        }
+    };
+
 //************************************************************************************
 // Public Signer Setters
 //************************************************************************************
@@ -659,6 +713,48 @@ SubSignManager = function() {
 		signLang = lang;
 		if ( signEnabled ) createSigner();
 	};	
+
+	this.setSignerLanguagesArray = function(subList)
+    {
+        signAvailableLang = [];
+
+        if ( subList['en'] ) 
+        {
+            signAvailableLang.push(
+            {
+                name: 'signerEngButton', 
+                value: 'en', 
+                default: ( 'en' == signLang )
+            } );
+        }
+        if ( subList['de'] ) 
+        {
+            signAvailableLang.push(
+            {
+                name: 'signerGerButton', 
+                value: 'de', 
+                default: ( 'de' == signLang )
+            } );
+        }
+        if ( subList['es'] ) 
+        {
+            signAvailableLang.push(
+            {
+                name: 'signerEspButton', 
+                value: 'es', 
+                default: ( 'es' == signLang )
+            } );
+        }
+        if ( subList['ca'] ) 
+        {
+            signAvailableLang.push(
+            {
+                name: 'signerCatButton', 
+                value: 'ca', 
+                default: ( 'ca' == signLang )
+            } );
+        }
+    };
 
 //************************************************************************************
 // Public Subtitle Checkers

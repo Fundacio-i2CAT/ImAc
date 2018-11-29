@@ -20,7 +20,7 @@ function SLOptionMenuController(menuType) {
 									{name: 'signerLargeAreaButton', value: 'Large', default: subController.checkSignArea( 70 ) }];
 
     var parentColumnDropdownElements = [ 
-                                    {name: 'signerLanguages', value: 'Language', options: MenuDictionary.getSignerLanguagesArray(), visible: true},
+                                    {name: 'signerLanguages', value: 'Language', options: subController.getSignerLanguagesArray(), visible: true},
                                     {name: 'signerShowPositions', value: 'Position', options: signerPositionArray, visible: true},
                                     {name: 'signerIndicator', value: 'Indicator', options: signerIndicatorArray, visible: true},
                                     {name: 'signerAreas', value: 'Area', options: signerAreasArray, visible: true}];

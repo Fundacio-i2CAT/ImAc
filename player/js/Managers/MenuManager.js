@@ -13,8 +13,8 @@ function MenuManager() {
     
     this.Init = function(type)
     {
-        MenuDictionary.setSubtitleLanguagesArray(list_contents[demoId].subtitles[0]);
-        MenuDictionary.setSignerLanguagesArray(list_contents[demoId].signer[0]);
+        subController.setSubtitleLanguagesArray(list_contents[demoId].subtitles[0]);
+        subController.setSignerLanguagesArray(list_contents[demoId].signer[0]);
 
         menuWidth = 125;
         menuHeight = 125*9/16;

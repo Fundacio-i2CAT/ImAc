@@ -29,7 +29,7 @@ function STOptionMenuController(menuType) {
 									{name: 'subtitlesEasyOff', value: 'Off', default: subController.checkSubEasy(false)}];
 
     var parentColumnDropdownElements = [ 
-                                    { name: 'subtitlesLanguages', value: 'Language', options: MenuDictionary.getSubtitlesLanguagesArray(), visible: true},
+                                    { name: 'subtitlesLanguages', value: 'Language', options: subController.getSubtitlesLanguagesArray(), visible: true},
                                     { name: 'subtitlesEasyRead', value: 'Easytoread', options: subtitlesEasyArray,visible: true}, 
                                     { name: 'subtitlesShowPositions', value: 'Position', options: subtitlesPositionArray, visible: true},
                                     { name: 'subtitlesBackground', value: 'Background', options: subtitlesBackgroundArray, visible: true}, 

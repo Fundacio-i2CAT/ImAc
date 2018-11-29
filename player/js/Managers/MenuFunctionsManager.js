@@ -203,35 +203,7 @@ MenuFunctionsManager = function() {
         }
     };
 
-    this.getMuteVolumeFunc = function(name)
-    {
-        return function() {
-            MenuManager.pressButtonFeedback( name );
-            _AudioManager.setmute();
-            setTimeout(function() { 
-                MenuController.showMuteUnmuteButton(); 
-            }, clickInteractionTimeout); 
-        }
-    };
-
-    this.getUnMuteVolumeFunc = function(name)
-    {
-        return function() {
-            MenuManager.pressButtonFeedback( name );
-            _AudioManager.setunmute();
-            setTimeout(function() { 
-                MenuController.showMuteUnmuteButton(); 
-            }, clickInteractionTimeout); 
-        }
-    };
 */
-
-    this.getCardboardFunc = function()
-    {
-        return function() {
-            console.error('Deprecated function! getCardboardFunc')
-        }
-    };
 
     this.getOnOffFunc = function(name)
     {

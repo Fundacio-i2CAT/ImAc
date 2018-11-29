@@ -5,8 +5,8 @@ function runDemo()
 {
     _AudioManager.initializeAudio( VideoController.getListOfVideoContents()[0].vid, list_contents[demoId].audioChannels, camera.matrixWorld.elements );
 
-    MenuDictionary.setSubtitleLanguagesArray( list_contents[demoId].subtitles[0] );
-    MenuDictionary.setSignerLanguagesArray( list_contents[demoId].signer[0] );
+    subController.setSubtitleLanguagesArray( list_contents[demoId].subtitles[0] );
+    subController.setSignerLanguagesArray( list_contents[demoId].signer[0] );
 
     _moData.createPointer();
 

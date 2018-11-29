@@ -207,7 +207,7 @@ MenuDictionary = function() {
     //                   ||                        ||                        ||                        ||                        ||
         de:              { ca: 'Deutsch'           , de: 'Deutsch'           , en: 'Deutsch'           , es: 'Deutsch'           },
     //                   ||                        ||                        ||                        ||                        ||
-        easytoread:      { ca: 'Lectura fàcil'     , de: 'Einfache Sprache'  , en: 'Easy To Read'      , es: 'Lectura fácil'     },
+        easytoread:      { ca: 'Lectura fàcil'     , de: 'Einfache Sprache'  , en: 'Easy to Read'      , es: 'Lectura fácil'     },
     //                   ||                        ||                        ||                        ||                        ||
         en:              { ca: 'English'           , de: 'English'           , en: 'English'           , es: 'English'           },
     //                   ||                        ||                        ||                        ||                        ||

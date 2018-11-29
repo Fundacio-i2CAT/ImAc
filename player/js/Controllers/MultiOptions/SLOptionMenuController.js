@@ -6,18 +6,18 @@ function SLOptionMenuController(menuType) {
 	var viewStructure;
 
 	var signerIndicatorArray = [
-									{name: 'signerIndicatorNoneButton', value: 'None', default: true}, 
-									{name: 'signerIndicatorArrowButton', value: 'Arrow', default: false}, 
-									{name: 'signerIndicatorRadarButton', value: 'Auto', default: false}];
+									{name: 'signerIndicatorNoneButton', value: 'None', default: subController.checkSignIndicator( 'none' ) }, 
+									{name: 'signerIndicatorArrowButton', value: 'Arrow', default: subController.checkSignIndicator( 'arrow' ) }, 
+									{name: 'signerIndicatorRadarButton', value: 'Auto', default: subController.checkSignIndicator( 'auto' ) }];
 
 	var signerPositionArray = [
-									{name: 'signerTopButton', value: 'Top', default: false}, 
-									{name: 'signerBottomButton', value: 'Bottom', default: true}];
+									{name: 'signerTopButton', value: 'Top', default: subController.checkSignPosition( 1 ) }, 
+									{name: 'signerBottomButton', value: 'Bottom', default: subController.checkSignPosition( -1 ) }];
 
 	var signerAreasArray = [
-									{name: 'signerSmallAreaButton', value: 'Small', default: false}, 
-									{name: 'signerMediumlAreaButton', value: 'Medium', default: false},
-									{name: 'signerLargeAreaButton', value: 'Large', default: true}];
+									{name: 'signerSmallAreaButton', value: 'Small', default: subController.checkSignArea( 50 ) }, 
+									{name: 'signerMediumlAreaButton', value: 'Medium', default: subController.checkSignArea( 60 ) },
+									{name: 'signerLargeAreaButton', value: 'Large', default: subController.checkSignArea( 70 ) }];
 
     var parentColumnDropdownElements = [ 
                                     {name: 'signerLanguages', value: 'Language', options: MenuDictionary.getSignerLanguagesArray(), visible: true},

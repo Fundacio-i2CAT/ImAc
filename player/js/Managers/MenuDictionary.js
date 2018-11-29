@@ -2,176 +2,30 @@
  * @author isaac.fraile@i2cat.net
  */
 
+/************************************************************************************
+    
+    MenuDictionary.js  
+        * Library used to translate words and control the subtitle and signer language availables
+
+    This library needs to use external libs:
+        * SubSignManager.js  -->  To check the subtilte and signer languages
+
+    This library needs to use the global vars:
+        * subController
+    
+    FUNCTIONALITIES:
+        * Getters of _mainLanguage, subtitlesLanguagesArray and signerLanguagesArray attributes
+        * Setters of _mainLanguage, subtitlesLanguagesArray and signerLanguagesArray attributes
+        * Translate function
+        * Checker of the _mainLanguage attribute
+
+************************************************************************************/
+
 MenuDictionary = function() {
 
 	var _mainLanguage = 'en';
-    var availableSubLanguages = [];
-    var availableSignerLanguages = [];
-    var availableSettingsLanguages = [];
-
     var subtitlesLanguagesArray = [];
     var signerLanguagesArray =  [];
-
-    function getSubtitleLanguages()
-    {
-        var ST_Languages = [];
-        availableSubLanguages.forEach(function( lang ) {
-            ST_Languages.push( wordList[ lang ][ lang ] );
-        });
-
-        return ST_Languages;
-    }
-
-    function getSignerLanguages()
-    {
-        var SL_Languages = [];
-
-        availableSignerLanguages.forEach(function( lang ) {
-            SL_Languages.push( wordList[ lang ][ lang ] );
-        });
-
-        return SL_Languages;
-    }
-
-    function getSettingsLanguages()
-    {
-        var _Languages = [];
-
-        _Languages.push( wordList[ 'en' ][ 'en' ] );
-        _Languages.push( wordList[ 'es' ][ 'es' ] );
-        _Languages.push( wordList[ 'de' ][ 'de' ] );
-        _Languages.push( wordList[ 'ca' ][ 'ca' ] );
-
-        return _Languages;
-    }
-
-	this.getMainLanguage = function()
-	{
-		return _mainLanguage;
-	};
-
-    this.checkMainLanguage = function(lang)
-    {
-        return _mainLanguage == lang;
-    };
-
-	this.setMainLanguage = function(language)
-	{
-		_mainLanguage = language;
-
-        /*if ( language == 'en') 
-        {
-            mainLanguage = 'settingsLanguageEngButton';
-        }
-        else if ( language == 'de') 
-        {
-            mainLanguage = 'settingsLanguageGerButton';
-        }
-        else if ( language == 'es') 
-        {
-            mainLanguage = 'settingsLanguageEspButton';
-        }
-        else if ( language == 'ca') 
-        {
-            mainLanguage = 'settingsLanguageCatButton';
-        }*/
-	};
-
-    this.setSubtitleLanguagesArray = function(subList)
-    {
-        subtitlesLanguagesArray = [];
-
-        if ( subList['en'] ) 
-        {
-            subtitlesLanguagesArray.push({name: 'subtitlesEngButton', value: 'en', default: subController.checkSubLanguage('en')});
-
-            availableSubLanguages.push('en');
-        }
-        if ( subList['de'] ) 
-        {
-            subtitlesLanguagesArray.push({name: 'subtitlesGerButton', value: 'de', default: subController.checkSubLanguage('de') });
-
-            availableSubLanguages.push('de');
-        }
-        if ( subList['es'] ) 
-        {
-            subtitlesLanguagesArray.push({name: 'subtitlesEspButton', value: 'es', default: subController.checkSubLanguage('es') });
-
-            availableSubLanguages.push('es');
-        }
-        if ( subList['ca'] ) 
-        {
-            subtitlesLanguagesArray.push({name: 'subtitlesCatButton', value: 'ca', default: subController.checkSubLanguage('ca') });
-
-            availableSubLanguages.push('ca');
-        }
-    };
-
-    this.getSubtitlesLanguagesArray = function()
-    {
-        return subtitlesLanguagesArray;
-    }
-
-    this.getSignerLanguagesArray = function()
-    {
-        return signerLanguagesArray;
-    }
-
-    this.getSubtitleLanguagesList = function()
-    {
-        return getSubtitleLanguages();
-    }
-
-    this.getSignerLanguagesList = function()
-    {
-        return getSignerLanguages();
-    }
-
-    this.getSettingsLanguagesList = function()
-    {
-        return getSettingsLanguages();
-    }
-
-    this.setSignerLanguagesArray = function(subList)
-    {
-        signerLanguagesArray = [];
-
-        if ( subList['en'] ) 
-        {
-            signerLanguagesArray.push({name: 'signerEngButton', value: 'en', default: subController.checkSignLanguage( 'en' ) });
-
-            availableSignerLanguages.push('en');
-        }
-        if ( subList['de'] ) 
-        {
-            signerLanguagesArray.push({name: 'signerGerButton', value: 'de', default: subController.checkSignLanguage( 'de' )});
-
-            availableSignerLanguages.push('de');
-        }
-        if ( subList['es'] ) 
-        {
-            signerLanguagesArray.push({name: 'signerEspButton', value: 'es', default: subController.checkSignLanguage( 'es' )});
-
-            availableSignerLanguages.push('es');
-        }
-        if ( subList['ca'] ) 
-        {
-            signerLanguagesArray.push({name: 'signerCatButton', value: 'ca', default: subController.checkSignLanguage( 'ca' )});
-
-            availableSignerLanguages.push('ca');
-        }
-    };
-
-    this.setMainLanguage = function(language)
-    {
-        if ( language ) _mainLanguage = language;
-    };
-
-	this.initGlobalArraysByLanguage = function(language)
-    {
-        console.warn('Future deprecated function!')
-    	if ( language ) _mainLanguage = language;
-    };
 
     var imgURL = './img/menu_ai_icons/';
 
@@ -288,11 +142,132 @@ MenuDictionary = function() {
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     }
+   
+
+//************************************************************************************
+// Public Functions
+//************************************************************************************
 
     this.translate = function(word)
     {
         var res = word.toLowerCase();
         return wordList[ res ] ? wordList[ res ][ _mainLanguage ] : word;
     };
-}
 
+    this.checkMainLanguage = function(lang)
+    {
+        return _mainLanguage == lang;
+    };
+
+//************************************************************************************
+// Public Getters
+//************************************************************************************
+
+    this.getMainLanguage = function()
+    {
+        return _mainLanguage;
+    };
+
+    this.getSubtitlesLanguagesArray = function()
+    {
+        return subtitlesLanguagesArray;
+    };
+
+    this.getSignerLanguagesArray = function()
+    {
+        return signerLanguagesArray;
+    };   
+
+//************************************************************************************
+// Public Setters
+//************************************************************************************
+
+    this.setMainLanguage = function(language)
+    {
+        if ( language ) _mainLanguage = language;
+    };
+
+    this.setSubtitleLanguagesArray = function(subList)
+    {
+        subtitlesLanguagesArray = [];
+
+        if ( subList['en'] ) 
+        {
+            subtitlesLanguagesArray.push( 
+            { 
+                name: 'subtitlesEngButton', 
+                value: 'en', 
+                default: subController.checkSubLanguage( 'en' ) 
+            } );
+        }
+        if ( subList['de'] ) 
+        {
+            subtitlesLanguagesArray.push( 
+            { 
+                name: 'subtitlesGerButton', 
+                value: 'de', 
+                default: subController.checkSubLanguage( 'de' ) 
+            } );
+        }
+        if ( subList['es'] ) 
+        {
+            subtitlesLanguagesArray.push( 
+            { 
+                name: 'subtitlesEspButton', 
+                value: 'es', 
+                default: subController.checkSubLanguage( 'es' ) 
+            } );
+        }
+        if ( subList['ca'] ) 
+        {
+            subtitlesLanguagesArray.push( 
+            { 
+                name: 'subtitlesCatButton', 
+                value: 'ca', 
+                default: subController.checkSubLanguage( 'ca' ) 
+            } );
+        }
+    };
+
+    this.setSignerLanguagesArray = function(subList)
+    {
+        signerLanguagesArray = [];
+
+        if ( subList['en'] ) 
+        {
+            signerLanguagesArray.push(
+            {
+                name: 'signerEngButton', 
+                value: 'en', 
+                default: subController.checkSignLanguage( 'en' ) 
+            } );
+        }
+        if ( subList['de'] ) 
+        {
+            signerLanguagesArray.push(
+            {
+                name: 'signerGerButton', 
+                value: 'de', 
+                default: subController.checkSignLanguage( 'de' )
+            } );
+        }
+        if ( subList['es'] ) 
+        {
+            signerLanguagesArray.push(
+            {
+                name: 'signerEspButton', 
+                value: 'es', 
+                default: subController.checkSignLanguage( 'es' )
+            } );
+        }
+        if ( subList['ca'] ) 
+        {
+            signerLanguagesArray.push(
+            {
+                name: 'signerCatButton', 
+                value: 'ca', 
+                default: subController.checkSignLanguage( 'ca' )
+            } );
+        }
+    };
+}

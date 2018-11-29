@@ -8,19 +8,27 @@
 		* Library used to manage Subtitle and Signer elements
 
 	This library needs to use external libs:
-		* MediaObject.js        -->  To create the subtilte, signer and radar meshs
-		* AplicationManager.js  -->  To enable the VR when autopositioning ends
-		* imsc_i2cat.js         -->  To parse the xml subtiles
-		* THREE.js              -->  To modify the mesh attributes such as visiblity
+		* MediaObjectData.js         -->  To create the subtilte, signer and radar meshs
+		* AplicationManager.js       -->  To enable the VR when autopositioning ends
+		* imsc_i2cat.js              -->  To parse the xml subtiles
+		* THREE.js                   -->  To modify the mesh attributes such as visiblity
+		* VideoController.js         -->  To get the video current time
+		* InteractionsController.js  -->  To add interactivity to a mesh object
 
 	This library needs to use the global vars:
 		* camera
 		* scene
 		* CameraParentObject
+		* _isHMD
+		* _moData
+		* AplicationManager
+		* VideoController
+		* interController
 	
 	FUNCTIONALITIES:
 		* Getters of all subtitle [ST] and signer [SL] attributes
 		* Setters of all subtitle [ST] and signer [SL] attributes
+		* Checkers of all subtitle [ST] and signer [SL] attributes
 		* enableSubtitles / disableSubtiles
 		* enableAutoPositioning / disableAutoPositioning
 		* updateSubtitleByTime = function( time )    --> Update the subtiltes using a 'time' in secongs such as currentTime

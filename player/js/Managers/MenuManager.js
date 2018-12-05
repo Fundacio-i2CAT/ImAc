@@ -90,7 +90,7 @@ function MenuManager() {
         return menuType;
     }
 
-    function LoadTrad()
+    /*function LoadTrad()
     {
        //IF TRADITIONAL 
         controllers.forEach(function(controller){
@@ -104,7 +104,7 @@ function MenuManager() {
         SettingsOptionCtrl.Exit();
 
         menuParent.getObjectByName('traditionalmenu').visible = true;      
-    }
+    }*/
 
     this.Load = function (controller)
     {
@@ -156,6 +156,9 @@ function MenuManager() {
         controllers.forEach(function(controller){
             controller.Exit();
         });
+
+        if ( scene.getObjectByName('pointer2') && _isHMD ) scene.getObjectByName('pointer2').visible = false;
+        else if ( scene.getObjectByName( "pointer" ) && _isHMD ) scene.getObjectByName( "pointer" ).visible = false;
 
         playpauseCtrl.playAllFunc();
 
@@ -213,6 +216,9 @@ function MenuManager() {
         menuActivationElement.visible = false;
         scene.getObjectByName( "openmenutext" ).visible = false;
 
+        if ( scene.getObjectByName('pointer2') && _isHMD ) scene.getObjectByName('pointer2').visible = true;
+        else if ( scene.getObjectByName( "pointer" ) && _isHMD ) scene.getObjectByName( "pointer" ).visible = true;
+
         switch(menuType)
         {
             case 1: // LOW SIGHTED
@@ -220,6 +226,16 @@ function MenuManager() {
             {
                 menuMgr.Load(playpauseCtrl);
                 playpauseCtrl.pauseAllFunc();
+
+                if (_isHMD) 
+                {
+                    resetMenuPosition( menuParent.getObjectByName('playpausemenu') );
+                    resetMenuPosition( menuParent.getObjectByName('volumemenu') )
+                    resetMenuPosition( menuParent.getObjectByName('settingsmenu') )
+                    resetMenuPosition( menuParent.getObjectByName('multioptionsmenu') )
+                    resetMenuPosition( menuParent.getObjectByName('lowsightedoptmenu') )
+                    resetMenuPosition( menuParent.getObjectByName('settingsoptmenu') )
+                }
 
                 break;
             };
@@ -235,11 +251,26 @@ function MenuManager() {
                 ASTOptionCtrl.Exit();
                 SettingsOptionCtrl.Exit();
 
+                if (_isHMD) 
+                {
+                    resetMenuPosition( menuParent.getObjectByName('traditionalmenu') )
+                }
+
                 menuParent.getObjectByName('traditionalmenu').visible = true;
 
                 break;
             };
         }   
+    }
+
+    function resetMenuPosition(object)
+    {
+        object.position.x = 0;
+        object.position.z = 0;
+        object.rotation.y = camera.rotation.y;
+
+        object.position.x = Math.sin(-camera.rotation.y)*67;
+        object.position.z = -Math.cos(camera.rotation.y)*67;
     }
 
     function addMenuToParent()
@@ -925,6 +956,8 @@ function MenuManager() {
         
         playpausemenu.add(seekForwardButton.create());
 
+        if (_isHMD) playpausemenu.scale.set( 0.6, 0.6, 0.6 );
+
         return playpausemenu;
     }
 
@@ -1006,6 +1039,8 @@ function MenuManager() {
         volumeLevel.position = new THREE.Vector3(0, 0, 0.01);
 
         volumemenu.add(volumeLevel.create());
+
+        if (_isHMD) volumemenu.scale.set( 0.6, 0.6, 0.6 );
         
         return volumemenu;
     }
@@ -1047,6 +1082,8 @@ function MenuManager() {
         cardboardButton.position = new THREE.Vector3(30, 0, 0.01);
 
         settingsmenu.add(cardboardButton.create());
+
+        if (_isHMD) settingsmenu.scale.set( 0.6, 0.6, 0.6 );
 
         return settingsmenu;
     }
@@ -1173,6 +1210,8 @@ function MenuManager() {
 
         multioptionsmenu.add(audioSubtitlesDisabledButton.create());
 
+        if (_isHMD) multioptionsmenu.scale.set( 0.6, 0.6, 0.6 );
+
         return multioptionsmenu;
 
     }
@@ -1294,6 +1333,8 @@ function MenuManager() {
         childColumnDropdown.position.set(menuWidth/3,0,0.01)       
 
         lowsightedoptmenu.add(childColumnDropdown);
+
+        if (_isHMD) lowsightedoptmenu.scale.set( 0.6, 0.6, 0.6 );
 
         return lowsightedoptmenu;
     }

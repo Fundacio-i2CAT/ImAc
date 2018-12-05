@@ -12,6 +12,7 @@ function PlayPauseLSMenuController() {
 		data = GetData();
 		UpdateData();
 		viewStructure = scene.getObjectByName(data.name);
+
 		viewStructure.visible = true;
 
 		view = new PlayPauseLSMenuView();

@@ -811,7 +811,7 @@ SubSignManager = function() {
 
 	this.checkSignPosition = function(x)
 	{
-		return x == signPosY;
+		return x == signPosX;
 	};
 
 	this.checkSignIndicator = function(x)

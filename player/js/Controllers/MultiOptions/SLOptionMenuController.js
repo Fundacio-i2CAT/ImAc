@@ -11,8 +11,8 @@ function SLOptionMenuController(menuType) {
 									{name: 'signerIndicatorRadarButton', value: 'Auto', default: subController.checkSignIndicator( 'auto' ) }];
 
 	var signerPositionArray = [
-									{name: 'signerTopButton', value: 'Top', default: subController.checkSignPosition( 1 ) }, 
-									{name: 'signerBottomButton', value: 'Bottom', default: subController.checkSignPosition( -1 ) }];
+									{name: 'signerTopButton', value: 'Right', default: subController.checkSignPosition( 1 ) }, 
+									{name: 'signerBottomButton', value: 'Left', default: subController.checkSignPosition( -1 ) }];
 
 	var signerAreasArray = [
 									{name: 'signerSmallAreaButton', value: 'Small', default: subController.checkSignArea( 50 ) }, 

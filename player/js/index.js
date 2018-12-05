@@ -5,14 +5,12 @@ var _PlayerVersion = 'v0.06.0';
 
 var AplicationManager = new AplicationManager();
 var MenuFunctionsManager = new MenuFunctionsManager();
-//var moData = new THREE.MediaObject();
 
 var _moData = new THREE.MediaObjectData();
 
 var menuMgr = new MenuManager();
 var settingsMgr = new SettingsManager();
 
-//var MenuController = new THREE.MenuController();
 var MenuDictionary = new MenuDictionary();
 
 var _AudioManager = new AudioManager();
@@ -47,8 +45,8 @@ if ( annyang ) {
   // Let's define a command.
   var commands = {
     //TEST WITH LOCALHOST
-    'hello': function() { console.log('Hello world!'); }
-    /*
+    'hello': function() { console.log('Hello world!'); },
+    
     'volume up': MenuFunctionsManager.getChangeVolumeFunc(true),
     'apujar volum': MenuFunctionsManager.getChangeVolumeFunc(true),
     'subir volumen': MenuFunctionsManager.getChangeVolumeFunc(true),
@@ -59,7 +57,7 @@ if ( annyang ) {
     'bajar volumen': MenuFunctionsManager.getChangeVolumeFunc(false),
     'leiser': MenuFunctionsManager.getChangeVolumeFunc(false),
 
-    'play': function() { console.log('play') },
+    'play': MenuFunctionsManager.getPlayPauseFunc(true),
 
     'pause': MenuFunctionsManager.getPlayPauseFunc(false),
     'pausar': MenuFunctionsManager.getPlayPauseFunc(false),
@@ -82,8 +80,8 @@ if ( annyang ) {
     'subtitles off': MenuFunctionsManager.getOnOffFunc('subtitlesOnButton'),
     'desactivar subtituls': MenuFunctionsManager.getOnOffFunc('subtitlesOnButton'),
     'desactivar subtitulos': MenuFunctionsManager.getOnOffFunc('subtitlesOnButton'),
-    'untertitel aus': MenuFunctionsManager.getOnOffFunc('subtitlesOnButton'),
-
+    'untertitel aus': MenuFunctionsManager.getOnOffFunc('subtitlesOnButton')
+/*
     'open menu': MenuFunctionsManager.getOpenMenuFunc(true),
     'obrir menu': MenuFunctionsManager.getOpenMenuFunc(true),
     'abrir menu': MenuFunctionsManager.getOpenMenuFunc(true),

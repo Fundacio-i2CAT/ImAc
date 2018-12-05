@@ -118,7 +118,7 @@ THREE.InteractionsController = function () {
 			}
             freeInteractionState(500);
     	}
-        else if ( _isHMD && intersects[0] && interactionState && pointerState )
+        /*else if ( _isHMD && intersects[0] && interactionState && pointerState )
         {
             //console.error('intersect')
             if ( scene.getObjectByName( "pointer" ) ) scene.getObjectByName( "pointer" ).visible = true;
@@ -129,7 +129,7 @@ THREE.InteractionsController = function () {
     	{
     		// TODO
             if ( scene.getObjectByName( "pointer" ) ) scene.getObjectByName( "pointer" ).visible = false;
-    	}
+    	}*/
         /*else
         {
             var activeSecondaryMenuTrad = secMMgr.getActiveSecondaryMenuTrad();

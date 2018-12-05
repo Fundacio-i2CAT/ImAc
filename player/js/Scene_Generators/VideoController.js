@@ -25,11 +25,11 @@ VideoController = function() {
 
     function setBitrateLimitationsFor(player)
     {
-    	if ( window.screen.availWidth <= 1920 ) 
+    	if ( window.screen.width * window.devicePixelRatioh <= 1920 ) 
         {
             player.setMaxAllowedBitrateFor( 'video', 13000 );
         }
-        else if ( window.screen.availWidth <= 2300 ) 
+        else if ( window.screen.width * window.devicePixelRatio <= 2300 ) 
         {
             player.setMaxAllowedBitrateFor( 'video', 15000 );
         }

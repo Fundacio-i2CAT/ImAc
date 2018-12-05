@@ -216,7 +216,7 @@ THREE.MediaObjectData = function () {
         pointer1.position.z = -0.15
 
         pointer1.name = 'pointer2';
-        pointer1.visible = true;
+        pointer1.visible = false;
 
         scene.add( pointer1 );
     };

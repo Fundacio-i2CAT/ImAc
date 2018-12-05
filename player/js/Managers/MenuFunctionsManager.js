@@ -127,7 +127,7 @@ MenuFunctionsManager = function() {
     function getSignerPositionFunc(position)
     {       
         return function() {
-            subController.setSignerPosition( 1, position );
+            subController.setSignerPosition( position, -1 );
         }
     }
 
@@ -171,39 +171,31 @@ MenuFunctionsManager = function() {
 // Public Functions
 //************************************************************************************
 
-/*
-    this.getPlayPauseFunc = function(play, name)
+
+    this.getPlayPauseFunc = function(play)
     {
         return function() {
-            if (name) MenuManager.pressButtonFeedback( name );
             play ? VideoController.playAll() : VideoController.pauseAll();
-            setTimeout(function() { 
-                MenuController.playoutTimeDisplayLogic( VideoController.isPausedById(0) ); 
-            }, clickInteractionTimeout);
         }
     };
 
-    this.getSeekFunc = function(plus, name)
+    this.getSeekFunc = function(plus)
     {
         var sign = plus ? 1 : -1;
         return function() {
-            if (name) MenuManager.pressButtonFeedback( name );
             VideoController.seekAll( sign*seekTime );
-            MenuController.playoutTimeDisplayLogic( true );
         }
     };
 
-    this.getChangeVolumeFunc = function(plus, name)
+    this.getChangeVolumeFunc = function(plus)
     {
         var sign = plus ? 1 : -1;
         return function() {
-            if (name) MenuManager.pressButtonFeedback( name );
-            _AudioManager.changeVolume( sign*volumeChangeStep );
-            MenuController.volumeLevelDisplayLogic();
+            _AudioManager.changeVolume( sign * volumeChangeStep );
         }
     };
 
-*/
+
 
     this.getOnOffFunc = function(name)
     {

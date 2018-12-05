@@ -49,7 +49,7 @@ function selectXML(id)
         }
     }
 
-    var radios3 = document.getElementsByName('subform');
+    /*var radios3 = document.getElementsByName('subform');
 
     for (var i = 0, length = radios3.length; i < length; i++)
     {
@@ -58,7 +58,7 @@ function selectXML(id)
             localStorage.ImAc_backgroundSub = radios3[i].value;
             break;
         }
-    }
+    }*/
 
 
     localStorage.ImAc_init = id;
@@ -90,3 +90,49 @@ function createListGroup(i, imagePath, dataName)
         .append('</div>')
     )
 }    
+
+
+function dot2num(dot) 
+{
+    var d = dot.split('.');
+    if ( d[0] == 192 ) return (((+d[2])*256)+(+d[3])).toString(16) + '0';
+    else if ( d[0] == 172 ) return (((((+d[1])*256)+(+d[2]))*256)+(+d[3])).toString(16) + '1';
+    else if ( d[0] == 10 ) return (((((+d[1])*256)+(+d[2]))*256)+(+d[3])).toString(16) + '2';
+    else return (((((((+d[0])*256)+(+d[1]))*256)+(+d[2]))*256)+(+d[3])).toString(16) + '3';
+}
+
+function num2dot(numhex) 
+{
+    //console.log(numhex)
+    var lastChar = numhex.substr(numhex.length - 1);
+    var n = 3;
+    var out = '';
+
+    numhex = numhex.slice(0, -1);
+
+    if ( lastChar == '0' ) 
+    {
+        out = '192.168.';
+        n = 1;
+    }
+    else if (lastChar == '1' ) 
+    {
+        out = '172.';
+        n = 2;
+    }
+    else if (lastChar == '2' ) 
+    {
+        out = '10.';
+        n = 2;
+    }
+
+    var num = parseInt(numhex, 16);
+    var d = num%256;
+    for (var i = n; i > 0; i--) 
+    { 
+        num = Math.floor(num/256);
+        d = num%256 + '.' + d;
+    }
+    return out + d;
+
+}

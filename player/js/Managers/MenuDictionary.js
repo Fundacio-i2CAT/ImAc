@@ -67,6 +67,8 @@ MenuDictionary = function() {
     //                   ||                        ||                        ||                        ||                        ||
         large:           { ca: 'Gran'              , de: 'Groß'              , en: 'Large'             , es: 'Grande'            },
     //                   ||                        ||                        ||                        ||                        ||
+        left:            { ca: 'Esquerra'          , de: 'Links'             , en: 'Left'              , es: 'Izquierda'         },
+    //                   ||                        ||                        ||                        ||                        ||
         medium:          { ca: 'Mitjana'           , de: 'Mittel'            , en: 'Medium'            , es: 'Mediana'           },
     //                   ||                        ||                        ||                        ||                        ||
         menutype:        { ca: 'Tipus menú'        , de: 'Menütyp'           , en: 'Menu type'         , es: 'Tipo menú'         },
@@ -88,6 +90,8 @@ MenuDictionary = function() {
         prespective:     { ca: 'Prespectiva'       , de: 'Prespective'       , en: 'Prespective'       , es: 'Prespectiva'       },
     //                   ||                        ||                        ||                        ||                        ||
         radar:           { ca: 'Radar'             , de: 'Radar'             , en: 'Radar'             , es: 'Radar'             },
+    //                   ||                        ||                        ||                        ||                        ||
+        right:           { ca: 'Dreta'             , de: 'Richtig'           , en: 'Right'             , es: 'Derecha'           },
     //                   ||                        ||                        ||                        ||                        ||
         semitrans:       { ca: 'Semi-Trans'        , de: 'Kasten'            , en: 'Semi-Trans'        , es: 'Semi-Trans'        },
     //                   ||                        ||                        ||                        ||                        ||

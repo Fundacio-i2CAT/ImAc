@@ -46,12 +46,14 @@ function runDemo()
             VideoController.playAll();
             scene.remove(xy)
             camera.remove(xz);
-            (localStorage.ImAc_backgroundSub == "outline") ? subController.setSubBackground(0) : subController.setSubBackground(0.5);
+            //(localStorage.ImAc_backgroundSub == "outline") ? subController.setSubBackground(0) : subController.setSubBackground(0.5);
+            subController.setSubBackground(0.5);
         },6000);
     }
     else 
     {     
-        (localStorage.ImAc_backgroundSub == "outline") ? subController.setSubBackground(0) : subController.setSubBackground(0.5);
+        //(localStorage.ImAc_backgroundSub == "outline") ? subController.setSubBackground(0) : subController.setSubBackground(0.5);
+        subController.setSubBackground(0.5);
     }
 }
 

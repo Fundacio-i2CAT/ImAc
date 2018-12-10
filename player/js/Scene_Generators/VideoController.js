@@ -72,6 +72,67 @@ VideoController = function() {
         listOfVideoContents.push( objVideo );
     }
 
+    function getSTfromMPD()
+    {
+        return new Promise((resolve) => {
+
+            listOfVideoContents[0].dash.on( dashjs.MediaPlayer.events.PLAYBACK_STARTED, function() { 
+
+                var subtitleList = listOfVideoContents[0].dash.getTracksForTypeFromManifest('application');
+                var videoList = listOfVideoContents[0].dash.getTracksForTypeFromManifest('video');
+
+                if ( subtitleList && subtitleList.length > 0 )
+                {
+                    list_contents[demoId].subtitles = [];
+
+                    //var split = listOfVideoContents[0].dash.getSource().split("/")
+                    //var baseURL = split.slice(0, split.length - 1).join("/") + "/";
+                    var langlist = {};
+
+                    subtitleList.forEach( function( elem ) { 
+                        langlist[ MenuDictionary.translate( elem.lang ) ] = elem.baseUri + elem.baseURL;                
+                    } );
+
+                    list_contents[demoId].subtitles.push(langlist)
+                }
+
+                /*if ( videoList && videoList.length > 0 )
+                {
+                    var split = listOfVideoContents[0].dash.getSource().split("/")
+                    var baseURL = split.slice(0, split.length - 1).join("/") + "/";
+                    var langlist = {};
+
+                    videoList.forEach( function( elem ) { 
+                        if (elem.roles && elem.roles == 'sign' ) {
+                            console.log(elem)
+                            langlist[elem.lang] = baseURL + elem.id;
+                        }
+                    } );
+
+                    if ( langlist.length > 0 ) {
+                        console.error(langlist)
+                        list_contents[demoId].signer = [];
+                        list_contents[demoId].signer.push(langlist)
+                    }
+                }   */            
+
+                var lang = MenuDictionary.getMainLanguage();
+                var sublang = list_contents[demoId].subtitles[0][lang] ? lang : Object.keys(list_contents[demoId].subtitles[0])[0];
+                var siglang = list_contents[demoId].signer[0][lang] ? lang : Object.keys(list_contents[demoId].signer[0])[0];
+
+                subController.setSubtitle( list_contents[demoId].subtitles[0][sublang], sublang );
+                subController.setSignerContent( list_contents[demoId].signer[0][siglang], siglang );
+
+                subController.setSubtitleLanguagesArray( list_contents[demoId].subtitles[0] );
+                subController.setSignerLanguagesArray( list_contents[demoId].signer[0] );
+
+                
+                resolve( 'ok' );
+            } );
+            
+        });
+    }
+
 //************************************************************************************
 // Public Functions
 //************************************************************************************
@@ -175,6 +236,13 @@ VideoController = function() {
 
     this.init = function()
     {
+        getSTfromMPD().then(( str ) => { 
+            subController.enableSubtitles();
+            createMenus();
+//console.error(str)
+        
+
+        //subController.enableSubtitles();
 
         listOfVideoContents[0].vid.ontimeupdate = function() 
         {
@@ -184,6 +252,6 @@ VideoController = function() {
                 vpbCtrl.updatePlayProgressBar();  
                 playpauseCtrl.updatePlayOutTime();   
             }
-        };
+        }; });
     };
 }

@@ -66,7 +66,7 @@ SubSignManager = function() {
 	var subLang; // string (en, de, ca, es)
 	var subBackground = 0.5; // semi-transparent = 0.5, outline = 0
 	var subEasy = false; // boolean
-	var subArea = 50; // small = 50, medium = 60, large = 70
+	var subArea = 70; // small = 50, medium = 60, large = 70
 	var subAvailableLang = []; // Array { name, value, default:bool }
 
 	// [SL] signer vars

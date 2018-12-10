@@ -21,7 +21,7 @@ InteractiveElementModel.prototype.create = function()
 
 		case "icon":
 		default:
-			return createImageIE(this)
+			return createImageIE(this);
 
 		case "text":
 			return createTextIE(this);

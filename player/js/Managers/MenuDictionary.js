@@ -131,9 +131,14 @@ MenuDictionary = function() {
     //                   ||                              ||                              ||                              ||                              ||
         ast:             { ca: imgURL + 'AST.png'        , de: imgURL + 'VO.png'         , en: imgURL + 'AST.png'        , es: imgURL + 'AST.png'        },
     //                   ||                              ||                              ||                              ||                              ||
-        ast_strike:      { ca: imgURL + 'AST_strike.png' , de: imgURL + 'VO_strike.png'  , en: imgURL + 'AST_strike.png' , es: imgURL + 'AST_strike.png' }
+        ast_strike:      { ca: imgURL + 'AST_strike.png' , de: imgURL + 'VO_strike.png'  , en: imgURL + 'AST_strike.png' , es: imgURL + 'AST_strike.png' },
     //                   ||                              ||                              ||                              ||                              ||
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        eng:             { ca: 'en'        , de: 'en'        , en: 'en'        , es: 'en'        },
+        esp:             { ca: 'es'        , de: 'es'        , en: 'es'        , es: 'es'        },
+        cat:             { ca: 'ca'        , de: 'ca'        , en: 'ca'        , es: 'ca'        },
+        ger:             { ca: 'de'        , de: 'de'        , en: 'de'        , es: 'de'        }
 
     }
    

@@ -102,13 +102,13 @@ THREE.InteractionsController = function () {
                     break;
                 }
                 
-                else if ( intersects[inter].object.type == 'Mesh' &&  intersects[inter].object.parent.name === 'video-progress-bar') 
+                else if ( intersects[inter].object.type == 'Mesh' && intersects[inter].object.parent && intersects[inter].object.parent.name === 'video-progress-bar') 
                 {
                     vpbCtrl.onClickSeek(mouse3D)
                     break;
                 }
 
-                else if ( intersects[inter].object.type == 'Mesh' && intersects[inter].object.name) 
+                else if ( intersects[inter].object.type == 'Mesh' && intersects[inter].object.name && intersects[inter].object.parent ) 
 	        	{
 					intersectedShapeId = intersects[inter].object.name;
 					console.error(intersectedShapeId);
@@ -118,31 +118,6 @@ THREE.InteractionsController = function () {
 			}
             freeInteractionState(500);
     	}
-        /*else if ( _isHMD && intersects[0] && interactionState && pointerState )
-        {
-            //console.error('intersect')
-            if ( scene.getObjectByName( "pointer" ) ) scene.getObjectByName( "pointer" ).visible = true;
-            //pointerState = false;
-            //freePointerState(600);
-        }
-    	else if ( _isHMD && pointerState )
-    	{
-    		// TODO
-            if ( scene.getObjectByName( "pointer" ) ) scene.getObjectByName( "pointer" ).visible = false;
-    	}*/
-        /*else
-        {
-            var activeSecondaryMenuTrad = secMMgr.getActiveSecondaryMenuTrad();
-            if(activeSecondaryMenuTrad)
-            {
-                activeSecondaryMenuTrad.buttons.forEach(function(elem){
-                    interController.removeInteractiveObject(elem);
-                }); 
-              camera.remove(camera.getObjectByName(activeSecondaryMenuTrad.name));
-              //subController.switchSigner( interController.getSignerActive() );
-                
-            } 
-        }*/
 	};
 
     this.checkVRInteraction = function(origin, direction) 

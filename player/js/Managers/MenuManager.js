@@ -13,8 +13,8 @@ function MenuManager() {
     
     this.Init = function(type)
     {
-        subController.setSubtitleLanguagesArray(list_contents[demoId].subtitles[0]);
-        subController.setSignerLanguagesArray(list_contents[demoId].signer[0]);
+        //subController.setSubtitleLanguagesArray(list_contents[demoId].subtitles[0]);
+        //subController.setSignerLanguagesArray(list_contents[demoId].signer[0]);
 
         menuWidth = 125;
         menuHeight = 125*9/16;
@@ -540,15 +540,15 @@ function MenuManager() {
         playpausemenu.add(seekForwardButton.create());
 
         var playouttime = new InteractiveElementModel();
-        playouttime.width = 35;
-        playouttime.height = 35;
+        playouttime.width = 0.3;
+        playouttime.height = 0.3;
         playouttime.name = 'playOutTime';
         playouttime.type =  'text';
         playouttime.value = '00:00 / 00:00';
         playouttime.color = 0xffffff;
         playouttime.textSize =  1.5;
         playouttime.position = new THREE.Vector3(-(tradmenuDivisions-17)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
-        
+            
         playpausemenu.add(playouttime.create());
 
         // Create the closeMenuButton by loading a new InteractiveElement model and ijecting the closeMenuButtonData

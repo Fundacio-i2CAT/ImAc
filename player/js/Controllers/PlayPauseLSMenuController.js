@@ -70,7 +70,7 @@ function PlayPauseLSMenuController() {
     function AddInteractivityToMenuElements()
     {
     	viewStructure.children.forEach(function(intrElement){
-    		if(intrElement.visible)
+    		if(intrElement.visible && intrElement.children.length > 0 )
     		{
     			interController.addInteractiveObject(intrElement);
     		}

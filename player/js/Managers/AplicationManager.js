@@ -107,7 +107,6 @@ function AplicationManager()
 
     this.init = function()
     {
-		//blockContainer();
         console.log('Init AplicationManager')
 			
 		var container = document.getElementById( 'container' );
@@ -121,16 +120,13 @@ function AplicationManager()
 
 		_moData.createOpenMenuMesh();
 
-        //moData.createSphericalVideoInScene( mainContentURL, 'contentsphere' );
         scene.add( _moData.getSphericalVideoMesh( 100, mainContentURL, 'contentsphere' ) )
-		_moData.createCastShadows();
+		//_moData.createCastShadows();
 
         if ( 'getVRDisplays' in navigator ) {
 
         	document.body.appendChild( createVRButton_1( renderer ) );
         	document.body.appendChild( createVRButton_2( renderer ) );
-
-        	//startAllVideos(); 
 
         	navigator.getVRDisplays().then( function ( displays ) 
         	{
@@ -138,14 +134,12 @@ function AplicationManager()
 				renderer.vr.enabled = true;
 				activateLogger();
 				renderer.animate( render );
-				//VideoController.playAll();
 			} );
         }
         else alert("This browser don't support VR content");
 
         initReticulum( camera );
 
-        //callback();
-        runDemo()
+        runDemo();
 	};
 }

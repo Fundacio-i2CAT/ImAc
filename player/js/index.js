@@ -34,6 +34,8 @@ let SettingsOptionCtrl;
 
 var loggerActivated = false;
 
+var sessionId = Date.now();
+
 var demoId = 1;
 
 var mainContentURL = './resources/rapzember-young-hurn_edit.mp4';

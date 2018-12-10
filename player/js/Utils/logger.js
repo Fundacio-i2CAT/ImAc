@@ -33,7 +33,7 @@ var StatElements = function ()
 	this.messageType = "INFO";
 	this.date = Date.now();
 	//this.deviceId = 1;
-	//this.sessionId = 2;
+	this.sessionId = sessionId;
 	//this.contentId = 3;
 
 	this.mediaTime = videoElement.vid.currentTime;

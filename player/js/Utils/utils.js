@@ -30,6 +30,8 @@ function cartesianToAngular (x, y, z)
     if (lon <= 0) lon += 360;
     lon = 360 - lon;
 
+    if (lat < 0) lat += 360;
+
     var outAng = {
         latitud : lat,
         longitud : lon,
@@ -122,7 +124,7 @@ function createVRButton_1(renderer)
             display.isPresenting ? display.exitPresent() : display.requestPresent( [ { source: renderer.domElement } ] ).then(
                 function () { 
                     _isHMD = true;  
-                    createMenus();                      
+                    //createMenus();                      
                 });
         };
         renderer.vr.setDevice( display );
@@ -140,7 +142,8 @@ function createVRButton_1(renderer)
     navigator.getVRDisplays().then( function ( displays ) 
     {
         AplicationManager.setDisplays( displays );
-        displays.length > 0 ? showEnterVR( displays[ 0 ] ) : createMenus();
+        //displays.length > 0 ? showEnterVR( displays[ 0 ] ) : createMenus();
+        if ( displays.length > 0 ) showEnterVR( displays[ 0 ] )
     });
 
     AplicationManager.setVRButton1( button );
@@ -162,7 +165,7 @@ function createVRButton_2(renderer)
             AplicationManager.disableVRButtons();
             VideoController.playAll();     
             _isHMD = false; 
-            createMenus();
+            //createMenus();
         };
     }
 
@@ -180,7 +183,7 @@ function createVRButton_2(renderer)
     return button;
 }
 
-function createMenus ()
+function createMenus()
 {
     switch ( localStorage.ImAc_menuType )
     {

@@ -238,7 +238,7 @@ VideoController = function() {
     {
         getSTfromMPD().then(( str ) => { 
             subController.enableSubtitles();
-            createMenus();
+            //createMenus();
 //console.error(str)
         
 

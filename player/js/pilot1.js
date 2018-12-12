@@ -26,7 +26,7 @@ function runDemo()
     //subController.setSignerContent( list_contents[demoId].signer[0][siglang], siglang );
 
     //VideoController.playAll();
-    VideoController.init();
+    //VideoController.init();
 
     if ( !document.cookie.includes('ImAcCookie') )
     {

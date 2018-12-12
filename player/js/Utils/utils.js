@@ -124,7 +124,7 @@ function createVRButton_1(renderer)
             display.isPresenting ? display.exitPresent() : display.requestPresent( [ { source: renderer.domElement } ] ).then(
                 function () { 
                     _isHMD = true;  
-                    //createMenus();                      
+                    createMenus();                      
                 });
         };
         renderer.vr.setDevice( display );
@@ -142,8 +142,8 @@ function createVRButton_1(renderer)
     navigator.getVRDisplays().then( function ( displays ) 
     {
         AplicationManager.setDisplays( displays );
-        //displays.length > 0 ? showEnterVR( displays[ 0 ] ) : createMenus();
-        if ( displays.length > 0 ) showEnterVR( displays[ 0 ] )
+        displays.length > 0 ? showEnterVR( displays[ 0 ] ) : createMenus();
+        //if ( displays.length > 0 ) showEnterVR( displays[ 0 ] )
     });
 
     AplicationManager.setVRButton1( button );
@@ -165,7 +165,7 @@ function createVRButton_2(renderer)
             AplicationManager.disableVRButtons();
             VideoController.playAll();     
             _isHMD = false; 
-            //createMenus();
+            createMenus();
         };
     }
 

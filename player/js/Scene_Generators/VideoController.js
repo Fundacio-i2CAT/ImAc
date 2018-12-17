@@ -125,7 +125,7 @@ VideoController = function() {
 
                 subController.setSubtitleLanguagesArray( list_contents[demoId].subtitles[0] );
 
-                if ( list_contents[demoId].signer ) 
+                if ( list_contents[demoId].signer && list_contents[demoId].signer[0] ) 
                 {
                     var siglang = list_contents[demoId].signer[0][lang] ? lang : Object.keys(list_contents[demoId].signer[0])[0];
                     subController.setSignerContent( list_contents[demoId].signer[0][siglang], siglang );

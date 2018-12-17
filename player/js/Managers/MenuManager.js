@@ -825,6 +825,20 @@ function MenuManager() {
         menu.position.set( 0, 0, -69 );
         menu.name = name;
 
+        var previewMenuButton = new InteractiveElementModel();
+        previewMenuButton.width = 8;
+        previewMenuButton.height = 8;
+        previewMenuButton.name = 'previewMenuButton';
+        previewMenuButton.type=  'icon';
+        previewMenuButton.value = './img/menu/preview.png';
+        previewMenuButton.color = 0xffffff;
+        previewMenuButton.visible = true;
+        previewMenuButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(previewMenuButton.width, previewMenuButton.height), new THREE.MeshBasicMaterial({visible:  false}));
+        previewMenuButton.onexecute =  function(){ console.log('Preview menu button clicked') };
+        previewMenuButton.position = new THREE.Vector3(-57, 30, 0.01);
+
+        menu.add(previewMenuButton.create());
+
         // Create the closeMenuButton by loading a new InteractiveElement model and ijecting the closeMenuButtonData
         var closeMenuButton = new InteractiveElementModel();
         closeMenuButton.width = 10;

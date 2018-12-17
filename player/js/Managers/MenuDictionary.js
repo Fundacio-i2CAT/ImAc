@@ -138,7 +138,17 @@ MenuDictionary = function() {
         eng:             { ca: 'en'        , de: 'en'        , en: 'en'        , es: 'en'        },
         esp:             { ca: 'es'        , de: 'es'        , en: 'es'        , es: 'es'        },
         cat:             { ca: 'ca'        , de: 'ca'        , en: 'ca'        , es: 'ca'        },
-        ger:             { ca: 'de'        , de: 'de'        , en: 'de'        , es: 'de'        }
+        ger:             { ca: 'de'        , de: 'de'        , en: 'de'        , es: 'de'        },
+
+        en_gb:             { ca: 'en'        , de: 'en'        , en: 'en'        , es: 'en'        },
+        es_es:             { ca: 'es'        , de: 'es'        , en: 'es'        , es: 'es'        },
+        ca_es:             { ca: 'ca'        , de: 'ca'        , en: 'ca'        , es: 'ca'        },
+        de_de:             { ca: 'de'        , de: 'de'        , en: 'de'        , es: 'de'        },
+
+        engb:             { ca: 'en'        , de: 'en'        , en: 'en'        , es: 'en'        },
+        eses:             { ca: 'es'        , de: 'es'        , en: 'es'        , es: 'es'        },
+        caes:             { ca: 'ca'        , de: 'ca'        , en: 'ca'        , es: 'ca'        },
+        dede:             { ca: 'de'        , de: 'de'        , en: 'de'        , es: 'de'        }
 
     }
    

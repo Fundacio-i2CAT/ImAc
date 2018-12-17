@@ -142,13 +142,20 @@ function createVRButton_1(renderer)
     navigator.getVRDisplays().then( function ( displays ) 
     {
         AplicationManager.setDisplays( displays );
-        displays.length > 0 ? showEnterVR( displays[ 0 ] ) : createMenus();
+        displays.length > 0 ? showEnterVR( displays[ 0 ] ) : createDelayedMenu();
         //if ( displays.length > 0 ) showEnterVR( displays[ 0 ] )
     });
 
     AplicationManager.setVRButton1( button );
 
     return button;
+}
+
+function createDelayedMenu()
+{
+    setTimeout(function(){
+        createMenus()
+    },1000);
 }
 
 function createVRButton_2(renderer)

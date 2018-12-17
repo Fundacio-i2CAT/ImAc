@@ -90,7 +90,7 @@ VideoController = function() {
                     var langlist = {};
 
                     subtitleList.forEach( function( elem ) { 
-                        langlist[ MenuDictionary.translate( elem.lang ) ] = elem.baseURL;                
+                        langlist[ MenuDictionary.translate( elem.lang ) ] = /*elem.baseUri + */elem.baseURL;                
                     } );
 
                     list_contents[demoId].subtitles.push(langlist)

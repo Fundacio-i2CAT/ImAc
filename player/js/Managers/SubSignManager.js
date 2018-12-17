@@ -889,8 +889,11 @@ SubSignManager = function() {
 
 	this.switchSigner = function(enable)
 	{
-		signEnabled = enable;
-		enable ? createSigner() : removeSignVideo();
+		if ( signAvailableLang.length > 0 )
+		{
+			signEnabled = enable;
+			enable ? createSigner() : removeSignVideo();
+		}		
 	};
 
 	this.updateRadar = function()

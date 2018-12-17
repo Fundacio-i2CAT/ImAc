@@ -90,7 +90,7 @@ VideoController = function() {
                     var langlist = {};
 
                     subtitleList.forEach( function( elem ) { 
-                        langlist[ MenuDictionary.translate( elem.lang ) ] = elem.baseUri + elem.baseURL;                
+                        langlist[ MenuDictionary.translate( elem.lang ) ] = elem.baseURL;                
                     } );
 
                     list_contents[demoId].subtitles.push(langlist)
@@ -114,17 +114,23 @@ VideoController = function() {
                         list_contents[demoId].signer = [];
                         list_contents[demoId].signer.push(langlist)
                     }
-                }   */            
+                }   */   
+
+                      
 
                 var lang = MenuDictionary.getMainLanguage();
                 var sublang = list_contents[demoId].subtitles[0][lang] ? lang : Object.keys(list_contents[demoId].subtitles[0])[0];
-                var siglang = list_contents[demoId].signer[0][lang] ? lang : Object.keys(list_contents[demoId].signer[0])[0];
 
                 subController.setSubtitle( list_contents[demoId].subtitles[0][sublang], sublang );
-                subController.setSignerContent( list_contents[demoId].signer[0][siglang], siglang );
 
                 subController.setSubtitleLanguagesArray( list_contents[demoId].subtitles[0] );
-                subController.setSignerLanguagesArray( list_contents[demoId].signer[0] );
+
+                if ( list_contents[demoId].signer ) 
+                {
+                    var siglang = list_contents[demoId].signer[0][lang] ? lang : Object.keys(list_contents[demoId].signer[0])[0];
+                    subController.setSignerContent( list_contents[demoId].signer[0][siglang], siglang );
+                    subController.setSignerLanguagesArray( list_contents[demoId].signer[0] );
+                }  
 
                 
                 resolve( 'ok' );
@@ -244,14 +250,15 @@ VideoController = function() {
 
         //subController.enableSubtitles();
 
-        listOfVideoContents[0].vid.ontimeupdate = function() 
-        {
-            subController.updateSubtitleByTime( listOfVideoContents[0].vid.currentTime );
-            if( scene.getObjectByName( "video-progress-bar" ) && scene.getObjectByName( "video-progress-bar" ).visible )
+            listOfVideoContents[0].vid.ontimeupdate = function() 
             {
-                vpbCtrl.updatePlayProgressBar();  
-                playpauseCtrl.updatePlayOutTime();   
-            }
-        }; });
+                subController.updateSubtitleByTime( listOfVideoContents[0].vid.currentTime );
+                if( scene.getObjectByName( "video-progress-bar" ) && scene.getObjectByName( "video-progress-bar" ).visible )
+                {
+                    vpbCtrl.updatePlayProgressBar();  
+                    playpauseCtrl.updatePlayOutTime();   
+                }
+            }; 
+        });
     };
 }

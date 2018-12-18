@@ -143,6 +143,24 @@ function MenuManager() {
         actualCtrl = controller;
     }
 
+    this.Preview = function()
+    {
+        //CREATE NEW SUBTITLES SHOWING IN TEXT THE OPTIONS OF SIZE. THIS IS ANS EXAMPLE OF BIG SUBTITLES.
+        console.log(subController.getSubtitleConfig());
+        var subMesh = scene.getObjectByName("subtitles");
+        if(subMesh) subMesh.visible = false;
+        
+        //subController.createSubAreaHelper();   This function shows the subtitles area for 1000ms
+
+        controllers.forEach(function(controller){
+            controller.Exit();
+        });
+        setTimeout(function()
+        {
+            actualCtrl.Init();
+        },2000); 
+    }
+
 /**
  * Resets the visibility to false in all the low sighted menus and shows the menu activation area
  *

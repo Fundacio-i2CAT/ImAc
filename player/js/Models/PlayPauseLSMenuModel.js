@@ -13,6 +13,7 @@ function PlayPauseLSMenuModel() {
 	this.isPlayOutTimeVisible;
 
 	this.closeMenuButtonFunc;
+	this.previewButtonFunc;
 
 	this.clickedButtonName;
 }

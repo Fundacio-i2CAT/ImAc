@@ -57,6 +57,8 @@ SubSignManager = function() {
 	var isExperimental = false;
 	var autoHMD = false;
 
+	var subConfig;
+
 	// [ST] subtitle vars 
 	var subtitleEnabled = false; // boolean
 	var subPosX = 0; // start = left = -1, center = 0, end = right = 1 
@@ -138,7 +140,7 @@ SubSignManager = function() {
 	      		var posZ = 75;
 	      		var esaySizeAjust = subEasy ? 1.25 : 1;
 
-	      		var conf = {
+	      		subConfig = {
 			        subtitleIndicator: subtitleIndicator,
 			        displayAlign: subPosY,
 			        textAlign: subPosX,
@@ -150,8 +152,10 @@ SubSignManager = function() {
 			        z: posZ
 			    };
 
+			    setSubtitleConfig(subConfig);
+
 	      		//createSubtitle( textList, conf );
-	      		isExperimental ? createExpSubtitle( textList, conf ) : createSubtitle( textList, conf );
+	      		isExperimental ? createExpSubtitle( textList, subConfig ) : createSubtitle( textList, subConfig );
 
 	      		if ( subtitleIndicator == 'radar' ) createSpeakerRadar( textList[0].color, isdImac );
 
@@ -306,6 +310,7 @@ SubSignManager = function() {
     function createSubtitle(textList, config)
     {
         subtitleMesh = _moData.getSubtitleMesh( textList, config );
+        subtitleMesh.name = "subtitles";
 
         camera.add( subtitleMesh );
     }
@@ -473,6 +478,10 @@ SubSignManager = function() {
 //************************************************************************************
 // Public Subtitle Getters
 //************************************************************************************
+	this.getSubtitleConfig = function()
+	{
+		return subConfig;
+	}
 
 	this.getSubtitleEnabled = function()
 	{
@@ -562,6 +571,14 @@ SubSignManager = function() {
     {
         return signAvailableLang;
     }; 
+
+//************************************************************************************
+// Private Subtitle Setters
+//************************************************************************************
+	function setSubtitleConfig(newConfig)
+	{
+		subConfig = newConfig;
+	}
 
 //************************************************************************************
 // Public Subtitle Setters

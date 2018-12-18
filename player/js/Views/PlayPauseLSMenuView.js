@@ -12,6 +12,8 @@ function PlayPauseLSMenuView() {
 		submenu.getObjectByName('forwardSeekButton').children[0].onexecute = data.seekForwardMenuButtonFunc;
 		submenu.getObjectByName('backSeekButton').children[0].onexecute = data.seekBackMenuButtonFunc;
 
+        if(submenu.getObjectByName('previewMenuButton')) submenu.getObjectByName('previewMenuButton').children[0].onexecute = data.previewButtonFunc;
+
 		if(submenu.getObjectByName('forwardMenuButton')) submenu.getObjectByName('forwardMenuButton').children[0].onexecute = data.forwardMenuButtonFunc;
 		if(submenu.getObjectByName('backMenuButton')) submenu.getObjectByName('backMenuButton').children[0].onexecute = data.backMenuButtonFunc;
 
@@ -26,7 +28,7 @@ function PlayPauseLSMenuView() {
     	var submenu = scene.getObjectByName(data.name);
         interController.removeInteractiveObject(data.clickedButtonName);
 
-        var sceneElement = submenu.getObjectByName(data.clickedButtonName)
+        var sceneElement = submenu.getObjectByName(data.clickedButtonName);
         var initScale = sceneElement.scale;
 
         sceneElement.material.color.set( menuButtonActiveColor );

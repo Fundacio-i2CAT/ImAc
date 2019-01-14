@@ -58,6 +58,7 @@ SubSignManager = function() {
 	var autoHMD = false;
 
 	var subConfig;
+	var signerConfig;
 
 	// [ST] subtitle vars 
 	var subtitleEnabled = false; // boolean
@@ -111,6 +112,24 @@ SubSignManager = function() {
 
 	function print3DText(isdContent, isdImac) 
 	{
+		var latitud = subPosY == 1 ? 30 * subArea/100 : -30 * subArea/100; 
+  		var posY = _isHMD && !isExperimental ? 80 * Math.sin( Math.radians( latitud ) ) : 135 * Math.sin( Math.radians( latitud ) );
+  		var subAjust = _isHMD ? 1 : 0.97;
+  		var posZ = 75;
+  		var esaySizeAjust = subEasy ? 1.25 : 1;
+
+  		subConfig = {
+	        subtitleIndicator: subtitleIndicator,
+	        displayAlign: subPosY,
+	        textAlign: subPosX,
+	        size: subSize * subAjust * esaySizeAjust,
+	        area: subArea/130,
+	        opacity: subBackground,
+	        x: 0,
+	        y: posY * 9/16,
+	        z: posZ
+	    };
+
 	  	if ( isdContent.contents.length > 0 )
 	  	{
 	    	var isdContentText = isdContent.contents[0].contents[0].contents[0].contents;
@@ -134,25 +153,9 @@ SubSignManager = function() {
 	    	{
 	      		removeSubtitle();
 
-	      		var latitud = subPosY == 1 ? 30 * subArea/100 : -30 * subArea/100; 
-	      		var posY = _isHMD && !isExperimental ? 80 * Math.sin( Math.radians( latitud ) ) : 135 * Math.sin( Math.radians( latitud ) );
-	      		var subAjust = _isHMD ? 1 : 0.97;
-	      		var posZ = 75;
-	      		var esaySizeAjust = subEasy ? 1.25 : 1;
+	      		
 
-	      		subConfig = {
-			        subtitleIndicator: subtitleIndicator,
-			        displayAlign: subPosY,
-			        textAlign: subPosX,
-			        size: subSize * subAjust * esaySizeAjust,
-			        area: subArea/130,
-			        opacity: subBackground,
-			        x: 0,
-			        y: posY * 9/16,
-			        z: posZ
-			    };
-
-			    setSubtitleConfig(subConfig);
+			    //Save subtitle configuration for preview visualitzation. 
 
 	      		//createSubtitle( textList, conf );
 	      		isExperimental ? createExpSubtitle( textList, subConfig ) : createSubtitle( textList, subConfig );
@@ -161,6 +164,7 @@ SubSignManager = function() {
 
 	      		textListMemory = textList;     
 	    	}   
+		    //setSubtitleConfig(subConfig);
 	  	}
 	  	else 
 	  	{
@@ -168,6 +172,7 @@ SubSignManager = function() {
 	    	removeSubtitle();
 	    	removeSpeakerRadar();
 	  	}
+
 	}
 
 	function checkSignIdicator(position)
@@ -287,6 +292,8 @@ SubSignManager = function() {
 			z: posZ
 		};
 
+		signerConfig = conf;
+
       	createSignVideo( signerContent, 'sign', conf );
       	VideoController.playAll();
 	}
@@ -301,6 +308,9 @@ SubSignManager = function() {
 		    var posX = _isHMD ? 60 * Math.sin( Math.radians( longitud ) ) * signArea/100 : 80 * Math.sin( Math.radians( longitud ) ) * signArea/100;
 		    var posY = 50 * Math.sin( Math.radians( latitud ) ) * signArea/100;
 		    var posZ = 76;
+
+		    signerConfig.x = posX;
+		    signerConfig.y = posY;
 
 		    scene.getObjectByName("sign").position.x = posX;
 		    scene.getObjectByName("sign").position.y = posY;
@@ -536,6 +546,10 @@ SubSignManager = function() {
 //************************************************************************************
 // Public Signer Getters
 //************************************************************************************
+	this.getSignerConfig = function()
+	{
+		return signerConfig;
+	}
 
 	this.getSignerEnabled = function()
 	{

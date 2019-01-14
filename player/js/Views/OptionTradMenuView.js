@@ -32,7 +32,6 @@ function OptionTradMenuView() {
 		        element.add(next);
             }
             submenu.getObjectByName('parentcolumndropdown').add(element)
-		
 		});
 		if(data.childColumnActiveOpt)
 		{

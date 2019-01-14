@@ -128,6 +128,7 @@ function SLOptionMenuController(menuType) {
 
                 data.backMenuButtonFunc = function(){ AddVisualFeedbackOnClick('backMenuButton', function(){ menuMgr.NavigateBackMenu()} )};
                 data.closeMenuButtonFunc = function(){ AddVisualFeedbackOnClick('closeMenuButton', function(){ menuMgr.ResetViews()} )};
+                data.previewButtonFunc = function(){ AddVisualFeedbackOnClick('previewMenuButton', function(){menuMgr.OpenPreview()} )};
                 break;
 
          // TRADITIONAL
@@ -196,7 +197,7 @@ function SLOptionMenuController(menuType) {
             dropdownIE.name = element.name;
             dropdownIE.type =  'text';
             dropdownIE.value = MenuDictionary.translate( element.value );
-            dropdownIE.color = 0xffffff;
+            dropdownIE.color = element.default ? 0xffff00 : 0xffffff;
             dropdownIE.textSize =  5;
             dropdownIE.visible = true;
             dropdownIE.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(dropdownIE.width, dropdownIE.height), new THREE.MeshBasicMaterial({visible:  false}));

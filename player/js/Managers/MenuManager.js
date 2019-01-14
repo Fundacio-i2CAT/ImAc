@@ -143,24 +143,6 @@ function MenuManager() {
         actualCtrl = controller;
     }
 
-    this.Preview = function()
-    {
-        //CREATE NEW SUBTITLES SHOWING IN TEXT THE OPTIONS OF SIZE. THIS IS ANS EXAMPLE OF BIG SUBTITLES.
-        console.log(subController.getSubtitleConfig());
-        var subMesh = scene.getObjectByName("subtitles");
-        if(subMesh) subMesh.visible = false;
-        
-        //subController.createSubAreaHelper();   This function shows the subtitles area for 1000ms
-
-        controllers.forEach(function(controller){
-            controller.Exit();
-        });
-        setTimeout(function()
-        {
-            actualCtrl.Init();
-        },2000); 
-    }
-
 /**
  * Resets the visibility to false in all the low sighted menus and shows the menu activation area
  *
@@ -188,7 +170,6 @@ function MenuManager() {
 
     this.createMenuActivationElement = function()
     {
-
         var geometry = new THREE.SphereGeometry( 99, 32, 16, Math.PI/2, Math.PI * 2,  2.35,  0.4 );
         geometry.scale( - 1, 1, 1 );
         //var material = new THREE.MeshBasicMaterial( {color: 0x13ec56, side: THREE.FrontSide, colorWrite: false});
@@ -279,6 +260,27 @@ function MenuManager() {
                 break;
             };
         }   
+    }
+
+    this.OpenPreview = function()
+    {
+        menuParent.add(createMultiOptionsPreviewStructure('multioptionspreview'));
+        multiOptionsPreviewCtrl = new MultiOptionsPreviewController(menuType);
+
+        controllers.forEach(function(controller){
+            controller.Exit();
+        });
+        multiOptionsPreviewCtrl.Init();
+        setTimeout(function()
+        {
+            multiOptionsPreviewCtrl.Exit();
+            actualCtrl.Init();
+            if(scene.getObjectByName("sign")) scene.getObjectByName("sign").visible = subController.getSignerEnabled();
+//            if(scene.getObjectByName("subtitles")) scene.getObjectByName("subtitles").visible = subController.getSignerEnabled();
+        },2000);
+
+        /*var subMesh = scene.getObjectByName("subtitles");
+        if(subMesh) subMesh.visible = false;*/
     }
 
     function resetMenuPosition(object)
@@ -389,6 +391,35 @@ function MenuManager() {
  *                                 V I E W     S T R U C T U R E S 
  *
  ******************************************************************************************************/
+    
+    function createMultiOptionsPreviewStructure(name)
+    {
+        var preview = new THREE.Group();
+        preview.name = name;
+
+        var subtitleMesh =  new THREE.Group();
+        subtitleMesh.name = 'subtitlespreview';
+
+        var subtitlesAreaMesh = new THREE.Group();
+        subtitlesAreaMesh.name = 'areapreview';
+
+        var signerMesh = new THREE.Group();
+        signerMesh.name = 'signerpreview';
+
+        preview.add(subtitleMesh);
+        preview.add(subtitlesAreaMesh);
+        preview.add(signerMesh);
+        
+        //CREATE NEW SUBTITLES SHOWING IN TEXT THE OPTIONS OF SIZE. THIS IS AN EXAMPLE OF BIG SUBTITLES.
+        var stMesh = scene.getObjectByName("subtitles");
+        if(stMesh) stMesh.visible = false;
+
+        var slMesh = scene.getObjectByName("sign");
+        if(slMesh) slMesh.visible = false;
+
+
+        return preview;
+    }
 
     function createTradMenuBaseViewStructure(name) 
     {

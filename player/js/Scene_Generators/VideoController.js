@@ -90,13 +90,13 @@ VideoController = function() {
                     var langlist = {};
 
                     subtitleList.forEach( function( elem ) { 
-                        langlist[ MenuDictionary.translate( elem.lang ) ] = /*elem.baseUri + */elem.baseURL;                
+                        langlist[ MenuDictionary.translate( elem.lang ) ] = elem.baseUri + elem.baseURL;                
                     } );
 
                     list_contents[demoId].subtitles.push(langlist)
                 }
 
-                /*if ( videoList && videoList.length > 0 )
+                if ( videoList && videoList.length > 0 )
                 {
                     var split = listOfVideoContents[0].dash.getSource().split("/")
                     var baseURL = split.slice(0, split.length - 1).join("/") + "/";
@@ -104,17 +104,16 @@ VideoController = function() {
 
                     videoList.forEach( function( elem ) { 
                         if (elem.roles && elem.roles == 'sign' ) {
-                            console.log(elem)
-                            langlist[elem.lang] = baseURL + elem.id;
+                            //console.warn(elem.id)
+                            langlist[ MenuDictionary.translate( elem.lang ) ] = elem.baseUri + elem.baseURL;
                         }
                     } );
 
-                    if ( langlist.length > 0 ) {
-                        console.error(langlist)
+                    if ( langlist && langlist != {} ) {
                         list_contents[demoId].signer = [];
-                        list_contents[demoId].signer.push(langlist)
+                        list_contents[demoId].signer.push( langlist );
                     }
-                }   */   
+                }     
 
                       
 

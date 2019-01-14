@@ -284,7 +284,7 @@ SubSignManager = function() {
 		};
 
       	createSignVideo( signerContent, 'sign', conf );
-      	VideoController.playAll();
+      	if ( !VideoController.isPausedById( 0 ) ) VideoController.playAll();
 	}
 
 	function updateSignerPosition()

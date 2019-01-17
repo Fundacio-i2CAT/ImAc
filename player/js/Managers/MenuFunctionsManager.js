@@ -93,16 +93,14 @@ MenuFunctionsManager = function() {
     function getAudioDescOnOffFunc(isEnabled)
     {       
         return function() {
-            //TODO AD functionality
-            console.warn('TODO AD functionality')
+            _AudioManager.switchAD( isEnabled );
         }
     }
 
     function getAudioSubOnOffFunc(isEnabled)
     {       
         return function() {
-            //TODO AST functionality
-            console.warn('TODO AST functionality')
+            _AudioManager.switchAST( isEnabled );
         }
     }
 
@@ -164,6 +162,42 @@ MenuFunctionsManager = function() {
         }
 
         return url;
+    }
+
+//************************************************************************************
+// Audio Description Functions
+//************************************************************************************
+
+    function getADLanguageFunc(url, lang)
+    {    
+        return function() {
+            _AudioManager.setADContent( url, lang );
+        }
+    }
+
+    function getADVolumeFunc(level)
+    {    
+        return function() {
+            _AudioManager.setVolume( 'AD', level );
+        }
+    }
+
+//************************************************************************************
+// Audio Subtitle Functions
+//************************************************************************************
+
+    function getASTLanguageFunc(url, lang)
+    {    
+        return function() {
+            _AudioManager.setASTContent( url, lang );
+        }
+    }
+
+    function getASTVolumeFunc(level)
+    {    
+        return function() {
+            _AudioManager.setVolume( 'AST', level );
+        }
     }
 
 
@@ -339,16 +373,16 @@ MenuFunctionsManager = function() {
 
         // Audio Description
             case "adEngButton":
-                return;
+                return getADLanguageFunc( list_contents[demoId].ad[0]['en'], 'en' );
 
             case "adEspButton":
-                return;
+                return getADLanguageFunc( list_contents[demoId].ad[0]['es'], 'es' );
 
             case "adGerButton":
-                return;
+                return getADLanguageFunc( list_contents[demoId].ad[0]['de'], 'de' );
 
             case "adCatButton":
-                return;
+                return getADLanguageFunc( list_contents[demoId].ad[0]['ca'], 'ca' );
 
             case "adPrespectiveButton":
                 return;
@@ -362,24 +396,42 @@ MenuFunctionsManager = function() {
             case "adPanoramaButton":
                 return;
 
-        // Audio Description
+            case 'adVolumeLowButton':
+                return getADVolumeFunc( 10 );
+
+            case 'adVolumeMidButton':
+                return getADVolumeFunc( 50 );
+
+            case 'adVolumeMaxButton':
+                return getADVolumeFunc( 100 );
+
+        // Audio Subtitles
             case "astEngButton":
-                return;
+                return getASTLanguageFunc( list_contents[demoId].ast[0]['en'], 'en' );
 
             case "astEspButton":
-                return;
+                return getASTLanguageFunc( list_contents[demoId].ast[0]['es'], 'es' );
 
             case "astGerButton":
-                return;
+                return getASTLanguageFunc( list_contents[demoId].ast[0]['de'], 'de' );
 
             case "astCatButton":
-                return;
+                return getASTLanguageFunc( list_contents[demoId].ast[0]['ca'], 'ca' );
 
             case "astEasyOn":
                 return;
 
             case "astEasyOff":
                 return;
+
+            case 'astVolumeLowButton':
+                return getASTVolumeFunc( 10 );
+
+            case 'astVolumeMidButton':
+                return getASTVolumeFunc( 50 );
+
+            case 'astVolumeMaxButton':
+                return getASTVolumeFunc( 100 );
 
         // Settings
             case "settingsLanguageEngButton":

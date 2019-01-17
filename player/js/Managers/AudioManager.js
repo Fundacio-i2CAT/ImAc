@@ -12,6 +12,28 @@ AudioManager = function() {
         isAmbisonics,
         activeVideoElement;  // Video element been reproduced.
 
+    var foaRendererList = [];  // [0] ==> AD foaRenderer,  [1] ==> AST foaRenderer
+    
+    // [AD] audio description vars 
+    var _AD;  // AD audio element
+    var adContent; // URL
+    var adVolume = 50; // Integer: Volume percentage
+    var adEnabled = false; // boolean
+    var adLang; // string (en, de, ca, es)
+    var adAvailableLang = []; // Array { name, value, default:bool }
+    var adPresentation;
+
+    // [AST] audio subtitles vars 
+    var _AST;  
+    var astContent; // URL
+    var astVolume = 50; // Integer: Volume percentage
+    var astEnabled = false; // boolean
+    var astLang; // string (en, de, ca, es)
+    var astAvailableLang = []; // Array { name, value, default:bool }
+    var astEasy = false; // boolean
+
+
+
     function getFOARenderer(audioContext)
     {
         return Omnitone.createFOARenderer( audioContext, { hrirPathList: audioResources_order_1 } );
@@ -24,7 +46,13 @@ AudioManager = function() {
 
     function updateMatrix4(m)
     {
-        if (foaRenderer) foaRenderer.setRotationMatrix4( m );
+        if ( foaRenderer ) foaRenderer.setRotationMatrix4( m );
+
+        if ( foaRendererList.length > 0 ) {
+            foaRendererList.forEach( function( elem ) { 
+                if (elem) elem.setRotationMatrix4( m );
+            });
+        }
     }
 
     this.initAmbisonicResources = function()
@@ -51,9 +79,7 @@ AudioManager = function() {
         var audioContext = new AudioContext();
 
         activeVideoElement = videoElement;
-
         activeVideoElement.volume = 0.5; // Start volume level in 0.5 
-
         videoElement.muted = false;
 
         var videoElementSource = audioContext.createMediaElementSource( videoElement );
@@ -132,10 +158,218 @@ AudioManager = function() {
     this.removeAudio = function()
     {
         foaRenderer = undefined;
-    }
+    };
 
     this.isAudioMuted = function()
     {
         return isMuted;
+    };
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    function initAdditionAudio(id, object)
+    {
+        //_AD.src = 'http://192.168.10.128:8080/dash/prova/32/Nightcore.mp3';
+        //_AD.src = 'http://192.168.10.128:8080/test8/Liceu/AmbiX-1er_Orquestra_Cam_01.wav';
+
+        // Create AudioContext, MediaElementSourceNode and FOARenderer.
+        var audioContext = new AudioContext();
+        var audioElementSource = audioContext.createMediaElementSource( object );
+        var foaRenderer_ = getFOARenderer( audioContext );
+
+        foaRendererList[id] = foaRenderer_;
+
+        // Make connection and start play.
+        foaRenderer_.initialize().then(function() {
+            audioElementSource.connect(foaRenderer_.input);
+            foaRenderer_.output.connect(audioContext.destination);
+            object.play();
+            updateMatrix4( camera.matrixWorld.elements )
+        });
+
+    };
+
+    function addAudio(type)
+    {
+        if ( type == 'AD' )
+        {       
+            if ( foaRendererList[0] ) removeAudio( type );
+
+            _AD = document.createElement('audio');
+            _AD.src = adContent;
+            _AD.volume = adVolume/100;
+
+            initAdditionAudio( 0, _AD );
+        }
+        else if ( type == 'AST' )
+        {          
+            if ( foaRendererList[1] ) removeAudio( type );
+
+            _AST = document.createElement('audio');
+            _AST.src = astContent;
+            _AST.volume = astVolume/100;
+
+            initAdditionAudio( 1, _AST );
+        }
+    };
+
+    function removeAudio(type)
+    {
+        if ( type == 'AD' )
+        {
+            foaRendererList[0] = undefined;
+            _AD.setAttribute('src', ''); 
+        }
+        else if ( type == 'AST' )
+        {
+            foaRendererList[1] = undefined;
+            _AST.setAttribute('src', ''); 
+        }     
     }
+
+    this.switchAD = function(enable)
+    {
+        // protection condition ???
+            adEnabled = enable;
+            enable ? addAudio( 'AD' ) : removeAudio( 'AD' );
+        
+    };
+
+    this.switchAST = function(enable)
+    {
+        // protection condition ???
+            astEnabled = enable;
+            enable ? addAudio( 'AST' ) : removeAudio( 'AST' );
+        
+    };
+
+    this.setADContent = function(url, lang)
+    {
+        adContent = url;
+        adLang = lang;
+        if ( adEnabled ) addAudio( 'AD' );
+    };  
+
+    this.setASTContent = function(url, lang)
+    {
+        astContent = url;
+        astLang = lang;
+        if ( astEnabled ) addAudio( 'AST' );
+    }; 
+
+    this.setADLanguagesArray = function(subList)
+    {
+        adAvailableLang = [];
+
+        if ( subList['en'] ) 
+        {
+            adAvailableLang.push(
+            {
+                name: 'adEngButton', 
+                value: 'en', 
+                default: ( 'en' == adLang )
+            } );
+        }
+        if ( subList['de'] ) 
+        {
+            adAvailableLang.push(
+            {
+                name: 'adGerButton', 
+                value: 'de', 
+                default: ( 'de' == adLang )
+            } );
+        }
+        if ( subList['es'] ) 
+        {
+            adAvailableLang.push(
+            {
+                name: 'adEspButton', 
+                value: 'es', 
+                default: ( 'es' == adLang )
+            } );
+        }
+        if ( subList['ca'] ) 
+        {
+            adAvailableLang.push(
+            {
+                name: 'adCatButton', 
+                value: 'ca', 
+                default: ( 'ca' == adLang )
+            } );
+        }
+    };
+
+    this.setASTLanguagesArray = function(subList)
+    {
+        astAvailableLang = [];
+
+        if ( subList['en'] ) 
+        {
+            astAvailableLang.push(
+            {
+                name: 'astEngButton', 
+                value: 'en', 
+                default: ( 'en' == astLang )
+            } );
+        }
+        if ( subList['de'] ) 
+        {
+            astAvailableLang.push(
+            {
+                name: 'astGerButton', 
+                value: 'de', 
+                default: ( 'de' == astLang )
+            } );
+        }
+        if ( subList['es'] ) 
+        {
+            astAvailableLang.push(
+            {
+                name: 'astEspButton', 
+                value: 'es', 
+                default: ( 'es' == astLang )
+            } );
+        }
+        if ( subList['ca'] ) 
+        {
+            astAvailableLang.push(
+            {
+                name: 'astCatButton', 
+                value: 'ca', 
+                default: ( 'ca' == astLang )
+            } );
+        }
+    };
+
+    this.getADLanguagesArray = function()
+    {
+        return adAvailableLang;
+    };
+
+    this.getASTLanguagesArray = function()
+    {
+        return astAvailableLang;
+    };
+
+    this.setVolume = function( type, level )
+    {
+        if ( type == 'AD' )
+        {
+            adVolume = level;
+            _AD.volume = adVolume/100;
+        }
+        else if ( type == 'AST' )
+        {
+            astVolume = level;
+            _AST.volume = astVolume/100;
+        }
+    }
+
+    this.getADEnabled = function() {
+        return adEnabled;
+    };
+
+    this.getASTEnabled = function() {
+        return astEnabled;
+    };
 }

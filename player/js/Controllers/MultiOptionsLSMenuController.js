@@ -52,8 +52,8 @@ function MultiOptionsLSMenuController(menuType) {
     {
 		data.isSTenabled = subController.getSubtitleEnabled(); //NEED FUNCTIONS THAT RETURNS IF THE OPTION IS ENABLED OR DISABLED
 		data.isSLenabled = subController.getSignerEnabled();
-		data.isADenabled = false;
-		data.isASTenabled = false;
+		data.isADenabled = _AudioManager.getADEnabled();
+		data.isASTenabled = _AudioManager.getASTEnabled();
 
 		data.closeMenuButtonFunc = function(){ AddVisualFeedbackOnClick('closeMenuButton', function(){ menuMgr.ResetViews()} )};
 

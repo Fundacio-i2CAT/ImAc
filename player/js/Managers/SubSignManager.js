@@ -918,4 +918,10 @@ SubSignManager = function() {
     	isExperimental = exp;
     };
 
+    this.removeSignVideoByPeriod = function()
+    {
+    	console.error('Remove signer')
+    	removeSignVideo();
+    }
+
 }

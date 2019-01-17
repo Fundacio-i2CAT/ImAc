@@ -6,10 +6,17 @@ function ASTOptionMenuController(menuType) {
 	var view;
 	var viewStructure;
 
+    var ASTEasyArray = [            {name: 'astEasyOn', value: 'On', default: false},
+                                    {name: 'astEasyOff', value: 'Off', default: true}]
+    var ASTVolumeArray = [
+                                    {name: 'astVolumeLowButton', value: 'Minimum', default: false},
+                                    {name: 'astVolumeMidButton', value: 'Middle', default: true},
+                                    {name: 'astVolumeMaxButton', value: 'Maximum', default: false}];
+
 	var parentColumnDropdownElements = [ 
-									{name: 'audioSubtitlesLanguages', value: 'Language'}, 
-									{name: 'audioSubtitlesEasy', value: 'EasyToread'},
-									{name: 'audioSubtitlesVolume', value: 'Volume (i)'}];
+									{name: 'audioSubtitlesLanguages', value: 'Language', options: _AudioManager.getASTLanguagesArray()}, 
+									{name: 'audioSubtitlesEasy', value: 'EasyToread', options: ASTEasyArray},
+									{name: 'audioSubtitlesVolume', value: 'Volume', options: ASTVolumeArray}];
 	
 
 	this.Init = function(){
@@ -79,7 +86,7 @@ function ASTOptionMenuController(menuType) {
 
 	function UpdateData()
     {
-		data.isOptEnabled = true;
+		data.isOptEnabled = false;
         data.isOnOffButtonVisible = true;
 
 
@@ -89,8 +96,19 @@ function ASTOptionMenuController(menuType) {
 		data.lsOptDisbledLabelName = 'disabledAudioSubtitlesMenuButton';
 		data.lsOptDisbledLabelValue = 'AST_strike';
 
-        data.onOptButtonFunc = function(){changeOnOffLSOptionState(data.isOptEnabled)};
-        data.offOptButtonFunc = function(){changeOnOffLSOptionState(data.isOptEnabled)};
+        //data.onOptButtonFunc = function(){changeOnOffLSOptionState(data.isOptEnabled)};
+        //data.offOptButtonFunc = function(){changeOnOffLSOptionState(data.isOptEnabled)};
+
+        data.onOptButtonFunc = function() {
+            MenuFunctionsManager.getOnOffFunc('audioSubtitlesOnButton')()
+            changeOnOffLSOptionState(data.isOptEnabled);
+            multiOptionsCtrl.UpdateMultiOptionsIconStatus();
+        };
+        data.offOptButtonFunc = function(){
+            MenuFunctionsManager.getOnOffFunc('audioSubtitlesOffButton')()
+            changeOnOffLSOptionState(data.isOptEnabled);
+            multiOptionsCtrl.UpdateMultiOptionsIconStatus();
+        };
 
         switch(menuType)
         {
@@ -221,13 +239,12 @@ function ASTOptionMenuController(menuType) {
             {
                 data.isFinalDrop = true;
                 dropdownIE.onexecute =  function()
-                {
-                    console.log(element.value);
-                    
-                   /* UpdateDefaultLSMenuOption(elements,index);
+                { 
+                    UpdateDefaultLSMenuOption(elements,index);
                     data.childColumnActiveOpt = element.name;
-                    console.log("Click on "+element.value+ " final option"); // ADD HERE THE FUNCTION 
-                    setTimeout(function(){view.UpdateView(data)}, 100);*/
+                    MenuFunctionsManager.getButtonFunctionByName( element.name )();
+
+                    setTimeout(function(){view.UpdateView(data)}, 100);
                 };
             } 
             

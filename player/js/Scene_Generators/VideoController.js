@@ -7,6 +7,8 @@
 VideoController = function() {
 
 	var listOfVideoContents = [];
+    var _freeSeek = true;
+    var ft = true;
 
 //************************************************************************************
 // Private Functions
@@ -35,10 +37,10 @@ VideoController = function() {
         }
     }
 
-    function createDashVO(id, vid, url)
+    function createDashVO(id, vid, url, autoplay)
     {
     	var player = dashjs.MediaPlayer().create();
-        player.initialize( vid, url, true );
+        player.initialize( vid, url, autoplay );
 
         setBitrateLimitationsFor( player );
 
@@ -76,66 +78,115 @@ VideoController = function() {
     {
         return new Promise((resolve) => {
 
-            listOfVideoContents[0].dash.on( dashjs.MediaPlayer.events.PLAYBACK_STARTED, function() { 
+            listOfVideoContents[0].dash.on( dashjs.MediaPlayer.events.PLAYBACK_STARTED, function() {
 
-                var subtitleList = listOfVideoContents[0].dash.getTracksForTypeFromManifest('application');
-                var videoList = listOfVideoContents[0].dash.getTracksForTypeFromManifest('video');
-
-                if ( subtitleList && subtitleList.length > 0 )
+                if ( ft ) 
                 {
-                    list_contents[demoId].subtitles = [];
+                    ft = false;  
 
-                    //var split = listOfVideoContents[0].dash.getSource().split("/")
-                    //var baseURL = split.slice(0, split.length - 1).join("/") + "/";
-                    var langlist = {};
+                    var subtitleList = listOfVideoContents[0].dash.getTracksForTypeFromManifest('application');
+                    var videoList = listOfVideoContents[0].dash.getTracksForTypeFromManifest('video');
 
-                    subtitleList.forEach( function( elem ) { 
-                        langlist[ MenuDictionary.translate( elem.lang ) ] = elem.baseUri + elem.baseURL;                
-                    } );
+                    if ( subtitleList && subtitleList.length > 0 )
+                    {
+                        var langlist = {};
+                        list_contents[demoId].subtitles = [];
 
-                    list_contents[demoId].subtitles.push(langlist)
+                        subtitleList.forEach( function( elem ) { 
+                            langlist[ MenuDictionary.translate( elem.lang ) ] = elem.baseUri + elem.baseURL;                
+                        } );
+
+                        list_contents[demoId].subtitles.push(langlist)
+                    }
+//console.error(videoList)
+                    if ( videoList && videoList.length > 0 )
+                    {
+                        var langlist;
+
+                        videoList.forEach( function( elem ) { 
+                            if (elem.roles && elem.roles == 'sign' ) {
+                                if ( langlist == undefined ) langlist = {};
+                                langlist[ MenuDictionary.translate( elem.lang ) ] = elem.baseUri + elem.baseURL;
+                            }
+                        } );
+
+                        if ( langlist ) restartSTContent( langlist );
+                    }  
+
+                    var lang = MenuDictionary.getMainLanguage();
+                    
+                    setSTContent( lang );
+                    setSLContent( lang ); 
+                    setADContent( lang ); 
+                    setASTContent( lang );     
                 }
 
-                if ( videoList && videoList.length > 0 )
-                {
-                    var split = listOfVideoContents[0].dash.getSource().split("/")
-                    var baseURL = split.slice(0, split.length - 1).join("/") + "/";
-                    var langlist = {};
-
-                    videoList.forEach( function( elem ) { 
-                        if (elem.roles && elem.roles == 'sign' ) {
-                            //console.warn(elem.id)
-                            langlist[ MenuDictionary.translate( elem.lang ) ] = elem.baseUri + elem.baseURL;
-                        }
-                    } );
-
-                    if ( langlist && langlist != {} ) {
-                        list_contents[demoId].signer = [];
-                        list_contents[demoId].signer.push( langlist );
-                    }
-                }     
-
-                      
-
-                var lang = MenuDictionary.getMainLanguage();
-                var sublang = list_contents[demoId].subtitles[0][lang] ? lang : Object.keys(list_contents[demoId].subtitles[0])[0];
-
-                subController.setSubtitle( list_contents[demoId].subtitles[0][sublang], sublang );
-
-                subController.setSubtitleLanguagesArray( list_contents[demoId].subtitles[0] );
-
-                if ( list_contents[demoId].signer && list_contents[demoId].signer[0] ) 
-                {
-                    var siglang = list_contents[demoId].signer[0][lang] ? lang : Object.keys(list_contents[demoId].signer[0])[0];
-                    subController.setSignerContent( list_contents[demoId].signer[0][siglang], siglang );
-                    subController.setSignerLanguagesArray( list_contents[demoId].signer[0] );
-                }  
-
-                
                 resolve( 'ok' );
             } );
             
         });
+    }
+
+    function restartSTContent(object)
+    {
+        list_contents[demoId].signer = [];
+        list_contents[demoId].signer.push( object );
+    }
+
+    function updateSignerVideo(periodId, mpd)
+    {
+        var adaptationList = mpd.manifest.Period[periodId].AdaptationSet;
+        var lang = MenuDictionary.getMainLanguage();
+        var langlist;
+
+        adaptationList.forEach( function( elem ) {
+            if ( elem.Role.value == 'sign') 
+            {
+                if ( langlist == undefined ) langlist = {};
+                langlist[ MenuDictionary.translate( elem.lang ) ] = mpd.manifest.baseUri + elem.Representation.SegmentList.SegmentURL.media;
+            }
+        });
+
+        if ( langlist )
+        {
+            restartSTContent( langlist );
+            setSLContent( lang );
+        }
+
+        else subController.removeSignVideoByPeriod();
+
+        
+    }
+
+    function setSTContent(lang)
+    {
+        var sublang = list_contents[demoId].subtitles[0][lang] ? lang : Object.keys(list_contents[demoId].subtitles[0])[0];
+        subController.setSubtitle( list_contents[demoId].subtitles[0][sublang], sublang );
+        subController.setSubtitleLanguagesArray( list_contents[demoId].subtitles[0] );
+    }
+
+    function setSLContent(lang)
+    {
+        if ( list_contents[demoId].signer && list_contents[demoId].signer[0] ) 
+        {
+            var siglang = list_contents[demoId].signer[0][lang] ? lang : Object.keys(list_contents[demoId].signer[0])[0];
+            subController.setSignerContent( list_contents[demoId].signer[0][siglang], siglang );
+            subController.setSignerLanguagesArray( list_contents[demoId].signer[0] );
+        }
+    }
+
+    function setADContent(lang)
+    {
+        var adlang = list_contents[demoId].ad[0][lang] ? lang : Object.keys(list_contents[demoId].ad[0])[0];
+        _AudioManager.setADContent( list_contents[demoId].ad[0][adlang], adlang );
+        _AudioManager.setADLanguagesArray( list_contents[demoId].ad[0] );
+    }
+
+    function setASTContent(lang)
+    {
+        var astlang = list_contents[demoId].ast[0][lang] ? lang : Object.keys(list_contents[demoId].ast[0])[0];
+        _AudioManager.setASTContent( list_contents[demoId].ast[0][astlang], astlang );
+        _AudioManager.setASTLanguagesArray( list_contents[demoId].ast[0] );
     }
 
 //************************************************************************************
@@ -146,7 +197,7 @@ VideoController = function() {
     {
         var vid = document.createElement( "video" );     
         vid.muted = true;
-        vid.autoplay = true;
+        vid.autoplay = listOfVideoContents[0] && listOfVideoContents[0].vid.paused ? false : true;
         vid.preload = "auto"; 
         vid.loop = true;
 
@@ -154,7 +205,7 @@ VideoController = function() {
 
         if ( type == 'mpd' )
         {   
-            createDashVO( id, vid, url );
+            createDashVO( id, vid, url, vid.autoplay );
         }
         else if ( type == 'm3u8' )
         {
@@ -215,9 +266,7 @@ VideoController = function() {
     this.seekAll = function(time)
     {
     	listOfVideoContents.forEach( function( elem ) { elem.vid.currentTime += time; } ); 
-    };
-
-    var _freeSeek = true;
+    };   
 
     this.seekAll2 = function(time)
     {
@@ -239,15 +288,27 @@ VideoController = function() {
         return listOfVideoContents[0].vid.currentTime;
     };
 
+    var periodCount = 0;
+
     this.init = function()
     {
-        getSTfromMPD().then(( str ) => { 
-            subController.enableSubtitles();
-            //createMenus();
-//console.error(str)
-        
+        listOfVideoContents[0].dash.on( dashjs.MediaPlayer.events.PERIOD_SWITCH_STARTED, function() 
+        {
+            var mpd = listOfVideoContents[0].dash.geti2catMPD();
+            //console.log(mpd.manifest)
+            if (periodCount > 0) updateSignerVideo(periodCount, mpd);
+            periodCount += 1;
+        });
 
-        //subController.enableSubtitles();
+        /*listOfVideoContents[0].dash.on( dashjs.MediaPlayer.events.PLAYBACK_ENDED, function() 
+        {
+            console.error('PLAYBACK_ENDED')
+
+        });*/
+
+        getSTfromMPD().then(( str ) => { 
+
+            subController.enableSubtitles();
 
             listOfVideoContents[0].vid.ontimeupdate = function() 
             {
@@ -260,4 +321,5 @@ VideoController = function() {
             }; 
         });
     };
+
 }

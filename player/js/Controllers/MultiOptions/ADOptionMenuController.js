@@ -8,11 +8,15 @@ function ADOptionMenuController(menuType) {
 	
 	var ADLanguagesArray = [];
 	var ADPresentationArray = [];
+    var ADVolumeArray = [
+                                    {name: 'adVolumeLowButton', value: 'Minimum', default: false},
+                                    {name: 'adVolumeMidButton', value: 'Middle', default: true},
+                                    {name: 'adVolumeMaxButton', value: 'Maximum', default: false}];
 
 	var parentColumnDropdownElements = [ 
-									{name: 'audioDescriptionLanguages', value: 'Language', options: ADLanguagesArray},
+									{name: 'audioDescriptionLanguages', value: 'Language', options: _AudioManager.getADLanguagesArray() },
 									{name: 'audioDescriptionPresentation', value: 'Presentation', options: ADPresentationArray},
-									{name: 'audioDescriptionVolume', value: 'Volume (i)'}];
+									{name: 'audioDescriptionVolume', value: 'Volume', options: ADVolumeArray}];
 
 	this.Init = function(){
 
@@ -81,7 +85,7 @@ function ADOptionMenuController(menuType) {
 
 	function UpdateData()
     {
-		data.isOptEnabled = true;
+		data.isOptEnabled = false;
         data.isOnOffButtonVisible = true;
 
 
@@ -91,8 +95,20 @@ function ADOptionMenuController(menuType) {
 		data.lsOptDisbledLabelName = 'disabledAudioDescriptionMenuButton';
 		data.lsOptDisbledLabelValue = 'AD_strike';
 
-        data.onOptButtonFunc = function(){changeOnOffLSOptionState(data.isOptEnabled)};
-        data.offOptButtonFunc = function(){changeOnOffLSOptionState(data.isOptEnabled)};
+        //data.onOptButtonFunc = function(){changeOnOffLSOptionState(data.isOptEnabled)};
+        //data.offOptButtonFunc = function(){changeOnOffLSOptionState(data.isOptEnabled)};
+
+
+        data.onOptButtonFunc = function() {
+            MenuFunctionsManager.getOnOffFunc('audioDescriptionOnButton')()
+            changeOnOffLSOptionState(data.isOptEnabled);
+            multiOptionsCtrl.UpdateMultiOptionsIconStatus();
+        };
+        data.offOptButtonFunc = function(){
+            MenuFunctionsManager.getOnOffFunc('audioDescriptionOffButton')()
+            changeOnOffLSOptionState(data.isOptEnabled);
+            multiOptionsCtrl.UpdateMultiOptionsIconStatus();
+        };
 
         switch(menuType)
         {
@@ -155,12 +171,15 @@ function ADOptionMenuController(menuType) {
 	        dropdownIE.visible = true;
             dropdownIE.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(dropdownIE.width, dropdownIE.height), new THREE.MeshBasicMaterial({visible:  false}));
         	
-        	if(element.options) dropdownIE.onexecute =  function()
-        	{
-        		data.activeOpt = element.name;
-        		data.childColumnDropdown = AddDropdownElementsLS(element.options); 
-        		UpdateData();
-        		setTimeout(function(){view.UpdateView(data)}, 100);
+        	/*if(element.options) 
+            {
+                dropdownIE.onexecute =  function()
+            	{
+            		data.activeOpt = element.name;
+            		data.childColumnDropdown = AddDropdownElementsLS(element.options); 
+            		UpdateData();
+            		setTimeout(function(){view.UpdateView(data)}, 100);
+                }
         		
         	};
         	else 
@@ -171,7 +190,34 @@ function ADOptionMenuController(menuType) {
                     console.log("Click on "+element.value+ " final option");
                     setTimeout(function(){view.UpdateView(data)}, 100);
                 };
-            }
+            }*/
+
+
+            if(element.options)
+            {
+                h = 125*9/16;
+                dropdownIE.onexecute =  function(){
+                    data.childColumnActiveOpt = undefined;  
+                    data.parentColumnActiveOpt = element.name;
+                    data.childColumnDropdown = AddDropdownElementsLS(element.options); 
+                    data.childColumnHoritzontalLineDivisions = getHoritzontalLineDivisions(125, 4*(125*9/16)/6, 0xffffff, element.options.length, 2); 
+                    UpdateData();
+                    setTimeout(function(){view.UpdateView(data)}, 100);      
+                };
+            } 
+            else
+            {
+                h = 4*(125*9/16)/6;
+                dropdownIE.onexecute =  function(){
+                    UpdateDefaultLSMenuOption(elements,index);
+                    data.childColumnActiveOpt = element.name;
+
+                    MenuFunctionsManager.getButtonFunctionByName( element.name )();
+
+                    //console.log("Click on "+element.value+ " final option");
+                    setTimeout(function(){view.UpdateView(data)}, 100);
+                };
+            } 
         	
 	        dropdownIE.position = new THREE.Vector3(0, (h/2-factor*h/(elements.length*2) ), 0.01);
 
@@ -222,12 +268,13 @@ function ADOptionMenuController(menuType) {
                 data.isFinalDrop = true;
                 dropdownIE.onexecute =  function()
                 {
-                    console.log(element.value);
-                    
-                   /* UpdateDefaultLSMenuOption(elements,index);
+                    UpdateDefaultLSMenuOption(elements,index);
                     data.childColumnActiveOpt = element.name;
-                    console.log("Click on "+element.value+ " final option"); // ADD HERE THE FUNCTION 
-                    setTimeout(function(){view.UpdateView(data)}, 100);*/
+
+                    MenuFunctionsManager.getButtonFunctionByName( element.name )();
+
+                    //console.log("Click on "+element.value+ " final option"); // ADD HERE THE FUNCTION 
+                    setTimeout(function(){view.UpdateView(data)}, 100);
                 };
             } 
             

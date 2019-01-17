@@ -90,6 +90,15 @@ function MenuManager() {
         return menuType;
     }
 
+    this.setActualCtrl = function(newCtrl)
+    {
+        actualCtrl = newCtrl;
+    }
+
+    this.getActualCtrl = function()
+    {
+        return actualCtrl;
+    }
     /*function LoadTrad()
     {
        //IF TRADITIONAL 
@@ -401,14 +410,18 @@ function MenuManager() {
         subtitleMesh.name = 'subtitlespreview';
 
         var subtitlesAreaMesh = new THREE.Group();
-        subtitlesAreaMesh.name = 'areapreview';
+        subtitlesAreaMesh.name = 'areaSTpreview';
 
         var signerMesh = new THREE.Group();
         signerMesh.name = 'signerpreview';
 
+        var signerAreaMesh = new THREE.Group();
+        signerAreaMesh.name = 'areaSLpreview';
+
         preview.add(subtitleMesh);
         preview.add(subtitlesAreaMesh);
         preview.add(signerMesh);
+        preview.add(signerAreaMesh);
         
         //CREATE NEW SUBTITLES SHOWING IN TEXT THE OPTIONS OF SIZE. THIS IS AN EXAMPLE OF BIG SUBTITLES.
         var stMesh = scene.getObjectByName("subtitles");
@@ -442,7 +455,7 @@ function MenuManager() {
 
     function createOptionTraditionalMenuViewStructure(name)
     {   
-        var tradOptionMenu =  new THREE.Group();
+        var tradOptionMenu = new THREE.Group();
         tradOptionMenu.name = name;
 
         tradOptionMenu.position.set((menuWidth-30)/2, menuHeight/12 + 1, 0.01); // The +1 in height is the height of the video-progress-bar

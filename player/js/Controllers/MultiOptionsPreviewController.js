@@ -1,10 +1,42 @@
+/*
+ The MultiOptionsPreviewController takes care for the pre-visualitzation of the enabled enhaced-accessibility options (ST, SL, AD, AST).
 
+ This controller has some core functionalities:
+
+    - Init (public) 
+    - Exit (public)
+    - getMenuName (public)
+    - getMenuIndex (public)
+    - GetData (private)
+    - UpdateData (private)
+
+    ... and some unique functionalities of this particular controller:
+
+    - setSubtitlePreview (private)
+    - setAreaSTPreview (private)
+    - setAreaSLPreview (private)
+    - setSignerPreview (private)
+
+
+ This controller is part of the MVC:
+    - (M) /player/js/Models/MultiOptionsPreviewModel.js
+    - (V) /player/js/Views/MultiOptionsPreviewView.js
+    - (C) /player/js/Controllers/MultiOptionsPreviewController.js
+
+ */
 function MultiOptionsPreviewController() {
 
 	var data;
 	var view;
 	var viewStructure;
 	
+/**
+ * This function initializes the data model with GetData() and updates the values with UpdateData() function.
+ * It loads the viewStructure created in the MenuManager and turns its visibility to true. 
+ * It loads the view and updates any element that has changed with the new data in UpdateView(data). 
+ *
+ * @function      Init (name)
+ */
 	this.Init = function(){
 
 		data = GetData();
@@ -16,8 +48,17 @@ function MultiOptionsPreviewController() {
 		view.UpdateView(data); 
 	}
 
+/**
+ * This function 'closes' the submenu page.
+ * Removes all the interactive elements from the 'interactiveListObjects' array stated in Managers/InteractionsController.js
+ * Hides the viewStructure. 
+ * This function is called when closing the menu or when navigating through the different menus in the Enhaced-Accessibility.
+ *
+ * @function      Exit (name)
+ */
 	this.Exit = function()
     {
+        // Works if the viewStructure is loaded.        
     	if(viewStructure)
     	{
 	    	viewStructure.visible = false;
@@ -27,16 +68,32 @@ function MultiOptionsPreviewController() {
     	}
     }
 
+/**
+ * Gets the menu name.
+ *
+ * @return     {<type>}  The menu name.
+ */
 	this.getMenuName = function()
     {
     	return data.name;
     }
 
+/**
+ * Gets the menu index.
+ *
+ * @return     {<type>}  The menu index.
+ */
 	this.getMenuIndex = function()
     {
         return -1;
     }
     
+/**
+ * Gets the data.
+ *
+ * @class      GetData (name)
+ * @return     {MultiOptionsPreviewModel}  The data.
+ */
     function GetData()
 	{
 	    if (data == null)
@@ -46,20 +103,29 @@ function MultiOptionsPreviewController() {
 	    return data;
 	}
 
+/**
+ * { function_description }
+ *
+ * @class      UpdateData (name)
+ */
 	function UpdateData()
     {
     	data.subtitlesPreview = setSubtitlePreview();
-    	data.areaPreview = setAreaPreview();
+    	data.areaSTPreview = setAreaSTPreview();
         data.signerPreview = setSignerPreview();
+        data.areaSLPreview = setAreaSLPreview();
     }
 
 
-// The text has to go through the dictionary library
+    /**
+     * Sets the subtitle preview.
+     *
+     * @return     {<type>}  { description_of_the_return_value }
+     */
     function setSubtitlePreview()
     {
     	let subConfig = subController.getSubtitleConfig(); console.log(subConfig);
     	let subPreviewText = "";
-    	console.log(subController.getSubSize());
 
     	if(subController.getSubSize() == 1)
     	{
@@ -87,15 +153,37 @@ function MultiOptionsPreviewController() {
         return subtitleMesh;
     }
 
-    function setAreaPreview()
+/**
+ * Sets the area st preview.
+ *
+ * @return     {<type>}  { description_of_the_return_value }
+ */
+    function setAreaSTPreview()
     {
         subtitlesAreaMesh = _moData.getPlaneImageMesh(1.48*subController.getSubArea(), 0.82*subController.getSubArea(), './img/rect5044.png', 'areamesh', 5);
         subtitlesAreaMesh.position.z = -70;
-        subtitlesAreaMesh.name = 'areapreview';
+        subtitlesAreaMesh.name = 'areaSTpreview';
         return subtitlesAreaMesh;
     }
 
+/**
+ * Sets the area sl preview.
+ *
+ * @return     {<type>}  { description_of_the_return_value }
+ */
+    function setAreaSLPreview()
+    {
+        signerAreaMesh = _moData.getPlaneImageMesh(1.48*subController.getSignerArea(), 0.82*subController.getSignerArea(), './img/rect5044.png', 'areamesh', 5);
+        signerAreaMesh.position.z = -70;
+        signerAreaMesh.name = 'areaSLpreview';
+        return signerAreaMesh;
+    }
 
+/**
+ * Sets the signer preview.
+ *
+ * @return     {THREE}  { description_of_the_return_value }
+ */
     function setSignerPreview()
     {
         let signerConfig =  subController.getSignerConfig();
@@ -106,7 +194,7 @@ function MultiOptionsPreviewController() {
         var geometry = new THREE.PlaneGeometry( size, size );
         var signerMesh =  new THREE.Mesh( geometry, material);
 
-        signerMesh.position.set(position.x , position.y, -69);
+        signerMesh.position.set(position.x , position.y, -76);
          
         signerMesh.name = 'signerpreview';
 

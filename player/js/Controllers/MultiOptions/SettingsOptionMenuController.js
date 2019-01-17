@@ -1,3 +1,32 @@
+/**
+ The SettingsOptionMenuController takes care for the 
+
+ This controller has some core functionalities:
+
+    - Init (public) 
+    - Exit (public)
+    - getMenuName (public)
+    - getMenuIndex (public)
+    - GetData (private)
+    - UpdateData (private)
+    - AddInteractivityToMenuElements (private)
+    - AddVisualFeedbackOnClick (private)
+
+    ... and some unique functionalities of this particular controller:
+    
+    - AddDropdownElementsLS (private)
+    - AddDropdownElementsTrad (private)
+    - UpdateDefaultLSMenuOption (private)
+    - getHoritzontalLineDivisions (private)
+
+
+ This controller is part of the MVC:
+    - (M) /player/js/Models/MultiOptionsLSMenuModel.js
+    - (V) /player/js/Views/MultiOptionsLSMenuView.js
+    - (C) /player/js/Controllers/MultiOptions/SettingsOptionMenuController.js
+
+ * @param      {<type>}                             menuType  (Low sighted menuType = 1; Traditional menuType = 2)
+ */
 function SettingsOptionMenuController(menuType) {
 
     var set = this;
@@ -27,7 +56,11 @@ function SettingsOptionMenuController(menuType) {
                                     {name: 'settingsVoiceControl', value: 'Voicecontrol', options: voiceControlArray},
                                     {name: 'settingsUserProfile', value: 'UserProfile', options: settingsUserProfileArray},
                                     {name: 'settingsMenuType', value: 'MenuType', options: settingsMenuTypeArray}];
-	
+/**
+ * { function_description }
+ *
+ * @function      Init (name)
+ */
 	this.Init = function(){
 
 		data = GetData();  
@@ -57,6 +90,11 @@ function SettingsOptionMenuController(menuType) {
 		AddInteractivityToMenuElements();
 	}
 
+/**
+ * { function_description }
+ *
+ * @class      Exit (name)
+ */
 	this.Exit = function()
     {
     	if(viewStructure)
@@ -75,17 +113,32 @@ function SettingsOptionMenuController(menuType) {
         
     }
 
+/**
+ * Gets the menu name.
+ *
+ * @return     {<type>}  The menu name.
+ */
     this.getMenuName = function()
     {
     	return data.name;
     }
 
+/**
+ * Gets the menu index.
+ *
+ * @return     {number}  The menu index.
+ */
     this.getMenuIndex = function()
     {
         return 5;
     }
 
-
+/**
+ * Gets the data.
+ *
+ * @class      GetData (name)
+ * @return     {OptionMenuModel}  The data.
+ */
     function GetData()
 	{
 	    if (data == null)
@@ -95,7 +148,11 @@ function SettingsOptionMenuController(menuType) {
 	    return data;
 	}
 
-
+/**
+ * { function_description }
+ *
+ * @class      UpdateData (name)
+ */
     function UpdateData()
     {
         data.isOptEnabled = true;
@@ -128,6 +185,11 @@ function SettingsOptionMenuController(menuType) {
         }   
     }
 
+/**
+ * Adds interactivity to menu elements.
+ *
+ * @class      AddInteractivityToMenuElements (name)
+ */
     function AddInteractivityToMenuElements()
     {
     	viewStructure.children.forEach(function(intrElement){
@@ -138,6 +200,13 @@ function SettingsOptionMenuController(menuType) {
     	})
     }
 
+/**
+ * Adds a visual feedback on click.
+ *
+ * @class      AddVisualFeedbackOnClick (name)
+ * @param      {<type>}    buttonName  The button name
+ * @param      {Function}  callback    The callback
+ */
     function AddVisualFeedbackOnClick(buttonName, callback)
     {
         data.clickedButtonName = buttonName;
@@ -145,6 +214,12 @@ function SettingsOptionMenuController(menuType) {
         setTimeout(callback, 300);
     }
 
+/**
+ * Adds a dropdown elements ls.
+ *
+ * @class      AddDropdownElementsLS (name)
+ * @param      {<type>}  elements  The elements
+ */
     function AddDropdownElementsLS(elements)
     {
         var dropdownInteractiveElements =  [];
@@ -193,6 +268,12 @@ function SettingsOptionMenuController(menuType) {
         return dropdownInteractiveElements
     }
 
+/**
+ * Adds a dropdown elements trad.
+ *
+ * @class      AddDropdownElementsTrad (name)
+ * @param      {<type>}  elements  The elements
+ */
     function AddDropdownElementsTrad(elements)
     {
         var dropdownInteractiveElements =  [];
@@ -250,6 +331,13 @@ function SettingsOptionMenuController(menuType) {
         return dropdownInteractiveElements
     }
 
+/**
+ * { function_description }
+ *
+ * @class      UpdateDefaultLSMenuOption (name)
+ * @param      {<type>}  options               The options
+ * @param      {<type>}  newActiveOptionIndex  The new active option index
+ */
     function UpdateDefaultLSMenuOption(options, newActiveOptionIndex)
     {
         options.forEach(function(element, index){
@@ -258,6 +346,16 @@ function SettingsOptionMenuController(menuType) {
         });
     }
 
+/**
+ * Gets the horitzontal line divisions.
+ *
+ * @param      {number}  w                  { parameter_description }
+ * @param      {number}  h                  { parameter_description }
+ * @param      {<type>}  color              The color
+ * @param      {<type>}  numberofdivisions  The numberofdivisions
+ * @param      {number}  row                The row
+ * @return     {Array}   The horitzontal line divisions.
+ */
     function getHoritzontalLineDivisions(w, h, color, numberofdivisions, row)
     {
         var linesHoritzontalGroup =  [];

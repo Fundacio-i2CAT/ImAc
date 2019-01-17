@@ -1,3 +1,34 @@
+/**
+ The STOptionMenuController takes care for the 
+
+ This controller has some core functionalities:
+
+    - Init (public) 
+    - Exit (public)
+    - getMenuName (public)
+    - getMenuIndex (public)
+    - GetData (private)
+    - UpdateData (private)
+    - AddInteractivityToMenuElements (private)
+    - AddVisualFeedbackOnClick (private)
+
+    ... and some unique functionalities of this particular controller:
+    
+    - AddDropdownElementsLS (private)
+    - AddDropdownElementsTrad (private)
+    - UpdateDefaultLSMenuOption (private)
+    - getHoritzontalLineDivisions (private)
+    - DropdownUpDownFunc (private)
+    - changeOnOffOptionState (private)
+
+
+ This controller is part of the MVC:
+    - (M) /player/js/Models/MultiOptionsLSMenuModel.js
+    - (V) /player/js/Views/MultiOptionsLSMenuView.js
+    - (C) /player/js/Controllers/MultiOptions/STOptionMenuController.js
+
+ * @param      {<type>}                             menuType  (Low sighted menuType = 1; Traditional menuType = 2)
+ */
 function STOptionMenuController(menuType) {
 
     var st = this;
@@ -36,7 +67,12 @@ function STOptionMenuController(menuType) {
                                     { name: 'subtitlesSizes', value: 'Size', options: subtitlesSizeArray, visible: false}, 
                                     { name: 'subtitlesIndicator', value: 'Indicator', options: subtitlesIndicatorArray, visible: false}, 
                                     { name: 'subtitlesAreas', value: 'Area', options: subtitlesAreasArray, visible: false}];
-	
+
+/**
+ * { function_description }
+ *
+ * @function      Init (name)
+ */
 	this.Init = function()
     {
         data = GetData();
@@ -66,6 +102,11 @@ function STOptionMenuController(menuType) {
 		AddInteractivityToMenuElements();
 	}
 
+/**
+ * { function_description }
+ *
+ * @class      Exit (name)
+ */
 	this.Exit = function()
     {
         
@@ -85,16 +126,32 @@ function STOptionMenuController(menuType) {
     	}
     }
 
+/**
+ * Gets the menu name.
+ *
+ * @return     {<type>}  The menu name.
+ */
     this.getMenuName = function()
     {
     	return data.name;
     }
 
+/**
+ * Gets the menu index.
+ *
+ * @return     {number}  The menu index.
+ */
     this.getMenuIndex = function()
     {
         return 1;
     }
 
+/**
+ * Gets the data.
+ *
+ * @class      GetData (name)
+ * @return     {OptionMenuModel}  The data.
+ */
     function GetData()
 	{
 	    if (data == null)
@@ -104,6 +161,11 @@ function STOptionMenuController(menuType) {
 	    return data;
 	}
 
+/**
+ * { function_description }
+ *
+ * @class      UpdateData (name)
+ */
 	function UpdateData()
     {
         data.isOptEnabled = subController.getSubtitleEnabled();;
@@ -155,6 +217,11 @@ function STOptionMenuController(menuType) {
         }	
     }
 
+/**
+ * Adds interactivity to menu elements.
+ *
+ * @class      AddInteractivityToMenuElements (name)
+ */
     function AddInteractivityToMenuElements()
     {
     	viewStructure.children.forEach(function(intrElement){
@@ -165,6 +232,13 @@ function STOptionMenuController(menuType) {
     	})
     }
 
+/**
+ * Adds a visual feedback on click.
+ *
+ * @class      AddVisualFeedbackOnClick (name)
+ * @param      {<type>}    buttonName  The button name
+ * @param      {Function}  callback    The callback
+ */
     function AddVisualFeedbackOnClick(buttonName, callback)
     {
         data.clickedButtonName = buttonName;
@@ -172,6 +246,12 @@ function STOptionMenuController(menuType) {
         setTimeout(callback, 300);
     }
 
+/**
+ * Adds a dropdown elements ls.
+ *
+ * @class      AddDropdownElementsLS (name)
+ * @param      {<type>}  elements  The elements
+ */
     function AddDropdownElementsLS(elements)
     {
     	var dropdownInteractiveElements =  [];
@@ -221,6 +301,12 @@ function STOptionMenuController(menuType) {
     	return dropdownInteractiveElements
     }
 
+/**
+ * Adds a dropdown elements trad.
+ *
+ * @class      AddDropdownElementsTrad (name)
+ * @param      {<type>}  elements  The elements
+ */
     function AddDropdownElementsTrad(elements)
     {
         var dropdownInteractiveElements =  [];
@@ -280,6 +366,13 @@ function STOptionMenuController(menuType) {
         return dropdownInteractiveElements
     }
 
+/**
+ * { function_description }
+ *
+ * @class      UpdateDefaultLSMenuOption (name)
+ * @param      {<type>}  options               The options
+ * @param      {<type>}  newActiveOptionIndex  The new active option index
+ */
     function UpdateDefaultLSMenuOption(options, newActiveOptionIndex)
     {
         options.forEach(function(element, index){
@@ -288,7 +381,16 @@ function STOptionMenuController(menuType) {
         });
     }
 
-
+/**
+ * Gets the horitzontal line divisions.
+ *
+ * @param      {number}  w                  { parameter_description }
+ * @param      {number}  h                  { parameter_description }
+ * @param      {<type>}  color              The color
+ * @param      {<type>}  numberofdivisions  The numberofdivisions
+ * @param      {number}  row                The row
+ * @return     {Array}   The horitzontal line divisions.
+ */
     function getHoritzontalLineDivisions(w, h, color, numberofdivisions, row)
     {
         var linesHoritzontalGroup =  [];
@@ -348,6 +450,12 @@ function STOptionMenuController(menuType) {
         }
     }
 
+/**
+ * { function_description }
+ *
+ * @class      DropdownUpDownFunc (name)
+ * @param      {boolean}  isDown  Indicates if down
+ */
     function DropdownUpDownFunc(isDown)
     {            
         var h = 125*9/16;
@@ -367,6 +475,11 @@ function STOptionMenuController(menuType) {
         setTimeout(function(){view.UpdateView(data)}, 100);
     };
 
+/**
+ * { function_description }
+ *
+ * @param      {<type>}  state   The state
+ */
     function changeOnOffOptionState(state)
     {
         data.isOptEnabled = !state;

@@ -78,7 +78,7 @@ SubSignManager = function() {
 	var signPosX = 1; // left = -1, center = 0, right = 1
 	var signPosY = -1; // bottom = -1, center = 0, top = 1
 	var signIndicator = 'none';	 // none, arrow, move
-	var signArea = 70; // small = 50, medium = 60, large = 70
+	var signArea = 60; // small = 50, medium = 60, large = 70
 	var signLang; // string (en, de, ca, es)
 	var signAvailableLang = []; // Array { name, value, default:bool }
 
@@ -406,6 +406,7 @@ SubSignManager = function() {
             camera.remove( signerMesh );
             signerMesh = undefined;
         }
+
     }
 
     function removeRadar()

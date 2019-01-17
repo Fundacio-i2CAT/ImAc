@@ -329,13 +329,13 @@ MenuFunctionsManager = function() {
                 return getSubAutoPositioningFunc();
 
             case "signerSmallAreaButton":
-                return getSignerAreaFunc( 50 );
+                return getSignerAreaFunc( 40 );
 
             case "signerMediumlAreaButton":
-                return getSignerAreaFunc( 60 );
+                return getSignerAreaFunc( 50 );
 
             case "signerLargeAreaButton":
-                return getSignerAreaFunc( 70 );
+                return getSignerAreaFunc( 60 );
 
         // Audio Description
             case "adEngButton":

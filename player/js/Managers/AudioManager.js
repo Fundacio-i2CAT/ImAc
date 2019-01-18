@@ -17,11 +17,13 @@ AudioManager = function() {
     // [AD] audio description vars 
     var _AD;  // AD audio element
     var adContent; // URL
+    var adContentArray; // URL
     var adVolume = 50; // Integer: Volume percentage
     var adEnabled = false; // boolean
     var adLang; // string (en, de, ca, es)
     var adAvailableLang = []; // Array { name, value, default:bool }
-    var adPresentation;
+    var adAvailablePresentation = [];
+    var adPresentation = 'VoiceOfGod'; // string (VoiceOfGod, Friend, Dynamic ...)
 
     // [AST] audio subtitles vars 
     var _AST;  
@@ -183,11 +185,12 @@ AudioManager = function() {
         foaRenderer_.initialize().then(function() {
             audioElementSource.connect(foaRenderer_.input);
             foaRenderer_.output.connect(audioContext.destination);
-            object.play();
+            if ( !VideoController.isPausedById(0) ) object.play();
             updateMatrix4( camera.matrixWorld.elements )
         });
 
-    };
+    }
+
 
     function addAudio(type)
     {
@@ -200,6 +203,7 @@ AudioManager = function() {
             _AD.volume = adVolume/100;
 
             initAdditionAudio( 0, _AD );
+            VideoController.addAudioContent( _AD );
         }
         else if ( type == 'AST' )
         {          
@@ -210,18 +214,21 @@ AudioManager = function() {
             _AST.volume = astVolume/100;
 
             initAdditionAudio( 1, _AST );
+            VideoController.addAudioContent( _AST );
         }
-    };
+    }
 
     function removeAudio(type)
     {
         if ( type == 'AD' )
         {
+            VideoController.removeAudioContent( _AD );
             foaRendererList[0] = undefined;
             _AD.setAttribute('src', ''); 
         }
         else if ( type == 'AST' )
         {
+            VideoController.removeAudioContent( _AST );
             foaRendererList[1] = undefined;
             _AST.setAttribute('src', ''); 
         }     
@@ -243,9 +250,16 @@ AudioManager = function() {
         
     };
 
-    this.setADContent = function(url, lang)
+    this.setADPresentation = function(value)
     {
-        adContent = url;
+        adPresentation = value;
+        adContent = adContentArray[adLang][adPresentation];
+        if ( adEnabled ) addAudio( 'AD' );
+    };
+
+    this.setADContent = function(content, lang)
+    {
+        adContent = content[adPresentation];
         adLang = lang;
         if ( adEnabled ) addAudio( 'AD' );
     };  
@@ -257,9 +271,43 @@ AudioManager = function() {
         if ( astEnabled ) addAudio( 'AST' );
     }; 
 
+    this.setADPresentationArray = function(subList)
+    {
+        adAvailablePresentation = [];
+
+        if ( subList['VoiceOfGod'] ) 
+        {
+            adAvailablePresentation.push(
+            {
+                name: 'adVOGButton', 
+                value: 'VoiceOfGod', 
+                default: ( 'VoiceOfGod' == adPresentation )
+            } );
+        }
+        if ( subList['Friend'] ) 
+        {
+            adAvailablePresentation.push(
+            {
+                name: 'adFriendButton', 
+                value: 'Friend', 
+                default: ( 'Friend' == adPresentation )
+            } );
+        }
+        if ( subList['Dynamic'] ) 
+        {
+            adAvailablePresentation.push(
+            {
+                name: 'adDynamicButton', 
+                value: 'Dynamic', 
+                default: ( 'Dynamic' == adPresentation )
+            } );
+        }
+    };
+
     this.setADLanguagesArray = function(subList)
     {
         adAvailableLang = [];
+        adContentArray = subList;
 
         if ( subList['en'] ) 
         {
@@ -339,6 +387,11 @@ AudioManager = function() {
                 default: ( 'ca' == astLang )
             } );
         }
+    };
+
+    this.getADPresentationArray = function()
+    {
+        return adAvailablePresentation;
     };
 
     this.getADLanguagesArray = function()

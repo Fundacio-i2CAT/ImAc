@@ -182,6 +182,13 @@ MenuFunctionsManager = function() {
         }
     }
 
+    function getADPresentationFunc(value)
+    {    
+        return function() {
+            _AudioManager.setADPresentation( value );
+        }
+    }
+
 //************************************************************************************
 // Audio Subtitle Functions
 //************************************************************************************
@@ -384,14 +391,14 @@ MenuFunctionsManager = function() {
             case "adCatButton":
                 return getADLanguageFunc( list_contents[demoId].ad[0]['ca'], 'ca' );
 
-            case "adPrespectiveButton":
-                return;
+            case "adVOGButton":
+                return getADPresentationFunc( 'VoiceOfGod' );
 
-            case "adAnchoredButton":
-                return;
+            case "adFriendButton":
+                return getADPresentationFunc( 'Friend' );
 
-            case "adClassicButton":
-                return;
+            case "adDynamicButton":
+                return getADPresentationFunc( 'Dynamic' );
 
             case "adPanoramaButton":
                 return;

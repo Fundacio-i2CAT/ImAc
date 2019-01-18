@@ -13,6 +13,8 @@ var settingsMgr = new SettingsManager();
 
 var MenuDictionary = new MenuDictionary();
 
+var _ManifestParser = new ManifestParser();
+
 var _AudioManager = new AudioManager();
 var subController = new SubSignManager();
 var interController = new THREE.InteractionsController();

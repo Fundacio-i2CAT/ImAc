@@ -6,8 +6,6 @@ function ADOptionMenuController(menuType) {
 	var view;
 	var viewStructure;
 	
-	var ADLanguagesArray = [];
-	var ADPresentationArray = [];
     var ADVolumeArray = [
                                     {name: 'adVolumeLowButton', value: 'Minimum', default: false},
                                     {name: 'adVolumeMidButton', value: 'Middle', default: true},
@@ -15,7 +13,7 @@ function ADOptionMenuController(menuType) {
 
 	var parentColumnDropdownElements = [ 
 									{name: 'audioDescriptionLanguages', value: 'Language', options: _AudioManager.getADLanguagesArray() },
-									{name: 'audioDescriptionPresentation', value: 'Presentation', options: ADPresentationArray},
+									{name: 'audioDescriptionPresentation', value: 'Presentation', options: _AudioManager.getADPresentationArray() },
 									{name: 'audioDescriptionVolume', value: 'Volume', options: ADVolumeArray}];
 
 	this.Init = function(){
@@ -85,7 +83,7 @@ function ADOptionMenuController(menuType) {
 
 	function UpdateData()
     {
-		data.isOptEnabled = false;
+		data.isOptEnabled = _AudioManager.getADEnabled();
         data.isOnOffButtonVisible = true;
 
 

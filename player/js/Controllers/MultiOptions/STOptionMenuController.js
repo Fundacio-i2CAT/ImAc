@@ -106,7 +106,7 @@ function STOptionMenuController(menuType) {
 
 	function UpdateData()
     {
-        data.isOptEnabled = subController.getSubtitleEnabled();;
+        data.isOptEnabled = subController.getSubtitleEnabled();
         data.isOnOffButtonVisible = true;
 
         data.lsOptEnabledLabelName = 'showSubtitlesMenuButton';

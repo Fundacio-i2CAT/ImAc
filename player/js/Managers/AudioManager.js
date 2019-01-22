@@ -171,9 +171,6 @@ AudioManager = function() {
 
     function initAdditionAudio(id, object)
     {
-        //_AD.src = 'http://192.168.10.128:8080/dash/prova/32/Nightcore.mp3';
-        //_AD.src = 'http://192.168.10.128:8080/test8/Liceu/AmbiX-1er_Orquestra_Cam_01.wav';
-
         // Create AudioContext, MediaElementSourceNode and FOARenderer.
         var audioContext = new AudioContext();
         var audioElementSource = audioContext.createMediaElementSource( object );
@@ -188,9 +185,7 @@ AudioManager = function() {
             if ( !VideoController.isPausedById(0) ) object.play();
             updateMatrix4( camera.matrixWorld.elements )
         });
-
     }
-
 
     function addAudio(type)
     {
@@ -238,16 +233,24 @@ AudioManager = function() {
     {
         // protection condition ???
             adEnabled = enable;
-            enable ? addAudio( 'AD' ) : removeAudio( 'AD' );
-        
+            //enable ? addAudio( 'AD' ) : removeAudio( 'AD' );
+            if ( enable )
+            {
+                addAudio( 'AD' ); 
+                this.setmute();
+            }
+            else 
+            {
+                removeAudio( 'AD' ); 
+                this.setunmute();
+            }      
     };
 
     this.switchAST = function(enable)
     {
         // protection condition ???
             astEnabled = enable;
-            enable ? addAudio( 'AST' ) : removeAudio( 'AST' );
-        
+            enable ? addAudio( 'AST' ) : removeAudio( 'AST' );       
     };
 
     this.setADPresentation = function(value)

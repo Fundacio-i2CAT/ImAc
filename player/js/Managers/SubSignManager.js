@@ -920,7 +920,6 @@ SubSignManager = function() {
 
     this.removeSignVideoByPeriod = function()
     {
-    	console.error('Remove signer')
     	removeSignVideo();
     }
 

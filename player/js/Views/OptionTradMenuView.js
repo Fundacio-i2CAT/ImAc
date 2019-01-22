@@ -34,7 +34,7 @@ function OptionTradMenuView() {
             submenu.getObjectByName('parentcolumndropdown').add(element)
 		
 		});
-		if(data.childColumnActiveOpt)
+		if(data.childColumnActiveOpt && submenu.getObjectByName(data.childColumnActiveOpt))
 		{
 			data.parentColumnDropdown.forEach(function(element){
 				element.material.color.set( 0xffffff );

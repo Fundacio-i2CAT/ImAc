@@ -185,6 +185,7 @@ VideoController = function() {
         else {
             _freeSeek = false;
             listOfVideoContents.forEach( function( elem ) { elem.vid.currentTime += time; } );
+            listOfAudioContents.forEach( function( elem ) { elem.currentTime += time; } );
             setTimeout(function(){_freeSeek = true;}, 1000);
         }
     };
@@ -241,6 +242,8 @@ VideoController = function() {
 
             listOfVideoContents[0].vid.ontimeupdate = function() 
             {
+
+                if (listOfVideoContents[0].vid.currentTime >= listOfVideoContents[0].vid.duration - 0.5) window.location.reload();
                 subController.updateSubtitleByTime( listOfVideoContents[0].vid.currentTime );
                 if( scene.getObjectByName( "video-progress-bar" ) && scene.getObjectByName( "video-progress-bar" ).visible )
                 {

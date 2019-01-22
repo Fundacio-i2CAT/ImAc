@@ -537,7 +537,7 @@ SubSignManager = function() {
 	{
 		var position = {
 			x: signPosX,
-			y: signPosX
+			y: signPosY
 		};
 
 		return position;

@@ -451,10 +451,10 @@ THREE.DeviceOrientationAndTouchController = function( object, objectPather, domE
 		interController.checkVRInteraction( _origin, direction );
 	}
 
-	var onVRControllerUpdate = function()
+	this.onVRControllerUpdate = function( event )
 	{
 		_moData.createPointer2();
-
+//console.error(event)
 		var controller = event.detail
 		controller.name = "controller"
 		/*var axesHelper = new THREE.AxesHelper( 5 );
@@ -595,10 +595,10 @@ var stover = false;
 		container.appendChild( domElement );
 
 		window.addEventListener( 'orientationchange', onScreenOrientationChangeEvent, false );	
-		window.addEventListener( 'deviceorientation', onDeviceOrientationChangeEvent, false );	
+		//window.addEventListener( 'deviceorientation', onDeviceOrientationChangeEvent, false );	
 		window.addEventListener( 'resize', onWindowResize, false );	
 
-		window.addEventListener( 'vr controller connected', onVRControllerUpdate, false);	
+		window.addEventListener( 'vr controller connected', this.onVRControllerUpdate, false);	
 
 		this.element.addEventListener( 'touchstart', this.onDocumentTouchStart, false );
 		this.element.addEventListener( 'mousedown', this.onDocumentMouseDown, false );
@@ -611,10 +611,10 @@ var stover = false;
 	this.disconnect = function() {
 
 		window.removeEventListener( 'orientationchange', onScreenOrientationChangeEvent, false );
-		window.removeEventListener( 'deviceorientation', onDeviceOrientationChangeEvent, false );
+		//window.removeEventListener( 'deviceorientation', onDeviceOrientationChangeEvent, false );
 		window.removeEventListener( 'resize', onWindowResize, false );	
 
-		window.removeEventListener( 'vr controller connected', onVRControllerUpdate, false);		
+		window.removeEventListener( 'vr controller connected', this.onVRControllerUpdate, false);		
 
 		this.element.removeEventListener( 'touchstart', this.onDocumentTouchStart, false );
 		this.element.removeEventListener( 'mousedown', this.onDocumentMouseDown, false );

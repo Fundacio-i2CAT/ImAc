@@ -207,6 +207,27 @@ MenuFunctionsManager = function() {
         }
     }
 
+    function getASTe2rURL() {
+
+        var url;
+        
+        if ( list_contents[demoId].ast[1] )
+        {
+            var lang = subController.getSubLanguage();
+            var e2r = list_contents[demoId].ast[1][lang] ? lang : Object.keys(list_contents[demoId].ast[1])[0];
+            url = list_contents[demoId].ast[1][e2r];
+        }
+
+        return url;
+    }
+
+    function getASTEasyOnOffFunc(enable, xml)
+    {       
+        return function() {
+            _AudioManager.setSubEasy( enable, xml );
+        }
+    }
+
 
 //************************************************************************************
 // Public Functions
@@ -400,9 +421,6 @@ MenuFunctionsManager = function() {
             case "adDynamicButton":
                 return getADPresentationFunc( 'Dynamic' );
 
-            case "adPanoramaButton":
-                return;
-
             case 'adVolumeLowButton':
                 return getADVolumeFunc( 10 );
 
@@ -414,22 +432,27 @@ MenuFunctionsManager = function() {
 
         // Audio Subtitles
             case "astEngButton":
-                return getASTLanguageFunc( list_contents[demoId].ast[0]['en'], 'en' );
+                var e2r = _AudioManager.getSubEasy() ? 1 : 0;
+                return getASTLanguageFunc( list_contents[demoId].ast[e2r]['en'], 'en' );
 
             case "astEspButton":
-                return getASTLanguageFunc( list_contents[demoId].ast[0]['es'], 'es' );
+                var e2r = _AudioManager.getSubEasy() ? 1 : 0;
+                return getASTLanguageFunc( list_contents[demoId].ast[e2r]['es'], 'es' );
 
             case "astGerButton":
-                return getASTLanguageFunc( list_contents[demoId].ast[0]['de'], 'de' );
+                var e2r = _AudioManager.getSubEasy() ? 1 : 0;
+                return getASTLanguageFunc( list_contents[demoId].ast[e2r]['de'], 'de' );
 
             case "astCatButton":
-                return getASTLanguageFunc( list_contents[demoId].ast[0]['ca'], 'ca' );
+                var e2r = _AudioManager.getSubEasy() ? 1 : 0;
+                return getASTLanguageFunc( list_contents[demoId].ast[e2r]['ca'], 'ca' );
 
             case "astEasyOn":
-                return;
+                var url = getASTe2rURL();
+                return getASTEasyOnOffFunc( true, url );
 
             case "astEasyOff":
-                return;
+                return getASTEasyOnOffFunc( false, list_contents[demoId].ast[0][_AudioManager.getASTLanguage()] );
 
             case 'astVolumeLowButton':
                 return getASTVolumeFunc( 10 );

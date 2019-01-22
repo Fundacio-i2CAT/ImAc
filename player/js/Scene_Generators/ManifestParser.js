@@ -9,9 +9,13 @@
 
 	This library needs to use external libs:
 		* MenuDictionary.js         -->  To translate words
+        * SubSignManager.js         -->  To initilize and set the ST and SL parameters
+        * AudioManager.js           -->  To initilize and set the AD and AST parameters
 
 	This library needs to use the global vars:
 		* list_contents
+        * subController
+        * _AudioManager
 	
 	FUNCTIONALITIES:
 		* init = function( mpd )                    --> Initialize the library and generate the metadata used in the player list_contents
@@ -88,7 +92,6 @@ ManifestParser = function() {
         setSLContent( lang ); 
         setADContent( lang ); 
         setASTContent( lang );  
-
 	};
 
 	this.updateSignerVideo = function(periodId)
@@ -114,6 +117,9 @@ ManifestParser = function() {
         else subController.removeSignVideoByPeriod();    
     };
 
+//************************************************************************************
+// Private Functions
+//************************************************************************************
 
     function restartSTContent(object, e2r)
     {

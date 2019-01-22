@@ -1,7 +1,7 @@
 
 // GLOBAL VARS
 
-var _PlayerVersion = 'v0.05.0';
+var _PlayerVersion = 'v0.06.0';
 
 /**
  * Initializes the web player.
@@ -103,7 +103,6 @@ function dot2num(dot)
 
 function num2dot(numhex) 
 {
-    //console.log(numhex)
     var lastChar = numhex.substr(numhex.length - 1);
     var n = 3;
     var out = '';
@@ -134,5 +133,4 @@ function num2dot(numhex)
         d = num%256 + '.' + d;
     }
     return out + d;
-
 }

@@ -412,20 +412,38 @@ AudioManager = function() {
         if ( type == 'AD' )
         {
             adVolume = level;
-            _AD.volume = adVolume/100;
+            if ( _AD ) _AD.volume = adVolume/100;
         }
         else if ( type == 'AST' )
         {
             astVolume = level;
-            _AST.volume = astVolume/100;
+            if ( _AST ) _AST.volume = astVolume/100;
         }
     }
 
-    this.getADEnabled = function() {
+    this.getADEnabled = function() 
+    {
         return adEnabled;
     };
 
-    this.getASTEnabled = function() {
+    this.getASTEnabled = function() 
+    {
         return astEnabled;
+    };
+
+    this.getASTLanguage = function()
+    {
+        return astLang;
+    };
+
+    this.getSubEasy = function()
+    {
+        return astEasy;
+    };
+
+    this.setSubEasy = function(easy, xml)
+    {
+        astEasy = easy;
+        this.setASTContent( xml, astLang );
     };
 }

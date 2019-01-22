@@ -165,6 +165,15 @@ function SLOptionMenuController(menuType) {
     		var factor = (index*2)+1;
 
     		var dropdownIE = new InteractiveElementModel();  
+            dropdownIE.width = 125/3;
+            dropdownIE.height =  elements.length>4 ? h/4 : h/elements.length;
+            dropdownIE.name = element.name;
+            dropdownIE.type =  'text';
+            dropdownIE.value = MenuDictionary.translate(element.value);
+            dropdownIE.color = element.default ? 0xffff00 : 0xffffff;
+            dropdownIE.textSize =  5;
+            
+            dropdownIE.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(dropdownIE.width, dropdownIE.height), new THREE.MeshBasicMaterial({visible:  false}));
 
             if(element.options)
             {
@@ -191,15 +200,6 @@ function SLOptionMenuController(menuType) {
                     setTimeout(function(){view.UpdateView(data)}, 100);
                 };
             } 
-            dropdownIE.width = 125/3;
-            dropdownIE.height =  elements.length>4 ? h/4 : h/elements.length;
-            dropdownIE.name = element.name;
-            dropdownIE.type =  'text';
-            dropdownIE.value = MenuDictionary.translate( element.value );
-            dropdownIE.color = 0xffffff;
-            dropdownIE.textSize =  5;
-            dropdownIE.visible = true;
-            dropdownIE.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(dropdownIE.width, dropdownIE.height), new THREE.MeshBasicMaterial({visible:  false}));
             
 	        dropdownIE.position = new THREE.Vector3(0, ( h/2-factor*h/(elements.length>4 ? 4*2 : elements.length*2) ), 0.01);
 	        dropdownInteractiveElements.push(dropdownIE.create())

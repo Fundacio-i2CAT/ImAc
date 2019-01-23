@@ -19,6 +19,8 @@ function MultiOptionsLSMenuView() {
         submenu.getObjectByName('showAudioSubtitlesMenuButton').children[0].onexecute = data.openASTMenuButtonFunc;
         submenu.getObjectByName('disabledAudioSubtitlesMenuButton').children[0].onexecute = data.openASTMenuButtonFunc;
 
+        if(submenu.getObjectByName('previewMenuButton')) submenu.getObjectByName('previewMenuButton').children[0].onexecute = data.previewButtonFunc;
+
 		if(submenu.getObjectByName('forwardMenuButton')) submenu.getObjectByName('forwardMenuButton').children[0].onexecute = data.forwardMenuButtonFunc;
 		if(submenu.getObjectByName('backMenuButton')) submenu.getObjectByName('backMenuButton').children[0].onexecute = data.backMenuButtonFunc;
 

@@ -90,6 +90,14 @@ THREE.InteractionsController = function () {
 	{
     	raycaster.setFromCamera( mouse3D, camera );
     	var intersects = raycaster.intersectObjects( interactiveListObjects, true ); // false
+
+        //Closes the open multi option menu of the traditional menu when clicked outside any element.
+        if(!intersects.length && menuMgr.getActualCtrl() && menuMgr.getMenuType() == 2)
+        { 
+            menuMgr.getActualCtrl().Exit();
+            menuMgr.setActualCtrl('');
+        }
+
     	if ( intersects[0] && interactionState && type != 'onDocumentMouseMove')
     	{
             interactionState = false;

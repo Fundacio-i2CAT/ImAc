@@ -33,6 +33,7 @@ let ADOptionCtrl;
 let ASTOptionCtrl;
 let vpbCtrl;
 let SettingsOptionCtrl;
+let multiOptionsPreviewCtrl;
 
 var loggerActivated = false;
 

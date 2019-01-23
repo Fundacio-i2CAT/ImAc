@@ -1,3 +1,9 @@
+/**
+ * { function_description }
+ *
+ * @class      MenuManager (name)
+ * @return     {string}  { description_of_the_return_value }
+ */
 function MenuManager() {
 
     var menuType;
@@ -10,7 +16,13 @@ function MenuManager() {
     var menuWidth;
 
     var optActiveIndex;
-    
+
+/**
+ * { function_description }
+ *
+ * @class      Init (name)
+ * @param      {<type>}  type    The type
+ */
     this.Init = function(type)
     {
         //subController.setSubtitleLanguagesArray(list_contents[demoId].subtitles[0]);
@@ -30,6 +42,12 @@ function MenuManager() {
         menuMgr.ResetViews();
     }
 
+/**
+ * { function_description }
+ *
+ * @class      NavigateForwardMenu (name)
+ * @return     {<type>}  { description_of_the_return_value }
+ */
     this.NavigateForwardMenu = function()
     {
         switch(actualCtrl.getMenuName())
@@ -48,6 +66,12 @@ function MenuManager() {
         }
     }
 
+/**
+ * { function_description }
+ *
+ * @class      NavigateBackMenu (name)
+ * @return     {<type>}  { description_of_the_return_value }
+ */
     this.NavigateBackMenu = function()
     {
         switch(actualCtrl.getMenuName())
@@ -75,37 +99,62 @@ function MenuManager() {
         } 
     }
 
+/**
+ * Sets the option active index.
+ *
+ * @param      {<type>}  newIndex  The new index
+ */
     this.setOptActiveIndex = function(newIndex)
     {
         optActiveIndex = newIndex;
     }
 
+/**
+ * Sets the menu type.
+ *
+ * @param      {<type>}  newMenuType  The new menu type
+ */
     this.setMenuType = function(newMenuType)
     {
         menuType = newMenuType;
     }
 
+/**
+ * Gets the menu type.
+ *
+ * @return     {<type>}  The menu type.
+ */
     this.getMenuType = function()
     {
         return menuType;
     }
 
-    /*function LoadTrad()
+/**
+ * Sets the actual control.
+ *
+ * @param      {<type>}  newCtrl  The new control
+ */
+    this.setActualCtrl = function(newCtrl)
     {
-       //IF TRADITIONAL 
-        controllers.forEach(function(controller){
-            controller.Init();
-        });
+        actualCtrl = newCtrl;
+    }
 
-        STOptionCtrl.Exit();
-        SLOptionCtrl.Exit();
-        ADOptionCtrl.Exit();
-        ASTOptionCtrl.Exit();
-        SettingsOptionCtrl.Exit();
+/**
+ * Gets the actual control.
+ *
+ * @return     {<type>}  The actual control.
+ */
+    this.getActualCtrl = function()
+    {
+        return actualCtrl;
+    }
 
-        menuParent.getObjectByName('traditionalmenu').visible = true;      
-    }*/
-
+/**
+ * { function_description }
+ *
+ * @class      Load (name)
+ * @param      {<type>}  controller  The controller
+ */
     this.Load = function (controller)
     {
         if(actualCtrl)
@@ -168,9 +217,11 @@ function MenuManager() {
         if(menuActivationElement) menuActivationElement.visible = true;
     }
 
+/**
+ * Creates a menu activation element.
+ */
     this.createMenuActivationElement = function()
     {
-
         var geometry = new THREE.SphereGeometry( 99, 32, 16, Math.PI/2, Math.PI * 2,  2.35,  0.4 );
         geometry.scale( - 1, 1, 1 );
         //var material = new THREE.MeshBasicMaterial( {color: 0x13ec56, side: THREE.FrontSide, colorWrite: false});
@@ -205,12 +256,13 @@ function MenuManager() {
         scene.add(menuActivationElement);
     }
 
-    /**
-     * This function return the initial state for the menu.
-     * For the Low Sighted menu the initial state is the PlayPause menu.
-     * For the Traditional menu the initial state is init all the controllers and exit the submenus.
-    */
-
+/**
+ * This function return the initial state for the menu.
+ * For the Low Sighted menu the initial state is the PlayPause menu.
+ * For the Traditional menu the initial state is init all the controllers and exit the submenus.
+ * 
+ * @function initFirstMenuState (name)
+*/
     this.initFirstMenuState = function()
     {
         menuActivationElement.visible = false;
@@ -263,6 +315,37 @@ function MenuManager() {
         }   
     }
 
+/**
+ * Opens a preview.
+ *
+ * @function      OpenPreview (name)
+ */
+    this.OpenPreview = function()
+    {
+        menuParent.add(createMultiOptionsPreviewStructure('multioptionspreview'));
+        multiOptionsPreviewCtrl = new MultiOptionsPreviewController(menuType);
+
+        controllers.forEach(function(controller){
+            controller.Exit();
+        });
+        multiOptionsPreviewCtrl.Init();
+        setTimeout(function()
+        {
+            multiOptionsPreviewCtrl.Exit();
+            actualCtrl.Init();
+            if(scene.getObjectByName("sign")) scene.getObjectByName("sign").visible = subController.getSignerEnabled();
+//            if(scene.getObjectByName("subtitles")) scene.getObjectByName("subtitles").visible = subController.getSignerEnabled();
+        },2000);
+
+        /*var subMesh = scene.getObjectByName("subtitles");
+        if(subMesh) subMesh.visible = false;*/
+    }
+
+/**
+ * { function_description }
+ *
+ * @param      {<type>}  object  The object
+ */
     function resetMenuPosition(object)
     {
         object.position.x = 0;
@@ -273,6 +356,9 @@ function MenuManager() {
         object.position.z = -Math.cos(camera.rotation.y)*67;
     }
 
+/**
+ * Adds a menu to parent.
+ */
     function addMenuToParent()
     {
         switch(menuType)
@@ -300,6 +386,9 @@ function MenuManager() {
         }
     }
 
+/**
+ * Removes a menu from parent.
+ */
     this.removeMenuFromParent = function()
     {
         switch(menuType)
@@ -324,6 +413,11 @@ function MenuManager() {
         }
     }
 
+/**
+ * { function_description }
+ *
+ * @function      InitAllCtrl (name)
+ */
     function InitAllCtrl()
     {
         controllers = [];
@@ -372,6 +466,51 @@ function MenuManager() {
  *
  ******************************************************************************************************/
 
+/**
+ * Creates a multi options preview structure.
+ *
+ * @param      {string}  name    The name
+ * @return     {THREE}   { description_of_the_return_value }
+ */
+    function createMultiOptionsPreviewStructure(name)
+    {
+        var preview = new THREE.Group();
+        preview.name = name;
+
+        var subtitleMesh =  new THREE.Group();
+        subtitleMesh.name = 'subtitlespreview';
+
+        var subtitlesAreaMesh = new THREE.Group();
+        subtitlesAreaMesh.name = 'areaSTpreview';
+
+        var signerMesh = new THREE.Group();
+        signerMesh.name = 'signerpreview';
+
+        var signerAreaMesh = new THREE.Group();
+        signerAreaMesh.name = 'areaSLpreview';
+
+        preview.add(subtitleMesh);
+        preview.add(subtitlesAreaMesh);
+        preview.add(signerMesh);
+        preview.add(signerAreaMesh);
+        
+        //CREATE NEW SUBTITLES SHOWING IN TEXT THE OPTIONS OF SIZE. THIS IS AN EXAMPLE OF BIG SUBTITLES.
+        var stMesh = scene.getObjectByName("subtitles");
+        if(stMesh) stMesh.visible = false;
+
+        var slMesh = scene.getObjectByName("sign");
+        if(slMesh) slMesh.visible = false;
+
+
+        return preview;
+    }
+
+/**
+ * Creates a trad menu base view structure.
+ *
+ * @param      {<type>}  name    The name
+ * @return     {THREE}   { description_of_the_return_value }
+ */
     function createTradMenuBaseViewStructure(name) 
     {
         var material = new THREE.MeshBasicMaterial( { color: 0x333333, transparent: true, opacity: 0.8 }); 
@@ -390,10 +529,15 @@ function MenuManager() {
         return menuTrad;
     }
 
-
+/**
+ * Creates an option traditional menu view structure.
+ *
+ * @param      {string}  name    The name
+ * @return     {THREE}   { description_of_the_return_value }
+ */
     function createOptionTraditionalMenuViewStructure(name)
     {   
-        var tradOptionMenu =  new THREE.Group();
+        var tradOptionMenu = new THREE.Group();
         tradOptionMenu.name = name;
 
         tradOptionMenu.position.set((menuWidth-30)/2, menuHeight/12 + 1, 0.01); // The +1 in height is the height of the video-progress-bar
@@ -471,7 +615,11 @@ function MenuManager() {
         return tradOptionMenu;
     }
 
-
+/**
+ * Creates a traditional view structure.
+ *
+ * @param      {string}  name    The name
+ */
     function createTraditionalViewStructure(name)
     {
         var traditionalmenu = createTradMenuBaseViewStructure(name);
@@ -824,6 +972,20 @@ function MenuManager() {
         var menu = new THREE.Mesh( geometry, material );
         menu.position.set( 0, 0, -69 );
         menu.name = name;
+
+        var previewMenuButton = new InteractiveElementModel();
+        previewMenuButton.width = 8;
+        previewMenuButton.height = 8;
+        previewMenuButton.name = 'previewMenuButton';
+        previewMenuButton.type=  'icon';
+        previewMenuButton.value = './img/menu/preview.png';
+        previewMenuButton.color = 0xffffff;
+        previewMenuButton.visible = true;
+        previewMenuButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(previewMenuButton.width, previewMenuButton.height), new THREE.MeshBasicMaterial({visible:  false}));
+        previewMenuButton.onexecute =  function(){ console.log('Preview menu button clicked') };
+        previewMenuButton.position = new THREE.Vector3(-57, 30, 0.01);
+
+        menu.add(previewMenuButton.create());
 
         // Create the closeMenuButton by loading a new InteractiveElement model and ijecting the closeMenuButtonData
         var closeMenuButton = new InteractiveElementModel();

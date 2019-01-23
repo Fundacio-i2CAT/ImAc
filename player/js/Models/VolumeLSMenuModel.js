@@ -9,6 +9,8 @@ function VolumeLSMenuModel() {
 	this.forwardMenuButtonFunc;
 
 	this.closeMenuButtonFunc;
+	this.previewButtonFunc;
+	this.isPreviewVisible;
 
 	this.clickedButtonName;
 

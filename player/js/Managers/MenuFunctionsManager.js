@@ -29,6 +29,7 @@ MenuFunctionsManager = function() {
     {       
         return function() {
             subController.setSubPosition( 0, position );
+            subController.setSignerPosition( subController.getSignerPosition().x, position );
         }
     }
 
@@ -125,7 +126,7 @@ MenuFunctionsManager = function() {
     function getSignerPositionFunc(position)
     {       
         return function() {
-            subController.setSignerPosition( position, -1 );
+            subController.setSignerPosition( position, subController.getSubPosition().y);
         }
     }
 
@@ -375,10 +376,10 @@ MenuFunctionsManager = function() {
             case "signerCatButton":
                 return getSignerLanguageFunc( list_contents[demoId].signer[0]['ca'], 'ca' );
 
-            case "signerTopButton":
+            case "signerRightButton":
                 return getSignerPositionFunc( 1 );
 
-            case "signerBottomButton":
+            case "signerLeftButton":
                 return getSignerPositionFunc( -1 );
 
             case "signerIndicatorNoneButton":
@@ -391,13 +392,13 @@ MenuFunctionsManager = function() {
                 return getSubAutoPositioningFunc();
 
             case "signerSmallAreaButton":
-                return getSignerAreaFunc( 50 );
+                return getSignerAreaFunc( 40 );
 
             case "signerMediumlAreaButton":
-                return getSignerAreaFunc( 60 );
+                return getSignerAreaFunc( 50 );
 
             case "signerLargeAreaButton":
-                return getSignerAreaFunc( 70 );
+                return getSignerAreaFunc( 60 );
 
         // Audio Description
             case "adEngButton":

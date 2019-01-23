@@ -58,7 +58,6 @@ SubSignManager = function() {
 	var autoHMD = false;
 
 	var subConfig;
-	var signerConfig;
 
 	// [ST] subtitle vars 
 	var subtitleEnabled = false; // boolean
@@ -81,6 +80,7 @@ SubSignManager = function() {
 	var signArea = 60; // small = 50, medium = 60, large = 70
 	var signLang; // string (en, de, ca, es)
 	var signAvailableLang = []; // Array { name, value, default:bool }
+	var signerSize = 20;
 
 
 //************************************************************************************
@@ -277,22 +277,17 @@ SubSignManager = function() {
 
 	function createSigner()
 	{
-	    var latitud = 30 * signPosY; 
-	    var longitud = 53 * signPosX; 
-
-	    var posX = _isHMD ? 60 * Math.sin( Math.radians( longitud ) ) * signArea/100 : 80 * Math.sin( Math.radians( longitud ) ) * signArea/100;
-	    var posY = 50 * Math.sin( Math.radians( latitud ) ) * signArea/100;
-	    var posZ = 76;
+	   	var posX = ( 1.48*signArea/2-signerSize/2 ) *signPosX;
+	    var posY = ( 0.82*signArea/2-signerSize/2 ) *signPosY;
+	    var posZ = 70;
 
 		var conf = {
-			size: 30 * 70/100, // signArea/100
+			size: signerSize, // signArea/100
 			signIndicator: signIndicator,
 			x: posX,
 			y: posY,
 			z: posZ
 		};
-
-		signerConfig = conf;
 
       	createSignVideo( signerContent, 'sign', conf );
       	VideoController.playAll();
@@ -302,15 +297,9 @@ SubSignManager = function() {
 	{
 		if ( scene.getObjectByName("sign") )
 		{
-			var latitud = ( 30 - 0.2 * ( 70 - signArea ) ) * signPosY; 
-		    var longitud = ( 53 - 0.35 * ( 70 - signArea ) ) * signPosX; 
-
-		    var posX = _isHMD ? 60 * Math.sin( Math.radians( longitud ) ) * signArea/100 : 80 * Math.sin( Math.radians( longitud ) ) * signArea/100;
-		    var posY = 50 * Math.sin( Math.radians( latitud ) ) * signArea/100;
-		    var posZ = 76;
-
-		    signerConfig.x = posX;
-		    signerConfig.y = posY;
+		   	var posX = ( 1.48*signArea/2-signerSize/2 )*signPosX;
+		    var posY = ( 0.82*signArea/2-signerSize/2 )*signPosY;
+		    var posZ = 70;
 
 		    scene.getObjectByName("sign").position.x = posX;
 		    scene.getObjectByName("sign").position.y = posY;
@@ -375,7 +364,7 @@ SubSignManager = function() {
     {
     	if ( areaMesh ) camera.remove( areaMesh );
 
-		var mesh = _moData.getPlaneImageMesh( 1.48*size, 0.82*size, './img/rect5044.png', 'areamesh', 5 ) 
+		var mesh = _moData.getPlaneImageMesh( 1.48*size, 0.82*size, './img/rect5044.png', 'areamesh', 5 );
 		mesh.position.z = -70;
 		mesh.autoRemove = function() {
 			var timer = setTimeout(function() {
@@ -547,9 +536,9 @@ SubSignManager = function() {
 //************************************************************************************
 // Public Signer Getters
 //************************************************************************************
-	this.getSignerConfig = function()
+	this.getSignerSize = function()
 	{
-		return signerConfig;
+		return signerSize;
 	}
 
 	this.getSignerEnabled = function()
@@ -561,7 +550,7 @@ SubSignManager = function() {
 	{
 		var position = {
 			x: signPosX,
-			y: signPosX
+			y: signPosY
 		};
 
 		return position;

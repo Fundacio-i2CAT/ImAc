@@ -29,6 +29,7 @@ MenuFunctionsManager = function() {
     {       
         return function() {
             subController.setSubPosition( 0, position );
+            subController.setSignerPosition( subController.getSignerPosition().x, position );
         }
     }
 
@@ -127,7 +128,7 @@ MenuFunctionsManager = function() {
     function getSignerPositionFunc(position)
     {       
         return function() {
-            subController.setSignerPosition( position, -1 );
+            subController.setSignerPosition( position, subController.getSubPosition().y);
         }
     }
 
@@ -313,10 +314,10 @@ MenuFunctionsManager = function() {
             case "signerCatButton":
                 return getSignerLanguageFunc( list_contents[demoId].signer[0]['ca'], 'ca' );
 
-            case "signerTopButton":
+            case "signerRightButton":
                 return getSignerPositionFunc( 1 );
 
-            case "signerBottomButton":
+            case "signerLeftButton":
                 return getSignerPositionFunc( -1 );
 
             case "signerIndicatorNoneButton":

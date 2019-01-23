@@ -42,9 +42,10 @@ function ADOptionMenuController(menuType) {
                                     {name: 'adVolumeMaxButton', value: 'Maximum', default: false}];
 
 	var parentColumnDropdownElements = [ 
-									{name: 'audioDescriptionLanguages', value: 'Language', options: ADLanguagesArray},
-									{name: 'audioDescriptionPresentation', value: 'Presentation', options: ADPresentationArray},
-									{name: 'audioDescriptionVolume', value: 'Volume (i)'}];
+									{name: 'audioDescriptionLanguages', value: 'Language', options: _AudioManager.getADLanguagesArray() },
+                                    {name: 'audioDescriptionPresentation', value: 'Presentation', options: _AudioManager.getADPresentationArray() },
+                                    {name: 'audioDescriptionVolume', value: 'Volume', options: ADVolumeArray}];
+
 /**
  * { function_description }
  *

@@ -124,7 +124,7 @@ function MultiOptionsPreviewController() {
      */
     function setSubtitlePreview()
     {
-    	let subConfig = subController.getSubtitleConfig(); console.log(subConfig);
+    	let subConfig = subController.getSubtitleConfig();
     	let subPreviewText = "";
 
     	if(subController.getSubSize() == 1)
@@ -186,15 +186,18 @@ function MultiOptionsPreviewController() {
  */
     function setSignerPreview()
     {
-        let signerConfig =  subController.getSignerConfig();
-        let size = (signerConfig) ? signerConfig.size : 30 * 70/100;
-        let position = (signerConfig) ? {'x':signerConfig.x, 'y':signerConfig.y} : subController.getSignerPosition();
-
+        var size = subController.getSignerSize();
         var material = new THREE.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 1 }); 
         var geometry = new THREE.PlaneGeometry( size, size );
         var signerMesh =  new THREE.Mesh( geometry, material);
 
-        signerMesh.position.set(position.x , position.y, -76);
+        let position = 
+        {
+            x: ( 1.48*subController.getSignerArea()/2-size/2 )*subController.getSignerPosition().x,
+            y: (0.82*subController.getSignerArea()/2-size/2) * subController.getSignerPosition().y
+        };
+
+        signerMesh.position.set(position.x , position.y, -70);
          
         signerMesh.name = 'signerpreview';
 
@@ -207,7 +210,6 @@ function MultiOptionsPreviewController() {
         signPreviewText.position = new THREE.Vector3(0, 0, 0.01);
 
         signerMesh.add(signPreviewText.create());
-
 
         return signerMesh;
     }

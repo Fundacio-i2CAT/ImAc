@@ -29,7 +29,7 @@ THREE.DeviceOrientationAndTouchController = function( object, objectPather, domE
 
 	this.enabled = true;
 
-	this.deviceOrientation = {};
+	//this.deviceOrientation = {};
 	this.screenOrientation = window.orientation || 0;
 
 	this.alpha = 0;
@@ -53,7 +53,7 @@ THREE.DeviceOrientationAndTouchController = function( object, objectPather, domE
 	var deviceQuat = new THREE.Quaternion();
 
 	
-	this.objectPather = objectPather;
+	//this.objectPather = objectPather;
 
 	var mouse;
 
@@ -75,10 +75,10 @@ THREE.DeviceOrientationAndTouchController = function( object, objectPather, domE
 	};
 
 
-	var onScreenOrientationChangeEvent = function() 
+	/*var onScreenOrientationChangeEvent = function() 
 	{
 		scope.screenOrientation = window.orientation || 0;
-	};
+	};*/
 	
 	
 	var onWindowResize = function() 
@@ -89,6 +89,7 @@ THREE.DeviceOrientationAndTouchController = function( object, objectPather, domE
 	};
 
 	this.onDocumentMouseDown = function ( event ) {
+
 		event.preventDefault();
 
 		tmpQuat.copy( scope.objectPather.quaternion );
@@ -122,11 +123,6 @@ THREE.DeviceOrientationAndTouchController = function( object, objectPather, domE
 		}*/
 		
 	}.bind( this );
-
-	var onDeviceOrientationChangeEvent = function( event ) 
-	{
-		scope.deviceOrientation = event;
-	};
 
 	this.onDocumentMouseMove = function ( event ) {
 		currentX = event.pageX;
@@ -324,44 +320,8 @@ THREE.DeviceOrientationAndTouchController = function( object, objectPather, domE
 		}
 	}.bind( this );
 
-	// The angles alpha, beta and gamma form a set of intrinsic Tait-Bryan angles of type Z-X'-Y''
-
-	var setObjectQuaternion = function() {
-
-		var zee = new THREE.Vector3( 0, 0, 1 );
-		var euler = new THREE.Euler();
-		var q0 = new THREE.Quaternion();
-		var q1 = new THREE.Quaternion( - Math.sqrt( 0.5 ), 0, 0, Math.sqrt( 0.5 ) ); // - PI/2 around the x-axis
-
-		return function( quaternion, alpha, beta, gamma, orient ) {
-
-			euler.set( beta, alpha, - gamma, 'YXZ' ); // 'ZXY' for the device, but 'YXZ' for us
-			quaternion.setFromEuler( euler ); // orient the device
-			quaternion.multiply( q1 ); // camera looks out the back of the device, not the top
-			quaternion.multiply( q0.setFromAxisAngle( zee, - orient ) ); // adjust for screen orientation
-		}
-	}();
-
-	
-	this.updateDeviceMove = function () {
-		
-		var alpha, beta, gamma, orient;
-		
-		return function () {
-			
-			if ( scope.enabled === false ) return;
-
-			alpha = scope.deviceOrientation.alpha ? THREE.Math.degToRad( scope.deviceOrientation.alpha ) : 0; // Z
-			beta = scope.deviceOrientation.beta ? THREE.Math.degToRad( scope.deviceOrientation.beta ) : 0; // X'
-			gamma = scope.deviceOrientation.gamma ? THREE.Math.degToRad( scope.deviceOrientation.gamma ) : 0; // Y''
-			orient = scope.screenOrientation ? THREE.Math.degToRad( scope.screenOrientation ) : 0; // O
-			setObjectQuaternion( scope.object.quaternion, alpha, beta, gamma, orient );
-			this.alpha = alpha;	
-		}
-	}();
-
 	this.updateManualMove = function () {
-				
+		
 		var lat, lon;
 		var phi, theta;
 
@@ -525,13 +485,11 @@ THREE.DeviceOrientationAndTouchController = function( object, objectPather, domE
 		})
 	};
 
-var stover = false;	
-
 	this.update = function() {
 		
 		if (this.isAndroid && !autopositioning && _isHMD) 
 		{
-			this.updateDeviceMove();		
+			//this.updateDeviceMove();		
 		}
 		else if ( appState !== CONTROLLER_STATE.AUTO ) 
 		{
@@ -549,18 +507,6 @@ var stover = false;
 			raycaster.set( _origin, direction );
 
 	        var intersects = raycaster.intersectObjects( interList, true ); // false
-
-	        /*if ( !stover && intersects[0] && intersects[0].object && intersects[0].object.name == 'showSubtitlesMenuButton') {
-	        	stover = true;
-	        	scene.getObjectByName( 'showSubtitlesMenuButton' ).visible = false; 
-            	scene.getObjectByName( 'overSTbutton' ).visible = true; 
-	        }
-	        else if (stover && ( ( intersects[0] && intersects[0].object && intersects[0].object.name != 'showSubtitlesMenuButton' && intersects[0].object.name != 'overSTbutton' ) ) )
-	        {
-	        	stover = false;
-	        	scene.getObjectByName( 'showSubtitlesMenuButton' ).visible = true; 
-            	scene.getObjectByName( 'overSTbutton' ).visible = false;
-	        }*/
 
 	        var dist = intersects[0] ? intersects[0].distance : 50;
 
@@ -590,12 +536,11 @@ var stover = false;
 	
 	this.connect = function() {
 
-		onScreenOrientationChangeEvent();
+		//onScreenOrientationChangeEvent();
 		
 		container.appendChild( domElement );
 
-		window.addEventListener( 'orientationchange', onScreenOrientationChangeEvent, false );	
-		//window.addEventListener( 'deviceorientation', onDeviceOrientationChangeEvent, false );	
+		//window.addEventListener( 'orientationchange', onScreenOrientationChangeEvent, false );	
 		window.addEventListener( 'resize', onWindowResize, false );	
 
 		window.addEventListener( 'vr controller connected', this.onVRControllerUpdate, false);	
@@ -610,8 +555,7 @@ var stover = false;
 
 	this.disconnect = function() {
 
-		window.removeEventListener( 'orientationchange', onScreenOrientationChangeEvent, false );
-		//window.removeEventListener( 'deviceorientation', onDeviceOrientationChangeEvent, false );
+		//window.removeEventListener( 'orientationchange', onScreenOrientationChangeEvent, false );
 		window.removeEventListener( 'resize', onWindowResize, false );	
 
 		window.removeEventListener( 'vr controller connected', this.onVRControllerUpdate, false);		

@@ -124,7 +124,7 @@ function createVRButton_1(renderer)
             display.isPresenting ? display.exitPresent() : display.requestPresent( [ { source: renderer.domElement } ] ).then(
                 function () { 
                     _isHMD = true;  
-                    createMenus();                      
+                    createMenus();                 
                 });
         };
         renderer.vr.setDevice( display );
@@ -143,7 +143,6 @@ function createVRButton_1(renderer)
     {
         AplicationManager.setDisplays( displays );
         displays.length > 0 ? showEnterVR( displays[ 0 ] ) : createDelayedMenu();
-        //if ( displays.length > 0 ) showEnterVR( displays[ 0 ] )
     });
 
     AplicationManager.setVRButton1( button );

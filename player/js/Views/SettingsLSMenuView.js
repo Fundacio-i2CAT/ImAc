@@ -10,7 +10,7 @@ function SettingsLSMenuView() {
 
         if(submenu.getObjectByName('closeMenuButton')) submenu.getObjectByName('closeMenuButton').children[0].onexecute = data.closeMenuButtonFunc;
 	        
-        if(submenu.getObjectByName('previewMenuButton')) submenu.getObjectByName('previewMenuButton').children[0].onexecute = data.previewButtonFunc;
+        if(submenu.getObjectByName('previewMenuButton')) submenu.getObjectByName('previewMenuButton').visible = data.isPreviewVisible;
     }
 
     this.pressButtonFeedback = function(data)

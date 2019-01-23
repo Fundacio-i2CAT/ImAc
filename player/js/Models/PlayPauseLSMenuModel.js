@@ -14,6 +14,7 @@ function PlayPauseLSMenuModel() {
 
 	this.closeMenuButtonFunc;
 	this.previewButtonFunc;
+	this.isPreviewVisible;
 
 	this.clickedButtonName;
 }

@@ -129,7 +129,8 @@ function PlayPauseLSMenuController() {
         data.backMenuButtonFunc = function(){ AddVisualFeedbackOnClick('backMenuButton', function(){ menuMgr.NavigateBackMenu()} )};
         data.forwardMenuButtonFunc = function(){ AddVisualFeedbackOnClick('forwardMenuButton', function(){menuMgr.NavigateForwardMenu()} )};
         data.closeMenuButtonFunc = function(){ AddVisualFeedbackOnClick('closeMenuButton', function(){ menuMgr.ResetViews()} )};
-        data.previewButtonFunc = function(){ AddVisualFeedbackOnClick('previewMenuButton', function(){menuMgr.OpenPreview()} )};
+        //data.previewButtonFunc = function(){ AddVisualFeedbackOnClick('previewMenuButton', function(){menuMgr.OpenPreview()} )};
+        data.isPreviewVisible = false;
     }
 
 /**
@@ -184,6 +185,8 @@ function PlayPauseLSMenuController() {
 
 /**
  * { function_description }
+ * 
+ * @function   playAllFunc (name)
  */
     this.playAllFunc = function()
     {
@@ -199,7 +202,7 @@ function PlayPauseLSMenuController() {
 /**
  * { function_description }
  *
- * @class      PlayPauseFunc (name)
+ * @function      PlayPauseFunc (name)
  */
 	function PlayPauseFunc()
     {
@@ -214,7 +217,7 @@ function PlayPauseLSMenuController() {
 /**
  * { function_description }
  *
- * @class      SeekFunc (name)
+ * @function      SeekFunc (name)
  * @param      {number}  plus    The plus
  */
     function SeekFunc(plus)
@@ -229,6 +232,8 @@ function PlayPauseLSMenuController() {
 
 /**
  * { function_description }
+ * 
+ * @function   playoutTimeDisplayLogic (name)
  */
     function playoutTimeDisplayLogic()
     {

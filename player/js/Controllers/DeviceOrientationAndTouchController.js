@@ -410,9 +410,12 @@ THREE.DeviceOrientationAndTouchController = function( object, objectPather, domE
 
 		interController.checkVRInteraction( _origin, direction );
 	}
+var gamepadConnected = false;
 
 	this.onVRControllerUpdate = function( event )
 	{
+		if ( !gamepadConnected ) {
+			gamepadConnected = true;
 		_moData.createPointer2();
 //console.error(event)
 		var controller = event.detail
@@ -483,6 +486,8 @@ THREE.DeviceOrientationAndTouchController = function( object, objectPather, domE
 		controller.addEventListener( 'disconnected', function( event ){
 			controller.parent.remove( controller )
 		})
+
+		}
 	};
 
 	this.update = function() {

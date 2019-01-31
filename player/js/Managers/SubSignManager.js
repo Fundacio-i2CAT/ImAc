@@ -153,8 +153,6 @@ SubSignManager = function() {
 	    	{
 	      		removeSubtitle();
 
-	      		
-
 			    //Save subtitle configuration for preview visualitzation. 
 
 	      		//createSubtitle( textList, conf );

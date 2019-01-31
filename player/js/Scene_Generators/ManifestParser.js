@@ -47,8 +47,8 @@ ManifestParser = function() {
                 if ( !st_list ) st_list = {};
                 if ( !st_list_e2r ) st_list_e2r = {};
                 representationArray.forEach( function( representation ) { 
-                    if ( representation.e2r == "false" ) st_list[ MenuDictionary.translate( elem.lang ) ] = _mpd.manifest.baseUri + representation.BaseURL; 
-                    else st_list_e2r[ MenuDictionary.translate( elem.lang ) ] = _mpd.manifest.baseUri + representation.BaseURL; 
+                    if ( representation.e2r == "true" ) st_list_e2r[ MenuDictionary.translate( elem.lang ) ] = _mpd.manifest.baseUri + representation.BaseURL; 
+                    else st_list[ MenuDictionary.translate( elem.lang ) ] = _mpd.manifest.baseUri + representation.BaseURL; 
                 });
             }
             else if ( elem.Role && elem.Role.value == 'sign') 

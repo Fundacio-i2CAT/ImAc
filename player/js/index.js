@@ -23,6 +23,8 @@ var statObj = new StatObject();
 
 var VideoController = new VideoController();
 
+var _ImAc = new ImAcController();
+
 let playpauseCtrl;
 let volumeCtrl;
 let settingsCtrl;
@@ -132,6 +134,19 @@ function init_webplayer()
                 localStorage.ImAc_language ? MenuDictionary.setMainLanguage( localStorage.ImAc_language ) : MenuDictionary.setMainLanguage( 'en' );
 
                 mainContentURL = list_contents[ myhash[1] ].url;
+
+                ///////////////////////////////////////////////////////////////
+                var cookieconf = readCookie("ImAcProfileConfig");
+
+                if ( cookieconf && cookieconf != null ) 
+                {
+                    var iconf = JSON.parse( cookieconf );
+                    subController.setSTConfig( iconf.ST );
+                    subController.setSLConfig( iconf.SL );
+                    _AudioManager.setADConfig( iconf.AD );
+                    _AudioManager.setASTConfig( iconf.AST );
+                }
+                ////////////////////////////////////////////////////////////////
 
                 demoId = myhash[1];
 

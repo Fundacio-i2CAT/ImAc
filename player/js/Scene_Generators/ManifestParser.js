@@ -109,7 +109,7 @@ ManifestParser = function() {
         });
 
         if ( langlist )
-        {
+        {  
             restartSTContent( langlist );
             setSLContent( lang );
         }
@@ -149,7 +149,8 @@ ManifestParser = function() {
 
     function setSTContent(lang)
     {
-        var sublang = list_contents[demoId].subtitles[0][lang] ? lang : Object.keys(list_contents[demoId].subtitles[0])[0];
+        var cookielang = subController.getSubLanguage();
+        var sublang = cookielang ? cookielang : list_contents[demoId].subtitles[0][lang] ? lang : Object.keys(list_contents[demoId].subtitles[0])[0];
         subController.setSubtitle( list_contents[demoId].subtitles[0][sublang], sublang );
         subController.setSubtitleLanguagesArray( list_contents[demoId].subtitles[0] );
     }
@@ -158,7 +159,8 @@ ManifestParser = function() {
     {
         if ( list_contents[demoId].signer && list_contents[demoId].signer[0] ) 
         {
-            var siglang = list_contents[demoId].signer[0][lang] ? lang : Object.keys(list_contents[demoId].signer[0])[0];
+            var cookielang = subController.getSignerLanguage();
+            var siglang = cookielang ? cookielang : list_contents[demoId].signer[0][lang] ? lang : Object.keys(list_contents[demoId].signer[0])[0];
             subController.setSignerContent( list_contents[demoId].signer[0][siglang], siglang );
             subController.setSignerLanguagesArray( list_contents[demoId].signer[0] );
         }
@@ -166,7 +168,8 @@ ManifestParser = function() {
 
     function setADContent(lang)
     {
-        var adlang = list_contents[demoId].ad[0][lang] ? lang : Object.keys(list_contents[demoId].ad[0])[0];
+        var cookielang = _AudioManager.getADLanguage();
+        var adlang = cookielang ? cookielang : list_contents[demoId].ad[0][lang] ? lang : Object.keys(list_contents[demoId].ad[0])[0];
         _AudioManager.setADContent( list_contents[demoId].ad[0][adlang], adlang );
         _AudioManager.setADLanguagesArray( list_contents[demoId].ad[0] );
         _AudioManager.setADPresentationArray( list_contents[demoId].ad[0][adlang] );
@@ -176,7 +179,8 @@ ManifestParser = function() {
     {
     	if ( list_contents[demoId].ast && list_contents[demoId].ast[0] ) 
         {
-	        var astlang = list_contents[demoId].ast[0][lang] ? lang : Object.keys(list_contents[demoId].ast[0])[0];
+            var cookielang = _AudioManager.getADLanguage();
+	        var astlang = cookielang ? cookielang : list_contents[demoId].ast[0][lang] ? lang : Object.keys(list_contents[demoId].ast[0])[0];
 	        _AudioManager.setASTContent( list_contents[demoId].ast[0][astlang], astlang );
 	        _AudioManager.setASTLanguagesArray( list_contents[demoId].ast[0] );
 	    }

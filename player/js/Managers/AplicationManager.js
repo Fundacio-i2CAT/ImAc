@@ -18,12 +18,13 @@ function AplicationManager()
     	camera = new THREE.PerspectiveCamera( 60.0, window.innerWidth / window.innerHeight, 1, 1000 );
         camera.name = 'perspectivecamera';
 
-        this.CameraParentObject = new THREE.Object3D();
+        /*this.CameraParentObject = new THREE.Object3D();
         this.CameraParentObject.name = 'parentcamera';
-		this.CameraParentObject.add( camera );
+		this.CameraParentObject.add( camera );*/
 
 		scene = new THREE.Scene();
-		scene.add( this.CameraParentObject );
+		//scene.add( this.CameraParentObject );
+        scene.add( camera );
     }
 
     function initRenderer()
@@ -114,7 +115,8 @@ function AplicationManager()
         initWorld();
 		initRenderer();
 
-		controls = new THREE.DeviceOrientationAndTouchController( camera, CameraParentObject, renderer.domElement, renderer );
+		//controls = new THREE.DeviceOrientationAndTouchController( camera, CameraParentObject, renderer.domElement, renderer );
+        controls = new THREE.DeviceOrientationAndTouchController( camera, renderer.domElement, renderer );
 
 		container.appendChild( renderer.domElement );
 

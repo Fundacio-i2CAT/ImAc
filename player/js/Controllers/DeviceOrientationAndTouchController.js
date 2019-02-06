@@ -5,10 +5,10 @@
 //* Orientation and touch controllers
 //*
 //**
-THREE.DeviceOrientationAndTouchController = function( object, objectPather, domElement, renderer ) {
+THREE.DeviceOrientationAndTouchController = function( object, domElement, renderer ) {
 
 	var scope = this;
-	var touchtime;
+	var touchtime = 0;
 
 	var raycaster = new THREE.Raycaster();
 	var interList = [];
@@ -18,9 +18,7 @@ THREE.DeviceOrientationAndTouchController = function( object, objectPather, domE
 	this.isAndroid = navigator.userAgent.toLowerCase().indexOf("android") > -1;
 
 	this.object = object;
-	this.objectPather = objectPather;
 	this.object.rotation.reorder( "YXZ" );
-	
 	
 	this.element = domElement || document;
 	
@@ -28,13 +26,6 @@ THREE.DeviceOrientationAndTouchController = function( object, objectPather, domE
 	var mouse;
 
 	this.enabled = true;
-
-	//this.deviceOrientation = {};
-	this.screenOrientation = window.orientation || 0;
-
-	this.alpha = 0;
-	this.enableManualDrag = true;
-	//this.alphaOffsetAngle = 0;//THREE.Math.degToRad(90);
 	
 	// Manual rotate override components
 	var startX = 0, startY = 0,
@@ -48,14 +39,8 @@ THREE.DeviceOrientationAndTouchController = function( object, objectPather, domE
 		MANUAL_ROTATE_DEVICE: 2
 	};
 
-	var appState = CONTROLLER_STATE.AUTO;
-	
+	var appState = CONTROLLER_STATE.AUTO;	
 	var deviceQuat = new THREE.Quaternion();
-
-	
-	//this.objectPather = objectPather;
-
-	var mouse;
 
 	this.enableManualDrag = true;
 
@@ -73,13 +58,6 @@ THREE.DeviceOrientationAndTouchController = function( object, objectPather, domE
 	{
 		interList = interList.filter(e => e.name != name);
 	};
-
-
-	/*var onScreenOrientationChangeEvent = function() 
-	{
-		scope.screenOrientation = window.orientation || 0;
-	};*/
-	
 	
 	var onWindowResize = function() 
 	{	
@@ -92,7 +70,8 @@ THREE.DeviceOrientationAndTouchController = function( object, objectPather, domE
 
 		event.preventDefault();
 
-		tmpQuat.copy( scope.objectPather.quaternion );
+		//tmpQuat.copy( scope.objectPather.quaternion );
+		tmpQuat.copy( scope.object.quaternion );
 
 		startX = currentX = event.pageX;
 		startY = currentY = event.pageY;
@@ -115,12 +94,6 @@ THREE.DeviceOrientationAndTouchController = function( object, objectPather, domE
 
 		this.element.addEventListener( 'mousemove', this.onDocumentMouseMove, false );
 		this.element.addEventListener( 'mouseup', this.onDocumentMouseUp, false );
-
-		/*if ( _isHMD ) {
-			var mouse3D = new THREE.Vector2();
-	        mouse3D.x = 0;
-	        mouse3D.y = 0;
-		}*/
 		
 	}.bind( this );
 
@@ -148,9 +121,21 @@ THREE.DeviceOrientationAndTouchController = function( object, objectPather, domE
 
 		switch ( event.touches.length ) {
 			case 1: // ROTATE
+			
 				if ( this.enableManualDrag !== true ) return;
-				touchtime = Date.now();
-				
+				if (autopositioning == true) {
+					if (touchtime < 5) {
+						navigator.vibrate([100]);
+						touchtime++;
+					}
+					else {
+						navigator.vibrate([500]);
+						touchtime = 0;
+						disableAutopositioning()
+					}
+				}
+				//touchtime = Date.now();
+			
 				var mouse3D = new THREE.Vector2();
 				mouse3D.x = _isHMD ? 0 : ( event.touches[0].pageX / window.innerWidth ) * 2 - 1;
                 mouse3D.y = _isHMD ? 0 : - ( event.touches[0].pageY / window.innerHeight ) * 2 + 1;
@@ -162,7 +147,8 @@ THREE.DeviceOrientationAndTouchController = function( object, objectPather, domE
 
 				scope.enabled = false;
 
-				tmpQuat.copy( scope.objectPather.quaternion );
+				//tmpQuat.copy( scope.objectPather.quaternion );
+				tmpQuat.copy( scope.object.quaternion );
 
 				startX = currentX = event.touches[ 0 ].pageX;
 				startY = currentY = event.touches[ 0 ].pageY;
@@ -186,91 +172,31 @@ THREE.DeviceOrientationAndTouchController = function( object, objectPather, domE
 
 	var myangle = 0;
 
+	function disableAutopositioning()
+	{
+		AplicationManager.enableVR();
+		subController.setSubIndicator( 'none' );
+    	subController.disableAutoPositioning();
+		autopositioning = false;
+		menuMgr.ResetViews();
+	}
+
 	this.onkeydownStart = function ( event ) {
-		
-/*
-		if( !autopositioning )
+
+		switch ( event.keyCode ) 
 		{
-			switch ( event.keyCode ) 
-			{
-				case 37:
-	            	camera.rotation.y += Math.PI / 90;
-
-					if (AudioManager.isAmbisonics) AudioManager.updateRotationMatrix( camera.matrixWorld.elements );
-			        //subtitles3d.position.x += 0.1;
-	            	break;
-
-	        	case 38:
-	            	camera.rotation.x += Math.PI / 180;
-
-					if (AudioManager.isAmbisonics) AudioManager.updateRotationMatrix( camera.matrixWorld.elements );
-
-	            	break;
-
-	        	case 39:
-	        		//subtitles3d.position.x -= 0.1;
-	            	camera.rotation.y -= Math.PI / 90;
-
-					if (AudioManager.isAmbisonics) AudioManager.updateRotationMatrix( camera.matrixWorld.elements );
-
-	            	break;
-
-	        	case 40:
-	            	camera.rotation.x -= Math.PI / 180;
-
-					if (AudioManager.isAmbisonics) AudioManager.updateRotationMatrix( camera.matrixWorld.elements );
-
-	            	break;
-
-	        	case 32:
-
-	            	//moData.isPausedById(0) ? moData.playAll() : moData.pauseAll();
-	            	//camera.position.z += 10;
-	            	//camera.position.y += 5;
-
-	            	break;
-
-
-	        	case 87:
-
-	        		scene.getObjectByName(menuList[0].name).position.y += 1;
-	            	break;
-
-	        	case 83:
-
-	    			scene.getObjectByName(menuList[0].name).position.y -= 1;
-	        		break;
-
-	        	case 65:
-
-	        		myangle -= 120;
-
-	    			scene.getObjectByName(menuList[0].name).position.x = Math.sin(Math.radians(myangle))*69;
-	    			scene.getObjectByName(menuList[0].name).position.z = -Math.cos(Math.radians(myangle))*69;
-
-	    			scene.getObjectByName(menuList[0].name).rotation.y += Math.radians(120);
-
-	        		break;        			
-
-	    		case 68:
-
-	    			myangle += 120;
-
-	    			scene.getObjectByName(menuList[0].name).position.x = Math.sin(Math.radians(myangle))*69;
-	    			scene.getObjectByName(menuList[0].name).position.z = -Math.cos(Math.radians(myangle))*69;
-
-	    			scene.getObjectByName(menuList[0].name).rotation.y -= Math.radians(120);
-	    			
-	        		break;
-
-			}
-
+			case 27:  // Esc.
+				disableAutopositioning();
+				break;
+			/*default:
+			console.log( event.keyCode )
+			break;*/
 		}
-*/
+
 	}.bind( this );
 
 	this.onDocumentTouchMove = function ( event ) {
-	
+	//alert('touch start 3')	
 		switch( event.touches.length ) {
 			case 1:
 				currentX = event.touches[ 0 ].pageX;
@@ -363,7 +289,8 @@ THREE.DeviceOrientationAndTouchController = function( object, objectPather, domE
 				rotQuat.set( 0, 0, Math.sin( ( realZ - objZ  ) / 2 ), Math.cos( ( realZ - objZ ) / 2 ) );
 				objQuat.multiply( rotQuat );
 
-				scope.objectPather.quaternion.copy( objQuat );
+				//scope.objectPather.quaternion.copy( objQuat );
+				scope.object.quaternion.copy( objQuat );
 			} 
 			else if ( appState === CONTROLLER_STATE.MANUAL_ROTATE_DEVICE && !autopositioning) 
 			{				
@@ -396,10 +323,10 @@ THREE.DeviceOrientationAndTouchController = function( object, objectPather, domE
 				rotQuat.set( 0, 0, Math.sin( ( realZ - objZ  ) / 2 ), Math.cos( ( realZ - objZ ) / 2 ) );
 				objQuat.multiply( rotQuat );
 
-				scope.objectPather.quaternion.copy( objQuat );
+				//scope.objectPather.quaternion.copy( objQuat );
+				scope.object.quaternion.copy( objQuat );
 			}
 		};
-
 	}();
 
 	function sendVRInteraction(quat)
@@ -410,83 +337,74 @@ THREE.DeviceOrientationAndTouchController = function( object, objectPather, domE
 
 		interController.checkVRInteraction( _origin, direction );
 	}
-var gamepadConnected = false;
+
+	var gamepadConnected = false;
 
 	this.onVRControllerUpdate = function( event )
 	{
-		if ( !gamepadConnected ) {
+		if ( !gamepadConnected ) 
+		{
 			gamepadConnected = true;
-		_moData.createPointer2();
-//console.error(event)
-		var controller = event.detail
-		controller.name = "controller"
-		/*var axesHelper = new THREE.AxesHelper( 5 );
-		controller.add( axesHelper )*/
-		scene.add( controller )
+			_moData.createPointer2();
 
-		controller.standingMatrix = renderer.vr.getStandingMatrix()
+			var controller = event.detail
+			controller.name = "controller"
 
-		var
-		meshColorOff = 0xDB3236,//  Red.
-		meshColorOn  = 0xF4C20D,//  Yellow.
-		controllerMaterial = new THREE.MeshStandardMaterial({ color: meshColorOff }),
-		controllerMesh = new THREE.Mesh(
-			new THREE.CylinderGeometry( 0.005, 0.05, 0.1, 15 ),
-			controllerMaterial
-		),
-		handleMesh = new THREE.Mesh(
-			new THREE.BoxGeometry( 0.03, 0.1, 0.03 ),
-			controllerMaterial
-		)
-		
-		controllerMaterial.flatShading = true
-		controllerMesh.rotation.x = -Math.PI / 2
-		handleMesh.position.y = -0.05
-		controllerMesh.visible = true
-		controllerMesh.add( handleMesh )
+			scene.add( controller )
 
-		/*var material = new THREE.LineBasicMaterial( { color: 0x7f7f7f } );
-        var geometry = new THREE.Geometry();
-        geometry.vertices.push(new THREE.Vector3( 0, 0, 0) );
-        geometry.vertices.push(new THREE.Vector3( 0, 1, 0) );
-        var line = new THREE.Line( geometry, material );
-        line.name = 'controllerline'
+			controller.standingMatrix = renderer.vr.getStandingMatrix()
 
-		controllerMesh.add( line );*/
+			var
+			meshColorOff = 0xDB3236,//  Red.
+			meshColorOn  = 0xF4C20D,//  Yellow.
+			controllerMaterial = new THREE.MeshStandardMaterial({ color: meshColorOff }),
+			controllerMesh = new THREE.Mesh(
+				new THREE.CylinderGeometry( 0.005, 0.05, 0.1, 15 ),
+				controllerMaterial
+			),
+			handleMesh = new THREE.Mesh(
+				new THREE.BoxGeometry( 0.03, 0.1, 0.03 ),
+				controllerMaterial
+			)
+			
+			controllerMaterial.flatShading = true
+			controllerMesh.rotation.x = -Math.PI / 2
+			handleMesh.position.y = -0.05
+			controllerMesh.visible = true
+			controllerMesh.add( handleMesh )
 
-		controller.userData.mesh = controllerMesh//  So we can change the color later.
+			controller.userData.mesh = controllerMesh//  So we can change the color later.
 
-		controllerMesh.scale.set( 0.5,0.5,0.5 );
-		controller.add( controllerMesh )
+			controllerMesh.scale.set( 0.5,0.5,0.5 );
+			controller.add( controllerMesh )
 
-		castShadows( controller )
-		receiveShadows( controller )
+			castShadows( controller )
+			receiveShadows( controller )
 
-		controller.addEventListener( 'primary press began', function( event ){
-			event.target.userData.mesh.material.color.setHex( meshColorOn )
-			sendVRInteraction(event.target.quaternion)
-		})
-		controller.addEventListener( 'primary press ended', function( event ){
-			event.target.userData.mesh.material.color.setHex( meshColorOff )
-		})
-		controller.addEventListener( 'button_0 press began', function( event ){
-			event.target.userData.mesh.material.color.setHex( meshColorOn )
-			sendVRInteraction(event.target.quaternion)
-		})
-		controller.addEventListener( 'button_0 press ended', function( event ){
-			event.target.userData.mesh.material.color.setHex( meshColorOff )
-		})	
-		controller.addEventListener( 'thumbpad press began', function( event ){
-			event.target.userData.mesh.material.color.setHex( meshColorOn )
-			sendVRInteraction(event.target.quaternion)
-		})
-		controller.addEventListener( 'thumbpad press ended', function( event ){
-			event.target.userData.mesh.material.color.setHex( meshColorOff )
-		})	
-		controller.addEventListener( 'disconnected', function( event ){
-			controller.parent.remove( controller )
-		})
-
+			controller.addEventListener( 'primary press began', function( event ){
+				event.target.userData.mesh.material.color.setHex( meshColorOn )
+				sendVRInteraction(event.target.quaternion)
+			})
+			controller.addEventListener( 'primary press ended', function( event ){
+				event.target.userData.mesh.material.color.setHex( meshColorOff )
+			})
+			controller.addEventListener( 'button_0 press began', function( event ){
+				event.target.userData.mesh.material.color.setHex( meshColorOn )
+				sendVRInteraction(event.target.quaternion)
+			})
+			controller.addEventListener( 'button_0 press ended', function( event ){
+				event.target.userData.mesh.material.color.setHex( meshColorOff )
+			})	
+			controller.addEventListener( 'thumbpad press began', function( event ){
+				event.target.userData.mesh.material.color.setHex( meshColorOn )
+				sendVRInteraction(event.target.quaternion)
+			})
+			controller.addEventListener( 'thumbpad press ended', function( event ){
+				event.target.userData.mesh.material.color.setHex( meshColorOff )
+			})	
+			controller.addEventListener( 'disconnected', function( event ){
+				controller.parent.remove( controller )
+			})
 		}
 	};
 
@@ -531,23 +449,18 @@ var gamepadConnected = false;
 		else if(_isHMD)
 		{
 			var mouse3D = new THREE.Vector3( 0, 0, 0 );
+			
 			interController.checkInteraction(mouse3D, scope.object, 'onDocumentMouseMove');
 		}
 
 		_AudioManager.updateRotationMatrix( camera.matrixWorld.elements );
-
-		//subController.updateRadar();
 	};
 	
-	this.connect = function() {
-
-		//onScreenOrientationChangeEvent();
-		
+	this.connect = function() 
+	{	
 		container.appendChild( domElement );
 
-		//window.addEventListener( 'orientationchange', onScreenOrientationChangeEvent, false );	
 		window.addEventListener( 'resize', onWindowResize, false );	
-
 		window.addEventListener( 'vr controller connected', this.onVRControllerUpdate, false);	
 
 		this.element.addEventListener( 'touchstart', this.onDocumentTouchStart, false );
@@ -558,11 +471,9 @@ var gamepadConnected = false;
 		scope.enabled = true;
 	};
 
-	this.disconnect = function() {
-
-		//window.removeEventListener( 'orientationchange', onScreenOrientationChangeEvent, false );
+	this.disconnect = function() 
+	{
 		window.removeEventListener( 'resize', onWindowResize, false );	
-
 		window.removeEventListener( 'vr controller connected', this.onVRControllerUpdate, false);		
 
 		this.element.removeEventListener( 'touchstart', this.onDocumentTouchStart, false );

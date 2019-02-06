@@ -218,7 +218,7 @@ SubSignManager = function() {
 		{
 			AplicationManager.enableVR();
         	autopositioning = false;
-        	CameraParentObject.rotation.set(0,0,0);
+        	//CameraParentObject.rotation.set(0,0,0);
 			autoHMD = true;
 		}
 		else 
@@ -226,7 +226,7 @@ SubSignManager = function() {
 			if ( _isHMD && autoHMD ) 
 			{
 				camera.rotation.set( 0,0,0 );
-            	CameraParentObject.quaternion.set(0,0,0,0);
+            	//CameraParentObject.quaternion.set(0,0,0,0);
 				autoHMD = false;
 				autopositioning = true;
 			}
@@ -234,27 +234,30 @@ SubSignManager = function() {
 			var position = Math.round(getViewDifPosition( isdImac, 3 ));
 
 	      	var rotaionValue = 0;
-	      	var initY = Math.round( CameraParentObject.rotation.y * (-180/Math.PI)%360 );
+	      	//var initY = Math.round( CameraParentObject.rotation.y * (-180/Math.PI)%360 );
+	      	var initY = Math.round( camera.rotation.y * (-180/Math.PI)%360 );
 
 	      	var rotationInterval = setInterval(function() 
 	      	{
 	      		var difff = isdImac - initY;
 	      		if ( difff > 180 ) difff -= 360;
 	      		if ( difff < 0 ) difff = -1*difff;
-	        	if ( position * rotaionValue >= difff || position == 0 ) 
+	        	if ( position * rotaionValue >= difff || position == 0 || autopositioning == false) 
 	        	{
 	        		clearInterval( rotationInterval );
 	        		if ( VideoController.getListOfVideoContents()[0].vid.currentTime < VideoController.getListOfVideoContents()[0].vid.duration - 10 ) autoPositioning = true;
 	        		else {
 	        			AplicationManager.enableVR();
 	        			autopositioning = false;
-	        			if ( _isHMD ) CameraParentObject.rotation.set(0,0,0);
+	        			//if ( _isHMD ) CameraParentObject.rotation.set(0,0,0);
+	        			if ( _isHMD ) camera.rotation.set(0,0,0);
 	        		}
 	        	}
 	        	else 
 	        	{
 	          		rotaionValue += position*1.2; // 60 degrees by second
-	          		CameraParentObject.rotation.y = initY / ( -180 / Math.PI )%360 + rotaionValue * ( -Math.PI / 180 );
+	          		//CameraParentObject.rotation.y = initY / ( -180 / Math.PI )%360 + rotaionValue * ( -Math.PI / 180 );
+	          		camera.rotation.y = initY / ( -180 / Math.PI )%360 + rotaionValue * ( -Math.PI / 180 );
 	        	}
 	      	}, 20); 
 	    }
@@ -266,7 +269,8 @@ SubSignManager = function() {
 
 		var a = new THREE.Euler( 0, Math.radians(isdImac), 0, 'XYZ' );
 
-		CameraParentObject.quaternion.setFromEuler( a );
+		//CameraParentObject.quaternion.setFromEuler( a );
+		camera.quaternion.setFromEuler( a );
 
 		AplicationManager.enableVR();
 
@@ -333,8 +337,8 @@ SubSignManager = function() {
     	radarMesh = _moData.getRadarMesh();
 
     	radarMesh.onexecute = function() {
-
-			radarAutoPositioning = true;
+console.error('radar auto positioning')
+			if ( !_isHMD ) radarAutoPositioning = true;
     	}
 
     	interController.addInteractiveRadar( radarMesh )
@@ -531,6 +535,20 @@ SubSignManager = function() {
         return subAvailableLang;
     };
 
+    this.getSTConfig = function()
+    {
+    	return {
+    		enabled: subtitleEnabled,
+    		lang: subLang,
+    		position: this.getSubPosition(),
+    		indicator: subtitleIndicator,
+    		area: subArea,
+    		size: subSize,
+    		easy: subEasy,
+    		background: subBackground
+    	};
+    };
+
 //************************************************************************************
 // Public Signer Getters
 //************************************************************************************
@@ -574,6 +592,17 @@ SubSignManager = function() {
         return signAvailableLang;
     }; 
 
+    this.getSLConfig = function()
+    {
+    	return {
+    		enabled: signEnabled,
+    		lang: signLang,
+    		position: this.getSignerPosition(),
+    		indicator: signIndicator,
+    		area: signArea
+    	};
+    };
+
 //************************************************************************************
 // Private Subtitle Setters
 //************************************************************************************
@@ -585,6 +614,19 @@ SubSignManager = function() {
 //************************************************************************************
 // Public Subtitle Setters
 //************************************************************************************
+
+	this.setSTConfig = function(conf)
+    {
+    	subtitleEnabled = conf.enabled;
+    	subLang = conf.lang;
+    	subPosX = conf.position.x;
+		subPosY = conf.position.y;
+    	subtitleIndicator = conf.indicator;
+    	subArea	= conf.area;
+    	subSize	= conf.size;
+    	subEasy = conf.easy;
+    	subBackground = conf.background;
+    };
 
 	this.setSubtitle = function(xml, lang)
 	{
@@ -705,6 +747,16 @@ SubSignManager = function() {
 //************************************************************************************
 // Public Signer Setters
 //************************************************************************************
+
+	this.setSLConfig = function(conf)
+    {
+    	signEnabled = conf.enabled;
+    	signLang = conf.lang;
+    	signPosX = conf.position.x;
+		signPosY = conf.position.y;
+    	signIndicator = conf.indicator;
+    	signArea = conf.area;
+    };
 
 	this.setSignerPosition = function(x, y)
 	{

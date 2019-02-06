@@ -59,7 +59,7 @@ MenuFunctionsManager = function() {
         return function() {
             if ( !_isHMD ) AplicationManager.disableVR();
             camera.rotation.set( 0,0,0 );
-            CameraParentObject.quaternion.set(0,0,0,0);
+            //CameraParentObject.quaternion.set(0,0,0,0);
 
             menuMgr.ResetViews();
 

@@ -181,6 +181,7 @@ function ADOptionMenuController(menuType) {
 
                 data.backMenuButtonFunc = function(){ AddVisualFeedbackOnClick('backMenuButton', function(){ menuMgr.NavigateBackMenu()} )};
                 data.closeMenuButtonFunc = function(){ AddVisualFeedbackOnClick('closeMenuButton', function(){ menuMgr.ResetViews()} )};
+                data.isPreviewVisible = false;
                 break;
                 
             // TRADITIONAL

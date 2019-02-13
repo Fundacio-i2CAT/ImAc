@@ -40,4 +40,7 @@ function OptionMenuModel() {
 	this.lsOptDisbledLabelName;
 	this.lsOptDisbledLabelValue;
 
+	this.previewButtonFunc;
+	this.isPreviewVisible;
+
 }

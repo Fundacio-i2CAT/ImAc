@@ -100,6 +100,10 @@ function AplicationManager()
     	{			
 			interController.checkInteraction( mouse3D, camera, 'onDocumentMouseDown' );
 		}
+        if ( _isHMD && subController.getSubtitleEnabled() )
+        {
+            subController.updateSTRotation();
+        }
 
 		subController.updateRadar();
 

@@ -106,7 +106,7 @@ MenuFunctionsManager = function() {
     }
 
 //************************************************************************************
-// Settings Functions
+// Signer Functions
 //************************************************************************************
 
     function getMainLanguageFunc(language)
@@ -227,6 +227,22 @@ MenuFunctionsManager = function() {
         return function() {
             _AudioManager.setSubEasy( enable, xml );
         }
+    }
+
+//************************************************************************************
+// Settings Functions
+//************************************************************************************
+    
+    function getSaveConfigFunc()
+    {
+        return function() {
+            saveConfig();
+        }
+    }
+
+    function getVoiceControlFunc(enable)
+    {
+        return;
     }
 
 
@@ -477,14 +493,14 @@ MenuFunctionsManager = function() {
             case "settingsLanguageCatButton":
                 return getMainLanguageFunc( 'ca' );
 
-            case "vc1":
-                return;
+            case "voiceControlOnButton":
+                return getVoiceControlFunc( true );
 
-            case "up1":
-                return;
+            case "voiceControlOffButton":
+                return getVoiceControlFunc( false );
 
-            case "up2":
-                return;
+            case "saveUserProfileButton":
+                return getSaveConfigFunc();
 
             case "settingsMenuTraditionalButton":
                 return settingsMgr.getChangeMenuTypeFunction(2);

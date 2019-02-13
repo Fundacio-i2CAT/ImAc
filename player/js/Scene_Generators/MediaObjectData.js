@@ -111,6 +111,8 @@ THREE.MediaObjectData = function () {
 
             group.add( mesh );
         }
+
+        if ( _isHMD ) group.rotation.z = -camera.rotation.z;
         
         return group;
     };

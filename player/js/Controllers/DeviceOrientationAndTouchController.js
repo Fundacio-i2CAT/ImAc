@@ -186,11 +186,28 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 		switch ( event.keyCode ) 
 		{
 			case 27:  // Esc.
-				disableAutopositioning();
+				if ( autopositioning ) disableAutopositioning();
 				break;
-			/*default:
-			console.log( event.keyCode )
-			break;*/
+
+			case 37:  // left
+				scope.object.rotation.y += Math.PI/40;
+				break;
+
+			case 38:  // up
+				scope.object.rotation.x += Math.PI/20;
+				break;
+
+			case 39:  // right
+				scope.object.rotation.y -= Math.PI/40;
+				break;
+
+			case 40:  // down
+				scope.object.rotation.x -= Math.PI/20;
+				break;
+
+			default:
+				//console.log( event.keyCode )
+				break;
 		}
 
 	}.bind( this );
@@ -340,12 +357,15 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 
 	var gamepadConnected = false;
 
+	var openmenutimer = 0;
+	var openmenuinterval;
+
 	this.onVRControllerUpdate = function( event )
 	{
 		if ( !gamepadConnected ) 
 		{
 			gamepadConnected = true;
-			_moData.createPointer2();
+			_moData.createPointer2(); 
 
 			var controller = event.detail
 			controller.name = "controller"
@@ -383,30 +403,52 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 
 			controller.addEventListener( 'primary press began', function( event ){
 				event.target.userData.mesh.material.color.setHex( meshColorOn )
+				startMenuInterval()
 				sendVRInteraction(event.target.quaternion)
 			})
 			controller.addEventListener( 'primary press ended', function( event ){
 				event.target.userData.mesh.material.color.setHex( meshColorOff )
+				stopMenuInterval()
 			})
 			controller.addEventListener( 'button_0 press began', function( event ){
 				event.target.userData.mesh.material.color.setHex( meshColorOn )
+				startMenuInterval()
 				sendVRInteraction(event.target.quaternion)
 			})
 			controller.addEventListener( 'button_0 press ended', function( event ){
 				event.target.userData.mesh.material.color.setHex( meshColorOff )
+				stopMenuInterval()
 			})	
 			controller.addEventListener( 'thumbpad press began', function( event ){
 				event.target.userData.mesh.material.color.setHex( meshColorOn )
+				startMenuInterval()
 				sendVRInteraction(event.target.quaternion)
 			})
 			controller.addEventListener( 'thumbpad press ended', function( event ){
 				event.target.userData.mesh.material.color.setHex( meshColorOff )
+				stopMenuInterval()
 			})	
 			controller.addEventListener( 'disconnected', function( event ){
 				controller.parent.remove( controller )
 			})
 		}
 	};
+
+	function startMenuInterval()
+	{
+		if ( !scene.getObjectByName("traditionalmenu").visible ) {
+			openmenuinterval = setInterval(function(){
+				openmenutimer++;
+				if ( openmenutimer == 3 ) menuMgr.initFirstMenuState();
+			}, 1000);
+		}
+	}
+
+	function stopMenuInterval()
+	{
+		clearInterval( openmenuinterval );
+		openmenutimer = 0;
+	}
 
 	this.update = function() {
 		

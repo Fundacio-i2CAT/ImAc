@@ -168,11 +168,14 @@ ManifestParser = function() {
 
     function setADContent(lang)
     {
-        var cookielang = _AudioManager.getADLanguage();
-        var adlang = cookielang ? cookielang : list_contents[demoId].ad[0][lang] ? lang : Object.keys(list_contents[demoId].ad[0])[0];
-        _AudioManager.setADContent( list_contents[demoId].ad[0][adlang], adlang );
-        _AudioManager.setADLanguagesArray( list_contents[demoId].ad[0] );
-        _AudioManager.setADPresentationArray( list_contents[demoId].ad[0][adlang] );
+        if ( list_contents[demoId].ad && list_contents[demoId].ad[0] ) 
+        {
+            var cookielang = _AudioManager.getADLanguage();
+            var adlang = cookielang ? cookielang : list_contents[demoId].ad[0][lang] ? lang : Object.keys(list_contents[demoId].ad[0])[0];
+            _AudioManager.setADContent( list_contents[demoId].ad[0][adlang], adlang );
+            _AudioManager.setADLanguagesArray( list_contents[demoId].ad[0] );
+            _AudioManager.setADPresentationArray( list_contents[demoId].ad[0][adlang] );
+        }
     }
 
     function setASTContent(lang)

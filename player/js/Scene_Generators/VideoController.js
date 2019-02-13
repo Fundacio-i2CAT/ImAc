@@ -254,4 +254,10 @@ VideoController = function() {
         });
     };
 
+    this.getSync = function()
+    {
+        listOfVideoContents.forEach( function( elem, i ) { console.log( elem.vid.currentTime + ' id: ' + i ) } ); 
+        listOfAudioContents.forEach( function( elem, i ) { console.log( elem.currentTime + ' aid: ' + i ) } );
+    }
+
 }

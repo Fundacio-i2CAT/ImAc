@@ -11,6 +11,7 @@ function init_webplayer()
 {
 	console.log('Version: ' + _PlayerVersion);
 
+setBrowserLanguage()
     $.getJSON('./content.json', function(json)
     {
         var list_contents = json.contents;
@@ -23,6 +24,23 @@ function init_webplayer()
             createListGroup(id, list_contents[i].thumbnail, dataText);
         }
     });
+}
+
+function setBrowserLanguage()
+{
+    var radios2 = document.getElementsByName('lang');
+    var lang =  navigator.language.substring(0,2);
+
+    for (var i = 0, length = radios2.length; i < length; i++)
+    {
+        if (radios2[i].value == lang)
+        {
+            radios2[i].checked = true;
+            break;
+        }
+    }
+
+   
 }
 
 function selectXML(id)

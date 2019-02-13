@@ -41,11 +41,11 @@ function SettingsOptionMenuController(menuType) {
 									{name: 'settingsLanguageCatButton', value: 'Català', default: MenuDictionary.checkMainLanguage( 'ca' )}];
 
 	var voiceControlArray = [
-									{name: 'vc1', value: 'Option 1', default: true}];
+                                    {name: 'voiceControlOnButton', value: 'On', default: false}, 
+                                    {name: 'voiceControlOffButton', value: 'Off', default: true}];
 
 	var settingsUserProfileArray = [
-									{name: 'up1', value: 'Option 1', default: true}, 
-									{name: 'up2', value: 'Option 2', default: false}];
+									{name: 'saveUserProfileButton', value: 'Save', default: false}];
 
     var settingsMenuTypeArray =    [
                                     {name: 'settingsMenuTraditionalButton', value: 'Traditional', default: settingsMgr.checkMenuType(2)}, 

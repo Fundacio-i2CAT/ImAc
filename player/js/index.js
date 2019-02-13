@@ -105,7 +105,7 @@ if ( annyang ) {
   annyang.addCommands(commands);
 
   // Start listening.
-  annyang.start();
+  //annyang.start();
 }
 
 

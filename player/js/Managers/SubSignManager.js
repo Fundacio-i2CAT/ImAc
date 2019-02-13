@@ -994,4 +994,9 @@ console.error('radar auto positioning')
     	removeSignVideo();
     }
 
+    this.updateSTRotation = function()
+    {
+    	if ( subtitleMesh ) subtitleMesh.rotation.z = -camera.rotation.z;
+    }
+
 }

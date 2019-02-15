@@ -99,6 +99,8 @@ SubSignManager = function() {
 		  		if ( radarAutoPositioning ) changeSimplePositioning( isd.imac );
 		    	if ( subtitleEnabled ) print3DText( isd.contents[0], isd.imac );
 
+		    	//if ( subtitleIndicator == 'arrow' ) arrowInteraction();
+
 		    	checkSpeakerPosition( isd.imac );
 		  	}
 		  	else if ( textListMemory.length > 0 )
@@ -107,6 +109,20 @@ SubSignManager = function() {
 		    	removeSubtitle();
 		    	removeSpeakerRadar();
 		  	}
+		}
+	}
+
+	function arrowInteraction()
+	{
+// cada 300 milis aprox
+		if ( scene.getObjectByName("right") ) {
+
+			scene.getObjectByName("right").material.opacity = scene.getObjectByName("right").material.opacity == 1 ? 0.4 : 1;
+		}
+		
+		if ( scene.getObjectByName("left") ) {
+
+			scene.getObjectByName("left").material.opacity = scene.getObjectByName("left").material.opacity == 1 ? 0.4 : 1;
 		}
 	}
 
@@ -265,16 +281,12 @@ SubSignManager = function() {
 
 	function changeSimplePositioning(isdImac)
 	{
+		//AplicationManager.disableVR();
 		radarAutoPositioning = false;
 
-		var a = new THREE.Euler( 0, Math.radians(isdImac), 0, 'XYZ' );
-
-		//CameraParentObject.quaternion.setFromEuler( a );
+		var a = new THREE.Euler( 0, Math.radians(-isdImac), 0, 'XYZ' );
 		camera.quaternion.setFromEuler( a );
 
-		AplicationManager.enableVR();
-
-		//setTimeout(function() {radarautopositioning = false;},500);
 	}	
 
 	function createSigner()
@@ -337,7 +349,7 @@ SubSignManager = function() {
     	radarMesh = _moData.getRadarMesh();
 
     	radarMesh.onexecute = function() {
-console.error('radar auto positioning')
+
 			if ( !_isHMD ) radarAutoPositioning = true;
     	}
 

@@ -5,10 +5,12 @@
 //* Orientation and touch controllers
 //*
 //**
+
 THREE.DeviceOrientationAndTouchController = function( object, domElement, renderer ) {
 
 	var scope = this;
 	var touchtime = 0;
+	var touchcount = 0;
 
 	var raycaster = new THREE.Raycaster();
 	var interList = [];
@@ -70,6 +72,24 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 
 		event.preventDefault();
 
+		if (autopositioning == false) {
+
+			if ( Date.now() - touchtime > 1200 ) touchcount = 0;
+
+			if (touchcount == 0) {
+				
+				touchcount++;
+				touchtime = Date.now();
+			}
+			else if (touchcount < 4) {
+				touchcount++;
+			}
+			else {
+				touchcount = 0;
+				menuMgr.initFirstMenuState();
+			}
+		}
+
 		//tmpQuat.copy( scope.objectPather.quaternion );
 		tmpQuat.copy( scope.object.quaternion );
 
@@ -115,7 +135,7 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 	
 	this.onDocumentTouchStart = function ( event ) {
 
-        //enterfullscreen();		
+        enterfullscreen();
 		event.preventDefault();
 		event.stopPropagation();
 
@@ -124,14 +144,42 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 			
 				if ( this.enableManualDrag !== true ) return;
 				if (autopositioning == true) {
-					if (touchtime < 5) {
+
+					if ( Date.now() - touchtime > 5000 ) touchcount = 0;
+
+					if (touchcount == 0) {
+						
+						touchcount++;
+						touchtime = Date.now();
 						navigator.vibrate([100]);
-						touchtime++;
+					}
+					else if (touchcount < 4) {
+						touchcount++;
+						navigator.vibrate([50]);
 					}
 					else {
 						navigator.vibrate([500]);
-						touchtime = 0;
+						touchcount = 0;
 						disableAutopositioning()
+					}
+					
+				}
+				else if ( scene.getObjectByName( "openMenu" ).visible ){
+
+					if ( Date.now() - touchtime > 1200 ) touchcount = 0;
+
+					if (touchcount == 0) {
+						
+						touchcount++;
+						touchtime = Date.now();
+					}
+					else if (touchcount < 4) {
+						touchcount++;
+					}
+					else {
+						navigator.vibrate([200]);
+						touchcount = 0;
+						menuMgr.initFirstMenuState();
 					}
 				}
 				//touchtime = Date.now();
@@ -174,11 +222,12 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 
 	function disableAutopositioning()
 	{
-		AplicationManager.enableVR();
-		subController.setSubIndicator( 'none' );
+		//AplicationManager.enableVR();
+
     	subController.disableAutoPositioning();
 		autopositioning = false;
-		menuMgr.ResetViews();
+		if ( scene.getObjectByName('subtitlesIndicatorNoneButton') ) scene.getObjectByName('subtitlesIndicatorNoneButton').onexecute();
+		if ( scene.getObjectByName('signerIndicatorNoneButton') ) scene.getObjectByName('signerIndicatorNoneButton').onexecute();
 	}
 
 	this.onkeydownStart = function ( event ) {
@@ -194,7 +243,7 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 				break;
 
 			case 38:  // up
-				scope.object.rotation.x += Math.PI/20;
+				if ( scope.object.rotation.x < Math.PI/2 ) scope.object.rotation.x += Math.PI/20;
 				break;
 
 			case 39:  // right
@@ -202,18 +251,33 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 				break;
 
 			case 40:  // down
-				scope.object.rotation.x -= Math.PI/20;
+				if ( scope.object.rotation.x > -Math.PI/2 ) scope.object.rotation.x -= Math.PI/20;
+				break;
+
+			case 32:  // space
+				VideoController.isPausedById(0) ? _ImAc.doPlay() : _ImAc.doPause();
+
+				break;
+
+			case 77:  // m
+				if ( !autopositioning ) {
+
+					if ( scene.getObjectByName( "openMenu" ).visible ) menuMgr.initFirstMenuState();
+					else menuMgr.ResetViews();
+
+				}
+
 				break;
 
 			default:
-				//console.log( event.keyCode )
+				console.log( event.keyCode )
 				break;
 		}
 
 	}.bind( this );
 
 	this.onDocumentTouchMove = function ( event ) {
-	//alert('touch start 3')	
+
 		switch( event.touches.length ) {
 			case 1:
 				currentX = event.touches[ 0 ].pageX;
@@ -340,7 +404,6 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 				rotQuat.set( 0, 0, Math.sin( ( realZ - objZ  ) / 2 ), Math.cos( ( realZ - objZ ) / 2 ) );
 				objQuat.multiply( rotQuat );
 
-				//scope.objectPather.quaternion.copy( objQuat );
 				scope.object.quaternion.copy( objQuat );
 			}
 		};
@@ -452,10 +515,7 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 
 	this.update = function() {
 		
-		if (this.isAndroid && !autopositioning && _isHMD) 
-		{
-			//this.updateDeviceMove();		
-		}
+		if (this.isAndroid && !autopositioning && _isHMD) {}
 		else if ( appState !== CONTROLLER_STATE.AUTO ) 
 		{
 			this.updateManualMove();	

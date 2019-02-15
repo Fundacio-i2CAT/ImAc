@@ -57,16 +57,18 @@ MenuFunctionsManager = function() {
     function getSubAutoPositioningFunc()
     {       
         return function() {
-            if ( !_isHMD ) AplicationManager.disableVR();
-            camera.rotation.set( 0,0,0 );
-            //CameraParentObject.quaternion.set(0,0,0,0);
+            if ( !_isHMD ) 
+            {
+                AplicationManager.disableVR();
+                camera.rotation.set( 0,0,0 );
 
-            menuMgr.ResetViews();
+                menuMgr.ResetViews();
 
-            subController.setSubIndicator( 'none' );
-            subController.enableAutoPositioning();
+                subController.setSubIndicator( 'none' );
+                subController.enableAutoPositioning();
 
-            autopositioning = true;
+                autopositioning = true;
+            }
         }
     }
 
@@ -258,7 +260,7 @@ MenuFunctionsManager = function() {
         }
     };
 
-    this.getSeekFunc = function(plus)
+    this.getSeekFunc = function(plus, seekTime = 5)
     {
         var sign = plus ? 1 : -1;
         return function() {
@@ -266,15 +268,20 @@ MenuFunctionsManager = function() {
         }
     };
 
-    this.getChangeVolumeFunc = function(plus)
+    this.getSpeedFunc = function(speed)
+    {
+        return function() {
+            VideoController.speedAll( speed );
+        }
+    };
+
+    this.getChangeVolumeFunc = function(plus, volumeChangeStep = 0.2)
     {
         var sign = plus ? 1 : -1;
         return function() {
             _AudioManager.changeVolume( sign * volumeChangeStep );
         }
     };
-
-
 
     this.getOnOffFunc = function(name)
     {

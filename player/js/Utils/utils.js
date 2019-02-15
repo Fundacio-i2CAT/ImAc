@@ -126,8 +126,9 @@ function createVRButton_1(renderer)
                     _isHMD = true;  
                     createMenus();                 
                 });
+            renderer.vr.setDevice( display );
         };
-        renderer.vr.setDevice( display );
+        //renderer.vr.setDevice( display );
     }
 
     var button = document.createElement( 'button' );

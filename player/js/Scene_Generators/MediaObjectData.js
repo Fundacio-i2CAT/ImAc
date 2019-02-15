@@ -4,7 +4,7 @@
 
 THREE.MediaObjectData = function () {
 
-    var subtitleFont;
+    var subtitleFont; // Modificar a Array de fonts
 
 //************************************************************************************
 // Public Setters

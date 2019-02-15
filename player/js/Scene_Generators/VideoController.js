@@ -179,6 +179,12 @@ VideoController = function() {
         listOfAudioContents.forEach( function( elem ) { elem.currentTime += time; } );
     };   
 
+    this.speedAll = function(speed)
+    {
+        listOfVideoContents.forEach( function( elem ) { elem.vid.playbackRate  = speed; } ); 
+        listOfAudioContents.forEach( function( elem ) { elem.playbackRate  = speed; } );
+    };   
+
     this.seekAll2 = function(time)
     {
         if (!_freeSeek) return;

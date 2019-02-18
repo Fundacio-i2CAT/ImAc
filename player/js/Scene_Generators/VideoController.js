@@ -8,7 +8,6 @@ VideoController = function() {
 
 	var listOfVideoContents = [];
     var listOfAudioContents = [];
-    var _freeSeek = true;
     var ft = true;
 
 //************************************************************************************
@@ -178,17 +177,6 @@ VideoController = function() {
     	listOfVideoContents.forEach( function( elem ) { elem.vid.currentTime += time; } ); 
         listOfAudioContents.forEach( function( elem ) { elem.currentTime += time; } );
     };   
-
-    this.seekAll2 = function(time)
-    {
-        if (!_freeSeek) return;
-        else {
-            _freeSeek = false;
-            listOfVideoContents.forEach( function( elem ) { elem.vid.currentTime += time; } );
-            listOfAudioContents.forEach( function( elem ) { elem.currentTime += time; } );
-            setTimeout(function(){_freeSeek = true;}, 1000);
-        }
-    };
 
     this.isPausedById = function(id)
     {

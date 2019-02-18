@@ -11,6 +11,7 @@ function MultiOptionsPreviewView() {
         if(scene.getObjectByName("sign")) submenu.add(refreshAreaSLPreview(data));
 
         submenu.getObjectByName('signerpreview').visible = subController.getSignerEnabled();
+        submenu.getObjectByName('subtitlespreview').visible = subController.getSubtitleEnabled();
 
         if(scene.getObjectByName('right')) scene.getObjectByName('right').visible = data.isArrowsVisible;
         if(scene.getObjectByName('left')) scene.getObjectByName('left').visible = data.isArrowsVisible;

@@ -259,6 +259,12 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 
 				break;
 
+			case 49:  // 1
+				subController.getSubtitleEnabled() ? subController.disableSubtiles() : subController.enableSubtitles();
+
+				break;
+
+
 			case 77:  // m
 				if ( !autopositioning ) {
 

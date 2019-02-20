@@ -118,7 +118,6 @@ function AplicationManager()
         initWorld();
 		initRenderer();
 
-		//controls = new THREE.DeviceOrientationAndTouchController( camera, CameraParentObject, renderer.domElement, renderer );
         controls = new THREE.DeviceOrientationAndTouchController( camera, renderer.domElement, renderer );
 
 		container.appendChild( renderer.domElement );
@@ -126,7 +125,7 @@ function AplicationManager()
 		_moData.createOpenMenuMesh();
 
         scene.add( _moData.getSphericalVideoMesh( 100, mainContentURL, 'contentsphere' ) )
-		_moData.createCastShadows();
+		//_moData.createCastShadows();
 
 
 /*////////////////////////////////////////////////////////////////////////////

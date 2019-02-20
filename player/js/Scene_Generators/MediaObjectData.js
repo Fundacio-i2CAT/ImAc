@@ -209,7 +209,8 @@ THREE.MediaObjectData = function () {
     this.createPointer2 = function()
     {
         var pointer1 = getPointMesh( 0.002, 16, 0xffff00, 0 );
-        var pointer2 = getPointMesh( 0.04, 32, 0xffff00, 1 );
+        var pointer2 = getPointMesh( 0.06, 32, 0xffff00, 1 );
+        pointer2.name = 'realpointer2';
 
         pointer1.add( pointer2 );
 
@@ -536,7 +537,7 @@ THREE.MediaObjectData = function () {
         arrowShape.quadraticCurveTo ( 0, -h/4, -w/2, -h/4 );
 
         var geometry = new THREE.ShapeGeometry( arrowShape );
-        var material = new THREE.MeshBasicMaterial( { color: c } );
+        var material = new THREE.MeshBasicMaterial( { color: c, transparent: true } );
         var mesh = new THREE.Mesh( geometry, material ) ;
 
         if ( o == 0 )

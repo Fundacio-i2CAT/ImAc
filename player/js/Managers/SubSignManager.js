@@ -99,7 +99,7 @@ SubSignManager = function() {
 		  		if ( radarAutoPositioning ) changeSimplePositioning( isd.imac );
 		    	if ( subtitleEnabled ) print3DText( isd.contents[0], isd.imac );
 
-		    	//if ( subtitleIndicator == 'arrow' ) arrowInteraction();
+		    	if ( subtitleIndicator == 'arrow' ) arrowInteraction();
 
 		    	checkSpeakerPosition( isd.imac );
 		  	}

@@ -322,7 +322,7 @@ function SLOptionMenuController(menuType) {
                 
                 dropdownIE.onexecute =  function()
                 {
-                    data.title = element.value;
+                    data.title = MenuDictionary.translate( element.value );
                     data.childColumnActiveOpt = undefined;
                     data.parentColumnActiveOpt = element.name;
                     data.parentColumnDropdown = AddDropdownElementsTrad(element.options);

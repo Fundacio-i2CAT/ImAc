@@ -39,7 +39,7 @@ let multiOptionsPreviewCtrl;
 
 var loggerActivated = false;
 
-var sessionId = Date.now();
+var sessionId = Date.now(); // logger
 
 var demoId = 1;
 
@@ -47,67 +47,6 @@ var mainContentURL = './resources/rapzember-young-hurn_edit.mp4';
 //var _selected_content = 'Radio';
 
 var list_contents;
-
-if ( annyang ) {
-  // Let's define a command.
-  var commands = {
-    //TEST WITH LOCALHOST
-    'hello': function() { console.log('Hello world!'); },
-    
-    'volume up': MenuFunctionsManager.getChangeVolumeFunc(true),
-    'apujar volum': MenuFunctionsManager.getChangeVolumeFunc(true),
-    'subir volumen': MenuFunctionsManager.getChangeVolumeFunc(true),
-    'lauter': MenuFunctionsManager.getChangeVolumeFunc(true),
-
-    'volume down': MenuFunctionsManager.getChangeVolumeFunc(false),
-    'abaixar volum': MenuFunctionsManager.getChangeVolumeFunc(false),
-    'bajar volumen': MenuFunctionsManager.getChangeVolumeFunc(false),
-    'leiser': MenuFunctionsManager.getChangeVolumeFunc(false),
-
-    'play': MenuFunctionsManager.getPlayPauseFunc(true),
-
-    'pause': MenuFunctionsManager.getPlayPauseFunc(false),
-    'pausar': MenuFunctionsManager.getPlayPauseFunc(false),
-
-    'seek forward': MenuFunctionsManager.getSeekFunc(true),
-    'avançar': MenuFunctionsManager.getSeekFunc(true),
-    'avanzar': MenuFunctionsManager.getSeekFunc(true),
-    'weiter': MenuFunctionsManager.getSeekFunc(true),
-
-    'seek back': MenuFunctionsManager.getSeekFunc(false),
-    'retrocedir': MenuFunctionsManager.getSeekFunc(false),
-    'retroceder': MenuFunctionsManager.getSeekFunc(false),
-    'zurück': MenuFunctionsManager.getSeekFunc(false),
-
-    'subtitles on': MenuFunctionsManager.getOnOffFunc('subtitlesOffButton'),
-    'activar subtitols': MenuFunctionsManager.getOnOffFunc('subtitlesOffButton'),
-    'activar subtitulos': MenuFunctionsManager.getOnOffFunc('subtitlesOffButton'),
-    'untertitel an': MenuFunctionsManager.getOnOffFunc('subtitlesOffButton'),
-
-    'subtitles off': MenuFunctionsManager.getOnOffFunc('subtitlesOnButton'),
-    'desactivar subtituls': MenuFunctionsManager.getOnOffFunc('subtitlesOnButton'),
-    'desactivar subtitulos': MenuFunctionsManager.getOnOffFunc('subtitlesOnButton'),
-    'untertitel aus': MenuFunctionsManager.getOnOffFunc('subtitlesOnButton')
-/*
-    'open menu': MenuFunctionsManager.getOpenMenuFunc(true),
-    'obrir menu': MenuFunctionsManager.getOpenMenuFunc(true),
-    'abrir menu': MenuFunctionsManager.getOpenMenuFunc(true),
-    'Öffne Menü': MenuFunctionsManager.getOpenMenuFunc(true),
-
-    'close menu': MenuFunctionsManager.getCloseTradMenuFunc(),
-    'tancar menu': MenuFunctionsManager.getCloseTradMenuFunc(),
-    'cerrar menu': MenuFunctionsManager.getCloseTradMenuFunc(),
-    'Schließe Menü': MenuFunctionsManager.getCloseTradMenuFunc()
-    */
-  };
-
-  // Add our commands to annyang
-  annyang.addCommands(commands);
-
-  // Start listening.
-  //annyang.start();
-}
-
 
 
 /**
@@ -159,7 +98,4 @@ function init_webplayer()
     //moData.setFont('./css/fonts/helvetiker_bold.typeface.json');
 }
 
-$(window).on('hashchange', function() 
-{
-    window.location.reload();
-});
+$(window).on( 'hashchange', () => { window.location.reload() } );

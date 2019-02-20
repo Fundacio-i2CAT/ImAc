@@ -29,7 +29,7 @@ VideoController = function() {
 
     function setBitrateLimitationsFor(player)
     {
-    	if ( window.screen.width * window.devicePixelRatioh <= 1920 ) 
+    	if ( window.screen.width * window.devicePixelRatio <= 1920 ) 
         {
             player.setMaxAllowedBitrateFor( 'video', 13000 );
         }
@@ -44,7 +44,7 @@ VideoController = function() {
     	var player = dashjs.MediaPlayer().create();
         player.initialize( vid, url, autoplay );
 
-        setBitrateLimitationsFor( player );
+        if ( navigator.userAgent.toLowerCase().indexOf("android") > -1 ) setBitrateLimitationsFor( player );
 
         player.getDebug().setLogToBrowserConsole( false );
         
@@ -245,6 +245,9 @@ VideoController = function() {
         getAdaptationSets().then(( str ) => { 
 
             subController.enableSubtitles();
+
+            //var sync = new SyncController()
+            //sync.init();
 
             listOfVideoContents[0].vid.ontimeupdate = function() 
             {

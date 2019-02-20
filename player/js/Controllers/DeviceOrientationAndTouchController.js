@@ -18,22 +18,15 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 	var _origin = new THREE.Vector3( 0.155, 1.21, -0.15 );
 
 	this.isAndroid = navigator.userAgent.toLowerCase().indexOf("android") > -1;
-
 	this.object = object;
 	this.object.rotation.reorder( "YXZ" );
-	
 	this.element = domElement || document;
-	
-	var container = document.getElementById( 'container' );
-	var mouse;
-
 	this.enabled = true;
 	
 	// Manual rotate override components
 	var startX = 0, startY = 0,
 	    currentX = 0, currentY = 0,
-	    scrollSpeedX, scrollSpeedY,
-	    tmpQuat = new THREE.Quaternion();
+	    scrollSpeedX, scrollSpeedY;
 
 	var CONTROLLER_STATE = {
 		AUTO: 0,
@@ -42,7 +35,11 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 	};
 
 	var appState = CONTROLLER_STATE.AUTO;	
+
+	var tmpQuat = new THREE.Quaternion()
 	var deviceQuat = new THREE.Quaternion();
+	var mouse2D = new THREE.Vector2();
+	//var mouse3D = new THREE.Vector3();
 
 	this.enableManualDrag = true;
 
@@ -72,8 +69,8 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 
 		event.preventDefault();
 
-		if (autopositioning == false) {
-
+		if ( autopositioning == false ) 
+		{
 			if ( Date.now() - touchtime > 1200 ) touchcount = 0;
 
 			if (touchcount == 0) {
@@ -96,12 +93,12 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 		startX = currentX = event.pageX;
 		startY = currentY = event.pageY;
 			
-		var mouse3D = new THREE.Vector2();
-        mouse3D.x = _isHMD ? 0 : ( event.clientX / window.innerWidth ) * 2 - 1;
-        mouse3D.y = _isHMD ? 0 : - ( event.clientY / window.innerHeight ) * 2 + 1;
+		//var mouse3D = new THREE.Vector2();
+        mouse2D.x = _isHMD ? 0 : ( event.clientX / window.innerWidth ) * 2 - 1;
+        mouse2D.y = _isHMD ? 0 : - ( event.clientY / window.innerHeight ) * 2 + 1;
 		
 		//INTERACTIVITY DETECT
-		interController.checkInteraction(mouse3D, scope.object, 'onDocumentMouseDown');
+		interController.checkInteraction(mouse2D, scope.object, 'onDocumentMouseDown');
 		
 		//changing state 
 		appState = CONTROLLER_STATE.MANUAL_ROTATE;
@@ -184,12 +181,12 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 				}
 				//touchtime = Date.now();
 			
-				var mouse3D = new THREE.Vector2();
-				mouse3D.x = _isHMD ? 0 : ( event.touches[0].pageX / window.innerWidth ) * 2 - 1;
-                mouse3D.y = _isHMD ? 0 : - ( event.touches[0].pageY / window.innerHeight ) * 2 + 1;
+				//var mouse3D = new THREE.Vector2();
+				mouse2D.x = _isHMD ? 0 : ( event.touches[0].pageX / window.innerWidth ) * 2 - 1;
+                mouse2D.y = _isHMD ? 0 : - ( event.touches[0].pageY / window.innerHeight ) * 2 + 1;
 				
 				//INTERACTIVITY DETECT
-                interController.checkInteraction(mouse3D, scope.object, 'onDocumentMouseDown');
+                interController.checkInteraction(mouse2D, scope.object, 'onDocumentMouseDown');
 
 				appState = CONTROLLER_STATE.MANUAL_ROTATE_DEVICE;
 
@@ -209,12 +206,12 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 				this.element.addEventListener( 'touchend', this.onDocumentTouchEnd, false );
 
 				break;
-			case 2:
+			/*case 2:
 				for (var i=0; i < event.touches.length; i++) {
      				tpCache.push(event.touches[i]);
    				}
 
-				break;
+				break;*/
 		}
 	}.bind( this );
 
@@ -222,8 +219,6 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 
 	function disableAutopositioning()
 	{
-		//AplicationManager.enableVR();
-
     	subController.disableAutoPositioning();
 		autopositioning = false;
 		if ( scene.getObjectByName('subtitlesIndicatorNoneButton') ) scene.getObjectByName('subtitlesIndicatorNoneButton').onexecute();
@@ -256,23 +251,18 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 
 			case 32:  // space
 				VideoController.isPausedById(0) ? _ImAc.doPlay() : _ImAc.doPause();
-
 				break;
 
 			case 49:  // 1
 				subController.getSubtitleEnabled() ? subController.disableSubtiles() : subController.enableSubtitles();
-
 				break;
-
 
 			case 77:  // m
 				if ( !autopositioning ) {
-
+					//xxx.swichtMenuState();
 					if ( scene.getObjectByName( "openMenu" ).visible ) menuMgr.initFirstMenuState();
 					else menuMgr.ResetViews();
-
 				}
-
 				break;
 
 			default:
@@ -284,43 +274,26 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 
 	this.onDocumentTouchMove = function ( event ) {
 
-		switch( event.touches.length ) {
+		if ( event.touches.length == 1 )
+		{
+			currentX = event.touches[ 0 ].pageX;
+			currentY = event.touches[ 0 ].pageY;
+		}
+
+		/*switch( event.touches.length ) {
 			case 1:
 				currentX = event.touches[ 0 ].pageX;
 				currentY = event.touches[ 0 ].pageY;
 				break;
 
-			case 2:
-				var point1=-1, point2=-1;
-   				for (var i=0; i < tpCache.length; i++) {
-     				if (tpCache[i].identifier == event.touches[0].identifier) point1 = i;
-     				if (tpCache[i].identifier == event.touches[1].identifier) point2 = i;
-   				}
-   				if (point1 >=0 && point2 >= 0) {
-    		 		// Calculate the difference between the start and move coordinates
-    		 		var diff1 = tpCache[point1].pageX - event.touches[0].pageX;
-     				var diff2 = tpCache[point2].pageX - event.touches[1].pageX;
-     				// This threshold is device dependent as well as application specific
-     				//var PINCH_THRESHHOLD = event.target.clientWidth / 10;
-     				if(tpCache[point1].pageX < tpCache[point2].pageX) {
-     					zoom(Math.trunc((diff1 - diff2)/10));
-     				}
-     				else {
-     					zoom(Math.trunc((diff2 - diff1)/10));
-     				}
-   				}
-   				else {
-     				// empty tpCache
-     				tpCache = new Array();
-   				}
-				break;
-		}
+			
+		}*/
 	}.bind( this );
 
 	this.onDocumentTouchEnd = function ( event ) 
 	{
 		//startAllAudios();		
-		tpCache = new Array();
+		//tpCache = new Array();
 		
 		this.element.removeEventListener( 'touchmove', this.onDocumentTouchMove, false );
 		this.element.removeEventListener( 'touchend', this.onDocumentTouchEnd, false );
@@ -443,7 +416,7 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 
 			controller.standingMatrix = renderer.vr.getStandingMatrix()
 
-			var
+			/*var
 			meshColorOff = 0xDB3236,//  Red.
 			meshColorOn  = 0xF4C20D,//  Yellow.
 			controllerMaterial = new THREE.MeshStandardMaterial({ color: meshColorOff }),
@@ -468,33 +441,33 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 			controller.add( controllerMesh )
 
 			castShadows( controller )
-			receiveShadows( controller )
+			receiveShadows( controller )*/
 
 			controller.addEventListener( 'primary press began', function( event ){
-				event.target.userData.mesh.material.color.setHex( meshColorOn )
+				//event.target.userData.mesh.material.color.setHex( meshColorOn )
 				startMenuInterval()
 				sendVRInteraction(event.target.quaternion)
 			})
 			controller.addEventListener( 'primary press ended', function( event ){
-				event.target.userData.mesh.material.color.setHex( meshColorOff )
+				//event.target.userData.mesh.material.color.setHex( meshColorOff )
 				stopMenuInterval()
 			})
 			controller.addEventListener( 'button_0 press began', function( event ){
-				event.target.userData.mesh.material.color.setHex( meshColorOn )
+				//event.target.userData.mesh.material.color.setHex( meshColorOn )
 				startMenuInterval()
 				sendVRInteraction(event.target.quaternion)
 			})
 			controller.addEventListener( 'button_0 press ended', function( event ){
-				event.target.userData.mesh.material.color.setHex( meshColorOff )
+				//event.target.userData.mesh.material.color.setHex( meshColorOff )
 				stopMenuInterval()
 			})	
 			controller.addEventListener( 'thumbpad press began', function( event ){
-				event.target.userData.mesh.material.color.setHex( meshColorOn )
+				//event.target.userData.mesh.material.color.setHex( meshColorOn )
 				startMenuInterval()
 				sendVRInteraction(event.target.quaternion)
 			})
 			controller.addEventListener( 'thumbpad press ended', function( event ){
-				event.target.userData.mesh.material.color.setHex( meshColorOff )
+				//event.target.userData.mesh.material.color.setHex( meshColorOff )
 				stopMenuInterval()
 			})	
 			controller.addEventListener( 'disconnected', function( event ){
@@ -505,7 +478,7 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 
 	function startMenuInterval()
 	{
-		if ( !scene.getObjectByName("traditionalmenu").visible ) {
+		if ( scene.getObjectByName( "openMenu" ).visible ) {
 			openmenuinterval = setInterval(function(){
 				openmenutimer++;
 				if ( openmenutimer == 3 ) menuMgr.initFirstMenuState();
@@ -544,6 +517,8 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 	        var direction2 = new THREE.Vector3( 0, 0, -dist );
         	direction2.applyQuaternion(rot)
 
+        	var pointscale = menuMgr.getMenuType() == 1 ? 3 : 1;
+
         	var p2 = scene.getObjectByName('pointer2').children[0];
             if ( p2 )
             {
@@ -551,14 +526,14 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
                 p2.position.y = direction2.y;
                 p2.position.z = direction2.z;
 
-                p2.scale.set( dist/10,dist/10,dist/10 )
+                p2.scale.set( pointscale*dist/10,pointscale*dist/10,pointscale*dist/10 )
             }
 		}
 		else if(_isHMD)
 		{
 			var mouse3D = new THREE.Vector3( 0, 0, 0 );
 			
-			interController.checkInteraction(mouse3D, scope.object, 'onDocumentMouseMove');
+			interController.checkInteraction( mouse3D, scope.object, 'onDocumentMouseMove' );
 		}
 
 		_AudioManager.updateRotationMatrix( camera.matrixWorld.elements );
@@ -566,8 +541,6 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 	
 	this.connect = function() 
 	{	
-		container.appendChild( domElement );
-
 		window.addEventListener( 'resize', onWindowResize, false );	
 		window.addEventListener( 'vr controller connected', this.onVRControllerUpdate, false);	
 

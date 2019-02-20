@@ -236,7 +236,7 @@ function saveConfig()
 
     //var expiresdate = new Date(2019, 01, 05, 11, 03); // aaaa/mm/dd/hh/mm/ss  els mesos van del 0-11
 
-    document.cookie = "ImAcProfileConfig=" + encodeURIComponent( JSON.stringify( iconfig ) ) + "; max-age=3600;" //expires=" + expiresdate.toUTCString();
+    document.cookie = "ImAcProfileConfig=" + encodeURIComponent( JSON.stringify( iconfig ) ) + "; max-age=2592000;" //expires=" + expiresdate.toUTCString(); max-age = 1 mes
 
     // Settings ( lang, menutype, voicecontrol )
 

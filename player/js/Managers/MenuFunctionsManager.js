@@ -119,7 +119,7 @@ MenuFunctionsManager = function() {
 
             menuMgr.removeMenuFromParent();
 
-            localStorage.ImAc_menuType == "LS_area" ? menuMgr.Init(1) : menuMgr.Init(2);
+            menuMgr.getMenuType() == 1 ? menuMgr.Init(1) : menuMgr.Init(2);
 
             menuMgr.initFirstMenuState(); 
         }

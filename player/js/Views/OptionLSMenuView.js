@@ -12,7 +12,11 @@ function OptionLSMenuView() {
 		submenu.getObjectByName('onlsoptbutton').children[0].onexecute = data.onOptButtonFunc;
 		submenu.getObjectByName('offlsoptbutton').children[0].onexecute = data.offOptButtonFunc;
 
-        if(submenu.getObjectByName('previewMenuButton')) submenu.getObjectByName('previewMenuButton').children[0].onexecute = data.previewButtonFunc;
+        if(submenu.getObjectByName('previewMenuButton'))
+        {
+        	submenu.getObjectByName('previewMenuButton').visible = data.isPreviewVisible;
+        	if(data.previewButtonFunc) submenu.getObjectByName('previewMenuButton').children[0].onexecute = data.previewButtonFunc;
+        } 
 
 		if(data.isOptEnabled) submenu.getObjectByName('lsOptEnabledLabel').material = UpdateImageIEMaterial( MenuDictionary.translate( data.lsOptEnabledLabelValue ) );
 		else submenu.getObjectByName('lsOptDisabledLabel').material = UpdateImageIEMaterial( MenuDictionary.translate( data.lsOptDisbledLabelValue ) );

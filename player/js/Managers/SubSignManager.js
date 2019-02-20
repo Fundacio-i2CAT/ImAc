@@ -712,6 +712,7 @@ SubSignManager = function() {
 		createSubAreaHelper( size );
 
 		updateISD( VideoController.getMediaTime() );
+		updateRadarPosition();
 	};
 
 	this.setSubtitleLanguagesArray = function(subList)
@@ -983,8 +984,8 @@ SubSignManager = function() {
     {
         if ( radarMesh ) 
         {
-        	radarMesh.position.x = _isHMD ? 35 : 40
-        	radarMesh.position.y = _isHMD ? -2 : -22
+        	//radarMesh.position.x = _isHMD ? 35 : 40
+        	//radarMesh.position.y = _isHMD ? -2 : -22
 
             var target = new THREE.Vector3();
             var camView = camera.getWorldDirection( target );
@@ -1005,10 +1006,25 @@ SubSignManager = function() {
     {
     	removeSignVideo();
     }
+    
+    function updateRadarPosition()
+    {
+        if ( radarMesh ) 
+        {
+
+		   	radarMesh.position.x = ( 1.48*subArea/2-14/2 );
+	    	radarMesh.position.y = ( 0.82*subArea/2-14/2 ) * subPosY;
+	    	
+	    	if ( speakerMesh ) 
+	        {
+		    	speakerMesh.position.x = ( 1.48*subArea/2-14/2 );
+		    	speakerMesh.position.y = ( 0.82*subArea/2-14/2 ) * subPosY;
+		    }
+	    }
+    }
 
     this.updateSTRotation = function()
     {
     	if ( subtitleMesh ) subtitleMesh.rotation.z = -camera.rotation.z;
     }
-
 }

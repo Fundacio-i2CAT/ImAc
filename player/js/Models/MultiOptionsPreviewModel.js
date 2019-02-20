@@ -5,4 +5,7 @@ function MultiOptionsPreviewModel()
 	this.areaSTPreview;
 	this.signerPreview;
 	this.areaSLPreview;
+
+	this.isRadarVisible;
+	this.isArrowsVisible;
 }

@@ -11,6 +11,15 @@ function MultiOptionsPreviewView() {
         if(scene.getObjectByName("sign")) submenu.add(refreshAreaSLPreview(data));
 
         submenu.getObjectByName('signerpreview').visible = subController.getSignerEnabled();
+        submenu.getObjectByName('subtitlespreview').visible = subController.getSubtitleEnabled();
+
+        if(scene.getObjectByName('right')) scene.getObjectByName('right').visible = data.isArrowsVisible;
+        if(scene.getObjectByName('left')) scene.getObjectByName('left').visible = data.isArrowsVisible;
+
+        submenu.getObjectByName('radarPreview').visible = data.isRadarVisible;
+        submenu.getObjectByName('radarPreview').position.x = ( 1.48*subController.getSubArea()/2-14/2 );
+        submenu.getObjectByName('radarPreview').position.y = ( 0.82*subController.getSubArea()/2-14/2 ) * subController.getSubPosition().y;
+        submenu.getObjectByName('radarPreview').position.z = -76;
 	}
 	
 	function refreshSubtitlesPreview(data)

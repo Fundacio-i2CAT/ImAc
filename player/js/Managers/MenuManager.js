@@ -343,7 +343,8 @@ function MenuManager() {
             multiOptionsPreviewCtrl.Exit();
             actualCtrl.Init();
             if(scene.getObjectByName("sign")) scene.getObjectByName("sign").visible = subController.getSignerEnabled();
-//            if(scene.getObjectByName("subtitles")) scene.getObjectByName("subtitles").visible = subController.getSignerEnabled();
+            //if(scene.getObjectByName("radarIndicartor")) scene.getObjectByName("radarIndicartor").visible = (subController.getSignerIndicator() == 'radar');
+            //if(scene.getObjectByName("subtitles")) scene.getObjectByName("subtitles").visible = subController.getSignerEnabled();
         },2000);
 
         /*var subMesh = scene.getObjectByName("subtitles");
@@ -497,7 +498,16 @@ function MenuManager() {
 
         var signerAreaMesh = new THREE.Group();
         signerAreaMesh.name = 'areaSLpreview';
-
+        
+        var geometry = new THREE.CircleGeometry( 7, 32 );
+        var material = new THREE.MeshBasicMaterial( { color: 0x000000 } );
+        var radarIndicator = new THREE.Mesh( geometry, material );
+    
+        radarIndicator.visible = false;
+        radarIndicator.name = 'radarPreview';
+        //radarIndicator.add(_moData.getRadarMesh());
+        
+        preview.add(radarIndicator);
         preview.add(subtitleMesh);
         preview.add(subtitlesAreaMesh);
         preview.add(signerMesh);

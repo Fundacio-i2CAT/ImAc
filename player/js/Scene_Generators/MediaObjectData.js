@@ -172,9 +172,15 @@ THREE.MediaObjectData = function () {
         var imgGeometry = new THREE.PlaneGeometry( 14, 14 );
         var mesh = getImageMesh( imgGeometry, './img/radar1.png', 'radar', 3 );
 
-        mesh.position.x = _isHMD ? 35 : 40
-        mesh.position.y = _isHMD ? -2 : -22
+        //mesh.position.x = _isHMD ? 35 : 40
+        //mesh.position.y = _isHMD ? -2 : -22
+
+        mesh.position.x = ( 1.48*subController.getSubArea()/2-14/2 );
+        mesh.position.y = ( 0.82*subController.getSubArea()/2-14/2 ) * subController.getSubPosition().y;
+
         mesh.position.z = -76.001;
+
+        mesh.name = 'radarIndicartor';
 
         return mesh;
     };
@@ -186,11 +192,14 @@ THREE.MediaObjectData = function () {
 
         mesh.material.color.set( color ); 
 
-        mesh.position.x = _isHMD ? 35 : 40
-        mesh.position.y = _isHMD ? -2 : -22
-        mesh.position.z = -76;
+       // mesh.position.x = _isHMD ? 35 : 40
+       // mesh.position.y = _isHMD ? -2 : -22
+        mesh.position.x = ( 1.48*subController.getSubArea()/2-14/2 );
+        mesh.position.y = ( 0.82*subController.getSubArea()/2-14/2 ) * subController.getSubPosition().y;
 
+        mesh.position.z = -76;
         mesh.rotation.z = Math.radians( 360 - pos );
+        mesh.name = 'radarIndicartor';
 
         return mesh;
     };

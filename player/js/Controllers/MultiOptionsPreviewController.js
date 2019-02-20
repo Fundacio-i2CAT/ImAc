@@ -110,6 +110,8 @@ function MultiOptionsPreviewController() {
  */
 	function UpdateData()
     {
+        data.isArrowsVisible = false;
+        data.isRadarVisible = false;
     	data.subtitlesPreview = setSubtitlePreview();
     	data.areaSTPreview = setAreaSTPreview();
         data.signerPreview = setSignerPreview();
@@ -150,6 +152,9 @@ function MultiOptionsPreviewController() {
         subtitleMesh = _moData.getSubtitleMesh( previewSTtext, subConfig);
         subtitleMesh.name = "subtitlespreview";
 
+        if(subConfig.subtitleIndicator === 'arrow') data.isArrowsVisible = true;
+        else if(subConfig.subtitleIndicator === 'radar') data.isRadarVisible = true;
+        
         return subtitleMesh;
     }
 

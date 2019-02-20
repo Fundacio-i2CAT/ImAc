@@ -3,18 +3,20 @@ function VideoProgressBarController() {
 	let data;
 	let view;
 	let viewStructure;
+    let isSeeking;
 
 	this.Init = function(){
+        vpbCtrl.setSeekingProcess(false);
 
-		data = GetData();
-		UpdateData();
-		viewStructure = scene.getObjectByName(data.name);
-		viewStructure.visible = true;
+        data = GetData();
+        UpdateData();
+        viewStructure = scene.getObjectByName(data.name);
+        viewStructure.visible = true;
 
-		view = new VideoProgressBarView();
-		view.UpdateView(data); 
+        view = new VideoProgressBarView();
+        view.UpdateView(data); 
 
-		AddInteractivityToMenuElements();
+        AddInteractivityToMenuElements();
 	}
 
 	this.Exit = function()
@@ -32,6 +34,16 @@ function VideoProgressBarController() {
     this.getName = function()
     {
     	return data.name;
+    }
+
+    this.setSeekingProcess = function(value)
+    {
+        isSeeking = value;
+    }
+
+    this.getSeekingProcess = function()
+    {
+        return isSeeking;
     }
 
 
@@ -98,20 +110,23 @@ function VideoProgressBarController() {
 
     this.onClickSeek = function(mouse3D)
     {
-	    var h = (Math.tan(30*Math.PI/180)*67)*2;
-	    var w = h*window.innerWidth/window.innerHeight
-	    
-	    var norm_vpb_w = scene.getObjectByName('background-progress').geometry.parameters.width / (w/2);
-	    var slider_position_norm = scene.getObjectByName('slider-progress').position.x / (w/2);
-	    let time_diff = mouse3D.x - slider_position_norm;
+        if(!vpbCtrl.getSeekingProcess())
+        {   
+            vpbCtrl.setSeekingProcess(true);
+            var h = (Math.tan(30*Math.PI/180)*67)*2;
+            var w = h*window.innerWidth/window.innerHeight;
+            
+            var norm_vpb_w = scene.getObjectByName('background-progress').geometry.parameters.width / (w/2);
+            var slider_position_norm = scene.getObjectByName('slider-progress').position.x / (w/2);
+            let time_diff = mouse3D.x - slider_position_norm;
 
-	    if(Math.sign(time_diff) != 0)
-	    {
-	        let new_seek_time = Math.round(VideoController.getListOfVideoContents()[0].vid.duration*time_diff/norm_vpb_w);
-	        VideoController.seekAll2(new_seek_time)
-	    }
-	    else console.log("You clicked over the slidder")
+            if(Math.round(time_diff*100) != 0)
+            {
+                let new_seek_time = Math.round(VideoController.getListOfVideoContents()[0].vid.duration*time_diff/norm_vpb_w);
+                VideoController.seekAll(new_seek_time);
+            }
+            else console.log("You clicked over the slidder");
+        }
+        else console.log("Seeking process running");   
     }
-
-
 };

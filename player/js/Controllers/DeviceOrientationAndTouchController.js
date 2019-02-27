@@ -257,6 +257,10 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 				subController.getSubtitleEnabled() ? subController.disableSubtiles() : subController.enableSubtitles();
 				break;
 
+			case 50:  // 2
+				subController.getSignerEnabled() ? subController.switchSigner( false ) : subController.switchSigner( true );
+				break;
+
 			case 77:  // m
 				if ( !autopositioning ) {
 					//xxx.swichtMenuState();
@@ -517,7 +521,7 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 	        var direction2 = new THREE.Vector3( 0, 0, -dist );
         	direction2.applyQuaternion(rot)
 
-        	var pointscale = menuMgr.getMenuType() == 1 ? 3 : 1;
+        	var pointscale = menuMgr.getMenuType() == 1 ? 3*_pointerSize : 1*_pointerSize;
 
         	var p2 = scene.getObjectByName('pointer2').children[0];
             if ( p2 )

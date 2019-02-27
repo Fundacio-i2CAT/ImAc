@@ -49,13 +49,19 @@ function SettingsOptionMenuController(menuType) {
 
     var settingsMenuTypeArray =    [
                                     {name: 'settingsMenuTraditionalButton', value: 'Traditional', default: settingsMgr.checkMenuType(2)}, 
-                                    {name: 'settingsMenuLowSightedButton', value: 'Enhanced-Accessibility', default: settingsMgr.checkMenuType(1)}];                                    
+                                    {name: 'settingsMenuLowSightedButton', value: 'Enhanced-Accessibility', default: settingsMgr.checkMenuType(1)}];  
+
+    var settingsMenuPointerArray = [
+                                    {name: 'settingsMenuPointerLarge', value: 'Large', default: false},
+                                    {name: 'settingsMenuPointerMedium', value: 'Medium', default: true},
+                                    {name: 'settingsMenuPointerSmall', value: 'Small', default: false}];                               
 
     var parentColumnDropdownElements = [ 
                                     {name: 'settingsLanguages', value: 'Language', options: settingsLanguagesArray},
                                     {name: 'settingsVoiceControl', value: 'Voicecontrol', options: voiceControlArray},
                                     {name: 'settingsUserProfile', value: 'UserProfile', options: settingsUserProfileArray},
-                                    {name: 'settingsMenuType', value: 'MenuType', options: settingsMenuTypeArray}];
+                                    {name: 'settingsMenuType', value: 'MenuType', options: settingsMenuTypeArray},
+                                    {name: 'settingsPointerSize', value: 'PointerSize', options: settingsMenuPointerArray}];
 /**
  * { function_description }
  *

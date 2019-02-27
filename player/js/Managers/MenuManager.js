@@ -214,8 +214,8 @@ function MenuManager() {
         else if ( scene.getObjectByName( "pointer" ) && _isHMD ) 
         {
             scene.getObjectByName( "pointer" ).visible = false;
-            if ( menuType == 2 ) scene.getObjectByName('pointer').scale.set(1,1,1)
-            else  scene.getObjectByName('pointer').scale.set(3,3,3)
+            if ( menuType == 2 ) scene.getObjectByName('pointer').scale.set(1*_pointerSize,1*_pointerSize,1*_pointerSize)
+            else  scene.getObjectByName('pointer').scale.set(3*_pointerSize,3*_pointerSize,3*_pointerSize)
         }
 
         playpauseCtrl.playAllFunc();

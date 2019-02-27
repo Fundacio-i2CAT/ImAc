@@ -51,6 +51,7 @@ SubSignManager = function() {
 	var subtitleMesh;
 	var signerMesh;
 	var radarMesh;
+	var radarMesh3;
 	var speakerMesh;
 
 	var areaMesh;
@@ -143,7 +144,8 @@ SubSignManager = function() {
 	        opacity: subBackground,
 	        x: 0,
 	        y: posY * 9/16,
-	        z: posZ
+	        z: posZ,
+	        speaker: isdImac
 	    };
 
 	  	if ( isdContent.contents.length > 0 )
@@ -347,6 +349,7 @@ SubSignManager = function() {
     {
     	if ( radarMesh ) removeRadar();
     	radarMesh = _moData.getRadarMesh();
+    	radarMesh3 = _moData.getIconRadarMesh();
 
     	radarMesh.onexecute = function() {
 
@@ -355,6 +358,7 @@ SubSignManager = function() {
 
     	interController.addInteractiveRadar( radarMesh )
     	camera.add( radarMesh );
+    	camera.add( radarMesh3 );
     }
 
     function createSpeakerRadar(color, pos)
@@ -417,7 +421,9 @@ SubSignManager = function() {
     	interController.removeInteractiveRadar( radarMesh )
     	removeSpeakerRadar();
     	camera.remove( radarMesh );
+    	camera.remove( radarMesh3 );
     	radarMesh = undefined;
+    	radarMesh3 = undefined;
     }
 
     function removeSpeakerRadar()
@@ -1012,19 +1018,19 @@ SubSignManager = function() {
         if ( radarMesh ) 
         {
 
-		   	radarMesh.position.x = ( 1.48*subArea/2-14/2 );
-	    	radarMesh.position.y = ( 0.82*subArea/2-14/2 ) * subPosY;
+		   	radarMesh.position.x = _isHMD ? 0.8*( 1.48*subArea/2-14/2 ) : ( 1.48*subArea/2-14/2 );
+	    	radarMesh.position.y = _isHMD ? 0.09*( 0.82*subArea/2-14/2 ) * subPosY : ( 0.82*subArea/2-14/2 ) * subPosY; 
 	    	
 	    	if ( speakerMesh ) 
 	        {
-		    	speakerMesh.position.x = ( 1.48*subArea/2-14/2 );
-		    	speakerMesh.position.y = ( 0.82*subArea/2-14/2 ) * subPosY;
+		    	speakerMesh.position.x = _isHMD ? 0.8*( 1.48*subArea/2-14/2 ) : ( 1.48*subArea/2-14/2 );
+		    	speakerMesh.position.y = _isHMD ? 0.09*( 0.82*subArea/2-14/2 ) * subPosY : ( 0.82*subArea/2-14/2 ) * subPosY;
 		    }
 	    }
     }
 
     this.updateSTRotation = function()
     {
-    	if ( subtitleMesh ) subtitleMesh.rotation.z = -camera.rotation.z;
+    	if ( subtitleMesh && !isExperimental ) subtitleMesh.rotation.z = -camera.rotation.z;
     }
 }

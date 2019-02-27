@@ -14,3 +14,5 @@ var tradMenuWidth = 30;
 
 var menuDefaultColor = 0xffffff;
 var menuButtonActiveColor = 0xffff00;
+
+var _pointerSize = 1;

@@ -247,6 +247,15 @@ MenuFunctionsManager = function() {
         return;
     }
 
+    function getChangePointerSizeFunc(size)
+    {
+        return function() {
+            _pointerSize = size;
+            menuMgr.ResetViews();
+            menuMgr.initFirstMenuState();
+        }
+    }
+
 
 //************************************************************************************
 // Public Functions
@@ -514,6 +523,15 @@ MenuFunctionsManager = function() {
 
             case "settingsMenuLowSightedButton":
                 return settingsMgr.getChangeMenuTypeFunction(1);
+
+            case "settingsMenuPointerLarge":
+                return getChangePointerSizeFunc( 2 );
+
+            case "settingsMenuPointerMedium":
+                return getChangePointerSizeFunc( 1 );
+
+            case "settingsMenuPointerSmall":
+                return getChangePointerSizeFunc( 0.6 );
 
         // Default
             default: 

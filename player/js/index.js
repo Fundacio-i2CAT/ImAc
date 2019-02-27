@@ -61,7 +61,8 @@ function init_webplayer()
 
     _AudioManager.initAmbisonicResources();
 
-    _moData.setFont('./css/fonts/TiresiasScreenfont_Regular.json').then(() => { 
+    //_moData.setFont('./css/fonts/TiresiasScreenfont_Regular.json').then(() => { 
+    _moData.set2Font('./css/fonts/TiresiasScreenfont_Regular.json', './css/fonts/RobotoMedium_Italic.json' ).then(() => { 
 
         $.getJSON('../content.json', function(json)
         {

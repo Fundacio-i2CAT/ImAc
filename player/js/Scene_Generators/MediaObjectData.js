@@ -4,7 +4,9 @@
 
 THREE.MediaObjectData = function () {
 
-    var subtitleFont;
+    var subtitleFont; // Modificar a Array de fonts
+    var subtitleFont2; // cursiva
+    var subtitleFontArray = [];
 
 //************************************************************************************
 // Public Setters
@@ -21,6 +23,35 @@ THREE.MediaObjectData = function () {
         });
     };
 
+    this.set2Font = function(url1, url2)
+    {
+        return new Promise((resolve, reject) => {
+            var loader = new THREE.FontLoader();
+            loader.load( url1, function ( font ) {
+                subtitleFont = font;
+                var loader = new THREE.FontLoader();
+                loader.load( url2, function ( font2 ) {
+                    subtitleFont2 = font2;
+                    resolve();
+                });
+            });
+        });
+    };
+
+    this.setFontArray = function(list)
+    {
+        return new Promise((resolve, reject) => {
+            list.forEach(function( url ){
+                var loader = new THREE.FontLoader();
+                loader.load( url, function ( font ) {
+                    subtitleFont = font;
+                    subtitleFontArray.push( font );
+                    resolve();
+                });
+            });
+        });
+    };
+
 //************************************************************************************
 // Public Getters
 //************************************************************************************
@@ -28,6 +59,11 @@ THREE.MediaObjectData = function () {
     this.getFont = function()
     {
         return subtitleFont;
+    };
+
+    this.getAllFonts = function()
+    {
+        return subtitleFontArray;
     };
 
     this.getSphericalVideoMesh = function(size, url, name) 
@@ -111,6 +147,8 @@ THREE.MediaObjectData = function () {
 
             group.add( mesh );
         }
+
+        if ( _isHMD ) group.rotation.z = -camera.rotation.z;
         
         return group;
     };
@@ -168,13 +206,13 @@ THREE.MediaObjectData = function () {
     this.getRadarMesh = function()
     {
         var imgGeometry = new THREE.PlaneGeometry( 14, 14 );
-        var mesh = getImageMesh( imgGeometry, './img/radar1.png', 'radar', 3 );
+        var mesh = getImageMesh( imgGeometry, './img/radar_7.png', 'radar', 3 );
 
         //mesh.position.x = _isHMD ? 35 : 40
         //mesh.position.y = _isHMD ? -2 : -22
 
-        mesh.position.x = ( 1.48*subController.getSubArea()/2-14/2 );
-        mesh.position.y = ( 0.82*subController.getSubArea()/2-14/2 ) * subController.getSubPosition().y;
+        mesh.position.x = _isHMD ? 0.8*( 1.48*subController.getSubArea()/2-14/2 ) : ( 1.48*subController.getSubArea()/2-14/2 );
+        mesh.position.y = _isHMD ? 0.09*( 0.82*subController.getSubArea()/2-14/2 ) * subController.getSubPosition().y : ( 0.82*subController.getSubArea()/2-14/2 ) * subController.getSubPosition().y;
 
         mesh.position.z = -76.001;
 
@@ -183,17 +221,36 @@ THREE.MediaObjectData = function () {
         return mesh;
     };
 
+    this.getIconRadarMesh = function()
+    {
+        var imgGeometry = new THREE.PlaneGeometry( 14, 14 );
+        var mesh = getImageMesh( imgGeometry, './img/area_7.png', 'radar3', 3 );
+
+        //mesh.position.x = _isHMD ? 35 : 40
+        //mesh.position.y = _isHMD ? -2 : -22
+
+        mesh.position.x = _isHMD ? 0.8*( 1.48*subController.getSubArea()/2-14/2 ) : ( 1.48*subController.getSubArea()/2-14/2 );
+        mesh.position.y = _isHMD ? 0.09*( 0.82*subController.getSubArea()/2-14/2 ) * subController.getSubPosition().y : ( 0.82*subController.getSubArea()/2-14/2 ) * subController.getSubPosition().y;
+
+        mesh.position.z = -76.001;
+
+        mesh.name = 'radarIcon';
+
+        return mesh;
+    };
+
     this.getSpeakerRadarMesh = function(color, pos)
     {
         var imgGeometry = new THREE.PlaneGeometry( 14, 14 );
-        var mesh = getImageMesh( imgGeometry, './img/radar2.png', 'radar2', 3 );
+        var mesh = getImageMesh( imgGeometry, './img/indicador_7.png', 'radar2', 3 );
 
         mesh.material.color.set( color ); 
 
-       // mesh.position.x = _isHMD ? 35 : 40
-       // mesh.position.y = _isHMD ? -2 : -22
-        mesh.position.x = ( 1.48*subController.getSubArea()/2-14/2 );
-        mesh.position.y = ( 0.82*subController.getSubArea()/2-14/2 ) * subController.getSubPosition().y;
+        //mesh.position.x = _isHMD ? 35 : 40
+        //mesh.position.y = _isHMD ? -2 : -22
+
+        mesh.position.x = _isHMD ? 0.8*( 1.48*subController.getSubArea()/2-14/2 ) : ( 1.48*subController.getSubArea()/2-14/2 );
+        mesh.position.y = _isHMD ? 0.09*( 0.82*subController.getSubArea()/2-14/2 ) * subController.getSubPosition().y : ( 0.82*subController.getSubArea()/2-14/2 ) * subController.getSubPosition().y;
 
         mesh.position.z = -76;
         mesh.rotation.z = Math.radians( 360 - pos );
@@ -216,7 +273,8 @@ THREE.MediaObjectData = function () {
     this.createPointer2 = function()
     {
         var pointer1 = getPointMesh( 0.002, 16, 0xffff00, 0 );
-        var pointer2 = getPointMesh( 0.04, 32, 0xffff00, 1 );
+        var pointer2 = getPointMesh( 0.06, 32, 0xffff00, 1 );
+        pointer2.name = 'realpointer2';
 
         pointer1.add( pointer2 );
 
@@ -543,7 +601,7 @@ THREE.MediaObjectData = function () {
         arrowShape.quadraticCurveTo ( 0, -h/4, -w/2, -h/4 );
 
         var geometry = new THREE.ShapeGeometry( arrowShape );
-        var material = new THREE.MeshBasicMaterial( { color: c } );
+        var material = new THREE.MeshBasicMaterial( { color: c, transparent: true } );
         var mesh = new THREE.Mesh( geometry, material ) ;
 
         if ( o == 0 )
@@ -574,7 +632,7 @@ THREE.MediaObjectData = function () {
     {
         var textmaterial = new THREE.MeshBasicMaterial( { color: t.color } );
         var textShape = new THREE.BufferGeometry();
-        var shapes = subtitleFont.generateShapes( /*'MMMMMWWWWWMMMMMWWWWWMMMMMWWWWWMMMMMQQ'*/t.text, 5*c.size );
+        var shapes = c.speaker != undefined ? subtitleFont.generateShapes( /*'MMMMMWWWWWMMMMMWWWWWMMMMMWWWWWMMMMMQQ'*/t.text, 5*c.size ) : subtitleFont2.generateShapes( t.text, 5*c.size );
         var geometry = new THREE.ShapeGeometry( shapes );
         geometry.computeBoundingBox();
 
@@ -631,7 +689,10 @@ THREE.MediaObjectData = function () {
         if ( i == l-1 && c.subtitleIndicator == 'arrow' )
         {
             // right arrow
-            var arrow = getArrowMesh( 6.7*c.size, 6.7*c.size, t.color, o );
+            var geometry = new THREE.PlaneGeometry( 6.7*c.size, 6.7*c.size );
+            var arrow = getImageMesh(geometry, './img/arrow_final.png', 'right', 3)
+            arrow.material.color.set( t.color );
+            //var arrow = getArrowMesh( 6.7*c.size, 6.7*c.size, t.color, o );
             arrow.add( getBackgroundMesh ( 9.7*c.size, 8.7*c.size, t.backgroundColor, o ) );
             arrow.position.x = xMid/2 + 6.8*c.size;
             arrow.name = 'right';
@@ -639,7 +700,10 @@ THREE.MediaObjectData = function () {
             mesh.add( arrow );
 
             // left arrow
-            var arrow = getArrowMesh( 6.7*c.size, 6.7*c.size, t.color, o );
+            var geometry = new THREE.PlaneGeometry( 6.7*c.size, 6.7*c.size );
+            var arrow = getImageMesh(geometry, './img/arrow_final.png', 'left', 3)
+            arrow.material.color.set( t.color );
+            //var arrow = getArrowMesh( 6.7*c.size, 6.7*c.size, t.color, o );
             arrow.rotation.z = Math.PI;
             arrow.add( getBackgroundMesh ( 9.7*c.size, 8.7*c.size, t.backgroundColor, o ) );
             arrow.position.x = -(xMid/2 + 6.8*c.size);

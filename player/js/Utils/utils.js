@@ -126,8 +126,9 @@ function createVRButton_1(renderer)
                     _isHMD = true;  
                     createMenus();                 
                 });
+            renderer.vr.setDevice( display );
         };
-        renderer.vr.setDevice( display );
+        //renderer.vr.setDevice( display );
     }
 
     var button = document.createElement( 'button' );
@@ -205,6 +206,40 @@ function createMenus()
 
             break;
     }
+}
+
+function readCookie(name)
+{
+    var nameEQ = name + "="; 
+    var ca = document.cookie.split(';');
+
+    for(var i=0;i < ca.length;i++) 
+    {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1,c.length);
+        if (c.indexOf(nameEQ) == 0) {
+          return decodeURIComponent( c.substring(nameEQ.length,c.length) );
+        }
+    }
+
+    return null;
+}
+
+function saveConfig()
+{
+    var iconfig = {
+        ST: subController.getSTConfig(),
+        SL: subController.getSLConfig(),
+        AD: _AudioManager.getADConfig(),
+        AST: _AudioManager.getASTConfig()
+    };
+
+    //var expiresdate = new Date(2019, 01, 05, 11, 03); // aaaa/mm/dd/hh/mm/ss  els mesos van del 0-11
+
+    document.cookie = "ImAcProfileConfig=" + encodeURIComponent( JSON.stringify( iconfig ) ) + "; max-age=2592000;" //expires=" + expiresdate.toUTCString(); max-age = 1 mes
+
+    // Settings ( lang, menutype, voicecontrol )
+
 }
 
 // Converts from degrees to radians.

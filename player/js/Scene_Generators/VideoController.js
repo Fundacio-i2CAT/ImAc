@@ -28,7 +28,7 @@ VideoController = function() {
 
     function setBitrateLimitationsFor(player)
     {
-    	if ( window.screen.width * window.devicePixelRatioh <= 1920 ) 
+    	if ( window.screen.width * window.devicePixelRatio <= 1920 ) 
         {
             player.setMaxAllowedBitrateFor( 'video', 13000 );
         }
@@ -43,7 +43,7 @@ VideoController = function() {
     	var player = dashjs.MediaPlayer().create();
         player.initialize( vid, url, autoplay );
 
-        setBitrateLimitationsFor( player );
+        if ( navigator.userAgent.toLowerCase().indexOf("android") > -1 ) setBitrateLimitationsFor( player );
 
         player.getDebug().setLogToBrowserConsole( false );
         
@@ -90,6 +90,33 @@ VideoController = function() {
                 resolve( 'ok' );
             });   
         });
+    }
+
+    function changeAllCurrentTime(value)
+    {
+        listOfVideoContents.forEach( function( elem ) { elem.vid.currentTime += value; } ); 
+        listOfAudioContents.forEach( function( elem ) { elem.currentTime += value; } );
+    }
+
+    function changeAllPlaybackRate(value)
+    {
+        listOfVideoContents.forEach( function( elem ) { elem.vid.playbackRate  = value; } ); 
+        listOfAudioContents.forEach( function( elem ) { elem.playbackRate  = value; } );
+    }
+
+    function syncAll(dif)
+    {           
+        if ( dif > -0.05 && dif < 0.05 ) {} 
+
+        else if ( dif < -1 || dif > 1 ) 
+        {
+            changeAllCurrentTime( -dif );
+        } 
+        else 
+        {
+            changeAllPlaybackRate( 1 - dif );
+            setTimeout( () => { changeAllPlaybackRate( 1 ) }, 900);
+        }
     }
 
 //************************************************************************************
@@ -174,8 +201,12 @@ VideoController = function() {
 
     this.seekAll = function(time)
     {
-    	listOfVideoContents.forEach( function( elem ) { elem.vid.currentTime += time; } ); 
-        listOfAudioContents.forEach( function( elem ) { elem.currentTime += time; } );
+        changeAllCurrentTime( time );
+    };   
+
+    this.speedAll = function(speed)
+    {
+        changeAllPlaybackRate( speed );
     };   
 
     this.isPausedById = function(id)
@@ -228,6 +259,9 @@ VideoController = function() {
 
             subController.enableSubtitles();
 
+            //var sync = new SyncController()
+            //sync.init();
+
             listOfVideoContents[0].vid.ontimeupdate = function() 
             {
 
@@ -241,5 +275,21 @@ VideoController = function() {
             }; 
         });
     };
+
+    this.getSync = function()
+    {
+        listOfVideoContents.forEach( function( elem, i ) { console.log( elem.vid.currentTime + ' id: ' + i ) } ); 
+        listOfAudioContents.forEach( function( elem, i ) { console.log( elem.currentTime + ' aid: ' + i ) } );
+    }
+
+    this.syncAllContents = function(speed, dif)
+    {
+        if ( speed == 1 )
+        {
+            if ( listOfVideoContents[0].vid.paused ) this.playAll();
+            else syncAll( dif );
+        }
+        else if ( !listOfVideoContents[0].vid.paused ) this.pauseAll();
+    }
 
 }

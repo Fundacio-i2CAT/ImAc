@@ -51,6 +51,7 @@ SubSignManager = function() {
 	var subtitleMesh;
 	var signerMesh;
 	var radarMesh;
+	var radarMesh3;
 	var speakerMesh;
 
 	var areaMesh;
@@ -99,6 +100,8 @@ SubSignManager = function() {
 		  		if ( radarAutoPositioning ) changeSimplePositioning( isd.imac );
 		    	if ( subtitleEnabled ) print3DText( isd.contents[0], isd.imac );
 
+		    	if ( subtitleIndicator == 'arrow' ) arrowInteraction();
+
 		    	checkSpeakerPosition( isd.imac );
 		  	}
 		  	else if ( textListMemory.length > 0 )
@@ -107,6 +110,20 @@ SubSignManager = function() {
 		    	removeSubtitle();
 		    	removeSpeakerRadar();
 		  	}
+		}
+	}
+
+	function arrowInteraction()
+	{
+// cada 300 milis aprox
+		if ( scene.getObjectByName("right") ) {
+
+			scene.getObjectByName("right").material.opacity = scene.getObjectByName("right").material.opacity == 1 ? 0.4 : 1;
+		}
+		
+		if ( scene.getObjectByName("left") ) {
+
+			scene.getObjectByName("left").material.opacity = scene.getObjectByName("left").material.opacity == 1 ? 0.4 : 1;
 		}
 	}
 
@@ -127,7 +144,8 @@ SubSignManager = function() {
 	        opacity: subBackground,
 	        x: 0,
 	        y: posY * 9/16,
-	        z: posZ
+	        z: posZ,
+	        speaker: isdImac
 	    };
 
 	  	if ( isdContent.contents.length > 0 )
@@ -152,8 +170,6 @@ SubSignManager = function() {
 	    	if ( textList.length > 0 && ( textListMemory.length == 0 || textListMemory.length > 0 && textList[0].text != textListMemory[0].text ) ) 
 	    	{
 	      		removeSubtitle();
-
-	      		
 
 			    //Save subtitle configuration for preview visualitzation. 
 
@@ -220,7 +236,7 @@ SubSignManager = function() {
 		{
 			AplicationManager.enableVR();
         	autopositioning = false;
-        	CameraParentObject.rotation.set(0,0,0);
+        	//CameraParentObject.rotation.set(0,0,0);
 			autoHMD = true;
 		}
 		else 
@@ -228,7 +244,7 @@ SubSignManager = function() {
 			if ( _isHMD && autoHMD ) 
 			{
 				camera.rotation.set( 0,0,0 );
-            	CameraParentObject.quaternion.set(0,0,0,0);
+            	//CameraParentObject.quaternion.set(0,0,0,0);
 				autoHMD = false;
 				autopositioning = true;
 			}
@@ -236,27 +252,30 @@ SubSignManager = function() {
 			var position = Math.round(getViewDifPosition( isdImac, 3 ));
 
 	      	var rotaionValue = 0;
-	      	var initY = Math.round( CameraParentObject.rotation.y * (-180/Math.PI)%360 );
+	      	//var initY = Math.round( CameraParentObject.rotation.y * (-180/Math.PI)%360 );
+	      	var initY = Math.round( camera.rotation.y * (-180/Math.PI)%360 );
 
 	      	var rotationInterval = setInterval(function() 
 	      	{
 	      		var difff = isdImac - initY;
 	      		if ( difff > 180 ) difff -= 360;
 	      		if ( difff < 0 ) difff = -1*difff;
-	        	if ( position * rotaionValue >= difff || position == 0 ) 
+	        	if ( position * rotaionValue >= difff || position == 0 || autopositioning == false) 
 	        	{
 	        		clearInterval( rotationInterval );
 	        		if ( VideoController.getListOfVideoContents()[0].vid.currentTime < VideoController.getListOfVideoContents()[0].vid.duration - 10 ) autoPositioning = true;
 	        		else {
 	        			AplicationManager.enableVR();
 	        			autopositioning = false;
-	        			if ( _isHMD ) CameraParentObject.rotation.set(0,0,0);
+	        			//if ( _isHMD ) CameraParentObject.rotation.set(0,0,0);
+	        			if ( _isHMD ) camera.rotation.set(0,0,0);
 	        		}
 	        	}
 	        	else 
 	        	{
 	          		rotaionValue += position*1.2; // 60 degrees by second
-	          		CameraParentObject.rotation.y = initY / ( -180 / Math.PI )%360 + rotaionValue * ( -Math.PI / 180 );
+	          		//CameraParentObject.rotation.y = initY / ( -180 / Math.PI )%360 + rotaionValue * ( -Math.PI / 180 );
+	          		camera.rotation.y = initY / ( -180 / Math.PI )%360 + rotaionValue * ( -Math.PI / 180 );
 	        	}
 	      	}, 20); 
 	    }
@@ -264,15 +283,12 @@ SubSignManager = function() {
 
 	function changeSimplePositioning(isdImac)
 	{
+		//AplicationManager.disableVR();
 		radarAutoPositioning = false;
 
-		var a = new THREE.Euler( 0, Math.radians(isdImac), 0, 'XYZ' );
+		var a = new THREE.Euler( 0, Math.radians(-isdImac), 0, 'XYZ' );
+		camera.quaternion.setFromEuler( a );
 
-		CameraParentObject.quaternion.setFromEuler( a );
-
-		AplicationManager.enableVR();
-
-		//setTimeout(function() {radarautopositioning = false;},500);
 	}	
 
 	function createSigner()
@@ -333,14 +349,16 @@ SubSignManager = function() {
     {
     	if ( radarMesh ) removeRadar();
     	radarMesh = _moData.getRadarMesh();
+    	radarMesh3 = _moData.getIconRadarMesh();
 
     	radarMesh.onexecute = function() {
 
-			radarAutoPositioning = true;
+			if ( !_isHMD ) radarAutoPositioning = true;
     	}
 
     	interController.addInteractiveRadar( radarMesh )
     	camera.add( radarMesh );
+    	camera.add( radarMesh3 );
     }
 
     function createSpeakerRadar(color, pos)
@@ -403,7 +421,9 @@ SubSignManager = function() {
     	interController.removeInteractiveRadar( radarMesh )
     	removeSpeakerRadar();
     	camera.remove( radarMesh );
+    	camera.remove( radarMesh3 );
     	radarMesh = undefined;
+    	radarMesh3 = undefined;
     }
 
     function removeSpeakerRadar()
@@ -533,6 +553,20 @@ SubSignManager = function() {
         return subAvailableLang;
     };
 
+    this.getSTConfig = function()
+    {
+    	return {
+    		enabled: subtitleEnabled,
+    		lang: subLang,
+    		position: this.getSubPosition(),
+    		indicator: subtitleIndicator,
+    		area: subArea,
+    		size: subSize,
+    		easy: subEasy,
+    		background: subBackground
+    	};
+    };
+
 //************************************************************************************
 // Public Signer Getters
 //************************************************************************************
@@ -576,6 +610,17 @@ SubSignManager = function() {
         return signAvailableLang;
     }; 
 
+    this.getSLConfig = function()
+    {
+    	return {
+    		enabled: signEnabled,
+    		lang: signLang,
+    		position: this.getSignerPosition(),
+    		indicator: signIndicator,
+    		area: signArea
+    	};
+    };
+
 //************************************************************************************
 // Private Subtitle Setters
 //************************************************************************************
@@ -587,6 +632,19 @@ SubSignManager = function() {
 //************************************************************************************
 // Public Subtitle Setters
 //************************************************************************************
+
+	this.setSTConfig = function(conf)
+    {
+    	subtitleEnabled = conf.enabled;
+    	subLang = conf.lang;
+    	subPosX = conf.position.x;
+		subPosY = conf.position.y;
+    	subtitleIndicator = conf.indicator;
+    	subArea	= conf.area;
+    	subSize	= conf.size;
+    	subEasy = conf.easy;
+    	subBackground = conf.background;
+    };
 
 	this.setSubtitle = function(xml, lang)
 	{
@@ -708,6 +766,16 @@ SubSignManager = function() {
 //************************************************************************************
 // Public Signer Setters
 //************************************************************************************
+
+	this.setSLConfig = function(conf)
+    {
+    	signEnabled = conf.enabled;
+    	signLang = conf.lang;
+    	signPosX = conf.position.x;
+		signPosY = conf.position.y;
+    	signIndicator = conf.indicator;
+    	signArea = conf.area;
+    };
 
 	this.setSignerPosition = function(x, y)
 	{
@@ -944,20 +1012,25 @@ SubSignManager = function() {
     {
     	removeSignVideo();
     }
-
+    
     function updateRadarPosition()
     {
         if ( radarMesh ) 
         {
 
-		   	radarMesh.position.x = ( 1.48*subArea/2-14/2 );
-	    	radarMesh.position.y = ( 0.82*subArea/2-14/2 ) * subPosY;
+		   	radarMesh.position.x = _isHMD ? 0.8*( 1.48*subArea/2-14/2 ) : ( 1.48*subArea/2-14/2 );
+	    	radarMesh.position.y = _isHMD ? 0.09*( 0.82*subArea/2-14/2 ) * subPosY : ( 0.82*subArea/2-14/2 ) * subPosY; 
 	    	
 	    	if ( speakerMesh ) 
 	        {
-		    	speakerMesh.position.x = ( 1.48*subArea/2-14/2 );
-		    	speakerMesh.position.y = ( 0.82*subArea/2-14/2 ) * subPosY;
+		    	speakerMesh.position.x = _isHMD ? 0.8*( 1.48*subArea/2-14/2 ) : ( 1.48*subArea/2-14/2 );
+		    	speakerMesh.position.y = _isHMD ? 0.09*( 0.82*subArea/2-14/2 ) * subPosY : ( 0.82*subArea/2-14/2 ) * subPosY;
 		    }
 	    }
+    }
+
+    this.updateSTRotation = function()
+    {
+    	if ( subtitleMesh && !isExperimental ) subtitleMesh.rotation.z = -camera.rotation.z;
     }
 }

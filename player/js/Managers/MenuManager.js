@@ -6,7 +6,7 @@
  */
 function MenuManager() {
 
-    var menuType;
+    var menuType = localStorage.ImAc_menuType == "LS_area" ? 1 : 2;
     var menuParent;
     var controllers = [];
     var actualCtrl;
@@ -206,8 +206,17 @@ function MenuManager() {
             controller.Exit();
         });
 
-        if ( scene.getObjectByName('pointer2') && _isHMD ) scene.getObjectByName('pointer2').visible = false;
-        else if ( scene.getObjectByName( "pointer" ) && _isHMD ) scene.getObjectByName( "pointer" ).visible = false;
+        if ( scene.getObjectByName( "pointer2" ) && _isHMD ) 
+        {
+            scene.getObjectByName( "pointer2" ).visible = false;
+        }
+
+        else if ( scene.getObjectByName( "pointer" ) && _isHMD ) 
+        {
+            scene.getObjectByName( "pointer" ).visible = false;
+            if ( menuType == 2 ) scene.getObjectByName('pointer').scale.set(1*_pointerSize,1*_pointerSize,1*_pointerSize)
+            else  scene.getObjectByName('pointer').scale.set(3*_pointerSize,3*_pointerSize,3*_pointerSize)
+        }
 
         playpauseCtrl.playAllFunc();
 

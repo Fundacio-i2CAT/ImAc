@@ -57,16 +57,18 @@ MenuFunctionsManager = function() {
     function getSubAutoPositioningFunc()
     {       
         return function() {
-            if ( !_isHMD ) AplicationManager.disableVR();
-            camera.rotation.set( 0,0,0 );
-            CameraParentObject.quaternion.set(0,0,0,0);
+            if ( !_isHMD ) 
+            {
+                AplicationManager.disableVR();
+                camera.rotation.set( 0,0,0 );
 
-            menuMgr.ResetViews();
+                menuMgr.ResetViews();
 
-            subController.setSubIndicator( 'none' );
-            subController.enableAutoPositioning();
+                subController.setSubIndicator( 'none' );
+                subController.enableAutoPositioning();
 
-            autopositioning = true;
+                autopositioning = true;
+            }
         }
     }
 
@@ -106,7 +108,7 @@ MenuFunctionsManager = function() {
     }
 
 //************************************************************************************
-// Settings Functions
+// Signer Functions
 //************************************************************************************
 
     function getMainLanguageFunc(language)
@@ -117,7 +119,7 @@ MenuFunctionsManager = function() {
 
             menuMgr.removeMenuFromParent();
 
-            localStorage.ImAc_menuType == "LS_area" ? menuMgr.Init(1) : menuMgr.Init(2);
+            menuMgr.getMenuType() == 1 ? menuMgr.Init(1) : menuMgr.Init(2);
 
             menuMgr.initFirstMenuState(); 
         }
@@ -229,6 +231,31 @@ MenuFunctionsManager = function() {
         }
     }
 
+//************************************************************************************
+// Settings Functions
+//************************************************************************************
+    
+    function getSaveConfigFunc()
+    {
+        return function() {
+            saveConfig();
+        }
+    }
+
+    function getVoiceControlFunc(enable)
+    {
+        return;
+    }
+
+    function getChangePointerSizeFunc(size)
+    {
+        return function() {
+            _pointerSize = size;
+            menuMgr.ResetViews();
+            menuMgr.initFirstMenuState();
+        }
+    }
+
 
 //************************************************************************************
 // Public Functions
@@ -242,7 +269,7 @@ MenuFunctionsManager = function() {
         }
     };
 
-    this.getSeekFunc = function(plus)
+    this.getSeekFunc = function(plus, seekTime = 5)
     {
         var sign = plus ? 1 : -1;
         return function() {
@@ -250,15 +277,20 @@ MenuFunctionsManager = function() {
         }
     };
 
-    this.getChangeVolumeFunc = function(plus)
+    this.getSpeedFunc = function(speed)
+    {
+        return function() {
+            VideoController.speedAll( speed );
+        }
+    };
+
+    this.getChangeVolumeFunc = function(plus, volumeChangeStep = 0.2)
     {
         var sign = plus ? 1 : -1;
         return function() {
             _AudioManager.changeVolume( sign * volumeChangeStep );
         }
     };
-
-
 
     this.getOnOffFunc = function(name)
     {
@@ -477,20 +509,29 @@ MenuFunctionsManager = function() {
             case "settingsLanguageCatButton":
                 return getMainLanguageFunc( 'ca' );
 
-            case "vc1":
-                return;
+            case "voiceControlOnButton":
+                return getVoiceControlFunc( true );
 
-            case "up1":
-                return;
+            case "voiceControlOffButton":
+                return getVoiceControlFunc( false );
 
-            case "up2":
-                return;
+            case "saveUserProfileButton":
+                return getSaveConfigFunc();
 
             case "settingsMenuTraditionalButton":
                 return settingsMgr.getChangeMenuTypeFunction(2);
 
             case "settingsMenuLowSightedButton":
                 return settingsMgr.getChangeMenuTypeFunction(1);
+
+            case "settingsMenuPointerLarge":
+                return getChangePointerSizeFunc( 2 );
+
+            case "settingsMenuPointerMedium":
+                return getChangePointerSizeFunc( 1 );
+
+            case "settingsMenuPointerSmall":
+                return getChangePointerSizeFunc( 0.6 );
 
         // Default
             default: 

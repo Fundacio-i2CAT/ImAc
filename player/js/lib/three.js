@@ -20988,8 +20988,6 @@
 
         }
 
-        //
-
         this.enabled = false;
         this.userHeight = 1.6;
 

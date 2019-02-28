@@ -34,7 +34,9 @@ AudioManager = function() {
     var astAvailableLang = []; // Array { name, value, default:bool }
     var astEasy = false; // boolean
 
-
+//************************************************************************************
+// Private Functions
+//************************************************************************************
 
     function getFOARenderer(audioContext)
     {
@@ -56,6 +58,70 @@ AudioManager = function() {
             });
         }
     }
+
+    function initAdditionAudio(id, object)
+    {
+        // Create AudioContext, MediaElementSourceNode and FOARenderer.
+        var audioContext = new AudioContext();
+        var audioElementSource = audioContext.createMediaElementSource( object );
+        var foaRenderer_ = getFOARenderer( audioContext );
+
+        foaRendererList[id] = foaRenderer_;
+
+        // Make connection and start play.
+        foaRenderer_.initialize().then(function() {
+            audioElementSource.connect(foaRenderer_.input);
+            foaRenderer_.output.connect(audioContext.destination);
+            if ( !VideoController.isPausedById(0) ) object.play();
+            updateMatrix4( camera.matrixWorld.elements )
+        });
+    }
+
+    function addAudio(type)
+    {
+        if ( type == 'AD' )
+        {       
+            if ( foaRendererList[0] ) removeAudio( type );
+
+            _AD = document.createElement('audio');
+            _AD.src = adContent;
+            _AD.volume = adVolume/100;
+
+            initAdditionAudio( 0, _AD );
+            VideoController.addAudioContent( _AD );
+        }
+        else if ( type == 'AST' )
+        {          
+            if ( foaRendererList[1] ) removeAudio( type );
+
+            _AST = document.createElement('audio');
+            _AST.src = astContent;
+            _AST.volume = astVolume/100;
+
+            initAdditionAudio( 1, _AST );
+            VideoController.addAudioContent( _AST );
+        }
+    }
+
+    function removeAudio(type)
+    {
+        if ( type == 'AD' )
+        {
+            VideoController.removeAudioContent( _AD );
+            foaRendererList[0] = undefined;
+            _AD.setAttribute('src', ''); 
+        }
+        else if ( type == 'AST' )
+        {
+            VideoController.removeAudioContent( _AST );
+            foaRendererList[1] = undefined;
+            _AST.setAttribute('src', ''); 
+        }     
+    }
+
+//************************************************************************************
+// Public Functions
+//************************************************************************************
 
     this.initAmbisonicResources = function()
     {
@@ -81,7 +147,7 @@ AudioManager = function() {
         var audioContext = new AudioContext();
 
         activeVideoElement = videoElement;
-        activeVideoElement.volume = 0.5; // Start volume level in 0.5 
+        activeVideoElement.volume = 1.0; // Start volume level in 0.5 
         videoElement.muted = false;
 
         var videoElementSource = audioContext.createMediaElementSource( videoElement );
@@ -167,68 +233,6 @@ AudioManager = function() {
         return isMuted;
     };
 
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    function initAdditionAudio(id, object)
-    {
-        // Create AudioContext, MediaElementSourceNode and FOARenderer.
-        var audioContext = new AudioContext();
-        var audioElementSource = audioContext.createMediaElementSource( object );
-        var foaRenderer_ = getFOARenderer( audioContext );
-
-        foaRendererList[id] = foaRenderer_;
-
-        // Make connection and start play.
-        foaRenderer_.initialize().then(function() {
-            audioElementSource.connect(foaRenderer_.input);
-            foaRenderer_.output.connect(audioContext.destination);
-            if ( !VideoController.isPausedById(0) ) object.play();
-            updateMatrix4( camera.matrixWorld.elements )
-        });
-    }
-
-    function addAudio(type)
-    {
-        if ( type == 'AD' )
-        {       
-            if ( foaRendererList[0] ) removeAudio( type );
-
-            _AD = document.createElement('audio');
-            _AD.src = adContent;
-            _AD.volume = adVolume/100;
-
-            initAdditionAudio( 0, _AD );
-            VideoController.addAudioContent( _AD );
-        }
-        else if ( type == 'AST' )
-        {          
-            if ( foaRendererList[1] ) removeAudio( type );
-
-            _AST = document.createElement('audio');
-            _AST.src = astContent;
-            _AST.volume = astVolume/100;
-
-            initAdditionAudio( 1, _AST );
-            VideoController.addAudioContent( _AST );
-        }
-    }
-
-    function removeAudio(type)
-    {
-        if ( type == 'AD' )
-        {
-            VideoController.removeAudioContent( _AD );
-            foaRendererList[0] = undefined;
-            _AD.setAttribute('src', ''); 
-        }
-        else if ( type == 'AST' )
-        {
-            VideoController.removeAudioContent( _AST );
-            foaRendererList[1] = undefined;
-            _AST.setAttribute('src', ''); 
-        }     
-    }
-
     this.switchAD = function(enable)
     {
         // protection condition ???
@@ -253,11 +257,103 @@ AudioManager = function() {
             enable ? addAudio( 'AST' ) : removeAudio( 'AST' );       
     };
 
-    this.setADPresentation = function(value)
+    this.setVolume = function( type, level )
     {
-        adPresentation = value;
-        adContent = adContentArray[adLang][adPresentation];
-        if ( adEnabled ) addAudio( 'AD' );
+        if ( type == 'AD' )
+        {
+            adVolume = level;
+            if ( _AD ) _AD.volume = adVolume/100;
+        }
+        else if ( type == 'AST' )
+        {
+            astVolume = level;
+            if ( _AST ) _AST.volume = astVolume/100;
+        }
+    };   
+
+//************************************************************************************
+// Public AD Getters
+//************************************************************************************
+
+    this.getADPresentationArray = function()
+    {
+        return adAvailablePresentation;
+    };
+
+    this.getADLanguagesArray = function()
+    {
+        return adAvailableLang;
+    };
+
+    this.getADEnabled = function() 
+    {
+        return adEnabled;
+    };
+
+    this.getADLanguage = function()
+    {
+        return adLang;
+    };
+
+    this.getADConfig = function()
+    {
+        return {
+            enabled: adEnabled,
+            lang: adLang,
+            volume: adVolume,
+            mode: adPresentation
+        };
+    };
+
+//************************************************************************************
+// Public AST Getters
+//************************************************************************************
+
+    this.getASTLanguagesArray = function()
+    {
+        return astAvailableLang;
+    };
+
+    this.getASTEnabled = function() 
+    {
+        return astEnabled;
+    };
+
+    this.getASTLanguage = function()
+    {
+        return astLang;
+    };
+
+    this.getSubEasy = function()
+    {
+        return astEasy;
+    };
+
+    this.getASTLanguage = function()
+    {
+        return astLang;
+    };
+
+    this.getASTConfig = function()
+    {
+        return {
+            enabled: astEnabled,
+            lang: astLang,
+            volume: astVolume,
+            easy: astEasy
+        };
+    };
+
+//************************************************************************************
+// Public AD Setters
+//************************************************************************************
+
+    this.setADConfig = function(conf)
+    {
+        adEnabled = conf.enabled;
+        adLang = conf.lang;
+        adVolume = conf.volume;
+        adPresentation = conf.mode;
     };
 
     this.setADContent = function(content, lang)
@@ -265,46 +361,13 @@ AudioManager = function() {
         adContent = content[adPresentation];
         adLang = lang;
         if ( adEnabled ) addAudio( 'AD' );
-    };  
-
-    this.setASTContent = function(url, lang)
-    {
-        astContent = url;
-        astLang = lang;
-        if ( astEnabled ) addAudio( 'AST' );
     }; 
 
-    this.setADPresentationArray = function(subList)
+    this.setADPresentation = function(value)
     {
-        adAvailablePresentation = [];
-
-        if ( subList['VoiceOfGod'] ) 
-        {
-            adAvailablePresentation.push(
-            {
-                name: 'adVOGButton', 
-                value: 'VoiceOfGod', 
-                default: ( 'VoiceOfGod' == adPresentation )
-            } );
-        }
-        if ( subList['Friend'] ) 
-        {
-            adAvailablePresentation.push(
-            {
-                name: 'adFriendButton', 
-                value: 'Friend', 
-                default: ( 'Friend' == adPresentation )
-            } );
-        }
-        if ( subList['Dynamic'] ) 
-        {
-            adAvailablePresentation.push(
-            {
-                name: 'adDynamicButton', 
-                value: 'Dynamic', 
-                default: ( 'Dynamic' == adPresentation )
-            } );
-        }
+        adPresentation = value;
+        adContent = adContentArray[adLang][adPresentation];
+        if ( adEnabled ) addAudio( 'AD' );
     };
 
     this.setADLanguagesArray = function(subList)
@@ -346,6 +409,58 @@ AudioManager = function() {
                 name: 'adCatButton', 
                 value: 'ca', 
                 default: ( 'ca' == adLang )
+            } );
+        }
+    };
+
+//************************************************************************************
+// Public AST Setters
+//************************************************************************************
+
+    this.setASTConfig = function(conf)
+    {
+        astEnabled = conf.enabled;
+        astLang = conf.lang;
+        astVolume = conf.volume;
+        astEasy = conf.easy;
+    };
+
+    this.setASTContent = function(url, lang)
+    {
+        astContent = url;
+        astLang = lang;
+        if ( astEnabled ) addAudio( 'AST' );
+    }; 
+
+    this.setADPresentationArray = function(subList)
+    {
+        adAvailablePresentation = [];
+
+        if ( subList['VoiceOfGod'] ) 
+        {
+            adAvailablePresentation.push(
+            {
+                name: 'adVOGButton', 
+                value: 'VoiceOfGod', 
+                default: ( 'VoiceOfGod' == adPresentation )
+            } );
+        }
+        if ( subList['Friend'] ) 
+        {
+            adAvailablePresentation.push(
+            {
+                name: 'adFriendButton', 
+                value: 'Friend', 
+                default: ( 'Friend' == adPresentation )
+            } );
+        }
+        if ( subList['Dynamic'] ) 
+        {
+            adAvailablePresentation.push(
+            {
+                name: 'adDynamicButton', 
+                value: 'Dynamic', 
+                default: ( 'Dynamic' == adPresentation )
             } );
         }
     };
@@ -392,58 +507,9 @@ AudioManager = function() {
         }
     };
 
-    this.getADPresentationArray = function()
-    {
-        return adAvailablePresentation;
-    };
-
-    this.getADLanguagesArray = function()
-    {
-        return adAvailableLang;
-    };
-
-    this.getASTLanguagesArray = function()
-    {
-        return astAvailableLang;
-    };
-
-    this.setVolume = function( type, level )
-    {
-        if ( type == 'AD' )
-        {
-            adVolume = level;
-            if ( _AD ) _AD.volume = adVolume/100;
-        }
-        else if ( type == 'AST' )
-        {
-            astVolume = level;
-            if ( _AST ) _AST.volume = astVolume/100;
-        }
-    }
-
-    this.getADEnabled = function() 
-    {
-        return adEnabled;
-    };
-
-    this.getASTEnabled = function() 
-    {
-        return astEnabled;
-    };
-
-    this.getASTLanguage = function()
-    {
-        return astLang;
-    };
-
-    this.getSubEasy = function()
-    {
-        return astEasy;
-    };
-
     this.setSubEasy = function(easy, xml)
     {
         astEasy = easy;
         this.setASTContent( xml, astLang );
-    };
+    };   
 }

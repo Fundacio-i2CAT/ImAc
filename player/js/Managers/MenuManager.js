@@ -224,10 +224,7 @@ function MenuManager() {
     {
         var geometry = new THREE.SphereGeometry( 99, 32, 16, Math.PI/2, Math.PI * 2,  2.35,  0.4 );
         geometry.scale( - 1, 1, 1 );
-        //var material = new THREE.MeshBasicMaterial( {color: 0x13ec56, side: THREE.FrontSide, colorWrite: false});
         var material = new THREE.MeshBasicMaterial( {color: 0xffffff, side: THREE.FrontSide, transparent: true, opacity:0} );
-        //var geometry = new THREE.SphereGeometry( 99, 64, 16, Math.PI/2, Math.PI * 2,  7*Math.PI/20,  -Math.PI/12 );
-        //var material = new THREE.MeshBasicMaterial( {color: 0xffffff, side: THREE.FrontSide, transparent: true, opacity:0.05} );
         menuActivationElement = new THREE.Mesh( geometry, material );
         menuActivationElement.name = 'openMenu';
 
@@ -491,7 +488,7 @@ function MenuManager() {
         signerAreaMesh.name = 'areaSLpreview';
         
         var geometry = new THREE.CircleGeometry( 7, 32 );
-        var material = new THREE.MeshBasicMaterial( { color: 0x000000 } );
+        var material = new THREE.MeshBasicMaterial( { color: 0xffff00 } );
         var radarIndicator = new THREE.Mesh( geometry, material );
     
         radarIndicator.visible = false;
@@ -504,7 +501,6 @@ function MenuManager() {
         preview.add(signerMesh);
         preview.add(signerAreaMesh);
         
-        //CREATE NEW SUBTITLES SHOWING IN TEXT THE OPTIONS OF SIZE. THIS IS AN EXAMPLE OF BIG SUBTITLES.
         var stMesh = scene.getObjectByName("subtitles");
         if(stMesh) stMesh.visible = false;
 

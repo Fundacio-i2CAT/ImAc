@@ -1,6 +1,6 @@
-function MultiOptionsPreviewModel() 
+function PreviewModel() 
 {
-	this.name = 'multioptionspreview';
+	this.name = 'preview';
 	this.subtitlesPreview;
 	this.areaSTPreview;
 	this.signerPreview;

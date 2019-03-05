@@ -37,8 +37,7 @@
 	<script src="./js/Scene_Generators/ManifestParser.js"></script>
 
 <!--MENU MANAGER -->
-	<!--script src="./js/Scene_Generators/Menu/MenuState.js"></script-->
-	
+	<script src="./js/Managers/ViewStructureMenuManager.js"></script>
 	<script src="./js/Managers/AplicationManager.js"></script>
 	<script src="./js/Managers/AudioManager.js"></script>
 	<script src="./js/Managers/MenuManager.js"></script>
@@ -47,9 +46,6 @@
 	<script src="./js/Managers/MenuDictionary.js"></script>
 	<script src="./js/Managers/InteractionsController.js"></script>
 	<script src="./js/Managers/SubSignManager.js"></script>
-
-
-	<!--script src="./js/Scene_Generators/Menu/MenuController.js"></script-->	
 
 	<script src="./js/Controllers/DeviceOrientationAndTouchController.js"></script>
 	<script src="./js/Controllers/FullScreenController.js"></script>
@@ -65,43 +61,43 @@
 	<script src="./js/pilot1.js"></script>
 	<script src="./js/index.js"></script>
 
+<!--MENU MODELS -->
 	<script src="./js/Models/InteractiveElementModel.js"></script>
 	<script src="./js/Models/PlayPauseLSMenuModel.js"></script>
 	<script src="./js/Models/VolumeLSMenuModel.js"></script>
 	<script src="./js/Models/SettingsLSMenuModel.js"></script>
 	<script src="./js/Models/MultiOptionsLSMenuModel.js"></script>
-	<script src="./js/Models/MultiOptionsPreviewModel.js"></script>
+	<script src="./js/Models/PreviewModel.js"></script>
 	<script src="./js/Models/OptionMenuModel.js"></script>
 	<script src="./js/Models/VideoProgressBarModel.js"></script>
 
+<!--MENU VIEWS -->
 	<script src="./js/Views/PlayPauseLSMenuView.js"></script>
 	<script src="./js/Views/VolumeLSMenuView.js"></script>
 	<script src="./js/Views/SettingsLSMenuView.js"></script>
 	<script src="./js/Views/MultiOptionsLSMenuView.js"></script>
-	<script src="./js/Views/MultiOptionsPreviewView.js"></script>
+	<script src="./js/Views/PreviewView.js"></script>
 	<script src="./js/Views/OptionLSMenuView.js"></script>
 	<script src="./js/Views/OptionTradMenuView.js"></script>
 	<script src="./js/Views/VideoProgressBarView.js"></script>
 	
-
+<!--MENU CONTROLLERS -->
 	<script src="./js/Controllers/PlayPauseLSMenuController.js"></script>
 	<script src="./js/Controllers/VolumeLSMenuController.js"></script>
 	<script src="./js/Controllers/SettingsLSMenuController.js"></script>
 	<script src="./js/Controllers/MultiOptionsLSMenuController.js"></script>
-	<script src="./js/Controllers/MultiOptionsPreviewController.js"></script>
+	<script src="./js/Controllers/PreviewController.js"></script>
 	<script src="./js/Controllers/MultiOptions/SettingsOptionMenuController.js"></script>
 	<script src="./js/Controllers/MultiOptions/STOptionMenuController.js"></script>
 	<script src="./js/Controllers/MultiOptions/SLOptionMenuController.js"></script>
 	<script src="./js/Controllers/MultiOptions/ADOptionMenuController.js"></script>
 	<script src="./js/Controllers/MultiOptions/ASTOptionMenuController.js"></script>
 	<script src="./js/Controllers/VideoProgressBarController.js"></script>
-
 </head>
 
 <body onload="init_webplayer()" id="body-container">
 
 	<div id="container"></div>
 	<!--canvas id="myCanvas" width="300" height="150" style="border:1px solid #d3d3d3;"-->
-
 </body>	
 </html>

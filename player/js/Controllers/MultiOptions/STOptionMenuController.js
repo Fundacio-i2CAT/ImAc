@@ -342,7 +342,6 @@ function STOptionMenuController(menuType) {
                     data.parentColumnActiveOpt = element.name;
                     data.parentColumnDropdown = AddDropdownElementsTrad(element.options);
                     data.isOnOffButtonVisible = false;
-                    //UpdateData();
                     setTimeout(function(){view.UpdateView(data)}, 100);
                 };
             } 

@@ -21,6 +21,42 @@
  *  	
  */
 function ViewStructureMenuManager() {
+    
+    /**
+     * This function sets the values of the create menu elements from the InteractiveElementModel.
+     *
+     * @param      {<type>}  w          The width
+     * @param      {<type>}  h          The height
+     * @param      {<type>}  r          The rotation
+     * @param      {<type>}  n          The name
+     * @param      {<type>}  t          The type (icon/text)
+     * @param      {<type>}  val        The value (if icon the path / if text the text value)
+     * @param      {<type>}  c          The color
+     * @param      {<type>}  txtSz      The text size
+     * @param      {<type>}  vis        The visibility 
+     * @param      {<type>}  x          The x position
+     * @param      {<type>}  y          The y position
+     * @param      {<type>}  z          The z position
+     */
+    function setMenuElementValues (w, h, r, n, t, val, c, txtSz, vis, x, y, z)
+    {
+        var IE = new InteractiveElementModel();
+
+        IE.width = w;
+        IE.height = h;
+        IE.name = n;
+        IE.rotation = r;
+        IE.type=  t;
+        IE.value = val;
+        IE.color = c;
+        IE.visible = vis;
+        IE.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(w, h), new THREE.MeshBasicMaterial({visible:  false}));
+        IE.position = new THREE.Vector3(x, y, z);
+        IE.onexecute = function() { console.log("This is the %s button", n) }
+
+        return IE.create();
+    }
+
 
 /**************************************************************
  *
@@ -75,67 +111,25 @@ function ViewStructureMenuManager() {
         menu.position.set( 0, 0, -69 );
         menu.name = name;
 
-        // Create the previewMenuButton by loading a new InteractiveElement model and injecting the previewMenuButtonData
-        var previewMenuButton = new InteractiveElementModel();
-        previewMenuButton.width = 8;
-        previewMenuButton.height = 8;
-        previewMenuButton.name = 'previewMenuButton';
-        previewMenuButton.type=  'icon';
-        previewMenuButton.value = './img/menu/preview.png';
-        previewMenuButton.color = 0xffffff;
-        previewMenuButton.visible = true;
-        previewMenuButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(previewMenuButton.width, previewMenuButton.height), new THREE.MeshBasicMaterial({visible:  false}));
-        previewMenuButton.onexecute =  function(){ console.log('Preview menu button clicked') };
-        previewMenuButton.position = new THREE.Vector3(-57, 30, 0.01);
+        // Create the menu button elements by loading a new InteractiveElement() model 
+        // and setting the data through setMenuElementValues().
+        var previewMenuButton = setMenuElementValues(8, 8, null, 'previewMenuButton', 'icon', 
+            './img/menu/preview.png', 0xffffff, null, true, -57, 30, 0.01);
+        
+        var closeMenuButton = setMenuElementValues(10, 10, Math.PI/4, 'closeMenuButton', 'icon', 
+            './img/menu/plus_icon.png', 0xffffff, null, true, 57, 30, 0.01);
+        
+        var forwardMenuButton = setMenuElementValues(8.4, 8.4, Math.PI, 'forwardMenuButton', 'icon', 
+            './img/menu/less_than_icon.png', 0xffffff, null, true, 57, -30, 0.01);
+        
+        var backMenuButton = setMenuElementValues(8.4, 8.4, null, 'backMenuButton', 'icon', 
+            './img/menu/less_than_icon.png', 0xffffff, null, true, -57, -30, 0.01);
 
-        menu.add(previewMenuButton.create());
-
-        // Create the closeMenuButton by loading a new InteractiveElement model and injecting the closeMenuButtonData
-        var closeMenuButton = new InteractiveElementModel();
-        closeMenuButton.width = 10;
-        closeMenuButton.height = 10;
-        closeMenuButton.rotation = Math.PI/4;
-        closeMenuButton.name = 'closeMenuButton';
-        closeMenuButton.type=  'icon';
-        closeMenuButton.value = './img/menu/plus_icon.png';
-        closeMenuButton.color = 0xffffff;
-        closeMenuButton.visible = true;
-        closeMenuButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(closeMenuButton.width, closeMenuButton.height), new THREE.MeshBasicMaterial({visible:  false}));
-        closeMenuButton.onexecute =  function(){ console.log('Close menu button clicked') };
-        closeMenuButton.position = new THREE.Vector3(57, 30, 0.01);
-
-        menu.add(closeMenuButton.create());
-
-        // Create the forwardMenuButton by loading a new InteractiveElement model and injecting the forwardMenuButtonData
-        var forwardMenuButton = new InteractiveElementModel();
-        forwardMenuButton.width = 8.4;
-        forwardMenuButton.height = 8.4;
-        forwardMenuButton.rotation = Math.PI;
-        forwardMenuButton.name = 'forwardMenuButton';
-        forwardMenuButton.type =  'icon';
-        forwardMenuButton.value = './img/menu/less_than_icon.png';
-        forwardMenuButton.color = 0xffffff;
-        forwardMenuButton.visible = true;
-        forwardMenuButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(forwardMenuButton.width, forwardMenuButton.height), new THREE.MeshBasicMaterial({visible:  false}));
-        forwardMenuButton.onexecute =  function(){ console.log("This is the forward menu button"); };
-        forwardMenuButton.position = new THREE.Vector3(57, -30, 0.01);
-
-        menu.add(forwardMenuButton.create());
-
-        // Create the backMenuButton by loading a new InteractiveElement model and ijecting the backMenuButtonData
-        var backMenuButton = new InteractiveElementModel();
-        backMenuButton.width = 8.4;
-        backMenuButton.height = 8.4;
-        backMenuButton.name = 'backMenuButton';
-        backMenuButton.type =  'icon';
-        backMenuButton.value = './img/menu/less_than_icon.png';
-        backMenuButton.color = 0xffffff;
-        backMenuButton.visible = true;
-        backMenuButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(backMenuButton.width, backMenuButton.height), new THREE.MeshBasicMaterial({visible:  false}));
-        backMenuButton.onexecute =  function(){ console.log("This is the back menu button"); };
-        backMenuButton.position = new THREE.Vector3(-57, -30, 0.01);
-
-        menu.add(backMenuButton.create());
+        // Add all the created elements to the parent group.
+        menu.add(previewMenuButton);
+        menu.add(closeMenuButton);
+        menu.add(forwardMenuButton);
+        menu.add(backMenuButton);
 
         return menu;
     }
@@ -155,100 +149,134 @@ function ViewStructureMenuManager() {
     {
         var traditionalmenu = TraditionalMenuBase(name);
 
+/************************************\
+|    PLAYPAUSE TRADITIONAL SUB MENU  |
+\************************************/
         var  playpausemenu =  new THREE.Group();
         playpausemenu.name = 'playpausemenu';
 
-        // Create the seekBackButton by loading a new InteractiveElement model and injecting the seekBackButtonData
-        var seekBackButton = new InteractiveElementModel();
-
-        seekBackButton.width = 2;
-        seekBackButton.height = 1;
-        seekBackButton.name =  'backSeekButton';
-        seekBackButton.type =  'icon';
-        seekBackButton.value = './img/menu/seek_icon.png';
-        seekBackButton.color = 0xffffff;
-        seekBackButton.visible = true;
-        seekBackButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(seekBackButton.width, seekBackButton.height), new THREE.MeshBasicMaterial({visible:  false}));
-        seekBackButton.onexecute =  function(){ console.log("This is a seek back button"); }
-        seekBackButton.position = new THREE.Vector3(-(tradmenuDivisions-1)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
+        // Create the menu button elements by loading a new InteractiveElement() model 
+        // and setting the data through setMenuElementValues().
+        var seekBackButton = setMenuElementValues(2, 1, null, 'backSeekButton', 
+            'icon', './img/menu/seek_icon.png', 0xffffff, null, true, -(tradmenuDivisions-1)*menuWidth/(tradmenuDivisions*2), 0, 0.01);        
         
-        playpausemenu.add(seekBackButton.create());
-
-        // Create the playbutton by loading a new InteractiveElement model and injecting the playButtonData
-        var playButton = new InteractiveElementModel();
-        playButton.width = 2;
-        playButton.height = 2;
-        playButton.name =  'playButton';
-        playButton.type =  'icon';
-        playButton.value = './img/menu/play_icon.png';
-        playButton.color = 0xffffff;
-        playButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(playButton.width, playButton.height), new THREE.MeshBasicMaterial({visible:  false}));
-        playButton.onexecute =  function(){ console.log("This is the play button"); }
-        playButton.position = new THREE.Vector3(-(tradmenuDivisions-3)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
+        var playButton = setMenuElementValues(2, 2, null, 'playButton', 'icon', 
+            './img/menu/play_icon.png', 0xffffff, null, false, -(tradmenuDivisions-3)*menuWidth/(tradmenuDivisions*2), 0, 0.01);                
         
-        playpausemenu.add(playButton.create());
-
-        // Create the pauseButton by loading a new InteractiveElement model and injecting the pauseButtonData
-        var pauseButton = new InteractiveElementModel();
-        pauseButton.width = 2;
-        pauseButton.height = 2;
-        pauseButton.name =  'pauseButton';
-        pauseButton.type =  'icon';
-        pauseButton.value = './img/menu/pause_icon.png';
-        pauseButton.color = 0xffffff;
-        pauseButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(pauseButton.width, pauseButton.height), new THREE.MeshBasicMaterial({visible:  false}));
-        pauseButton.onexecute =  function(){ console.log("This is the pause button"); }
-        pauseButton.position = new THREE.Vector3(-(tradmenuDivisions-3)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
+        var pauseButton = setMenuElementValues(2, 2, null, 'pauseButton', 'icon', 
+            './img/menu/pause_icon.png', 0xffffff, null, false, -(tradmenuDivisions-3)*menuWidth/(tradmenuDivisions*2), 0, 0.01);                
         
-        playpausemenu.add(pauseButton.create());
-
-        // Create the seekForwardButton by loading a new InteractiveElement model and injecting the seekForwardButtonData
-        var seekForwardButton = new InteractiveElementModel();
-        seekForwardButton.width = 2;
-        seekForwardButton.height = 1;
-        seekForwardButton.rotation = Math.PI;
-        seekForwardButton.name =  'forwardSeekButton';
-        seekForwardButton.type =  'icon';
-        seekForwardButton.value = './img/menu/seek_icon.png';
-        seekForwardButton.color = 0xffffff;
-        seekForwardButton.visible = true;
-        seekForwardButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(seekForwardButton.width, seekForwardButton.height), new THREE.MeshBasicMaterial({visible: false}));
-        seekForwardButton.onexecute =  function(){ console.log("This is a seek forward button"); }
-        seekForwardButton.position = new THREE.Vector3(-(tradmenuDivisions-5)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
+        var seekForwardButton = setMenuElementValues(2, 1, Math.PI, 'forwardSeekButton', 'icon', 
+            './img/menu/seek_icon.png', 0xffffff, null, true, -(tradmenuDivisions-5)*menuWidth/(tradmenuDivisions*2), 0, 0.01);                
         
-        playpausemenu.add(seekForwardButton.create());
+        var playouttime = setMenuElementValues(0.3, 0.3, null, 'playOutTime', 'text', 
+            '00:00 / 00:00', 0xffffff, 1.5, true, -(tradmenuDivisions-17)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
+        
+        var closeMenuButton = setMenuElementValues(3, 3, Math.PI/4, 'closeMenuButton', 'icon', 
+            './img/menu/plus_icon.png', 0xffffff, null, true, (tradmenuDivisions-1)*menuWidth/(tradmenuDivisions*2), 0, 0.01); 
 
-        var playouttime = new InteractiveElementModel();
-        playouttime.width = 0.3;
-        playouttime.height = 0.3;
-        playouttime.name = 'playOutTime';
-        playouttime.type =  'text';
-        playouttime.value = '00:00 / 00:00';
-        playouttime.color = 0xffffff;
-        playouttime.textSize =  1.5;
-        playouttime.position = new THREE.Vector3(-(tradmenuDivisions-17)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
-            
-        playpausemenu.add(playouttime.create());
+        // Add all the created elements to the parent group.
+        playpausemenu.add(seekBackButton);
+        playpausemenu.add(playButton);
+        playpausemenu.add(pauseButton);
+        playpausemenu.add(seekForwardButton);
+        playpausemenu.add(playouttime);
+        playpausemenu.add(closeMenuButton);
 
-        // Create the closeMenuButton by loading a new InteractiveElement model and injecting the closeMenuButtonData
-        var closeMenuButton = new InteractiveElementModel();
-        closeMenuButton.width = 3;
-        closeMenuButton.height = 3;
-        closeMenuButton.rotation = Math.PI/4;
-        closeMenuButton.name = 'closeMenuButton';
-        closeMenuButton.type=  'icon';
-        closeMenuButton.value = './img/menu/plus_icon.png';
-        closeMenuButton.color = 0xffffff;
-        closeMenuButton.visible = true;
-        closeMenuButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(closeMenuButton.width, closeMenuButton.height), new THREE.MeshBasicMaterial({visible:  false}));
-        closeMenuButton.onexecute =  function(){ console.log('Close menu button clicked') };
-        closeMenuButton.position = new THREE.Vector3((tradmenuDivisions-1)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
 
-        playpausemenu.add(closeMenuButton.create());
+/************************************\
+|    VOLUME TRADITIONAL SUB MENU     |
+\************************************/
+        var  volumemenu =  new THREE.Group();
+        volumemenu.name = 'volumemenu';
 
-        traditionalmenu.add(playpausemenu);
+        // Create the menu button elements by loading a new InteractiveElement() model 
+        // and setting the data through setMenuElementValues().
+        var minusVolumeButton = setMenuElementValues(1.5, 1.5, null, 'minusVolumeButton', 'icon', 
+            './img/menu/minus_icon.png', 0xffffff, null, true, -(tradmenuDivisions-8)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
+        
+        var plusVolumeButton = setMenuElementValues(1.5, 1.5, null, 'plusVolumeButton', 'icon', 
+            './img/menu/plus_icon.png', 0xffffff, null, true, -(tradmenuDivisions-12)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
 
-// VIDEO PROGRESS BAR ELEMENT
+        var unmuteVolumeButton = setMenuElementValues(2, 2, null, 'unmuteVolumeButton', 'icon', 
+            './img/menu/volume_unmute_icon.png', 0xffffff, null, false, -(tradmenuDivisions-10)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
+        
+        var muteVolumeButton = setMenuElementValues(2, 2, null, 'muteVolumeButton', 'icon', 
+            './img/menu/volume_mute_icon.png', 0xffffff, null, false, -(tradmenuDivisions-10)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
+        
+        var volumeLevel = setMenuElementValues(4, 4, null, 'volumeLevel', 'text', 
+            '', 0xffffff, 1.25, false, -(tradmenuDivisions-10)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
+        
+        // Add all the created elements to the parent group.
+        volumemenu.add(minusVolumeButton);
+        volumemenu.add(plusVolumeButton);
+        volumemenu.add(unmuteVolumeButton);
+        volumemenu.add(muteVolumeButton);
+        volumemenu.add(volumeLevel);
+
+
+/************************************\
+| MULTI-OPTIONS TRADITIONAL SUB MENU |
+\************************************/
+        var  multioptionsmenu =  new THREE.Group();
+        multioptionsmenu.name = 'multioptionsmenu';
+
+        // Create the menu button elements by loading a new InteractiveElement() model 
+        // and setting the data through setMenuElementValues().
+        var subtitlesButton = setMenuElementValues(4, 4, null, 'showSubtitlesMenuButton', 'icon', 
+            MenuDictionary.translate('ST'), 0xffffff, null, true, (tradmenuDivisions-13)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
+
+        var subtitlesDisabledButton = setMenuElementValues(4, 4, null, 'disabledSubtitlesMenuButton', 'icon', 
+            MenuDictionary.translate('ST_strike'), 0xffffff, null, true, (tradmenuDivisions-13)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
+
+        var signLanguageButton = setMenuElementValues(4, 4, null, 'showSignLanguageMenuButton', 'icon', 
+            MenuDictionary.translate('SL'), 0xffffff, null, true, (tradmenuDivisions-11)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
+
+        var signLanguageDisabledButton = setMenuElementValues(4, 4, null, 'disabledSignLanguageMenuButton', 'icon', 
+            MenuDictionary.translate('SL_strike'), 0xffffff, null, true, (tradmenuDivisions-11)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
+
+        var audioDescriptionButton = setMenuElementValues(4, 4, null, 'showAudioDescriptionMenuButton', 'icon', 
+            MenuDictionary.translate('AD'), 0xffffff, null, true, (tradmenuDivisions-9)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
+
+        var audioDescriptionDisabledButton = setMenuElementValues(4, 4, null, 'disabledAudioDescriptionMenuButton', 'icon', 
+            MenuDictionary.translate('AD_strike'), 0xffffff, null, true, (tradmenuDivisions-9)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
+
+        var audioSubtitlesButton = setMenuElementValues(4, 4, null, 'showAudioSubtitlesMenuButton', 'icon', 
+            MenuDictionary.translate('AST'), 0xffffff, null, true, (tradmenuDivisions-7)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
+
+        var audioSubtitlesDisabledButton = setMenuElementValues(4, 4, null, 'disabledAudioSubtitlesMenuButton', 'icon', 
+            MenuDictionary.translate('AST_strike'), 0xffffff, null, true, (tradmenuDivisions-7)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
+        
+        // Add all the created elements to the parent group.
+        multioptionsmenu.add(subtitlesButton);
+        multioptionsmenu.add(subtitlesDisabledButton);
+        multioptionsmenu.add(signLanguageButton);
+        multioptionsmenu.add(signLanguageDisabledButton);
+        multioptionsmenu.add(audioDescriptionButton);
+        multioptionsmenu.add(audioDescriptionDisabledButton);
+        multioptionsmenu.add(audioSubtitlesButton);
+        multioptionsmenu.add(audioSubtitlesDisabledButton);
+
+
+/************************************\
+|   SETTINGS TRADITIONAL SUB MENU    |
+\************************************/
+        var  settingsmenu =  new THREE.Group();
+        settingsmenu.name = 'settingsmenu';
+
+        // Create the menu button elements by loading a new InteractiveElement() model 
+        // and setting the data through setMenuElementValues().
+        var settingsButton = setMenuElementValues(2.5, 2.5, null, 'settingsButton', 'icon', 
+            './img/menu/settings_icon.png', 0xffffff, null, true, (tradmenuDivisions-4)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
+       
+        // Add all the created elements to the parent group.
+        settingsmenu.add(settingsButton);
+
+
+/************************************\
+|     VIDEO PROGRESS BAR ELEMENT     |
+\************************************/
+        // This is where the video progress bar is created for the traditional menu.
         var vpb =  new THREE.Group();
         vpb.name = "video-progress-bar";
         vpb.visible = true;
@@ -256,238 +284,30 @@ function ViewStructureMenuManager() {
         var vpb_background =  new THREE.Mesh( new THREE.PlaneGeometry( menuWidth, 1 ), new THREE.MeshBasicMaterial( { color:  0x888888, transparent: true, opacity: 0.8 }));
         vpb_background.position.set( 0, traditionalmenu.geometry.parameters.height/2 + vpb_background.geometry.parameters.height/2, 0.01 );
         vpb_background.name = "background-progress";
-        vpb.add(vpb_background);
-
+        
         var vpb_play =  new THREE.Mesh( new THREE.PlaneGeometry( menuWidth, 1 ), new THREE.MeshBasicMaterial( { color:  0xff0000, transparent: true, opacity: 1 }));
         vpb_play.position.set( 0, traditionalmenu.geometry.parameters.height/2 + vpb_play.geometry.parameters.height/2, 0.02 ); 
         vpb_play.name = "play-progress";
-        vpb.add(vpb_play);      
-        
+             
         var vpb_time_slider = new THREE.Mesh( new THREE.CircleGeometry(1,32), new THREE.MeshBasicMaterial( { color: 0xff0000 } ) );
         vpb_time_slider.position.set( -traditionalmenu.geometry.parameters.width/2, traditionalmenu.geometry.parameters.height/2 + vpb_play.geometry.parameters.height/2, 0.02 ); 
         vpb_time_slider.name = "slider-progress";
+        
+        // Add all the created elements to the parent group.
+        vpb.add(vpb_background);
+        vpb.add(vpb_play); 
         vpb.add( vpb_time_slider );
 
-        traditionalmenu.add(vpb);
-
-// VOLUME MENU
-        var  volumemenu =  new THREE.Group();
-        volumemenu.name = 'volumemenu';
-
-        // Create the minusVolumeButton by loading a new InteractiveElement model and injecting the minusVolumeButtonData
-        var minusVolumeButton = new InteractiveElementModel();
-        minusVolumeButton.width = 1.5;
-        minusVolumeButton.height = 1.5;
-        minusVolumeButton.name = 'minusVolumeButton';
-        minusVolumeButton.type =  'icon';
-        minusVolumeButton.value = './img/menu/minus_icon.png';
-        minusVolumeButton.color = 0xffffff;
-        minusVolumeButton.visible = true;
-        minusVolumeButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(minusVolumeButton.width, minusVolumeButton.height), new THREE.MeshBasicMaterial({visible:  false}));
-        minusVolumeButton.onexecute =  function(){ console.log("This is the minus volume button"); };
-        minusVolumeButton.position = new THREE.Vector3(-(tradmenuDivisions-8)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
-
-        volumemenu.add(minusVolumeButton.create());
-
-        // Create the playbutton by loading a new InteractiveElement model and injecting the playButtonData
-        var plusVolumeButton = new InteractiveElementModel();
-        plusVolumeButton.width = 1.5;
-        plusVolumeButton.height = 1.5;
-        plusVolumeButton.name = 'plusVolumeButton';
-        plusVolumeButton.type =  'icon';
-        plusVolumeButton.value = './img/menu/plus_icon.png';
-        plusVolumeButton.color = 0xffffff;
-        plusVolumeButton.visible = true;
-        plusVolumeButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(plusVolumeButton.width, plusVolumeButton.height), new THREE.MeshBasicMaterial({visible:  false}));
-        plusVolumeButton.onexecute =  function(){ console.log("This is the plus volume button"); };
-        plusVolumeButton.position = new THREE.Vector3(-(tradmenuDivisions-12)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
-
-        volumemenu.add(plusVolumeButton.create());
-
-        // Create the pauseButton by loading a new InteractiveElement model and injecting the pauseButtonData
-        var unmuteVolumeButton = new InteractiveElementModel();
-        unmuteVolumeButton.width = 2;
-        unmuteVolumeButton.height = 2;
-        unmuteVolumeButton.name = 'unmuteVolumeButton';
-        unmuteVolumeButton.type =  'icon';
-        unmuteVolumeButton.value = './img/menu/volume_unmute_icon.png';
-        unmuteVolumeButton.color = 0xffffff;
-        unmuteVolumeButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(unmuteVolumeButton.width, unmuteVolumeButton.height), new THREE.MeshBasicMaterial({visible:  false}));
-        unmuteVolumeButton.onexecute =  function(){ console.log("This is the unmute volume button"); };
-        unmuteVolumeButton.position = new THREE.Vector3(-(tradmenuDivisions-10)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
-
-        volumemenu.add(unmuteVolumeButton.create());
-
-        // Create the plusVolumeButton by loading a new InteractiveElement model and injecting the plusVolumeButtonData
-        var muteVolumeButton = new InteractiveElementModel();
-        muteVolumeButton.width = 2;
-        muteVolumeButton.height = 2;
-        muteVolumeButton.name = 'muteVolumeButton';
-        muteVolumeButton.type =  'icon';
-        muteVolumeButton.value = './img/menu/volume_mute_icon.png';
-        muteVolumeButton.color = 0xffffff;
-        muteVolumeButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(muteVolumeButton.width, muteVolumeButton.height), new THREE.MeshBasicMaterial({visible:  false}));
-        muteVolumeButton.onexecute =  function(){ console.log("This is the mute volume button"); };
-        muteVolumeButton.position = new THREE.Vector3(-(tradmenuDivisions-10)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
-
-        volumemenu.add(muteVolumeButton.create());
-
-        var volumeLevel = new InteractiveElementModel();
-        volumeLevel.width = 4;
-        volumeLevel.height = 4;
-        volumeLevel.name = 'volumeLevel';
-        volumeLevel.type =  'text';
-        volumeLevel.value = '';
-        volumeLevel.color = 0xffffff;
-        volumeLevel.textSize =  1.25;
-        volumeLevel.visible = false;
-        volumeLevel.position = new THREE.Vector3(-(tradmenuDivisions-10)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
-
-        volumemenu.add(volumeLevel.create());
-
+        
+        // Add all the parent submenus to the traditionalmenu base.
+        traditionalmenu.add(playpausemenu); 
         traditionalmenu.add(volumemenu);
-
-
-        var  multioptionsmenu =  new THREE.Group();
-        multioptionsmenu.name = 'multioptionsmenu';
-
-// SUBTITLES
-        var subtitlesButton = new InteractiveElementModel();
-        subtitlesButton.width = 4;
-        subtitlesButton.height = 4;
-        subtitlesButton.name = 'showSubtitlesMenuButton';
-        subtitlesButton.type =  'icon';
-        subtitlesButton.value = MenuDictionary.translate('ST');
-        subtitlesButton.color = 0xffffff;
-        subtitlesButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(subtitlesButton.width, subtitlesButton.height), new THREE.MeshBasicMaterial({visible: false}));
-        subtitlesButton.onexecute =  function(){ console.log("Open ST submenu") };
-        subtitlesButton.position = new THREE.Vector3((tradmenuDivisions-13)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
-
-        multioptionsmenu.add(subtitlesButton.create());
-
-// SUBTITLES DISABLED
-        var subtitlesDisabledButton = new InteractiveElementModel();
-        subtitlesDisabledButton.width = 4;
-        subtitlesDisabledButton.height = 4;
-        subtitlesDisabledButton.name = 'disabledSubtitlesMenuButton';
-        subtitlesDisabledButton.type =  'icon';
-        subtitlesDisabledButton.value = MenuDictionary.translate('ST_strike');
-        subtitlesDisabledButton.color = 0xffffff;
-        subtitlesDisabledButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(subtitlesDisabledButton.width, subtitlesDisabledButton.height), new THREE.MeshBasicMaterial({visible: false}));
-        subtitlesDisabledButton.onexecute =  function(){ console.log("Open ST submenu") };
-        subtitlesDisabledButton.position = new THREE.Vector3((tradmenuDivisions-13)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
-
-        multioptionsmenu.add(subtitlesDisabledButton.create());
-
-//SIGN LANGUAGE
-        var signLanguageButton = new InteractiveElementModel();
-        signLanguageButton.width = 4;
-        signLanguageButton.height = 4;
-        signLanguageButton.name = 'showSignLanguageMenuButton';
-        signLanguageButton.type =  'icon';
-        signLanguageButton.value = MenuDictionary.translate('SL');
-        signLanguageButton.color = 0xffffff;
-        signLanguageButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(signLanguageButton.width, signLanguageButton.height), new THREE.MeshBasicMaterial({visible: false}));
-        signLanguageButton.onexecute =  function(){ console.log("Open SL submenu")};
-        signLanguageButton.position = new THREE.Vector3((tradmenuDivisions-11)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
-
-        multioptionsmenu.add(signLanguageButton.create());
-
-//SIGN LANGUAGE DISABLED
-        var signLanguageDisabledButton = new InteractiveElementModel();
-        signLanguageDisabledButton.width = 4;
-        signLanguageDisabledButton.height = 4;
-        signLanguageDisabledButton.name = 'disabledSignLanguageMenuButton';
-        signLanguageDisabledButton.type =  'icon';
-        signLanguageDisabledButton.value = MenuDictionary.translate('SL_strike');
-        signLanguageDisabledButton.color = 0xffffff;
-        signLanguageDisabledButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(signLanguageDisabledButton.width, signLanguageDisabledButton.height), new THREE.MeshBasicMaterial({visible: false}));
-        signLanguageDisabledButton.onexecute =  function(){ console.log("Open SL submenu") };
-        signLanguageDisabledButton.position = new THREE.Vector3((tradmenuDivisions-11)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
-
-        multioptionsmenu.add(signLanguageDisabledButton.create());
-
-//AUDIO DESCRIPTION
-        var audioDescriptionButton = new InteractiveElementModel();
-        audioDescriptionButton.width = 4;
-        audioDescriptionButton.height = 4;
-        audioDescriptionButton.name = 'showAudioDescriptionMenuButton';
-        audioDescriptionButton.type =  'icon';
-        audioDescriptionButton.value = MenuDictionary.translate('AD');
-        audioDescriptionButton.color = 0xffffff;
-        audioDescriptionButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(audioDescriptionButton.width, audioDescriptionButton.height), new THREE.MeshBasicMaterial({visible: false}));
-        audioDescriptionButton.onexecute =  function(){ console.log("Open AD submenu") };
-        audioDescriptionButton.position = new THREE.Vector3((tradmenuDivisions-9)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
-
-        multioptionsmenu.add(audioDescriptionButton.create());
-
-//AUDIO DESCRIPTION DISABLED
-        var audioDescriptionDisabledButton = new InteractiveElementModel();
-        audioDescriptionDisabledButton.width = 4;
-        audioDescriptionDisabledButton.height = 4;
-        audioDescriptionDisabledButton.name = 'disabledAudioDescriptionMenuButton';
-        audioDescriptionDisabledButton.type =  'icon';
-        audioDescriptionDisabledButton.value = MenuDictionary.translate('AD_strike');
-        audioDescriptionDisabledButton.color = 0xffffff;
-        audioDescriptionDisabledButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(audioDescriptionDisabledButton.width, audioDescriptionDisabledButton.height), new THREE.MeshBasicMaterial({visible: false}));
-        audioDescriptionDisabledButton.onexecute =  function(){ console.log("Open AD submenu") };
-        audioDescriptionDisabledButton.position = new THREE.Vector3((tradmenuDivisions-9)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
-
-        multioptionsmenu.add(audioDescriptionDisabledButton.create());
-
-//AUDIO SUBTITLES
-        var audioSubtitlesButton = new InteractiveElementModel();
-        audioSubtitlesButton.width = 4;
-        audioSubtitlesButton.height = 4;
-        audioSubtitlesButton.name = 'showAudioSubtitlesMenuButton';
-        audioSubtitlesButton.type =  'icon';
-        audioSubtitlesButton.value = MenuDictionary.translate('AST');
-        audioSubtitlesButton.color = 0xffffff;
-        audioSubtitlesButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(audioSubtitlesButton.width, audioSubtitlesButton.height), new THREE.MeshBasicMaterial({visible: false}));
-        audioSubtitlesButton.onexecute =  function(){ console.log("Open AST submenu") };
-        audioSubtitlesButton.position = new THREE.Vector3((tradmenuDivisions-7)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
-
-        multioptionsmenu.add(audioSubtitlesButton.create());
-
-//AUDIO SUBTITLES DISABLED
-        var audioSubtitlesDisabledButton = new InteractiveElementModel();
-        audioSubtitlesDisabledButton.width = 4;
-        audioSubtitlesDisabledButton.height = 4;
-        audioSubtitlesDisabledButton.name = 'disabledAudioSubtitlesMenuButton';
-        audioSubtitlesDisabledButton.type =  'icon';
-        audioSubtitlesDisabledButton.value = MenuDictionary.translate('AST_strike');
-        audioSubtitlesDisabledButton.color = 0xffffff;
-        audioSubtitlesDisabledButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(audioSubtitlesDisabledButton.width, audioSubtitlesDisabledButton.height), new THREE.MeshBasicMaterial({visible: false}));
-        audioSubtitlesDisabledButton.onexecute =  function(){ console.log("Open AST submenu") };
-        audioSubtitlesDisabledButton.position = new THREE.Vector3((tradmenuDivisions-7)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
-
-        multioptionsmenu.add(audioSubtitlesDisabledButton.create());
-
-        traditionalmenu.add(multioptionsmenu);
-
-//SETTINGS
-        var  settingsmenu =  new THREE.Group();
-        settingsmenu.name = 'settingsmenu';
-
-        var settingsButton = new InteractiveElementModel();
-        settingsButton.width = 2.5;
-        settingsButton.height = 2.5;
-        settingsButton.name = 'settingsButton';
-        settingsButton.type =  'icon';
-        settingsButton.value = './img/menu/settings_icon.png';
-        settingsButton.color = 0xffffff;
-        settingsButton.visible = true;
-        settingsButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(settingsButton.width, settingsButton.height), new THREE.MeshBasicMaterial({visible: false}));
-        settingsButton.onexecute =  function(){ console.log("Open SETTINGS submenu") };
-        settingsButton.position = new THREE.Vector3((tradmenuDivisions-4)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
-
-        settingsmenu.add(settingsButton.create());
-
         traditionalmenu.add(settingsmenu);
+        traditionalmenu.add(multioptionsmenu);
+        traditionalmenu.add(vpb);
 
         return traditionalmenu;
     }
-
 
 /**
  * { function_description }
@@ -508,69 +328,41 @@ function ViewStructureMenuManager() {
         var tradOptionMenuBackground =  new THREE.Mesh( geometry, material);
         tradOptionMenuBackground.name = 'tradoptionmenubackground';
         tradOptionMenuBackground.position.y = menuHeight/12;
-        tradOptionMenu.add(tradOptionMenuBackground);
-
+        
+        // Title for the traditional option sub menu.
         var tradOptionMenuTitle =  new THREE.Group();
         tradOptionMenuTitle.name = 'tradoptionmenutitle';
 
-        var line = _moData.createLine( 0xffffff, 
-            new THREE.Vector3( -15, -2.5, 0.01 ),
-            new THREE.Vector3( 15, -2.5, 0.01 ) );
-
-        tradOptionMenuTitle.add(line)
-
-        var back = new InteractiveElementModel();
-        back.width = 1.5;
-        back.height = 1.5;
-        back.name = 'backMenuButton';
-        back.type =  'icon';
-        back.value = './img/menu/less_than_icon.png';
-        back.color = 0xffffff;
-        back.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(back.width, back.height), new THREE.MeshBasicMaterial({visible: false}));
-        back.position = new THREE.Vector3(-12, 0, 0.01);
-
-        tradOptionMenuTitle.add(back.create());
-
-        var onOptButton = new InteractiveElementModel();
-        onOptButton.width = 4.5;
-        onOptButton.height = 2.5;
-        onOptButton.name = 'onoptbutton';
-        onOptButton.type =  'icon';
-        onOptButton.value = './img/menu/toggle_on.png';
-        onOptButton.color = 0xffffff;
-        onOptButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(onOptButton.width, onOptButton.height), new THREE.MeshBasicMaterial({visible: false}));
-        onOptButton.position = new THREE.Vector3(-12, 0, 0.01);
-
-        tradOptionMenuTitle.add(onOptButton.create());
-
-        var offOptButton = new InteractiveElementModel();
-        offOptButton.width = 4.5;
-        offOptButton.height = 2.5;
-        offOptButton.name = 'offoptbutton';
-        offOptButton.type =  'icon';
-        offOptButton.value = './img/menu/toggle_off.png';
-        offOptButton.color = 0xffffff;
-        offOptButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(offOptButton.width, offOptButton.height), new THREE.MeshBasicMaterial({visible: false}));
-        offOptButton.position = new THREE.Vector3(-12, 0, 0.01);
-
-        tradOptionMenuTitle.add(offOptButton.create());
-
-        var optTitle = new InteractiveElementModel();
-        optTitle.width = 4.5;
-        optTitle.height = 2.5;
-        optTitle.name = 'opttitle';
-        optTitle.type =  'text';
-        optTitle.textSize = 1.5;
-        optTitle.value = 'Title';
-        optTitle.color = 0xffffff;
-        optTitle.position = new THREE.Vector3(0,0, 0.01);
-
-        tradOptionMenuTitle.add(optTitle.create());
-
-        tradOptionMenu.add(tradOptionMenuTitle);
-
+        // Dropdown for the traditional option sub menu.
         var  tradOptionMenuDropdown =  new THREE.Group();
         tradOptionMenuDropdown.name = 'parentcolumndropdown';
+
+        var line = _moData.createLine( 0xffffff, new THREE.Vector3( -15, -2.5, 0.01 ), new THREE.Vector3( 15, -2.5, 0.01 ) );
+
+        // Create the menu button elements by loading a new InteractiveElement() model 
+        // and setting the data through setMenuElementValues().
+        var back = setMenuElementValues(1.5, 1.5, null, 'backMenuButton', 'icon', 
+            './img/menu/less_than_icon.png', 0xffffff, null, true, -12, 0, 0.01);
+
+        var onOptButton = setMenuElementValues(4.5, 2.5, null, 'onoptbutton', 'icon', 
+            './img/menu/toggle_on.png', 0xffffff, null, true, -12, 0, 0.01);
+
+        var offOptButton = setMenuElementValues(4.5, 2.5, null, 'offoptbutton', 'icon', 
+            './img/menu/toggle_off.png', 0xffffff, null, true, -12, 0, 0.01);
+
+        var optTitle = setMenuElementValues(4.5, 2.5, null, 'opttitle', 'text', 
+            'Title', 0xffffff, 1.5, true, 0,0, 0.01);
+
+        // Add all the created elements to the parent group.
+        tradOptionMenuTitle.add(line);
+        tradOptionMenuTitle.add(back);
+        tradOptionMenuTitle.add(onOptButton);
+        tradOptionMenuTitle.add(offOptButton);
+        tradOptionMenuTitle.add(optTitle);
+
+        // Add all the parent elements to the traditional option menu.
+        tradOptionMenu.add(tradOptionMenuTitle);
+        tradOptionMenu.add(tradOptionMenuBackground);
         tradOptionMenu.add(tradOptionMenuDropdown);
 
         return tradOptionMenu;
@@ -592,77 +384,29 @@ function ViewStructureMenuManager() {
     {
         var playpausemenu = LowSightedMenuBase(name);
 
-        // Create the seekBackButton by loading a new InteractiveElement model and ijecting the seekBackButtonData
-        var seekBackButton = new InteractiveElementModel();
-
-        seekBackButton.width = 30;
-        seekBackButton.height = 15;
-        seekBackButton.name =  'backSeekButton';
-        seekBackButton.type =  'icon';
-        seekBackButton.value = './img/menu/seek_icon.png';
-        seekBackButton.color = 0xffffff;
-        seekBackButton.visible = true;
-        seekBackButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(seekBackButton.width, seekBackButton.height), new THREE.MeshBasicMaterial({visible:  false}));
-        seekBackButton.onexecute =  function(){ console.log("This is a seek back button"); }
-        seekBackButton.position = new THREE.Vector3(-45, 0, 0.01);
+        // Create the menu button elements by loading a new InteractiveElement() model 
+        // and setting the data through setMenuElementValues().
+        var seekBackButton = setMenuElementValues(30, 15, null, 'backSeekButton', 'icon', 
+            './img/menu/seek_icon.png', 0xffffff, null, true, -45, 0, 0.01);
         
-        playpausemenu.add(seekBackButton.create());
+        var playButton = setMenuElementValues(50, 50, null, 'playButton', 'icon', 
+            './img/menu/play_icon.png', 0xffffff, null, true, 0, 0, 0.01);
 
-        // Create the playbutton by loading a new InteractiveElement model and ijecting the playButtonData
-        var playButton = new InteractiveElementModel();
-        playButton.width = 50;
-        playButton.height = 50;
-        playButton.name =  'playButton';
-        playButton.type =  'icon';
-        playButton.value = './img/menu/play_icon.png';
-        playButton.color = 0xffffff;
-        playButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(playButton.width, playButton.height), new THREE.MeshBasicMaterial({visible:  false}));
-        playButton.onexecute =  function(){ console.log("This is the play button"); }
-        playButton.position = new THREE.Vector3(0, 0, 0.01);
-        
-        playpausemenu.add(playButton.create());
+        var pauseButton = setMenuElementValues(50, 50, null, 'pauseButton', 'icon', 
+            './img/menu/pause_icon.png', 0xffffff, null, true, 0, 0, 0.01);
 
-        // Create the pauseButton by loading a new InteractiveElement model and ijecting the pauseButtonData
-        var pauseButton = new InteractiveElementModel();
-        pauseButton.width = 50;
-        pauseButton.height = 50;
-        pauseButton.name =  'pauseButton';
-        pauseButton.type =  'icon';
-        pauseButton.value = './img/menu/pause_icon.png';
-        pauseButton.color = 0xffffff;
-        pauseButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(pauseButton.width, pauseButton.height), new THREE.MeshBasicMaterial({visible:  false}));
-        pauseButton.onexecute =  function(){ console.log("This is the pause button"); }
-        pauseButton.position = new THREE.Vector3(0, 0, 0.01);
-        
-        playpausemenu.add(pauseButton.create());
+        var playouttime = setMenuElementValues(50, 50, null, 'playOutTime', 'text', 
+            '00:00', 0xffffff, 15, true, 0, 0, 0.01);
 
-        var playouttime = new InteractiveElementModel();
-        playouttime.width = 50;
-        playouttime.height = 50;
-        playouttime.name = 'playOutTime';
-        playouttime.type =  'text';
-        playouttime.value = '00:00';
-        playouttime.color = 0xffffff;
-        playouttime.textSize =  15;
-        playouttime.position = new THREE.Vector3(0, 0, 0.01);
-        
-        playpausemenu.add(playouttime.create());
+        var seekForwardButton = setMenuElementValues(30, 15, Math.PI, 'forwardSeekButton', 'icon', 
+            './img/menu/seek_icon.png', 0xffffff, null, true, 45, 0, 0.01);
 
-        // Create the seekForwardButton by loading a new InteractiveElement model and ijecting the seekForwardButtonData
-        var seekForwardButton = new InteractiveElementModel();
-        seekForwardButton.width = 30;
-        seekForwardButton.height = 15;
-        seekForwardButton.rotation = Math.PI;
-        seekForwardButton.name =  'forwardSeekButton';
-        seekForwardButton.type =  'icon';
-        seekForwardButton.value = './img/menu/seek_icon.png';
-        seekForwardButton.color = 0xffffff;
-        seekForwardButton.visible = true;
-        seekForwardButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(seekForwardButton.width, seekForwardButton.height), new THREE.MeshBasicMaterial({visible: false}));
-        seekForwardButton.onexecute =  function(){ console.log("This is a seek forward button"); }
-        seekForwardButton.position = new THREE.Vector3(45, 0, 0.01);
-        
-        playpausemenu.add(seekForwardButton.create());
+        // Add all the created elements to the parent group.
+        playpausemenu.add(seekBackButton);
+        playpausemenu.add(playButton);
+        playpausemenu.add(pauseButton);
+        playpausemenu.add(playouttime);
+        playpausemenu.add(seekForwardButton);
 
         if (_isHMD) playpausemenu.scale.set( 0.6, 0.6, 0.6 );
 
@@ -678,75 +422,29 @@ function ViewStructureMenuManager() {
     {
         var volumemenu = LowSightedMenuBase(name);
 
-        // Create the minusVolumeButton by loading a new InteractiveElement model and ijecting the minusVolumeButtonData
-        var minusVolumeButton = new InteractiveElementModel();
-        minusVolumeButton.width = 22.5;
-        minusVolumeButton.height = 22.5;
-        minusVolumeButton.name = 'minusVolumeButton';
-        minusVolumeButton.type =  'icon';
-        minusVolumeButton.value = './img/menu/minus_icon.png';
-        minusVolumeButton.color = 0xffffff;
-        minusVolumeButton.visible = true;
-        minusVolumeButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(minusVolumeButton.width, minusVolumeButton.height), new THREE.MeshBasicMaterial({visible:  false}));
-        minusVolumeButton.onexecute =  function(){ console.log("This is the minus volume button"); };
-        minusVolumeButton.position = new THREE.Vector3(-45, 0, 0.01);
+        // Create the menu button elements by loading a new InteractiveElement() model 
+        // and setting the data through setMenuElementValues().
+        var minusVolumeButton = setMenuElementValues(22.5, 22.5, null, 'minusVolumeButton', 'icon', 
+            './img/menu/minus_icon.png', 0xffffff, null, true, -45, 0, 0.01);
 
-        volumemenu.add(minusVolumeButton.create());
+        var plusVolumeButton = setMenuElementValues(22.5, 22.5, null, 'plusVolumeButton', 'icon', 
+            './img/menu/plus_icon.png', 0xffffff, null, true, 45, 0, 0.01);
 
-        // Create the playbutton by loading a new InteractiveElement model and ijecting the playButtonData
-        var plusVolumeButton = new InteractiveElementModel();
-        plusVolumeButton.width = 22.5;
-        plusVolumeButton.height = 22.5;
-        plusVolumeButton.name = 'plusVolumeButton';
-        plusVolumeButton.type =  'icon';
-        plusVolumeButton.value = './img/menu/plus_icon.png';
-        plusVolumeButton.color = 0xffffff;
-        plusVolumeButton.visible = true;
-        plusVolumeButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(plusVolumeButton.width, plusVolumeButton.height), new THREE.MeshBasicMaterial({visible:  false}));
-        plusVolumeButton.onexecute =  function(){ console.log("This is the plus volume button"); };
-        plusVolumeButton.position = new THREE.Vector3(45, 0, 0.01);
+        var unmuteVolumeButton = setMenuElementValues(50, 50, null, 'unmuteVolumeButton', 'icon', 
+            './img/menu/volume_unmute_icon.png', 0xffffff, null, true, 0, 0, 0.01);
 
-        volumemenu.add(plusVolumeButton.create());
+        var muteVolumeButton = setMenuElementValues(50, 50, null, 'muteVolumeButton', 'icon', 
+            './img/menu/volume_mute_icon.png', 0xffffff, null, true, 0, 0, 0.01);
 
-        // Create the pauseButton by loading a new InteractiveElement model and ijecting the pauseButtonData
-        var unmuteVolumeButton = new InteractiveElementModel();
-        unmuteVolumeButton.width = 50;
-        unmuteVolumeButton.height = 50;
-        unmuteVolumeButton.name = 'unmuteVolumeButton';
-        unmuteVolumeButton.type =  'icon';
-        unmuteVolumeButton.value = './img/menu/volume_unmute_icon.png';
-        unmuteVolumeButton.color = 0xffffff;
-        unmuteVolumeButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(unmuteVolumeButton.width, unmuteVolumeButton.height), new THREE.MeshBasicMaterial({visible:  false}));
-        unmuteVolumeButton.onexecute =  function(){ console.log("This is the unmute volume button"); };
-        unmuteVolumeButton.position = new THREE.Vector3(0, 0, 0.01);
+        var volumeLevel = setMenuElementValues(35, 35, null, 'volumeLevel', 'text', 
+            '', 0xffffff, 18, true, 0, 0, 0.01);
 
-        volumemenu.add(unmuteVolumeButton.create());
-
-        // Create the plusVolumeButton by loading a new InteractiveElement model and ijecting the plusVolumeButtonData
-        var muteVolumeButton = new InteractiveElementModel();
-        muteVolumeButton.width = 50;
-        muteVolumeButton.height = 50;
-        muteVolumeButton.name = 'muteVolumeButton';
-        muteVolumeButton.type =  'icon';
-        muteVolumeButton.value = './img/menu/volume_mute_icon.png';
-        muteVolumeButton.color = 0xffffff;
-        muteVolumeButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(muteVolumeButton.width, muteVolumeButton.height), new THREE.MeshBasicMaterial({visible:  false}));
-        muteVolumeButton.onexecute =  function(){ console.log("This is the mute volume button"); };
-        muteVolumeButton.position = new THREE.Vector3(0, 0, 0.01);
-
-        volumemenu.add(muteVolumeButton.create());
-
-        var volumeLevel = new InteractiveElementModel();
-        volumeLevel.width = 35;
-        volumeLevel.height = 35;
-        volumeLevel.name = 'volumeLevel';
-        volumeLevel.type =  'text';
-        volumeLevel.value = '';
-        volumeLevel.color = 0xffffff;
-        volumeLevel.textSize =  18;
-        volumeLevel.position = new THREE.Vector3(0, 0, 0.01);
-
-        volumemenu.add(volumeLevel.create());
+        // Add all the created elements to the parent group.
+        volumemenu.add(minusVolumeButton);
+        volumemenu.add(plusVolumeButton);
+        volumemenu.add(unmuteVolumeButton);
+        volumemenu.add(muteVolumeButton);
+        volumemenu.add(volumeLevel);
 
         if (_isHMD) volumemenu.scale.set( 0.6, 0.6, 0.6 );
         
@@ -762,34 +460,14 @@ function ViewStructureMenuManager() {
     {
         var settingsmenu = LowSightedMenuBase(name);
 
-        var settingsButton = new InteractiveElementModel();
-        settingsButton.width = 45;
-        settingsButton.height = 45;
-        settingsButton.name = 'settingsButton';
-        settingsButton.type =  'icon';
-        settingsButton.value = './img/menu/settings_icon.png';
-        settingsButton.color = 0xffffff;
-        settingsButton.visible = true;
-        settingsButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(settingsButton.width, settingsButton.height), new THREE.MeshBasicMaterial({visible:  false}));
-        settingsButton.onexecute =  function(){ Load(SettingsOptionCtrl) };
-        settingsButton.position = new THREE.Vector3(-30, 0, 0.01);
+        var settingsButton = setMenuElementValues(45, 45, null, 'settingsButton', 'icon', 
+            './img/menu/settings_icon.png', 0xffffff, null, true, -30, 0, 0.01);
 
-        settingsmenu.add(settingsButton.create());
+        /*var cardboardButton = setMenuElementValues(45, 28, null, 'cardboardButton', 'icon', 
+            './img/menu/cardboard_icon.png', 0xffffff, null, false, 30, 0, 0.01);*/
 
-        // Create the playbutton by loading a new InteractiveElement model and ijecting the playButtonData
-        var cardboardButton = new InteractiveElementModel();
-        cardboardButton.width = 45;
-        cardboardButton.height = 28;
-        cardboardButton.name = 'cardboardButton';
-        cardboardButton.type =  'icon';
-        cardboardButton.value = './img/menu/cardboard_icon.png';
-        cardboardButton.color = 0xffffff;
-        cardboardButton.visible = false;
-        cardboardButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(cardboardButton.width, cardboardButton.height), new THREE.MeshBasicMaterial({visible:  false}));
-        cardboardButton.onexecute =  function(){ console.log("This is the cardboard button"); };
-        cardboardButton.position = new THREE.Vector3(30, 0, 0.01);
-
-        settingsmenu.add(cardboardButton.create());
+        settingsmenu.add(settingsButton);
+        //settingsmenu.add(cardboardButton);
 
         if (_isHMD) settingsmenu.scale.set( 0.6, 0.6, 0.6 );
 
@@ -805,118 +483,42 @@ function ViewStructureMenuManager() {
     {
         var multioptionsmenu = LowSightedMenuBase(name);
 
-// SUBTITLES
-        var subtitlesButton = new InteractiveElementModel();
-        subtitlesButton.width = 30;
-        subtitlesButton.height = 30;
-        subtitlesButton.name = 'showSubtitlesMenuButton';
-        subtitlesButton.type =  'icon';
-        subtitlesButton.value = MenuDictionary.translate('ST');
-        subtitlesButton.color = 0xffffff;
-        subtitlesButton.textSize =  12;
-        subtitlesButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(subtitlesButton.width, subtitlesButton.height), new THREE.MeshBasicMaterial({visible: false}));
-        subtitlesButton.onexecute =  function(){ Load(STOptionCtrl) };
-        subtitlesButton.position = new THREE.Vector3(-3*menuWidth/8, 0, 0.01);
+        // Create the menu button elements by loading a new InteractiveElement() model 
+        // and setting the data through setMenuElementValues().
+        var subtitlesButton = setMenuElementValues(30, 30, null, 'showSubtitlesMenuButton', 'icon', 
+            MenuDictionary.translate('ST'), 0xffffff, null, true, -3*menuWidth/8, 0, 0.01);
 
-        multioptionsmenu.add(subtitlesButton.create());
+        var subtitlesDisabledButton = setMenuElementValues(30, 30, null, 'disabledSubtitlesMenuButton', 'icon', 
+            MenuDictionary.translate('ST_strike'), 0xffffff, null, true, -3*menuWidth/8, 0, 0.01);
 
-// SUBTITLES DISABLED
-        var subtitlesDisabledButton = new InteractiveElementModel();
-        subtitlesDisabledButton.width = 30;
-        subtitlesDisabledButton.height = 30;
-        subtitlesDisabledButton.name = 'disabledSubtitlesMenuButton';
-        subtitlesDisabledButton.type =  'icon';
-        subtitlesDisabledButton.value = MenuDictionary.translate('ST_strike');
-        subtitlesDisabledButton.color = 0xffffff;
-        subtitlesDisabledButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(subtitlesDisabledButton.width, subtitlesDisabledButton.height), new THREE.MeshBasicMaterial({visible: false}));
-        subtitlesDisabledButton.onexecute =  function(){ Load(STOptionCtrl) };
-        subtitlesDisabledButton.position = new THREE.Vector3(-3*menuWidth/8, 0, 0.01);
+        var signLanguageButton = setMenuElementValues(30, 30, null, 'showSignLanguageMenuButton', 'icon', 
+            MenuDictionary.translate('SL'), 0xffffff, null, true, -1*menuWidth/8, 0, 0.01);
 
-        multioptionsmenu.add(subtitlesDisabledButton.create());
+        var signLanguageDisabledButton = setMenuElementValues(30, 30, null, 'disabledSignLanguageMenuButton', 'icon', 
+            MenuDictionary.translate('SL_strike'), 0xffffff, null, true, -1*menuWidth/8, 0, 0.01);
 
-//SIGN LANGUAGE
-        var signLanguageButton = new InteractiveElementModel();
-        signLanguageButton.width = 30;
-        signLanguageButton.height = 30;
-        signLanguageButton.name = 'showSignLanguageMenuButton';
-        signLanguageButton.type =  'icon';
-        signLanguageButton.value = MenuDictionary.translate('SL');
-        signLanguageButton.color = 0xffffff;
-        signLanguageButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(signLanguageButton.width, signLanguageButton.height), new THREE.MeshBasicMaterial({visible: false}));
-        signLanguageButton.onexecute =  function(){ Load(SLOptionCtrl) };
-        signLanguageButton.position = new THREE.Vector3(-1*menuWidth/8, 0, 0.01);
+        var audioDescriptionButton = setMenuElementValues(30, 30, null, 'showAudioDescriptionMenuButton', 'icon', 
+            MenuDictionary.translate('AD'), 0xffffff, null, true, 1*menuWidth/8, 0, 0.01);
 
-        multioptionsmenu.add(signLanguageButton.create());
+        var audioDescriptionDisabledButton = setMenuElementValues(30, 30, null, 'disabledAudioDescriptionMenuButton', 'icon', 
+            MenuDictionary.translate('AD_strike'), 0xffffff, null, true, 1*menuWidth/8, 0, 0.01);
+        
+        var audioSubtitlesButton = setMenuElementValues(30, 30, null, 'showAudioSubtitlesMenuButton', 'icon', 
+            MenuDictionary.translate('AST'), 0xffffff, null, true, 3*menuWidth/8, 0, 0.01);
 
-//SIGN LANGUAGE DISABLED
-        var signLanguageDisabledButton = new InteractiveElementModel();
-        signLanguageDisabledButton.width = 30;
-        signLanguageDisabledButton.height = 30;
-        signLanguageDisabledButton.name = 'disabledSignLanguageMenuButton';
-        signLanguageDisabledButton.type =  'icon';
-        signLanguageDisabledButton.value = MenuDictionary.translate('SL_strike');
-        signLanguageDisabledButton.color = 0xffffff;
-        signLanguageDisabledButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(signLanguageDisabledButton.width, signLanguageDisabledButton.height), new THREE.MeshBasicMaterial({visible: false}));
-        signLanguageDisabledButton.onexecute =  function(){ Load(SLOptionCtrl) };
-        signLanguageDisabledButton.position = new THREE.Vector3(-1*menuWidth/8, 0, 0.01);
+        var audioSubtitlesDisabledButton = setMenuElementValues(30, 30, null, 'disabledAudioSubtitlesMenuButton', 'icon', 
+            MenuDictionary.translate('AST_strike'), 0xffffff, null, true, 3*menuWidth/8, 0, 0.01);
 
-        multioptionsmenu.add(signLanguageDisabledButton.create());
 
-//AUDIO DESCRIPTION
-        var audioDescriptionButton = new InteractiveElementModel();
-        audioDescriptionButton.width = 30;
-        audioDescriptionButton.height = 30;
-        audioDescriptionButton.name = 'showAudioDescriptionMenuButton';
-        audioDescriptionButton.type =  'icon';
-        audioDescriptionButton.value = MenuDictionary.translate('AD');
-        audioDescriptionButton.color = 0xffffff;
-        audioDescriptionButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(audioDescriptionButton.width, audioDescriptionButton.height), new THREE.MeshBasicMaterial({visible: false}));
-        audioDescriptionButton.onexecute =  function(){ Load(ADOptionCtrl) };
-        audioDescriptionButton.position = new THREE.Vector3(1*menuWidth/8, 0, 0.01);
-
-        multioptionsmenu.add(audioDescriptionButton.create());
-
-//AUDIO DESCRIPTION DISABLED
-        var audioDescriptionDisabledButton = new InteractiveElementModel();
-        audioDescriptionDisabledButton.width = 30;
-        audioDescriptionDisabledButton.height = 30;
-        audioDescriptionDisabledButton.name = 'disabledAudioDescriptionMenuButton';
-        audioDescriptionDisabledButton.type =  'icon';
-        audioDescriptionDisabledButton.value = MenuDictionary.translate('AD_strike');
-        audioDescriptionDisabledButton.color = 0xffffff;
-        audioDescriptionDisabledButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(audioDescriptionDisabledButton.width, audioDescriptionDisabledButton.height), new THREE.MeshBasicMaterial({visible: false}));
-        audioDescriptionDisabledButton.onexecute =  function(){ Load(ADOptionCtrl) };
-        audioDescriptionDisabledButton.position = new THREE.Vector3(1*menuWidth/8, 0, 0.01);
-
-        multioptionsmenu.add(audioDescriptionDisabledButton.create());
-
-//AUDIO SUBTITLES
-        var audioSubtitlesButton = new InteractiveElementModel();
-        audioSubtitlesButton.width = 30;
-        audioSubtitlesButton.height = 30;
-        audioSubtitlesButton.name = 'showAudioSubtitlesMenuButton';
-        audioSubtitlesButton.type =  'icon';
-        audioSubtitlesButton.value = MenuDictionary.translate('AST');
-        audioSubtitlesButton.color = 0xffffff;
-        audioSubtitlesButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(audioSubtitlesButton.width, audioSubtitlesButton.height), new THREE.MeshBasicMaterial({visible: false}));
-        audioSubtitlesButton.onexecute =  function(){ Load(ASTOptionCtrl) };
-        audioSubtitlesButton.position = new THREE.Vector3(3*menuWidth/8, 0, 0.01);
-
-        multioptionsmenu.add(audioSubtitlesButton.create());
-
-//AUDIO SUBTITLES DISABLED
-        var audioSubtitlesDisabledButton = new InteractiveElementModel();
-        audioSubtitlesDisabledButton.width = 30;
-        audioSubtitlesDisabledButton.height = 30;
-        audioSubtitlesDisabledButton.name = 'disabledAudioSubtitlesMenuButton';
-        audioSubtitlesDisabledButton.type =  'icon';
-        audioSubtitlesDisabledButton.value = MenuDictionary.translate('AST_strike');
-        audioSubtitlesDisabledButton.color = 0xffffff;
-        audioSubtitlesDisabledButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(audioSubtitlesDisabledButton.width, audioSubtitlesDisabledButton.height), new THREE.MeshBasicMaterial({visible: false}));
-        audioSubtitlesDisabledButton.onexecute =  function(){ Load(ASTOptionCtrl) };
-        audioSubtitlesDisabledButton.position = new THREE.Vector3(3*menuWidth/8, 0, 0.01);
-
-        multioptionsmenu.add(audioSubtitlesDisabledButton.create());
+        // Add all the created elements to the parent group.
+        multioptionsmenu.add(subtitlesButton);
+        multioptionsmenu.add(subtitlesDisabledButton);
+        multioptionsmenu.add(signLanguageButton);
+        multioptionsmenu.add(signLanguageDisabledButton);
+        multioptionsmenu.add(audioDescriptionButton);
+        multioptionsmenu.add(audioDescriptionDisabledButton);
+        multioptionsmenu.add(audioSubtitlesButton);
+        multioptionsmenu.add(audioSubtitlesDisabledButton);
 
         if (_isHMD) multioptionsmenu.scale.set( 0.6, 0.6, 0.6 );
 
@@ -944,79 +546,35 @@ function ViewStructureMenuManager() {
 
         lowsightedoptmenu.add(linesMenuGroup);
 
-// LS OPTION ENABLED
-        var lsOptEnabledLabel = new InteractiveElementModel();
-        lsOptEnabledLabel.width = 30;
-        lsOptEnabledLabel.height = 30;
-        lsOptEnabledLabel.name = 'lsOptEnabledLabel';
-        lsOptEnabledLabel.type =  'icon';
-        lsOptEnabledLabel.color = 0xffffff;
-        lsOptEnabledLabel.position = new THREE.Vector3(-menuWidth/3, 0, 0.01);
+        // Create the menu button elements by loading a new InteractiveElement() model 
+        // and setting the data through setMenuElementValues().
+        var lsOptEnabledLabel = setMenuElementValues(30, 30, null, 'lsOptEnabledLabel', 'icon', 
+            '', 0xffffff, null, true, -menuWidth/3, 0, 0.01);
 
-        lowsightedoptmenu.add(lsOptEnabledLabel.create());
+        var lsOptDisabledLabel = setMenuElementValues(30, 30, null, 'lsOptDisabledLabel', 'icon', 
+            '', 0xffffff, null, true, -menuWidth/3, 0, 0.01);
 
-// LS OPTION DISABLED
-        var lsOptDisabledLabel = new InteractiveElementModel();
-        lsOptDisabledLabel.width = 30;
-        lsOptDisabledLabel.height = 30;
-        lsOptDisabledLabel.name = 'lsOptDisabledLabel';
-        lsOptDisabledLabel.type =  'icon';
-        lsOptDisabledLabel.color = 0xffffff;
-        lsOptDisabledLabel.position = new THREE.Vector3(-menuWidth/3, 0, 0.01);
+        var onLSOptButton = setMenuElementValues(22.5, 12.6, null, 'onlsoptbutton', 'icon', 
+            './img/menu/toggle_on.png', 0xffffff, null, true, -menuWidth/3, 3*menuHeight/8, 0.01);
 
-        lowsightedoptmenu.add(lsOptDisabledLabel.create());
+        var offLSOptButton = setMenuElementValues(22.5, 12.6, null, 'offlsoptbutton', 'icon', 
+            './img/menu/toggle_off.png', 0xffffff, null, true, -menuWidth/3, 3*menuHeight/8, 0.01);
 
-        var onLSOptButton = new InteractiveElementModel();
-        onLSOptButton.width = 22.5;
-        onLSOptButton.height = 12.6;
-        onLSOptButton.name = 'onlsoptbutton';
-        onLSOptButton.type =  'icon';
-        onLSOptButton.value = './img/menu/toggle_on.png';
-        onLSOptButton.color = 0xffffff;
-        onLSOptButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(onLSOptButton.width, onLSOptButton.height), new THREE.MeshBasicMaterial({visible: false}));
-        onLSOptButton.position = new THREE.Vector3(-menuWidth/3, 3*menuHeight/8, 0.01);
+        var upDropdownButton = setMenuElementValues(4, 12, -Math.PI/2, 'upDropdownButton', 'icon', 
+            './img/menu/less_than_icon.png', 0xffffff, null, true, 0, 6*menuHeight/14, 0.01);
 
-        lowsightedoptmenu.add(onLSOptButton.create());
+        var downDropdownButton = setMenuElementValues(4, 12, Math.PI/2, 'downDropdownButton', 'icon', 
+            './img/menu/less_than_icon.png', 0xffffff, null, true, 0, -6*menuHeight/14, 0.01);
 
-        var offLSOptButton = new InteractiveElementModel();
-        offLSOptButton.width = 22.5;
-        offLSOptButton.height = 12.6;
-        offLSOptButton.name = 'offlsoptbutton';
-        offLSOptButton.type =  'icon';
-        offLSOptButton.value = './img/menu/toggle_off.png';
-        offLSOptButton.color = 0xffffff;
-        offLSOptButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(offLSOptButton.width, offLSOptButton.height), new THREE.MeshBasicMaterial({visible: false}));
-        offLSOptButton.position = new THREE.Vector3(-menuWidth/3, 3*menuHeight/8, 0.01);
 
-        lowsightedoptmenu.add(offLSOptButton.create());
+        // Add all the created elements to the parent group.
+        lowsightedoptmenu.add(lsOptEnabledLabel);
+        lowsightedoptmenu.add(lsOptDisabledLabel);
+        lowsightedoptmenu.add(onLSOptButton);
+        lowsightedoptmenu.add(offLSOptButton);
+        lowsightedoptmenu.add(upDropdownButton);
+        lowsightedoptmenu.add(downDropdownButton);
 
-        var upDropdownButton = new InteractiveElementModel();
-        upDropdownButton.width = 4;
-        upDropdownButton.height = 12;
-        upDropdownButton.rotation = -Math.PI/2;
-        upDropdownButton.name = 'upDropdownButton';
-        upDropdownButton.type =  'icon';
-        upDropdownButton.value = './img/menu/less_than_icon.png';
-        upDropdownButton.color = 0xffffff;
-        upDropdownButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(menuWidth/3, upDropdownButton.height), new THREE.MeshBasicMaterial({visible: false}));
-        upDropdownButton.onexecute =  function(){ console.log("This is the up menu button"); };
-        upDropdownButton.position = new THREE.Vector3(0, 6*menuHeight/14, 0.01);
-
-        lowsightedoptmenu.add(upDropdownButton.create());
-
-        var downDropdownButton = new InteractiveElementModel();
-        downDropdownButton.width = 4;
-        downDropdownButton.height = 12;
-        downDropdownButton.rotation = Math.PI/2;
-        downDropdownButton.name = 'downDropdownButton';
-        downDropdownButton.type =  'icon';
-        downDropdownButton.value = './img/menu/less_than_icon.png';
-        downDropdownButton.color = 0xffffff;
-        downDropdownButton.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(menuWidth/3, downDropdownButton.height), new THREE.MeshBasicMaterial({visible: false}));
-        downDropdownButton.onexecute =  function(){ console.log("This is the down menu button"); };
-        downDropdownButton.position = new THREE.Vector3(0, -6*menuHeight/14, 0.01);
-
-        lowsightedoptmenu.add(downDropdownButton.create());
 
         var parentColumnHoritzontalLines = new THREE.Group();
         parentColumnHoritzontalLines.position.set(0,0,0.01)

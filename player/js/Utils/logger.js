@@ -34,7 +34,7 @@ var StatElements = function ()
 	this.date = Date.now();
 	//this.deviceId = 1;
 	this.sessionId = sessionId;
-	//this.contentId = 3;
+	this.contentId = demoId;
 
 	this.mediaTime = videoElement.vid.currentTime;
 

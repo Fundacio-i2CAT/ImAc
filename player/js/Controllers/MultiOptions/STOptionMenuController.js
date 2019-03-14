@@ -414,10 +414,10 @@ function STOptionMenuController(menuType) {
                 line1.position.y += h/6;
                 line2.position.y -= h/6;
                 if( row > 1 )
-                    {
-                      line1.position.x +=  w/3;  
-                      line2.position.x +=  w/3;  
-                    } 
+                {
+                  line1.position.x +=  w/3;  
+                  line2.position.x +=  w/3;  
+                } 
                 linesHoritzontalGroup.push(line1);
                 linesHoritzontalGroup.push(line2);
                 return linesHoritzontalGroup;

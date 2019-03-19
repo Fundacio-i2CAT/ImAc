@@ -455,11 +455,14 @@ SubSignManager = function() {
     {
         if ( signerMesh )
         {
-        	signerMesh.children.forEach( function( e ) 
-        	{
-        		if ( e.name == 'left' ) e.visible = pos == 'left' ? true : false;
-                else if ( e.name == 'right' ) e.visible = pos == 'right' ? true : false;
-            }); 
+        	signerMesh.children.forEach( function( elem ) 
+        	{ 
+	        	elem.children.forEach( function( e ) 
+	        	{
+	        		if ( e.name == 'left' ) e.visible = pos == 'left' ? true : false;
+	                else if ( e.name == 'right' ) e.visible = pos == 'right' ? true : false;
+	            }); 
+            });
         }
     }
 
@@ -1038,5 +1041,10 @@ SubSignManager = function() {
     this.updateSTRotation = function()
     {
     	if ( subtitleMesh && !isExperimental ) subtitleMesh.rotation.z = -camera.rotation.z;
+    }
+
+    this.updateSLRotation = function()
+    {
+    	if ( signerMesh ) signerMesh.rotation.z = -camera.rotation.z;
     }
 }

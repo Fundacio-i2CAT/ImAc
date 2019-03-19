@@ -107,6 +107,8 @@ THREE.MediaObjectData = function () {
 
     this.getSignVideoMesh = function(url, name, config) 
     {
+        var group = new THREE.Group();
+
         var geometry = new THREE.PlaneGeometry( config.size, config.size );
         var plane = getVideoMesh( geometry, url, name, 1 );
 
@@ -128,17 +130,22 @@ THREE.MediaObjectData = function () {
         plane.add( arrow );
 
         // background 
-        var backgroundMesh = getBackgroundMesh ( config.size, config.size/5, 0x000000, 0.8 );
+        /*var backgroundMesh = getBackgroundMesh ( config.size, config.size/5, 0x000000, 0.8 );
         backgroundMesh.position.y = -6 * config.size/10;
         backgroundMesh.visible = config.signIndicator == 'arrow' ? true : false;
 
-        plane.add( backgroundMesh );
+        plane.add( backgroundMesh );*/
 
         plane.position.z = - config.z;
         plane.position.x = config.x;
         plane.position.y = config.y;
 
-        return plane;
+        //return plane;
+        group.add( plane );
+
+        if ( _isHMD ) group.rotation.z = -camera.rotation.z;
+        
+        return group;
     };
 
     this.getSubtitleMesh = function(textList, config)
@@ -761,7 +768,7 @@ THREE.MediaObjectData = function () {
         var canvas = document.getElementById( "canvas" );
         var ctx = canvas.getContext( "2d" );
         var text = /*'😃 ' + */t[0].text;
-        var font = "500 40px Roboto";
+        var font = c.speaker != undefined ? "500 40px Roboto" : "italic 500 40px Roboto";
         var ch = 50; // canvas height x line
         var fh = 40; // font height
 

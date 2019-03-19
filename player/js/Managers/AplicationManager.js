@@ -104,11 +104,16 @@ function AplicationManager()
 
     	if( THREE.VRController.getTouchPadState() && _isHMD ) 
     	{			
-			interController.checkInteraction( mouse3D, camera, 'onDocumentMouseDown' );
+			// afegir contador per a obrir el menu despres de fer 5 clicks
+            interController.checkInteraction( mouse3D, camera, 'onDocumentMouseDown' );
 		}
         if ( _isHMD && subController.getSubtitleEnabled() )
         {
             subController.updateSTRotation();
+        }
+        if ( _isHMD && subController.getSignerEnabled() )
+        {
+            subController.updateSLRotation();
         }
 
 		subController.updateRadar();

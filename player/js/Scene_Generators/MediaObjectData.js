@@ -820,7 +820,7 @@ THREE.MediaObjectData = function () {
             mesh.add( arrow );
         }
 
-        mesh.scale.set( c.area,c.area,1 );
+        mesh.scale.set( c.area*c.size,c.area*c.size,1 );
 
         mesh.name = 'test';
         mesh.renderOrder = 3;

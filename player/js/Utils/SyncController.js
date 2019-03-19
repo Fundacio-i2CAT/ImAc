@@ -21,6 +21,19 @@ SyncController = function() {
 		//connection_LOG( 'ws://192.168.10.128:4649/log' )
 	}
 
+	this.vc = function ( action, time )
+	{
+		var cs_ws = new WebSocket( 'ws://192.168.10.128:4649/cs' );
+		cs_ws.onopen = function() {
+			var json = {
+				action: action,
+				actionTime: time
+			};
+			cs_ws.send( JSON.stringify( json ) );
+			cs_ws.close();
+		};
+	}
+
 	function connection_LOG( ws_url ) 
 	{
 		var cs_ws = new WebSocket( ws_url );

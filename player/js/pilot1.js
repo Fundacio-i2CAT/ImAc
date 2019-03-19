@@ -50,7 +50,7 @@ function runUABDemo()
             subController.enableSubtitles();
             subController.initSubtitle( 70, 0, -1, 'none' );
 
-            var xz = _moData.getPlaneImageMesh(16*2,9*2,'./img/tests/prueba_holy_fixed_gradient.png', 'name', 6);
+            var xz = _moData.getPlaneImageMesh(16*2,9*2,'./img/tests/holy_fixed_black_2.png', 'name', 6);
         }
         else if ( demoId == 2 )
         {
@@ -137,7 +137,7 @@ function runUABDemo()
             VideoController.playAll();
             scene.remove(xy)
             camera.remove(xz);
-            if ( demoId == 7 || demoId == 8 ) VideoController.seekAll( 389 );
+            if ( demoId == 7 || demoId == 8 ) VideoController.seekAll( 390 );
             else if ( demoId == 5 || demoId == 6 ) VideoController.seekAll( 30 );
 
            (localStorage.ImAc_backgroundSub == "outline") ? subController.setSubBackground(0) : subController.setSubBackground(0.5);

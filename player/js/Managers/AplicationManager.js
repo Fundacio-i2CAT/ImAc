@@ -2,6 +2,7 @@
 var camera;
 var scene;
 var controls;
+var rendertime = 0;
 
 function AplicationManager()
 {
@@ -12,6 +13,8 @@ function AplicationManager()
 
     var button_1;
     var button_2;
+
+    this.getRenderer = function() { return renderer };
 
     function initWorld()
     {
@@ -89,6 +92,10 @@ function AplicationManager()
 
     function render()
     {
+        /*var time =  performance.now();
+        console.log( time - rendertime )
+        rendertime = time;*/
+
     	THREE.VRController.update()
     	if ( controls ) controls.update();
     	renderer.render( scene, camera );
@@ -128,36 +135,10 @@ function AplicationManager()
 		//_moData.createCastShadows();
 
 
-/*////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 
-var c = document.getElementById("myCanvas");
-var ctx = c.getContext("2d");
-
-ctx.font = "20px Georgia";
-ctx.fillText("Hello World!", 10, 50);
-
-ctx.font = "30px Verdana";
-// Create gradient
-var gradient = ctx.createLinearGradient(0, 0, c.width, 0);
-gradient.addColorStop("0"," magenta");
-gradient.addColorStop("0.5", "blue");
-gradient.addColorStop("1.0", "red");
-// Fill with gradient
-ctx.fillStyle = gradient;
-ctx.fillText("Big smile!", 10, 90);
-
-let texture = new THREE.CanvasTexture(c);
-        texture.needsUpdate = true;
-        //material.map = texture;
-//new THREE.SphereBufferGeometry( size, 32, 32, Math.PI/2 );
-var material = new THREE.MeshBasicMaterial( { map: texture, color: 0xff00ff } );
-        var mesh = new THREE.Mesh( new THREE.SphereBufferGeometry( 2, 32, 32, -Math.PI/2 ), material );
-
-        mesh.name = 'test';
-        mesh.renderOrder = 1;
-        mesh.position.z = -10
-                scene.add( mesh );
-/////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+//_moData.expText()
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
         if ( 'getVRDisplays' in navigator ) {
 
             VideoController.init();

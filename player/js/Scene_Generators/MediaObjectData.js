@@ -84,6 +84,13 @@ THREE.MediaObjectData = function () {
         return sphere;
     };
 
+    this.getCubeVideo32Mesh = function(size, url, name) 
+    {
+        var geometry = getCubeGeometry32( size );
+
+        return getVideoMesh( geometry, url, name, 0 );
+    };
+
     this.getCubeVideo65Mesh = function(size, url, name) 
     {
         var geometry = getCubeGeometry65( size );
@@ -147,6 +154,22 @@ THREE.MediaObjectData = function () {
 
             group.add( mesh );
         }
+
+        if ( _isHMD ) group.rotation.z = -camera.rotation.z;
+        
+        return group;
+    };
+
+    this.getEmojiSubtitleMesh = function(textList, config)
+    {
+         var group = new THREE.Group();
+
+        config.x = config.textAlign == 0 ? 0 : config.textAlign == -1 ? -config.size : config.size;
+
+        var mesh = getEmojiSubMesh( textList, config, config.opacity, textList.length );
+        mesh.name = textList.length;
+
+        group.add( mesh );
 
         if ( _isHMD ) group.rotation.z = -camera.rotation.z;
         
@@ -334,9 +357,6 @@ THREE.MediaObjectData = function () {
 
         camera.add(openMenuText);
     };
-
-
-
 
     this.createLine = function (color, startvector, endvector)
     {
@@ -540,7 +560,6 @@ THREE.MediaObjectData = function () {
         }
     };
 
-
 //************************************************************************************
 // Private Functions
 //************************************************************************************
@@ -724,6 +743,198 @@ THREE.MediaObjectData = function () {
         return mesh;
     }
 
+    function createCanvasFillRect(ctx, x, y, w, h, o)
+    {
+        ctx.fillStyle = 'rgba(0,0,0,' + o + ')';
+        ctx.fillRect( x, y, w, h );
+    }
+
+    function createCanvasStrokeText(ctx, text, w, h)
+    {
+        ctx.strokeStyle = "#000";
+        ctx.lineWidth = 2;
+        ctx.strokeText( text, w, h );
+    }
+
+    function getEmojiSubMesh(t, c, o, i)
+    {
+        var canvas = document.getElementById( "canvas" );
+        var ctx = canvas.getContext( "2d" );
+        var text = /*'😃 ' + */t[0].text;
+        var font = "500 40px Roboto";
+        var ch = 50; // canvas height x line
+        var fh = 40; // font height
+
+        ctx.font = font;
+        var width = ctx.measureText( text ).width;
+        var width2 = t[1] ? ctx.measureText( t[1].text ).width : 0;
+        canvas.width = (width > width2) ? width + 20 : width2 + 20;
+        canvas.height = ch*i;
+
+        ctx.font = font;
+        if ( o != 0 ) createCanvasFillRect( ctx, 0, 0, canvas.width, ch, o );
+        ctx.fillStyle = t[0].color;
+        ctx.fillText( text, ( canvas.width - width )/2, fh );
+        if ( o == 0 ) createCanvasStrokeText( ctx, text, ( canvas.width - width )/2, fh );
+
+        if ( t[1] ) 
+        {
+            var text2 = t[1].text;
+            ctx.font = font;
+            if ( o != 0 ) createCanvasFillRect( ctx, 0, ch, canvas.width, ch, o );
+            ctx.fillStyle = t[1].color;     
+            ctx.fillText( text2, ( canvas.width - width2 )/2, fh + ch );
+            if ( o == 0 ) createCanvasStrokeText( ctx, text2, ( canvas.width - width2 )/2, fh + ch );
+        }
+
+        let texture = new THREE.CanvasTexture( canvas );
+        texture.needsUpdate = true;
+
+        var material = new THREE.MeshBasicMaterial( { map: texture,  transparent: true } );
+        var mesh = new THREE.Mesh( new THREE.PlaneGeometry( canvas.width/6, ch*i/6 ), material );
+
+
+        if ( c.subtitleIndicator == 'arrow' )
+        {
+            // right arrow
+            var geometry = new THREE.PlaneGeometry( 6.7*c.size, 6.7*c.size );
+            var arrow = getImageMesh(geometry, './img/arrow_final.png', 'right', 3)
+            arrow.material.color.set( t[0].color );
+            //var arrow = getArrowMesh( 6.7*c.size, 6.7*c.size, t.color, o );
+            arrow.add( getBackgroundMesh ( 9.7*c.size, 8.7*c.size, t[0].backgroundColor, o ) );
+            arrow.position.x = (canvas.width)/2/6 + 5*c.size;
+            arrow.name = 'right';
+
+            mesh.add( arrow );
+
+            // left arrow
+            var geometry = new THREE.PlaneGeometry( 6.7*c.size, 6.7*c.size );
+            var arrow = getImageMesh(geometry, './img/arrow_final.png', 'left', 3)
+            arrow.material.color.set( t[0].color );
+            //var arrow = getArrowMesh( 6.7*c.size, 6.7*c.size, t.color, o );
+            arrow.rotation.z = Math.PI;
+            arrow.add( getBackgroundMesh ( 9.7*c.size, 8.7*c.size, t[0].backgroundColor, o ) );
+            arrow.position.x = -(canvas.width)/2/6 - 5*c.size;
+            arrow.name = 'left';
+
+            mesh.add( arrow );
+        }
+
+        mesh.scale.set( c.area,c.area,1 );
+
+        mesh.name = 'test';
+        mesh.renderOrder = 3;
+        mesh.position.z = - c.z;
+        mesh.position.y = c.y;
+        mesh.visible = true;
+
+        return mesh;
+    }
+
+    function getEmojiSubMesh2(t, c, o, i)
+    {
+        var canvas = document.getElementById("canvas");
+        var ctx = canvas.getContext("2d");
+        var text = /*'😃 ' + */t[0].text;
+
+        var drawing;
+        var il = 0;
+
+        if ( text.indexOf("🤖") > -1 ) {
+            text = text.replace("🤖", "");
+            drawing = emoji_4;
+            il = 63;
+            console.error(text)
+        }
+        else if ( text.indexOf("😃") > -1 ) {
+            text = text.replace("😃", "");
+            drawing = emoji_2;
+            il = 63;
+            console.error(text)
+        }
+
+        ctx.font = "500 40px Roboto";
+        var width = ctx.measureText( text ).width + il;
+        var width2 = t[1] ? ctx.measureText( t[1].text ).width : 0;
+        canvas.width = (width > width2) ? width + 20 : width2 + 20;
+        canvas.height = 50*i;
+
+        ctx.font = "500 40px Roboto";
+        if ( o != 0 ) {ctx.fillStyle = 'rgba(0,0,0,' + o + ')';
+        ctx.fillRect( 0, 0, il + canvas.width, 50);}
+        ctx.fillStyle = t[0].color;
+        ctx.fillText(text, il + (canvas.width - width)/2, 40);
+        if ( o == 0 )  {ctx.strokeStyle = "#000";
+        ctx.lineWidth = 2;
+        ctx.strokeText(text, il + (canvas.width - width)/2, 40);}
+
+        if( il > 0 ) {
+            ctx.drawImage(drawing, (canvas.width - width)/2, 0, 63, 50);
+        }
+
+        if ( t[1] ) {
+            var text2 = t[1].text;
+            //ctx.font = "500 30px Roboto";
+            //width2 = ctx.measureText( text2 ).width;
+            ctx.font = "500 40px Roboto";
+            if ( o != 0 ) {ctx.fillStyle = 'rgba(0,0,0,' + o + ')';
+            ctx.fillRect( 0, 50, canvas.width, 50);}
+            ctx.fillStyle = t[1].color;     
+            ctx.fillText(text2, (canvas.width - width2)/2, 40+50);
+            if ( o == 0 ) {ctx.strokeStyle = "#000";
+            ctx.lineWidth = 2;
+            ctx.strokeText(text2, (canvas.width - width2)/2, 40+50);}
+        }
+
+
+        let texture = new THREE.CanvasTexture(canvas);
+        texture.needsUpdate = true;
+
+        var material = new THREE.MeshBasicMaterial( { map: texture,  transparent: true } );
+
+        var mesh = new THREE.Mesh( new THREE.PlaneGeometry( canvas.width/6, 50*i/6 ), material );
+
+
+        if ( c.subtitleIndicator == 'arrow' )
+        {
+            // right arrow
+            var geometry = new THREE.PlaneGeometry( 6.7*c.size, 6.7*c.size );
+            var arrow = getImageMesh(geometry, './img/arrow_final.png', 'right', 3)
+            arrow.material.color.set( t[0].color );
+            //var arrow = getArrowMesh( 6.7*c.size, 6.7*c.size, t.color, o );
+            arrow.add( getBackgroundMesh ( 9.7*c.size, 8.7*c.size, t[0].backgroundColor, o ) );
+            arrow.position.x = (canvas.width)/2/6 + 5*c.size;
+            arrow.name = 'right';
+
+            mesh.add( arrow );
+
+            // left arrow
+            var geometry = new THREE.PlaneGeometry( 6.7*c.size, 6.7*c.size );
+            var arrow = getImageMesh(geometry, './img/arrow_final.png', 'left', 3)
+            arrow.material.color.set( t[0].color );
+            //var arrow = getArrowMesh( 6.7*c.size, 6.7*c.size, t.color, o );
+            arrow.rotation.z = Math.PI;
+            arrow.add( getBackgroundMesh ( 9.7*c.size, 8.7*c.size, t[0].backgroundColor, o ) );
+            arrow.position.x = -(canvas.width)/2/6 - 5*c.size;
+            arrow.name = 'left';
+
+            mesh.add( arrow );
+        }
+
+
+
+        mesh.scale.set( c.area,c.area,1 );
+
+        mesh.name = 'test';
+        mesh.renderOrder = 3;
+        mesh.position.z = - c.z;
+        mesh.position.y = c.y;
+        //camera.add( mesh );
+        mesh.visible = true;
+
+        return mesh;
+    }
+
     function getPointMesh(w, h, c, o)
     {
         var pointer = new THREE.Mesh(
@@ -769,6 +980,106 @@ THREE.MediaObjectData = function () {
         geometry.faceVertexUvs[0][11] = [ r[1], r[2], r[3] ];
 
         return geometry;
+    }
+
+    function getCubeGeometry32(size)
+    {
+        var threshold = 0.0002;
+        var one_third = .3333;
+        var two_third = .6666;
+
+        var _00 = new THREE.Vector2(0,0);
+        var _01a = new THREE.Vector2(0, .5 - threshold);
+        var _01b = new THREE.Vector2(0, .5 + threshold);
+        var _02 = new THREE.Vector2(0, 1);
+
+        var _10 = new THREE.Vector2(one_third, 0);
+        var _11a = new THREE.Vector2(one_third, .5 - threshold);
+        var _11b = new THREE.Vector2(one_third, .5 + threshold);
+        var _12 = new THREE.Vector2(one_third, 1);
+
+        var _20 = new THREE.Vector2(two_third, 0);
+        var _21a = new THREE.Vector2(two_third, .5 - threshold);
+        var _21b = new THREE.Vector2(two_third, .5 + threshold);
+        var _22 = new THREE.Vector2(two_third, 1);
+
+        var _30 = new THREE.Vector2(1,0);
+        var _31a = new THREE.Vector2(1, .5 - threshold);
+        var _31b = new THREE.Vector2(1, .5 + threshold);
+        var _32 = new THREE.Vector2(1, 1);
+
+        /// map the faces
+        var face_top = [ _31a, _21a, _20, _30 ];
+        var face_back = [ _21a, _11a, _10, _20 ];
+        var face_bottom = [ _11a, _01a, _00, _10 ];
+        var face_front = [ _12, _11b, _21b, _22 ];
+        var face_left = [ _22, _21b, _31b, _32 ];
+        var face_right = [ _02, _01b, _11b, _12 ];
+
+        return getCubeGeometryByVertexUVs( size, face_front, face_left, face_right, face_top, face_back, face_bottom );
+    }
+
+    function getCubeGeometry32(size)
+    {
+        /// Used to modify the cube UVs adding a threshold between the conflictive edges.
+        /// 3x2 Texture UV vertices map:
+        /// 
+        ///       ^
+        ///       |
+        ///      0,1    +--------+--------+--------+
+        ///       |     |02      |12      |22      |32
+        ///       |     |        |        |        |
+        ///       |     |        |        |        |
+        ///       |     |01b     |11b     |21b     |31b
+        ///      0,0.5  +--------+--------+--------+
+        ///       |     |01a     |11a     |21a     |31a
+        ///       |     |        |        |        |
+        ///       |     |        |        |        |
+        ///       |     |        |        |        |
+        ///       |     +--------+--------+--------+
+        ///       |      00       10       20       30 
+        ///       |
+        ///      0,0-------------|--------|-------1,0------->
+        ///                      - one_third
+        ///                               - two_third
+
+        // cubemap UV points
+        // The "threshold" value removes the pixel(s) between the two rows of the texture.
+        // Defines the 01, 11, 21 and 31 vector points.
+
+        var threshold = 0.00002;
+        var one_third = .3333;
+        var two_third = .6666;
+
+        var _00 = new THREE.Vector2(0,0);
+        var _01a = new THREE.Vector2(0, .5 - threshold);
+        var _01b = new THREE.Vector2(0, .5 + threshold);
+        var _02 = new THREE.Vector2(0, 1);
+
+        var _10 = new THREE.Vector2(one_third, 0);
+        var _11a = new THREE.Vector2(one_third, .5 - threshold);
+        var _11b = new THREE.Vector2(one_third, .5 + threshold);
+        var _12 = new THREE.Vector2(one_third, 1);
+
+        var _20 = new THREE.Vector2(two_third, 0);
+        var _21a = new THREE.Vector2(two_third, .5 - threshold);
+        var _21b = new THREE.Vector2(two_third, .5 + threshold);
+        var _22 = new THREE.Vector2(two_third, 1);
+
+        var _30 = new THREE.Vector2(1,0);
+        var _31a = new THREE.Vector2(1, .5 - threshold);
+        var _31b = new THREE.Vector2(1, .5 + threshold);
+        var _32 = new THREE.Vector2(1, 1);
+
+        /// map the faces
+        var face_front = [ _12, _11b, _21b, _22 ];
+        var face_back = [ _21a, _11a, _10, _20 ];
+        var face_top = [ _21a, _20,_30, _31a ];
+        var face_bottom = [  _10, _11a, _01a, _00 ];
+        var face_right = [ _22, _21b, _31b, _32 ];
+        var face_left = [ _02, _01b, _11b, _12 ];
+
+        return getCubeGeometryByVertexUVs( size, face_front, face_left, face_right, face_top, face_back, face_bottom );
     }
 
     function getCubeGeometry65(size)
@@ -834,11 +1145,11 @@ THREE.MediaObjectData = function () {
 
         /// map the faces
         var face_front = [ _05, _00, _50a, _55a ];
-        var face_back = [ _54a, _53b, _63b, _64a ];
-        var face_top = [ _54b, _64b, _65, _55b ];    
-        var face_bottom = [ _63a, _53a, _52b, _62b ];
-        var face_right = [ _52a, _51b, _61b, _62b ];
-        var face_left = [ _51a, _50b, _60, _61a ]; 
+        var face_right  = [ _54a, _53b, _63b, _64a ];
+        var face_left  = [ _55b, _54b, _64b, _65 ];    
+        var face_top  = [ _52b, _62b, _63a, _53a ];
+        var face_back  = [ _52a, _51b, _61b, _62b ];
+        var face_bottom  = [ _61a, _51a, _50b, _60 ]; 
 
         return getCubeGeometryByVertexUVs( size, face_front, face_left, face_right, face_top, face_back, face_bottom );
     }
@@ -850,7 +1161,7 @@ THREE.MediaObjectData = function () {
          ///       ^
          ///       |
          ///      0,1    +-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+
-         ///       |     |06    16    26    36    46    56   |66    76    86   |96    106  |116 
+         ///       |     |06    16    26    36    46    56   |66b   76    86   |96b   106  |116 
          ///       |     |                                   |                 |           |
          ///      0,0.833+     +     +     +     +     +     +     +     +     +     +     +
          ///       |     |                                   |                 |           |
@@ -866,7 +1177,7 @@ THREE.MediaObjectData = function () {
          ///       |     |                                   |                 |           |
          ///      0,0.167+     +     +     +     +     +     +     +     +     +     +     +
          ///       |     |                                   |                 |           |
-         ///       |     |                                   |60               |90         |110
+         ///       |     |                                60a|60b           90a|90b        |110
          ///       |     +-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+
          ///       |      00    10    20    30    40    50    60    70    80    90    100   110
          ///       |
@@ -881,34 +1192,38 @@ THREE.MediaObjectData = function () {
         var _00 = new THREE.Vector2( 0, 0 );
         var _06 = new THREE.Vector2( 0, 1 );
 
-        var _60 = new THREE.Vector2( 0.5454, 0 );
-        var _63a = new THREE.Vector2( 0.5454, 0.5 - threshold );
-        var _63b = new THREE.Vector2( 0.5454, 0.5 + threshold );
-        var _66 = new THREE.Vector2( 0.5454, 1 );
+        var _60a = new THREE.Vector2( 6/11 - threshold, 0 );
+        var _60b = new THREE.Vector2( 6/11 + threshold, 0 );
+        var _63a = new THREE.Vector2( 6/11 + threshold, 0.5 - threshold *2 );
+        var _63b = new THREE.Vector2( 6/11 + threshold, 0.5 + threshold *2 );
+        var _66a = new THREE.Vector2( 6/11 - threshold, 1 );
+        var _66b = new THREE.Vector2( 6/11 + threshold, 1 );
 
-        var _90 = new THREE.Vector2( 0.8181, 0 );
-        var _92a = new THREE.Vector2( 0.8181, 0.3333 - threshold );
-        var _92b = new THREE.Vector2( 0.8181, 0.3333 + threshold );
-        var _93a = new THREE.Vector2( 0.8181, 0.5 - threshold );
-        var _93b = new THREE.Vector2( 0.8181, 0.5 + threshold );
-        var _94a = new THREE.Vector2( 0.8181, 0.8333 - threshold );
-        var _94b = new THREE.Vector2( 0.8181, 0.8333 + threshold );
-        var _96 = new THREE.Vector2( 0.8181, 1 );
+        var _90a = new THREE.Vector2( 9/11 - threshold, 0 );
+        var _90b = new THREE.Vector2( 9/11 + threshold, 0 );
+        var _92a = new THREE.Vector2( 9/11 + threshold, 2/6 - threshold );
+        var _92b = new THREE.Vector2( 9/11 + threshold, 2/6 + threshold );
+        var _93a = new THREE.Vector2( 9/11 - threshold, 0.5 - threshold *2 );
+        var _93b = new THREE.Vector2( 9/11 - threshold, 0.5 + threshold *2 );
+        var _94a = new THREE.Vector2( 9/11 + threshold, 4/6 - threshold );
+        var _94b = new THREE.Vector2( 9/11 + threshold, 4/6 + threshold );
+        var _96a = new THREE.Vector2( 9/11 - threshold, 1 );
+        var _96b = new THREE.Vector2( 9/11 + threshold, 1 );
 
         var _110 = new THREE.Vector2( 1, 0 );
-        var _112a = new THREE.Vector2( 1, 0.3333 - threshold );
-        var _112b = new THREE.Vector2( 1, 0.3333 + threshold );
-        var _114a = new THREE.Vector2( 1, 0.8333 - threshold );
-        var _114b = new THREE.Vector2( 1, 0.8333 + threshold );
+        var _112a = new THREE.Vector2( 1, 2/6 - threshold );
+        var _112b = new THREE.Vector2( 1, 2/6 + threshold );
+        var _114a = new THREE.Vector2( 1, 4/6 - threshold );
+        var _114b = new THREE.Vector2( 1, 4/6 + threshold );
         var _116 = new THREE.Vector2( 1, 1 );
 
         /// map the faces
-        var face_front = [ _06, _00, _60, _66 ];
-        var face_left = [ _66, _63b, _93b, _96 ];
-        var face_right = [ _63a, _60, _90, _93a ];
-        var face_top = [ _94b, _114b, _116,_96 ];
+        var face_front = [ _06, _00, _60a, _66a ];
+        var face_left = [ _66b, _63b, _93b, _96a ];
+        var face_right = [ _63a, _60b, _90a, _93a ];
+        var face_top = [ _94b, _114b, _116, _96b ];
         var face_back = [ _94a, _92b, _112b, _114a ];
-        var face_bottom = [ _112a, _92a, _90, _110 ];
+        var face_bottom = [ _112a, _92a, _90b, _110 ];
 
         return getCubeGeometryByVertexUVs( size, face_front, face_left, face_right, face_top, face_back, face_bottom );
     }

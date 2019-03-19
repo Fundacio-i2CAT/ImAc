@@ -324,7 +324,7 @@ SubSignManager = function() {
 
     function createSubtitle(textList, config)
     {
-        subtitleMesh = _moData.getSubtitleMesh( textList, config );
+        subtitleMesh = _moData.getEmojiSubtitleMesh( textList, config );
         subtitleMesh.name = "subtitles";
 
         camera.add( subtitleMesh );
@@ -707,6 +707,8 @@ SubSignManager = function() {
 		subPosY = y;
 		textListMemory = [];
 
+		updateRadarPosition();
+
 		updateISD( VideoController.getMediaTime() );
 	};
 
@@ -796,6 +798,7 @@ SubSignManager = function() {
 		signIndicator = ind;
 		updateSignerPosition();
 	};
+
 
 	this.setSignerContent = function(url, lang)
 	{
@@ -1015,11 +1018,14 @@ SubSignManager = function() {
     
     function updateRadarPosition()
     {
-        if ( radarMesh ) 
+        if ( radarMesh && radarMesh3 ) 
         {
 
 		   	radarMesh.position.x = _isHMD ? 0.8*( 1.48*subArea/2-14/2 ) : ( 1.48*subArea/2-14/2 );
 	    	radarMesh.position.y = _isHMD ? 0.09*( 0.82*subArea/2-14/2 ) * subPosY : ( 0.82*subArea/2-14/2 ) * subPosY; 
+
+	    	radarMesh3.position.x = _isHMD ? 0.8*( 1.48*subArea/2-14/2 ) : ( 1.48*subArea/2-14/2 );
+	    	radarMesh3.position.y = _isHMD ? 0.09*( 0.82*subArea/2-14/2 ) * subPosY : ( 0.82*subArea/2-14/2 ) * subPosY; 
 	    	
 	    	if ( speakerMesh ) 
 	        {

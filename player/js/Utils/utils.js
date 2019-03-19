@@ -251,3 +251,23 @@ Math.radians = function(degrees) {
 Math.degrees = function(radians) {
     return radians * (180 / Math.PI);
 };
+
+var emoji_1, emoji_2, emoji_3, emoji_4, emoji_5;
+
+function loadEmojisIcons()
+{
+    emoji_1 = new Image() 
+    emoji_1.src = ""; 
+
+    emoji_2 = new Image() 
+    emoji_2.src = "./img/emojis/moreno-03.png"; 
+
+    emoji_3 = new Image() 
+    emoji_3.src = "./img/emojis/sad-03.png"; 
+
+    emoji_4 = new Image() 
+    emoji_4.src = "./img/emojis/robot-04.png"; 
+
+    emoji_5 = new Image() 
+    emoji_5.src = ""; 
+}

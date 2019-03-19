@@ -56,6 +56,7 @@ var list_contents;
 function init_webplayer() 
 {
 	console.log('Version: ' + _PlayerVersion);
+    //loadEmojisIcons();
 
     var myhash = window.location.hash.split('#');
 

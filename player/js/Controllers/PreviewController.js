@@ -24,7 +24,7 @@
     - (C) /player/js/Controllers/MultiOptionsPreviewController.js
 
  */
-function MultiOptionsPreviewController() {
+function PreviewController() {
 
 	var data;
 	var view;
@@ -44,7 +44,7 @@ function MultiOptionsPreviewController() {
 		viewStructure = scene.getObjectByName(data.name);
 		viewStructure.visible = true;
 
-		view = new MultiOptionsPreviewView();
+		view = new PreviewView();
 		view.UpdateView(data); 
 	}
 
@@ -98,7 +98,7 @@ function MultiOptionsPreviewController() {
 	{
 	    if (data == null)
 	    {
-	        data = new MultiOptionsPreviewModel();
+	        data = new PreviewModel();
 	    }
 	    return data;
 	}

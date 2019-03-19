@@ -8,6 +8,7 @@ var MenuFunctionsManager = new MenuFunctionsManager();
 
 var _moData = new THREE.MediaObjectData();
 
+var vwStrucMMngr = new ViewStructureMenuManager();
 var menuMgr = new MenuManager();
 var settingsMgr = new SettingsManager();
 
@@ -36,6 +37,10 @@ let ASTOptionCtrl;
 let vpbCtrl;
 let SettingsOptionCtrl;
 let multiOptionsPreviewCtrl;
+
+var menuParent;
+var menuHeight;
+var menuWidth;
 
 var loggerActivated = false;
 

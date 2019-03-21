@@ -39,8 +39,6 @@ function setBrowserLanguage()
             break;
         }
     }
-
-   
 }
 
 function selectXML(id)

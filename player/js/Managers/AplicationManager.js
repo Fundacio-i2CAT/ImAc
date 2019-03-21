@@ -137,13 +137,7 @@ function AplicationManager()
 		_moData.createOpenMenuMesh();
 
         scene.add( _moData.getSphericalVideoMesh( 100, mainContentURL, 'contentsphere' ) )
-		//_moData.createCastShadows();
 
-
-////////////////////////////////////////////////////////////////////////////
-
-//_moData.expText()
-/////////////////////////////////////////////////////////////////////////////////////////////////////////
         if ( 'getVRDisplays' in navigator ) {
 
             VideoController.init();

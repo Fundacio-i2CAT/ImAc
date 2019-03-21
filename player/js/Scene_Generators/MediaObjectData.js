@@ -173,7 +173,9 @@ THREE.MediaObjectData = function () {
 
         config.x = config.textAlign == 0 ? 0 : config.textAlign == -1 ? -config.size : config.size;
 
-        var mesh = getEmojiSubMesh( textList, config, config.opacity, textList.length );
+        var font = config.speaker != undefined || (textList[0].color == 'rgb(255,255,0)') ? "500 40px Roboto, Arial" : "italic 500 40px Roboto, Arial";
+
+        var mesh = __etype == 0 ? getEmojiSubMesh( textList, config, config.opacity, textList.length, font ) : getEmojiSubMesh2( textList, config, config.opacity, textList.length, font );
         mesh.name = textList.length;
 
         group.add( mesh );
@@ -238,9 +240,6 @@ THREE.MediaObjectData = function () {
         var imgGeometry = new THREE.PlaneGeometry( 14, 14 );
         var mesh = getImageMesh( imgGeometry, './img/radar_7.png', 'radar', 3 );
 
-        //mesh.position.x = _isHMD ? 35 : 40
-        //mesh.position.y = _isHMD ? -2 : -22
-
         mesh.position.x = _isHMD ? 0.8*( 1.48*subController.getSubArea()/2-14/2 ) : ( 1.48*subController.getSubArea()/2-14/2 );
         mesh.position.y = _isHMD ? 0.09*( 0.82*subController.getSubArea()/2-14/2 ) * subController.getSubPosition().y : ( 0.82*subController.getSubArea()/2-14/2 ) * subController.getSubPosition().y;
 
@@ -255,9 +254,6 @@ THREE.MediaObjectData = function () {
     {
         var imgGeometry = new THREE.PlaneGeometry( 14, 14 );
         var mesh = getImageMesh( imgGeometry, './img/area_7.png', 'radar3', 3 );
-
-        //mesh.position.x = _isHMD ? 35 : 40
-        //mesh.position.y = _isHMD ? -2 : -22
 
         mesh.position.x = _isHMD ? 0.8*( 1.48*subController.getSubArea()/2-14/2 ) : ( 1.48*subController.getSubArea()/2-14/2 );
         mesh.position.y = _isHMD ? 0.09*( 0.82*subController.getSubArea()/2-14/2 ) * subController.getSubPosition().y : ( 0.82*subController.getSubArea()/2-14/2 ) * subController.getSubPosition().y;
@@ -275,9 +271,6 @@ THREE.MediaObjectData = function () {
         var mesh = getImageMesh( imgGeometry, './img/indicador_7.png', 'radar2', 3 );
 
         mesh.material.color.set( color ); 
-
-        //mesh.position.x = _isHMD ? 35 : 40
-        //mesh.position.y = _isHMD ? -2 : -22
 
         mesh.position.x = _isHMD ? 0.8*( 1.48*subController.getSubArea()/2-14/2 ) : ( 1.48*subController.getSubArea()/2-14/2 );
         mesh.position.y = _isHMD ? 0.09*( 0.82*subController.getSubArea()/2-14/2 ) * subController.getSubPosition().y : ( 0.82*subController.getSubArea()/2-14/2 ) * subController.getSubPosition().y;
@@ -346,7 +339,6 @@ THREE.MediaObjectData = function () {
 
         scene.add( new THREE.HemisphereLight( 0x909090, 0x404040 ))
     };
-
 
 
 //************************************************************************************
@@ -763,110 +755,107 @@ THREE.MediaObjectData = function () {
         ctx.strokeText( text, w, h );
     }
 
-    function getEmojiSubMesh(t, c, o, i)
+    function createCanvasText(ctx, text, font, color, w, h)
+    {
+        ctx.font = font;
+        ctx.fillStyle = color;
+        ctx.fillText( text, w, h );
+    }
+
+    function setArrowToMesh(mesh, cw, c, t, o)
+    {
+        // right arrow
+        var geometry = new THREE.PlaneGeometry( 6.7*c.size, 6.7*c.size );
+        var arrow = getImageMesh( geometry, './img/arrow_final.png', 'right', 3 );
+        arrow.material.color.set( t[0].color );
+        arrow.add( getBackgroundMesh ( 9.7*c.size, 8.7*c.size, t[0].backgroundColor, o ) );
+        arrow.position.x = cw/2/6 + 5*c.size;
+        arrow.name = 'right';
+        mesh.add( arrow );
+
+        // left arrow
+        var geometry = new THREE.PlaneGeometry( 6.7*c.size, 6.7*c.size );
+        var arrow = getImageMesh( geometry, './img/arrow_final.png', 'left', 3 );
+        arrow.material.color.set( t[0].color );
+        arrow.rotation.z = Math.PI;
+        arrow.add( getBackgroundMesh ( 9.7*c.size, 8.7*c.size, t[0].backgroundColor, o ) );
+        arrow.position.x = -cw/2/6 - 5*c.size;
+        arrow.name = 'left';
+        mesh.add( arrow );
+    }
+
+    function createCanvasTextLine(ctx, text, font, color, x, y, w, h, o, fw, fh )
+    {
+        ctx.font = font;
+        if ( o != 0 ) createCanvasFillRect( ctx, x, y, w, h, o );
+        createCanvasText( ctx, text, font, color, fw, fh );
+        if ( o == 0 ) createCanvasStrokeText( ctx, text, fw, fh );
+    }
+
+    function getEmojiSubMesh(t, c, o, i, font)
     {
         var canvas = document.getElementById( "canvas" );
         var ctx = canvas.getContext( "2d" );
-        var text = /*'😃 ' + */t[0].text;
-        var font = c.speaker != undefined ? "500 40px Roboto" : "italic 500 40px Roboto";
         var ch = 50; // canvas height x line
         var fh = 40; // font height
+        var e1w = 0; // emoji width t[0]
+        var e2w = 0; // emoji width t[1]
+        var drawing;
+
+        // ToDo :  check Emoji
 
         ctx.font = font;
-        var width = ctx.measureText( text ).width;
+        var width = ctx.measureText( t[0].text ).width + e1w;
         var width2 = t[1] ? ctx.measureText( t[1].text ).width : 0;
-        canvas.width = (width > width2) ? width + 20 : width2 + 20;
+        canvas.width = ( width > width2 ) ? width + 20 : width2 + 20;
         canvas.height = ch*i;
 
-        ctx.font = font;
-        if ( o != 0 ) createCanvasFillRect( ctx, 0, 0, canvas.width, ch, o );
-        ctx.fillStyle = t[0].color;
-        ctx.fillText( text, ( canvas.width - width )/2, fh );
-        if ( o == 0 ) createCanvasStrokeText( ctx, text, ( canvas.width - width )/2, fh );
+        if ( t[0] ) createCanvasTextLine( ctx, t[0].text, font, t[0].color, 0, 0, e1w + canvas.width, ch, o, e1w + ( canvas.width - width )/2, fh );
+        if ( t[1] ) createCanvasTextLine( ctx, t[1].text, font, t[1].color, 0, ch, e2w + canvas.width, ch, o, e2w + ( canvas.width - width2 )/2, fh + ch );
 
-        if ( t[1] ) 
-        {
-            var text2 = t[1].text;
-            ctx.font = font;
-            if ( o != 0 ) createCanvasFillRect( ctx, 0, ch, canvas.width, ch, o );
-            ctx.fillStyle = t[1].color;     
-            ctx.fillText( text2, ( canvas.width - width2 )/2, fh + ch );
-            if ( o == 0 ) createCanvasStrokeText( ctx, text2, ( canvas.width - width2 )/2, fh + ch );
-        }
-
-        let texture = new THREE.CanvasTexture( canvas );
-        texture.needsUpdate = true;
-
-        var material = new THREE.MeshBasicMaterial( { map: texture,  transparent: true } );
+        var material = new THREE.MeshBasicMaterial( { map: new THREE.CanvasTexture( canvas ),  transparent: true } );
         var mesh = new THREE.Mesh( new THREE.PlaneGeometry( canvas.width/6, ch*i/6 ), material );
 
+        if ( c.subtitleIndicator == 'arrow' ) setArrowToMesh( mesh, canvas.width, c, t, o );
 
-        if ( c.subtitleIndicator == 'arrow' )
-        {
-            // right arrow
-            var geometry = new THREE.PlaneGeometry( 6.7*c.size, 6.7*c.size );
-            var arrow = getImageMesh(geometry, './img/arrow_final.png', 'right', 3)
-            arrow.material.color.set( t[0].color );
-            //var arrow = getArrowMesh( 6.7*c.size, 6.7*c.size, t.color, o );
-            arrow.add( getBackgroundMesh ( 9.7*c.size, 8.7*c.size, t[0].backgroundColor, o ) );
-            arrow.position.x = (canvas.width)/2/6 + 5*c.size;
-            arrow.name = 'right';
-
-            mesh.add( arrow );
-
-            // left arrow
-            var geometry = new THREE.PlaneGeometry( 6.7*c.size, 6.7*c.size );
-            var arrow = getImageMesh(geometry, './img/arrow_final.png', 'left', 3)
-            arrow.material.color.set( t[0].color );
-            //var arrow = getArrowMesh( 6.7*c.size, 6.7*c.size, t.color, o );
-            arrow.rotation.z = Math.PI;
-            arrow.add( getBackgroundMesh ( 9.7*c.size, 8.7*c.size, t[0].backgroundColor, o ) );
-            arrow.position.x = -(canvas.width)/2/6 - 5*c.size;
-            arrow.name = 'left';
-
-            mesh.add( arrow );
-        }
-
-        mesh.scale.set( c.area*c.size,c.area*c.size,1 );
-
+        mesh.scale.set( c.area*c.size, c.area*c.size, 1 );
         mesh.name = 'test';
         mesh.renderOrder = 3;
-        mesh.position.z = - c.z;
+        mesh.position.z = -c.z;
         mesh.position.y = c.y;
         mesh.visible = true;
 
         return mesh;
     }
 
-    function getEmojiSubMesh2(t, c, o, i)
+    function getEmojiSubMesh2(t, c, o, i, font)
     {
         var canvas = document.getElementById("canvas");
         var ctx = canvas.getContext("2d");
         var text = /*'😃 ' + */t[0].text;
-
+        var ch = 50; // canvas height x line
+        var fh = 40; // font height
         var drawing;
-        var il = 0;
+        var il = 0; // emoji width
 
         if ( text.indexOf("🤖") > -1 ) {
             text = text.replace("🤖", "");
             drawing = emoji_4;
             il = 63;
-            console.error(text)
         }
         else if ( text.indexOf("😃") > -1 ) {
             text = text.replace("😃", "");
             drawing = emoji_2;
             il = 63;
-            console.error(text)
         }
 
-        ctx.font = "500 40px Roboto";
+        ctx.font = font;
         var width = ctx.measureText( text ).width + il;
         var width2 = t[1] ? ctx.measureText( t[1].text ).width : 0;
         canvas.width = (width > width2) ? width + 20 : width2 + 20;
         canvas.height = 50*i;
 
-        ctx.font = "500 40px Roboto";
+        ctx.font = font;
         if ( o != 0 ) {ctx.fillStyle = 'rgba(0,0,0,' + o + ')';
         ctx.fillRect( 0, 0, il + canvas.width, 50);}
         ctx.fillStyle = t[0].color;
@@ -881,9 +870,7 @@ THREE.MediaObjectData = function () {
 
         if ( t[1] ) {
             var text2 = t[1].text;
-            //ctx.font = "500 30px Roboto";
-            //width2 = ctx.measureText( text2 ).width;
-            ctx.font = "500 40px Roboto";
+            ctx.font = font;
             if ( o != 0 ) {ctx.fillStyle = 'rgba(0,0,0,' + o + ')';
             ctx.fillRect( 0, 50, canvas.width, 50);}
             ctx.fillStyle = t[1].color;     
@@ -893,42 +880,13 @@ THREE.MediaObjectData = function () {
             ctx.strokeText(text2, (canvas.width - width2)/2, 40+50);}
         }
 
-
         let texture = new THREE.CanvasTexture(canvas);
         texture.needsUpdate = true;
 
         var material = new THREE.MeshBasicMaterial( { map: texture,  transparent: true } );
-
         var mesh = new THREE.Mesh( new THREE.PlaneGeometry( canvas.width/6, 50*i/6 ), material );
 
-
-        if ( c.subtitleIndicator == 'arrow' )
-        {
-            // right arrow
-            var geometry = new THREE.PlaneGeometry( 6.7*c.size, 6.7*c.size );
-            var arrow = getImageMesh(geometry, './img/arrow_final.png', 'right', 3)
-            arrow.material.color.set( t[0].color );
-            //var arrow = getArrowMesh( 6.7*c.size, 6.7*c.size, t.color, o );
-            arrow.add( getBackgroundMesh ( 9.7*c.size, 8.7*c.size, t[0].backgroundColor, o ) );
-            arrow.position.x = (canvas.width)/2/6 + 5*c.size;
-            arrow.name = 'right';
-
-            mesh.add( arrow );
-
-            // left arrow
-            var geometry = new THREE.PlaneGeometry( 6.7*c.size, 6.7*c.size );
-            var arrow = getImageMesh(geometry, './img/arrow_final.png', 'left', 3)
-            arrow.material.color.set( t[0].color );
-            //var arrow = getArrowMesh( 6.7*c.size, 6.7*c.size, t.color, o );
-            arrow.rotation.z = Math.PI;
-            arrow.add( getBackgroundMesh ( 9.7*c.size, 8.7*c.size, t[0].backgroundColor, o ) );
-            arrow.position.x = -(canvas.width)/2/6 - 5*c.size;
-            arrow.name = 'left';
-
-            mesh.add( arrow );
-        }
-
-
+        if ( c.subtitleIndicator == 'arrow' ) setArrowToMesh( mesh, canvas.width, c, t, o );
 
         mesh.scale.set( c.area,c.area,1 );
 
@@ -936,7 +894,6 @@ THREE.MediaObjectData = function () {
         mesh.renderOrder = 3;
         mesh.position.z = - c.z;
         mesh.position.y = c.y;
-        //camera.add( mesh );
         mesh.visible = true;
 
         return mesh;
@@ -1265,7 +1222,6 @@ THREE.MediaObjectData = function () {
 
         return mesh;
     }
-
 }
 
 THREE.MediaObjectData.prototype.constructor = THREE.MediaObjectData;

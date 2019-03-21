@@ -53,6 +53,8 @@ var mainContentURL = './resources/rapzember-young-hurn_edit.mp4';
 
 var list_contents;
 
+var __etype = 0;
+
 
 /**
  * Initializes the web player.
@@ -61,7 +63,8 @@ var list_contents;
 function init_webplayer() 
 {
 	console.log('Version: ' + _PlayerVersion);
-    //loadEmojisIcons();
+
+    loadEmojisIcons();
 
     var myhash = window.location.hash.split('#');
 

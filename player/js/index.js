@@ -56,9 +56,9 @@ var list_contents;
 
 /**
  * Initializes the web player.
- */	
+ */
 
-function init_webplayer() 
+function init_webplayer()
 {
 	console.log('Version: ' + _PlayerVersion);
     //loadEmojisIcons();
@@ -67,14 +67,14 @@ function init_webplayer()
 
     _AudioManager.initAmbisonicResources();
 
-    //_moData.setFont('./css/fonts/TiresiasScreenfont_Regular.json').then(() => { 
-    _moData.set2Font('./css/fonts/TiresiasScreenfont_Regular.json', './css/fonts/RobotoMedium_Italic.json' ).then(() => { 
+    //_moData.setFont('./css/fonts/TiresiasScreenfont_Regular.json').then(() => {
+    _moData.set2Font('./css/fonts/TiresiasScreenfont_Regular.json', './css/fonts/RobotoMedium_Italic.json' ).then(() => {
 
         $.getJSON('../content.json', function(json)
         {
             list_contents = json.contents;
 
-            if ( myhash && myhash[1] && myhash[1] < list_contents.length && list_contents[ myhash[1] ] && localStorage.ImAc_init == myhash[1] ) 
+            if ( myhash && myhash[1] && myhash[1] < list_contents.length && list_contents[ myhash[1] ] && localStorage.ImAc_init == myhash[1] )
             {
                 localStorage.removeItem('ImAc_init');
                 localStorage.ImAc_language ? MenuDictionary.setMainLanguage( localStorage.ImAc_language ) : MenuDictionary.setMainLanguage( 'en' );
@@ -84,7 +84,7 @@ function init_webplayer()
                 ///////////////////////////////////////////////////////////////
                 var cookieconf = readCookie("ImAcProfileConfig");
 
-                if ( cookieconf && cookieconf != null ) 
+                if ( cookieconf && cookieconf != null )
                 {
                     var iconf = JSON.parse( cookieconf );
                     subController.setSTConfig( iconf.ST );
@@ -99,7 +99,7 @@ function init_webplayer()
                 AplicationManager.init();
 
             }
-            else window.location = window.location.origin + window.location.pathname.slice(0, -7);       
+            else window.location = window.location.origin + window.location.pathname.slice(0, -7);
         });
     });
     //moData.setFont('./css/fonts/helvetiker_bold.typeface.json');

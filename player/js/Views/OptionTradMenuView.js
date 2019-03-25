@@ -6,9 +6,10 @@ function OptionTradMenuView() {
 		submenu.getObjectByName('onoptbutton').visible = data.isOnOffButtonVisible ? data.isOptEnabled : false;
 		submenu.getObjectByName('offoptbutton').visible = data.isOnOffButtonVisible ? !data.isOptEnabled : false;
 
-		submenu.getObjectByName('backMenuButton').visible = data.isFinalDrop ? !data.isOnOffButtonVisible : false;
+		//submenu.getObjectByName('backMenuButton').visible = data.isFinalDrop ? !data.isOnOffButtonVisible : false;
+		submenu.getObjectByName('backMenuButton').visible = data.isFinalDrop;
 		submenu.getObjectByName('backMenuButton').children[0].onexecute = data.backMenuButtonFunc;
-		
+
 		submenu.getObjectByName('onoptbutton').children[0].onexecute = data.onOptButtonFunc;
 		submenu.getObjectByName('offoptbutton').children[0].onexecute = data.offOptButtonFunc;
 
@@ -21,10 +22,10 @@ function OptionTradMenuView() {
 
 	 	submenu.getObjectByName('parentcolumndropdown').children = [];
 		data.parentColumnDropdown.forEach(function(element){
-			
+
 			element.position.x = -30/2+element.geometry.boundingBox.max.x+2;
             element.children[0].position.x = +30/2-element.geometry.boundingBox.max.x-2;
-            
+
             if(!data.isFinalDrop)
             {
 	            var next = AddArrowIcon();
@@ -38,8 +39,8 @@ function OptionTradMenuView() {
 			data.parentColumnDropdown.forEach(function(element){
 				element.material.color.set( 0xffffff );
 			});
-			submenu.getObjectByName(data.childColumnActiveOpt).material.color.set( 0xffff00 ); 
-		} 
+			submenu.getObjectByName(data.childColumnActiveOpt).material.color.set( 0xffff00 );
+		}
 		submenu.getObjectByName('tradoptionmenubackground').scale.set(1,data.parentColumnDropdown.length+1, 1);
 		submenu.getObjectByName('tradoptionmenubackground').position.set(0, data.parentColumnDropdown.length*5/2, 0);
 	}
@@ -48,7 +49,7 @@ function OptionTradMenuView() {
 	{
 		var submenu = scene.getObjectByName(data.name);
 		scene.getObjectByName("tradoptionmenutitle").remove(submenu.getObjectByName('opttitle'));
-		
+
 		var optTitle = new InteractiveElementModel();
         optTitle.width = 4.5;
         optTitle.height = 2.5;
@@ -79,7 +80,7 @@ function OptionTradMenuView() {
 	}
 
 	this.pressButtonFeedback = function(data)
-    {   
+    {
     	var submenu = scene.getObjectByName(data.name);
         interController.removeInteractiveObject(data.clickedButtonName);
 
@@ -90,9 +91,9 @@ function OptionTradMenuView() {
         sceneElement.scale.set( initScale.x*0.8, initScale.y*0.8, 1 );
 
         // Set color 'menuDefaultColor' (white), size to initial and add interactivity within 300ms to sceneElement;
-       setTimeout(function() { 
+       setTimeout(function() {
             sceneElement.material.color.set( menuDefaultColor );
-            sceneElement.scale.set( initScale.x*1.25, initScale.y*1.25, 1 ); 
+            sceneElement.scale.set( initScale.x*1.25, initScale.y*1.25, 1 );
             interController.addInteractiveObject( sceneElement );
         }, 300);
     }

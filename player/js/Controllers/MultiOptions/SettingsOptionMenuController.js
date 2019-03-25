@@ -1,9 +1,9 @@
 /**
- The SettingsOptionMenuController takes care for the 
+ The SettingsOptionMenuController takes care for the
 
  This controller has some core functionalities:
 
-    - Init (public) 
+    - Init (public)
     - Exit (public)
     - getMenuName (public)
     - getMenuIndex (public)
@@ -13,7 +13,7 @@
     - AddVisualFeedbackOnClick (private)
 
     ... and some unique functionalities of this particular controller:
-    
+
     - AddDropdownElementsLS (private)
     - AddDropdownElementsTrad (private)
     - UpdateDefaultLSMenuOption (private)
@@ -29,34 +29,34 @@
  */
 function SettingsOptionMenuController(menuType) {
 
-    var set = this;
+  var set = this;
 	var data;
 	var view;
 	var viewStructure;
 
 	var settingsLanguagesArray =  [
-									{name: 'settingsLanguageEngButton', value: 'English', default: MenuDictionary.checkMainLanguage( 'en' ) }, 
-									{name: 'settingsLanguageEspButton', value: 'Español', default: MenuDictionary.checkMainLanguage( 'es' )}, 
-									{name: 'settingsLanguageGerButton', value: 'Deutsch', default: MenuDictionary.checkMainLanguage( 'de' )}, 
+									{name: 'settingsLanguageEngButton', value: 'English', default: MenuDictionary.checkMainLanguage( 'en' ) },
+									{name: 'settingsLanguageEspButton', value: 'Español', default: MenuDictionary.checkMainLanguage( 'es' )},
+									{name: 'settingsLanguageGerButton', value: 'Deutsch', default: MenuDictionary.checkMainLanguage( 'de' )},
 									{name: 'settingsLanguageCatButton', value: 'Català', default: MenuDictionary.checkMainLanguage( 'ca' )}];
 
 	var voiceControlArray = [
-                                    {name: 'voiceControlOnButton', value: 'On', default: false}, 
+                                    {name: 'voiceControlOnButton', value: 'On', default: false},
                                     {name: 'voiceControlOffButton', value: 'Off', default: true}];
 
 	var settingsUserProfileArray = [
 									{name: 'saveUserProfileButton', value: 'Save', default: false}];
 
     var settingsMenuTypeArray =    [
-                                    {name: 'settingsMenuTraditionalButton', value: 'Traditional', default: settingsMgr.checkMenuType(2)}, 
-                                    {name: 'settingsMenuLowSightedButton', value: 'Enhanced-Accessibility', default: settingsMgr.checkMenuType(1)}];  
+                                    {name: 'settingsMenuTraditionalButton', value: 'Traditional', default: settingsMgr.checkMenuType(2)},
+                                    {name: 'settingsMenuLowSightedButton', value: 'Enhanced-Accessibility', default: settingsMgr.checkMenuType(1)}];
 
     var settingsMenuPointerArray = [
                                     {name: 'settingsMenuPointerLarge', value: 'Large', default: false},
                                     {name: 'settingsMenuPointerMedium', value: 'Medium', default: true},
-                                    {name: 'settingsMenuPointerSmall', value: 'Small', default: false}];                               
+                                    {name: 'settingsMenuPointerSmall', value: 'Small', default: false}];
 
-    var parentColumnDropdownElements = [ 
+    var parentColumnDropdownElements = [
                                     {name: 'settingsLanguages', value: 'Language', options: settingsLanguagesArray},
                                     {name: 'settingsVoiceControl', value: 'Voicecontrol', options: voiceControlArray},
                                     {name: 'settingsUserProfile', value: 'UserProfile', options: settingsUserProfileArray},
@@ -69,13 +69,13 @@ function SettingsOptionMenuController(menuType) {
  */
 	this.Init = function(){
 
-		data = GetData();  
+		data = GetData();
 		UpdateData();
 
         switch(menuType)
         {
             // LOW SIGHTED
-            case 1: 
+            case 1:
             default:
                 data.name = 'settingsoptmenu';
                 view = new OptionLSMenuView();
@@ -91,7 +91,7 @@ function SettingsOptionMenuController(menuType) {
 		viewStructure = scene.getObjectByName(data.name);
 		viewStructure.visible = true;
 
-		view.UpdateView(data); 
+		view.UpdateView(data);
 
 		AddInteractivityToMenuElements();
 	}
@@ -116,7 +116,7 @@ function SettingsOptionMenuController(menuType) {
             if(viewStructure.getObjectByName('childcolumnhoritzontallines')) viewStructure.getObjectByName('childcolumnhoritzontallines').children = [];
             data.childColumnActiveOpt = undefined;
     	}
-        
+
     }
 
 /**
@@ -162,7 +162,7 @@ function SettingsOptionMenuController(menuType) {
     function UpdateData()
     {
         data.isOptEnabled = true;
-        data.isOnOffButtonVisible = false;
+        //data.isOnOffButtonVisible = false;
 
         data.lsOptEnabledLabelName = 'settingsButton';
         data.lsOptEnabledLabelValue = './img/menu/settings_icon.png';
@@ -170,25 +170,26 @@ function SettingsOptionMenuController(menuType) {
         switch(menuType)
         {
             // LOW SIGHTED
-            case 1: 
+            case 1:
             default:
                 data.isUpDownArrowsVisible = parentColumnDropdownElements.length > 4 ? true : false;
 
                 data.parentColumnHoritzontalLineDivisions = getHoritzontalLineDivisions(125, 125*9/16, 0xffffff, 4, 1);
 
-                if(!data.parentColumnDropdown) data.parentColumnDropdown = AddDropdownElementsLS(parentColumnDropdownElements);  
+                if(!data.parentColumnDropdown) data.parentColumnDropdown = AddDropdownElementsLS(parentColumnDropdownElements);
 
                 data.backMenuButtonFunc = function(){ AddVisualFeedbackOnClick('backMenuButton', function(){ menuMgr.NavigateBackMenu()} )};
                 data.closeMenuButtonFunc = function(){ AddVisualFeedbackOnClick('closeMenuButton', function(){ menuMgr.ResetViews()} )};
                 break;
 
             // TRADITIONAL
-            case 2: 
+            case 2:
                 data.title = MenuDictionary.translate('Settings');
-                data.parentColumnDropdown = AddDropdownElementsTrad(parentColumnDropdownElements);  
+                //data.parentColumnDropdown = AddDropdownElementsTrad(parentColumnDropdownElements);
+                data.parentColumnDropdown = AddDropdownOptions(settingsDropdownOpt);
                 data.backMenuButtonFunc = function(){ AddVisualFeedbackOnClick('backMenuButton', function(){ menuMgr.setOptActiveIndex(0); menuMgr.Load(set)} )};
                 break;
-        }   
+        }
     }
 
 /**
@@ -233,20 +234,20 @@ function SettingsOptionMenuController(menuType) {
         elements.forEach(function(element, index){
             var factor = (index*2)+1;
 
-            var dropdownIE = new InteractiveElementModel();  
+            var dropdownIE = new InteractiveElementModel();
 
             if(element.options)
             {
                 h = 125*9/16;
                 dropdownIE.onexecute =  function(){
-                    data.childColumnActiveOpt = undefined;  
+                    data.childColumnActiveOpt = undefined;
                     data.parentColumnActiveOpt = element.name;
-                    data.childColumnDropdown = AddDropdownElementsLS(element.options); 
-                    data.childColumnHoritzontalLineDivisions = getHoritzontalLineDivisions(125, 4*(125*9/16)/6, 0xffffff, element.options.length, 2); 
+                    data.childColumnDropdown = AddDropdownElementsLS(element.options);
+                    data.childColumnHoritzontalLineDivisions = getHoritzontalLineDivisions(125, 4*(125*9/16)/6, 0xffffff, element.options.length, 2);
                     UpdateData();
-                    setTimeout(function(){view.UpdateView(data)}, 100);      
+                    setTimeout(function(){view.UpdateView(data)}, 100);
                 };
-            } 
+            }
             else
             {
                 h = 4*(125*9/16)/6;
@@ -256,7 +257,7 @@ function SettingsOptionMenuController(menuType) {
                     view.UpdateView(data)
                     MenuFunctionsManager.getButtonFunctionByName( element.name )();
                 };
-            } 
+            }
             dropdownIE.width = 125/3;
             dropdownIE.height =  elements.length>4 ? h/4 : h/elements.length;
             dropdownIE.name = element.name;
@@ -266,7 +267,7 @@ function SettingsOptionMenuController(menuType) {
             dropdownIE.textSize =  5;
             dropdownIE.visible = true;
             dropdownIE.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(dropdownIE.width, dropdownIE.height), new THREE.MeshBasicMaterial({visible:  false}));
-            
+
             dropdownIE.position = new THREE.Vector3(0, ( h/2-factor*h/(elements.length>4 ? 4*2 : elements.length*2) ), 0.01);
             dropdownInteractiveElements.push(dropdownIE.create())
         });
@@ -298,15 +299,15 @@ function SettingsOptionMenuController(menuType) {
             dropdownIE.color = element.default ? 0xffff00 : 0xffffff;
             dropdownIE.textSize =  1.5;
             dropdownIE.visible = true;
-            
+
             dropdownIE.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(dropdownIE.width, dropdownIE.height), new THREE.MeshBasicMaterial({visible:  false}));
-            
+
             if(element.options)
             {
                 //dropdownIE.visible = element.visible;
                 data.isFinalDrop = false;
                 data.childColumnActiveOpt = undefined;
-                
+
                 dropdownIE.onexecute =  function()
                 {
                     data.title = MenuDictionary.translate( element.value );
@@ -315,19 +316,19 @@ function SettingsOptionMenuController(menuType) {
                     data.parentColumnDropdown = AddDropdownElementsTrad(element.options);
                     view.UpdateView(data)
                 };
-            } 
+            }
             else
             {
                 data.isFinalDrop = true;
                 dropdownIE.onexecute =  function()
-                {                    
+                {
                     UpdateDefaultLSMenuOption(elements,index);
                     data.childColumnActiveOpt = element.name;
                     view.UpdateView(data)
                     MenuFunctionsManager.getButtonFunctionByName( element.name )();
                 };
-            } 
-            
+            }
+
             dropdownIE.position = new THREE.Vector3(0, h - factor*5, 0.01);
 
             dropdownInteractiveElements.push(dropdownIE.create())
@@ -368,7 +369,7 @@ function SettingsOptionMenuController(menuType) {
         var material = new THREE.LineBasicMaterial({color: color, linewidth: 1});
         var geometry = new THREE.Geometry();
         geometry.vertices.push(new THREE.Vector3( -w/6, 0, 0 ),new THREE.Vector3( w/6, 0, 0 ));
-        
+
         var line = new THREE.Line( geometry, material );
 
         switch( numberofdivisions )
@@ -386,9 +387,9 @@ function SettingsOptionMenuController(menuType) {
                 line2.position.y -= h/6;
                 if( row > 1 )
                     {
-                      line1.position.x +=  w/3;  
-                      line2.position.x +=  w/3;  
-                    } 
+                      line1.position.x +=  w/3;
+                      line2.position.x +=  w/3;
+                    }
                 linesHoritzontalGroup.push(line1);
                 linesHoritzontalGroup.push(line2);
                 return linesHoritzontalGroup;
@@ -401,8 +402,8 @@ function SettingsOptionMenuController(menuType) {
                 if( row > 1 )
                 {
                   line.position.x += w/3;
-                  line2.position.x += w/3; 
-                  line3.position.x += w/3;  
+                  line2.position.x += w/3;
+                  line3.position.x += w/3;
                 }
                 else if ( row == 0 )
                 {
@@ -410,7 +411,7 @@ function SettingsOptionMenuController(menuType) {
                     line4.position.x -= w/3;
                     line4.position.y += h/4;
                     linesHoritzontalGroup.push(line4);
-                } 
+                }
                 linesHoritzontalGroup.push(line);
                 linesHoritzontalGroup.push(line2);
                 linesHoritzontalGroup.push(line3);
@@ -420,4 +421,45 @@ function SettingsOptionMenuController(menuType) {
                 return linesHoritzontalGroup;
         }
     }
+
+/**
+ * Adds a dropdown elements trad.
+ *
+ * @class      AddDropdownElementsTrad (name)
+ * @param      {<type>}  elements  The elements
+ */
+  function AddDropdownOptions(menuOpts){
+    let dropdownInteractiveElements =  [];
+    const h = 5*menuOpts.options.length;
+    //data.titleHeight = elements.options.length * 5;
+
+    menuOpts.options.forEach(function(opt, index){
+      let factor = (index+1);
+      data.isFinalDrop = false;
+      let dropdownIE = new InteractiveElementModel();
+      dropdownIE.width = 30;
+      dropdownIE.height =  4;
+      dropdownIE.name = opt.optId;
+      dropdownIE.type =  'text';
+      dropdownIE.value = opt.text; //MenuDictionary.translate( element.text ); //AudioManager.getVolume();
+      dropdownIE.color =  0xffffff; //element.default ? 0xffff00 : 0xffffff;
+      dropdownIE.textSize =  1.5;
+      dropdownIE.visible = true;
+      dropdownIE.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(dropdownIE.width, dropdownIE.height), new THREE.MeshBasicMaterial({visible:  false}));
+      dropdownIE.onexecute =  opt.function;
+
+      dropdownIE.position = new THREE.Vector3(0, h - factor*5, 0.01);
+
+      dropdownInteractiveElements.push(dropdownIE.create())
+    });
+
+    return dropdownInteractiveElements
+  }
+
+
+  this.updateDropdownOptions = function(menuOpts){
+    data.parentColumnDropdown = AddDropdownOptions(menuOpts);
+    //data.isFinalDrop = false;
+    view.UpdateView(data);
+  }
 }

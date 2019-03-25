@@ -1,9 +1,9 @@
 /*
- The SettingsLSMenuController takes care for the 
+ The SettingsLSMenuController takes care for the
 
  This controller has some core functionalities:
 
-    - Init (public) 
+    - Init (public)
     - Exit (public)
     - getMenuName (public)
     - GetData (private)
@@ -26,20 +26,19 @@ function SettingsLSMenuController(menuType) {
 
 /**
  * This function initializes the data model with GetData() and updates the values with UpdateData() function.
- * It loads the viewStructure created in the MenuManager and turns its visibility to true. 
- * It loads the view and updates any element that has changed with the new data in UpdateView(data). 
+ * It loads the viewStructure created in the MenuManager and turns its visibility to true.
+ * It loads the view and updates any element that has changed with the new data in UpdateView(data).
  * Adds all the visible interactive elements to the 'interactiveListObjects' array stated in Managers/InteractionsController.js
  *
  * @function      Init (name)
  */
 	this.Init = function(){
-
 		data = GetData();
 		UpdateData();
 		viewStructure = scene.getObjectByName(data.name);
 		viewStructure.visible = true;
 		view = new SettingsLSMenuView();
-		view.UpdateView(data); 
+		view.UpdateView(data);
 
 		AddInteractivityToMenuElements();
 	}
@@ -47,33 +46,30 @@ function SettingsLSMenuController(menuType) {
 /**
  * This function 'closes' the submenu page.
  * Removes all the interactive elements from the 'interactiveListObjects' array stated in Managers/InteractionsController.js
- * Hides the viewStructure. 
+ * Hides the viewStructure.
  * This function is called when closing the menu or when navigating through the different menus in the Enhaced-Accessibility.
  *
  * @function      Exit (name)
  */
-	this.Exit = function()
-    {
-        menuMgr.setOptActiveIndex(0);
-        // Works if the viewStructure is loaded.
-    	if(viewStructure)
-    	{
-	    	viewStructure.visible = false;
-	    	viewStructure.children.forEach(function(intrElement){
-	    		interController.removeInteractiveObject(intrElement.name);
-	    	})
-    	}
-    }
+	this.Exit = function(){
+  	menuMgr.setOptActiveIndex(0);
+    // Works if the viewStructure is loaded.
+  	if(viewStructure){
+    	viewStructure.visible = false;
+    	viewStructure.children.forEach(function(intrElement){
+    		interController.removeInteractiveObject(intrElement.name);
+    	})
+  	}
+  }
 
 /**
  * Gets the menu name.
  *
  * @return     {<type>}  The menu name.
  */
-    this.getMenuName = function()
-    {
-    	return data.name;
-    }
+  this.getMenuName = function(){
+  	return data.name;
+  }
 
 /**
  * Gets the data.
@@ -81,13 +77,11 @@ function SettingsLSMenuController(menuType) {
  * @class      GetData (name)
  * @return     {SettingsLSMenuModel}  The data.
  */
-    function GetData()
-	{
-	    if (data == null)
-	    {
-	        data = new SettingsLSMenuModel();
-	    }
-	    return data;
+  function GetData(){
+	  if (data == null){
+      data = new SettingsLSMenuModel();
+	  }
+    return data;
 	}
 
 /**
@@ -95,30 +89,28 @@ function SettingsLSMenuController(menuType) {
  *
  * @class      UpdateData (name)
  */
-	function UpdateData()
-    {
+	function UpdateData(){
 		data.closeMenuButtonFunc = function(){ AddVisualFeedbackOnClick('closeMenuButton', function(){ menuMgr.ResetViews()} )};
-        data.openSettingsMenuButtonFunc = function(){ AddVisualFeedbackOnClick('settingsButton', function(){ menuMgr.Load(SettingsOptionCtrl)} )};   
-        data.backMenuButtonFunc = function(){ AddVisualFeedbackOnClick('backMenuButton', function(){ menuMgr.NavigateBackMenu()} )};
-        data.forwardMenuButtonFunc = function(){ AddVisualFeedbackOnClick('forwardMenuButton', function(){menuMgr.NavigateForwardMenu()} )};
-        //data.previewButtonFunc = function(){ AddVisualFeedbackOnClick('previewMenuButton', function(){menuMgr.OpenPreview()} )};
-        data.isPreviewVisible = false;
-    }
+    data.openSettingsMenuButtonFunc = function(){ AddVisualFeedbackOnClick('settingsButton', function(){ menuMgr.Load(SettingsOptionCtrl)} )};
+    data.backMenuButtonFunc = function(){ AddVisualFeedbackOnClick('backMenuButton', function(){ menuMgr.NavigateBackMenu()} )};
+    data.forwardMenuButtonFunc = function(){ AddVisualFeedbackOnClick('forwardMenuButton', function(){menuMgr.NavigateForwardMenu()} )};
+    //data.previewButtonFunc = function(){ AddVisualFeedbackOnClick('previewMenuButton', function(){menuMgr.OpenPreview()} )};
+    data.isPreviewVisible = false;
+  }
 
 /**
  * Adds interactivity to menu elements.
  *
  * @class      AddInteractivityToMenuElements (name)
  */
-    function AddInteractivityToMenuElements()
-    {
-    	viewStructure.children.forEach(function(intrElement){
-    		if(intrElement.visible)
-    		{
-    			interController.addInteractiveObject(intrElement);
-    		}
-    	})
-    }
+  function AddInteractivityToMenuElements(){
+  	viewStructure.children.forEach(function(intrElement){
+  		if(intrElement.visible)
+  		{
+  			interController.addInteractiveObject(intrElement);
+  		}
+  	})
+  }
 
 /**
  * Adds a visual feedback on click.
@@ -127,10 +119,9 @@ function SettingsLSMenuController(menuType) {
  * @param      {<type>}    buttonName  The button name
  * @param      {Function}  callback    The callback
  */
-    function AddVisualFeedbackOnClick(buttonName, callback)
-    {
-    	data.clickedButtonName = buttonName;
+  function AddVisualFeedbackOnClick(buttonName, callback){
+  	data.clickedButtonName = buttonName;
 		view.pressButtonFeedback(data);
 		setTimeout(callback, 300);
-    }
+  }
 }

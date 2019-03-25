@@ -27,7 +27,7 @@ function MenuManager() {
 
         menuWidth = 125;
         menuHeight = 125*9/16;
-        
+
         menuParent = _isHMD ? scene : camera;
 
         // Low sighted menuType = 1; Traditional menuType = 2;
@@ -80,10 +80,10 @@ function MenuManager() {
                 return menuMgr.Load(playpauseCtrl)
 
             case multiOptionsCtrl.getMenuName():
-                return menuMgr.Load(volumeCtrl) 
+                return menuMgr.Load(volumeCtrl)
 
             case settingsCtrl.getMenuName():
-                return menuMgr.Load(multiOptionsCtrl)            
+                return menuMgr.Load(multiOptionsCtrl)
 
             case STOptionCtrl.getMenuName():
             case SLOptionCtrl.getMenuName():
@@ -93,7 +93,7 @@ function MenuManager() {
 
             case SettingsOptionCtrl.getMenuName():
                 return menuMgr.Load(settingsCtrl)
-        } 
+        }
     }
 
 /**
@@ -168,7 +168,7 @@ function MenuManager() {
                 };
                 case 2:
                 {
-                    // Compare the saved index of the traditional option dropdown with the new controller index. 
+                    // Compare the saved index of the traditional option dropdown with the new controller index.
                     // If the index is deferent change the variable and initialize the doprdown
                     if(optActiveIndex != controller.getMenuIndex())
                     {
@@ -195,7 +195,7 @@ function MenuManager() {
  * @class      ResetViews (name)
  */
     this.ResetViews = function()
-    {  
+    {
         actualCtrl = '';
         optActiveIndex = 0;
 
@@ -203,12 +203,12 @@ function MenuManager() {
             controller.Exit();
         });
 
-        if ( scene.getObjectByName( "pointer2" ) && _isHMD ) 
+        if ( scene.getObjectByName( "pointer2" ) && _isHMD )
         {
             scene.getObjectByName( "pointer2" ).visible = false;
         }
 
-        else if ( scene.getObjectByName( "pointer" ) && _isHMD ) 
+        else if ( scene.getObjectByName( "pointer" ) && _isHMD )
         {
             scene.getObjectByName( "pointer" ).visible = false;
             if ( menuType == 2 ) scene.getObjectByName('pointer').scale.set(1*_pointerSize,1*_pointerSize,1*_pointerSize)
@@ -249,7 +249,7 @@ function MenuManager() {
                 this.material.color.setHex( 0xffffff );
             },
             onGazeLong: function(){
-            
+
                 menuMgr.initFirstMenuState(); // Initialize the first menu state when the time has expired.
 
             }
@@ -262,7 +262,7 @@ function MenuManager() {
  * This function return the initial state for the menu.
  * For the Low Sighted menu the initial state is the PlayPause menu.
  * For the Traditional menu the initial state is init all the controllers and exit the submenus.
- * 
+ *
  * @function initFirstMenuState (name)
 */
     this.initFirstMenuState = function()
@@ -281,7 +281,7 @@ function MenuManager() {
                 menuMgr.Load(playpauseCtrl);
                 playpauseCtrl.pauseAllFunc();
 
-                if (_isHMD) 
+                if (_isHMD)
                 {
                     resetMenuPosition( menuParent.getObjectByName('playpausemenu') );
                     resetMenuPosition( menuParent.getObjectByName('volumemenu') )
@@ -305,7 +305,7 @@ function MenuManager() {
                 ASTOptionCtrl.Exit();
                 SettingsOptionCtrl.Exit();
 
-                if (_isHMD) 
+                if (_isHMD)
                 {
                     resetMenuPosition( menuParent.getObjectByName('traditionalmenu') )
                 }
@@ -314,7 +314,7 @@ function MenuManager() {
 
                 break;
             };
-        }   
+        }
     }
 
 /**
@@ -324,7 +324,7 @@ function MenuManager() {
  */
     this.OpenPreview = function()
     {
-        
+
         menuParent.add(vwStrucMMngr.Preview('preview'));
         previewCtrl = new PreviewController(menuType);
 
@@ -369,7 +369,7 @@ function MenuManager() {
         {
             case 1: // LOW SIGHTED
             default:
-            {                
+            {
                 menuParent.add(vwStrucMMngr.PlayPauseLowSightedMenu('playpausemenu'));
                 menuParent.add(vwStrucMMngr.VolumeLowSightedMenu('volumemenu'));
                 menuParent.add(vwStrucMMngr.SettingsLowSightedMenu('settingsmenu'));
@@ -397,7 +397,7 @@ function MenuManager() {
     {
         switch(menuType)
         {
-            
+
             case 1: // LOW SIGHTED
             default:
             {
@@ -426,8 +426,8 @@ function MenuManager() {
     {
         controllers = [];
 
-        playpauseCtrl = new PlayPauseLSMenuController();
-        controllers.push(playpauseCtrl);  
+        playpauseCtrl = new PlayPauseMenuController();
+        controllers.push(playpauseCtrl);
 
         volumeCtrl = new VolumeLSMenuController();
         controllers.push(volumeCtrl);
@@ -435,7 +435,7 @@ function MenuManager() {
         settingsCtrl = new SettingsLSMenuController(menuType);
         controllers.push(settingsCtrl);
 
-        multiOptionsCtrl = new MultiOptionsLSMenuController(menuType);
+        multiOptionsCtrl = new AccessibilityOptionsMenuController(menuType);
         controllers.push(multiOptionsCtrl);
 
         STOptionCtrl = new STOptionMenuController(menuType);
@@ -463,4 +463,16 @@ function MenuManager() {
             controller.Init();
         });
     }
+
+/**
+ * Adds interactivity to menu elements.
+ *
+ * @class      AddInteractivityToMenuElements (name)
+ */
+  this.AddInteractionIfVisible = function(viewStructure){
+    viewStructure.children.forEach(function(intrElement){
+      if(intrElement.visible) interController.addInteractiveObject(intrElement);
+      else interController.removeInteractiveObject(intrElement.name)
+    });
+  };
 }

@@ -1,19 +1,18 @@
 /*
- The VolumeLSMenuController takes care for the 
+ The VolumeLSMenuController takes care for the
 
  This controller has some core functionalities:
 
-    - Init (public) 
+    - Init (public)
     - Exit (public)
     - getMenuName (public)
     - getMenuIndex (public)
     - GetData (private)
     - UpdateData (private)
-    - AddInteractivityToMenuElements (private)
     - AddVisualFeedbackOnClick (private)
 
     ... and some unique functionalities of this particular controller:
-    
+
     - ChangeVolumeFunc (private)
     - MuteUnmuteVolumeFunc (private)
     - volumeLevelDisplayLogic (private)
@@ -31,29 +30,28 @@ function VolumeLSMenuController() {
 
 /**
  * This function initializes the data model with GetData() and updates the values with UpdateData() function.
- * It loads the viewStructure created in the MenuManager and turns its visibility to true. 
- * It loads the view and updates any element that has changed with the new data in UpdateView(data). 
+ * It loads the viewStructure created in the MenuManager and turns its visibility to true.
+ * It loads the view and updates any element that has changed with the new data in UpdateView(data).
  * Adds all the visible interactive elements to the 'interactiveListObjects' array stated in Managers/InteractionsController.js
  *
  * @function      Init (name)
  */
 	this.Init = function(){
-
 		data = GetData();
 		UpdateData();
 		viewStructure = scene.getObjectByName(data.name);
 		viewStructure.visible = true;
 
 		view = new VolumeLSMenuView();
-		view.UpdateView(data); 
+		view.UpdateView(data);
 
-		AddInteractivityToMenuElements();
+		menuMgr.AddInteractionIfVisible(viewStructure);
 	}
 
 /**
  * This function 'closes' the submenu page.
  * Removes all the interactive elements from the 'interactiveListObjects' array stated in Managers/InteractionsController.js
- * Hides the viewStructure. 
+ * Hides the viewStructure.
  * This function is called when closing the menu or when navigating through the different menus in the Enhaced-Accessibility.
  *
  * @function      Exit (name)
@@ -96,106 +94,84 @@ function VolumeLSMenuController() {
  * @class      GetData (name)
  * @return     {VolumeLSMenuModel}  The data.
  */
-    function GetData()
-	{
-	    if (data == null)
-	    {
-	        data = new VolumeLSMenuModel();
-	    }
-	    return data;
+  function GetData(){
+    if (data == null){
+      data = new VolumeLSMenuModel();
+    }
+    return data;
 	}
 
 /**
  * { function_description }
  *
- * @class      UpdateData (name)
+ * @function      UpdateData (name)
  */
-	function UpdateData()
-    {
-    	data.volumeLevel = _AudioManager.getVolume()*100+'%';
-    	data.isVolumeLevelVisible = false;
+	function UpdateData(){
+  	data.volumeLevel = _AudioManager.getVolume()*100+'%';
+  	data.isVolumeLevelVisible = false;
 		data.isMuted = _AudioManager.isAudioMuted();
 
-		data.muteUnmuteMenuButtonFunc = function(){ AddVisualFeedbackOnClick(_AudioManager.isAudioMuted() ? 'unmuteVolumeButton' : 'muteVolumeButton', function(){ MuteUnmuteVolumeFunc()} )}; 
+		data.muteUnmuteMenuButtonFunc = function(){ AddVisualFeedbackOnClick(_AudioManager.isAudioMuted() ? 'unmuteVolumeButton' : 'muteVolumeButton', function(){ MuteUnmuteVolumeFunc()} )};
 		data.plusVolumeMenuButtonFunc = function(){ AddVisualFeedbackOnClick('plusVolumeButton', function(){ ChangeVolumeFunc(true)} )};
 		data.minusVolumeMenuButtonFunc = function(){ AddVisualFeedbackOnClick('minusVolumeButton', function(){ ChangeVolumeFunc(false)} )};
 		data.backMenuButtonFunc = function(){ AddVisualFeedbackOnClick('backMenuButton', function(){ menuMgr.NavigateBackMenu()} )};
 		data.forwardMenuButtonFunc = function(){ AddVisualFeedbackOnClick('forwardMenuButton', function(){ menuMgr.NavigateForwardMenu()} )};
 		data.closeMenuButtonFunc = function(){ AddVisualFeedbackOnClick('closeMenuButton', function(){ menuMgr.ResetViews()} )};
-        //data.previewButtonFunc = function(){ AddVisualFeedbackOnClick('previewMenuButton', function(){menuMgr.OpenPreview()} )};
-        data.isPreviewVisible = false;
-    }
-
-/**
- * Adds interactivity to menu elements.
- *
- * @class      AddInteractivityToMenuElements (name)
- */
-    function AddInteractivityToMenuElements()
-    {
-    	viewStructure.children.forEach(function(intrElement){
-    		if(intrElement.visible)
-    		{
-    			interController.addInteractiveObject(intrElement);
-    		}
-    	})
-    }
+    //data.previewButtonFunc = function(){ AddVisualFeedbackOnClick('previewMenuButton', function(){menuMgr.OpenPreview()} )};
+    data.isPreviewVisible = false;
+  }
 
 /**
  * Adds a visual feedback on click.
  *
- * @class      AddVisualFeedbackOnClick (name)
+ * @function      AddVisualFeedbackOnClick (name)
  * @param      {<type>}    buttonName  The button name
  * @param      {Function}  callback    The callback
  */
-	function AddVisualFeedbackOnClick(buttonName, callback)
-    {
-    	data.clickedButtonName = buttonName;
+	function AddVisualFeedbackOnClick(buttonName, callback){
+  	data.clickedButtonName = buttonName;
 		view.pressButtonFeedback(data);
 		setTimeout(callback, 300);
-    }
+  }
 
 /**
  * { function_description }
  *
- * @class      ChangeVolumeFunc (name)
+ * @function      ChangeVolumeFunc (name)
  * @param      {number}  plus    The plus
  */
-	function ChangeVolumeFunc(plus)
-    {
-    	var sign = plus ? 1 : -1;
-        _AudioManager.changeVolume( 0.1*sign );
-        volumeLevelDisplayLogic();
-    };
+	function ChangeVolumeFunc(plus){
+  	var sign = plus ? 1 : -1;
+    _AudioManager.changeVolume( 0.1*sign );
+    volumeLevelDisplayLogic();
+  };
 
 /**
- * { function_description }
- *
- * @class      MuteUnmuteVolumeFunc (name)
+ * [MuteUnmuteVolumeFunc description]
+ * @function
  */
-    function MuteUnmuteVolumeFunc()
-    {
+  function MuteUnmuteVolumeFunc(){
 		_AudioManager.isAudioMuted() ? _AudioManager.setunmute() : _AudioManager.setmute();
-        
 		UpdateData();
 		view.UpdateView(data);
-    	AddInteractivityToMenuElements();
-    };
+    menuMgr.AddInteractionIfVisible(viewStructure);
+  };
 
 /**
- * { function_description }
+ * [volumeLevelDisplayLogic description]
+ * @function
+ * @return {[type]} [description]
  */
-    function volumeLevelDisplayLogic()
-    {
+  function volumeLevelDisplayLogic(){
 		data.volumeLevel = _AudioManager.getVolume();
-        data.isVolumeLevelVisible =  true;
-        view.UpdateView(data);
+    data.isVolumeLevelVisible =  true;
+    view.UpdateView(data);
 
-        setTimeout(function(){ 
-        	(_AudioManager.getVolume()>0) ? _AudioManager.setunmute() : _AudioManager.setmute();
-        	data.isMuted = _AudioManager.isAudioMuted();
+    setTimeout(function(){
+    	(_AudioManager.getVolume()>0) ? _AudioManager.setunmute() : _AudioManager.setmute();
+    	data.isMuted = _AudioManager.isAudioMuted();
 			data.isVolumeLevelVisible =  false;
 			view.UpdateView(data);
-        }, 500);
-    };
+    }, 500);
+  };
 }

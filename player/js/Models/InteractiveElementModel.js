@@ -1,4 +1,7 @@
-
+/**
+ * [InteractiveElementModel description]
+ * @constructor
+ */
 function InteractiveElementModel()
 {
 	this.width;
@@ -15,6 +18,10 @@ function InteractiveElementModel()
 	this.onexecute;
 }
 
+/**
+ * [description]
+ * @return {[type]} [description]
+ */
 InteractiveElementModel.prototype.create = function()
 {
 	switch(this.type){
@@ -28,55 +35,67 @@ InteractiveElementModel.prototype.create = function()
 	}
 }
 
-function createTextIE (element)
-{
-    var shape = new THREE.BufferGeometry();
-    var material = new THREE.MeshBasicMaterial( { color: element.color} );
-    var shapes = _moData.getFont().generateShapes( element.value, element.textSize);
-    var geometry = new THREE.ShapeGeometry( shapes );
+/**
+ * [createTextIE description]
+ * @param  {[type]} element [description]
+ * @return {[type]}         [description]
+ */
+function createTextIE (element){
+  var shape = new THREE.BufferGeometry();
+  var material = new THREE.MeshBasicMaterial( { color: element.color} );
+  var shapes = _moData.getFont().generateShapes( element.value, element.textSize);
+  var geometry = new THREE.ShapeGeometry( shapes );
 
-    geometry.computeBoundingBox();
-    shape.fromGeometry( geometry );
-    shape.center();
+  geometry.computeBoundingBox();
+  shape.fromGeometry( geometry );
+  shape.center();
 
 	var mesh = new THREE.Mesh(shape, material);
 
-    return addColiderMesh(element, mesh);
+  return addColiderMesh(element, mesh);
 }
 
-function createImageIE(element)
-{
+/**
+ * [createImageIE description]
+ * @param  {[type]} element [description]
+ * @return {[type]}         [description]
+ */
+function createImageIE(element){
 	var geometry = new THREE.PlaneGeometry(element.width, element.height);
-    var loader = new THREE.TextureLoader();
-    var texture = loader.load(element.value);
+	var loader = new THREE.TextureLoader();
+  var texture = loader.load(element.value);
 
-    texture.minFilter = THREE.LinearFilter;
-    texture.format = THREE.RGBAFormat;
-    
-    var material = new THREE.MeshBasicMaterial( { map: texture, transparent: true, side: THREE.FrontSide } );
-    var mesh = new THREE.Mesh( geometry, material );
-    if(element.rotation) mesh.rotation.z = element.rotation;
+  texture.minFilter = THREE.LinearFilter;
+  texture.format = THREE.RGBAFormat;
 
-    return addColiderMesh(element, mesh);
+  var material = new THREE.MeshBasicMaterial( { map: texture, transparent: true, side: THREE.FrontSide } );
+  var mesh = new THREE.Mesh( geometry, material );
+  if(element.rotation) mesh.rotation.z = element.rotation;
+
+	return addColiderMesh(element, mesh);
 }
 
-function addColiderMesh(element, mesh)
-{
-	if(element.interactiveArea)
-	{
+/**
+ * [addColiderMesh description]
+ * @param {[type]} element [description]
+ * @param {[type]} mesh    [description]
+ */
+function addColiderMesh(element, mesh){
+	if(element.interactiveArea){
 		var coliderMesh = element.interactiveArea;
 		if(element.rotation) coliderMesh.rotation.z = -element.rotation;
-	    coliderMesh.name = element.name;
-	    coliderMesh.position.z = 0.01
+
+		coliderMesh.name = element.name;
+    coliderMesh.position.z = 0.01
 		coliderMesh.onexecute = element.onexecute;
 		mesh.onexecute = element.onexecute;
 		mesh.add(coliderMesh);
 	}
 
-	mesh.visible = element.visible;	
+	mesh.visible = element.visible;
 	mesh.position.set(element.position.x, element.position.y, element.position.z );
 	mesh.name = element.name;
 	mesh.renderOrder = 5;
-		
+
 	return mesh;
 }

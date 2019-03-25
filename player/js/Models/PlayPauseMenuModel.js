@@ -1,6 +1,6 @@
 
-function PlayPauseLSMenuModel() {
-	
+function PlayPauseMenuModel() {
+
 	this.name = 'playpausemenu';
 	this.isPaused;
 	this.playpauseMenuButtonFunc;

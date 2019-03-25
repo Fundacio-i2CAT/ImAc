@@ -20,7 +20,8 @@
  * ║ Audio Subtitles (AST)          (>)  ║
  * ╚═════════════════════════════════════╝
 */
-const settingsDropdownOpt = { parent: -1, options: [
+//MenuDictionary.translate('Settings')
+const settingsDropdownOpt = {title: 'Settings', final: false, options: [
     {optId: 'settingsGeneral', text: 'General', function: function(){ return SettingsOptionCtrl.updateDropdownOptions(generalSettings)} },
     {optId: 'settingsST', text: 'Subtitles', function: function(){ return SettingsOptionCtrl.updateDropdownOptions(settingsSubtitles)} },
     {optId: 'settingsSL', text: 'Sign Language', function: function(){ return SettingsOptionCtrl.updateDropdownOptions(settingsSignLanguage)} },
@@ -56,15 +57,15 @@ const settingsDropdownOpt = { parent: -1, options: [
  * ║ Safe Area                      (>)  ║
  * ╚═════════════════════════════════════╝
   */
-const generalSettings = { parent: settingsDropdownOpt, options: [
-    {optId: 'settingsLanguages', text: 'UI Languages', function: 'open settingsUILanguages'},
-    {optId: 'settingsVoiceControl', text: 'Voice Control', function: 'open settigsVoiceControl'},
-    {optId: 'settingsMenuType', text: 'Menu Type', function: 'open settingsMenuType'},
-    {optId: 'settingsPointerSize', text: 'Pointer Size', function: 'open settingsPointerSize'},
-    {optId: 'settingsUserProfile', text: 'User Profile', function: 'open settingsUserProfile'},
-    {optId: 'settingsAccessLanguage', text: 'Acces Language', function: 'open settingsAccesLanguages'}, //NEW LANG
-    {optId: 'settingsIndicator', text: 'Indicator', function: 'open settingsIndicator'}, //NEW INDIC
-    {optId: 'settingsSafeArea', text: 'Safe Area', function: ''}
+const generalSettings = { parent: settingsDropdownOpt, final: false, options: [
+    {optId: 'settingsLanguages', text: 'UI Languages', function: function(){ return SettingsOptionCtrl.updateDropdownOptions(settingsUILanguages)} },
+    {optId: 'settingsVoiceControl', text: 'Voice Control', function: function(){ return SettingsOptionCtrl.updateDropdownOptions(settigsVoiceControl)} },
+    {optId: 'settingsMenuType', text: 'Menu Type', function: function(){ return SettingsOptionCtrl.updateDropdownOptions(settingsMenuType)} },
+    {optId: 'settingsPointerSize', text: 'Pointer Size', function: function(){ return SettingsOptionCtrl.updateDropdownOptions(settingsPointerSize)} },
+    {optId: 'settingsUserProfile', text: 'User Profile', function: function(){ return SettingsOptionCtrl.updateDropdownOptions(settingsUserProfile)} },
+    {optId: 'settingsAccessLanguage', text: 'Acces Language', function: function(){ return SettingsOptionCtrl.updateDropdownOptions(settingsAccesLanguages)} }, //NEW LANG
+    {optId: 'settingsIndicator', text: 'Indicator', function: function(){ return SettingsOptionCtrl.updateDropdownOptions(settingsIndicator)} }, //NEW INDIC
+    {optId: 'settingsSafeArea', text: 'Safe Area', function: function(){ return SettingsOptionCtrl.updateDropdownOptions(settingsSafeArea)} }
   ]};
 
 /**
@@ -83,11 +84,11 @@ const generalSettings = { parent: settingsDropdownOpt, options: [
   * ║ Català                        Final ║
   * ╚═════════════════════════════════════╝
  */
-const settingsUILanguages = { parent: generalSettings, options: [
-    {optId: 'settingsUILanguageEngButton', text: 'English', function: ''}, //default: MenuDictionary.checkMainLanguage( 'en' ) },
-    {optId: 'settingsUILanguageEspButton', text: 'Español', function: ''}, // default: MenuDictionary.checkMainLanguage( 'es' )},
-    {optId: 'settingsUILanguageGerButton', text: 'Deutsch', function: ''}, // default: MenuDictionary.checkMainLanguage( 'de' )},
-    {optId: 'settingsUILanguageCatButton', text: 'Català', function: ''} // default: MenuDictionary.checkMainLanguage( 'ca' )}];
+const settingsUILanguages = { parent: generalSettings, final: true, options: [
+    {optId: 'settingsUILanguageEngButton', text: 'English', function:  function(){ return console.log()} }, //default: MenuDictionary.checkMainLanguage( 'en' ) },
+    {optId: 'settingsUILanguageEspButton', text: 'Español', function:  function(){ return console.log()} }, // default: MenuDictionary.checkMainLanguage( 'es' )},
+    {optId: 'settingsUILanguageGerButton', text: 'Deutsch', function:  function(){ return console.log()} }, // default: MenuDictionary.checkMainLanguage( 'de' )},
+    {optId: 'settingsUILanguageCatButton', text: 'Català', function:  function(){ return console.log()} } // default: MenuDictionary.checkMainLanguage( 'ca' )}];
   ]};
 
 /**
@@ -101,9 +102,9 @@ const settingsUILanguages = { parent: generalSettings, options: [
  * ║ OFF                           Final ║
  * ╚═════════════════════════════════════╝
 */
-const settigsVoiceControl = { parent: generalSettings, options: [
-    {optId: 'voiceControlOnButton', text: 'On', function: ''}, // default: false},
-    {optId: 'voiceControlOffButton', text: 'Off', function: ''} // default: true}];
+const settigsVoiceControl = { parent: generalSettings, final: true, options: [
+    {optId: 'voiceControlOnButton', text: 'On', function:  function(){ return console.log()} }, // default: false},
+    {optId: 'voiceControlOffButton', text: 'Off', function:  function(){ return console.log()} } // default: true}];
   ]};
 
 /**  MENU TYPE menu hierarchy structure
@@ -117,9 +118,9 @@ const settigsVoiceControl = { parent: generalSettings, options: [
  * ║ Enhanced-Accessibility        Final ║
  * ╚═════════════════════════════════════╝
 */
-const settingsMenuType = { parent: generalSettings, options: [
-    {optId: 'settingsMenuTraditionalButton', text: 'Traditional', function: ''}, //default: settingsMgr.checkMenuType(2)},
-    {optId: 'settingsMenuLowSightedButton', text: 'Enhanced-Accessibility', function: ''} //default: settingsMgr.checkMenuType(1)}];
+const settingsMenuType = { parent: generalSettings, final: true, options: [
+    {optId: 'settingsMenuTraditionalButton', text: 'Traditional', function:  function(){ return console.log()} }, //default: settingsMgr.checkMenuType(2)},
+    {optId: 'settingsMenuLowSightedButton', text: 'Enhanced-Accessibility', function:  function(){ return console.log()} } //default: settingsMgr.checkMenuType(1)}];
   ]};
 
 /**
@@ -136,10 +137,10 @@ const settingsMenuType = { parent: generalSettings, options: [
  * ║ Small                         Final ║
  * ╚═════════════════════════════════════╝
 */
-const settingsPointerSize = { parent: generalSettings, options: [
-    {optId: 'settingsMenuPointerLarge', text: 'Large', function: ''}, // default: false},
-    {optId: 'settingsMenuPointerMedium', text: 'Medium', function: ''}, //default: true},
-    {optId: 'settingsMenuPointerSmall', text: 'Small', function: ''} //default: false}];
+const settingsPointerSize = { parent: generalSettings, final: true, options: [
+    {optId: 'settingsMenuPointerLarge', text: 'Large', function:  function(){ return console.log()} }, // default: false},
+    {optId: 'settingsMenuPointerMedium', text: 'Medium', function:  function(){ return console.log()} }, //default: true},
+    {optId: 'settingsMenuPointerSmall', text: 'Small', function:  function(){ return console.log()} } //default: false}];
   ]};
 
 /**  USER PROFILE menu hierarchy structure
@@ -151,8 +152,8 @@ const settingsPointerSize = { parent: generalSettings, options: [
  * ║ Save                          Final ║
  * ╚═════════════════════════════════════╝
 */
-const settingsUserProfile = { parent: generalSettings, options: [
-    {optId: 'saveUserProfileButton', text: 'Save', function: ''} // default: false}];
+const settingsUserProfile = { parent: generalSettings, final: true, options: [
+    {optId: 'saveUserProfileButton', text: 'Save', function:  function(){ return console.log()} } // default: false}];
   ]};
 
 /**
@@ -171,11 +172,11 @@ const settingsUserProfile = { parent: generalSettings, options: [
  * ║ Català                        Final ║
  * ╚═════════════════════════════════════╝
 */
-const settingsAccesLanguages = { parent: generalSettings, options: [
-    {optId: 'settingsAccesLanguageEngButton', text: 'English', function: ''}, //default: MenuDictionary.checkMainLanguage( 'en' ) },
-    {optId: 'settingsAccesLanguageEspButton', text: 'Español', function: ''}, // default: MenuDictionary.checkMainLanguage( 'es' )},
-    {optId: 'settingsAccesLanguageGerButton', text: 'Deutsch', function: ''}, // default: MenuDictionary.checkMainLanguage( 'de' )},
-    {optId: 'settingsAccesLanguageCatButton', text: 'Català', function: ''} // default: MenuDictionary.checkMainLanguage( 'ca' )}];
+const settingsAccesLanguages = { parent: generalSettings, final: true, options: [
+    {optId: 'settingsAccesLanguageEngButton', text: 'English', function:  function(){ return console.log()} }, //default: MenuDictionary.checkMainLanguage( 'en' ) },
+    {optId: 'settingsAccesLanguageEspButton', text: 'Español', function:  function(){ return console.log()} }, // default: MenuDictionary.checkMainLanguage( 'es' )},
+    {optId: 'settingsAccesLanguageGerButton', text: 'Deutsch', function:  function(){ return console.log()} }, // default: MenuDictionary.checkMainLanguage( 'de' )},
+    {optId: 'settingsAccesLanguageCatButton', text: 'Català', function:  function(){ return console.log()} } // default: MenuDictionary.checkMainLanguage( 'ca' )}];
   ]};
 
 /**
@@ -192,10 +193,10 @@ const settingsAccesLanguages = { parent: generalSettings, options: [
  * ║ Radar                         Final ║
  * ╚═════════════════════════════════════╝
   */
-const settingsIndicator = { parent: generalSettings, options: [
-    {optId: 'settingsIndicatorNone', text: 'None', function: ''}, // default: false},
-    {optId: 'settingsIndicatorArrows', text: 'Arrows', function: ''}, //default: true},
-    {optId: 'settingsIndicatorRadar', text: 'Radar', function: ''} //default: false}];ç
+const settingsIndicator = { parent: generalSettings, final: true, options: [
+    {optId: 'settingsIndicatorNone', text: 'None', function:  function(){ return console.log()} }, // default: false},
+    {optId: 'settingsIndicatorArrows', text: 'Arrows', function:  function(){ return console.log()} }, //default: true},
+    {optId: 'settingsIndicatorRadar', text: 'Radar', function:  function(){ return console.log()} } //default: false}];ç
   ]};
 
 
@@ -211,9 +212,9 @@ const settingsIndicator = { parent: generalSettings, options: [
  * ║ Large                         Final ║
  * ╚═════════════════════════════════════╝
 */
-const settingsSafeArea = { parent: generalSettings, options: [
-    {optId: 'settingsSafeAreaSmall', text: 'Small', function: ''}, //default: false}];
-    {optId: 'settingsSafeAreaLarge', text: 'Large', function: ''} // default: false},
+const settingsSafeArea = { parent: generalSettings, final: true, options: [
+    {optId: 'settingsSafeAreaSmall', text: 'Small', function:  function(){ return console.log()} }, //default: false}];
+    {optId: 'settingsSafeAreaLarge', text: 'Large', function:  function(){ return console.log()} } // default: false},
   ]};
 
 
@@ -237,11 +238,11 @@ const settingsSafeArea = { parent: generalSettings, options: [
  * ║ Easy-to-Read                   (>)  ║
  * ╚═════════════════════════════════════╝
 */
-const settingsSubtitles = { parent: settingsDropdownOpt, options: [
-    { optId: 'subtitlesSizes', text: 'Size', function: ''},
-    { optId: 'subtitlesBackground', text: 'Background', function: ''},
-    { optId: 'subtitlesShowPositions', text: 'Position', function: ''},
-    { optId: 'subtitlesEasyRead', text: 'Easy to read', function: ''}
+const settingsSubtitles = { parent: settingsDropdownOpt, final: false, options: [
+    { optId: 'subtitlesSizes', text: 'Size', function:  function(){ return SettingsOptionCtrl.updateDropdownOptions(settingsSubtitlesSize)} },
+    { optId: 'subtitlesBackground', text: 'Background', function:  function(){ return SettingsOptionCtrl.updateDropdownOptions(settingsSubtitlesBackground)} },
+    { optId: 'subtitlesShowPositions', text: 'Position', function:  function(){ return SettingsOptionCtrl.updateDropdownOptions(settingsSubtitlesPosition)} },
+    { optId: 'subtitlesEasyRead', text: 'Easy to read', function:  function(){ return SettingsOptionCtrl.updateDropdownOptions(settingsSubtitlesEasyToRead)} }
   ]};
 
   /**
@@ -258,10 +259,10 @@ const settingsSubtitles = { parent: settingsDropdownOpt, options: [
    * ║ Large                         Final ║
    * ╚═════════════════════════════════════╝
   */
-const settingsSubtitlesSize = { parent: settingsSubtitles, options: [
-    {optId: 'subtitlesSmallSizeButton', text: 'Small', function: ''},
-    {optId: 'subtitlesMediumSizeButton', text: 'Medium', function: ''},
-    {optId: 'subtitlesLargeSizeButton', text: 'Large', function: ''}
+const settingsSubtitlesSize = { parent: settingsSubtitles, final: true, options: [
+    {optId: 'subtitlesSmallSizeButton', text: 'Small', function:  function(){ return console.log()} },
+    {optId: 'subtitlesMediumSizeButton', text: 'Medium', function:  function(){ return console.log()} },
+    {optId: 'subtitlesLargeSizeButton', text: 'Large', function:  function(){ return console.log()} }
   ]};
 
   /**
@@ -276,9 +277,9 @@ const settingsSubtitlesSize = { parent: settingsSubtitles, options: [
    * ║ Outline                       Final ║
    * ╚═════════════════════════════════════╝
   */
-  const settingsSubtitlesBackground = { parent: settingsSubtitles, options: [
-    {optId: 'subtitlesSemitrans', text: 'Semitrans', function: ''},
-    {optId: 'subtitlesOutline', text: 'Outline', function: ''}
+  const settingsSubtitlesBackground = { parent: settingsSubtitles, final: true, options: [
+    {optId: 'subtitlesSemitrans', text: 'Semitrans', function:  function(){ return console.log()} },
+    {optId: 'subtitlesOutline', text: 'Outline', function:  function(){ return console.log()} }
   ]};
 
   /**
@@ -293,9 +294,9 @@ const settingsSubtitlesSize = { parent: settingsSubtitles, options: [
    * ║ Bottom                        Final ║
    * ╚═════════════════════════════════════╝
   */
-  const settingsSubtitlesPosition = { parent: settingsSubtitles, options: [
-    {optId: 'subtitlesTopButton', text: 'Top', function: ''},
-    {optId: 'subtitlesBottomButton', text: 'Bottom', function: ''}
+  const settingsSubtitlesPosition = { parent: settingsSubtitles, final: true, options: [
+    {optId: 'subtitlesTopButton', text: 'Top', function:  function(){ return console.log()} },
+    {optId: 'subtitlesBottomButton', text: 'Bottom', function:  function(){ return console.log()} }
   ]};
 
   /**
@@ -310,9 +311,9 @@ const settingsSubtitlesSize = { parent: settingsSubtitles, options: [
    * ║ Off                           Final ║
    * ╚═════════════════════════════════════╝
   */
-  const settingsSubtitlesEasyToRead = { parent: settingsSubtitles, options: [
-    {optId: 'subtitlesEasyOn', text: 'On', function: ''},
-    {optId: 'subtitlesEasyOff', text: 'Off', function: ''}
+  const settingsSubtitlesEasyToRead = { parent: settingsSubtitles, final: true, options: [
+    {optId: 'subtitlesEasyOn', text: 'On', function:  function(){ return console.log()} },
+    {optId: 'subtitlesEasyOff', text: 'Off', function:  function(){ return console.log()} }
   ]};
 
 
@@ -332,9 +333,9 @@ const settingsSubtitlesSize = { parent: settingsSubtitles, options: [
   * ║ Size                           (>)  ║
   * ╚═════════════════════════════════════╝
   */
-  const settingsSignLanguage = { parent: settingsDropdownOpt, options: [
-    { optId: 'signerPosition', text: 'Position', function: ''},
-    { optId: 'signerSize', text: 'Size', function: ''}
+  const settingsSignLanguage = { parent: settingsDropdownOpt, final: false, options: [
+    { optId: 'signerPosition', text: 'Position', function:  function(){ return SettingsOptionCtrl.updateDropdownOptions(settingsSignLanguagePosition)} },
+    { optId: 'signerSize', text: 'Size', function:  function(){ return SettingsOptionCtrl.updateDropdownOptions(settingsSignLanguageSize)} }
   ]};
 
   /**
@@ -349,9 +350,9 @@ const settingsSubtitlesSize = { parent: settingsSubtitles, options: [
    * ║ Left                          Final ║
    * ╚═════════════════════════════════════╝
   */
-  const settingsSignLanguagePosition = { parent: settingsSignLanguage, options: [
-    {optId: 'signerRightButton', text: 'Right', function: ''},
-    {optId: 'signerLeftButton', text: 'Left', function: ''}
+  const settingsSignLanguagePosition = { parent: settingsSignLanguage, final: true, options: [
+    {optId: 'signerRightButton', text: 'Right', function:  function(){ return console.log()} },
+    {optId: 'signerLeftButton', text: 'Left', function:  function(){ return console.log()} }
   ]};
 
   /**
@@ -368,10 +369,10 @@ const settingsSubtitlesSize = { parent: settingsSubtitles, options: [
    * ║ Large                         Final ║
    * ╚═════════════════════════════════════╝
   */
-const settingsSignLanguageSize = { parent: settingsSignLanguage, options: [
-    {optId: 'signerSmallSizeButton', text: 'Small', function: ''},
-    {optId: 'signerMediumSizeButton', text: 'Medium', function: ''},
-    {optId: 'signerLargeSizeButton', text: 'Large', function: ''}
+const settingsSignLanguageSize = { parent: settingsSignLanguage, final: true, options: [
+    {optId: 'signerSmallSizeButton', text: 'Small', function:  function(){ return console.log()} },
+    {optId: 'signerMediumSizeButton', text: 'Medium', function:  function(){ return console.log()} },
+    {optId: 'signerLargeSizeButton', text: 'Large', function:  function(){ return console.log()} }
   ]};
 
 
@@ -391,9 +392,9 @@ const settingsSignLanguageSize = { parent: settingsSignLanguage, options: [
   * ║ Volume Level                   (>)  ║
   * ╚═════════════════════════════════════╝
   */
-  const settingsAudioDescription = { parent: settingsDropdownOpt, options: [
-    { optId: 'audioDescriptionPresentation', text: 'Presentation', function: ''},
-    { optId: 'audioDescriptionVolume', text: 'Volume', function: ''}
+  const settingsAudioDescription = { parent: settingsDropdownOpt, final: false, options: [
+    { optId: 'audioDescriptionPresentation', text: 'Presentation', function:  function(){ return SettingsOptionCtrl.updateDropdownOptions(settingsAudioDescriptionPresentation)} },
+    { optId: 'audioDescriptionVolume', text: 'Volume', function:  function(){ return SettingsOptionCtrl.updateDropdownOptions(settingsAudioDescriptionVolume)} }
   ]};
 
   /**
@@ -410,10 +411,10 @@ const settingsSignLanguageSize = { parent: settingsSignLanguage, options: [
    * ║ Placed on Action              Final ║
    * ╚═════════════════════════════════════╝
   */
-const settingsAudioDescriptionPresentation = { parent: settingsAudioDescription, options: [
-    {optId: 'adPresentationVoGButton', text: 'Voice of God', function: ''},
-    {optId: 'adPresentationFoSButton', text: 'Friend of Sofa', function: ''},
-    {optId: 'adPresentationPoAButton', text: 'Placed on Action', function: ''}
+const settingsAudioDescriptionPresentation = { parent: settingsAudioDescription, final: true, options: [
+    {optId: 'adPresentationVoGButton', text: 'Voice of God', function:  function(){ return console.log()} },
+    {optId: 'adPresentationFoSButton', text: 'Friend of Sofa', function:  function(){ return console.log()} },
+    {optId: 'adPresentationPoAButton', text: 'Placed on Action', function:  function(){ return console.log()} }
   ]};
 
   /**
@@ -430,10 +431,10 @@ const settingsAudioDescriptionPresentation = { parent: settingsAudioDescription,
    * ║ Maximum                       Final ║
    * ╚═════════════════════════════════════╝
   */
-const settingsAudioDescriptionVolume = { parent: settingsAudioDescription, options: [
-    {optId: 'adVolumeMinButton', text: 'Minimum', function: ''},
-    {optId: 'adVolumeMidButton', text: 'Medium', function: ''},
-    {optId: 'adVolumeMaxButton', text: 'Maximum', function: ''}
+const settingsAudioDescriptionVolume = { parent: settingsAudioDescription, final: true, options: [
+    {optId: 'adVolumeMinButton', text: 'Minimum', function:  function(){ return console.log()} },
+    {optId: 'adVolumeMidButton', text: 'Medium', function:  function(){ return console.log()} },
+    {optId: 'adVolumeMaxButton', text: 'Maximum', function:  function(){ return console.log()} }
   ]};
 
 
@@ -456,10 +457,10 @@ const settingsAudioDescriptionVolume = { parent: settingsAudioDescription, optio
   * ╚═════════════════════════════════════╝
   */
 
-  const settingsAudioSubtitles = { parent: settingsDropdownOpt, options: [
-      { optId: 'audioSubtitlesEasy', text: 'Easy to read', function: ''},
-      { optId: 'audioSubtitlesPresentation', text: 'Presentation Mode', function: ''},
-      { optId: 'audioSubtitlesVolume', text: 'Volume Level', function: ''}
+  const settingsAudioSubtitles = { parent: settingsDropdownOpt, final: false, options: [
+      { optId: 'audioSubtitlesEasy', text: 'Easy to read', function:  function(){ return SettingsOptionCtrl.updateDropdownOptions(settingsAudioSubtitlesEasyToRead)} },
+      { optId: 'audioSubtitlesPresentation', text: 'Presentation Mode', function:  function(){ return SettingsOptionCtrl.updateDropdownOptions(settingsAudioSubtitlesPresentation)} },
+      { optId: 'audioSubtitlesVolume', text: 'Volume Level', function:  function(){ return SettingsOptionCtrl.updateDropdownOptions(settingsAudioSubtitlesVolume)} }
 
     ]};
 
@@ -475,9 +476,9 @@ const settingsAudioDescriptionVolume = { parent: settingsAudioDescription, optio
    * ║ Off                           Final ║
    * ╚═════════════════════════════════════╝
   */
-  const settingsAudioSubtitlesEasyToRead = { parent: settingsAudioSubtitles, options: [
-    {optId: 'astEasyOn', text: 'On', function: ''},
-    {optId: 'astEasyOff', text: 'Off', function: ''}
+  const settingsAudioSubtitlesEasyToRead = { parent: settingsAudioSubtitles, final: true, options: [
+    {optId: 'astEasyOn', text: 'On', function:  function(){ return console.log()} },
+    {optId: 'astEasyOff', text: 'Off', function:  function(){ return console.log()} }
   ]};
 
   /**
@@ -494,10 +495,10 @@ const settingsAudioDescriptionVolume = { parent: settingsAudioDescription, optio
    * ║ Placed on Action              Final ║
    * ╚═════════════════════════════════════╝
   */
-const settingsAudioSubtitlesPresentation = { parent: settingsAudioSubtitles, options: [
-    {optId: 'astPresentationVoGButton', text: 'Voice of God', function: ''},
-    {optId: 'astPresentationFoSButton', text: 'Friend of Sofa', function: ''},
-    {optId: 'astPresentationPoAButton', text: 'Placed on Action', function: ''}
+const settingsAudioSubtitlesPresentation = { parent: settingsAudioSubtitles, final: true, options: [
+    {optId: 'astPresentationVoGButton', text: 'Voice of God', function:  function(){ return console.log()} },
+    {optId: 'astPresentationFoSButton', text: 'Friend of Sofa', function:  function(){ return console.log()} },
+    {optId: 'astPresentationPoAButton', text: 'Placed on Action', function:  function(){ return console.log()} }
   ]};
 
   /**
@@ -514,8 +515,8 @@ const settingsAudioSubtitlesPresentation = { parent: settingsAudioSubtitles, opt
    * ║ Maximum                       Final ║
    * ╚═════════════════════════════════════╝
   */
-const settingsAudioSubtitlesVolume = { parent: settingsAudioSubtitles, options: [
-    {optId: 'astVolumeMinButton', text: 'Minimum', function: ''},
-    {optId: 'astVolumeMidButton', text: 'Medium', function: ''},
-    {optId: 'astVolumeMaxButton', text: 'Maximum', function: ''}
+const settingsAudioSubtitlesVolume = { parent: settingsAudioSubtitles, final: true, options: [
+    {optId: 'astVolumeMinButton', text: 'Minimum', function:  function(){ return console.log()} },
+    {optId: 'astVolumeMidButton', text: 'Medium', function:  function(){ return console.log()} },
+    {optId: 'astVolumeMaxButton', text: 'Maximum', function:  function(){ return console.log()} }
   ]};

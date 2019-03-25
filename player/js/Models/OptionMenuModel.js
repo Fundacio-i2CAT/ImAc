@@ -19,6 +19,8 @@ function OptionMenuModel() {
 	this.title;
 	this.titleHeight;
 	this.isFinalDrop;
+	this.hasParentDropdown;
+	this.parentDropdownData;
 
 // L O W	S I G H T E D
 

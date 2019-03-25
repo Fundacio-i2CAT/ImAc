@@ -8,6 +8,7 @@ function OptionTradMenuView() {
 
 		//submenu.getObjectByName('backMenuButton').visible = data.isFinalDrop ? !data.isOnOffButtonVisible : false;
 		submenu.getObjectByName('backMenuButton').visible = data.isFinalDrop;
+		submenu.getObjectByName('backMenuButton').visible = data.hasParentDropdown;
 		submenu.getObjectByName('backMenuButton').children[0].onexecute = data.backMenuButtonFunc;
 
 		submenu.getObjectByName('onoptbutton').children[0].onexecute = data.onOptButtonFunc;
@@ -23,16 +24,14 @@ function OptionTradMenuView() {
 	 	submenu.getObjectByName('parentcolumndropdown').children = [];
 		data.parentColumnDropdown.forEach(function(element){
 
-			element.position.x = -30/2+element.geometry.boundingBox.max.x+2;
-            element.children[0].position.x = +30/2-element.geometry.boundingBox.max.x-2;
-
-            if(!data.isFinalDrop)
-            {
-	            var next = AddArrowIcon();
-		        next.position.x = 30-element.geometry.boundingBox.max.x-4;
-		        element.add(next);
-            }
-            submenu.getObjectByName('parentcolumndropdown').add(element)
+		element.position.x = -30/2+element.geometry.boundingBox.max.x+2;
+      element.children[0].position.x = +30/2-element.geometry.boundingBox.max.x-2;
+      if(!data.isFinalDrop){
+        var next = AddArrowIcon();
+      	next.position.x = 30-element.geometry.boundingBox.max.x-4;
+      	element.add(next);
+      }
+      submenu.getObjectByName('parentcolumndropdown').add(element)
 		});
 		if(data.childColumnActiveOpt && submenu.getObjectByName(data.childColumnActiveOpt))
 		{

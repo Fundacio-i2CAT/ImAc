@@ -184,10 +184,10 @@ function SettingsOptionMenuController(menuType) {
 
             // TRADITIONAL
             case 2:
-                data.title = MenuDictionary.translate('Settings');
+//                data.title = MenuDictionary.translate('Settings');
                 //data.parentColumnDropdown = AddDropdownElementsTrad(parentColumnDropdownElements);
                 data.parentColumnDropdown = AddDropdownOptions(settingsDropdownOpt);
-                data.backMenuButtonFunc = function(){ AddVisualFeedbackOnClick('backMenuButton', function(){ menuMgr.setOptActiveIndex(0); menuMgr.Load(set)} )};
+                data.backMenuButtonFunc = function(){ AddVisualFeedbackOnClick('backMenuButton', function(){ SettingsOptionCtrl.updateDropdownOptions(data.parentDropdownData)} )};
                 break;
         }
     }
@@ -431,11 +431,13 @@ function SettingsOptionMenuController(menuType) {
   function AddDropdownOptions(menuOpts){
     let dropdownInteractiveElements =  [];
     const h = 5*menuOpts.options.length;
-    //data.titleHeight = elements.options.length * 5;
-
+    data.titleHeight = menuOpts.options.length * 5;
+    data.hasParentDropdown = menuOpts.parent ? true : false;
+    data.isFinalDrop = menuOpts.final;
+    data.parentDropdownData = menuOpts.parent;
+    data.title = menuOpts.title ? menuOpts.title : menuOpts.text; //NOT UPDATING
     menuOpts.options.forEach(function(opt, index){
       let factor = (index+1);
-      data.isFinalDrop = false;
       let dropdownIE = new InteractiveElementModel();
       dropdownIE.width = 30;
       dropdownIE.height =  4;
@@ -459,7 +461,6 @@ function SettingsOptionMenuController(menuType) {
 
   this.updateDropdownOptions = function(menuOpts){
     data.parentColumnDropdown = AddDropdownOptions(menuOpts);
-    //data.isFinalDrop = false;
     view.UpdateView(data);
   }
 }

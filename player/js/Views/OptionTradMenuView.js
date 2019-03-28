@@ -44,20 +44,20 @@ function OptionTradMenuView() {
 		submenu.getObjectByName('tradoptionmenubackground').position.set(0, data.parentColumnDropdown.length*5/2, 0);
 	}
 
-	function CreateTraditionaOptionTitle(data)
-	{
+	function CreateTraditionaOptionTitle(data){
+		console.log(data.title)
 		var submenu = scene.getObjectByName(data.name);
 		scene.getObjectByName("tradoptionmenutitle").remove(submenu.getObjectByName('opttitle'));
 
 		var optTitle = new InteractiveElementModel();
-        optTitle.width = 4.5;
-        optTitle.height = 2.5;
-        optTitle.name = 'opttitle';
-        optTitle.type =  'text';
-        optTitle.value = data.title;
-        optTitle.textSize = 1.5;
-        optTitle.color = 0xffffff;
-        optTitle.position = new THREE.Vector3(0, 0, 0.01);
+    optTitle.width = 4.5;
+    optTitle.height = 2.5;
+    optTitle.name = 'opttitle';
+    optTitle.type =  'text';
+    optTitle.value = data.title;
+    optTitle.textSize = 1.5;
+    optTitle.color = 0xffffff;
+    optTitle.position = new THREE.Vector3(0, 0, 0.01);
 
 		return optTitle.create();
 	}

@@ -34,34 +34,6 @@ function SettingsOptionMenuController(menuType) {
 	var view;
 	var viewStructure;
 
-	var settingsLanguagesArray =  [
-									{name: 'settingsLanguageEngButton', value: 'English', default: MenuDictionary.checkMainLanguage( 'en' ) },
-									{name: 'settingsLanguageEspButton', value: 'Español', default: MenuDictionary.checkMainLanguage( 'es' )},
-									{name: 'settingsLanguageGerButton', value: 'Deutsch', default: MenuDictionary.checkMainLanguage( 'de' )},
-									{name: 'settingsLanguageCatButton', value: 'Català', default: MenuDictionary.checkMainLanguage( 'ca' )}];
-
-	var voiceControlArray = [
-                                    {name: 'voiceControlOnButton', value: 'On', default: false},
-                                    {name: 'voiceControlOffButton', value: 'Off', default: true}];
-
-	var settingsUserProfileArray = [
-									{name: 'saveUserProfileButton', value: 'Save', default: false}];
-
-    var settingsMenuTypeArray =    [
-                                    {name: 'settingsMenuTraditionalButton', value: 'Traditional', default: settingsMgr.checkMenuType(2)},
-                                    {name: 'settingsMenuLowSightedButton', value: 'Enhanced-Accessibility', default: settingsMgr.checkMenuType(1)}];
-
-    var settingsMenuPointerArray = [
-                                    {name: 'settingsMenuPointerLarge', value: 'Large', default: false},
-                                    {name: 'settingsMenuPointerMedium', value: 'Medium', default: true},
-                                    {name: 'settingsMenuPointerSmall', value: 'Small', default: false}];
-
-    var parentColumnDropdownElements = [
-                                    {name: 'settingsLanguages', value: 'Language', options: settingsLanguagesArray},
-                                    {name: 'settingsVoiceControl', value: 'Voicecontrol', options: voiceControlArray},
-                                    {name: 'settingsUserProfile', value: 'UserProfile', options: settingsUserProfileArray},
-                                    {name: 'settingsMenuType', value: 'MenuType', options: settingsMenuTypeArray},
-                                    {name: 'settingsPointerSize', value: 'PointerSize', options: settingsMenuPointerArray}];
 /**
  * { function_description }
  *
@@ -184,7 +156,7 @@ function SettingsOptionMenuController(menuType) {
 
             // TRADITIONAL
             case 2:
-//                data.title = MenuDictionary.translate('Settings');
+                data.title = MenuDictionary.translate('Settings');
                 //data.parentColumnDropdown = AddDropdownElementsTrad(parentColumnDropdownElements);
                 data.parentColumnDropdown = AddDropdownOptions(settingsDropdownOpt);
                 data.backMenuButtonFunc = function(){ AddVisualFeedbackOnClick('backMenuButton', function(){ SettingsOptionCtrl.updateDropdownOptions(data.parentDropdownData)} )};
@@ -227,17 +199,13 @@ function SettingsOptionMenuController(menuType) {
  * @class      AddDropdownElementsLS (name)
  * @param      {<type>}  elements  The elements
  */
-    function AddDropdownElementsLS(elements)
-    {
+    function AddDropdownElementsLS(elements){
         var dropdownInteractiveElements =  [];
         var h;
         elements.forEach(function(element, index){
             var factor = (index*2)+1;
-
             var dropdownIE = new InteractiveElementModel();
-
-            if(element.options)
-            {
+            if(element.options){
                 h = 125*9/16;
                 dropdownIE.onexecute =  function(){
                     data.childColumnActiveOpt = undefined;
@@ -281,8 +249,7 @@ function SettingsOptionMenuController(menuType) {
  * @class      AddDropdownElementsTrad (name)
  * @param      {<type>}  elements  The elements
  */
-    function AddDropdownElementsTrad(elements)
-    {
+    function AddDropdownElementsTrad(elements){
         var dropdownInteractiveElements =  [];
         var h = 5*elements.length;
         data.titleHeight = elements.length * 5;
@@ -431,11 +398,13 @@ function SettingsOptionMenuController(menuType) {
   function AddDropdownOptions(menuOpts){
     let dropdownInteractiveElements =  [];
     const h = 5*menuOpts.options.length;
+
     data.titleHeight = menuOpts.options.length * 5;
     data.hasParentDropdown = menuOpts.parent ? true : false;
     data.isFinalDrop = menuOpts.final;
     data.parentDropdownData = menuOpts.parent;
-    data.title = menuOpts.title ? menuOpts.title : menuOpts.text; //NOT UPDATING
+    data.title = menuOpts.title;
+
     menuOpts.options.forEach(function(opt, index){
       let factor = (index+1);
       let dropdownIE = new InteractiveElementModel();
@@ -458,7 +427,11 @@ function SettingsOptionMenuController(menuType) {
     return dropdownInteractiveElements
   }
 
-
+/**
+ * [description]
+ * @param  {[type]} menuOpts [description]
+ * @return {[type]}          [description]
+ */
   this.updateDropdownOptions = function(menuOpts){
     data.parentColumnDropdown = AddDropdownOptions(menuOpts);
     view.UpdateView(data);

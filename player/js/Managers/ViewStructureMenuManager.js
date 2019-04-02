@@ -6,7 +6,7 @@
  *  BASES:
  *  	- TraditionalMenuBase (private)
  *  	- LowSightedMenuBase (private)
- *  	
+ *
  *  TRADITIONAL MENU:
  *  	- TraditionalMenu (public)
  *  	- TraditionalOptionMenu (public)
@@ -20,6 +20,9 @@
  *  	- Preview (public)
  *
  */
+
+//import IE_test from '../Models/InteractiveElementModel_class.js';
+
 function ViewStructureMenuManager() {
 
     /**
@@ -40,7 +43,7 @@ function ViewStructureMenuManager() {
      */
     function setMenuElementValues (w, h, r, n, t, val, c, txtSz, vis, x, y, z)
     {
-        var IE = new InteractiveElementModel();
+        let IE = new InteractiveElementModel();
 
         IE.width = w;
         IE.height = h;
@@ -73,20 +76,43 @@ function ViewStructureMenuManager() {
 	 */
     function TraditionalMenuBase(name)
     {
-        var material = new THREE.MeshBasicMaterial( { color: 0x333333, transparent: true, opacity: 0.8 });
-        var geometry = new THREE.PlaneGeometry( menuWidth, menuHeight/12 );
+
+      var roundedRectShape = new THREE.Shape();
+      //var testShape = roundedRect( roundedRectShape, 0, 0, menuWidth, menuHeight/12, 5 );
+      var testShape = roundedRect( roundedRectShape, 0, 0, menuWidth, menuHeight, 4 );
+
+        //var material = new THREE.MeshBasicMaterial( { color: 0x333333, transparent: true, opacity: 0.8 });
+        var material = new THREE.MeshBasicMaterial( { color: 0x000000});
+        //var geometry = new THREE.PlaneGeometry( menuWidth, menuHeight/12 );
+        var geometry = new THREE.ShapeGeometry( testShape );
         var menuTrad =  new THREE.Mesh( geometry, material);
 
-        menuTrad.position.set( 0, -menuHeight/2.5 - 5, -67 );
+        menuTrad.position.set( -menuWidth/2, -menuHeight/2, -67 );
         menuTrad.name = name;
 
-        var menuBackground = new THREE.Mesh( new THREE.PlaneGeometry( menuWidth, menuHeight ), new THREE.MeshBasicMaterial( {visible:  false} ) );
+        //var menuBackground = new THREE.Mesh( new THREE.PlaneGeometry( menuWidth, menuHeight ), new THREE.MeshBasicMaterial( {visible:  false} ) );
 
-        menuBackground.position.set( 0, menuHeight/2, 0.01 );
+        //menuBackground.position.set( 0, menuHeight/2, 0.01 );
 
-        menuTrad.add(menuBackground);
+        //menuTrad.add(menuBackground);
 
         return menuTrad;
+    }
+
+//MOVE
+    function roundedRect( ctx, x, y, width, height, radius ) {
+
+      ctx.moveTo( x, y + radius );
+      ctx.lineTo( x, y + height - radius );
+      ctx.quadraticCurveTo( x, y + height, x + radius, y + height );
+      ctx.lineTo( x + width - radius, y + height );
+      ctx.quadraticCurveTo( x + width, y + height, x + width, y + height - radius );
+      ctx.lineTo( x + width, y + radius );
+      ctx.quadraticCurveTo( x + width, y, x + width - radius, y );
+      ctx.lineTo( x + radius, y );
+      ctx.quadraticCurveTo( x, y, x, y + radius );
+
+      return ctx;
     }
 
 	/**
@@ -157,17 +183,17 @@ function ViewStructureMenuManager() {
 
         // Create the menu button elements by loading a new InteractiveElement() model
         // and setting the data through setMenuElementValues().
-        var seekBackButton = setMenuElementValues(2, 1, null, 'backSeekButton',
-            'icon', './img/menu/seek_icon.png', 0xffffff, null, true, -(tradmenuDivisions-1)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
+        var seekBackButton = setMenuElementValues(5,3, null, 'backSeekButton',
+            'icon', './img/menu/seek_icon.png', 0xffffff, null, true, menuWidth/2 - 10, 2*menuHeight/3, 0.01);
 
-        var playButton = setMenuElementValues(2, 2, null, 'playButton', 'icon',
-            './img/menu/play_icon.png', 0xffffff, null, false, -(tradmenuDivisions-3)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
+        var playButton = setMenuElementValues(5,5, null, 'playButton', 'icon',
+            './img/menu/play_icon.png', 0xffffff, null, false, menuWidth/2, 2*menuHeight/3, 0.01);
 
-        var pauseButton = setMenuElementValues(2, 2, null, 'pauseButton', 'icon',
-            './img/menu/pause_icon.png', 0xffffff, null, false, -(tradmenuDivisions-3)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
+        var pauseButton = setMenuElementValues(5,5, null, 'pauseButton', 'icon',
+            './img/menu/pause_icon.png', 0xffffff, null, false, menuWidth/2, 2*menuHeight/3, 0.01);
 
-        var seekForwardButton = setMenuElementValues(2, 1, Math.PI, 'forwardSeekButton', 'icon',
-            './img/menu/seek_icon.png', 0xffffff, null, true, -(tradmenuDivisions-5)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
+        var seekForwardButton = setMenuElementValues(5,3, Math.PI, 'forwardSeekButton', 'icon',
+            './img/menu/seek_icon.png', 0xffffff, null, true, menuWidth/2 + 10, 2*menuHeight/3, 0.01);
 
         var playouttime = setMenuElementValues(0.3, 0.3, null, 'playOutTime', 'text',
             '00:00 / 00:00', 0xffffff, 1.5, true, -(tradmenuDivisions-17)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
@@ -193,16 +219,16 @@ function ViewStructureMenuManager() {
         // Create the menu button elements by loading a new InteractiveElement() model
         // and setting the data through setMenuElementValues().
         var minusVolumeButton = setMenuElementValues(1.5, 1.5, null, 'minusVolumeButton', 'icon',
-            './img/menu/minus_icon.png', 0xffffff, null, true, -(tradmenuDivisions-8)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
+            './img/menu/minus_icon.png', 0xffffff, null, true, -(tradmenuDivisions-8)*menuWidth/(tradmenuDivisions*2), 2*menuHeight/3, 0.01);
 
         var plusVolumeButton = setMenuElementValues(1.5, 1.5, null, 'plusVolumeButton', 'icon',
-            './img/menu/plus_icon.png', 0xffffff, null, true, -(tradmenuDivisions-12)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
+            './img/menu/plus_icon.png', 0xffffff, null, true, -(tradmenuDivisions-12)*menuWidth/(tradmenuDivisions*2), 2*menuHeight/3, 0.01);
 
-        var unmuteVolumeButton = setMenuElementValues(2, 2, null, 'unmuteVolumeButton', 'icon',
-            './img/menu/volume_unmute_icon.png', 0xffffff, null, false, -(tradmenuDivisions-10)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
+        var unmuteVolumeButton = setMenuElementValues(3,3, null, 'unmuteVolumeButton', 'icon',
+            './img/menu/volume_unmute_icon.png', 0xffffff, null, false, menuWidth/2 - 20, 2*menuHeight/3, 0.01);
 
-        var muteVolumeButton = setMenuElementValues(2, 2, null, 'muteVolumeButton', 'icon',
-            './img/menu/volume_mute_icon.png', 0xffffff, null, false, -(tradmenuDivisions-10)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
+        var muteVolumeButton = setMenuElementValues(3,3, null, 'muteVolumeButton', 'icon',
+            './img/menu/volume_mute_icon.png', 0xffffff, null, false, menuWidth/2 - 20, 2*menuHeight/3, 0.01);
 
         var volumeLevel = setMenuElementValues(4, 4, null, 'volumeLevel', 'text',
             '', 0xffffff, 1.25, false, -(tradmenuDivisions-10)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
@@ -224,28 +250,28 @@ function ViewStructureMenuManager() {
         // Create the menu button elements by loading a new InteractiveElement() model
         // and setting the data through setMenuElementValues().
         var subtitlesButton = setMenuElementValues(4, 4, null, 'showSubtitlesMenuButton', 'icon',
-            MenuDictionary.translate('ST'), 0xffffff, null, true, (tradmenuDivisions-13)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
+            MenuDictionary.translate('ST'), 0xffffff, null, true, menuWidth/8, menuHeight/6, 0.01);
 
         var subtitlesDisabledButton = setMenuElementValues(4, 4, null, 'disabledSubtitlesMenuButton', 'icon',
-            MenuDictionary.translate('ST_strike'), 0xffffff, null, true, (tradmenuDivisions-13)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
+            MenuDictionary.translate('ST_strike'), 0xffffff, null, true, menuWidth/8, menuHeight/6, 0.01);
 
         var signLanguageButton = setMenuElementValues(4, 4, null, 'showSignLanguageMenuButton', 'icon',
-            MenuDictionary.translate('SL'), 0xffffff, null, true, (tradmenuDivisions-11)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
+            MenuDictionary.translate('SL'), 0xffffff, null, true,  3*menuWidth/8, menuHeight/6, 0.01);
 
         var signLanguageDisabledButton = setMenuElementValues(4, 4, null, 'disabledSignLanguageMenuButton', 'icon',
-            MenuDictionary.translate('SL_strike'), 0xffffff, null, true, (tradmenuDivisions-11)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
+            MenuDictionary.translate('SL_strike'), 0xffffff, null, true, 3*menuWidth/8, menuHeight/6, 0.01);
 
         var audioDescriptionButton = setMenuElementValues(4, 4, null, 'showAudioDescriptionMenuButton', 'icon',
-            MenuDictionary.translate('AD'), 0xffffff, null, true, (tradmenuDivisions-9)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
+            MenuDictionary.translate('AD'), 0xffffff, null, true, 5*menuWidth/8, menuHeight/6, 0.01);
 
         var audioDescriptionDisabledButton = setMenuElementValues(4, 4, null, 'disabledAudioDescriptionMenuButton', 'icon',
-            MenuDictionary.translate('AD_strike'), 0xffffff, null, true, (tradmenuDivisions-9)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
+            MenuDictionary.translate('AD_strike'), 0xffffff, null, true, 5*menuWidth/8, menuHeight/6, 0.01);
 
         var audioSubtitlesButton = setMenuElementValues(4, 4, null, 'showAudioSubtitlesMenuButton', 'icon',
-            MenuDictionary.translate('AST'), 0xffffff, null, true, (tradmenuDivisions-7)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
+            MenuDictionary.translate('AST'), 0xffffff, null, true, 7*menuWidth/8, menuHeight/6, 0.01);
 
         var audioSubtitlesDisabledButton = setMenuElementValues(4, 4, null, 'disabledAudioSubtitlesMenuButton', 'icon',
-            MenuDictionary.translate('AST_strike'), 0xffffff, null, true, (tradmenuDivisions-7)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
+            MenuDictionary.translate('AST_strike'), 0xffffff, null, true, 7*menuWidth/8, menuHeight/6, 0.01);
 
         // Add all the created elements to the parent group.
         multioptionsmenu.add(subtitlesButton);
@@ -266,8 +292,8 @@ function ViewStructureMenuManager() {
 
         // Create the menu button elements by loading a new InteractiveElement() model
         // and setting the data through setMenuElementValues().
-        var settingsButton = setMenuElementValues(2.5, 2.5, null, 'settingsButton', 'icon',
-            './img/menu/settings_icon.png', 0xffffff, null, true, (tradmenuDivisions-4)*menuWidth/(tradmenuDivisions*2), 0, 0.01);
+        var settingsButton = setMenuElementValues(3,3, null, 'settingsButton', 'icon',
+            './img/menu/settings_icon.png', 0xffffff, null, true, menuWidth/2 + 20, 2*menuHeight/3, 0.01);
 
         // Add all the created elements to the parent group.
         settingsmenu.add(settingsButton);
@@ -277,20 +303,23 @@ function ViewStructureMenuManager() {
 |     VIDEO PROGRESS BAR ELEMENT     |
 \************************************/
         // This is where the video progress bar is created for the traditional menu.
+
+        var vpb_shape = roundedRect( new THREE.Shape(), 10,  menuHeight/3, menuWidth - 20, 1, 0.5 );
+
         var vpb =  new THREE.Group();
         vpb.name = "video-progress-bar";
         vpb.visible = true;
 
-        var vpb_background =  new THREE.Mesh( new THREE.PlaneGeometry( menuWidth, 1 ), new THREE.MeshBasicMaterial( { color:  0x888888, transparent: true, opacity: 0.8 }));
-        vpb_background.position.set( 0, traditionalmenu.geometry.parameters.height/2 + vpb_background.geometry.parameters.height/2, 0.01 );
+        var vpb_background =  new THREE.Mesh( new THREE.ShapeGeometry( vpb_shape ), new THREE.MeshBasicMaterial( { color:  0x666666, transparent: true, opacity: 0.8 }));
+        //vpb_background.position.set( menuWidth, menuHeight/3, 0.01 );
         vpb_background.name = "background-progress";
 
-        var vpb_play =  new THREE.Mesh( new THREE.PlaneGeometry( menuWidth, 1 ), new THREE.MeshBasicMaterial( { color:  0xff0000, transparent: true, opacity: 1 }));
-        vpb_play.position.set( 0, traditionalmenu.geometry.parameters.height/2 + vpb_play.geometry.parameters.height/2, 0.02 );
+        var vpb_play =  new THREE.Mesh( new THREE.ShapeGeometry( vpb_shape ), new THREE.MeshBasicMaterial( { color:  0xc91355, transparent: true, opacity: 1 }));
+        //vpb_play.position.set( menuWidth, menuHeight/3, 0.02 );
         vpb_play.name = "play-progress";
 
-        var vpb_time_slider = new THREE.Mesh( new THREE.CircleGeometry(1,32), new THREE.MeshBasicMaterial( { color: 0xff0000 } ) );
-        vpb_time_slider.position.set( -traditionalmenu.geometry.parameters.width/2, traditionalmenu.geometry.parameters.height/2 + vpb_play.geometry.parameters.height/2, 0.02 );
+        var vpb_time_slider = new THREE.Mesh( new THREE.CircleGeometry(1,32), new THREE.MeshBasicMaterial( { color: 0xe6e6e6 } ) );
+        vpb_time_slider.position.set( menuWidth/2, menuHeight/3+0.5, 0.03 );
         vpb_time_slider.name = "slider-progress";
 
         // Add all the created elements to the parent group.

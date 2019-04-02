@@ -6,13 +6,13 @@
  */
 function MenuManager() {
 
-    var menuType = localStorage.ImAc_menuType == "LS_area" ? 1 : 2;
+    let MENU_TYPE = localStorage.ImAc_menuType == "LS_area" ? 1 : 2;
 
-    var controllers = [];
-    var actualCtrl;
-    var menuActivationElement;
+    let controllers = [];
+    let actualCtrl;
+    let menuActivationElement;
 
-    var optActiveIndex;
+    let optActiveIndex;
 
 /**
  * { function_description }
@@ -20,13 +20,12 @@ function MenuManager() {
  * @class      Init (name)
  * @param      {<type>}  type    The type
  */
-    this.Init = function(type)
-    {
-        //subController.setSubtitleLanguagesArray(list_contents[demoId].subtitles[0]);
-        //subController.setSignerLanguagesArray(list_contents[demoId].signer[0]);
+    this.Init = function(type){
 
-        menuWidth = 125;
-        menuHeight = 125*9/16;
+      menuWidth = 64;
+      menuHeight = 16;
+        /*menuWidth = 125;
+        menuHeight = 125*9/16;*/
 
         menuParent = _isHMD ? scene : camera;
 
@@ -85,11 +84,12 @@ function MenuManager() {
             case settingsCtrl.getMenuName():
                 return menuMgr.Load(multiOptionsCtrl)
 
-            case STOptionCtrl.getMenuName():
+            //DEPRECATED
+            /*case STOptionCtrl.getMenuName():
             case SLOptionCtrl.getMenuName():
             case ADOptionCtrl.getMenuName():
             case ASTOptionCtrl.getMenuName():
-                return menuMgr.Load(multiOptionsCtrl)
+                return menuMgr.Load(multiOptionsCtrl)*/
 
             case SettingsOptionCtrl.getMenuName():
                 return menuMgr.Load(settingsCtrl)
@@ -109,11 +109,11 @@ function MenuManager() {
 /**
  * Sets the menu type.
  *
- * @param      {<type>}  newMenuType  The new menu type
+ * @param      {<type>}  type  The new menu type
  */
-    this.setMenuType = function(newMenuType)
+    this.setMenuType = function(type)
     {
-        menuType = newMenuType;
+        MENU_TYPE = type;
     }
 
 /**
@@ -123,7 +123,7 @@ function MenuManager() {
  */
     this.getMenuType = function()
     {
-        return menuType;
+        return MENU_TYPE;
     }
 
 /**
@@ -157,7 +157,7 @@ function MenuManager() {
         if(actualCtrl)
         {
             actualCtrl.Exit();
-            switch(menuType)
+            switch(MENU_TYPE)
             {
                 case 1:
                 default:
@@ -211,7 +211,7 @@ function MenuManager() {
         else if ( scene.getObjectByName( "pointer" ) && _isHMD )
         {
             scene.getObjectByName( "pointer" ).visible = false;
-            if ( menuType == 2 ) scene.getObjectByName('pointer').scale.set(1*_pointerSize,1*_pointerSize,1*_pointerSize)
+            if ( MENU_TYPE == 2 ) scene.getObjectByName('pointer').scale.set(1*_pointerSize,1*_pointerSize,1*_pointerSize)
             else  scene.getObjectByName('pointer').scale.set(3*_pointerSize,3*_pointerSize,3*_pointerSize)
         }
 
@@ -226,8 +226,7 @@ function MenuManager() {
 /**
  * Creates a menu activation element.
  */
-    this.createMenuActivationElement = function()
-    {
+    this.createMenuActivationElement = function(){
         var geometry = new THREE.SphereGeometry( 99, 32, 16, Math.PI/2, Math.PI * 2,  2.35,  0.4 );
         geometry.scale( - 1, 1, 1 );
         var material = new THREE.MeshBasicMaterial( {color: 0xffffff, side: THREE.FrontSide, transparent: true, opacity:0} );
@@ -273,7 +272,7 @@ function MenuManager() {
         if ( scene.getObjectByName('pointer2') && _isHMD ) scene.getObjectByName('pointer2').visible = true;
         else if ( scene.getObjectByName( "pointer" ) && _isHMD ) scene.getObjectByName( "pointer" ).visible = true;
 
-        switch(menuType)
+        switch(MENU_TYPE)
         {
             case 1: // LOW SIGHTED
             default:
@@ -299,10 +298,11 @@ function MenuManager() {
                     controller.Init();
                 });
 
-                STOptionCtrl.Exit();
+                //DEPRECATED
+                /*STOptionCtrl.Exit();
                 SLOptionCtrl.Exit();
                 ADOptionCtrl.Exit();
-                ASTOptionCtrl.Exit();
+                ASTOptionCtrl.Exit();*/
                 SettingsOptionCtrl.Exit();
 
                 if (_isHMD)
@@ -326,7 +326,7 @@ function MenuManager() {
     {
 
         menuParent.add(vwStrucMMngr.Preview('preview'));
-        previewCtrl = new PreviewController(menuType);
+        previewCtrl = new PreviewController(MENU_TYPE);
 
         controllers.forEach(function(controller){
             controller.Exit();
@@ -365,7 +365,7 @@ function MenuManager() {
  */
     function addMenuToParent()
     {
-        switch(menuType)
+        switch(MENU_TYPE)
         {
             case 1: // LOW SIGHTED
             default:
@@ -395,7 +395,7 @@ function MenuManager() {
  */
     this.removeMenuFromParent = function()
     {
-        switch(menuType)
+        switch(MENU_TYPE)
         {
 
             case 1: // LOW SIGHTED
@@ -432,28 +432,29 @@ function MenuManager() {
         volumeCtrl = new VolumeLSMenuController();
         controllers.push(volumeCtrl);
 
-        settingsCtrl = new SettingsLSMenuController(menuType);
+        settingsCtrl = new SettingsLSMenuController(MENU_TYPE);
         controllers.push(settingsCtrl);
 
-        multiOptionsCtrl = new AccessibilityOptionsMenuController(menuType);
+        multiOptionsCtrl = new AccessibilityOptionsMenuController(MENU_TYPE);
         controllers.push(multiOptionsCtrl);
 
-        STOptionCtrl = new STOptionMenuController(menuType);
+        //DEPRECATED
+        /*STOptionCtrl = new STOptionMenuController(MENU_TYPE);
         controllers.push(STOptionCtrl);
 
-        SLOptionCtrl = new SLOptionMenuController(menuType);
+        SLOptionCtrl = new SLOptionMenuController(MENU_TYPE);
         controllers.push(SLOptionCtrl);
 
-        ADOptionCtrl = new ADOptionMenuController(menuType);
+        ADOptionCtrl = new ADOptionMenuController(MENU_TYPE);
         controllers.push(ADOptionCtrl);
 
-        ASTOptionCtrl = new ASTOptionMenuController(menuType);
-        controllers.push(ASTOptionCtrl);
+        ASTOptionCtrl = new ASTOptionMenuController(MENU_TYPE);
+        controllers.push(ASTOptionCtrl);*/
 
-        SettingsOptionCtrl = new SettingsOptionMenuController(menuType);
+        SettingsOptionCtrl = new SettingsOptionMenuController(MENU_TYPE);
         controllers.push(SettingsOptionCtrl);
 
-        if(menuType == 2)
+        if(MENU_TYPE == 2)
         {
             vpbCtrl = new VideoProgressBarController();
             controllers.push(vpbCtrl);

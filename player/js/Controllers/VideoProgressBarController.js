@@ -51,8 +51,8 @@ function VideoProgressBarController() {
 
 	function UpdateData(){
 		data.playScaleX  = updatePlayProgressScale();
-		data.playPositionX = updatePlayProgressPosition();
 		data.sliderPositionX = updateSliderPosition();
+		data.playPositionX = updatePlayProgressPosition();
   }
 
 
@@ -63,22 +63,23 @@ function VideoProgressBarController() {
 
 
   function updatePlayProgressPosition(){
-  	const play_progress = scene.getObjectByName("play-progress");
-  	if( ! play_progress.geometry.boundingBox ) play_progress.geometry.computeBoundingBox();
-      let widthCurrent = play_progress.geometry.boundingBox.max.x - play_progress.geometry.boundingBox.min.x;
-      return (-widthCurrent + widthCurrent * data.playScaleX) / 2 ;
+		const play_progress = 44;//scene.getObjectByName("play-progress").geometry.parameters.width;
+		//const play_progress = scene.getObjectByName("play-progress").geometry.boundingSphere.radius*2;
+
+		return 	data.sliderPositionX - ( play_progress*data.playScaleX)/2
   }
 
 
   function updateSliderPosition(){
-  	const progress_width = scene.getObjectByName("background-progress").geometry.parameters.width;
-  	const play_progress = scene.getObjectByName("play-progress").geometry.parameters.width;
-  	return -progress_width/2 + play_progress*data.playScaleX;
+  	const progress_width = scene.getObjectByName("background-progress").geometry.parameters.shapes.currentPoint.x;
+  	const play_progress = 44;//scene.getObjectByName("play-progress").geometry.parameters.width;
+		console.log(play_progress)
+  	//return (progress_width - play_progress/2 )+ play_progress*data.playScaleX;
+		return progress_width + play_progress*data.playScaleX ;
   }
 
 
   function updatePlayProgressScale(){
-		const progress_width = scene.getObjectByName("background-progress").geometry.parameters.width;
   	const totalTime = VideoController.getListOfVideoContents()[0].vid.duration;
   	let playoutTime = VideoController.getListOfVideoContents()[0].vid.currentTime;
   	let newPorgressWidth = (playoutTime)/totalTime;
@@ -90,12 +91,22 @@ function VideoProgressBarController() {
   this.onClickSeek = function(mouse3D){
     if(!vpbCtrl.getSeekingProcess()){
       vpbCtrl.setSeekingProcess(true);
-      var h = (Math.tan(30*Math.PI/180)*67)*2;
-      var w = h*window.innerWidth/window.innerHeight;
+      const h = (Math.tan(30*Math.PI/180)*67)*2;
+      const w = h*window.innerWidth/window.innerHeight;
+			console.log(window.innerWidth)
+			console.log("mouse: " +mouse3D.x)
 
-      var norm_vpb_w = scene.getObjectByName('background-progress').geometry.parameters.width / (w/2);
-      var slider_position_norm = scene.getObjectByName('slider-progress').position.x / (w/2);
+      //let norm_vpb_w = scene.getObjectByName('background-progress').geometry.parameters.width / (w/2);
+			let norm_vpb_w = scene.getObjectByName("background-progress").position.x / (window.innerWidth/2);
+			console.log("norm_vpb: " + norm_vpb_w)
+
+			//let slider_position_norm = scene.getObjectByName('slider-progress').position.x / (w/2);
+			let slider_position_norm = scene.getObjectByName('slider-progress').position.x / (window.innerWidth/2);
+			console.log("norm_slider: " +slider_position_norm)
       let time_diff = mouse3D.x - slider_position_norm;
+
+		console.log("diff "+ time_diff)
+
 
       if(Math.round(time_diff*100) != 0){
         let new_seek_time = Math.round(VideoController.getListOfVideoContents()[0].vid.duration*time_diff/norm_vpb_w);

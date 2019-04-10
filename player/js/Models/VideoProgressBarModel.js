@@ -5,4 +5,6 @@ function VideoProgressBarModel() {
 	this.playScaleX;
 	this.playPositionX;
 	this.sliderPositionX;
+	this.videoPlayOutTimeText;
+
 }

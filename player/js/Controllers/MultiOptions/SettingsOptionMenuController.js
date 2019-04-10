@@ -29,7 +29,7 @@
  */
 function SettingsOptionMenuController(menuType) {
 
-  var set = this;
+    var set = this;
 	var data;
 	var view;
 	var viewStructure;
@@ -244,68 +244,6 @@ function SettingsOptionMenuController(menuType) {
     }
 
 /**
- * Adds a dropdown elements trad.
- *
- * @class      AddDropdownElementsTrad (name)
- * @param      {<type>}  elements  The elements
- */
-    function AddDropdownElementsTrad(elements){
-        var dropdownInteractiveElements =  [];
-        var h = 5*elements.length;
-        data.titleHeight = elements.length * 5;
-
-        elements.forEach(function(element, index){
-            var factor = (index+1);
-
-            var dropdownIE = new InteractiveElementModel();
-            dropdownIE.width = 30;
-            dropdownIE.height =  4;
-            dropdownIE.name = element.name;
-            dropdownIE.type =  'text';
-            dropdownIE.value = MenuDictionary.translate( element.value ); //AudioManager.getVolume();
-            dropdownIE.color = element.default ? 0xffff00 : 0xffffff;
-            dropdownIE.textSize =  1.5;
-            dropdownIE.visible = true;
-
-            dropdownIE.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(dropdownIE.width, dropdownIE.height), new THREE.MeshBasicMaterial({visible:  false}));
-
-            if(element.options)
-            {
-                //dropdownIE.visible = element.visible;
-                data.isFinalDrop = false;
-                data.childColumnActiveOpt = undefined;
-
-                dropdownIE.onexecute =  function()
-                {
-                    data.title = MenuDictionary.translate( element.value );
-                    data.childColumnActiveOpt = undefined;
-                    data.parentColumnActiveOpt = element.name;
-                    data.parentColumnDropdown = AddDropdownElementsTrad(element.options);
-                    view.UpdateView(data)
-                };
-            }
-            else
-            {
-                data.isFinalDrop = true;
-                dropdownIE.onexecute =  function()
-                {
-                    UpdateDefaultLSMenuOption(elements,index);
-                    data.childColumnActiveOpt = element.name;
-                    view.UpdateView(data)
-                    MenuFunctionsManager.getButtonFunctionByName( element.name )();
-                };
-            }
-
-            dropdownIE.position = new THREE.Vector3(0, h - factor*5, 0.01);
-
-            dropdownInteractiveElements.push(dropdownIE.create())
-        });
-
-
-        return dropdownInteractiveElements
-    }
-
-/**
  * { function_description }
  *
  * @class      UpdateDefaultLSMenuOption (name)
@@ -396,10 +334,11 @@ function SettingsOptionMenuController(menuType) {
  * @param      {<type>}  elements  The elements
  */
   function AddDropdownOptions(menuOpts){
-    let dropdownInteractiveElements =  [];
-    const h = 5*menuOpts.options.length;
 
-    data.titleHeight = menuOpts.options.length * 5;
+    let dropdownInteractiveElements = [];
+    const h = optHeight*menuOpts.options.length;
+
+    data.titleHeight = menuOpts.options.length * optHeight;
     data.hasParentDropdown = menuOpts.parent ? true : false;
     data.isFinalDrop = menuOpts.final;
     data.parentDropdownData = menuOpts.parent;
@@ -408,18 +347,18 @@ function SettingsOptionMenuController(menuType) {
     menuOpts.options.forEach(function(opt, index){
       let factor = (index+1);
       let dropdownIE = new InteractiveElementModel();
-      dropdownIE.width = 30;
-      dropdownIE.height =  4;
+      dropdownIE.width = menuWidth/3;
+      dropdownIE.height = optHeight;
       dropdownIE.name = opt.optId;
-      dropdownIE.type =  'text';
+      dropdownIE.type = 'text';
       dropdownIE.value = opt.text; //MenuDictionary.translate( element.text ); //AudioManager.getVolume();
-      dropdownIE.color =  0xffffff; //element.default ? 0xffff00 : 0xffffff;
-      dropdownIE.textSize =  1.5;
+      dropdownIE.color = 0xe6e6e6; //element.default ? 0xffff00 : 0xffffff;
+      dropdownIE.textSize = 4*menuWidth/200;
       dropdownIE.visible = true;
       dropdownIE.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(dropdownIE.width, dropdownIE.height), new THREE.MeshBasicMaterial({visible:  false}));
       dropdownIE.onexecute =  opt.function;
 
-      dropdownIE.position = new THREE.Vector3(0, h - factor*5, 0.01);
+      dropdownIE.position = new THREE.Vector3(0, h - factor*optHeight, 0.01);
 
       dropdownInteractiveElements.push(dropdownIE.create())
     });

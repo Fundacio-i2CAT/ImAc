@@ -22,10 +22,8 @@ function MenuManager() {
  */
     this.Init = function(type){
 
-      menuWidth = 64;
-      menuHeight = 16;
-        /*menuWidth = 125;
-        menuHeight = 125*9/16;*/
+        menuWidth = 80;
+        menuHeight = menuWidth/4;
 
         menuParent = _isHMD ? scene : camera;
 

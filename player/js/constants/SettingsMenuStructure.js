@@ -1,3 +1,5 @@
+let optHeight;
+let optWidth
 /*************************************************************************************************************************************
   *                                                S E T T I N G S
 **************************************************************************************************************************************/
@@ -11,22 +13,22 @@
  * ╠═════════════════════════════════════╣
  * ║ General                        (>)  ║
  * ║─────────────────────────────────────║
- * ║ Subtitles (ST)                 (>)  ║
+ * ║ [=] ST Settings                (>)  ║
  * ║─────────────────────────────────────║
- * ║ Sign Language (SL)             (>)  ║
+ * ║ [>] SL Settings                (>)  ║
  * ║─────────────────────────────────────║
- * ║ Audio Description (AD)         (>)  ║
+ * ║ [o] AD Settings                (>)  ║
  * ║─────────────────────────────────────║
- * ║ Audio Subtitles (AST)          (>)  ║
+ * ║ [··] AST Settings              (>)  ║
  * ╚═════════════════════════════════════╝
 */
 //MenuDictionary.translate('Settings')
 const settingsDropdownOpt = {title: 'Settings', final: false, options: [
     {optId: 'settingsGeneral', text: 'General', function: function(){ return SettingsOptionCtrl.updateDropdownOptions(generalSettings)} },
-    {optId: 'settingsST', text: 'Subtitles', function: function(){ return SettingsOptionCtrl.updateDropdownOptions(settingsSubtitles)} },
-    {optId: 'settingsSL', text: 'Sign Language', function: function(){ return SettingsOptionCtrl.updateDropdownOptions(settingsSignLanguage)} },
-    {optId: 'settingsAD', text: 'Audio Description', function: function(){ return SettingsOptionCtrl.updateDropdownOptions(settingsAudioDescription)} },
-    {optId: 'settingsAST', text: 'Audio Subtitles', function: function(){ return SettingsOptionCtrl.updateDropdownOptions(settingsAudioSubtitles)} }
+    {optId: 'settingsST', text: 'ST Settings', function: function(){ return SettingsOptionCtrl.updateDropdownOptions(settingsSubtitles)} },
+    {optId: 'settingsSL', text: 'SL Settings', function: function(){ return SettingsOptionCtrl.updateDropdownOptions(settingsSignLanguage)} },
+    {optId: 'settingsAD', text: 'AD Settings', function: function(){ return SettingsOptionCtrl.updateDropdownOptions(settingsAudioDescription)} },
+    {optId: 'settingsAST', text: 'AST Settings', function: function(){ return SettingsOptionCtrl.updateDropdownOptions(settingsAudioSubtitles)} }
   ]};
 
 /*************************************************************************************************************************************
@@ -227,7 +229,7 @@ const settingsSafeArea = { title: 'Safe Area', parent: generalSettings, final: t
  * @level 1
  *
  * ╔═════════════════════════════════════╗
- * ║ (<)        Subtitles (ST)           ║
+ * ║ (<)        ST Settings              ║
  * ╠═════════════════════════════════════╣
  * ║ Size                           (>)  ║
  * ║─────────────────────────────────────║
@@ -238,7 +240,7 @@ const settingsSafeArea = { title: 'Safe Area', parent: generalSettings, final: t
  * ║ Easy-to-Read                   (>)  ║
  * ╚═════════════════════════════════════╝
 */
-const settingsSubtitles = { title: 'Subtitles', parent: settingsDropdownOpt, final: false, options: [
+const settingsSubtitles = { title: 'ST Settings', parent: settingsDropdownOpt, final: false, options: [
     { optId: 'subtitlesSizes', text: 'Size', function:  function(){ return SettingsOptionCtrl.updateDropdownOptions(settingsSubtitlesSize)} },
     { optId: 'subtitlesBackground', text: 'Background', function:  function(){ return SettingsOptionCtrl.updateDropdownOptions(settingsSubtitlesBackground)} },
     { optId: 'subtitlesShowPositions', text: 'Position', function:  function(){ return SettingsOptionCtrl.updateDropdownOptions(settingsSubtitlesPosition)} },
@@ -326,14 +328,14 @@ const settingsSubtitlesSize = { title: 'Size (ST)', parent: settingsSubtitles, f
   * @level 1
   *
   * ╔═════════════════════════════════════╗
-  * ║ (<)     Sign Language (SL)          ║
+  * ║ (<)     SL Settings                 ║
   * ╠═════════════════════════════════════╣
   * ║ Position                       (>)  ║
   * ║─────────────────────────────────────║
   * ║ Size                           (>)  ║
   * ╚═════════════════════════════════════╝
   */
-  const settingsSignLanguage = { title: 'Sign Language', parent: settingsDropdownOpt, final: false, options: [
+  const settingsSignLanguage = { title: 'SL Settings', parent: settingsDropdownOpt, final: false, options: [
     { optId: 'signerPosition', text: 'Position', function:  function(){ return SettingsOptionCtrl.updateDropdownOptions(settingsSignLanguagePosition)} },
     { optId: 'signerSize', text: 'Size', function:  function(){ return SettingsOptionCtrl.updateDropdownOptions(settingsSignLanguageSize)} }
   ]};
@@ -385,14 +387,14 @@ const settingsSignLanguageSize = { title: 'Size (SL)', parent: settingsSignLangu
   * @level 1
   *
   * ╔═════════════════════════════════════╗
-  * ║ (<)   Audio Description (AD)        ║
+  * ║ (<)   AD Settings                   ║
   * ╠═════════════════════════════════════╣
   * ║ Presentation Mode              (>)  ║
   * ║─────────────────────────────────────║
   * ║ Volume Level                   (>)  ║
   * ╚═════════════════════════════════════╝
   */
-  const settingsAudioDescription = { title: 'Audio Description', parent: settingsDropdownOpt, final: false, options: [
+  const settingsAudioDescription = { title: 'AD Settings', parent: settingsDropdownOpt, final: false, options: [
     { optId: 'audioDescriptionPresentation', text: 'Presentation', function:  function(){ return SettingsOptionCtrl.updateDropdownOptions(settingsAudioDescriptionPresentation)} },
     { optId: 'audioDescriptionVolume', text: 'Volume', function:  function(){ return SettingsOptionCtrl.updateDropdownOptions(settingsAudioDescriptionVolume)} }
   ]};
@@ -447,7 +449,7 @@ const settingsAudioDescriptionVolume = { title: 'Volume (AD)', parent: settingsA
   * @level 1
   *
   * ╔═════════════════════════════════════╗
-  * ║ (<)    Audio Subtitles (AST)        ║
+  * ║ (<)    AST Settings                 ║
   * ╠═════════════════════════════════════╣
   * ║ Easy-to-Read                   (>)  ║
   * ║─────────────────────────────────────║
@@ -457,7 +459,7 @@ const settingsAudioDescriptionVolume = { title: 'Volume (AD)', parent: settingsA
   * ╚═════════════════════════════════════╝
   */
 
-  const settingsAudioSubtitles = { title: 'Audio Subtitles', parent: settingsDropdownOpt, final: false, options: [
+  const settingsAudioSubtitles = { title: 'AST Settings', parent: settingsDropdownOpt, final: false, options: [
       { optId: 'audioSubtitlesEasy', text: 'Easy to read', function:  function(){ return SettingsOptionCtrl.updateDropdownOptions(settingsAudioSubtitlesEasyToRead)} },
       { optId: 'audioSubtitlesPresentation', text: 'Presentation Mode', function:  function(){ return SettingsOptionCtrl.updateDropdownOptions(settingsAudioSubtitlesPresentation)} },
       { optId: 'audioSubtitlesVolume', text: 'Volume Level', function:  function(){ return SettingsOptionCtrl.updateDropdownOptions(settingsAudioSubtitlesVolume)} }

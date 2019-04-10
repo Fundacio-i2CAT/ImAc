@@ -9,7 +9,6 @@
     - getMenuIndex (public)
     - GetData (private)
     - UpdateData (private)
-    - AddInteractivityToMenuElements (private) DEPRECATED
     - AddVisualFeedbackOnClick (private)
 
     ... and some unique functionalities of this particular controller:
@@ -50,7 +49,6 @@ function PlayPauseMenuController() {
 		viewStructure.visible = true;
 		view = new PlayPauseMenuView();
 		view.UpdateView(data);
-		//AddInteractivityToMenuElements();
     menuMgr.AddInteractionIfVisible(viewStructure);
 	};
 
@@ -110,9 +108,7 @@ function PlayPauseMenuController() {
  */
 	function UpdateData(){
 		data.isPaused = VideoController.isPausedById(0);
-    data.playOutTimeText = VideoController.getPlayoutTime(VideoController.getListOfVideoContents()[0].vid.currentTime);
-    data.isPlayOutTimeVisible = (menuMgr.getMenuType() == 1) ? false : true;
-
+    
 		data.playpauseMenuButtonFunc = function(){ AddVisualFeedbackOnClick(VideoController.isPausedById(0) ? 'playButton' : 'pauseButton', function(){ PlayPauseFunc()} )};
 		data.seekForwardMenuButtonFunc = function(){ AddVisualFeedbackOnClick('forwardSeekButton',  function(){ SeekFunc(true)} )};
 		data.seekBackMenuButtonFunc = function(){ AddVisualFeedbackOnClick('backSeekButton',  function(){ SeekFunc(false)} )};
@@ -122,19 +118,6 @@ function PlayPauseMenuController() {
     //data.previewButtonFunc = function(){ AddVisualFeedbackOnClick('previewMenuButton', function(){menuMgr.OpenPreview()} )};
     data.isPreviewVisible = false;
   };
-
-/**
- * Adds interactivity to menu elements.
- *
- * @class      AddInteractivityToMenuElements (name)
- */
-/*  function AddInteractivityToMenuElements(){
-  	viewStructure.children.forEach(function(intrElement){
-  		if(intrElement.visible && intrElement.children.length > 0 ){
-  			interController.addInteractiveObject(intrElement);
-  		}
-  	});
-  };*/
 
 /**
  * { function_description }
@@ -165,7 +148,6 @@ function PlayPauseMenuController() {
     VideoController.pauseAll();
     UpdateData();
     view.UpdateView(data);
-    //AddInteractivityToMenuElements();
     menuMgr.AddInteractionIfVisible(viewStructure);
   };
 
@@ -180,7 +162,6 @@ function PlayPauseMenuController() {
         VideoController.playAll();
         UpdateData();
         view.UpdateView(data);
-        //AddInteractivityToMenuElements();
     }
   };
 /**
@@ -192,10 +173,8 @@ function PlayPauseMenuController() {
     VideoController.isPausedById(0) ? VideoController.playAll() : VideoController.pauseAll();
 		UpdateData();
 		view.UpdateView(data);
-    //AddInteractivityToMenuElements();
     menuMgr.AddInteractionIfVisible(viewStructure);
     playoutTimeDisplayLogic();
-    interController.getInteractiveObjectList();
   };
 
 /**

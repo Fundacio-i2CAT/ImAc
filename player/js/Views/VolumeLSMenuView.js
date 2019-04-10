@@ -9,13 +9,13 @@ function VolumeLSMenuView() {
 		submenu.getObjectByName('unmuteVolumeButton').visible = data.isVolumeLevelVisible ? false : data.isMuted;
 		submenu.getObjectByName('muteVolumeButton').visible = data.isVolumeLevelVisible ? false : !data.isMuted;
 
-        submenu.getObjectByName('volumeLevel').visible = data.isVolumeLevelVisible;
+        if(submenu.getObjectByName('volumeLevel')) submenu.getObjectByName('volumeLevel').visible = data.isVolumeLevelVisible;
 
 		submenu.getObjectByName('unmuteVolumeButton').children[0].onexecute = data.muteUnmuteMenuButtonFunc;
 		submenu.getObjectByName('muteVolumeButton').children[0].onexecute = data.muteUnmuteMenuButtonFunc;
 
-		submenu.getObjectByName('plusVolumeButton').children[0].onexecute = data.plusVolumeMenuButtonFunc;
-		submenu.getObjectByName('minusVolumeButton').children[0].onexecute = data.minusVolumeMenuButtonFunc;
+		if(submenu.getObjectByName('plusVolumeButton')) submenu.getObjectByName('plusVolumeButton').children[0].onexecute = data.plusVolumeMenuButtonFunc;
+		if(submenu.getObjectByName('minusVolumeButton')) submenu.getObjectByName('minusVolumeButton').children[0].onexecute = data.minusVolumeMenuButtonFunc;
 
         if(submenu.getObjectByName('previewMenuButton')) submenu.getObjectByName('previewMenuButton').visible = data.isPreviewVisible;
 

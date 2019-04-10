@@ -365,10 +365,28 @@ THREE.MediaObjectData = function () {
         camera.add(openMenuText);
     };
 
-    this.createLine = function (color, startvector, endvector)
-    {
-        return getLineMesh(color, startvector, endvector);
+    this.createLine = function (c, startvector, endvector){
+        
+        let material = new THREE.LineBasicMaterial( { color: c } );
+        let geometry = new THREE.Geometry();
+        geometry.vertices.push( startvector, endvector );
+        let line = new THREE.Line( geometry, material );
+        return line;
     };
+
+    this.createCurvedLine = function(c, startvector, control, endvector){
+
+        let curve = new THREE.QuadraticBezierCurve3( startvector, control, endvector);
+        let points = curve.getPoints( 50 );
+        let geometry = new THREE.BufferGeometry().setFromPoints( points );
+        let material = new THREE.LineBasicMaterial( { color : c } );
+
+        //Create the final object to add to the scene
+        let curveObject = new THREE.Line( geometry, material );
+        return curveObject
+
+        
+    }
 
     this.getMenuTextMesh = function(text, size, color, name, func, cw, ch)
     {
@@ -566,6 +584,33 @@ THREE.MediaObjectData = function () {
                 return linesHoritzontalGroup;
         }
     };
+
+    this.roundedRect = function( ctx, width, height, radius ){
+        //STARTING POINT IS 0,0
+        ctx.moveTo(-width/2, 0);
+        ctx.lineTo( -width/2, height/2 - radius );  
+        ctx.quadraticCurveTo( -width/2, height/2, -width/2 + radius, height/2);
+        ctx.lineTo( width/2 - radius, height/2 );
+        ctx.quadraticCurveTo( width/2, height/2, width/2, height/2 - radius );
+        ctx.lineTo( width/2, -height/2 + radius );
+        ctx.quadraticCurveTo( width/2, -height/2, width/2 - radius, -height/2 );
+        ctx.lineTo( -width/2 + radius, -height/2 );
+        ctx.quadraticCurveTo( -width/2,-height/2, -width/2,-height/2 + radius );
+
+        //OPTION RELATIVE TO STARTING POINT
+        //ctx.moveTo( x, y + radius );
+        //ctx.lineTo( x, y + height - radius );
+        //ctx.quadraticCurveTo( x, y + height, x + radius, y + height );
+        //ctx.lineTo( x + width - radius, y + height );
+        //ctx.quadraticCurveTo( x + width, y + height, x + width, y + height - radius );
+      
+        //ctx.lineTo( x + width, y + radius );
+        //ctx.quadraticCurveTo( x + width, y, x + width - radius, y );
+        //ctx.lineTo( x + radius, y );
+        //ctx.quadraticCurveTo( x, y, x, y + radius );
+
+      return ctx;
+    }
 
 //************************************************************************************
 // Private Functions
@@ -952,9 +997,9 @@ THREE.MediaObjectData = function () {
         return pointer;
     }
 
-    function getLineMesh(c, startvector, endvector)
+    function getLineMesh(c, startvector, endvector, linewidth)
     {
-        var material = new THREE.LineBasicMaterial( { color: c, linewidth: 1 } );
+        var material = new THREE.LineBasicMaterial( { color: c, linewidth: linewidth } );
         var geometry = new THREE.Geometry();
         geometry.vertices.push( startvector, endvector );
         var line = new THREE.Line( geometry, material );

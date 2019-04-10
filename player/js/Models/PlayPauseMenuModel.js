@@ -9,7 +9,6 @@ function PlayPauseMenuModel() {
 	this.backMenuButtonFunc;
 	this.forwardMenuButtonFunc;
 
-	this.playOutTimeText;
 	this.isPlayOutTimeVisible;
 
 	this.closeMenuButtonFunc;

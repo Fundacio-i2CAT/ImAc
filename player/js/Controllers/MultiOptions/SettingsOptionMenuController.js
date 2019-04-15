@@ -347,7 +347,7 @@ function SettingsOptionMenuController(menuType) {
     menuOpts.options.forEach(function(opt, index){
       let factor = (index+1);
       let dropdownIE = new InteractiveElementModel();
-      dropdownIE.width = menuWidth/3;
+      dropdownIE.width = optWidth;
       dropdownIE.height = optHeight;
       dropdownIE.name = opt.optId;
       dropdownIE.type = 'text';

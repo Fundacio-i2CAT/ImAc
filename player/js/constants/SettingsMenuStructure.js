@@ -13,9 +13,11 @@ let optWidth
  * ╠═════════════════════════════════════╣
  * ║ General                        (>)  ║
  * ║─────────────────────────────────────║
+ * ║ Access Setings                 (>)  ║
+ * ║─────────────────────────────────────║
  * ║ [=] ST Settings                (>)  ║
  * ║─────────────────────────────────────║
- * ║ [>] SL Settings                (>)  ║
+ * ║ [<] SL Settings                (>)  ║
  * ║─────────────────────────────────────║
  * ║ [o] AD Settings                (>)  ║
  * ║─────────────────────────────────────║
@@ -24,11 +26,12 @@ let optWidth
 */
 //MenuDictionary.translate('Settings')
 const settingsDropdownOpt = {title: 'Settings', final: false, options: [
-    {optId: 'settingsGeneral', text: 'General', function: function(){ return SettingsOptionCtrl.updateDropdownOptions(generalSettings)} },
-    {optId: 'settingsST', text: 'ST Settings', function: function(){ return SettingsOptionCtrl.updateDropdownOptions(settingsSubtitles)} },
-    {optId: 'settingsSL', text: 'SL Settings', function: function(){ return SettingsOptionCtrl.updateDropdownOptions(settingsSignLanguage)} },
-    {optId: 'settingsAD', text: 'AD Settings', function: function(){ return SettingsOptionCtrl.updateDropdownOptions(settingsAudioDescription)} },
-    {optId: 'settingsAST', text: 'AST Settings', function: function(){ return SettingsOptionCtrl.updateDropdownOptions(settingsAudioSubtitles)} }
+    {optId: 'settingsGeneral', text: 'General Settings', function: function(){ return SettingsOptionCtrl.updateDropdownOptions(generalSettings)} },
+    {optId: 'settingsAccess', text: 'Access Settings', function: function(){ return SettingsOptionCtrl.updateDropdownOptions(accessSettings)} },
+    {optId: 'settingsST', text: '[=] Settings', function: function(){ return SettingsOptionCtrl.updateDropdownOptions(settingsSubtitles)} },
+    {optId: 'settingsSL', text: '[<] Settings', function: function(){ return SettingsOptionCtrl.updateDropdownOptions(settingsSignLanguage)} },
+    {optId: 'settingsAD', text: '[··] Settings', function: function(){ return SettingsOptionCtrl.updateDropdownOptions(settingsAudioDescription)} },
+    {optId: 'settingsAST', text: '[o] Settings', function: function(){ return SettingsOptionCtrl.updateDropdownOptions(settingsAudioSubtitles)} }
   ]};
 
 /*************************************************************************************************************************************
@@ -51,12 +54,6 @@ const settingsDropdownOpt = {title: 'Settings', final: false, options: [
  * ║ Pointer Size                   (>)  ║
  * ║─────────────────────────────────────║
  * ║ User Profile                   (>)  ║
- * ║─────────────────────────────────────║
- * ║ Acces Language                 (>)  ║
- * ║─────────────────────────────────────║
- * ║ Indicator                      (>)  ║
- * ║─────────────────────────────────────║
- * ║ Safe Area                      (>)  ║
  * ╚═════════════════════════════════════╝
   */
 const generalSettings = { title: 'General', parent: settingsDropdownOpt, final: false, options: [
@@ -64,10 +61,7 @@ const generalSettings = { title: 'General', parent: settingsDropdownOpt, final: 
     {optId: 'settingsVoiceControl', text: 'Voice Control', function: function(){ return SettingsOptionCtrl.updateDropdownOptions(settigsVoiceControl)} },
     {optId: 'settingsMenuType', text: 'Menu Type', function: function(){ return SettingsOptionCtrl.updateDropdownOptions(settingsMenuType)} },
     {optId: 'settingsPointerSize', text: 'Pointer Size', function: function(){ return SettingsOptionCtrl.updateDropdownOptions(settingsPointerSize)} },
-    {optId: 'settingsUserProfile', text: 'User Profile', function: function(){ return SettingsOptionCtrl.updateDropdownOptions(settingsUserProfile)} },
-    {optId: 'settingsAccessLanguage', text: 'Acces Language', function: function(){ return SettingsOptionCtrl.updateDropdownOptions(settingsAccesLanguages)} }, //NEW LANG
-    {optId: 'settingsIndicator', text: 'Indicator', function: function(){ return SettingsOptionCtrl.updateDropdownOptions(settingsIndicator)} }, //NEW INDIC
-    {optId: 'settingsSafeArea', text: 'Safe Area', function: function(){ return SettingsOptionCtrl.updateDropdownOptions(settingsSafeArea)} }
+    {optId: 'settingsUserProfile', text: 'User Profile', function: function(){ return SettingsOptionCtrl.updateDropdownOptions(settingsUserProfile)} }
   ]};
 
 /**
@@ -97,7 +91,7 @@ const settingsUILanguages = { title: 'UI Languages', parent: generalSettings, fi
  * VOICE CONTROL menu hierarchy structure
  * @level 2
  * ╔═════════════════════════════════════╗
- * ║ (<)       Voice Control             ║
+ * ║ (<)       Voice Control             ║4
  * ╠═════════════════════════════════════╣
  * ║ ON                            Final ║
  * ║─────────────────────────────────────║
@@ -156,6 +150,31 @@ const settingsPointerSize = { title: 'Pointer Size', parent: generalSettings, fi
 */
 const settingsUserProfile = { title: 'User Profile', parent: generalSettings, final: true, options: [
     {optId: 'saveUserProfileButton', text: 'Save', function:  function(){ return console.log()} } // default: false}];
+  ]};
+
+
+/*************************************************************************************************************************************
+   *                                               A C C E S S 
+  **************************************************************************************************************************************/
+
+/**
+ *  ACCESS SETTINGS menu hierarchy structure
+ * @level 1
+ *
+ * ╔═════════════════════════════════════╗
+ * ║ (<)        Access Settings          ║
+ * ╠═════════════════════════════════════╣
+ * ║ Acces Language                 (>)  ║
+ * ║─────────────────────────────────────║
+ * ║ Indicator                      (>)  ║
+ * ║─────────────────────────────────────║
+ * ║ Safe Area                      (>)  ║
+ * ╚═════════════════════════════════════╝
+  */
+const accessSettings = { title: 'Access Settings', parent: settingsDropdownOpt, final: false, options: [
+    {optId: 'settingsAccessLanguage', text: 'Language', function: function(){ return SettingsOptionCtrl.updateDropdownOptions(settingsAccesLanguages)} }, //NEW LANG
+    {optId: 'settingsIndicator', text: 'Indicator', function: function(){ return SettingsOptionCtrl.updateDropdownOptions(settingsIndicator)} }, //NEW INDIC
+    {optId: 'settingsSafeArea', text: 'Safe Area', function: function(){ return SettingsOptionCtrl.updateDropdownOptions(settingsSafeArea)} }
   ]};
 
 /**

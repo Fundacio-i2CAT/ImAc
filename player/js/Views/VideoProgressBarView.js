@@ -3,9 +3,8 @@ function VideoProgressBarView() {
 	this.UpdateView = function(data){
 		const element = scene.getObjectByName(data.name);
        
-        /*element.getObjectByName("play-progress").scale.set(data.playScaleX,1,1);
-        element.getObjectByName("play-progress").scale.set(0.2,1,1);
-        element.getObjectByName("play-progress").position.x = data.playPositionX;*/
+        element.getObjectByName("play-progress").scale.set(data.playScaleX,1,1);
+        element.getObjectByName("play-progress").position.x = data.playPositionX;
         element.getObjectByName("slider-progress").position.x = data.sliderPositionX;
 
         vpbCtrl.setSeekingProcess(false);
@@ -22,7 +21,7 @@ function VideoProgressBarView() {
 	    playouttime.name = 'video-playout-time';
 	    playouttime.type =  'text';
 	    playouttime.value = data.videoPlayOutTimeText;
-	    playouttime.textSize = (menuMgr.getMenuType() == 1) ? 15 : 3*menuWidth/200;
+	    playouttime.textSize = (menuMgr.getMenuType() == 1) ? 15 : menuWidth/50;
 	    playouttime.color = 0xe6e6e6;
 	    playouttime.position = new THREE.Vector3(-9*menuWidth/20 , -menuHeight/24, 0.01);
 

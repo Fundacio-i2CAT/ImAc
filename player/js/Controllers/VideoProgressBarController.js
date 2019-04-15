@@ -53,7 +53,7 @@ function VideoProgressBarController() {
     data.videoPlayOutTimeText = VideoController.getPlayoutTime(VideoController.getListOfVideoContents()[0].vid.currentTime);
 		data.playScaleX  = updatePlayProgressScale();
 		data.sliderPositionX = updateSliderPosition();
-		//data.playPositionX = updatePlayProgressPosition();
+		data.playPositionX = updatePlayProgressPosition();
   }
 
 
@@ -63,15 +63,14 @@ function VideoProgressBarController() {
   }
 
 
-  /*function updatePlayProgressPosition(){
-		const play_progress = 44;//scene.getObjectByName("play-progress").geometry.parameters.width;
-		//const play_progress = scene.getObjectByName("play-progress").geometry.boundingSphere.radius*2;
-    console.log(  data.sliderPositionX)
-
-		return 	20;
-    //return  -data.sliderPositionX+ ( play_progress*data.playScaleX) +20
-  }*/
-
+  function updatePlayProgressPosition(){
+		  const play_progress =  scene.getObjectByName("play-progress");
+      if( ! play_progress.geometry.boundingBox ) {
+        play_progress.geometry.computeBoundingBox();
+      }
+      let widthCurrent = play_progress.geometry.boundingBox.max.x - play_progress.geometry.boundingBox.min.x;
+      return (-widthCurrent + widthCurrent * data.playScaleX) / 2  + menuWidth/200;
+  }
 
 /**
  * This function calculates the new position of the slider depending on the current video time over the total video length.
@@ -99,7 +98,11 @@ function VideoProgressBarController() {
   }
 
 
-
+/**
+ * { function_description }
+ *
+ * @param      {<type>}  mouse3D  The mouse 3d
+ */
   this.onClickSeek = function(mouse3D){
     if(!vpbCtrl.getSeekingProcess()){
       vpbCtrl.setSeekingProcess(true);

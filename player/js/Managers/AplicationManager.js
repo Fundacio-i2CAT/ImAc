@@ -156,7 +156,7 @@ function AplicationManager()
         else alert("This browser don't support VR content");
 
         initReticulum( camera );
-
+        //if ( localStorage.ImAc_server ) _Sync.init( localStorage.ImAc_server );
         runDemo();
 	};
 }

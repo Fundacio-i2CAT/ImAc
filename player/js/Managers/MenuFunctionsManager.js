@@ -265,6 +265,7 @@ MenuFunctionsManager = function() {
     this.getPlayPauseFunc = function(play)
     {
         return function() {
+            play ? _Sync.vc( 'play', VideoController.getMediaTime()* 1000000000 ) : _Sync.vc( 'pause', VideoController.getMediaTime()* 1000000000 );
             play ? VideoController.playAll() : VideoController.pauseAll();
         }
     };

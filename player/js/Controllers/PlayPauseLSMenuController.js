@@ -206,6 +206,7 @@ function PlayPauseLSMenuController() {
  */
 	function PlayPauseFunc()
     {
+        VideoController.isPausedById(0) ? _Sync.vc( 'play', VideoController.getMediaTime()* 1000000000 ) : _Sync.vc( 'pause', VideoController.getMediaTime()* 1000000000 );
         VideoController.isPausedById(0) ? VideoController.playAll() : VideoController.pauseAll();
 		UpdateData();
 		view.UpdateView(data);

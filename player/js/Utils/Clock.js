@@ -1,4 +1,13 @@
+/**
+ * @author isaac.fraile@i2cat.net
+ */
 
+/************************************************************************************
+    SysClock, objecte rellotge.
+
+    Utilitzat cada vegada que es vol definir un nou rellotge.
+    Idealment s'inicialitza utilitzant un temps NTP.
+************************************************************************************/
 
 
 class SysClock {

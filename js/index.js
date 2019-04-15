@@ -1,7 +1,7 @@
 
 // GLOBAL VARS
 
-var _PlayerVersion = 'v0.06.0';
+var _PlayerVersion = 'v0.07.0';
 
 /**
  * Initializes the web player.
@@ -64,6 +64,8 @@ function selectXML(id)
             break;
         }
     }
+
+    //localStorage.ImAc_server = document.getElementById('server_id').value;
 
     /*var radios3 = document.getElementsByName('subform');
 

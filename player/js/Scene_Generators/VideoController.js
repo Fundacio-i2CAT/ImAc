@@ -2,7 +2,29 @@
  * @author isaac.fraile@i2cat.net
  */
 
- // This library needs to use the dash.all.min.js and hls.js functions
+/************************************************************************************
+    
+    VideoController.js  
+        * Library used to manage audovisual contents
+
+    This library needs to use external libs:
+        * dash.all.min.js
+        * hls.js
+
+    This library needs to use the global vars:
+        * _ManifestParser
+        * _Sync
+        * subController
+        * vpbCtrl
+        * scene
+        * playpauseCtrl
+    
+    FUNCTIONALITIES:
+        * init = function()    --> Initialize the player contents
+        * Play, Pause, seek and Synchronization services
+        * Add and remove media content
+
+************************************************************************************/
 
 VideoController = function() {
 
@@ -100,12 +122,13 @@ VideoController = function() {
 
     function changeAllPlaybackRate(value)
     {
-        listOfVideoContents.forEach( function( elem ) { elem.vid.playbackRate  = value; } ); 
+        listOfVideoContents.forEach( function( elem ) { elem.vid.playbackRate = value; } ); 
         listOfAudioContents.forEach( function( elem ) { elem.playbackRate  = value; } );
     }
 
     function syncAll(dif)
-    {           
+    {  
+        dif = parseInt( dif*100 )/100;       
         if ( dif > -0.05 && dif < 0.05 ) {} 
 
         else if ( dif < -1 || dif > 1 ) 
@@ -201,6 +224,7 @@ VideoController = function() {
 
     this.seekAll = function(time)
     {
+        _Sync.vc( 'play', (listOfVideoContents[0].vid.currentTime + time) * 1000000000 )
         changeAllCurrentTime( time );
     };   
 
@@ -239,32 +263,23 @@ VideoController = function() {
 
     var periodCount = 0;
 
+    /**
+     * Initialize the library
+    */
     this.init = function()
     {
         listOfVideoContents[0].dash.on( dashjs.MediaPlayer.events.PERIOD_SWITCH_STARTED, function() 
         {
-            //var mpd = listOfVideoContents[0].dash.geti2catMPD();
-            //console.log(mpd.manifest)
             if (periodCount > 0) _ManifestParser.updateSignerVideo(periodCount);
             periodCount += 1;
         });
-
-        /*listOfVideoContents[0].dash.on( dashjs.MediaPlayer.events.PLAYBACK_ENDED, function() 
-        {
-            console.error('PLAYBACK_ENDED')
-
-        });*/
 
         getAdaptationSets().then(( str ) => { 
 
             subController.enableSubtitles();
 
-            //var sync = new SyncController()
-            //sync.init();
-
             listOfVideoContents[0].vid.ontimeupdate = function() 
             {
-
                 if (listOfVideoContents[0].vid.currentTime >= listOfVideoContents[0].vid.duration - 0.5) window.location.reload();
                 subController.updateSubtitleByTime( listOfVideoContents[0].vid.currentTime );
                 if( scene.getObjectByName( "video-progress-bar" ) && scene.getObjectByName( "video-progress-bar" ).visible )
@@ -291,5 +306,4 @@ VideoController = function() {
         }
         else if ( !listOfVideoContents[0].vid.paused ) this.pauseAll();
     }
-
 }

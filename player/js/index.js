@@ -1,7 +1,7 @@
 
 // GLOBAL VARS
 
-var _PlayerVersion = 'v0.06.0';
+var _PlayerVersion = 'v0.07.0';
 
 var AplicationManager = new AplicationManager();
 var MenuFunctionsManager = new MenuFunctionsManager();
@@ -25,6 +25,7 @@ var statObj = new StatObject();
 var VideoController = new VideoController();
 
 var _ImAc = new ImAcController();
+var _Sync = new SyncController();
 
 let playpauseCtrl;
 let volumeCtrl;
@@ -55,6 +56,8 @@ var list_contents;
 
 var __etype = 0;
 
+var _fixedST = false;
+
 
 /**
  * Initializes the web player.
@@ -64,14 +67,11 @@ function init_webplayer()
 {
 	console.log('Version: ' + _PlayerVersion);
 
-    loadEmojisIcons();
-
     var myhash = window.location.hash.split('#');
 
     _AudioManager.initAmbisonicResources();
 
-    //_moData.setFont('./css/fonts/TiresiasScreenfont_Regular.json').then(() => { 
-    _moData.set2Font('./css/fonts/TiresiasScreenfont_Regular.json', './css/fonts/RobotoMedium_Italic.json' ).then(() => { 
+    _moData.setFont('./css/fonts/TiresiasScreenfont_Regular.json').then(() => { 
 
         $.getJSON('../content.json', function(json)
         {
@@ -105,7 +105,6 @@ function init_webplayer()
             else window.location = window.location.origin + window.location.pathname.slice(0, -7);       
         });
     });
-    //moData.setFont('./css/fonts/helvetiker_bold.typeface.json');
 }
 
 $(window).on( 'hashchange', () => { window.location.reload() } );

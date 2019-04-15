@@ -252,22 +252,43 @@ Math.degrees = function(radians) {
     return radians * (180 / Math.PI);
 };
 
-var emoji_1, emoji_2, emoji_3, emoji_4, emoji_5;
+var emoji_1, emoji_2, emoji_3, emoji_4, emoji_5, emoji_6, emoji_7, emoji_8, emoji_9, emoji_10;
 
 function loadEmojisIcons()
 {
     emoji_1 = new Image() 
-    emoji_1.src = ""; 
+    emoji_1.src = "./img/emojis/happy.png"; 
 
     emoji_2 = new Image() 
-    emoji_2.src = "./img/emojis/moreno-03.png"; 
+    emoji_2.src = "./img/emojis/hands.png"; 
 
     emoji_3 = new Image() 
-    emoji_3.src = "./img/emojis/sad-03.png"; 
+    emoji_3.src = "./img/emojis/sad.png"; 
 
     emoji_4 = new Image() 
-    emoji_4.src = "./img/emojis/robot-04.png"; 
+    emoji_4.src = "./img/emojis/steps.png"; 
 
     emoji_5 = new Image() 
-    emoji_5.src = ""; 
+    emoji_5.src = "./img/emojis/robot.png"; 
+
+    emoji_6 = new Image() 
+    emoji_6.src = "./img/emojis/phone.png"; 
+
+    emoji_7 = new Image() 
+    emoji_7.src = "./img/emojis/wave.png"; 
+
+    emoji_8 = new Image() 
+    emoji_8.src = "./img/emojis/music.png"; 
+
+    emoji_9 = new Image() 
+    emoji_9.src = "./img/emojis/plug.png"; 
+
+    emoji_10 = new Image() 
+    emoji_10.src = "./img/emojis/noise.png"; 
+}
+
+function startSync()
+{
+    var sync = new SyncController()
+    sync.init();
 }

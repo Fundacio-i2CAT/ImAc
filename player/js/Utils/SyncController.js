@@ -1,66 +1,154 @@
+/**
+ * @author isaac.fraile@i2cat.net
+ */
 
+/************************************************************************************
+	
+	SyncController.js  
+		* Library used to manage Subtitle and Signer elements
+
+	This library needs to use external libs:
+		* VideoController.js         -->  To sync all the video contents and get the current media time ( syncAllContents(speed, diff) , getMediaTime() )
+		* Clock.js
+
+	This library needs to use the global vars:
+		* demoId
+		* VideoController
+		* localStorage.ImAc_init
+		* SysClock
+	
+	FUNCTIONALITIES:
+		* init = function( ip )    --> Initialize the sync connections
+		* vc = function( action, time )  --> Used to do play, pause and seek synchronously
+
+************************************************************************************/
 
 SyncController = function() {
 
 	var clock = new SysClock();
-	var server;
-	var isMaster = false;
+	var first_entry = true;
+	//var server;
+	//var isMaster = false;
 
-	this.init = function()
+	var _tsUrl;
+	var _wcUrl;
+	var _csUrl;
+
+	/**
+	 * Initialize the library
+	 *
+	 * @param  {ip}
+	*/
+	this.init = function( ip )
 	{
-		//findServer(); --> startNewSession( UUID ) // findSession( UUID )
+		first_entry = true;
+		connection_CII( 'ws://' + ip + ':4649/dvbcsscii' );
+	};
 
-		//connection_CII();
-
-		setContent( 'ws://192.168.10.128:4649/cs' );
-
-		sync_WC( 'ws://192.168.10.128:4649/wc' );
-
-		connection_TS( 'ws://192.168.10.128:4649/dvbcssts' );
-
-		//connection_LOG( 'ws://192.168.10.128:4649/log' )
-	}
-
-	this.vc = function ( action, time )
+	/**
+	 * Function used to do Play, Pause and Seek actions synchronously
+	 *
+	 * @param  {string}
+	 * @param  {integer}
+	*/
+	this.vc = function( action, time )
 	{
-		var cs_ws = new WebSocket( 'ws://192.168.10.128:4649/cs' );
-		cs_ws.onopen = function() {
-			var json = {
-				action: action,
-				actionTime: time
+		if ( _csUrl ) 
+		{
+			var cs_ws = new WebSocket( _csUrl );
+			cs_ws.onopen = function() {
+				var json = {
+					action: action,
+					actionTime: time
+				};
+				cs_ws.send( JSON.stringify( json ) );
+				cs_ws.close();
 			};
-			cs_ws.send( JSON.stringify( json ) );
-			cs_ws.close();
-		};
-	}
+		}
+	};
 
-	function connection_LOG( ws_url ) 
+	/**
+	 * Initialize the DVB-CSS-CII connection and stay listening
+	 * When receive a message initializes the url of each active service
+	 *
+	 * @param  {url}
+	*/
+	function connection_CII(ws_url)
 	{
-		var cs_ws = new WebSocket( ws_url );
-		cs_ws.onopen = function() {
-			cs_ws.send( JSON.stringify( scene.children ) );
-		};
+		var cii_ws = new WebSocket( ws_url );
+
+		cii_ws.onmessage = function(message) 
+		{
+			var data = JSON.parse( message.data );
+
+			console.log( data );
+
+			_tsUrl = data.tsUrl;
+			_csUrl = data.private[0].contentSetterUrl;
+			_wcUrl = data.private[0].wsClockUrl;
+
+			data.contentId ? checkContent( data.contentId ) : setContent( _csUrl );
+		}
 	}
 
+	/**
+	 * Checks if the content setted is the same that the content selected
+	 * Checks if this is the first entry to initilize the sync. services
+	 *
+	 * @param  {string}
+	*/
+	function checkContent( contentId )
+	{
+		if ( demoId != contentId ) 
+		{
+			if ( first_entry ) setContent( _csUrl ); 
+			else 
+			{ 
+				localStorage.ImAc_init = contentId;
+				window.location = window.location.origin + window.location.pathname + '#' + localStorage.ImAc_init;
+			}
+		}
+
+		if ( first_entry )	
+		{
+			sync_WC( _wcUrl );
+			connection_TS( _tsUrl );
+			first_entry = false;
+		}
+	}
+
+	/**
+	 * Set a new content on the synchronize server using a websocket connection
+	 *
+	 * @param  {url}
+	*/
 	function setContent( ws_url )
 	{
 		var cs_ws = new WebSocket( ws_url );
-		cs_ws.onopen = function() {
 
-			var json = {
-				contentId: list_contents[demoId].url
-			};
+		cs_ws.onopen = function() 
+		{
+			var json = { contentId: demoId };
+
 			cs_ws.send( JSON.stringify( json ) );
 			cs_ws.close();
 		};
 	}
 
+	/**
+	 * Initialize the WallClock connection and stay listening
+	 * Used to sinchronize the clock time
+	 * This function checks the WC time every 5 seconds
+	 * When receive a websocket message, checks and sync the clock
+	 *
+	 * @param  {url}
+	*/
 	function sync_WC( ws_url )
 	{
 		var wc_ws = new WebSocket( ws_url );
-		//active_sockets.push( wc_ws );
 
-		wc_ws.onopen = function() {
+		wc_ws.onopen = function() 
+		{
 			getWC( wc_ws, 5000 ); // get wallclock time every X seconds, en aquest cas cada 5 segons
 		};
 
@@ -68,7 +156,6 @@ SyncController = function() {
 		{
 			var t4 = clock.time;
 			var wc_msg = JSON.parse( message.data );
-			//console.log(wc_msg)
 			var offset = ( ( wc_msg.t3 + wc_msg.t2 ) - ( t4 + wc_msg.t1 ) )/2;
 			var RTT = ( ( t4 - wc_msg.t1 ) - ( wc_msg.t3 - wc_msg.t2 ) )/2;
 			var ajustment = offset - RTT;
@@ -77,10 +164,15 @@ SyncController = function() {
 		};
 	}
 
+	/**
+	 * Initialize the DVB-CSS-TS connection and stay listening
+	 * When receive a websocket message, checks and sync all contents
+	 *
+	 * @param  {url}
+	*/
 	function connection_TS( ws_url )
 	{
 		ts_ws = new WebSocket( ws_url );
-		//startContentTime = (wallClock.getTicks() / 1000000000);
 
 		var delay = 0;
 		var syncoffset = 0;
@@ -92,7 +184,6 @@ SyncController = function() {
 				timelineSelector: 'this:is:new:timeline:selector'
 			};
 			ts_ws.send( JSON.stringify( json ) );
-
 		};
 		
 		ts_ws.onmessage = function(message) 
@@ -106,6 +197,12 @@ SyncController = function() {
 		};
 	}
 
+	/**
+	 * Send a websocket message with the WC params (clock time)
+	 *
+	 * @param  {websocket}
+	 * @param  {integer}
+	*/
 	function getWC( wc_ws, millis ) 
 	{
 		var startTime = clock.time;
@@ -114,4 +211,13 @@ SyncController = function() {
 			getWC( wc_ws, millis );
 		}, millis);
 	}	
+
+	function connection_LOG( ws_url ) 
+	{
+		var cs_ws = new WebSocket( ws_url );
+		cs_ws.onopen = function() 
+		{
+			cs_ws.send( JSON.stringify( scene.children ) );
+		};
+	}
 }

@@ -72,6 +72,8 @@ SubSignManager = function() {
 	var subArea = 70; // small = 50, medium = 60, large = 70
 	var subAvailableLang = []; // Array { name, value, default:bool }
 
+	var subType = 0; // normal = 0; fixed = 1; fixedUAB = 2; SL_subtitles = 3;
+
 	// [SL] signer vars
 	var signerContent; // URL
 	var signEnabled = false; // boolean
@@ -98,7 +100,7 @@ SubSignManager = function() {
 		  	{
 		  		if ( autoPositioning ) changePositioning( isd.imac );
 		  		if ( radarAutoPositioning ) changeSimplePositioning( isd.imac );
-		    	if ( subtitleEnabled ) print3DText( isd.contents[0], isd.imac );
+		    	if ( subtitleEnabled ) print3DText( isd.contents[0], isd.imac, isd.imacY );
 
 		    	if ( subtitleIndicator == 'arrow' ) arrowInteraction();
 
@@ -127,7 +129,7 @@ SubSignManager = function() {
 		}
 	}
 
-	function print3DText(isdContent, isdImac) 
+	function print3DText(isdContent, isdImac, isdImacY) 
 	{
 		var latitud = subPosY == 1 ? 30 * subArea/100 : -30 * subArea/100; 
   		var posY = _isHMD && !isExperimental ? 80 * Math.sin( Math.radians( latitud ) ) : 135 * Math.sin( Math.radians( latitud ) );
@@ -137,15 +139,14 @@ SubSignManager = function() {
 
   		subConfig = {
 	        subtitleIndicator: subtitleIndicator,
-	        displayAlign: subPosY,
-	        textAlign: subPosX,
 	        size: subSize * subAjust * esaySizeAjust,
 	        area: subArea/130,
 	        opacity: subBackground,
-	        x: 0,
+	        x: subPosX * subSize * subAjust * esaySizeAjust,
 	        y: posY * 9/16,
 	        z: posZ,
-	        speaker: isdImac
+	        lon: -isdImac,
+	        lat: isdImacY
 	    };
 
 	  	if ( isdContent.contents.length > 0 )
@@ -172,9 +173,8 @@ SubSignManager = function() {
 	      		removeSubtitle();
 
 			    //Save subtitle configuration for preview visualitzation. 
-
-	      		//createSubtitle( textList, conf );
-	      		isExperimental ? createExpSubtitle( textList, subConfig ) : createSubtitle( textList, subConfig );
+			    if ( isExperimental ) createExpSubtitle( textList, subConfig );
+			    else createSubtitle( textList, subConfig );
 
 	      		if ( subtitleIndicator == 'radar' ) createSpeakerRadar( textList[0].color, isdImac );
 
@@ -288,7 +288,6 @@ SubSignManager = function() {
 
 		var a = new THREE.Euler( 0, Math.radians(-isdImac), 0, 'XYZ' );
 		camera.quaternion.setFromEuler( a );
-
 	}	
 
 	function createSigner()
@@ -324,12 +323,22 @@ SubSignManager = function() {
 
     function createSubtitle(textList, config)
     {
-        subtitleMesh = _moData.getEmojiSubtitleMesh( textList, config );
+        subtitleMesh = !_fixedST ? _moData.getEmojiSubtitleMesh( textList, config ) : _moData.getExpEmojiSubtitleMesh( textList, config );
+        subtitleMesh.name = "subtitles";
+
+        _fixedST ? scene.add( subtitleMesh ) : camera.add( subtitleMesh );
+    }
+
+    // Subtitles fixed under SL video
+    function createSLSubtitle(textList, config)
+    {
+    	subtitleMesh = _moData.getSLSubtitleMesh( textList, config );
         subtitleMesh.name = "subtitles";
 
         camera.add( subtitleMesh );
     }
 
+    // Fixed position subtitles for UAB
     function createExpSubtitle(textList, config)
     {
     	subtitleMesh = _moData.getExpSubtitleMesh( textList, config );
@@ -401,7 +410,7 @@ SubSignManager = function() {
 
     function removeSubtitle()
     {
-        isExperimental ? scene.remove( subtitleMesh ) : camera.remove( subtitleMesh );
+        (isExperimental || _fixedST) ? scene.remove( subtitleMesh ) : camera.remove( subtitleMesh );
         subtitleMesh = undefined;
     }
 
@@ -660,6 +669,21 @@ SubSignManager = function() {
 	        if ( r.readyState === 4 && r.status === 200 ) 
 	        {
 	            imsc1doc = imsc.fromXML( r.responseText );
+
+		////////////////////////////////////////////////////////////////
+
+				var lineCount = 2;
+				var charWidth = 30;
+
+				var RS = new responsiveSubs(imsc1doc);
+				RS.IMSCtoWords();
+				RS.blockSubsBySpeaker(" ");
+				RS.splitSubsByLPL(charWidth); // numero de caracters per linea
+				RS.blockSubsBySpeaker("\n",lineCount); // numero de linees
+				
+				imsc1doc = RS.toIMSC(fontSize=110);
+		/////////////////////////////////////////////////////////////////////
+		
 	        }
 	        else if ( r.readyState === 4 ) 
 	        {
@@ -1047,4 +1071,40 @@ SubSignManager = function() {
     {
     	if ( signerMesh ) signerMesh.rotation.z = -camera.rotation.z;
     }
+}
+
+
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////
+
+
+class Accessibility 
+{
+	constructor( language = 'en', indicator = 'none', area = 70 ) {
+		this.lang = language;
+		this.indicator = indicator;
+		this.area = area;
+	}
+}
+
+
+class Subtitle 
+{
+	constructor() 
+	{
+		this.enabled 	= false; 		// boolean
+		this.size 		= 1; 			// small = 0.6, medium = 0.8, large = 1
+		this.background = 0.5;			// semi-transparent = 0.5, outline = 0
+		this.position 	= [ 0, -1 ];	// array(x,y) [ -1 .. 0 .. 1 ]
+		this.e2r 		= false;		// boolean
+		this.mesh 		= undefined;	// Three.js object
+		this.imsc1doc 	= undefined;	// ttml object
+		this.isFixed 	= false;		// boolean
+		this.memory 	= [];			// array of text memory
+		this.maxLines	= 2;			// integer
+		this.maxChars	= 30;			// integer
+	}
 }

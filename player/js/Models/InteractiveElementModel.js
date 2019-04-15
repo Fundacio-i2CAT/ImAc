@@ -30,6 +30,7 @@ InteractiveElementModel.prototype.create = function()
 
 function createTextIE (element)
 {
+	//console.warn('Deprecated function, needs to be updated')
     var shape = new THREE.BufferGeometry();
     var material = new THREE.MeshBasicMaterial( { color: element.color} );
     var shapes = _moData.getFont().generateShapes( element.value, element.textSize);

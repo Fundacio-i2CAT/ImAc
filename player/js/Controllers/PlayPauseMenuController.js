@@ -109,12 +109,12 @@ function PlayPauseMenuController() {
 	function UpdateData(){
 		data.isPaused = VideoController.isPausedById(0);
     
-		data.playpauseMenuButtonFunc = function(){ AddVisualFeedbackOnClick(VideoController.isPausedById(0) ? 'playButton' : 'pauseButton', function(){ PlayPauseFunc()} )};
-		data.seekForwardMenuButtonFunc = function(){ AddVisualFeedbackOnClick('forwardSeekButton',  function(){ SeekFunc(true)} )};
-		data.seekBackMenuButtonFunc = function(){ AddVisualFeedbackOnClick('backSeekButton',  function(){ SeekFunc(false)} )};
-    data.backMenuButtonFunc = function(){ AddVisualFeedbackOnClick('backMenuButton', function(){ menuMgr.NavigateBackMenu()} )};
-    data.forwardMenuButtonFunc = function(){ AddVisualFeedbackOnClick('forwardMenuButton', function(){menuMgr.NavigateForwardMenu()} )};
-    data.closeMenuButtonFunc = function(){ AddVisualFeedbackOnClick('closeMenuButton', function(){ menuMgr.ResetViews()} )};
+		data.playpauseMenuButtonFunc = function(){ AddVisualFeedbackOnClick(VideoController.isPausedById(0) ? 'play-button' : 'pause-button', function(){ PlayPauseFunc()} )};
+		data.seekForwardMenuButtonFunc = function(){ AddVisualFeedbackOnClick('forward-seek-button',  function(){ SeekFunc(true)} )};
+		data.seekBackMenuButtonFunc = function(){ AddVisualFeedbackOnClick('back-seek-button',  function(){ SeekFunc(false)} )};
+    //data.backMenuButtonFunc = function(){ AddVisualFeedbackOnClick('backMenuButton', function(){ menuMgr.NavigateBackMenu()} )};
+    //data.forwardMenuButtonFunc = function(){ AddVisualFeedbackOnClick('forwardMenuButton', function(){menuMgr.NavigateForwardMenu()} )};
+    data.closeMenuButtonFunc = function(){ AddVisualFeedbackOnClick('close-button', function(){ menuMgr.ResetViews()} )};
     //data.previewButtonFunc = function(){ AddVisualFeedbackOnClick('previewMenuButton', function(){menuMgr.OpenPreview()} )};
     data.isPreviewVisible = false;
   };
@@ -174,7 +174,6 @@ function PlayPauseMenuController() {
 		UpdateData();
 		view.UpdateView(data);
     menuMgr.AddInteractionIfVisible(viewStructure);
-    playoutTimeDisplayLogic();
   };
 
 /**
@@ -183,27 +182,10 @@ function PlayPauseMenuController() {
  * @function      SeekFunc (name)
  * @param      {number}  plus    The plus
  */
-  function SeekFunc(plus){
-    var sign = plus ? 1 : -1;
-    VideoController.seekAll( 5*sign );
-    UpdateData();
-    view.UpdateView(data);
-    playoutTimeDisplayLogic();
-  };
-
-/**
- * { function_description }
- *
- * @function   playoutTimeDisplayLogic (name)
- */
-  function playoutTimeDisplayLogic(){
-    if(menuMgr.getMenuType() == 1){
-      data.isPlayOutTimeVisible = true;
-      view.UpdateView(data);
-      setTimeout(function(){
-          data.isPlayOutTimeVisible = false;
-          view.UpdateView(data);
-      }, 500);
-    }
-  };
+    function SeekFunc(plus){
+        var sign = plus ? 1 : -1;
+        VideoController.seekAll( 5*sign );
+        UpdateData();
+        view.UpdateView(data);
+    };
 };

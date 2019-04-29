@@ -1,6 +1,6 @@
 function AccessibilityOptionsMenuModel()
 {
-	this.name = 'multioptionsmenu';
+	this.name = 'accessoptions-menu-group';
 	this.backMenuButtonfunc;
 	this.forwardMenuButtonFunc;
 	this.closeMenuButtonFunc;

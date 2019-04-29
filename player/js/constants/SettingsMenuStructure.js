@@ -17,21 +17,20 @@ let optWidth
  * ║─────────────────────────────────────║
  * ║ [=] ST Settings                (>)  ║
  * ║─────────────────────────────────────║
- * ║ [<] SL Settings                (>)  ║
+ * ║ [>] SL Settings                (>)  ║
  * ║─────────────────────────────────────║
  * ║ [o] AD Settings                (>)  ║
  * ║─────────────────────────────────────║
  * ║ [··] AST Settings              (>)  ║
  * ╚═════════════════════════════════════╝
 */
-//MenuDictionary.translate('Settings')
 const settingsDropdownOpt = {title: 'Settings', final: false, options: [
-    {optId: 'settingsGeneral', text: 'General Settings', function: function(){ return SettingsOptionCtrl.updateDropdownOptions(generalSettings)} },
-    {optId: 'settingsAccess', text: 'Access Settings', function: function(){ return SettingsOptionCtrl.updateDropdownOptions(accessSettings)} },
-    {optId: 'settingsST', text: '[=] Settings', function: function(){ return SettingsOptionCtrl.updateDropdownOptions(settingsSubtitles)} },
-    {optId: 'settingsSL', text: '[<] Settings', function: function(){ return SettingsOptionCtrl.updateDropdownOptions(settingsSignLanguage)} },
-    {optId: 'settingsAD', text: '[··] Settings', function: function(){ return SettingsOptionCtrl.updateDropdownOptions(settingsAudioDescription)} },
-    {optId: 'settingsAST', text: '[o] Settings', function: function(){ return SettingsOptionCtrl.updateDropdownOptions(settingsAudioSubtitles)} }
+    {optId: 'settingsGeneral', icon: './img/menu/settings_icon.png', text: 'General', function: function(){ SettingsOptionCtrl.updateDropdownOptions(generalSettings)} },
+    {optId: 'settingsAccess', icon: './img/menu/accessibility_icon.png', text: 'Access', function: function(){ SettingsOptionCtrl.updateDropdownOptions(accessSettings)} },
+    {optId: 'settingsST', icon: './img/acc_serv_icon/st_off.png', text: 'Subtitles', function: function(){ SettingsOptionCtrl.updateDropdownOptions(settingsSubtitles)} },
+    {optId: 'settingsSL', icon: './img/acc_serv_icon/sl_off.png', text: 'Signlanguage', function: function(){ SettingsOptionCtrl.updateDropdownOptions(settingsSignLanguage)} },
+    {optId: 'settingsAD', icon: './img/acc_serv_icon/ad_off.png', text: 'Audiodescription', function: function(){ SettingsOptionCtrl.updateDropdownOptions(settingsAudioDescription)} },
+    {optId: 'settingsAST', icon: './img/acc_serv_icon/ast_off.png', text: 'Audiosubtitles', function: function(){ SettingsOptionCtrl.updateDropdownOptions(settingsAudioSubtitles)} }
   ]};
 
 /*************************************************************************************************************************************
@@ -49,19 +48,19 @@ const settingsDropdownOpt = {title: 'Settings', final: false, options: [
  * ║─────────────────────────────────────║
  * ║ Voice Control                  (>)  ║
  * ║─────────────────────────────────────║
- * ║ Menu Type                      (>)  ║
+ * ║ Menu Type                      (>)  ║ X --> This option will be as an icon in the menu.
  * ║─────────────────────────────────────║
  * ║ Pointer Size                   (>)  ║
  * ║─────────────────────────────────────║
  * ║ User Profile                   (>)  ║
  * ╚═════════════════════════════════════╝
   */
-const generalSettings = { title: 'General', parent: settingsDropdownOpt, final: false, options: [
-    {optId: 'settingsLanguages', text: 'UI Languages', function: function(){ return SettingsOptionCtrl.updateDropdownOptions(settingsUILanguages)} },
-    {optId: 'settingsVoiceControl', text: 'Voice Control', function: function(){ return SettingsOptionCtrl.updateDropdownOptions(settigsVoiceControl)} },
-    {optId: 'settingsMenuType', text: 'Menu Type', function: function(){ return SettingsOptionCtrl.updateDropdownOptions(settingsMenuType)} },
-    {optId: 'settingsPointerSize', text: 'Pointer Size', function: function(){ return SettingsOptionCtrl.updateDropdownOptions(settingsPointerSize)} },
-    {optId: 'settingsUserProfile', text: 'User Profile', function: function(){ return SettingsOptionCtrl.updateDropdownOptions(settingsUserProfile)} }
+const generalSettings = { title: 'General', icon: './img/menu/settings_icon.png', parent: settingsDropdownOpt, final: false, options: [
+    {optId: 'settingsLanguages', icon: './img/menu/language.png', text: 'Language', function: function(){ SettingsOptionCtrl.updateDropdownOptions(settingsUILanguages)} },
+    {optId: 'settingsVoiceControl', icon: './img/menu/voice_control.png', text: 'VoiceControl', function: function(){ SettingsOptionCtrl.updateDropdownOptions(settigsVoiceControl)} },
+    //{optId: 'settingsMenuType', icon: './img/menu/menu_type.png', text: 'Menu Type', function: function(){ SettingsOptionCtrl.updateDropdownOptions(settingsMenuType)} },
+    {optId: 'settingsPointerSize', icon: './img/menu/pointer_size.png', text: 'PointerSize', function: function(){ SettingsOptionCtrl.updateDropdownOptions(settingsPointerSize)} },
+    {optId: 'settingsUserProfile', icon: './img/menu/user_profile.png', text: 'UserProfile', function: function(){ SettingsOptionCtrl.updateDropdownOptions(settingsUserProfile)} }
   ]};
 
 /**
@@ -80,11 +79,11 @@ const generalSettings = { title: 'General', parent: settingsDropdownOpt, final: 
   * ║ Català                        Final ║
   * ╚═════════════════════════════════════╝
  */
-const settingsUILanguages = { title: 'UI Languages', parent: generalSettings, final: true, options: [
-    {optId: 'settingsUILanguageEngButton', text: 'English', function:  function(){ return console.log()} }, //default: MenuDictionary.checkMainLanguage( 'en' ) },
-    {optId: 'settingsUILanguageEspButton', text: 'Español', function:  function(){ return console.log()} }, // default: MenuDictionary.checkMainLanguage( 'es' )},
-    {optId: 'settingsUILanguageGerButton', text: 'Deutsch', function:  function(){ return console.log()} }, // default: MenuDictionary.checkMainLanguage( 'de' )},
-    {optId: 'settingsUILanguageCatButton', text: 'Català', function:  function(){ return console.log()} } // default: MenuDictionary.checkMainLanguage( 'ca' )}];
+const settingsUILanguages = { title: 'Languages', icon: './img/menu/language.png', parent: generalSettings, final: true, options: [
+    {optId: 'settingsUILanguageEngButton', text: 'English', function:  function(){ MenuFunctionsManager.getMainLanguageFunc('en')} }, 
+    {optId: 'settingsUILanguageEspButton', text: 'Español', function:  function(){ MenuFunctionsManager.getMainLanguageFunc('es')} }, 
+    {optId: 'settingsUILanguageGerButton', text: 'Deutsch', function:  function(){ MenuFunctionsManager.getMainLanguageFunc('de')} }, 
+    {optId: 'settingsUILanguageCatButton', text: 'Català', function:  function(){ MenuFunctionsManager.getMainLanguageFunc('ca')} } 
   ]};
 
 /**
@@ -98,9 +97,9 @@ const settingsUILanguages = { title: 'UI Languages', parent: generalSettings, fi
  * ║ OFF                           Final ║
  * ╚═════════════════════════════════════╝
 */
-const settigsVoiceControl = { title: 'Voice Control', parent: generalSettings, final: true, options: [
-    {optId: 'voiceControlOnButton', text: 'On', function:  function(){ return console.log()} }, // default: false},
-    {optId: 'voiceControlOffButton', text: 'Off', function:  function(){ return console.log()} } // default: true}];
+const settigsVoiceControl = { title: 'VoiceControl', icon: './img/menu/voice_control.png', parent: generalSettings, final: true, options: [
+    {optId: 'voiceControlOnButton', text: 'On', function:  function(){ console.log()} }, 
+    {optId: 'voiceControlOffButton', text: 'Off', function:  function(){ console.log()} } 
   ]};
 
 /**  MENU TYPE menu hierarchy structure
@@ -114,9 +113,9 @@ const settigsVoiceControl = { title: 'Voice Control', parent: generalSettings, f
  * ║ Enhanced-Accessibility        Final ║
  * ╚═════════════════════════════════════╝
 */
-const settingsMenuType = { title: 'Menu Type', parent: generalSettings, final: true, options: [
-    {optId: 'settingsMenuTraditionalButton', text: 'Traditional', function:  function(){ return console.log()} }, //default: settingsMgr.checkMenuType(2)},
-    {optId: 'settingsMenuLowSightedButton', text: 'Enhanced-Accessibility', function:  function(){ return console.log()} } //default: settingsMgr.checkMenuType(1)}];
+const settingsMenuType = { title: 'MenuType', icon: './img/menu/menu_type.png', parent: generalSettings, final: true, options: [
+    {optId: 'settingsMenuTraditionalButton', text: 'Traditional', function:  function(){ console.log()} }, //TODO
+    {optId: 'settingsMenuLowSightedButton', text: 'Enhanced-Accessibility', function:  function(){ console.log()} } //TOD 
   ]};
 
 /**
@@ -133,10 +132,10 @@ const settingsMenuType = { title: 'Menu Type', parent: generalSettings, final: t
  * ║ Small                         Final ║
  * ╚═════════════════════════════════════╝
 */
-const settingsPointerSize = { title: 'Pointer Size', parent: generalSettings, final: true, options: [
-    {optId: 'settingsMenuPointerLarge', text: 'Large', function:  function(){ return console.log()} }, // default: false},
-    {optId: 'settingsMenuPointerMedium', text: 'Medium', function:  function(){ return console.log()} }, //default: true},
-    {optId: 'settingsMenuPointerSmall', text: 'Small', function:  function(){ return console.log()} } //default: false}];
+const settingsPointerSize = { title: 'PointerSize', icon: './img/menu/pointer_size.png', parent: generalSettings, final: true, options: [
+    {optId: 'settingsMenuPointerLarge', text: 'Large', function:  function(){ MenuFunctionsManager.getChangePointerSizeFunc(2)} }, 
+    {optId: 'settingsMenuPointerMedium', text: 'Medium', function:  function(){ MenuFunctionsManager.getChangePointerSizeFunc(1)} }, 
+    {optId: 'settingsMenuPointerSmall', text: 'Small', function:  function(){ MenuFunctionsManager.getChangePointerSizeFunc(0.6)} } 
   ]};
 
 /**  USER PROFILE menu hierarchy structure
@@ -148,8 +147,8 @@ const settingsPointerSize = { title: 'Pointer Size', parent: generalSettings, fi
  * ║ Save                          Final ║
  * ╚═════════════════════════════════════╝
 */
-const settingsUserProfile = { title: 'User Profile', parent: generalSettings, final: true, options: [
-    {optId: 'saveUserProfileButton', text: 'Save', function:  function(){ return console.log()} } // default: false}];
+const settingsUserProfile = { title: 'UserProfile', icon: './img/menu/user_profile.png', parent: generalSettings, final: true, options: [
+    {optId: 'saveUserProfileButton', text: 'Save', function:  function(){ saveConfig();} } 
   ]};
 
 
@@ -171,10 +170,10 @@ const settingsUserProfile = { title: 'User Profile', parent: generalSettings, fi
  * ║ Safe Area                      (>)  ║
  * ╚═════════════════════════════════════╝
   */
-const accessSettings = { title: 'Access Settings', parent: settingsDropdownOpt, final: false, options: [
-    {optId: 'settingsAccessLanguage', text: 'Language', function: function(){ return SettingsOptionCtrl.updateDropdownOptions(settingsAccesLanguages)} }, //NEW LANG
-    {optId: 'settingsIndicator', text: 'Indicator', function: function(){ return SettingsOptionCtrl.updateDropdownOptions(settingsIndicator)} }, //NEW INDIC
-    {optId: 'settingsSafeArea', text: 'Safe Area', function: function(){ return SettingsOptionCtrl.updateDropdownOptions(settingsSafeArea)} }
+const accessSettings = { title: 'Access', icon: './img/menu/accessibility_icon.png', parent: settingsDropdownOpt, final: false, options: [
+    {optId: 'settingsAccessLanguage', icon: './img/menu/language.png', text: 'Language', function: function(){ SettingsOptionCtrl.updateDropdownOptions(settingsAccesLanguages)} }, //NEW LANG
+    {optId: 'settingsIndicator', icon: './img/menu/indicator.png', text: 'Indicator', function: function(){ SettingsOptionCtrl.updateDropdownOptions(settingsIndicator)} }, //NEW INDIC
+    {optId: 'settingsSafeArea', icon: './img/menu/safe_area.png', text: 'SafeArea', function: function(){ SettingsOptionCtrl.updateDropdownOptions(settingsSafeArea)} }
   ]};
 
 /**
@@ -193,11 +192,11 @@ const accessSettings = { title: 'Access Settings', parent: settingsDropdownOpt, 
  * ║ Català                        Final ║
  * ╚═════════════════════════════════════╝
 */
-const settingsAccesLanguages = { title: 'Access Languages', parent: generalSettings, final: true, options: [
-    {optId: 'settingsAccesLanguageEngButton', text: 'English', function:  function(){ return console.log()} }, //default: MenuDictionary.checkMainLanguage( 'en' ) },
-    {optId: 'settingsAccesLanguageEspButton', text: 'Español', function:  function(){ return console.log()} }, // default: MenuDictionary.checkMainLanguage( 'es' )},
-    {optId: 'settingsAccesLanguageGerButton', text: 'Deutsch', function:  function(){ return console.log()} }, // default: MenuDictionary.checkMainLanguage( 'de' )},
-    {optId: 'settingsAccesLanguageCatButton', text: 'Català', function:  function(){ return console.log()} } // default: MenuDictionary.checkMainLanguage( 'ca' )}];
+const settingsAccesLanguages = { title: 'Languages', icon: './img/menu/language.png', parent: accessSettings, final: true, options: [
+    {optId: 'settingsAccesLanguageEngButton', text: 'English', function:  function(){ console.log()} }, 
+    {optId: 'settingsAccesLanguageEspButton', text: 'Español', function:  function(){ console.log()} }, 
+    {optId: 'settingsAccesLanguageGerButton', text: 'Deutsch', function:  function(){ console.log()} }, 
+    {optId: 'settingsAccesLanguageCatButton', text: 'Català', function:  function(){ console.log()} } 
   ]};
 
 /**
@@ -214,10 +213,10 @@ const settingsAccesLanguages = { title: 'Access Languages', parent: generalSetti
  * ║ Radar                         Final ║
  * ╚═════════════════════════════════════╝
   */
-const settingsIndicator = { title: 'Indicator', parent: generalSettings, final: true, options: [
-    {optId: 'settingsIndicatorNone', text: 'None', function:  function(){ return console.log()} }, // default: false},
-    {optId: 'settingsIndicatorArrows', text: 'Arrows', function:  function(){ return console.log()} }, //default: true},
-    {optId: 'settingsIndicatorRadar', text: 'Radar', function:  function(){ return console.log()} } //default: false}];ç
+const settingsIndicator = { title: 'Indicator', icon: './img/menu/indicator.png', parent: accessSettings, final: true, options: [
+    {optId: 'settingsIndicatorNone', text: 'None', function:  function(){ subController.setSubIndicator( "none" )} }, 
+    {optId: 'settingsIndicatorArrows', text: 'Arrows', function:  function(){ subController.setSubIndicator( "arrow" )} },
+    {optId: 'settingsIndicatorRadar', text: 'Radar', function:  function(){ subController.setSubIndicator( "radar" )} } 
   ]};
 
 
@@ -233,9 +232,9 @@ const settingsIndicator = { title: 'Indicator', parent: generalSettings, final: 
  * ║ Large                         Final ║
  * ╚═════════════════════════════════════╝
 */
-const settingsSafeArea = { title: 'Safe Area', parent: generalSettings, final: true, options: [
-    {optId: 'settingsSafeAreaSmall', text: 'Small', function:  function(){ return console.log()} }, //default: false}];
-    {optId: 'settingsSafeAreaLarge', text: 'Large', function:  function(){ return console.log()} } // default: false},
+const settingsSafeArea = { title: 'SafeArea', icon: './img/menu/safe_area.png', parent: accessSettings, final: true, options: [
+    {optId: 'settingsSafeAreaSmall', text: 'Small', function:  function(){ subController.setSubArea( 50 )} }, 
+    {optId: 'settingsSafeAreaLarge', text: 'Large', function:  function(){ subController.setSubArea( 70 )} } 
   ]};
 
 
@@ -259,11 +258,11 @@ const settingsSafeArea = { title: 'Safe Area', parent: generalSettings, final: t
  * ║ Easy-to-Read                   (>)  ║
  * ╚═════════════════════════════════════╝
 */
-const settingsSubtitles = { title: 'ST Settings', parent: settingsDropdownOpt, final: false, options: [
-    { optId: 'subtitlesSizes', text: 'Size', function:  function(){ return SettingsOptionCtrl.updateDropdownOptions(settingsSubtitlesSize)} },
-    { optId: 'subtitlesBackground', text: 'Background', function:  function(){ return SettingsOptionCtrl.updateDropdownOptions(settingsSubtitlesBackground)} },
-    { optId: 'subtitlesShowPositions', text: 'Position', function:  function(){ return SettingsOptionCtrl.updateDropdownOptions(settingsSubtitlesPosition)} },
-    { optId: 'subtitlesEasyRead', text: 'Easy to read', function:  function(){ return SettingsOptionCtrl.updateDropdownOptions(settingsSubtitlesEasyToRead)} }
+const settingsSubtitles = { title: 'Subtitles', icon: './img/acc_serv_icon/st_off.png', parent: settingsDropdownOpt, final: false, options: [
+    { optId: 'subtitlesSizes', icon: './img/menu/st_font_size.png', text: 'Size', function:  function(){ SettingsOptionCtrl.updateDropdownOptions(settingsSubtitlesSize)} },
+    { optId: 'subtitlesBackground', icon: './img/menu/st_background.png', text: 'Background', function:  function(){ SettingsOptionCtrl.updateDropdownOptions(settingsSubtitlesBackground)} },
+    { optId: 'subtitlesShowPositions', icon: './img/menu/st_position.png', text: 'Position', function:  function(){ SettingsOptionCtrl.updateDropdownOptions(settingsSubtitlesPosition)} },
+    { optId: 'subtitlesEasyRead', icon: './img/menu/easy_to_read.png', text: 'Easytoread', function:  function(){ SettingsOptionCtrl.updateDropdownOptions(settingsSubtitlesEasyToRead)} }
   ]};
 
   /**
@@ -280,10 +279,10 @@ const settingsSubtitles = { title: 'ST Settings', parent: settingsDropdownOpt, f
    * ║ Large                         Final ║
    * ╚═════════════════════════════════════╝
   */
-const settingsSubtitlesSize = { title: 'Size (ST)', parent: settingsSubtitles, final: true, options: [
-    {optId: 'subtitlesSmallSizeButton', text: 'Small', function:  function(){ return console.log()} },
-    {optId: 'subtitlesMediumSizeButton', text: 'Medium', function:  function(){ return console.log()} },
-    {optId: 'subtitlesLargeSizeButton', text: 'Large', function:  function(){ return console.log()} }
+const settingsSubtitlesSize = { title: 'Size', icon: './img/menu/st_font_size.png', parent: settingsSubtitles, final: true, options: [
+    {optId: 'subtitlesSmallSizeButton', text: 'Small', function:  function(){ subController.setSubSize( 0.6 )} },
+    {optId: 'subtitlesMediumSizeButton', text: 'Medium', function:  function(){ subController.setSubSize( 0.8 )} },
+    {optId: 'subtitlesLargeSizeButton', text: 'Large', function:  function(){ subController.setSubSize( 1 )} }
   ]};
 
   /**
@@ -298,9 +297,9 @@ const settingsSubtitlesSize = { title: 'Size (ST)', parent: settingsSubtitles, f
    * ║ Outline                       Final ║
    * ╚═════════════════════════════════════╝
   */
-  const settingsSubtitlesBackground = { title: 'Background (ST)', parent: settingsSubtitles, final: true, options: [
-    {optId: 'subtitlesSemitrans', text: 'Semitrans', function:  function(){ return console.log()} },
-    {optId: 'subtitlesOutline', text: 'Outline', function:  function(){ return console.log()} }
+  const settingsSubtitlesBackground = { title: 'Background', icon: './img/menu/st_background.png', parent: settingsSubtitles, final: true, options: [
+    {optId: 'subtitlesSemitrans', text: 'Semitrans', function:  function(){ subController.setSubBackground( 0.5 )} },
+    {optId: 'subtitlesOutline', text: 'Outline', function:  function(){ subController.setSubBackground( 0 )} }
   ]};
 
   /**
@@ -315,9 +314,13 @@ const settingsSubtitlesSize = { title: 'Size (ST)', parent: settingsSubtitles, f
    * ║ Bottom                        Final ║
    * ╚═════════════════════════════════════╝
   */
-  const settingsSubtitlesPosition = { title: 'Position (ST)', parent: settingsSubtitles, final: true, options: [
-    {optId: 'subtitlesTopButton', text: 'Top', function:  function(){ return console.log()} },
-    {optId: 'subtitlesBottomButton', text: 'Bottom', function:  function(){ return console.log()} }
+  const settingsSubtitlesPosition = { title: 'Position', icon: './img/menu/st_position.png', parent: settingsSubtitles, final: true, options: [
+    {optId: 'subtitlesTopButton', text: 'Top', function:  function(){
+            subController.setSubPosition( 0, 1 );
+            subController.setSignerPosition( subController.getSignerPosition().x, 1 )} },
+    {optId: 'subtitlesBottomButton', text: 'Bottom', function:  function(){ 
+            subController.setSubPosition( 0, -1 );
+            subController.setSignerPosition( subController.getSignerPosition().x, -1 )} }
   ]};
 
   /**
@@ -332,9 +335,9 @@ const settingsSubtitlesSize = { title: 'Size (ST)', parent: settingsSubtitles, f
    * ║ Off                           Final ║
    * ╚═════════════════════════════════════╝
   */
-  const settingsSubtitlesEasyToRead = { title: 'Easy to Read (ST)', parent: settingsSubtitles, final: true, options: [
-    {optId: 'subtitlesEasyOn', text: 'On', function:  function(){ return console.log()} },
-    {optId: 'subtitlesEasyOff', text: 'Off', function:  function(){ return console.log()} }
+  const settingsSubtitlesEasyToRead = { title: 'EasytoRead', icon: './img/menu/easy_to_read.png', parent: settingsSubtitles, final: true, options: [
+    {optId: 'subtitlesEasyOn', text: 'On', function:  function(){ subController.setSubEasy( true, getE2RURL() )} },
+    {optId: 'subtitlesEasyOff', text: 'Off', function:  function(){ subController.setSubEasy( false, list_contents[demoId].subtitles[0][subController.getSubLanguage()] );} }
   ]};
 
 
@@ -354,9 +357,9 @@ const settingsSubtitlesSize = { title: 'Size (ST)', parent: settingsSubtitles, f
   * ║ Size                           (>)  ║
   * ╚═════════════════════════════════════╝
   */
-  const settingsSignLanguage = { title: 'SL Settings', parent: settingsDropdownOpt, final: false, options: [
-    { optId: 'signerPosition', text: 'Position', function:  function(){ return SettingsOptionCtrl.updateDropdownOptions(settingsSignLanguagePosition)} },
-    { optId: 'signerSize', text: 'Size', function:  function(){ return SettingsOptionCtrl.updateDropdownOptions(settingsSignLanguageSize)} }
+  const settingsSignLanguage = { title: 'Signlanguage', icon: './img/acc_serv_icon/sl_off.png', parent: settingsDropdownOpt, final: false, options: [
+    { optId: 'signerPosition', icon: './img/menu/sl_position.png', text: 'Position', function:  function(){ SettingsOptionCtrl.updateDropdownOptions(settingsSignLanguagePosition)} },
+    { optId: 'signerSize', icon: './img/menu/sl_size.png', text: 'Size', function:  function(){ SettingsOptionCtrl.updateDropdownOptions(settingsSignLanguageSize)} }
   ]};
 
   /**
@@ -371,9 +374,9 @@ const settingsSubtitlesSize = { title: 'Size (ST)', parent: settingsSubtitles, f
    * ║ Left                          Final ║
    * ╚═════════════════════════════════════╝
   */
-  const settingsSignLanguagePosition = { title: 'Position (SL)', parent: settingsSignLanguage, final: true, options: [
-    {optId: 'signerRightButton', text: 'Right', function:  function(){ return console.log()} },
-    {optId: 'signerLeftButton', text: 'Left', function:  function(){ return console.log()} }
+  const settingsSignLanguagePosition = { title: 'Position', icon: './img/menu/sl_position.png', parent: settingsSignLanguage, final: true, options: [
+    {optId: 'signerRightButton', text: 'Right', function:  function(){ subController.setSignerPosition( 1, subController.getSubPosition().y);} },
+    {optId: 'signerLeftButton', text: 'Left', function:  function(){ subController.setSignerPosition( -1, subController.getSubPosition().y);} }
   ]};
 
   /**
@@ -390,10 +393,10 @@ const settingsSubtitlesSize = { title: 'Size (ST)', parent: settingsSubtitles, f
    * ║ Large                         Final ║
    * ╚═════════════════════════════════════╝
   */
-const settingsSignLanguageSize = { title: 'Size (SL)', parent: settingsSignLanguage, final: true, options: [
-    {optId: 'signerSmallSizeButton', text: 'Small', function:  function(){ return console.log()} },
-    {optId: 'signerMediumSizeButton', text: 'Medium', function:  function(){ return console.log()} },
-    {optId: 'signerLargeSizeButton', text: 'Large', function:  function(){ return console.log()} }
+const settingsSignLanguageSize = { title: 'Size', icon: './img/menu/sl_size.png', parent: settingsSignLanguage, final: true, options: [
+    {optId: 'signerSmallSizeButton', text: 'Small', function:  function(){ console.log()} }, //TODO
+    {optId: 'signerMediumSizeButton', text: 'Medium', function:  function(){ console.log()} }, //TODO
+    {optId: 'signerLargeSizeButton', text: 'Large', function:  function(){ console.log()} } //TODO
   ]};
 
 
@@ -413,9 +416,9 @@ const settingsSignLanguageSize = { title: 'Size (SL)', parent: settingsSignLangu
   * ║ Volume Level                   (>)  ║
   * ╚═════════════════════════════════════╝
   */
-  const settingsAudioDescription = { title: 'AD Settings', parent: settingsDropdownOpt, final: false, options: [
-    { optId: 'audioDescriptionPresentation', text: 'Presentation', function:  function(){ return SettingsOptionCtrl.updateDropdownOptions(settingsAudioDescriptionPresentation)} },
-    { optId: 'audioDescriptionVolume', text: 'Volume', function:  function(){ return SettingsOptionCtrl.updateDropdownOptions(settingsAudioDescriptionVolume)} }
+  const settingsAudioDescription = { title: 'Audiodescription', icon: './img/acc_serv_icon/ad_off.png', parent: settingsDropdownOpt, final: false, options: [
+    { optId: 'audioDescriptionPresentation', icon: './img/menu/ad_presentation_mode.png', text: 'Presentation', function:  function(){ SettingsOptionCtrl.updateDropdownOptions(settingsAudioDescriptionPresentation)} },
+    { optId: 'audioDescriptionVolume', icon: './img/menu/volume_mute_icon.png', text: 'Volume', function:  function(){ SettingsOptionCtrl.updateDropdownOptions(settingsAudioDescriptionVolume)} }
   ]};
 
   /**
@@ -432,10 +435,10 @@ const settingsSignLanguageSize = { title: 'Size (SL)', parent: settingsSignLangu
    * ║ Placed on Action              Final ║
    * ╚═════════════════════════════════════╝
   */
-const settingsAudioDescriptionPresentation = { title: 'Presetation (AD)', parent: settingsAudioDescription, final: true, options: [
-    {optId: 'adPresentationVoGButton', text: 'Voice of God', function:  function(){ return console.log()} },
-    {optId: 'adPresentationFoSButton', text: 'Friend of Sofa', function:  function(){ return console.log()} },
-    {optId: 'adPresentationPoAButton', text: 'Placed on Action', function:  function(){ return console.log()} }
+const settingsAudioDescriptionPresentation = { title: 'Presetation', icon: './img/menu/ad_presentation_mode.png', parent: settingsAudioDescription, final: true, options: [
+    {optId: 'adPresentationVoGButton', text: 'VoiceofGod', function:  function(){ _AudioManager.setADPresentation( 'VoiceOfGod' )} },
+    {optId: 'adPresentationFoSButton', text: 'FriendofSofa', function:  function(){ _AudioManager.setADPresentation( 'Friend' )} },
+    {optId: 'adPresentationPoAButton', text: 'PlacedonAction', function:  function(){ _AudioManager.setADPresentation( 'Dynamic' )} }
   ]};
 
   /**
@@ -452,10 +455,10 @@ const settingsAudioDescriptionPresentation = { title: 'Presetation (AD)', parent
    * ║ Maximum                       Final ║
    * ╚═════════════════════════════════════╝
   */
-const settingsAudioDescriptionVolume = { title: 'Volume (AD)', parent: settingsAudioDescription, final: true, options: [
-    {optId: 'adVolumeMinButton', text: 'Minimum', function:  function(){ return console.log()} },
-    {optId: 'adVolumeMidButton', text: 'Medium', function:  function(){ return console.log()} },
-    {optId: 'adVolumeMaxButton', text: 'Maximum', function:  function(){ return console.log()} }
+const settingsAudioDescriptionVolume = { title: 'Volume', icon: './img/menu/volume_mute_icon.png', parent: settingsAudioDescription, final: true, options: [
+    {optId: 'adVolumeMinButton', text: 'Minimum', function:  function(){ _AudioManager.setVolume( 'AD', 10 );} },
+    {optId: 'adVolumeMidButton', text: 'Medium', function:  function(){ _AudioManager.setVolume( 'AD', 50 );} },
+    {optId: 'adVolumeMaxButton', text: 'Maximum', function:  function(){ _AudioManager.setVolume( 'AD', 100 );} }
   ]};
 
 
@@ -478,10 +481,10 @@ const settingsAudioDescriptionVolume = { title: 'Volume (AD)', parent: settingsA
   * ╚═════════════════════════════════════╝
   */
 
-  const settingsAudioSubtitles = { title: 'AST Settings', parent: settingsDropdownOpt, final: false, options: [
-      { optId: 'audioSubtitlesEasy', text: 'Easy to read', function:  function(){ return SettingsOptionCtrl.updateDropdownOptions(settingsAudioSubtitlesEasyToRead)} },
-      { optId: 'audioSubtitlesPresentation', text: 'Presentation Mode', function:  function(){ return SettingsOptionCtrl.updateDropdownOptions(settingsAudioSubtitlesPresentation)} },
-      { optId: 'audioSubtitlesVolume', text: 'Volume Level', function:  function(){ return SettingsOptionCtrl.updateDropdownOptions(settingsAudioSubtitlesVolume)} }
+  const settingsAudioSubtitles = { title: 'Audiosubtitles', icon: './img/acc_serv_icon/ast_off.png', parent: settingsDropdownOpt, final: false, options: [
+      { optId: 'audioSubtitlesEasy', icon: './img/menu/easy_to_read.png', text: 'Easy to read', function:  function(){ SettingsOptionCtrl.updateDropdownOptions(settingsAudioSubtitlesEasyToRead)} },
+      { optId: 'audioSubtitlesPresentation', icon: './img/menu/ad_presentation_mode.png', text: 'Presentation', function:  function(){ SettingsOptionCtrl.updateDropdownOptions(settingsAudioSubtitlesPresentation)} },
+      { optId: 'audioSubtitlesVolume', icon: './img/menu/volume_mute_icon.png', text: 'Volume', function:  function(){ SettingsOptionCtrl.updateDropdownOptions(settingsAudioSubtitlesVolume)} }
 
     ]};
 
@@ -497,9 +500,9 @@ const settingsAudioDescriptionVolume = { title: 'Volume (AD)', parent: settingsA
    * ║ Off                           Final ║
    * ╚═════════════════════════════════════╝
   */
-  const settingsAudioSubtitlesEasyToRead = { title: 'Easy to Read (AST)', parent: settingsAudioSubtitles, final: true, options: [
-    {optId: 'astEasyOn', text: 'On', function:  function(){ return console.log()} },
-    {optId: 'astEasyOff', text: 'Off', function:  function(){ return console.log()} }
+  const settingsAudioSubtitlesEasyToRead = { title: 'EasytoRead', icon: './img/menu/easy_to_read.png', parent: settingsAudioSubtitles, final: true, options: [
+    {optId: 'astEasyOn', text: 'On', function:  function(){ _AudioManager.setSubEasy(  true, getASTe2rURL() )} },
+    {optId: 'astEasyOff', text: 'Off', function:  function(){ _AudioManager.setSubEasy( false, list_contents[demoId].ast[0][_AudioManager.getASTLanguage()] );} }
   ]};
 
   /**
@@ -516,10 +519,10 @@ const settingsAudioDescriptionVolume = { title: 'Volume (AD)', parent: settingsA
    * ║ Placed on Action              Final ║
    * ╚═════════════════════════════════════╝
   */
-const settingsAudioSubtitlesPresentation = { title: 'Presetation (AST)', parent: settingsAudioSubtitles, final: true, options: [
-    {optId: 'astPresentationVoGButton', text: 'Voice of God', function:  function(){ return console.log()} },
-    {optId: 'astPresentationFoSButton', text: 'Friend of Sofa', function:  function(){ return console.log()} },
-    {optId: 'astPresentationPoAButton', text: 'Placed on Action', function:  function(){ return console.log()} }
+const settingsAudioSubtitlesPresentation = { title: 'Presetation', icon: './img/menu/ad_presentation_mode.png', parent: settingsAudioSubtitles, final: true, options: [
+    {optId: 'astPresentationVoGButton', text: 'VoiceofGod', function:  function(){ _AudioManager.setASTPresentation( 'VoiceOfGod' )} }, //TODO
+    {optId: 'astPresentationFoSButton', text: 'FriendofSofa', function:  function(){ _AudioManager.setASTPresentation( 'Friend' )} }, //TODO
+    {optId: 'astPresentationPoAButton', text: 'PlacedonAction', function:  function(){ _AudioManager.setASTPresentation( 'Dynamic' )} } //TODO
   ]};
 
   /**
@@ -536,8 +539,8 @@ const settingsAudioSubtitlesPresentation = { title: 'Presetation (AST)', parent:
    * ║ Maximum                       Final ║
    * ╚═════════════════════════════════════╝
   */
-const settingsAudioSubtitlesVolume = { title: 'Volume (AST)', parent: settingsAudioSubtitles, final: true, options: [
-    {optId: 'astVolumeMinButton', text: 'Minimum', function:  function(){ return console.log()} },
-    {optId: 'astVolumeMidButton', text: 'Medium', function:  function(){ return console.log()} },
-    {optId: 'astVolumeMaxButton', text: 'Maximum', function:  function(){ return console.log()} }
+const settingsAudioSubtitlesVolume = { title: 'Volume', icon: './img/menu/volume_mute_icon.png', parent: settingsAudioSubtitles, final: true, options: [
+    {optId: 'astVolumeMinButton', text: 'Minimum', function:  function(){ _AudioManager.setVolume( 'AST', 10 )} },
+    {optId: 'astVolumeMidButton', text: 'Medium', function:  function(){ _AudioManager.setVolume( 'AST', 50 )} },
+    {optId: 'astVolumeMaxButton', text: 'Maximum', function:  function(){ _AudioManager.setVolume( 'AST', 100 )} }
   ]};

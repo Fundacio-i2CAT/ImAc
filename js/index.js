@@ -10,6 +10,9 @@ var _PlayerVersion = 'v0.06.0';
 function init_webplayer() 
 {
 	console.log('Version: ' + _PlayerVersion);
+    localStorage.removeItem('dashjs_video_settings');
+    localStorage.removeItem('dashjs_video_bitrate');
+    localStorage.removeItem('dashjs_text_settings');
 
 setBrowserLanguage()
     $.getJSON('./content.json', function(json)

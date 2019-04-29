@@ -80,7 +80,7 @@ THREE.InteractionsController = function () {
   	var intersects = raycaster.intersectObjects( interactiveListObjects, true ); // false
 
     //Closes the open multi option menu of the traditional menu when clicked outside any element.
-    if(!intersects.length && menuMgr.getActualCtrl() && menuMgr.getMenuType() == 2 && type != 'onDocumentMouseMove'){
+    if(!intersects.length && menuMgr.getActualCtrl() && type != 'onDocumentMouseMove'){
       menuMgr.getActualCtrl().Exit();
       menuMgr.setActualCtrl('');
     }

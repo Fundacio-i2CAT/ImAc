@@ -612,6 +612,14 @@ THREE.MediaObjectData = function () {
       return ctx;
     }
 
+    this.triangleTest = function( ctx, sx , sy, side){
+        ctx.moveTo(sx, sy);
+        ctx.lineTo(sx + side, sy);
+        ctx.lineTo(sx, sy - side);  
+        ctx.lineTo(sx, sy);    
+      return ctx;
+    }
+
 //************************************************************************************
 // Private Functions
 //************************************************************************************

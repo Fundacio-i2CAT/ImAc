@@ -63,6 +63,11 @@ function VideoProgressBarController() {
   }
 
 
+/**
+ * { function_description }
+ *
+ * @return     {<type>}  { description_of_the_return_value }
+ */
   function updatePlayProgressPosition(){
 		  const play_progress =  scene.getObjectByName("play-progress");
       if( ! play_progress.geometry.boundingBox ) {
@@ -116,11 +121,8 @@ function VideoProgressBarController() {
 
       if(Math.round(time_diff*100) != 0){
         let new_seek_time = Math.round(VideoController.getListOfVideoContents()[0].vid.duration*time_diff/(norm_vpb_w));
-        console.log("seek: "+new_seek_time)
         VideoController.seekAll(new_seek_time);
-      }
-      else console.log("You clicked over the slidder");
-    }
-    else console.log("Seeking process running");
+      } else console.log("You clicked over the slidder");
+    } else console.log("Seeking process running");
   }
 };

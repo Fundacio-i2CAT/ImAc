@@ -4,24 +4,24 @@ function AccessibilityOptionsMenuView() {
 
 	this.UpdateView = function(data){
 		submenu = scene.getObjectByName(data.name);
-    //Update the Accesibility icon initial status depending if they are enabled or not.
-    this.UpdateAccessibilityOptionsIconStatusView(data);
-    //Adding the functions to the corresponding menu elements.
-    submenu.getObjectByName('showSubtitlesMenuButton').children[0].onexecute = data.subtitlesButtonFunc;
-    submenu.getObjectByName('disabledSubtitlesMenuButton').children[0].onexecute = data.subtitlesButtonFunc;
-    submenu.getObjectByName('showSignLanguageMenuButton').children[0].onexecute =  data.signlanguageButtonFunc;
-    submenu.getObjectByName('disabledSignLanguageMenuButton').children[0].onexecute = data.signlanguageButtonFunc;
-    submenu.getObjectByName('showAudioDescriptionMenuButton').children[0].onexecute = data.audioDescriptionButtonFunc;
-    submenu.getObjectByName('disabledAudioDescriptionMenuButton').children[0].onexecute = data.audioDescriptionButtonFunc;
-    submenu.getObjectByName('showAudioSubtitlesMenuButton').children[0].onexecute = data.audioSubtitlesButtonFunc;
-    submenu.getObjectByName('disabledAudioSubtitlesMenuButton').children[0].onexecute = data.audioSubtitlesButtonFunc;
+        //Update the Accesibility icon initial status depending if they are enabled or not.
+        this.UpdateAccessibilityOptionsIconStatusView(data);
+        //Adding the functions to the corresponding menu elements.
+        submenu.getObjectByName('show-st-button').children[0].onexecute = data.subtitlesButtonFunc;
+        submenu.getObjectByName('disable-st-button').children[0].onexecute = data.subtitlesButtonFunc;
+        submenu.getObjectByName('show-sl-button').children[0].onexecute =  data.signlanguageButtonFunc;
+        submenu.getObjectByName('disable-sl-button').children[0].onexecute = data.signlanguageButtonFunc;
+        submenu.getObjectByName('show-ad-button').children[0].onexecute = data.audioDescriptionButtonFunc;
+        submenu.getObjectByName('disable-ad-button').children[0].onexecute = data.audioDescriptionButtonFunc;
+        submenu.getObjectByName('show-ast-button').children[0].onexecute = data.audioSubtitlesButtonFunc;
+        submenu.getObjectByName('disable-ast-button').children[0].onexecute = data.audioSubtitlesButtonFunc;
 
-    //If this elements are visible add the function.
-    if(submenu.getObjectByName('previewMenuButton')) submenu.getObjectByName('previewMenuButton').children[0].onexecute = data.previewButtonFunc;
-		if(submenu.getObjectByName('forwardMenuButton')) submenu.getObjectByName('forwardMenuButton').children[0].onexecute = data.forwardMenuButtonFunc;
-		if(submenu.getObjectByName('backMenuButton')) submenu.getObjectByName('backMenuButton').children[0].onexecute = data.backMenuButtonFunc;
-    if(submenu.getObjectByName('closeMenuButton')) submenu.getObjectByName('closeMenuButton').children[0].onexecute = data.closeMenuButtonFunc;
-	}
+        //If this elements are visible add the function.
+        /*if(submenu.getObjectByName('previewMenuButton')) submenu.getObjectByName('previewMenuButton').children[0].onexecute = data.previewButtonFunc;
+        if(submenu.getObjectByName('forwardMenuButton')) submenu.getObjectByName('forwardMenuButton').children[0].onexecute = data.forwardMenuButtonFunc;
+    	if(submenu.getObjectByName('backMenuButton')) submenu.getObjectByName('backMenuButton').children[0].onexecute = data.backMenuButtonFunc;
+        if(submenu.getObjectByName('closeMenuButton')) submenu.getObjectByName('closeMenuButton').children[0].onexecute = data.closeMenuButtonFunc;*/
+    }
 
 /**
  * [description]
@@ -57,16 +57,16 @@ function AccessibilityOptionsMenuView() {
  */
   this.UpdateAccessibilityOptionsIconStatusView = function(data){
 
-    submenu.getObjectByName('showSubtitlesMenuButton').visible = data.isSTenabled;
-    submenu.getObjectByName('disabledSubtitlesMenuButton').visible = !data.isSTenabled;
+    submenu.getObjectByName('show-st-button').visible = data.isSTenabled;
+    submenu.getObjectByName('disable-st-button').visible = !data.isSTenabled;
 
-    submenu.getObjectByName('showSignLanguageMenuButton').visible = data.isSLenabled;
-    submenu.getObjectByName('disabledSignLanguageMenuButton').visible = !data.isSLenabled;
+    submenu.getObjectByName('show-sl-button').visible = data.isSLenabled;
+    submenu.getObjectByName('disable-sl-button').visible = !data.isSLenabled;
 
-    submenu.getObjectByName('showAudioDescriptionMenuButton').visible = data.isADenabled;
-    submenu.getObjectByName('disabledAudioDescriptionMenuButton').visible = !data.isADenabled;
+    submenu.getObjectByName('show-ad-button').visible = data.isADenabled;
+    submenu.getObjectByName('disable-ad-button').visible = !data.isADenabled;
 
-    submenu.getObjectByName('showAudioSubtitlesMenuButton').visible = data.isASTenabled;
-    submenu.getObjectByName('disabledAudioSubtitlesMenuButton').visible = !data.isASTenabled;
+    submenu.getObjectByName('show-ast-button').visible = data.isASTenabled;
+    submenu.getObjectByName('disable-ast-button').visible = !data.isASTenabled;
   }
 }

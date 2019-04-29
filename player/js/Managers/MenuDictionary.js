@@ -27,6 +27,8 @@ MenuDictionary = function() {
     //                   ||                        ||                        ||                        ||                        ||
     //-------------------||------------------------||------------------------||------------------------||------------------------||
     //                   ||                        ||                        ||                        ||                        ||
+        access:          { ca: 'Accessibilitat'    , de: ''                  , en: 'Accessibility'     , es: 'Accesibilidad'     },
+    //                   ||                        ||                        ||                        ||                        ||
         anchored:        { ca: 'Anchored'          , de: 'Anchored'          , en: 'Anchored'          , es: 'Anchored'          },
     //                   ||                        ||                        ||                        ||                        ||
         area:            { ca: 'Àrea'              , de: 'Bereich'           , en: 'Area'              , es: 'Area'              },
@@ -45,8 +47,6 @@ MenuDictionary = function() {
     //                   ||                        ||                        ||                        ||                        ||
         ca:              { ca: 'Català'            , de: 'Català'            , en: 'Català'            , es: 'Català'            },
     //                   ||                        ||                        ||                        ||                        ||
-        catalan:         { ca: 'Català'            , de: 'katalanisch'       , en: 'Catalan'           , es: 'Catalán'           },
-    //                   ||                        ||                        ||                        ||                        ||
         classic:         { ca: 'Clàssic'           , de: 'Classic'           , en: 'Classic'           , es: 'Clásico'           },
     //                   ||                        ||                        ||                        ||                        ||
         de:              { ca: 'Deutsch'           , de: 'Deutsch'           , en: 'Deutsch'           , es: 'Deutsch'           },
@@ -55,11 +55,7 @@ MenuDictionary = function() {
     //                   ||                        ||                        ||                        ||                        ||
         en:              { ca: 'English'           , de: 'English'           , en: 'English'           , es: 'English'           },
     //                   ||                        ||                        ||                        ||                        ||
-        english:         { ca: 'English'           , de: 'English'           , en: 'English'           , es: 'English'           },
-    //                   ||                        ||                        ||                        ||                        ||
         es:              { ca: 'Español'           , de: 'Español'           , en: 'Español'           , es: 'Español'           },
-    //                   ||                        ||                        ||                        ||                        ||
-        german:          { ca: 'Alemany'           , de: 'Deutsch'           , en: 'German'            , es: 'Alemán'            },
     //                   ||                        ||                        ||                        ||                        ||
         indicator:       { ca: 'Indicador'         , de: 'Indikator'         , en: 'Indicator'         , es: 'Indicador'         },
     //                   ||                        ||                        ||                        ||                        ||
@@ -97,13 +93,11 @@ MenuDictionary = function() {
     //                   ||                        ||                        ||                        ||                        ||
         settings:        { ca: 'Configuració'      , de: 'Einstellungen'     , en: 'Settings'          , es: 'Ajustes'           },
     //                   ||                        ||                        ||                        ||                        ||
-        signlanguage:    { ca: 'Llenguatge signes' , de: 'Gebärdensprache'   , en: 'Sign language'     , es: 'Lenguage signos'   },
+        signlanguage:    { ca: 'Llengua de signes' , de: 'Gebärdensprache'   , en: 'Sign language'     , es: 'Lengua de signos'},
     //                   ||                        ||                        ||                        ||                        ||
         size:            { ca: 'Mida'              , de: 'Größe'             , en: 'Size'              , es: 'Tamaño'            },
     //                   ||                        ||                        ||                        ||                        ||
         small:           { ca: 'Petita'            , de: 'Klein'             , en: 'Small'             , es: 'Pequeña'           },
-    //                   ||                        ||                        ||                        ||                        ||
-        spanish:         { ca: 'Espanyol'          , de: 'Spanisch'          , en: 'Spanish'           , es: 'Español'           },
     //                   ||                        ||                        ||                        ||                        ||
         subtitles:       { ca: 'Subtitols'         , de: 'Untertitel'        , en: 'Subtitles'         , es: 'Subtítulos'        },
     //                   ||                        ||                        ||                        ||                        ||
@@ -115,21 +109,23 @@ MenuDictionary = function() {
     //                   ||                        ||                        ||                        ||                        ||
         voicecontrol:    { ca: 'Audio control'     , de: 'Sprachsteuerung'   , en: 'Voice control'     , es: 'Audio control'     },
     //                   ||                        ||                        ||                        ||                        ||
+        st:              { ca: 'SUB'               , de: 'UT'                , en: 'ST'                , es: 'SUB'               },
+    //                   ||                        ||                        ||                        ||                        ||
+        sl:              { ca: 'SL'                , de: 'DGS'               , en: 'SL'                , es: 'SL'                },
+    //                   ||                        ||                        ||                        ||                        ||
+        ad:              { ca: 'AD'                , de: 'AD'                , en: 'AD'                , es: 'AD'                },
+    //                   ||                        ||                        ||                        ||                        ||  
+        ast:             { ca: 'AST'               , de: 'VO'                , en: 'AST'               , es: 'AST'               }, 
+    //                   ||                        ||                        ||                        ||                        ||      
+        
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //                   ||                              ||                              ||                              ||                              ||
-        st:              { ca: imgURL + 'SUB.png'        , de: imgURL + 'UT.png'         , en: imgURL + 'ST.png'         , es: imgURL + 'SUB.png'        },
+    
     //                   ||                              ||                              ||                              ||                              ||
         st_strike:       { ca: imgURL + 'SUB_strike.png' , de: imgURL + 'UT_strike.png'  , en: imgURL + 'ST_strike.png'  , es: imgURL + 'SUB_strike.png' },
     //                   ||                              ||                              ||                              ||                              ||
-        sl:              { ca: imgURL + 'SL.png'         , de: imgURL + 'DGS.png'        , en: imgURL + 'SL.png'         , es: imgURL + 'SL.png'         },
-    //                   ||                              ||                              ||                              ||                              ||
         sl_strike:       { ca: imgURL + 'SL_strike.png'  , de: imgURL + 'DGS_strike.png' , en: imgURL + 'SL_strike.png'  , es: imgURL + 'SL_strike.png'  },
     //                   ||                              ||                              ||                              ||                              ||
-        ad:              { ca: imgURL + 'AD.png'         , de: imgURL + 'AD.png'         , en: imgURL + 'AD.png'         , es: imgURL + 'AD.png'         },
-    //                   ||                              ||                              ||                              ||                              ||
         ad_strike:       { ca: imgURL + 'AD_strike.png'  , de: imgURL + 'AD_strike.png'  , en: imgURL + 'AD_strike.png'  , es: imgURL + 'AD_strike.png'  },
-    //                   ||                              ||                              ||                              ||                              ||
-        ast:             { ca: imgURL + 'AST.png'        , de: imgURL + 'VO.png'         , en: imgURL + 'AST.png'        , es: imgURL + 'AST.png'        },
     //                   ||                              ||                              ||                              ||                              ||
         ast_strike:      { ca: imgURL + 'AST_strike.png' , de: imgURL + 'VO_strike.png'  , en: imgURL + 'AST_strike.png' , es: imgURL + 'AST_strike.png' },
     //                   ||                              ||                              ||                              ||                              ||
@@ -140,15 +136,15 @@ MenuDictionary = function() {
         cat:             { ca: 'ca'        , de: 'ca'        , en: 'ca'        , es: 'ca'        },
         ger:             { ca: 'de'        , de: 'de'        , en: 'de'        , es: 'de'        },
 
-        en_gb:             { ca: 'en'        , de: 'en'        , en: 'en'        , es: 'en'        },
-        es_es:             { ca: 'es'        , de: 'es'        , en: 'es'        , es: 'es'        },
-        ca_es:             { ca: 'ca'        , de: 'ca'        , en: 'ca'        , es: 'ca'        },
-        de_de:             { ca: 'de'        , de: 'de'        , en: 'de'        , es: 'de'        },
+        en_gb:           { ca: 'en'        , de: 'en'        , en: 'en'        , es: 'en'        },
+        es_es:           { ca: 'es'        , de: 'es'        , en: 'es'        , es: 'es'        },
+        ca_es:           { ca: 'ca'        , de: 'ca'        , en: 'ca'        , es: 'ca'        },
+        de_de:           { ca: 'de'        , de: 'de'        , en: 'de'        , es: 'de'        },
 
-        engb:             { ca: 'en'        , de: 'en'        , en: 'en'        , es: 'en'        },
-        eses:             { ca: 'es'        , de: 'es'        , en: 'es'        , es: 'es'        },
-        caes:             { ca: 'ca'        , de: 'ca'        , en: 'ca'        , es: 'ca'        },
-        dede:             { ca: 'de'        , de: 'de'        , en: 'de'        , es: 'de'        }
+        engb:            { ca: 'en'        , de: 'en'        , en: 'en'        , es: 'en'        },
+        eses:            { ca: 'es'        , de: 'es'        , en: 'es'        , es: 'es'        },
+        caes:            { ca: 'ca'        , de: 'ca'        , en: 'ca'        , es: 'ca'        },
+        dede:            { ca: 'de'        , de: 'de'        , en: 'de'        , es: 'de'        }
 
     }
    
@@ -157,14 +153,12 @@ MenuDictionary = function() {
 // Public Functions
 //************************************************************************************
 
-    this.translate = function(word)
-    {
+    this.translate = function(word){
         var res = word.toLowerCase();
         return wordList[ res ] ? wordList[ res ][ _mainLanguage ] : word;
     };
 
-    this.checkMainLanguage = function(lang)
-    {
+    this.checkMainLanguage = function(lang){
         return _mainLanguage == lang;
     };
 
@@ -172,8 +166,7 @@ MenuDictionary = function() {
 // Public Getters
 //************************************************************************************
 
-    this.getMainLanguage = function()
-    {
+    this.getMainLanguage = function(){
         return _mainLanguage;
     };
 
@@ -181,8 +174,7 @@ MenuDictionary = function() {
 // Public Setters
 //************************************************************************************
 
-    this.setMainLanguage = function(language)
-    {
+    this.setMainLanguage = function(language){
         if ( language ) _mainLanguage = language;
     };
 

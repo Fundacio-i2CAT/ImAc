@@ -16,7 +16,7 @@
     - (V) /player/js/Views/SettingsLSMenuView.js
     - (C) /player/js/Controllers/SettingsLSMenuController.js
  */
-function SettingsLSMenuController(menuType) {
+function SettingsMenuController(menuType) {
 
 	var data;
 	var view;
@@ -37,7 +37,7 @@ function SettingsLSMenuController(menuType) {
 		UpdateData();
 		viewStructure = scene.getObjectByName(data.name);
 		viewStructure.visible = true;
-		view = new SettingsLSMenuView();
+		view = new SettingsMenuView();
 		view.UpdateView(data);
 
 		AddInteractivityToMenuElements();
@@ -79,7 +79,7 @@ function SettingsLSMenuController(menuType) {
  */
   function GetData(){
 	  if (data == null){
-      data = new SettingsLSMenuModel();
+      data = new SettingsMenuModel();
 	  }
     return data;
 	}
@@ -90,11 +90,9 @@ function SettingsLSMenuController(menuType) {
  * @class      UpdateData (name)
  */
 	function UpdateData(){
-		data.closeMenuButtonFunc = function(){ AddVisualFeedbackOnClick('closeMenuButton', function(){ menuMgr.ResetViews()} )};
-    data.openSettingsMenuButtonFunc = function(){ AddVisualFeedbackOnClick('settingsButton', function(){ menuMgr.Load(SettingsOptionCtrl)} )};
-    data.backMenuButtonFunc = function(){ AddVisualFeedbackOnClick('backMenuButton', function(){ menuMgr.NavigateBackMenu()} )};
-    data.forwardMenuButtonFunc = function(){ AddVisualFeedbackOnClick('forwardMenuButton', function(){menuMgr.NavigateForwardMenu()} )};
-    //data.previewButtonFunc = function(){ AddVisualFeedbackOnClick('previewMenuButton', function(){menuMgr.OpenPreview()} )};
+    data.openSettingsMenuButtonFunc = function(){ AddVisualFeedbackOnClick('settings-button', function(){ menuMgr.Load(SettingsOptionCtrl)} )};
+    data.previewButtonFunc = function(){ AddVisualFeedbackOnClick('preview-button', function(){menuMgr.OpenPreview()} )};
+    data.menuTypeButtonFunc = function(){ AddVisualFeedbackOnClick(menuMgr.getMenuType() == 2 ? 'enhanced-menu-button' :'traditional-menu-button', function(){ settingsMgr.getChangeMenuTypeFunction()} )};
     data.isPreviewVisible = false;
   }
 

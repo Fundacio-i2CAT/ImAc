@@ -101,7 +101,7 @@ function AccessibilityOptionsMenuController(menuType) {
 
 //SUBTITLES
 		data.subtitlesButtonFunc =  function() {
-			AddVisualFeedbackOnClick(data.isSTenabled ? 'showSubtitlesMenuButton' : 'disabledSubtitlesMenuButton', function(){
+			AddVisualFeedbackOnClick(data.isSTenabled ? 'show-st-button' : 'disable-st-button', function(){
 				data.isSTenabled = !data.isSTenabled;
 				subController.switchSubtitles(data.isSTenabled);
 				view.UpdateAccessibilityOptionsIconStatusView(data);
@@ -112,7 +112,7 @@ function AccessibilityOptionsMenuController(menuType) {
 
 //SIGH LANGUAGE
 		data.signlanguageButtonFunc = function() {
-			AddVisualFeedbackOnClick(data.isSLenabled ? 'showSignLanguageMenuButton' : 'disabledSignLanguageMenuButton',function(){
+			AddVisualFeedbackOnClick(data.isSLenabled ? 'show-sl-button' : 'disable-sl-button',function(){
 				data.isSLenabled = !data.isSLenabled;
 				subController.switchSigner(data.isSLenabled);
 				view.UpdateAccessibilityOptionsIconStatusView(data);
@@ -123,7 +123,7 @@ function AccessibilityOptionsMenuController(menuType) {
 
 //AUDIO DESCRIPTION
 		data.audioDescriptionButtonFunc = function() {
-			AddVisualFeedbackOnClick(data.isADenabled ? 'showAudioDescriptionMenuButton' : 'disabledAudioDescriptionMenuButton',function(){
+			AddVisualFeedbackOnClick(data.isADenabled ? 'show-ad-button' : 'disable-ad-button',function(){
 				data.isADenabled = !data.isADenabled;
 				_AudioManager.switchAD(data.isADenabled);
 				view.UpdateAccessibilityOptionsIconStatusView(data);
@@ -134,7 +134,7 @@ function AccessibilityOptionsMenuController(menuType) {
 
 //AUDIO SUBTITLES
 		data.audioSubtitlesButtonFunc = function() {
-			AddVisualFeedbackOnClick(data.isASTenabled ? 'showAudioSubtitlesMenuButton' : 'disabledAudioSubtitlesMenuButton', function(){
+			AddVisualFeedbackOnClick(data.isASTenabled ? 'show-ast-button' : 'disable-ast-button', function(){
 				data.isASTenabled = !data.isASTenabled;
 				_AudioManager.switchAST(data.isASTenabled);
 				view.UpdateAccessibilityOptionsIconStatusView(data);
@@ -143,10 +143,10 @@ function AccessibilityOptionsMenuController(menuType) {
 			});
 		};
 
-		data.closeMenuButtonFunc = function(){ AddVisualFeedbackOnClick('closeMenuButton', function(){ menuMgr.ResetViews()} )};
+		/*data.closeMenuButtonFunc = function(){ AddVisualFeedbackOnClick('closeMenuButton', function(){ menuMgr.ResetViews()} )};
 		data.backMenuButtonFunc = function(){ AddVisualFeedbackOnClick('backMenuButton', function(){ menuMgr.NavigateBackMenu()} )};
 		data.forwardMenuButtonFunc = function(){ AddVisualFeedbackOnClick('forwardMenuButton', function(){menuMgr.NavigateForwardMenu()} )};
-    data.previewButtonFunc = function(){ AddVisualFeedbackOnClick('previewMenuButton', function(){menuMgr.OpenPreview()} )};
+    	data.previewButtonFunc = function(){ AddVisualFeedbackOnClick('previewMenuButton', function(){menuMgr.OpenPreview()} )};*/
 	}
 
 /**

@@ -79,52 +79,9 @@ MenuFunctionsManager = function() {
         }
     }
 
-/* DEPRECATED Options are enabled and disabled by clicking in the corresponding icon*/
-  /*  function getSubOnOffFunc(isEnabled)
-    {
-        return function() {
-            subController.switchSubtitles(isEnabled);
-        }
-    }
-
-    function getSignerOnOffFunc(isEnabled)
-    {
-        return function() {
-            subController.switchSigner( isEnabled );
-        }
-    }
-
-    function getAudioDescOnOffFunc(isEnabled)
-    {
-        return function() {
-            _AudioManager.switchAD( isEnabled );
-        }
-    }
-
-    function getAudioSubOnOffFunc(isEnabled)
-    {
-        return function() {
-            _AudioManager.switchAST( isEnabled );
-        }
-    }*/
-
 //************************************************************************************
 // Signer Functions
 //************************************************************************************
-
-    function getMainLanguageFunc(language)
-    {
-        return function() {
-
-            MenuDictionary.setMainLanguage( language );
-
-            menuMgr.removeMenuFromParent();
-
-            menuMgr.getMenuType() == 1 ? menuMgr.Init(1) : menuMgr.Init(2);
-
-            menuMgr.initFirstMenuState();
-        }
-    }
 
     function getSignerPositionFunc(position)
     {
@@ -248,20 +205,22 @@ MenuFunctionsManager = function() {
         return;
     }
 
-    function getChangePointerSizeFunc(size)
-    {
-        return function() {
-            _pointerSize = size;
-            menuMgr.ResetViews();
-            menuMgr.initFirstMenuState();
-        }
-    }
-
-
 //************************************************************************************
 // Public Functions
 //************************************************************************************
 
+    this.getMainLanguageFunc = function(language){
+        MenuDictionary.setMainLanguage( language );
+        menuMgr.removeMenuFromParent();
+        menuMgr.Init();
+        menuMgr.initFirstMenuState();        
+    }
+
+    this.getChangePointerSizeFunc = function(size){
+        _pointerSize = size;
+        menuMgr.ResetViews();
+        menuMgr.initFirstMenuState();
+    }
 
     this.getPlayPauseFunc = function(play)
     {

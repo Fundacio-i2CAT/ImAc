@@ -25,23 +25,13 @@ SettingsManager = function() {
         }
     }*/
 
-    this.getChangeMenuTypeFunction = function(newMenuType)
+    this.getChangeMenuTypeFunction = function()
     {
-    	return function() {
-			var currentMenuType = menuMgr.getMenuType();
-			
-			if(currentMenuType == newMenuType)
-			{
-				 console.log("Same Menu");
-			}
-			else
-			{
-                menuMgr.ResetViews();
-				menuMgr.removeMenuFromParent();
-				menuMgr.Init(newMenuType);
-				menuMgr.initFirstMenuState();
-			}	
-    	}
+		let newType = (menuMgr.getMenuType()%2)+1;
+		menuMgr.ResetViews();
+		menuMgr.removeMenuFromParent();
+		menuMgr.Init(newType);
+		menuMgr.initFirstMenuState();	
 	}
 
 	this.checkMenuType = function(menuType)

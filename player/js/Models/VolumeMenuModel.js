@@ -1,6 +1,6 @@
-function VolumeLSMenuModel() {
+function VolumeMenuModel() {
 	
-	this.name = 'volumemenu';
+	this.name = 'volume-menu-group';
 	this.isMuted;
 	this.muteUnmuteMenuButtonFunc;
 	this.plusVolumeMenuButtonFunc;

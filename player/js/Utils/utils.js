@@ -257,34 +257,28 @@ var emoji_1, emoji_2, emoji_3, emoji_4, emoji_5, emoji_6, emoji_7, emoji_8, emoj
 function loadEmojisIcons()
 {
     emoji_1 = new Image() 
-    emoji_1.src = "./img/emojis/happy.png"; 
+    emoji_1.src = "./img/emojis/image001.png"; 
 
     emoji_2 = new Image() 
-    emoji_2.src = "./img/emojis/hands.png"; 
+    emoji_2.src = "./img/emojis/image002.png"; 
 
     emoji_3 = new Image() 
-    emoji_3.src = "./img/emojis/sad.png"; 
+    emoji_3.src = "./img/emojis/image003.png"; 
 
     emoji_4 = new Image() 
-    emoji_4.src = "./img/emojis/steps.png"; 
+    emoji_4.src = "./img/emojis/image004.png"; 
 
     emoji_5 = new Image() 
-    emoji_5.src = "./img/emojis/robot.png"; 
+    emoji_5.src = "./img/emojis/image005.png"; 
 
     emoji_6 = new Image() 
-    emoji_6.src = "./img/emojis/phone.png"; 
+    emoji_6.src = "./img/emojis/image006.png"; 
 
     emoji_7 = new Image() 
-    emoji_7.src = "./img/emojis/wave.png"; 
+    emoji_7.src = "./img/emojis/image007.png"; 
 
     emoji_8 = new Image() 
-    emoji_8.src = "./img/emojis/music.png"; 
-
-    emoji_9 = new Image() 
-    emoji_9.src = "./img/emojis/plug.png"; 
-
-    emoji_10 = new Image() 
-    emoji_10.src = "./img/emojis/noise.png"; 
+    emoji_8.src = "./img/emojis/image008.png"; 
 }
 
 function startSync()
@@ -292,3 +286,63 @@ function startSync()
     var sync = new SyncController()
     sync.init();
 }
+
+var SLTImes = [
+    { state: 'on', time: 17.07 },
+    { state: 'off', time: 25.23 },
+    { state: 'on', time: 52.19 },
+    { state: 'off', time: 80.20 },
+    { state: 'on', time: 82.04 },
+    { state: 'off', time: 97.01 },
+    { state: 'on', time: 110.13 },
+    { state: 'off', time: 115.00 },
+    { state: 'on', time: 117.22 },
+    { state: 'off', time: 159.24 },
+    { state: 'on', time: 161.03 },
+    { state: 'off', time: 175.04 },
+    { state: 'on', time: 178.11 },
+    { state: 'off', time: 331.13 },
+    { state: 'on', time: 348.08 },
+    { state: 'off', time: 366.14 },
+    { state: 'on', time: 369.15 },
+    { state: 'off', time: 377.07 },
+    { state: 'on', time: 390.16 },
+    { state: 'off', time: 505.08 },
+    { state: 'on', time: 521.21 },
+    { state: 'off', time: 526.16 },
+    { state: 'on', time: 531.13 },
+    { state: 'off', time: 539.06 },
+    { state: 'on', time: 548.13 },
+    { state: 'off', time: 574.20 },
+    { state: 'on', time: 586.05 },
+    { state: 'off', time: 593.20 },
+    { state: 'on', time: 602.06 },
+    { state: 'off', time: 607.22 },
+    { state: 'on', time: 612.20 },
+    { state: 'off', time: 623.16 },
+    { state: 'on', time: 644.23 },
+    { state: 'off', time: 659.03 },
+    { state: 'on', time: 660.23 },
+    { state: 'off', time: 663.12 },
+    { state: 'on', time: 679.18 },
+    { state: 'off', time: 697.23 },
+    { state: 'on', time: 699.19 },
+    { state: 'off', time: 745.05 }
+];
+
+
+function getViewDifPositionTest(sp, fov)
+{
+    var target = new THREE.Vector3();
+    var camView = camera.getWorldDirection( target );
+    var offset = camView.z >= 0 ? 180 : -0;
+
+    var lon = Math.degrees( Math.atan( camView.x/camView.z ) ) + offset;
+
+    lon = lon > 0 ? 360 - lon : - lon;
+
+    if ( ( lon - sp + 360 )%360 > fov && ( lon - sp + 360 )%360 <= 180 ) return -1; 
+    else if ( ( lon - sp + 360 )%360 > 180 && ( lon - sp + 360 )%360 <= 360 - fov ) return 1;
+    else return 0;
+}
+

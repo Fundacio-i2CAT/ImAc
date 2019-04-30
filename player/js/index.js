@@ -57,6 +57,8 @@ var list_contents;
 var __etype = 0;
 
 var _fixedST = false;
+var _SLsubtitles = false;
+var _NonCont = false;
 
 
 /**
@@ -77,6 +79,8 @@ function init_webplayer()
         {
             list_contents = json.contents;
 
+            loadEmojisIcons()
+
             if ( myhash && myhash[1] && myhash[1] < list_contents.length && list_contents[ myhash[1] ] && localStorage.ImAc_init == myhash[1] ) 
             {
                 localStorage.removeItem('ImAc_init');
@@ -85,7 +89,7 @@ function init_webplayer()
                 mainContentURL = list_contents[ myhash[1] ].url;
 
                 ///////////////////////////////////////////////////////////////
-                var cookieconf = readCookie("ImAcProfileConfig");
+                /*var cookieconf = readCookie("ImAcProfileConfig");
 
                 if ( cookieconf && cookieconf != null ) 
                 {
@@ -94,7 +98,7 @@ function init_webplayer()
                     subController.setSLConfig( iconf.SL );
                     _AudioManager.setADConfig( iconf.AD );
                     _AudioManager.setASTConfig( iconf.AST );
-                }
+                }*/
                 ////////////////////////////////////////////////////////////////
 
                 demoId = myhash[1];

@@ -276,12 +276,13 @@ VideoController = function() {
 
         getAdaptationSets().then(( str ) => { 
 
-            subController.enableSubtitles();
+            //subController.enableSubtitles();
 
             listOfVideoContents[0].vid.ontimeupdate = function() 
             {
                 if (listOfVideoContents[0].vid.currentTime >= listOfVideoContents[0].vid.duration - 0.5) window.location.reload();
                 subController.updateSubtitleByTime( listOfVideoContents[0].vid.currentTime );
+                if ( _NonCont ) subController.updateSLByTime( listOfVideoContents[0].vid.currentTime );
                 if( scene.getObjectByName( "video-progress-bar" ) && scene.getObjectByName( "video-progress-bar" ).visible )
                 {
                     vpbCtrl.updatePlayProgressBar();  

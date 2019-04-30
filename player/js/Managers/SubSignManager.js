@@ -72,8 +72,6 @@ SubSignManager = function() {
 	var subArea = 70; // small = 50, medium = 60, large = 70
 	var subAvailableLang = []; // Array { name, value, default:bool }
 
-	var subType = 0; // normal = 0; fixed = 1; fixedUAB = 2; SL_subtitles = 3;
-
 	// [SL] signer vars
 	var signerContent; // URL
 	var signEnabled = false; // boolean
@@ -98,11 +96,15 @@ SubSignManager = function() {
 
 			if ( isd.contents.length > 0 ) 
 		  	{
+		  		//if (_fixedST && !isd.imac ) isd.imac = 0;
+		  		//if (_fixedST && !isd.imacY ) isd.imacY = 0;
+
 		  		if ( autoPositioning ) changePositioning( isd.imac );
 		  		if ( radarAutoPositioning ) changeSimplePositioning( isd.imac );
 		    	if ( subtitleEnabled ) print3DText( isd.contents[0], isd.imac, isd.imacY );
 
 		    	if ( subtitleIndicator == 'arrow' ) arrowInteraction();
+		    	if ( signIndicator == 'arrow' ) arrowSLInteraction();
 
 		    	checkSpeakerPosition( isd.imac );
 		  	}
@@ -117,7 +119,7 @@ SubSignManager = function() {
 
 	function arrowInteraction()
 	{
-// cada 300 milis aprox
+		// cada 300 milis aprox
 		if ( scene.getObjectByName("right") ) {
 
 			scene.getObjectByName("right").material.opacity = scene.getObjectByName("right").material.opacity == 1 ? 0.4 : 1;
@@ -129,8 +131,29 @@ SubSignManager = function() {
 		}
 	}
 
+	function arrowSLInteraction()
+	{
+		// cada 300 milis aprox
+		if ( scene.getObjectByName("rightSL") ) {
+
+			scene.getObjectByName("rightSL").material.opacity = scene.getObjectByName("rightSL").material.opacity == 1 ? 0.4 : 1;
+		}
+		
+		if ( scene.getObjectByName("leftSL") ) {
+
+			scene.getObjectByName("leftSL").material.opacity = scene.getObjectByName("leftSL").material.opacity == 1 ? 0.4 : 1;
+		}
+	}
+
 	function print3DText(isdContent, isdImac, isdImacY) 
 	{
+		var offset = 0;
+		if ( !_SLsubtitles && signEnabled )
+		{
+			subArea = signArea;
+			offset = -signPosX * signerSize/2;
+		}
+
 		var latitud = subPosY == 1 ? 30 * subArea/100 : -30 * subArea/100; 
   		var posY = _isHMD && !isExperimental ? 80 * Math.sin( Math.radians( latitud ) ) : 135 * Math.sin( Math.radians( latitud ) );
   		var subAjust = _isHMD ? 1 : 0.97;
@@ -146,7 +169,8 @@ SubSignManager = function() {
 	        y: posY * 9/16,
 	        z: posZ,
 	        lon: -isdImac,
-	        lat: isdImacY
+	        lat: isdImacY,
+	        offset: offset
 	    };
 
 	  	if ( isdContent.contents.length > 0 )
@@ -159,7 +183,7 @@ SubSignManager = function() {
 	      		if ( isdContentText[i].kind == 'span' && isdContentText[i].contents )
 	      		{
 	        		var isdTextObject = {
-	          			text: isdContentText[i].contents[0].text,
+	          			text: isdContentText[i].contents[0].text, //'MMMMMWWWWWMMMMMWWWWWMMMMMWWWWWMMMMM',
 	          			color: adaptRGBA( isdContentText[i].contents[0].styleAttrs['http://www.w3.org/ns/ttml#styling color'] ),
 	          			backgroundColor: adaptRGBA( isdContentText[i].contents[0].styleAttrs['http://www.w3.org/ns/ttml#styling backgroundColor'] )
 	        		};
@@ -168,22 +192,25 @@ SubSignManager = function() {
 	      		}
 	    	}
 
-	    	if ( textList.length > 0 && ( textListMemory.length == 0 || textListMemory.length > 0 && textList[0].text != textListMemory[0].text ) ) 
+	    	if ( textList.length > 0 && ( textListMemory.length == 0 || textListMemory.length > 0 && textList[0].text != textListMemory[0].text || textList.length != textListMemory.length ) ) 
 	    	{
 	      		removeSubtitle();
 
 			    //Save subtitle configuration for preview visualitzation. 
 			    if ( isExperimental ) createExpSubtitle( textList, subConfig );
+			    else if( _SLsubtitles ) createSLSubtitle( textList, subConfig );
 			    else createSubtitle( textList, subConfig );
 
 	      		if ( subtitleIndicator == 'radar' ) createSpeakerRadar( textList[0].color, isdImac );
 
 	      		textListMemory = textList;     
-	    	}   
+	    	} 
+	    	//if ( _NonCont ) subController.swichtSL(true);  
 		    //setSubtitleConfig(subConfig);
 	  	}
 	  	else 
 	  	{
+	  		//if ( _NonCont ) subController.swichtSL(false);
 	    	textListMemory = [];
 	    	removeSubtitle();
 	    	removeSpeakerRadar();
@@ -323,6 +350,10 @@ SubSignManager = function() {
 
     function createSubtitle(textList, config)
     {
+    	if ( signEnabled ) 
+    	{
+    		//config.size = config.size * 0.8;
+    	}
         subtitleMesh = !_fixedST ? _moData.getEmojiSubtitleMesh( textList, config ) : _moData.getExpEmojiSubtitleMesh( textList, config );
         subtitleMesh.name = "subtitles";
 
@@ -332,8 +363,22 @@ SubSignManager = function() {
     // Subtitles fixed under SL video
     function createSLSubtitle(textList, config)
     {
-    	subtitleMesh = _moData.getSLSubtitleMesh( textList, config );
-        subtitleMesh.name = "subtitles";
+    	var posX = ( 1.48*signArea/2-signerSize/2 ) *signPosX;
+	    var posY = ( 0.82*signArea/2-signerSize/2 ) *signPosY;
+	    var posZ = 70;
+
+		var slconfig = {
+			size: signerSize, // signArea/100
+			signIndicator: signIndicator,
+			x: posX,
+			y: posY,
+			z: posZ
+		};
+
+    	subtitleMesh = _moData.getSLSubtitleMesh( textList, config, slconfig );
+        subtitleMesh.name = "SLsubtitles";
+
+        //signerMesh.addST(subtitleMesh);
 
         camera.add( subtitleMesh );
     }
@@ -351,6 +396,8 @@ SubSignManager = function() {
     	removeSignVideo();
 
         signerMesh = _moData.getSignVideoMesh( url, name, config );
+        signerMesh.visible = false;
+        var SLTimeout = setTimeout( function() { signerMesh.visible = true },700);
         camera.add( signerMesh );
     }
 
@@ -411,6 +458,7 @@ SubSignManager = function() {
     function removeSubtitle()
     {
         (isExperimental || _fixedST) ? scene.remove( subtitleMesh ) : camera.remove( subtitleMesh );
+
         subtitleMesh = undefined;
     }
 
@@ -449,14 +497,24 @@ SubSignManager = function() {
     {
         if ( subtitleMesh )
         {
-        	subtitleMesh.children.forEach( function( elem ) 
+        	/*subtitleMesh.children.forEach( function( elem ) 
         	{ 
         		elem.children.forEach( function( e ) 
         		{
         			if ( e.name == 'left' ) e.visible = pos == 'left' ? true : false;
                     else if ( e.name == 'right' ) e.visible = pos == 'right' ? true : false;
                 }); 
-        	}); 
+        	});*/ 
+
+        	if ( scene.getObjectByName("right") ) {
+
+				scene.getObjectByName("right").visible = pos == 'right' ? true : false;
+			}
+			
+			if ( scene.getObjectByName("left") ) {
+
+				scene.getObjectByName("left").visible = pos == 'left' ? true : false;
+			}
         }
     }
 
@@ -464,14 +522,25 @@ SubSignManager = function() {
     {
         if ( signerMesh )
         {
-        	signerMesh.children.forEach( function( elem ) 
+        	/*signerMesh.children.forEach( function( elem ) 
         	{ 
 	        	elem.children.forEach( function( e ) 
 	        	{
 	        		if ( e.name == 'left' ) e.visible = pos == 'left' ? true : false;
 	                else if ( e.name == 'right' ) e.visible = pos == 'right' ? true : false;
 	            }); 
-            });
+            });*/
+
+
+            if ( scene.getObjectByName("rightSL") ) {
+
+				scene.getObjectByName("rightSL").visible = pos == 'right' ? true : false;
+			}
+			
+			if ( scene.getObjectByName("leftSL") ) {
+
+				scene.getObjectByName("leftSL").visible = pos == 'left' ? true : false;
+			}
         }
     }
 
@@ -671,9 +740,9 @@ SubSignManager = function() {
 	            imsc1doc = imsc.fromXML( r.responseText );
 
 		////////////////////////////////////////////////////////////////
-
+/*
 				var lineCount = 2;
-				var charWidth = 30;
+				var charWidth = 45;
 
 				var RS = new responsiveSubs(imsc1doc);
 				RS.IMSCtoWords();
@@ -681,7 +750,7 @@ SubSignManager = function() {
 				RS.splitSubsByLPL(charWidth); // numero de caracters per linea
 				RS.blockSubsBySpeaker("\n",lineCount); // numero de linees
 				
-				imsc1doc = RS.toIMSC(fontSize=110);
+				imsc1doc = RS.toIMSC(fontSize=110);*/
 		/////////////////////////////////////////////////////////////////////
 		
 	        }
@@ -823,6 +892,8 @@ SubSignManager = function() {
 	this.setSignerIndicator = function(ind)
 	{
 		signIndicator = ind;
+		if ( signIndicator == 'arrow' && scene.getObjectByName("backgroundSL") ) scene.getObjectByName("backgroundSL").visible = true;
+		else if ( scene.getObjectByName("backgroundSL") ) scene.getObjectByName("backgroundSL").visible = false;
 		updateSignerPosition();
 	};
 
@@ -958,6 +1029,11 @@ SubSignManager = function() {
 		if ( imsc1doc ) updateISD( time );
 	};
 
+	this.updateSLByTime = function(time)
+	{
+		this.swichtSL( getNonContSLMeta(time) );
+	};
+
     this.initSubtitle = function(fov, x, y, ind)
 	{
 		subArea = fov;
@@ -1064,47 +1140,32 @@ SubSignManager = function() {
 
     this.updateSTRotation = function()
     {
-    	if ( subtitleMesh && !isExperimental ) subtitleMesh.rotation.z = -camera.rotation.z;
+    	if ( subtitleMesh && !isExperimental && !_fixedST ) subtitleMesh.rotation.z = -camera.rotation.z;
     }
 
     this.updateSLRotation = function()
     {
     	if ( signerMesh ) signerMesh.rotation.z = -camera.rotation.z;
     }
-}
 
 
+///////////////////////////////////////////////////////////////////////////////////
 
+    this.swichtSL = function(enable)
+    {
+    	if ( signerMesh )
+    	{
+    		signerMesh.visible = enable;
+    	}
+    }
 
-
-
-//////////////////////////////////////////////////////////////////////////////////////////
-
-
-class Accessibility 
-{
-	constructor( language = 'en', indicator = 'none', area = 70 ) {
-		this.lang = language;
-		this.indicator = indicator;
-		this.area = area;
-	}
-}
-
-
-class Subtitle 
-{
-	constructor() 
-	{
-		this.enabled 	= false; 		// boolean
-		this.size 		= 1; 			// small = 0.6, medium = 0.8, large = 1
-		this.background = 0.5;			// semi-transparent = 0.5, outline = 0
-		this.position 	= [ 0, -1 ];	// array(x,y) [ -1 .. 0 .. 1 ]
-		this.e2r 		= false;		// boolean
-		this.mesh 		= undefined;	// Three.js object
-		this.imsc1doc 	= undefined;	// ttml object
-		this.isFixed 	= false;		// boolean
-		this.memory 	= [];			// array of text memory
-		this.maxLines	= 2;			// integer
-		this.maxChars	= 30;			// integer
-	}
+    function getNonContSLMeta(time)
+    {
+    	var SLstate = false;
+    	SLTImes.forEach( function( elem ) {
+    		if ( elem.time >= time ) return SLstate;
+    		else SLstate = (elem.state == 'on') ? true : false;
+    	});
+    	return SLstate;
+    }
 }

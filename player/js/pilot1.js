@@ -29,6 +29,83 @@ function runDemo()
     }
 }
 
+function runTest1() 
+{
+    _AudioManager.initializeAudio( VideoController.getListOfVideoContents()[0].vid, list_contents[demoId].audioChannels, camera.matrixWorld.elements );
+    _moData.createPointer();
+
+    subController.enableSubtitles();
+    subController.initSubtitle( 70, 0, -1, 'arrow' );
+
+    if ( demoId == 1 || demoId == 3 ) _fixedST = true;
+
+    if ( demoId == 2 || demoId == 3 || demoId == 6 || demoId == 7) VideoController.seekAll( 391 );
+    else if ( demoId == 4 || demoId == 5 ) VideoController.seekAll( 110 );
+
+    else if ( demoId == 0 || demoId == 1 )
+    {
+        var interval5 = setTimeout( function() { window.location.reload() }, 360000);
+        VideoController.seekAll( 30 );
+    } 
+    else  
+    {
+        var interval5 = setTimeout( function() { window.location.reload() }, 225000);
+    }  
+}
+
+function runTest2() 
+{
+    _AudioManager.initializeAudio( VideoController.getListOfVideoContents()[0].vid, list_contents[demoId].audioChannels, camera.matrixWorld.elements );
+    _moData.createPointer();
+
+    var interval81 = setTimeout( function() {
+        subController.switchSigner( true );
+        VideoController.playAll();
+        
+         },1000);
+
+    if ( demoId == 0 || demoId == 2 )
+    {
+        subController.enableSubtitles();
+        subController.initSubtitle( 70, 0, -1, 'arrow' );
+    }
+    else if ( demoId == 1 || demoId == 3 || demoId == 4 || demoId == 5 || demoId == 6 || demoId == 7)
+    {
+        subController.setSignerIndicator( 'arrow' );
+    }
+
+    if ( demoId == 5 || demoId == 7 ) _NonCont = true;
+    if ( demoId == 8 || demoId == 9 || demoId == 10 || demoId == 11 ) 
+    {
+        _SLsubtitles = true;
+
+        var interval82 = setTimeout( function() {
+        subController.enableSubtitles();
+        subController.initSubtitle( 70, 0, -1, 'arrow' );  },1200);
+    }
+
+    if ( demoId == 2 || demoId == 3 ) VideoController.seekAll( 250 ); //opera part 2
+    else if ( demoId == 6 || demoId == 7 || demoId == 10 || demoId == 11 ) VideoController.seekAll( 391 );
+    else if ( demoId == 8 || demoId == 9 ) 
+    {
+        VideoController.seekAll( 110 );
+        var interval5 = setTimeout( function() { window.location.reload() },280000);
+    }
+    else if ( demoId == 0 || demoId == 1 ) 
+    {
+        var interval5 = setTimeout( function() { window.location.reload() },250000);
+    }
+    else if ( demoId == 4 || demoId == 5 )
+    {
+        var interval5 = setTimeout( function() { window.location.reload() },360000);
+        VideoController.seekAll( 30 );
+    }   
+    if ( demoId == 10 || demoId == 11 ) 
+    {
+        var interval5 = setTimeout( function() { window.location.reload() },225000);
+    } 
+}
+
 function runGADemo() 
 {
     _AudioManager.initializeAudio( VideoController.getListOfVideoContents()[0].vid, list_contents[demoId].audioChannels, camera.matrixWorld.elements );

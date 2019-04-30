@@ -11,7 +11,11 @@ function init_webplayer()
 {
 	console.log('Version: ' + _PlayerVersion);
 
-setBrowserLanguage()
+    localStorage.removeItem('dashjs_video_settings');
+    localStorage.removeItem('dashjs_video_bitrate');
+    localStorage.removeItem('dashjs_text_settings');
+
+//setBrowserLanguage()
     $.getJSON('./content.json', function(json)
     {
         var list_contents = json.contents;

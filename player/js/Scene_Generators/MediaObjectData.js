@@ -76,63 +76,23 @@ THREE.MediaObjectData = function () {
         var geometry = new THREE.PlaneGeometry( config.size, config.size );
         var plane = getVideoMesh( geometry, url, name, 1 );
 
-        // left arrow
-        /*var arrow = getArrowMesh( config.size/5, config.size/6, 0xffffff );
-        arrow.rotation.z = Math.PI;
-        //arrow.add( getBackgroundMesh ( config.size/5, config.size/5, 0x000000, 0.8 ) );
-        arrow.position.y = -7 * config.size/12;
-        arrow.position.x = -3 * config.size/8;
-        arrow.name = 'left';
 
-        plane.add( arrow );
+        var material = new THREE.MeshBasicMaterial( { color: 0x000000,  transparent: true, opacity: 0.5 } );
+        var mesh = new THREE.Mesh( new THREE.PlaneGeometry( 38, 8.4 ), material );
 
-        // right arrow
-        var arrow = getArrowMesh( config.size/5, config.size/6, 0xffffff );
-        //arrow.add( getBackgroundMesh ( config.size/5, config.size/5, 0x000000, 0.8 ) );
-        arrow.position.y = -7 * config.size/12;
-        arrow.position.x = 3 * config.size/8;
-        arrow.name = 'right';
+        setArrowToMesh( mesh, 120/6, 1, 0xffffff, 0x000000, 0, true ) 
+        mesh.position.y = -config.size/2 - 4.4/2;
+        mesh.scale.set( 0.97*70/130, 0.97*70/130, 1 )
+        mesh.children[0].visible = false;
+        mesh.children[1].visible = false;
+        mesh.visible = config.signIndicator == 'arrow' ? true : false;
+        mesh.name = 'backgroundSL';
 
-        plane.add( arrow );*/
-
-        // background
-/*
-        var textList = [];
-        var isdTextObject = {
-              text: 'Hola',
-              color: 0xffffff,
-              backgroundColor: 0x000000 
-        };
-
-        textList.push( isdTextObject );
-
-        var subConfig = {
-            subtitleIndicator: 'arrow',
-            size: 0.8 * 0.97 * 1,
-            area: 70/130,
-            opacity: 0.5,
-            x: 0,
-            y: 0,
-            z: 0
-        };
-
-        var backgroundMesh = this.getEmojiSubtitleMesh( textList, subConfig )
-        backgroundMesh.position.y = -7 * config.size/12;
-        backgroundMesh.position.x = -3 * config.size/8;
-        plane.add( backgroundMesh );
-*/
-
-        //setArrowToMesh( plane, config.size/10, config.size/24, 0xffffff, 0x000000, 0.8 );
-
-        /*var backgroundMesh = getBackgroundMesh ( config.size, config.size/5, 0x000000, 0.8 );
-        backgroundMesh.position.y = -6 * config.size/10;
-        backgroundMesh.visible = config.signIndicator == 'arrow' ? true : false;
-
-        plane.add( backgroundMesh );*/
+        plane.add( mesh );
 
         plane.position.z = - config.z;
         plane.position.x = config.x;
-        plane.position.y = config.y;
+        plane.position.y = ( !_SLsubtitles && subController.checkSubtitleEnabled(true) ) ? config.y : config.y +3.4;
 
         //return plane;
         group.add( plane );
@@ -170,28 +130,45 @@ THREE.MediaObjectData = function () {
         return group;
     };
 
-    this.getSLSubtitleMesh = function(textList, config)
+    this.getSLSubtitleMesh = function(textList, config, slconfig)
     {
         var group = new THREE.Group();
-        var font = "500 30px Roboto, Arial";
 
-        var posX = ( 1.48*60/2-20/2 ) *1;
+        var material = new THREE.MeshBasicMaterial( { color: 0x000000,  transparent: true, opacity: 0 } );
+        var plane = new THREE.Mesh( new THREE.PlaneGeometry( slconfig.size, slconfig.size ), material );
+
+        var group2 = new THREE.Group();
+        var font = "500 40px Roboto, Arial";
+
+
         var posY = ( 0.82*60/2-20/2 ) *-1;
 
         config.x=0;
         config.y=0;
-        config.z=70;
+        config.z=0;
         config.size = 0.8*0.97;
 
-        group.add( getEmojiSubMesh3( textList, config, font ) );
-        group.position.x = posX;
-        group.position.y = posY-10-1.5;
+        group2.add(  getEmojiSubMesh3( textList, config, font ) );
+
+        group2.position.y = -slconfig.size/2 - 1.8;
+        plane.add( group2 );
+
+        plane.position.z = - slconfig.z;
+        plane.position.x = slconfig.x;
+        plane.position.y = slconfig.y +3.4;
+
+        //return plane;
+        group.add( plane );
+
+        //group.position.x = posX;
+        //group.position.y = posY-10+2*0.97*0.8;
 
         if ( _isHMD ) group.rotation.z = -camera.rotation.z;
         
         return group;
     };
 
+    // subtitols always visible
     this.getEmojiSubtitleMesh = function(textList, config)
     {
         var group = new THREE.Group();
@@ -204,48 +181,71 @@ THREE.MediaObjectData = function () {
         return group;
     };
 
+    // subtitols fixed position
     this.getExpEmojiSubtitleMesh = function(textList, config)
     {
         var group = new THREE.Group();
         var font = "500 40px Roboto, Arial";
 
-        var view = camera.getWorldDirection( _targetVector );
-        var position = cartesianToAngular( view.x,view.y,view.z );
-        var lon = config.lon;
+        var difPosition = config.lon ? getViewDifPositionTest( -config.lon, camera.fov ) : 0;
 
-        if ( -lon > 180 ) lon = -(lon +360)
 
-        console.log(config.lon + '  ' + position.longitud)
+        if ( difPosition == 0 ) position = 'center';
+        else position = difPosition < 0 ? 'left' : 'right';
 
-        if ( ( ( lon + 360 )%360 - position.longitud ) > 180 && ( ( lon + 360 )%360 - position.longitud ) <= ( 360 - camera.fov ) ) {
+        var target = new THREE.Vector3();
+        var camView = camera.getWorldDirection( target );
+        var offset = camView.z >= 0 ? 180 : -0;
+
+        var dist = Math.sqrt( Math.pow( camView.x,2 ) + Math.pow( camView.y,2 ) + Math.pow( camView.z,2 ) );
+        var lon = Math.degrees( Math.atan( camView.x/camView.z ) ) + offset;
+        var lat = Math.degrees( Math.asin( camView.y/-dist ) );
+
+        lon = lon > 0 ? 360 - lon : - lon;
+
+        if ( position != 'center' ) 
+        {
+            var isRight = position == 'right' ? true : false;   
             var mesh = new THREE.Mesh( new THREE.PlaneGeometry( 0.001, 0.001 ), new THREE.MeshBasicMaterial( { color: 0xffffff } ) );
-            setFixedArrow( mesh, 0, config, textList, config.opacity, false );
-            mesh.position.x = config.z * Math.cos( Math.radians( position.longitud -90 +lon) );
-            mesh.position.y = config.z * Math.sin( Math.radians( position.latitud -20 ) );
-            mesh.position.z = config.z * Math.sin( Math.radians( position.longitud -90 +lon) ) * Math.cos( Math.radians( position.latitud -20 ) );
+            setFixedArrow( mesh, 0, config, textList, config.opacity, isRight );
+
+            mesh.position.x = config.z * Math.cos( Math.radians( lon-90 +config.lon) ) * Math.cos( Math.radians( -lat -20) );
+            mesh.position.y = config.z * Math.sin( Math.radians( -lat -20) );
+            mesh.position.z = config.z * Math.sin( Math.radians( lon-90 +config.lon) ) * Math.cos( Math.radians( -lat -20) );
+
             mesh.lookAt(0,0,0)
 
             group.add( mesh )
         }
-        else if ( ( ( lon + 360 )%360 - position.longitud ) >= camera.fov && ( ( lon + 360 )%360 - position.longitud ) <= 180 ) { 
-            var mesh = new THREE.Mesh( new THREE.PlaneGeometry( 0.001, 0.001 ), new THREE.MeshBasicMaterial( { color: 0xffffff } ) );
-            setFixedArrow( mesh, 0, config, textList, config.opacity, true );
-            mesh.position.x = config.z * Math.cos( Math.radians( position.longitud -90 +lon) );
-            mesh.position.y = config.z * Math.sin( Math.radians( position.latitud -20 ) );
-            mesh.position.z = config.z * Math.sin( Math.radians( position.longitud -90 +lon) ) * Math.cos( Math.radians( position.latitud -20 ) );
-            mesh.lookAt(0,0,0)
 
-            group.add( mesh )
+        var needajust = false;
+        if ( config.lon ) {}
+        else {
+            config.lon = -lon;
+            config.lat = -lat;
+            needajust = true;
         }
+        //console.warn( position )
 
+        ////////////////////////////////////////////////////////////////////////////////////
         config.x = 0;
         config.y = config.z * Math.sin( Math.radians( config.lat ) );
         config.z = config.z * Math.cos( Math.radians( config.lat ) );
 
-        group.add( getEmojiSubMesh( textList, config, font, true ) );
+        var stmesh = getEmojiSubMesh( textList, config, font, true ) 
+
+        if ( needajust ) {
+            stmesh.position.x = config.z * Math.cos( Math.radians( lon-90 +config.lon) ) * Math.cos( Math.radians( -lat -20) );
+            stmesh.position.y = config.z * Math.sin( Math.radians( -lat -20) );
+            stmesh.position.z = config.z * Math.sin( Math.radians( lon-90 +config.lon) ) * Math.cos( Math.radians( -lat -20) );
+
+            stmesh.lookAt(0,0,0)
+        }
+
+        group.add( stmesh );
         
         group.rotation.y = Math.radians( config.lon );
-        
+
         return group;
     };
 
@@ -673,7 +673,7 @@ THREE.MediaObjectData = function () {
         var material = new THREE.MeshBasicMaterial( { color: c, transparent: true, opacity: o } );
         var geometry = new THREE.PlaneGeometry( w, h ); 
         var mesh = new THREE.Mesh( geometry, material );
-        mesh.position.z = -0.1;
+        mesh.position.z = -0.01;
 
         return mesh;
     }
@@ -841,10 +841,10 @@ THREE.MediaObjectData = function () {
     {
         // right arrow
         if ( right ){
-            var geometry = new THREE.PlaneGeometry( 6.7*c.size, 6.7*c.size );
+            var geometry = new THREE.PlaneGeometry( 6.5, 6.5 );
             var arrow = getImageMesh( geometry, './img/arrow_final.png', 'right', 3 );
             arrow.material.color.set( t[0].color );
-            arrow.add( getBackgroundMesh ( 9.7*c.size, 8.7*c.size, t[0].backgroundColor, o ) );
+            arrow.add( getBackgroundMesh ( 9.4, 8.4, t[0].backgroundColor, o ) );
 
             arrow.name = 'right';
             mesh.add( arrow );
@@ -852,36 +852,36 @@ THREE.MediaObjectData = function () {
 
         // left arrow
         else {
-            var geometry = new THREE.PlaneGeometry( 6.7*c.size, 6.7*c.size );
+            var geometry = new THREE.PlaneGeometry( 6.5, 6.5 );
             var arrow = getImageMesh( geometry, './img/arrow_final.png', 'left', 3 );
             arrow.material.color.set( t[0].color );
             arrow.rotation.z = Math.PI;
-            arrow.add( getBackgroundMesh ( 9.7*c.size, 8.7*c.size, t[0].backgroundColor, o ) );
-            //arrow.position.x = -cw/2 - 9.7*c.size/2;
+            arrow.add( getBackgroundMesh ( 9.4, 8.4, t[0].backgroundColor, o ) );
+
             arrow.name = 'left';
             mesh.add( arrow );
         }
     }
 
-    function setArrowToMesh(mesh, cw, size, color, backgroundColor, o)
+    function setArrowToMesh(mesh, cw, size, color, backgroundColor, o, isSL)
     {
         // right arrow
-        var geometry = new THREE.PlaneGeometry( 6.7*size, 6.7*size );
+        var geometry = new THREE.PlaneGeometry( 6.5, 6.5 );
         var arrow = getImageMesh( geometry, './img/arrow_final.png', 'right', 3 );
         arrow.material.color.set( color );
-        arrow.add( getBackgroundMesh ( 9.7*size, 8.7*size, backgroundColor, o ) );
-        arrow.position.x = cw/2 + 10*size/2;
-        arrow.name = 'right';
+        arrow.add( getBackgroundMesh ( 9.4, 8.3*size, backgroundColor, o ) );
+        arrow.position.x = cw/2 + 4.7;
+        arrow.name = isSL ? 'rightSL' : 'right';
         mesh.add( arrow );
 
         // left arrow
-        var geometry = new THREE.PlaneGeometry( 6.7*size, 6.7*size );
+        var geometry = new THREE.PlaneGeometry( 6.5, 6.5 );
         var arrow = getImageMesh( geometry, './img/arrow_final.png', 'left', 3 );
         arrow.material.color.set( color );
         arrow.rotation.z = Math.PI;
-        arrow.add( getBackgroundMesh ( 9.7*size, 8.7*size, backgroundColor, o ) );
-        arrow.position.x = -cw/2 - 9.6*size/2;
-        arrow.name = 'left';
+        arrow.add( getBackgroundMesh ( 9.4, 8.3*size, backgroundColor, o ) );
+        arrow.position.x = -cw/2 - 4.7;
+        arrow.name = isSL ? 'leftSL' : 'left';
         mesh.add( arrow );
     }
 
@@ -912,13 +912,15 @@ THREE.MediaObjectData = function () {
         var material = new THREE.MeshBasicMaterial( { map: new THREE.CanvasTexture( canvas ),  transparent: true } );
         var mesh = new THREE.Mesh( new THREE.PlaneGeometry( canvas.width/6, ch*t.length/6 ), material );
 
-        if ( !fixed && c.subtitleIndicator == 'arrow' ) setArrowToMesh( mesh, canvas.width/6, c.size, t[0].color, t[0].backgroundColor, c.opacity );
+        if ( !fixed && c.subtitleIndicator == 'arrow' ) setArrowToMesh( mesh, canvas.width/6, t.length, t[0].color, t[0].backgroundColor, c.opacity );
 
         mesh.scale.set( c.area*c.size, c.area*c.size, 1 );
+
         mesh.name = 'emojitext';
         mesh.renderOrder = 3;
         mesh.position.z = -c.z;
         mesh.position.y = c.y;
+        mesh.position.x = c.offset;
         mesh.visible = true;
 
         if ( fixed ) mesh.lookAt(0,0,0);
@@ -931,20 +933,59 @@ THREE.MediaObjectData = function () {
         //t[0].text = ':)'
         var canvas = document.getElementById( "canvas" );
         var ctx = canvas.getContext( "2d" );
-        var ch = 50*0.8; // canvas height x line
-        var fh = 30; // font height
+        var ch = 50; // canvas height x line
+        var fh = 40; // font height
+
+        var text = t[0].text;
+        var il = 0;
+
+        if ( text == '01' ) {
+            drawing = emoji_1; 
+            il = 63;
+        }
+        else if ( text == '02' ) {
+            drawing = emoji_2; 
+            il = 63;
+        }
+        else if ( text == '03' ) {
+            drawing = emoji_3; 
+            il = 63;
+        }
+        else if ( text == '04' ) {
+            drawing = emoji_4; 
+            il = 63;
+        }
+        else if ( text == '05' ) {
+            drawing = emoji_5; 
+            il = 63;
+        }
+        else if ( text == '06' ) {
+            drawing = emoji_6; 
+            il = 63;
+        }
+        else if ( text == '07' ) {
+            drawing = emoji_7; 
+            il = 63;
+        }
+        else if ( text == '08' ) {
+            drawing = emoji_8; 
+            il = 63;
+        }
+
 
         ctx.font = font;
         var width = ctx.measureText( t[0].text ).width;
-        canvas.width = 200;
+        canvas.width = 285;
         canvas.height = ch;
 
-        if ( t[0] ) createCanvasTextLine( ctx, t[0].text, font, t[0].color, 0, 0, canvas.width, ch, c.opacity, ( canvas.width - width )/2, fh );
+        if( il > 0 ) ctx.drawImage(drawing, 110, 0, 63, 50);
+
+        else if ( t[0] ) createCanvasTextLine( ctx, t[0].text, font, t[0].color, 0, 0, canvas.width, ch, c.opacity, ( canvas.width - width )/2, fh );
 
         var material = new THREE.MeshBasicMaterial( { map: new THREE.CanvasTexture( canvas ),  transparent: true } );
         var mesh = new THREE.Mesh( new THREE.PlaneGeometry( canvas.width/6, ch/6 ), material );
 
-        if ( c.subtitleIndicator == 'arrow' ) setArrowToMesh( mesh, canvas.width/6, c.size, t[0].color, t[0].backgroundColor, c.opacity );
+        setArrowToMesh( mesh, canvas.width/6-18, 1, t[0].color, t[0].backgroundColor, 0 );
 
         mesh.scale.set( c.area*c.size, c.area*c.size, 1 );
         mesh.name = 'emojitext';

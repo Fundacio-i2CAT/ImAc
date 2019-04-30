@@ -7,6 +7,9 @@ function SettingsOptionMenuView() {
 		submenu.getObjectByName('back-button').visible = data.isFinalDrop || data.hasParentDropdown;
 		submenu.getObjectByName('back-button').children[0].onexecute = data.backMenuButtonFunc;
 
+        submenu.getObjectByName('close-button-opt').visible = menuMgr.getMenuType() == 1 ? true : false;
+        submenu.getObjectByName('close-button-opt').children[0].onexecute = data.closeOptMenuButtonFunc;
+
 		submenu.getObjectByName('tradoptionmenutitle').add(updateTitle(data));
 		
 		submenu.getObjectByName('tradoptionmenutitle').position.y = data.titleHeight;
@@ -19,7 +22,6 @@ function SettingsOptionMenuView() {
 		});
 
 		if(data.childColumnActiveOpt && submenu.getObjectByName(data.childColumnActiveOpt)){
-			console.log("xx")
 			data.parentColumnDropdown.forEach(function(element){
 				element.material.color.set( 0xe6e6e6 );
 			});
@@ -35,6 +37,11 @@ function SettingsOptionMenuView() {
 
         submenu.remove(submenu.getObjectByName('tradoptionmenubackground')).add(mesh);
 		submenu.getObjectByName('tradoptionmenubackground').position.set(0, data.parentColumnDropdown.length*(optHeight/2), 0);
+
+        //Centering the position depending on the menu type.
+        if(menuMgr.getMenuType()%2 != 0){
+            submenu.position.y = -(data.parentColumnDropdown.length)* optHeight/2;
+        }
 	}
 
 	function updateTitle(data) {
@@ -49,7 +56,7 @@ function SettingsOptionMenuView() {
         optTitle.type =  'text';
         optTitle.text = MenuDictionary.translate( data.title );
         optTitle.path = data.icon;
-        optTitle.textSize =  5*menuWidth/200;
+        optTitle.textSize =  menuWidth/35;
         optTitle.color = 0xe6e6e6;
         optTitle.visible = true;
         optTitle.position = new THREE.Vector3( 0, 0, 0.01 );

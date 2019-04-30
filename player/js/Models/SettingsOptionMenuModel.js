@@ -3,7 +3,7 @@ function SettingsOptionMenuModel() {
 
 	this.name;
 	this.isOptEnabled;
-	this.closeMenuButtonFunc;
+	this.closeOptMenuButtonFunc;
 
 	this.parentColumnDropdown;
 	this.parentColumnActiveOpt;

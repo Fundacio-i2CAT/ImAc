@@ -22,6 +22,7 @@ function MenuManager() {
 
         menuMgr.setMenuType(type);
 
+        //The size depends on the menu type.
         menuWidth = (menuType%2 == 0) ? 70 : 130;
         menuHeight = menuWidth/4;
         
@@ -165,6 +166,17 @@ function MenuManager() {
         }
     }
 
+    this.test = function(){
+
+        menuMgr.ResetViews();
+
+
+        /*controllers.forEach(function(controller){
+            controller.Exit();
+        });
+        menuParent.getObjectByName('trad-menu-base').visible = false;*/
+    }
+
 /**
  * Creates a menu activation element.
  */
@@ -274,7 +286,14 @@ function MenuManager() {
             traditionalmenu.scale.set( 0.8, 0.8, 0.8 );
         }
         menuParent.add(traditionalmenu);
-        traditionalmenu.add(vwStrucMMngr.TraditionalOptionMenu('trad-option-menu'));
+
+//Depending on the menu type the menu is attached to the menuParent or to the traditional menu
+        if(menuMgr.getMenuType()%2 == 0){
+            traditionalmenu.add(vwStrucMMngr.TraditionalOptionMenu('trad-option-menu'));
+        } else {
+            menuParent.add(vwStrucMMngr.TraditionalOptionMenu('trad-option-menu'));
+        }
+        
     }
 
 /**
@@ -282,6 +301,7 @@ function MenuManager() {
  */
     this.removeMenuFromParent = function() {
         menuParent.remove(scene.getObjectByName('traditional-menu'));
+        menuParent.remove(scene.getObjectByName('trad-option-menu'));
     }
 
 /**

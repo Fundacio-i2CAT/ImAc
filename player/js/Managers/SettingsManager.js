@@ -17,16 +17,9 @@
 
 SettingsManager = function() {
 
+    this.getChangeMenuTypeFunction = function(){
 
-	/*this.getMainLanguageFunc = function (name, language)
-    {      
-        return function() {
-            MenuDictionary.setMainLanguage( language );
-        }
-    }*/
-
-    this.getChangeMenuTypeFunction = function()
-    {
+    	// TYPE 1 => Enhanced; TYPE 2 => Trdaitional;
 		let newType = (menuMgr.getMenuType()%2)+1;
 		menuMgr.ResetViews();
 		menuMgr.removeMenuFromParent();

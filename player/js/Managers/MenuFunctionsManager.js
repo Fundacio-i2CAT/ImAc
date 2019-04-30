@@ -211,9 +211,17 @@ MenuFunctionsManager = function() {
 
     this.getMainLanguageFunc = function(language){
         MenuDictionary.setMainLanguage( language );
-        menuMgr.removeMenuFromParent();
-        menuMgr.Init();
-        menuMgr.initFirstMenuState();        
+
+        if(menuMgr.getMenuType() == 2){
+            menuMgr.removeMenuFromParent();
+            menuMgr.Init(2);
+            menuMgr.initFirstMenuState();
+        } else {
+            menuMgr.ResetViews();
+            //SettingsOptionCtrl.Exit();
+            menuMgr.Load(SettingsOptionCtrl);
+        }
+                
     }
 
     this.getChangePointerSizeFunc = function(size){

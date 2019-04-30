@@ -31,28 +31,20 @@ function ViewStructureMenuManager() {
         let radius = 3*menuWidth/100;
 
 //NEEDS TO BE REMOVED, ONLY FOR TESTING PORPOUSES
-       /* let centerBtn = new THREE.Mesh( new THREE.CircleGeometry(0.5,32), new THREE.MeshBasicMaterial( { color: 0xff0000 } ) );
-        centerBtn.position.set( 0,0,-67 );
+        /*let centerBtn = new THREE.Mesh( new THREE.CircleGeometry(0.5,32), new THREE.MeshBasicMaterial( { color: 0xff0000 } ) );
+        centerBtn.position.set( 0,0,-65 );
         camera.add(centerBtn);*/
 //********************************************
         
         let menuTrad =  new THREE.Group();
+        menuTrad.name = name;
+
         let menuShape = _moData.roundedRect( new THREE.Shape(), menuWidth, menuHeight, radius );
         let material = new THREE.MeshBasicMaterial( { color: 0x111111});
         let geometry = new THREE.ShapeGeometry( menuShape );
         let mesh =  new THREE.Mesh( geometry, material);
 
         mesh.name = 'trad-menu-base';
-
-        menuTrad.add(mesh);
-
-        if(menuMgr.getMenuType()%2 == 0){
-            menuTrad.position.set( 0, -20, -67 );    
-        } else {
-            menuTrad.position.set( 0, 0, -67 );
-        }
-
-        menuTrad.name = name;
 
         let menuTradLineDivisions =  new THREE.Group();
         menuTradLineDivisions.name = 'trad-menu-lines';
@@ -86,7 +78,16 @@ function ViewStructureMenuManager() {
         menuTradLineDivisions.add(lineV3);
         menuTradLineDivisions.add(lineBot);
 
-        menuTrad.add(menuTradLineDivisions);
+        mesh.add(menuTradLineDivisions);
+
+        menuTrad.add(mesh);
+
+        //The position depends on the menu type.
+        if(menuMgr.getMenuType()%2 == 0){
+            menuTrad.position.set( 0, -20, -67 );    
+        } else {
+            menuTrad.position.set( 0, 0, -67 );
+        }
 
         return menuTrad;
     }
@@ -518,7 +519,7 @@ function ViewStructureMenuManager() {
  */
     this.TraditionalOptionMenu = function(name){
 
-        optWidth = 3*menuWidth/8;
+        optWidth = 7*menuWidth/16;
         optHeight = menuHeight/4 + 1;
 
         let tradOptionMenu =  new THREE.Group();
@@ -527,10 +528,15 @@ function ViewStructureMenuManager() {
         let tradOptionMenuBackground =  new THREE.Mesh( geometry, material);
 
         tradOptionMenu.name = name;
-        tradOptionMenu.position.set(5*menuWidth/16, menuHeight/2 + optHeight/2 + 1, 0.01); // The +1 in height is the height of the video-progress-bar
-        tradOptionMenuBackground.name = 'tradoptionmenubackground';
 
-        //tradOptionMenuBackground.position.y = menuHeight/12;
+         //The position depends on the menu type.
+        if(menuMgr.getMenuType()%2 == 0){
+            tradOptionMenu.position.set(9*menuWidth/32, menuHeight/2 + optHeight/2 + menuWidth/100, 0.01); // The +/100 in height is small margin
+        } else {
+            tradOptionMenu.position.set(0, 0, -67); 
+        }
+
+        tradOptionMenuBackground.name = 'tradoptionmenubackground';
 
         // Title for the traditional option sub menu.
         let tradOptionMenuTitle =  new THREE.Group();
@@ -544,18 +550,30 @@ function ViewStructureMenuManager() {
 
         var backBtn = new InteractiveElementModel();
         backBtn.width = menuWidth/30;
-        backBtn.height = 2*menuWidth/30;
-        backBtn.rotation = -Math.PI/2;
+        backBtn.height = menuWidth/30;
+        backBtn.rotation = -Math.PI;
         backBtn.name = 'back-button';
         backBtn.type =  'icon';
-        backBtn.path = './img/menu/arrow.png';
+        backBtn.path = './img/menu/play_icon.png';
         backBtn.color = 0xe6e6e6;
         backBtn.visible = true;
         backBtn.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry( 2*menuWidth/30, menuWidth/30), new THREE.MeshBasicMaterial({visible: false}));
-        backBtn.position = new THREE.Vector3( -optWidth/2 + 2, 0, 0.01 );
+        backBtn.position = new THREE.Vector3( -optWidth/2 + menuWidth/35, 0, 0.01 );
         backBtn.onexecute = function() { console.log("This is the %s button", backBtn.name) };
 
-        var optTitle = new InteractiveElementModel();
+        let closeBtn = new InteractiveElementModel();
+        closeBtn.width = menuWidth/30;
+        closeBtn.height = menuWidth/30;
+        closeBtn.name = 'close-button-opt';
+        closeBtn.type =  'icon';
+        closeBtn.path = './img/menu/close.png';
+        closeBtn.color = 0xe6e6e6;
+        closeBtn.visible = true;
+        closeBtn.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(menuWidth/25, menuWidth/25), new THREE.MeshBasicMaterial({visible: false}));
+        closeBtn.position = new THREE.Vector3( optWidth/2 - menuWidth/35, 0, 0.01 );
+        closeBtn.onexecute = function() { console.log("This is the %s button", closeBtn.name) };
+
+        let optTitle = new InteractiveElementModel();
         optTitle.width = 18*menuWidth/200;
         optTitle.height = optHeight;
         optTitle.name = 'settings-opt-title';
@@ -572,6 +590,7 @@ function ViewStructureMenuManager() {
         // Add all the created elements to the parent group.
         tradOptionMenuTitle.add(line);
         tradOptionMenuTitle.add(backBtn.create());
+        tradOptionMenuTitle.add(closeBtn.create());
         tradOptionMenuTitle.add(optTitle.create());
 
         // Add all the parent elements to the traditional option menu.

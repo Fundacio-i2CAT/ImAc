@@ -112,6 +112,7 @@ function SettingsOptionMenuController() {
         data.title = MenuDictionary.translate('Settings');
         data.parentColumnDropdown = AddDropdownOptions(settingsDropdownOpt);
         data.backMenuButtonFunc = function(){ AddVisualFeedbackOnClick('back-button', function(){ SettingsOptionCtrl.updateDropdownOptions(data.parentDropdownData)} )};
+        data.closeOptMenuButtonFunc = function(){ AddVisualFeedbackOnClick('close-button-opt', function(){ test() } )};
     }
 
 /**
@@ -167,7 +168,7 @@ function SettingsOptionMenuController() {
         dropdownIE.type =  'mix';
         dropdownIE.text = MenuDictionary.translate( opt.text );
         dropdownIE.path = opt.icon;
-        dropdownIE.textSize = menuWidth/45;
+        dropdownIE.textSize = menuWidth/40;
         dropdownIE.color = 0xe6e6e6;
         dropdownIE.visible = true;
         dropdownIE.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(dropdownIE.width, dropdownIE.height), new THREE.MeshBasicMaterial({visible:  false}));
@@ -188,5 +189,12 @@ function SettingsOptionMenuController() {
   this.updateDropdownOptions = function(menuOpts){
     data.parentColumnDropdown = AddDropdownOptions(menuOpts);
     view.UpdateView(data);
+  }
+
+  function test(){
+    menuMgr.ResetViews();
+    menuMgr.removeMenuFromParent();
+    menuMgr.Init(1);
+    menuMgr.initFirstMenuState();
   }
 }

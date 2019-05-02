@@ -716,15 +716,15 @@ SubSignManager = function() {
 
 	this.setSTConfig = function(conf)
     {
-    	subtitleEnabled = conf.enabled;
-    	subLang = conf.lang;
-    	subPosX = conf.position.x;
-		subPosY = conf.position.y;
+    	//subtitleEnabled = conf.enabled;
+    	subLang = conf.accesslanguage;
+    	subPosX = 0;
+		subPosY = conf.stposition == 'down' ? -1 : 1;
     	subtitleIndicator = conf.indicator;
-    	subArea	= conf.area;
-    	subSize	= conf.size;
-    	subEasy = conf.easy;
-    	subBackground = conf.background;
+    	subArea	=conf.safearea == 'L' ? 70 : conf.safearea == 'M' ? 60 : 50;
+    	subSize	= conf.stsize == 'L' ? 1 : conf.stsize == 'M' ? 0.8 : 0.6;
+    	subEasy = conf.ste2r == 'on' ? true: false;
+    	subBackground = conf.stbackground == 'box' ? 0.5 : 0;
     };
 
 	this.setSubtitle = function(xml, lang)

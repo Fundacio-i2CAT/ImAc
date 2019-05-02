@@ -2,7 +2,8 @@
 // GLOBAL VARS
 
 var list_contents;
-
+var _ws_vc;
+var _confMemory;
 
 /**
  * Initializes the web player.
@@ -12,6 +13,8 @@ function init_webplayer()
     localStorage.removeItem('dashjs_video_settings');
     localStorage.removeItem('dashjs_video_bitrate');
     localStorage.removeItem('dashjs_text_settings');
+
+    checkCookies();
     
     $.getJSON('./content.json', function(json)
     {
@@ -22,6 +25,17 @@ function init_webplayer()
             createListGroup( i, list_contents[i].thumbnail, list_contents[i].name, list_contents[i].duration );
         }
     });
+}
+
+function checkCookies()
+{
+    var cookieconf = readCookie("ImAcProfileConfig");
+
+    if ( cookieconf && cookieconf != null )
+    {
+        _confMemory = _ImAc_default;
+        _ImAc_default = JSON.parse( cookieconf );
+    }
 }
 
 function searchFunc()
@@ -300,6 +314,9 @@ function openFirstOption(id)
         else if ( id == 'btn_voice_on' )
         {
             _ImAc_default.voicecontrol = 'on';
+            localStorage.ImAc_voiceControl = 'on';
+
+            showUserProfileBox();
 
             document.getElementById( 'btn_voice_on' ).className += " enabled";
             document.getElementById( 'btn_voice_off' ).classList.remove("enabled");
@@ -309,6 +326,9 @@ function openFirstOption(id)
         else if ( id == 'btn_voice_off' )
         {
             _ImAc_default.voicecontrol = 'off';
+            localStorage.ImAc_voiceControl = 'off';
+
+            disconnectVoiceControl();
 
             document.getElementById( 'btn_voice_off' ).className += " enabled";
             document.getElementById( 'btn_voice_on' ).classList.remove("enabled");
@@ -330,6 +350,9 @@ function openFirstOption(id)
         else if ( id == 'btn_user_del' )
         {
             _ImAc_default.userprofile = 'del';
+
+            document.cookie = "ImAcProfileConfig" + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+            if ( _confMemory ) _ImAc_default = _confMemory;
 
             document.getElementById( 'btn_user_del' ).className += " enabled";
             document.getElementById( 'btn_user_save' ).classList.remove("enabled");
@@ -1799,13 +1822,53 @@ function playContent()
 
 function showUserProfileBox()
 {
-    var txt;
-    var deviceId = prompt("Please enter your device ID:", "Player");
+    var deviceId = prompt("Please enter your device ID:", "i2CAT");
     if (deviceId == null || deviceId == "") {
-        txt = "User cancelled the prompt.";
+        connectVoiceControl();
     } else {
-        txt = "Hello " + deviceId + "!";
+        connectVoiceControl( deviceId, "http://51.89.138.157:3000/" )
     }
+}
+
+function connectVoiceControl( deviceId="i2CAT", ws_url="http://51.89.138.157:3000/" )
+{
+    _ws_vc = io( ws_url );
+
+    localStorage.ImAc_voiceControlId = deviceId;
+
+    _ws_vc.on('connect', function(){
+      _ws_vc.emit('setClientID', { customId:deviceId, type:'player', description:'ImAc Player' });
+    });
+
+    _ws_vc.on('command', function(msg){
+
+        if ( msg.includes("play_") ) launchPlayer( msg.substr(5, 2) );
+      
+        console.log( msg );
+    });
+}
+
+function disconnectVoiceControl()
+{
+    _ws_vc.disconnect();
+    _ws_vc = undefined;
+}
+
+function readCookie(name)
+{
+    var nameEQ = name + "="; 
+    var ca = document.cookie.split(';');
+
+    for(var i=0;i < ca.length;i++) 
+    {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1,c.length);
+        if (c.indexOf(nameEQ) == 0) {
+          return decodeURIComponent( c.substring(nameEQ.length,c.length) );
+        }
+    }
+
+    return null;
 }
 
 

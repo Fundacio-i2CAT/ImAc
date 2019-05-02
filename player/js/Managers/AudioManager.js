@@ -467,6 +467,13 @@ AudioManager = function() {
         if ( astEnabled ) addAudio( 'AST' );
     }; 
 
+    this.setASTPresentation = function(value)
+    {
+        astPresentation = value;
+        astContent = astContentArray[astLang][astPresentation];
+        if ( astEnabled ) addAudio( 'AST' );
+    };
+
     this.setASTPresentationArray = function(subList)
     {
         astAvailablePresentation = [];

@@ -224,18 +224,16 @@ function readCookie(name)
 
 function saveConfig()
 {
-    var iconfig = {
+    /*var iconfig = {
         ST: subController.getSTConfig(),
         SL: subController.getSLConfig(),
         AD: _AudioManager.getADConfig(),
         AST: _AudioManager.getASTConfig()
-    };
+    };*/
 
-    //var expiresdate = new Date(2019, 01, 05, 11, 03); // aaaa/mm/dd/hh/mm/ss  els mesos van del 0-11
 
-    document.cookie = "ImAcProfileConfig=" + encodeURIComponent( JSON.stringify( iconfig ) ) + "; max-age=2592000;" //expires=" + expiresdate.toUTCString(); max-age = 1 mes
+    //document.cookie = "ImAcProfileConfig=" + encodeURIComponent( JSON.stringify( iconfig ) ) + "; max-age=2592000;" //expires=" + expiresdate.toUTCString(); max-age = 1 mes
 
-    // Settings ( lang, menutype, voicecontrol )
 
 }
 
@@ -343,3 +341,19 @@ function getViewDifPositionTest(sp, fov)
     else return 0;
 }
 
+
+function connectVoiceControl( devoceId="i2CAT", ws_url="http://51.89.138.157:3000/" )
+{
+    var socket = io( ws_url );
+
+    socket.on('connect', function(){
+      socket.emit('setClientID', { customId:devoceId, type:'player', description:'ImAc Player' });
+    });
+
+    socket.on('command', function(msg){
+
+        launchVoiceCommand( msg );
+      
+      console.log( msg );
+    });
+}

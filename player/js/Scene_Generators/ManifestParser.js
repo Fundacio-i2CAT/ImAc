@@ -74,10 +74,17 @@ ManifestParser = function() {
                 var representationArray = elem.Representation_asArray;
                 if ( !ast_list ) ast_list = {};
                 if ( !ast_list_e2r ) ast_list_e2r = {};
-                representationArray.forEach( function( representation ) {        
-                    if ( representation.e2r == "false" ) ast_list[ MenuDictionary.translate( elem.lang ) ] = _mpd.manifest.baseUri + representation.BaseURL; 
-                    else ast_list_e2r[ MenuDictionary.translate( elem.lang ) ] = _mpd.manifest.baseUri + representation.BaseURL; 
+                var ast_modeList = {};
+                var ast_modeList2 = {};
+
+                representationArray.forEach( function( representation ) {
+                    if ( representation.e2r == "false" ) ast_modeList[ representation.mode ] = _mpd.manifest.baseUri + representation.BaseURL;
+                    else ast_modeList2[ representation.mode ] = _mpd.manifest.baseUri + representation.BaseURL;
                 });
+
+                ast_list[ MenuDictionary.translate( elem.lang ) ] = ast_modeList; 
+                ast_list_e2r[ MenuDictionary.translate( elem.lang ) ] = ast_modeList2;
+
             }
         });
 

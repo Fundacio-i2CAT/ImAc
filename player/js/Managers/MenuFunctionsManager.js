@@ -189,6 +189,13 @@ MenuFunctionsManager = function() {
         }
     }
 
+    function getASTPresentationFunc(value)
+    {
+        return function() {
+            _AudioManager.setASTPresentation( value );
+        }
+    }
+
 //************************************************************************************
 // Settings Functions
 //************************************************************************************
@@ -455,6 +462,13 @@ MenuFunctionsManager = function() {
 
             case 'astVolumeMaxButton':
                 return getASTVolumeFunc( 100 );
+
+            case "astVOGButton":
+                return getASTPresentationFunc( 'VoiceOfGod' );
+
+            case "astDynamicButton":
+                return getASTPresentationFunc( 'Dynamic' );
+
 
         // Settings
             case "settingsLanguageEngButton":

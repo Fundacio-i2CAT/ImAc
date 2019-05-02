@@ -88,17 +88,21 @@ function init_webplayer()
 
                 mainContentURL = list_contents[ myhash[1] ].url;
 
+                if ( localStorage.ImAc_voiceControl == 'on' ) connectVoiceControl( localStorage.ImAc_voiceControlId, "http://51.89.138.157:3000/" );
+
                 ///////////////////////////////////////////////////////////////
-                /*var cookieconf = readCookie("ImAcProfileConfig");
+                var cookieconf = readCookie("ImAcProfileConfig");
 
                 if ( cookieconf && cookieconf != null )
                 {
                     var iconf = JSON.parse( cookieconf );
-                    subController.setSTConfig( iconf.ST );
-                    subController.setSLConfig( iconf.SL );
+
+                    console.log( iconf )
+                    subController.setSTConfig( iconf );
+                    /*subController.setSLConfig( iconf.SL );
                     _AudioManager.setADConfig( iconf.AD );
-                    _AudioManager.setASTConfig( iconf.AST );
-                }*/
+                    _AudioManager.setASTConfig( iconf.AST );*/
+                }
                 ////////////////////////////////////////////////////////////////
 
                 demoId = myhash[1];

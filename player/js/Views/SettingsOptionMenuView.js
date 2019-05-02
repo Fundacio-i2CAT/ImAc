@@ -18,15 +18,15 @@ function SettingsOptionMenuView() {
 //TODO: CHECK FOREACH
 		data.parentColumnDropdown.forEach(function(element){
 			element.position.x = menuWidth/8 + element.width - 2*menuWidth/8;
-            element.children[0].children[0].position.x += 7*menuWidth/50; //+element.children[0].children[0].geometry.boundingSphere.radius;
+            element.children[0].children[0].position.x = 7*menuWidth/50; //+element.children[0].children[0].geometry.boundingSphere.radius;
   			submenu.getObjectByName('parentcolumndropdown').add(element)
 		});
 
 		if(data.childColumnActiveOpt && submenu.getObjectByName(data.childColumnActiveOpt)){
 			data.parentColumnDropdown.forEach(function(element){
-				element.material.color.set( 0xe6e6e6 );
+				element.children[0].material.color.set( 0xe6e6e6 );
 			});
-			submenu.getObjectByName(data.childColumnActiveOpt).material.color.set( 0xffff00 );
+			submenu.getObjectByName(data.childColumnActiveOpt).children[0].material.color.set( 0xffff00 );
 		}
 
 //TODO: CREATE SEPARATE FUNCTION

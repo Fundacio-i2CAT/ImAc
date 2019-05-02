@@ -89,6 +89,11 @@ function SettingsOptionMenuController() {
         return 5;
     }
 
+    this.setChildColumnActiveOpt = function(name){
+        data.childColumnActiveOpt = name;
+        view.UpdateView(data);
+    }
+
 /**
  * Gets the data.
  *
@@ -172,10 +177,10 @@ function SettingsOptionMenuController() {
         dropdownIE.color = 0xe6e6e6;
         dropdownIE.visible = true;
         dropdownIE.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(dropdownIE.width, dropdownIE.height), new THREE.MeshBasicMaterial({visible:  false}));
-        dropdownIE.onexecute =  opt.function;
+        dropdownIE.onexecute = opt.function; 
         dropdownIE.position = new THREE.Vector3(0, h - (index+1)*optHeight, 0.01);
 
-        dropdownInteractiveElements.push(dropdownIE.create())
+        dropdownInteractiveElements.push(dropdownIE.create());
     });
 
     return dropdownInteractiveElements

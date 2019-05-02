@@ -27,7 +27,7 @@ MenuDictionary = function() {
     //                   ||                        ||                        ||                        ||                        ||
     //-------------------||------------------------||------------------------||------------------------||------------------------||
     //                   ||                        ||                        ||                        ||                        ||
-        access:          { ca: 'Accessibilitat'    , de: ''                  , en: 'Accessibility'     , es: 'Accesibilidad'     },
+        access:          { ca: 'Accessibilitat'    , de: 'Barrierefreiheit'  , en: 'Accessibility'     , es: 'Accesibilidad'     },
     //                   ||                        ||                        ||                        ||                        ||
         anchored:        { ca: 'Anchored'          , de: 'Anchored'          , en: 'Anchored'          , es: 'Anchored'          },
     //                   ||                        ||                        ||                        ||                        ||
@@ -57,6 +57,8 @@ MenuDictionary = function() {
     //                   ||                        ||                        ||                        ||                        ||
         es:              { ca: 'Español'           , de: 'Español'           , en: 'Español'           , es: 'Español'           },
     //                   ||                        ||                        ||                        ||                        ||
+        general:         { ca: 'General'           , de: 'Allgemein'         , en: 'General'           , es: 'General'           },
+    //                   ||                        ||                        ||                        ||                        ||
         indicator:       { ca: 'Indicador'         , de: 'Indikator'         , en: 'Indicator'         , es: 'Indicador'         },
     //                   ||                        ||                        ||                        ||                        ||
         language:        { ca: 'Idioma'            , de: 'Sprache'           , en: 'Language'          , es: 'Idioma'            },
@@ -79,6 +81,8 @@ MenuDictionary = function() {
     //                   ||                        ||                        ||                        ||                        ||
         panorama:        { ca: 'Panorama'          , de: 'Panorama'          , en: 'Panorama'          , es: 'Panorama'          },
     //                   ||                        ||                        ||                        ||                        ||
+        pointersize:     { ca: 'Mide Punter'       , de: 'Pointergröße'      , en: 'Pointer Size'      , es: 'Tamaño Puntero'    },
+    //                   ||                        ||                        ||                        ||                        ||
         position:        { ca: 'Posició'           , de: 'Position'          , en: 'Position'          , es: 'Posición'          },
     //                   ||                        ||                        ||                        ||                        ||
         presentation:    { ca: 'Presentació'       , de: 'Präsentation'      , en: 'Presentation'      , es: 'Presentación'      },
@@ -89,11 +93,15 @@ MenuDictionary = function() {
     //                   ||                        ||                        ||                        ||                        ||
         right:           { ca: 'Dreta'             , de: 'Richtig'           , en: 'Right'             , es: 'Derecha'           },
     //                   ||                        ||                        ||                        ||                        ||
+        safearea:        { ca: 'Area Segura'       , de: 'Darstellungsbereich', en: 'Safe Area'        , es: 'Area Segura'       },
+    //                   ||                        ||                        ||                        ||                        ||
+        save:            { ca: 'Guardar'           , de: 'Speichern'         , en: 'Save'              , es: 'Guardar'           },
+    //                   ||                        ||                        ||                        ||                        || 
         semitrans:       { ca: 'Semi-Trans'        , de: 'Kasten'            , en: 'Semi-Trans'        , es: 'Semi-Trans'        },
     //                   ||                        ||                        ||                        ||                        ||
         settings:        { ca: 'Configuració'      , de: 'Einstellungen'     , en: 'Settings'          , es: 'Ajustes'           },
     //                   ||                        ||                        ||                        ||                        ||
-        signlanguage:    { ca: 'Llengua de signes' , de: 'Gebärdensprache'   , en: 'Sign language'     , es: 'Lengua de signos'},
+        signlanguage:    { ca: 'Llengua de signes' , de: 'Gebärdensprache'   , en: 'Sign language'     , es: 'Lengua de signos'  },
     //                   ||                        ||                        ||                        ||                        ||
         size:            { ca: 'Mida'              , de: 'Größe'             , en: 'Size'              , es: 'Tamaño'            },
     //                   ||                        ||                        ||                        ||                        ||
@@ -108,6 +116,8 @@ MenuDictionary = function() {
         userprofile:     { ca: 'Perfil usuari'     , de: 'Benutzerprofil'    , en: 'User profile'      , es: 'Perfil usuario'    },
     //                   ||                        ||                        ||                        ||                        ||
         voicecontrol:    { ca: 'Audio control'     , de: 'Sprachsteuerung'   , en: 'Voice control'     , es: 'Audio control'     },
+    //                   ||                        ||                        ||                        ||                        ||
+        volume:          { ca: 'Volum'             , de: 'Lautstärke'        , en: 'Volume'            , es: 'Volumen'           },
     //                   ||                        ||                        ||                        ||                        ||
         st:              { ca: 'SUB'               , de: 'UT'                , en: 'ST'                , es: 'SUB'               },
     //                   ||                        ||                        ||                        ||                        ||

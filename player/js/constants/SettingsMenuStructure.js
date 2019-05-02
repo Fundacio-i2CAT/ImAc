@@ -15,13 +15,13 @@ let optWidth
  * ║─────────────────────────────────────║
  * ║ Access Setings                 (>)  ║
  * ║─────────────────────────────────────║
- * ║ [=] ST Settings                (>)  ║
+ * ║ [=] Subtitles                  (>)  ║
  * ║─────────────────────────────────────║
- * ║ [>] SL Settings                (>)  ║
+ * ║ [>] Sign Language              (>)  ║
  * ║─────────────────────────────────────║
- * ║ [o] AD Settings                (>)  ║
+ * ║ [o] Audio Description          (>)  ║
  * ║─────────────────────────────────────║
- * ║ [··] AST Settings              (>)  ║
+ * ║ [··] Audio Subtitles           (>)  ║
  * ╚═════════════════════════════════════╝
 */
 const settingsDropdownOpt = {title: 'Settings', final: false, options: [
@@ -482,7 +482,7 @@ const settingsAudioDescriptionVolume = { title: 'Volume', icon: './img/menu/volu
   */
 
   const settingsAudioSubtitles = { title: 'Audiosubtitles', icon: './img/acc_serv_icon/ast_off.png', parent: settingsDropdownOpt, final: false, options: [
-      { optId: 'audioSubtitlesEasy', icon: './img/menu/easy_to_read.png', text: 'Easy to read', function:  function(){ SettingsOptionCtrl.updateDropdownOptions(settingsAudioSubtitlesEasyToRead)} },
+      { optId: 'audioSubtitlesEasy', icon: './img/menu/easy_to_read.png', text: 'easytoread', function:  function(){ SettingsOptionCtrl.updateDropdownOptions(settingsAudioSubtitlesEasyToRead)} },
       { optId: 'audioSubtitlesPresentation', icon: './img/menu/ad_presentation_mode.png', text: 'Presentation', function:  function(){ SettingsOptionCtrl.updateDropdownOptions(settingsAudioSubtitlesPresentation)} },
       { optId: 'audioSubtitlesVolume', icon: './img/menu/volume_mute_icon.png', text: 'Volume', function:  function(){ SettingsOptionCtrl.updateDropdownOptions(settingsAudioSubtitlesVolume)} }
 

@@ -18,6 +18,7 @@ function SettingsOptionMenuView() {
 //TODO: CHECK FOREACH
 		data.parentColumnDropdown.forEach(function(element){
 			element.position.x = menuWidth/8 + element.width - 2*menuWidth/8;
+            element.children[0].children[0].position.x += 7*menuWidth/50; //+element.children[0].children[0].geometry.boundingSphere.radius;
   			submenu.getObjectByName('parentcolumndropdown').add(element)
 		});
 

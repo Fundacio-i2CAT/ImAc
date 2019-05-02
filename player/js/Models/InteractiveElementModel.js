@@ -102,7 +102,7 @@ function createMixIE(element){
 		element.height = element.textSize*2;
 		let image = createImageIE(element);
 		image.position.x = -w - element.width*1.25;
-		mix.width += image.geometry.parameters.width;
+		mix.width = w + image.geometry.parameters.width;
 		mix.add(image);
 		mix.position.x = element.width/2;
 	}
@@ -132,7 +132,7 @@ function addColiderMesh(element, mesh){
 	}
 
 	mesh.visible = element.visible;
-	mesh.position.set(element.position.x, element.position.y, element.position.z );
+ 	mesh.position.set(element.position.x, element.position.y, element.position.z );
 	mesh.name = element.name;
 
 	return mesh;

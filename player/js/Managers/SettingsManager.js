@@ -17,31 +17,14 @@
 
 SettingsManager = function() {
 
+    this.getChangeMenuTypeFunction = function(){
 
-	/*this.getMainLanguageFunc = function (name, language)
-    {      
-        return function() {
-            MenuDictionary.setMainLanguage( language );
-        }
-    }*/
-
-    this.getChangeMenuTypeFunction = function(newMenuType)
-    {
-    	return function() {
-			var currentMenuType = menuMgr.getMenuType();
-			
-			if(currentMenuType == newMenuType)
-			{
-				 console.log("Same Menu");
-			}
-			else
-			{
-                menuMgr.ResetViews();
-				menuMgr.removeMenuFromParent();
-				menuMgr.Init(newMenuType);
-				menuMgr.initFirstMenuState();
-			}	
-    	}
+    	// TYPE 1 => Enhanced; TYPE 2 => Trdaitional;
+		let newType = (menuMgr.getMenuType()%2)+1;
+		menuMgr.ResetViews();
+		menuMgr.removeMenuFromParent();
+		menuMgr.Init(newType);
+		menuMgr.initFirstMenuState();	
 	}
 
 	this.checkMenuType = function(menuType)

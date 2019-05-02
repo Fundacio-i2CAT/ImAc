@@ -118,7 +118,7 @@ function AplicationManager()
 
 		subController.updateRadar();
 
-		Reticulum.update();
+        Reticulum.update();
     }
 
     this.init = function()

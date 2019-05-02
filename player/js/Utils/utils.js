@@ -195,15 +195,12 @@ function createMenus()
     switch ( localStorage.ImAc_menuType )
     {
         case "LS_area":
-            //MenuManager.createMenu(false);
             menuMgr.Init(1);
             menuMgr.createMenuActivationElement();
             break;
         default:
             menuMgr.Init(2);
             menuMgr.createMenuActivationElement();
-            //MenuManager.createMenu(true);
-
             break;
     }
 }

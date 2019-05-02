@@ -23,7 +23,7 @@ AudioManager = function() {
     var adLang; // string (en, de, ca, es)
     var adAvailableLang = []; // Array { name, value, default:bool }
     var adAvailablePresentation = [];
-    var adPresentation = 'VoiceOfGod'; // string (VoiceOfGod, Friend, Dynamic ...)
+    var adPresentation = 'VoiceOfGod'; // string (VoiceOfGod (classic), Friend (static), Dynamic)
 
     // [AST] audio subtitles vars 
     var _AST;  
@@ -33,6 +33,8 @@ AudioManager = function() {
     var astLang; // string (en, de, ca, es)
     var astAvailableLang = []; // Array { name, value, default:bool }
     var astEasy = false; // boolean
+    var astAvailablePresentation = [];
+    var astPresentation = 'VoiceOfGod'; // string (VoiceOfGod (classic), Dynamic)
 
 //************************************************************************************
 // Private Functions
@@ -413,25 +415,6 @@ AudioManager = function() {
         }
     };
 
-//************************************************************************************
-// Public AST Setters
-//************************************************************************************
-
-    this.setASTConfig = function(conf)
-    {
-        astEnabled = conf.enabled;
-        astLang = conf.lang;
-        astVolume = conf.volume;
-        astEasy = conf.easy;
-    };
-
-    this.setASTContent = function(url, lang)
-    {
-        astContent = url;
-        astLang = lang;
-        if ( astEnabled ) addAudio( 'AST' );
-    }; 
-
     this.setADPresentationArray = function(subList)
     {
         adAvailablePresentation = [];
@@ -461,6 +444,49 @@ AudioManager = function() {
                 name: 'adDynamicButton', 
                 value: 'Dynamic', 
                 default: ( 'Dynamic' == adPresentation )
+            } );
+        }
+    };
+
+//************************************************************************************
+// Public AST Setters
+//************************************************************************************
+
+    this.setASTConfig = function(conf)
+    {
+        astEnabled = conf.enabled;
+        astLang = conf.lang;
+        astVolume = conf.volume;
+        astEasy = conf.easy;
+    };
+
+    this.setASTContent = function(url, lang)
+    {
+        astContent = url;
+        astLang = lang;
+        if ( astEnabled ) addAudio( 'AST' );
+    }; 
+
+    this.setASTPresentationArray = function(subList)
+    {
+        astAvailablePresentation = [];
+
+        if ( subList['VoiceOfGod'] ) 
+        {
+            astAvailablePresentation.push(
+            {
+                name: 'adVOGButton', 
+                value: 'VoiceOfGod', 
+                default: ( 'VoiceOfGod' == astPresentation )
+            } );
+        }
+        if ( subList['Dynamic'] ) 
+        {
+            astAvailablePresentation.push(
+            {
+                name: 'adDynamicButton', 
+                value: 'Dynamic', 
+                default: ( 'Dynamic' == astPresentation )
             } );
         }
     };

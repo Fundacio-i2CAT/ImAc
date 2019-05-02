@@ -270,7 +270,7 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 				break;
 
 			default:
-				console.log( event.keyCode )
+				//console.log( event.keyCode )
 				break;
 		}
 

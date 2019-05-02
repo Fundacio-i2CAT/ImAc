@@ -1,4 +1,7 @@
-
+/**
+ * [InteractiveElementModel description]
+ * @constructor
+ */
 function InteractiveElementModel()
 {
 	this.width;
@@ -6,7 +9,8 @@ function InteractiveElementModel()
 	this.rotation;
 	this.name;
 	this.type;
-	this.value;
+	this.text;
+	this.path;
 	this.color;
 	this.textSize;
 	this.visible;
@@ -15,6 +19,10 @@ function InteractiveElementModel()
 	this.onexecute;
 }
 
+/**
+ * [description]
+ * @return {[type]} [description]
+ */
 InteractiveElementModel.prototype.create = function()
 {
 	switch(this.type){
@@ -25,59 +33,107 @@ InteractiveElementModel.prototype.create = function()
 
 		case "text":
 			return createTextIE(this);
+
+		case "mix":
+			return createMixIE(this);
 	}
 }
 
-function createTextIE (element)
-{
-	//console.warn('Deprecated function, needs to be updated')
-    var shape = new THREE.BufferGeometry();
-    var material = new THREE.MeshBasicMaterial( { color: element.color} );
-    var shapes = _moData.getFont().generateShapes( element.value, element.textSize);
-    var geometry = new THREE.ShapeGeometry( shapes );
+/**
+ * [createTextIE description]
+ * @param  {[type]} element [description]
+ * @return {[type]}         [description]
+ */
+function createTextIE (element){
+	let shape = new THREE.BufferGeometry();
+	const material = new THREE.MeshBasicMaterial( { color: element.color} );
+	const shapes = _moData.getFont().generateShapes( element.text, element.textSize);
+	let geometry = new THREE.ShapeGeometry( shapes );
 
-    geometry.computeBoundingBox();
-    shape.fromGeometry( geometry );
-    shape.center();
+	geometry.computeBoundingBox();
+	shape.fromGeometry( geometry );
+	shape.center();
 
-	var mesh = new THREE.Mesh(shape, material);
+	const mesh = new THREE.Mesh(shape, material);
 
-    return addColiderMesh(element, mesh);
+  	return addColiderMesh(element, mesh);
 }
 
-function createImageIE(element)
-{
-	var geometry = new THREE.PlaneGeometry(element.width, element.height);
-    var loader = new THREE.TextureLoader();
-    var texture = loader.load(element.value);
+/**
+ * [createImageIE description]
+ * @param  {[type]} element [description]
+ * @return {[type]}         [description]
+ */
+function createImageIE(element){
+	const geometry = new THREE.PlaneGeometry(element.width, element.height);
+	const loader = new THREE.TextureLoader();
+  	const texture = loader.load(element.path);
 
-    texture.minFilter = THREE.LinearFilter;
-    texture.format = THREE.RGBAFormat;
-    
-    var material = new THREE.MeshBasicMaterial( { map: texture, transparent: true, side: THREE.FrontSide } );
-    var mesh = new THREE.Mesh( geometry, material );
-    if(element.rotation) mesh.rotation.z = element.rotation;
+	texture.minFilter = THREE.LinearFilter;
+	texture.format = THREE.RGBAFormat;
 
-    return addColiderMesh(element, mesh);
+	const material = new THREE.MeshBasicMaterial( { color: element.color, map: texture, transparent: true, side: THREE.FrontSide} );
+	let mesh = new THREE.Mesh( geometry, material );
+
+	if(element.rotation) {
+		mesh.rotation.z = element.rotation;
+	}
+	return addColiderMesh(element, mesh);
 }
 
-function addColiderMesh(element, mesh)
-{
-	if(element.interactiveArea)
-	{
-		var coliderMesh = element.interactiveArea;
-		if(element.rotation) coliderMesh.rotation.z = -element.rotation;
-	    coliderMesh.name = element.name;
-	    coliderMesh.position.z = 0.01
+/**
+ * 
+ * Creates a mix ie.
+ *
+ * @param      {<type>}  element  The element
+ * @return     {THREE}   { description_of_the_return_value }
+ */
+function createMixIE(element){
+	
+	let mix =  new THREE.Group();
+	let text = createTextIE(element);
+	const w = text.geometry.boundingBox.max.x;
+	
+	mix.name = element.name;
+	mix.width = w;
+	
+	if(element.path) {
+		element.width = element.textSize*2;
+		element.height = element.textSize*2;
+		let image = createImageIE(element);
+		image.position.x = -w - element.width*1.25;
+		mix.width += image.geometry.parameters.width;
+		mix.add(image);
+		mix.position.x = element.width/2;
+	}
+
+	mix.add(text);
+
+	return mix;
+}
+
+/**
+ * [addColiderMesh description]
+ * @param {[type]} element [description]
+ * @param {[type]} mesh    [description]
+ */
+function addColiderMesh(element, mesh){
+	if(element.interactiveArea){
+		let coliderMesh = element.interactiveArea;
+		if(element.rotation) {
+			coliderMesh.rotation.z = -element.rotation;
+		}
+
+		coliderMesh.name = element.name;
+    	coliderMesh.position.z = 0.01
 		coliderMesh.onexecute = element.onexecute;
 		mesh.onexecute = element.onexecute;
 		mesh.add(coliderMesh);
 	}
 
-	mesh.visible = element.visible;	
+	mesh.visible = element.visible;
 	mesh.position.set(element.position.x, element.position.y, element.position.z );
 	mesh.name = element.name;
-	mesh.renderOrder = 5;
-		
+
 	return mesh;
 }

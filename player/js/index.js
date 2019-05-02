@@ -63,9 +63,9 @@ var _NonCont = false;
 
 /**
  * Initializes the web player.
- */	
+ */
 
-function init_webplayer() 
+function init_webplayer()
 {
 	console.log('Version: ' + _PlayerVersion);
 
@@ -91,7 +91,7 @@ function init_webplayer()
                 ///////////////////////////////////////////////////////////////
                 /*var cookieconf = readCookie("ImAcProfileConfig");
 
-                if ( cookieconf && cookieconf != null ) 
+                if ( cookieconf && cookieconf != null )
                 {
                     var iconf = JSON.parse( cookieconf );
                     subController.setSTConfig( iconf.ST );
@@ -106,7 +106,7 @@ function init_webplayer()
                 AplicationManager.init();
 
             }
-            else window.location = window.location.origin + window.location.pathname.slice(0, -7);       
+            else window.location = window.location.origin + window.location.pathname.slice(0, -7);
         });
     });
 }

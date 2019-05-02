@@ -210,7 +210,7 @@ function PreviewController() {
         signPreviewText.width = size;
         signPreviewText.height = size;
         signPreviewText.type =  'icon';
-        signPreviewText.value = MenuDictionary.translate('SL');
+        signPreviewText.path = './img/acc_serv_icon/sl_off.png';
         signPreviewText.color = 0xffffff;
         signPreviewText.position = new THREE.Vector3(0, 0, 0.01);
 

@@ -12,21 +12,21 @@ MenuFunctionsManager = function() {
 //************************************************************************************
 
     function getSubLanguageFunc(xml, lang)
-    {    
+    {
         return function() {
             subController.setSubtitle( xml, lang );
         }
     }
 
     function getSubEasyOnOffFunc(enable, xml)
-    {       
+    {
         return function() {
             subController.setSubEasy( enable, xml );
         }
     }
 
     function getSubPositionFunc(position)
-    {       
+    {
         return function() {
             subController.setSubPosition( 0, position );
             subController.setSignerPosition( subController.getSignerPosition().x, position );
@@ -34,30 +34,30 @@ MenuFunctionsManager = function() {
     }
 
     function getSubBackgroundFunc(index)
-    {       
+    {
         return function() {
             subController.setSubBackground( index );
         }
     }
 
     function getSubSizeFunc(size)
-    {       
+    {
         return function() {
             subController.setSubSize( size );
         }
     }
 
     function getSubIndicatorFunc(indicator)
-    {       
+    {
         return function() {
             subController.setSubIndicator( indicator );
         }
     }
 
     function getSubAutoPositioningFunc()
-    {       
+    {
         return function() {
-            if ( !_isHMD ) 
+            if ( !_isHMD )
             {
                 AplicationManager.disableVR();
                 camera.rotation.set( 0,0,0 );
@@ -73,37 +73,9 @@ MenuFunctionsManager = function() {
     }
 
     function getSubAreaFunc(area)
-    {       
+    {
         return function() {
             subController.setSubArea( area );
-        }
-    }
-
-    function getSubOnOffFunc(isEnabled)
-    {       
-        return function() {
-            subController.switchSubtitles(isEnabled);
-        }
-    }
-
-    function getSignerOnOffFunc(isEnabled)
-    {       
-        return function() {
-            subController.switchSigner( isEnabled );
-        }
-    }
-
-    function getAudioDescOnOffFunc(isEnabled)
-    {       
-        return function() {
-            _AudioManager.switchAD( isEnabled );
-        }
-    }
-
-    function getAudioSubOnOffFunc(isEnabled)
-    {       
-        return function() {
-            _AudioManager.switchAST( isEnabled );
         }
     }
 
@@ -111,43 +83,29 @@ MenuFunctionsManager = function() {
 // Signer Functions
 //************************************************************************************
 
-    function getMainLanguageFunc(language)
-    {      
-        return function() {
-
-            MenuDictionary.setMainLanguage( language );
-
-            menuMgr.removeMenuFromParent();
-
-            menuMgr.getMenuType() == 1 ? menuMgr.Init(1) : menuMgr.Init(2);
-
-            menuMgr.initFirstMenuState(); 
-        }
-    }
-
     function getSignerPositionFunc(position)
-    {       
+    {
         return function() {
             subController.setSignerPosition( position, subController.getSubPosition().y);
         }
     }
 
     function getSignerAreaFunc(area)
-    {       
+    {
         return function() {
             subController.setSignerArea( area );
         }
     }
 
     function getSignerIndicatorFunc(indicator)
-    {       
+    {
         return function() {
             subController.setSignerIndicator( indicator );
         }
     }
 
     function getSignerLanguageFunc(url, lang)
-    {    
+    {
         return function() {
             subController.setSignerContent( url, lang );
         }
@@ -156,7 +114,7 @@ MenuFunctionsManager = function() {
     function getE2RURL() {
 
         var url;
-        
+
         if ( list_contents[demoId].subtitles[1] )
         {
             var lang = subController.getSubLanguage();
@@ -172,21 +130,21 @@ MenuFunctionsManager = function() {
 //************************************************************************************
 
     function getADLanguageFunc(url, lang)
-    {    
+    {
         return function() {
             _AudioManager.setADContent( url, lang );
         }
     }
 
     function getADVolumeFunc(level)
-    {    
+    {
         return function() {
             _AudioManager.setVolume( 'AD', level );
         }
     }
 
     function getADPresentationFunc(value)
-    {    
+    {
         return function() {
             _AudioManager.setADPresentation( value );
         }
@@ -197,14 +155,14 @@ MenuFunctionsManager = function() {
 //************************************************************************************
 
     function getASTLanguageFunc(url, lang)
-    {    
+    {
         return function() {
             _AudioManager.setASTContent( url, lang );
         }
     }
 
     function getASTVolumeFunc(level)
-    {    
+    {
         return function() {
             _AudioManager.setVolume( 'AST', level );
         }
@@ -213,7 +171,7 @@ MenuFunctionsManager = function() {
     function getASTe2rURL() {
 
         var url;
-        
+
         if ( list_contents[demoId].ast[1] )
         {
             var lang = subController.getSubLanguage();
@@ -225,7 +183,7 @@ MenuFunctionsManager = function() {
     }
 
     function getASTEasyOnOffFunc(enable, xml)
-    {       
+    {
         return function() {
             _AudioManager.setSubEasy( enable, xml );
         }
@@ -234,7 +192,7 @@ MenuFunctionsManager = function() {
 //************************************************************************************
 // Settings Functions
 //************************************************************************************
-    
+
     function getSaveConfigFunc()
     {
         return function() {
@@ -247,20 +205,30 @@ MenuFunctionsManager = function() {
         return;
     }
 
-    function getChangePointerSizeFunc(size)
-    {
-        return function() {
-            _pointerSize = size;
-            menuMgr.ResetViews();
-            menuMgr.initFirstMenuState();
-        }
-    }
-
-
 //************************************************************************************
 // Public Functions
 //************************************************************************************
 
+    this.getMainLanguageFunc = function(language){
+        MenuDictionary.setMainLanguage( language );
+
+        if(menuMgr.getMenuType() == 2){
+            menuMgr.removeMenuFromParent();
+            menuMgr.Init(2);
+            menuMgr.initFirstMenuState();
+        } else {
+            menuMgr.ResetViews();
+            //SettingsOptionCtrl.Exit();
+            menuMgr.Load(SettingsOptionCtrl);
+        }
+                
+    }
+
+    this.getChangePointerSizeFunc = function(size){
+        _pointerSize = size;
+        menuMgr.ResetViews();
+        menuMgr.initFirstMenuState();
+    }
 
     this.getPlayPauseFunc = function(play)
     {
@@ -293,38 +261,29 @@ MenuFunctionsManager = function() {
         }
     };
 
-    this.getOnOffFunc = function(name)
-    {
-        switch ( name )
-        {
-            case "subtitlesOnButton":
-                return getSubOnOffFunc( false );
-
-            case "subtitlesOffButton":
-                return getSubOnOffFunc( true );
-
-            case "signLanguageOnButton":
-                return getSignerOnOffFunc( false );
-
-            case "signLanguageOffButton":
-                return getSignerOnOffFunc( true );
-
-            case "audioDescriptionOnButton":
-                return getAudioDescOnOffFunc( false );
-
-            case "audioDescriptionOffButton":
-                return getAudioDescOnOffFunc( true );
-
-            case "audioSubtitlesOnButton":
-                return getAudioSubOnOffFunc( false );
-
-            case "audioSubtitlesOffButton":
-                return getAudioSubOnOffFunc( true );
-
-            default: 
-                return undefined;
-        }
-    };  
+/* DEPRECATED Options are enabled and disabled by clicking in the corresponding icon*/
+  /*  this.getOnOffFunc = function(name){
+      switch ( name ){
+        case "subtitlesOnButton":
+            return getSubOnOffFunc( false );
+        case "subtitlesOffButton":
+            return getSubOnOffFunc( true );
+        case "signLanguageOnButton":
+            return getSignerOnOffFunc( false );
+        case "signLanguageOffButton":
+            return getSignerOnOffFunc( true );
+        case "audioDescriptionOnButton":
+            return getAudioDescOnOffFunc( false );
+        case "audioDescriptionOffButton":
+            return getAudioDescOnOffFunc( true );
+        case "audioSubtitlesOnButton":
+            return getAudioSubOnOffFunc( false );
+        case "audioSubtitlesOffButton":
+            return getAudioSubOnOffFunc( true );
+        default:
+            return undefined;
+      }
+    };*/
 
     this.getButtonFunctionByName = function(name)
     {
@@ -535,8 +494,8 @@ MenuFunctionsManager = function() {
                 return getChangePointerSizeFunc( 0.6 );
 
         // Default
-            default: 
+            default:
                 return undefined;
         }
-    };	
+    };
 }

@@ -149,8 +149,6 @@ function PreviewController() {
             backgroundColor: "rgb(0,0,0)"
         }]
 
-        console.log(previewSTtext)
-
         subtitleMesh = _moData.getEmojiSubtitleMesh( previewSTtext, subConfig);
         subtitleMesh.name = "subtitlespreview";
 

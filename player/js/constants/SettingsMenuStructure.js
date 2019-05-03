@@ -500,13 +500,13 @@ const settingsSignLanguageSize = { title: 'Size', icon: './img/menu/sl_size.png'
    * ╚═════════════════════════════════════╝
   */
 const settingsAudioDescriptionPresentation = { title: 'Presetation', icon: './img/menu/ad_presentation_mode.png', parent: settingsAudioDescription, final: true, options: [
-    {optId: 'adPresentationVoGButton', text: 'VoiceofGod', function:  function(){ 
-        _AudioManager.setADPresentation( 'VoiceOfGod' );
+    {optId: 'adPresentationVoGButton', text: 'Classic', function:  function(){ 
+        _AudioManager.setADPresentation( 'VoiceofGod' );
         SettingsOptionCtrl.setChildColumnActiveOpt(settingsAudioDescriptionPresentation.options[0].optId);} },
-    {optId: 'adPresentationFoSButton', text: 'FriendofSofa', function:  function(){ 
+    {optId: 'adPresentationFoSButton', text: 'Static', function:  function(){ 
         _AudioManager.setADPresentation( 'Friend' );
         SettingsOptionCtrl.setChildColumnActiveOpt(settingsAudioDescriptionPresentation.options[1].optId);} },
-    {optId: 'adPresentationPoAButton', text: 'PlacedonAction', function:  function(){ 
+    {optId: 'adPresentationPoAButton', text: 'Dynamic', function:  function(){ 
         _AudioManager.setADPresentation( 'Dynamic' );
         SettingsOptionCtrl.setChildColumnActiveOpt(settingsAudioDescriptionPresentation.options[2].optId);} }
   ]};
@@ -536,6 +536,7 @@ const settingsAudioDescriptionVolume = { title: 'Volume', icon: './img/menu/volu
         _AudioManager.setVolume( 'AD', 100 );
         SettingsOptionCtrl.setChildColumnActiveOpt(settingsAudioDescriptionVolume.options[2].optId);} }
   ]};
+    
 
 
   /*************************************************************************************************************************************
@@ -600,13 +601,10 @@ const settingsAudioDescriptionVolume = { title: 'Volume', icon: './img/menu/volu
    * ╚═════════════════════════════════════╝
   */
 const settingsAudioSubtitlesPresentation = { title: 'Presetation', icon: './img/menu/ad_presentation_mode.png', parent: settingsAudioSubtitles, final: true, options: [
-    {optId: 'astPresentationVoGButton', text: 'VoiceofGod', function:  function(){ 
+    {optId: 'astPresentationVoGButton', text: 'Classic', function:  function(){ 
         _AudioManager.setASTPresentation( 'VoiceOfGod' );
         SettingsOptionCtrl.setChildColumnActiveOpt(settingsAudioSubtitlesPresentation.options[1].optId);} }, //TODO
-    {optId: 'astPresentationFoSButton', text: 'FriendofSofa', function:  function(){ 
-        _AudioManager.setASTPresentation( 'Friend' );
-        SettingsOptionCtrl.setChildColumnActiveOpt(settingsAudioSubtitlesPresentation.options[1].optId);} }, //TODO
-    {optId: 'astPresentationPoAButton', text: 'PlacedonAction', function:  function(){ 
+    {optId: 'astPresentationPoAButton', text: 'Dynamic', function:  function(){ 
         _AudioManager.setASTPresentation( 'Dynamic' );
         SettingsOptionCtrl.setChildColumnActiveOpt(settingsAudioSubtitlesPresentation.options[1].optId);} } //TODO
   ]};

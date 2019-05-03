@@ -216,6 +216,20 @@ MenuFunctionsManager = function() {
 // Public Functions
 //************************************************************************************
 
+    this.getopenMenu = function() 
+    {
+        return function() {
+            if ( scene.getObjectByName( "openMenu" ).visible ) menuMgr.initFirstMenuState();
+        }
+    }
+
+    this.getcloseMenu = function() 
+    {
+        return function() {
+            menuMgr.ResetViews();
+        }
+    }
+
     this.getMainLanguageFunc = function(language){
         MenuDictionary.setMainLanguage( language );
 
@@ -268,8 +282,39 @@ MenuFunctionsManager = function() {
         }
     };
 
+
 /* DEPRECATED Options are enabled and disabled by clicking in the corresponding icon*/
-  /*  this.getOnOffFunc = function(name){
+    function getSubOnOffFunc(isEnabled)
+    {
+        return function() {
+            subController.switchSubtitles(isEnabled);
+        }
+    }
+
+    function getSignerOnOffFunc(isEnabled)
+    {
+        return function() {
+            subController.switchSigner( isEnabled );
+        }
+    }
+
+    function getAudioDescOnOffFunc(isEnabled)
+    {
+        return function() {
+            _AudioManager.switchAD( isEnabled );
+        }
+    }
+
+    function getAudioSubOnOffFunc(isEnabled)
+    {
+        return function() {
+            _AudioManager.switchAST( isEnabled );
+        }
+    }
+
+
+/* DEPRECATED Options are enabled and disabled by clicking in the corresponding icon*/
+    this.getOnOffFunc = function(name){
       switch ( name ){
         case "subtitlesOnButton":
             return getSubOnOffFunc( false );
@@ -290,7 +335,7 @@ MenuFunctionsManager = function() {
         default:
             return undefined;
       }
-    };*/
+    };
 
     this.getButtonFunctionByName = function(name)
     {

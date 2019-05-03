@@ -16,13 +16,34 @@ ImAcController = function()
 	this.disableAD = function() { MenuFunctionsManager.getOnOffFunc( 'audioDescriptionOnButton' )() };
 	this.enableAST = function() { MenuFunctionsManager.getOnOffFunc( 'audioSubtitlesOffButton' )() };
 	this.disableAST = function() { MenuFunctionsManager.getOnOffFunc( 'audioSubtitlesOnButton' )() };
+	this.openMenu = function() { MenuFunctionsManager.getopenMenu()() };
+	this.closeMenu = function() { MenuFunctionsManager.getcloseMenu()() };
 }
 
 function launchVoiceCommand( com )
 {
-	if ( com == 'play' ) ImAcController.doPlay();
-	else if ( com == 'pause' ) ImAcController.doPause();
-	else if ( com == 'volume_up' ) ImAcController.volumeUp();
-	else if ( com == 'volume_down' ) ImAcController.volumeDown();
+	if ( com == 'play' ) _ImAc.doPlay();
+	else if ( com == 'pause' ) _ImAc.doPause();
+	else if ( com == 'volume_up' ) _ImAc.volumeUp();
+	else if ( com == 'volume_down' ) _ImAc.volumeDown();
+	else if ( com == 'AD_on' ) _ImAc.enableAD();
+	else if ( com == 'AD_off' ) _ImAc.disableAD();
+	else if ( com == 'seek_forward' ) _ImAc.goForward(5);
+	else if ( com == 'seek_back' ) _ImAc.goBack(5);
+	else if ( com == 'subtitles_on' ) _ImAc.enableSubtitles();
+	else if ( com == 'subtitles_off' ) _ImAc.disableSubtitles();
+	else if ( com == 'menu_open' ) _ImAc.openMenu();
+	else if ( com == 'menu_close' ) _ImAc.closeMenu();
+	else if ( com.includes("forward|") ) _ImAc.goForward(23);
+	else if ( com.includes("backward|") ) _ImAc.goBack( com.split("backward|")[1] );
 
 }
+
+
+
+
+
+
+ //<p><input id="btnVolume_5" value="Volume 5" type="button" onclick="sendCommand('volume_x|5');" /></p>
+    
+    

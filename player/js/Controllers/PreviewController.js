@@ -141,7 +141,7 @@ function PreviewController() {
 
 
 
-    	subPreviewText += (subConfig.displayAlign > 0) ? "top" : "bottom";
+    	subPreviewText += (subController.getSubPosition.y > 0) ? "top" : "bottom";
 
         let previewSTtext = [{
             text: subPreviewText+" preview subtitle text",
@@ -149,7 +149,9 @@ function PreviewController() {
             backgroundColor: "rgb(0,0,0)"
         }]
 
-        subtitleMesh = _moData.getSubtitleMesh( previewSTtext, subConfig);
+        console.log(previewSTtext)
+
+        subtitleMesh = _moData.getEmojiSubtitleMesh( previewSTtext, subConfig);
         subtitleMesh.name = "subtitlespreview";
 
         if(subConfig.subtitleIndicator === 'arrow') data.isArrowsVisible = true;

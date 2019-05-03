@@ -436,9 +436,9 @@ const settingsSignLanguageSize = { title: 'Size', icon: './img/menu/sl_size.png'
    * ╚═════════════════════════════════════╝
   */
 const settingsAudioDescriptionPresentation = { title: 'Presetation', icon: './img/menu/ad_presentation_mode.png', parent: settingsAudioDescription, final: true, options: [
-    {optId: 'adPresentationVoGButton', text: 'VoiceofGod', function:  function(){ _AudioManager.setADPresentation( 'VoiceOfGod' )} },
-    {optId: 'adPresentationFoSButton', text: 'FriendofSofa', function:  function(){ _AudioManager.setADPresentation( 'Friend' )} },
-    {optId: 'adPresentationPoAButton', text: 'PlacedonAction', function:  function(){ _AudioManager.setADPresentation( 'Dynamic' )} }
+    {optId: 'adPresentationVoGButton', text: 'Classic', function:  function(){ _AudioManager.setADPresentation( 'VoiceOfGod' )} },
+    {optId: 'adPresentationFoSButton', text: 'Static', function:  function(){ _AudioManager.setADPresentation( 'Friend' )} },
+    {optId: 'adPresentationPoAButton', text: 'Dynamic', function:  function(){ _AudioManager.setADPresentation( 'Dynamic' )} }
   ]};
 
   /**
@@ -520,9 +520,9 @@ const settingsAudioDescriptionVolume = { title: 'Volume', icon: './img/menu/volu
    * ╚═════════════════════════════════════╝
   */
 const settingsAudioSubtitlesPresentation = { title: 'Presetation', icon: './img/menu/ad_presentation_mode.png', parent: settingsAudioSubtitles, final: true, options: [
-    {optId: 'astPresentationVoGButton', text: 'VoiceofGod', function:  function(){ _AudioManager.setASTPresentation( 'VoiceOfGod' )} }, //TODO
-    {optId: 'astPresentationFoSButton', text: 'FriendofSofa', function:  function(){ _AudioManager.setASTPresentation( 'Friend' )} }, //TODO
-    {optId: 'astPresentationPoAButton', text: 'PlacedonAction', function:  function(){ _AudioManager.setASTPresentation( 'Dynamic' )} } //TODO
+    {optId: 'astPresentationVoGButton', text: 'Classic', function:  function(){ _AudioManager.setASTPresentation( 'VoiceOfGod' )} }, //TODO
+    //{optId: 'astPresentationFoSButton', text: 'FriendofSofa', function:  function(){ _AudioManager.setASTPresentation( 'Friend' )} }, //TODO
+    {optId: 'astPresentationPoAButton', text: 'Dynamic', function:  function(){ _AudioManager.setASTPresentation( 'Dynamic' )} } //TODO
   ]};
 
   /**

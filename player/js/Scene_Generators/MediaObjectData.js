@@ -105,9 +105,9 @@ THREE.MediaObjectData = function () {
     this.getSubtitleMesh = function(textList, config)
     {
         console.error('Deprecated function (getSubtitleMesh), please change to getEmojiSubtitleMesh')
-        var group = new THREE.Group();
+        /*var group = new THREE.Group();
 
-        /*for ( var i = 0, len = textList.length; i < len; ++i ) 
+        for ( var i = 0, len = textList.length; i < len; ++i ) 
         {
             config.x = config.textAlign == 0 ? 0 : config.textAlign == -1 ? -config.size : config.size;
 
@@ -115,7 +115,7 @@ THREE.MediaObjectData = function () {
             mesh.name = i;
 
             group.add( mesh );
-        }*/
+        }
         config.x = config.textAlign == 0 ? 0 : config.textAlign == -1 ? -config.size : config.size;
 
         var font = "500 40px Roboto, Arial";
@@ -124,6 +124,15 @@ THREE.MediaObjectData = function () {
         mesh.name = textList.length;
 
         group.add( mesh );
+
+        if ( _isHMD ) group.rotation.z = -camera.rotation.z;
+        
+        return group;*/
+
+        var group = new THREE.Group();
+        var font = "500 40px Roboto, Arial";
+
+        group.add( getEmojiSubMesh( textList, config, font ) );
 
         if ( _isHMD ) group.rotation.z = -camera.rotation.z;
         

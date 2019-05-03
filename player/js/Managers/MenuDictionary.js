@@ -51,6 +51,8 @@ MenuDictionary = function() {
     //                   ||                        ||                        ||                        ||                        ||
         de:              { ca: 'Deutsch'           , de: 'Deutsch'           , en: 'Deutsch'           , es: 'Deutsch'           },
     //                   ||                        ||                        ||                        ||                        ||
+        dynamic:         { ca: 'Dinàmic'           , de: 'Dynamisch'         , en: 'Dynamic'           , es: 'Dinámico'          },
+    //                   ||                        ||                        ||                        ||                        ||
         easytoread:      { ca: 'Lectura fàcil'     , de: 'Einfache Sprache'  , en: 'Easy to Read'      , es: 'Lectura fácil'     },
     //                   ||                        ||                        ||                        ||                        ||
         en:              { ca: 'English'           , de: 'English'           , en: 'English'           , es: 'English'           },
@@ -93,11 +95,13 @@ MenuDictionary = function() {
     //                   ||                        ||                        ||                        ||                        ||
         settings:        { ca: 'Configuració'      , de: 'Einstellungen'     , en: 'Settings'          , es: 'Ajustes'           },
     //                   ||                        ||                        ||                        ||                        ||
-        signlanguage:    { ca: 'Llengua de signes' , de: 'Gebärdensprache'   , en: 'Sign language'     , es: 'Lengua de signos'},
+        signlanguage:    { ca: 'Llengua de signes' , de: 'Gebärdensprache'   , en: 'Sign language'     , es: 'Lengua de signos'  },
     //                   ||                        ||                        ||                        ||                        ||
         size:            { ca: 'Mida'              , de: 'Größe'             , en: 'Size'              , es: 'Tamaño'            },
     //                   ||                        ||                        ||                        ||                        ||
         small:           { ca: 'Petita'            , de: 'Klein'             , en: 'Small'             , es: 'Pequeña'           },
+    //                   ||                        ||                        ||                        ||                        ||
+        static:          { ca: 'Estàtic'            , de: 'Statisch'         , en: 'Static'            , es: 'Estático'          },
     //                   ||                        ||                        ||                        ||                        ||
         subtitles:       { ca: 'Subtitols'         , de: 'Untertitel'        , en: 'Subtitles'         , es: 'Subtítulos'        },
     //                   ||                        ||                        ||                        ||                        ||

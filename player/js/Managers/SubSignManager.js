@@ -145,7 +145,7 @@ SubSignManager = function() {
 		}
 	}
 
-	function print3DText(isdContent, isdImac, isdImacY) 
+	function generateSTConf(isdImac=0, isdImacY=0)
 	{
 		var offset = 0;
 		if ( !_SLsubtitles && signEnabled )
@@ -172,6 +172,36 @@ SubSignManager = function() {
 	        lat: isdImacY,
 	        offset: offset
 	    };
+	}
+
+	function print3DText(isdContent, isdImac, isdImacY) 
+	{
+		generateSTConf( isdImac, isdImacY );
+		/*var offset = 0;
+		if ( !_SLsubtitles && signEnabled )
+		{
+			subArea = signArea;
+			offset = -signPosX * signerSize/2;
+		}
+
+		var latitud = subPosY == 1 ? 30 * subArea/100 : -30 * subArea/100; 
+  		var posY = _isHMD && !isExperimental ? 80 * Math.sin( Math.radians( latitud ) ) : 135 * Math.sin( Math.radians( latitud ) );
+  		var subAjust = _isHMD ? 1 : 0.97;
+  		var posZ = 75;
+  		var esaySizeAjust = subEasy ? 1.25 : 1;
+
+  		subConfig = {
+	        subtitleIndicator: subtitleIndicator,
+	        size: subSize * subAjust * esaySizeAjust,
+	        area: subArea/130,
+	        opacity: subBackground,
+	        x: subPosX * subSize * subAjust * esaySizeAjust,
+	        y: posY * 9/16,
+	        z: posZ,
+	        lon: -isdImac,
+	        lat: isdImacY,
+	        offset: offset
+	    };*/
 
 	  	if ( isdContent.contents.length > 0 )
 	  	{
@@ -206,7 +236,7 @@ SubSignManager = function() {
 	      		textListMemory = textList;     
 	    	} 
 	    	//if ( _NonCont ) subController.swichtSL(true);  
-		    //setSubtitleConfig(subConfig);
+		    setSubtitleConfig(subConfig);
 	  	}
 	  	else 
 	  	{
@@ -581,6 +611,7 @@ SubSignManager = function() {
 //************************************************************************************
 	this.getSubtitleConfig = function()
 	{
+		if ( !subConfig ) generateSTConf( 0, 0 );
 		return subConfig;
 	}
 

@@ -214,16 +214,16 @@ const accessSettings = { title: 'Access', icon: './img/menu/accessibility_icon.p
 */
 const settingsAccesLanguages = { title: 'Languages', icon: './img/menu/language.png', parent: accessSettings, final: true, options: [
     {optId: 'settingsAccesLanguageEngButton', text: 'English', function:  function(){ 
-        console.log();
+        MenuFunctionsManager.changeAccesLanguage('en')(); 
         SettingsOptionCtrl.setChildColumnActiveOpt(settingsAccesLanguages.options[0].optId);} }, 
     {optId: 'settingsAccesLanguageEspButton', text: 'Español', function:  function(){ 
-        console.log();
+        MenuFunctionsManager.changeAccesLanguage('es')(); 
         SettingsOptionCtrl.setChildColumnActiveOpt(settingsAccesLanguages.options[1].optId);} }, 
     {optId: 'settingsAccesLanguageGerButton', text: 'Deutsch', function:  function(){ 
-        console.log();
+        MenuFunctionsManager.changeAccesLanguage('de')(); 
         SettingsOptionCtrl.setChildColumnActiveOpt(settingsAccesLanguages.options[2].optId);} }, 
     {optId: 'settingsAccesLanguageCatButton', text: 'Català', function:  function(){ 
-        console.log();
+        MenuFunctionsManager.changeAccesLanguage('ca')(); 
         SettingsOptionCtrl.setChildColumnActiveOpt(settingsAccesLanguages.options[3].optId);} } 
   ]};
 

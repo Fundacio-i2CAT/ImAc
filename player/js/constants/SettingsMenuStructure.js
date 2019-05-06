@@ -79,7 +79,7 @@ const generalSettings = { title: 'General', icon: './img/menu/settings_icon.png'
   * ║ Català                        Final ║
   * ╚═════════════════════════════════════╝
  */
-const settingsUILanguages = { title: 'Languages', icon: './img/menu/language.png', parent: generalSettings, final: true, options: [
+const settingsUILanguages = { title: 'Language', icon: './img/menu/language.png', parent: generalSettings, final: true, options: [
     {optId: 'settingsUILanguageEngButton', text: 'English', function:  function(){ 
         MenuFunctionsManager.getMainLanguageFunc('en');
         SettingsOptionCtrl.setChildColumnActiveOpt(settingsUILanguages.options[0].optId);} }, 
@@ -212,7 +212,7 @@ const accessSettings = { title: 'Access', icon: './img/menu/accessibility_icon.p
  * ║ Català                        Final ║
  * ╚═════════════════════════════════════╝
 */
-const settingsAccesLanguages = { title: 'Languages', icon: './img/menu/language.png', parent: accessSettings, final: true, options: [
+const settingsAccesLanguages = { title: 'Language', icon: './img/menu/language.png', parent: accessSettings, final: true, options: [
     {optId: 'settingsAccesLanguageEngButton', text: 'English', function:  function(){ 
         MenuFunctionsManager.changeAccesLanguage('en')(); 
         SettingsOptionCtrl.setChildColumnActiveOpt(settingsAccesLanguages.options[0].optId);} }, 

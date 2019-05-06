@@ -192,9 +192,9 @@ function createVRButton_2(renderer)
 
 function createMenus()
 {
-    switch ( localStorage.ImAc_menuType )
+    switch ( _iconf.menutype )
     {
-        case "LS_area":
+        case "ls":
             menuMgr.Init(1);
             menuMgr.createMenuActivationElement();
             break;

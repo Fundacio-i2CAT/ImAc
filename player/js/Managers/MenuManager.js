@@ -166,17 +166,6 @@ function MenuManager() {
         }
     }
 
-    this.test = function(){
-
-        menuMgr.ResetViews();
-
-
-        /*controllers.forEach(function(controller){
-            controller.Exit();
-        });
-        menuParent.getObjectByName('trad-menu-base').visible = false;*/
-    }
-
 /**
  * Creates a menu activation element.
  */
@@ -247,6 +236,11 @@ function MenuManager() {
  * @function      OpenPreview (name)
  */
     this.OpenPreview = function() {
+        let isSubmenuOpen = false;
+        if(actualCtrl && actualCtrl.getMenuName() === 'trad-option-menu') {
+            console.log("sub menu open");
+            isSubmenuOpen = true;
+        }
         VideoController.pauseAll();
         menuParent.add(vwStrucMMngr.Preview('preview'));
         previewCtrl = new PreviewController();
@@ -257,6 +251,9 @@ function MenuManager() {
             previewCtrl.Exit();
             //actualCtrl.Init();
             menuMgr.initFirstMenuState();
+            if(isSubmenuOpen){
+              menuMgr.Load(SettingsOptionCtrl);  
+            } 
             if(scene.getObjectByName("sign")) {
                 scene.getObjectByName("sign").visible = subController.getSignerEnabled();
             }

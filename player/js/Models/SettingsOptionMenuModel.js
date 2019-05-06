@@ -16,4 +16,6 @@ function SettingsOptionMenuModel() {
 	this.isFinalDrop;
 	this.hasParentDropdown;
 	this.parentDropdownData;
+
+	this.activeMenuOpts;
 }

@@ -93,7 +93,12 @@ function SettingsMenuController(menuType) {
     data.openSettingsMenuButtonFunc = function(){ AddVisualFeedbackOnClick('settings-button', function(){
           if(menuMgr.getMenuType() == 1) {
                 menuMgr.ResetViews();
-                scene.getObjectByName( "pointer2" ).visible = true;
+                if ( scene.getObjectByName( "pointer2" ) && _isHMD ){
+                    scene.getObjectByName( "pointer2" ).visible = true;
+                } else if ( scene.getObjectByName( "pointer" ) && _isHMD ) {
+                    scene.getObjectByName( "pointer" ).visible = true;
+                    scene.getObjectByName('pointer').scale.set(1*_pointerSize,1*_pointerSize,1*_pointerSize)
+                }
             }
             menuMgr.Load(SettingsOptionCtrl)
         } )};

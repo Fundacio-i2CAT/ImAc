@@ -238,7 +238,6 @@ function MenuManager() {
     this.OpenPreview = function() {
         let isSubmenuOpen = false;
         if(actualCtrl && actualCtrl.getMenuName() === 'trad-option-menu') {
-            console.log("sub menu open");
             isSubmenuOpen = true;
         }
         VideoController.pauseAll();

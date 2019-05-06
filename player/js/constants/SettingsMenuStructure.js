@@ -57,7 +57,7 @@ const settingsDropdownOpt = {title: 'Settings', final: false, options: [
   */
 const generalSettings = { title: 'General', icon: './img/menu/settings_icon.png', parent: settingsDropdownOpt, final: false, options: [
     {optId: 'settingsLanguages', icon: './img/menu/language.png', text: 'Language', function: function(){ SettingsOptionCtrl.updateDropdownOptions(settingsUILanguages)} },
-    //{optId: 'settingsVoiceControl', icon: './img/menu/voice_control.png', text: 'VoiceControl', function: function(){ SettingsOptionCtrl.updateDropdownOptions(settigsVoiceControl)} },
+    {optId: 'settingsVoiceControl', icon: './img/menu/voice_control.png', text: 'VoiceControl', function: function(){ SettingsOptionCtrl.updateDropdownOptions(settigsVoiceControl)} },
     //{optId: 'settingsMenuType', icon: './img/menu/menu_type.png', text: 'Menu Type', function: function(){ SettingsOptionCtrl.updateDropdownOptions(settingsMenuType)} },
     {optId: 'settingsPointerSize', icon: './img/menu/pointer_size.png', text: 'PointerSize', function: function(){ SettingsOptionCtrl.updateDropdownOptions(settingsPointerSize)} },
     {optId: 'settingsUserProfile', icon: './img/menu/user_profile.png', text: 'UserProfile', function: function(){ SettingsOptionCtrl.updateDropdownOptions(settingsUserProfile)} }
@@ -107,7 +107,7 @@ const settingsUILanguages = { title: 'Languages', icon: './img/menu/language.png
 */
 const settigsVoiceControl = { title: 'VoiceControl', icon: './img/menu/voice_control.png', parent: generalSettings, final: true, options: [
     {optId: 'voiceControlOnButton', text: 'On', function:  function(){ 
-        console.log();
+        connectVoiceControl( localStorage.ImAc_voiceControlId, "http://51.89.138.157:3000/" );
         SettingsOptionCtrl.setChildColumnActiveOpt(settigsVoiceControl.options[0].optId);} }, 
     {optId: 'voiceControlOffButton', text: 'Off', function:  function(){ 
         console.log();

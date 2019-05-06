@@ -341,6 +341,48 @@ function getViewDifPositionTest(sp, fov)
     else return 0;
 }
 
+function addSphericalGrid()
+{
+    var radius = 40;
+    var segments = 36;
+    var rings = 18;
+
+    var geometry = new THREE.SphereGeometry(radius, segments, rings);
+    var material = new THREE.MeshBasicMaterial({
+      color: 0xF3A2B0,
+      wireframe: true
+    });
+
+    var cube = new THREE.Mesh(geometry, material);
+    scene.add(cube);
+
+    var radius = 40;
+    var segments = 36;
+    var rings = 18;
+
+    var geometry = new THREE.SphereGeometry(radius, segments, rings);
+    var material = new THREE.MeshBasicMaterial({
+      color: 0xF3A2B0,
+      wireframe: true
+    });
+
+    var cube = new THREE.Mesh(geometry, material);
+    scene.add(cube);
+
+    var radius = 35;
+    var segments = 4;
+    var rings = 4;
+
+    var geometry = new THREE.SphereGeometry(radius, segments, rings);
+    var material = new THREE.MeshBasicMaterial({
+      color: 0x0FA2B0,
+      wireframe: true
+    });
+
+    var cube = new THREE.Mesh(geometry, material);
+    scene.add(cube);
+}
+
 
 function connectVoiceControl( devoceId="i2CAT", ws_url="http://51.89.138.157:3000/" )
 {

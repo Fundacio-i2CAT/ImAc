@@ -20,6 +20,8 @@ function init_webplayer()
     {
         list_contents = json.contents;
 
+        if ( localStorage.ImAc_voiceControl == 'on' ) connectVoiceControl( localStorage.ImAc_voiceControlId, "http://51.89.138.157:3000/" );
+
         for (var i = 0; i < list_contents.length; i++) 
         {
             createListGroup( i, list_contents[i].thumbnail, list_contents[i].name, list_contents[i].duration );

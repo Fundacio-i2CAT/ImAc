@@ -241,22 +241,30 @@ function MenuManager() {
             isSubmenuOpen = true;
         }
         VideoController.pauseAll();
-        menuParent.add(vwStrucMMngr.Preview('preview'));
+
+        let previewMesh = vwStrucMMngr.Preview('preview');
+        //previewMesh.position.set( menuX, menuY, -67 ); //TODO
+        
+        menuParent.add(previewMesh);
         previewCtrl = new PreviewController();
 
         menuMgr.ResetViews();
         previewCtrl.Init();
         setTimeout(function() {
             previewCtrl.Exit();
-            //actualCtrl.Init();
+            VideoController.playAll();
             menuMgr.initFirstMenuState();
             if(isSubmenuOpen){
               menuMgr.Load(SettingsOptionCtrl);  
             } 
+            if(scene.getObjectByName("subtitles")){
+                scene.getObjectByName("subtitles").visible = subController.getSubtitleEnabled();
+            }
+
             if(scene.getObjectByName("sign")) {
                 scene.getObjectByName("sign").visible = subController.getSignerEnabled();
             }
-            VideoController.playAll();
+            
         },2000);
     }
 

@@ -177,6 +177,18 @@ THREE.MediaObjectData = function () {
         return group;
     };
 
+    this.getPreviewSubtitleMesh = function(textList, config)
+    {
+        var group = new THREE.Group();
+        var font = "500 40px Roboto, Arial";
+
+        group.add( getPreviewSubMesh( textList, config, font ) );
+
+        if ( _isHMD ) group.rotation.z = -camera.rotation.z;
+        
+        return group;
+    };
+
     // subtitols always visible
     this.getEmojiSubtitleMesh = function(textList, config)
     {
@@ -947,12 +959,68 @@ THREE.MediaObjectData = function () {
         mesh.add( arrow );
     }
 
+    function setPreviewArrowToMesh(mesh, cw, size, color, backgroundColor, o, isSL)
+    {
+        // right arrow
+        var geometry = new THREE.PlaneGeometry( 6.5, 6.5 );
+        var arrow = getImageMesh( geometry, './img/arrow_final.png', 'right', 3 );
+        arrow.material.color.set( color );
+        arrow.add( getBackgroundMesh ( 9.4, 8.3*size, backgroundColor, o ) );
+        arrow.position.x = cw/2 + 4.7;
+        arrow.name = 'preright';
+        mesh.add( arrow );
+
+        // left arrow
+        var geometry = new THREE.PlaneGeometry( 6.5, 6.5 );
+        var arrow = getImageMesh( geometry, './img/arrow_final.png', 'left', 3 );
+        arrow.material.color.set( color );
+        arrow.rotation.z = Math.PI;
+        arrow.add( getBackgroundMesh ( 9.4, 8.3*size, backgroundColor, o ) );
+        arrow.position.x = -cw/2 - 4.7;
+        arrow.name = 'preleft';
+        mesh.add( arrow );
+    }
+
     function createCanvasTextLine(ctx, text, font, color, x, y, w, h, o, fw, fh )
     {
         ctx.font = font;
         if ( o != 0 ) createCanvasFillRect( ctx, x, y, w, h, o );
         createCanvasText( ctx, text, font, color, fw, fh );
         if ( o == 0 ) createCanvasStrokeText( ctx, text, fw, fh );
+    }
+
+    function getPreviewSubMesh(t, c, font, fixed)
+    {
+        var canvas = document.getElementById( "canvas" );
+        var ctx = canvas.getContext( "2d" );
+        var ch = 50; // canvas height x line
+        var fh = 40; // font height
+
+        ctx.font = font;
+        var width = ctx.measureText( t[0].text ).width;
+        var width2 = t[1] ? ctx.measureText( t[1].text ).width : 0;
+        canvas.width = ( width > width2 ) ? width + 20 : width2 + 20;
+        canvas.height = ch*t.length;
+
+        if ( t[0] ) createCanvasTextLine( ctx, t[0].text, font, t[0].color, 0, 0, canvas.width, ch, c.opacity, ( canvas.width - width )/2, fh );
+        if ( t[1] ) createCanvasTextLine( ctx, t[1].text, font, t[1].color, 0, ch, canvas.width, ch, c.opacity, ( canvas.width - width2 )/2, fh + ch );
+
+        var material = new THREE.MeshBasicMaterial( { map: new THREE.CanvasTexture( canvas ),  transparent: true } );
+        var mesh = new THREE.Mesh( new THREE.PlaneGeometry( canvas.width/6, ch*t.length/6 ), material );
+
+        if ( !fixed && c.subtitleIndicator == 'arrow' ) setPreviewArrowToMesh( mesh, canvas.width/6, t.length, t[0].color, t[0].backgroundColor, c.opacity );
+
+        mesh.scale.set( c.area*c.size, c.area*c.size, 1 );
+
+        mesh.renderOrder = 3;
+        mesh.position.z = -c.z;
+        mesh.position.y = c.y;
+        mesh.position.x = c.offset;
+        mesh.visible = true;
+
+        if ( fixed ) mesh.lookAt(0,0,0);
+
+        return mesh;
     }
 
     function getEmojiSubMesh(t, c, font, fixed)
@@ -1040,7 +1108,10 @@ THREE.MediaObjectData = function () {
         canvas.width = 285;
         canvas.height = ch;
 
-        if( il > 0 ) ctx.drawImage(drawing, 110, 0, 63, 50);
+        if( il > 0 ) {          
+            createCanvasTextLine( ctx, '', font, t[0].color, 0, 0, canvas.width, ch, c.opacity, ( canvas.width - width )/2, fh );
+            ctx.drawImage(drawing, 110, 0, 63, 50);
+        }
 
         else if ( t[0] ) createCanvasTextLine( ctx, t[0].text, font, t[0].color, 0, 0, canvas.width, ch, c.opacity, ( canvas.width - width )/2, fh );
 

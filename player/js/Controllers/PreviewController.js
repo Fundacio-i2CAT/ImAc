@@ -149,7 +149,7 @@ function PreviewController() {
             backgroundColor: "rgb(0,0,0)"
         }]
 
-        subtitleMesh = _moData.getEmojiSubtitleMesh( previewSTtext, subConfig);
+        subtitleMesh = _moData.getPreviewSubtitleMesh( previewSTtext, subConfig);
         subtitleMesh.name = "subtitlespreview";
 
         if(subConfig.subtitleIndicator === 'arrow') data.isArrowsVisible = true;

@@ -360,9 +360,13 @@ AudioManager = function() {
 
     this.setADContent = function(content, lang)
     {
-        adContent = content[adPresentation];
         adLang = lang;
-        if ( adEnabled ) addAudio( 'AD' );
+        if ( content )
+        {
+            adContent = content[adPresentation];
+            
+            if ( adEnabled ) addAudio( 'AD' );
+        }
     }; 
 
     this.setADPresentation = function(value)
@@ -419,32 +423,36 @@ AudioManager = function() {
     {
         adAvailablePresentation = [];
 
-        if ( subList['VoiceOfGod'] ) 
+        if (subList) 
         {
-            adAvailablePresentation.push(
+
+            if ( subList['VoiceOfGod'] ) 
             {
-                name: 'adVOGButton', 
-                value: 'VoiceOfGod', 
-                default: ( 'VoiceOfGod' == adPresentation )
-            } );
-        }
-        if ( subList['Friend'] ) 
-        {
-            adAvailablePresentation.push(
+                adAvailablePresentation.push(
+                {
+                    name: 'adVOGButton', 
+                    value: 'VoiceOfGod', 
+                    default: ( 'VoiceOfGod' == adPresentation )
+                } );
+            }
+            if ( subList['Friend'] ) 
             {
-                name: 'adFriendButton', 
-                value: 'Friend', 
-                default: ( 'Friend' == adPresentation )
-            } );
-        }
-        if ( subList['Dynamic'] ) 
-        {
-            adAvailablePresentation.push(
+                adAvailablePresentation.push(
+                {
+                    name: 'adFriendButton', 
+                    value: 'Friend', 
+                    default: ( 'Friend' == adPresentation )
+                } );
+            }
+            if ( subList['Dynamic'] ) 
             {
-                name: 'adDynamicButton', 
-                value: 'Dynamic', 
-                default: ( 'Dynamic' == adPresentation )
-            } );
+                adAvailablePresentation.push(
+                {
+                    name: 'adDynamicButton', 
+                    value: 'Dynamic', 
+                    default: ( 'Dynamic' == adPresentation )
+                } );
+            }
         }
     };
 

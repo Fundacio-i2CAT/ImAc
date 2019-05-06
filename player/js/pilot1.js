@@ -58,9 +58,11 @@ function runTest2()
     _AudioManager.initializeAudio( VideoController.getListOfVideoContents()[0].vid, list_contents[demoId].audioChannels, camera.matrixWorld.elements );
     _moData.createPointer();
 
+    var bannerTime = 10000;
+
     var interval81 = setTimeout( function() {
         subController.switchSigner( true );
-        VideoController.playAll();
+        //VideoController.playAll();
         
          },1000);
 
@@ -104,6 +106,22 @@ function runTest2()
     {
         var interval5 = setTimeout( function() { window.location.reload() },225000);
     } 
+
+    //var xz = _moData.getPlaneImageMesh(16*2,9*2,'./img/tests/holy_fixed_black_2.png', 'name', 6);
+    var interval1 = setTimeout( function() { VideoController.pauseAll(); },1000);
+    var xy = _moData.getSphericalColorMesh( 60, 0x000000, 'colorsphere' )
+
+    //xz.position.z = -10;
+    scene.add(xy)
+    //camera.add(xz)
+
+    var interval2 = setTimeout( function() {
+        //console.warn('asdasfsaffafafadsfadfas')
+        VideoController.playAll();
+        scene.remove(xy)
+        //camera.remove(xz);
+  
+    },bannerTime);
 }
 
 function runGADemo() 

@@ -48,6 +48,13 @@ VideoController = function() {
         listOfAudioContents.forEach( function( elem ) { elem.currentTime = mainVideoTime } ); 
     }
 
+    function syncAllVideos()
+    {
+        //var mainVideoTime = listOfVideoContents[0].vid.currentTime;
+        listOfVideoContents.forEach( function( elem, i ) { if ( i > 0 ) elem.vid.currentTime = listOfVideoContents[0].vid.currentTime } ); 
+        //listOfAudioContents.forEach( function( elem ) { elem.currentTime = listOfVideoContents[0].vid.currentTime } ); 
+    }
+
     function setBitrateLimitationsFor(player)
     {
     	if ( window.screen.width * window.devicePixelRatio <= 1920 ) 
@@ -277,7 +284,7 @@ VideoController = function() {
         getAdaptationSets().then(( str ) => { 
 
             subController.enableSubtitles();
-
+            var firtsIteration = true;
             listOfVideoContents[0].vid.ontimeupdate = function() 
             {
                 if (listOfVideoContents[0].vid.currentTime >= listOfVideoContents[0].vid.duration - 0.5) window.location.reload();
@@ -288,6 +295,12 @@ VideoController = function() {
                     vpbCtrl.updatePlayProgressBar();  
                     playpauseCtrl.updatePlayOutTime();   
                 }
+                if ( Math.trunc(listOfVideoContents[0].vid.currentTime)%10 == 0 && firtsIteration ) 
+                {
+                    syncAllVideos();
+                    firtsIteration = false;
+                }
+                else if ( Math.trunc(listOfVideoContents[0].vid.currentTime)%10 != 0 ) firtsIteration = true;
             }; 
         });
     };

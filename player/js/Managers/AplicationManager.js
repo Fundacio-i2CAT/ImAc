@@ -157,8 +157,8 @@ function AplicationManager()
 
         initReticulum( camera );
         //if ( localStorage.ImAc_server ) _Sync.init( localStorage.ImAc_server );
-        runDemo();
+        //runDemo();
         //runTest1();
-        //runTest2();
+        runTest2();
 	};
 }

@@ -13,8 +13,9 @@ function PreviewView() {
         submenu.getObjectByName('signerpreview').visible = subController.getSignerEnabled();
         submenu.getObjectByName('subtitlespreview').visible = subController.getSubtitleEnabled();
 
-        if(scene.getObjectByName('right')) scene.getObjectByName('right').visible = data.isArrowsVisible;
-        if(scene.getObjectByName('left')) scene.getObjectByName('left').visible = data.isArrowsVisible;
+        if(scene.getObjectByName('preright')) scene.getObjectByName('preright').visible = data.isArrowsVisible;
+        if(scene.getObjectByName('preleft')) scene.getObjectByName('preleft').visible = data.isArrowsVisible;
+
 
         /*submenu.getObjectByName('radarPreview').visible = data.isRadarVisible;
         submenu.getObjectByName('radarPreview').position.x = ( 1.48*subController.getSubArea()/2-14/2 );

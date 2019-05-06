@@ -38,14 +38,105 @@ function checkCookies()
     }
 }
 
-function searchFunc()
+function filterFunc()
 {
-    console.log('search')
+    var optionslist = document.getElementsByName('is_name');
+    var checkedlist = [];
+
+    for (var i = 0; i < optionslist.length; i++) 
+    {
+        if ( optionslist[i].checked ) checkedlist.push( optionslist[i] );
+    }
+
+    if ( checkedlist.length > 0 )
+    {
+        var myNode = document.getElementById( "list_group" );
+        while (myNode.firstChild) {
+            myNode.removeChild(myNode.firstChild);
+        }
+
+        for (var i = 0; i < list_contents.length; i++) 
+        {
+            if ( list_contents[i].acces && checkAcces( list_contents[i].acces[0], checkedlist ) ) createListGroup( i, list_contents[i].thumbnail, list_contents[i].name, list_contents[i].duration );
+        }
+    }
+    else searchFuncByName();
+
 }
 
-
-function searchFuncByName( name )
+function checkAccesLang(obj, lang)
 {
+    var haslang = false;
+    if ( obj.ST )
+    {
+        for (var i = 0; i < obj.ST.length; i++) 
+        {
+            if ( obj.ST[i] == lang ) haslang = true;
+        }
+    }
+    if ( obj.SL )
+    {
+        for (var i = 0; i < obj.SL.length; i++) 
+        {
+            if ( obj.SL[i] == lang ) haslang = true;
+        }
+    }
+    if ( obj.AD )
+    {
+        for (var i = 0; i < obj.AD.length; i++) 
+        {
+            if ( obj.AD[i] == lang ) haslang = true;
+        }
+    }
+    if ( obj.AST )
+    {
+        for (var i = 0; i < obj.AST.length; i++) 
+        {
+            if ( obj.AST[i] == lang ) haslang = true;
+        }
+    }
+
+    return haslang;
+}
+
+function checkAcces(obj, checkedlist)
+{
+    var hasacces = false;
+    for (var i = 0; i < checkedlist.length; i++) 
+    {
+        if ( checkedlist[i].id == 'st_check' && obj.ST ) hasacces = true;
+        else if ( checkedlist[i].id == 'st_check' )  { hasacces = false; break; }
+
+        if ( checkedlist[i].id == 'sl_check' && obj.SL ) hasacces = true;
+        else if ( checkedlist[i].id == 'sl_check' )  { hasacces = false; break; }
+
+        if ( checkedlist[i].id == 'ad_check' && obj.AD ) hasacces = true;
+        else if ( checkedlist[i].id == 'ad_check' )  { hasacces = false; break; }
+
+        if ( checkedlist[i].id == 'ast_check' && obj.AST ) hasacces = true;
+        else if ( checkedlist[i].id == 'ast_check' )  { hasacces = false; break; }
+
+
+        if ( checkedlist[i].id == 'en_check' && checkAccesLang(obj, 'en') ) hasacces = true;
+        else if ( checkedlist[i].id == 'en_check' )  { hasacces = false; break; }
+
+        if ( checkedlist[i].id == 'es_check' && checkAccesLang(obj, 'es') ) hasacces = true;
+        else if ( checkedlist[i].id == 'es_check' )  { hasacces = false; break; }
+
+        if ( checkedlist[i].id == 'de_check' && checkAccesLang(obj, 'de') ) hasacces = true;
+        else if ( checkedlist[i].id == 'de_check' )  { hasacces = false; break; }
+
+        if ( checkedlist[i].id == 'ca_check' && checkAccesLang(obj, 'ca') ) hasacces = true;
+        else if ( checkedlist[i].id == 'ca_check' )  { hasacces = false; break; }
+
+    }
+
+    return hasacces;
+}
+
+function searchFuncByName()
+{
+    var name = document.getElementById('search').value;
     var myNode = document.getElementById( "list_group" );
     while (myNode.firstChild) {
         myNode.removeChild(myNode.firstChild);
@@ -53,7 +144,22 @@ function searchFuncByName( name )
 
     for (var i = 0; i < list_contents.length; i++) 
     {
-        if ( list_contents[i].name.includes( name ) ) createListGroup( i, list_contents[i].thumbnail, list_contents[i].name, list_contents[i].duration );
+        if ( list_contents[i].name.toLowerCase().includes( name.toLowerCase() ) ) createListGroup( i, list_contents[i].thumbnail, list_contents[i].name, list_contents[i].duration );
+    }
+}
+
+function toggleInfo()
+{
+    var input = document.getElementById('togglebutton');
+    if(input.checked == false) {
+        //input.checked = true; 
+        document.getElementById('poster_container').style.display = 'none';
+    }
+    else {
+        document.getElementById('poster_container').style.display = 'inherit';
+        /*if(input.checked == true) {
+            input.checked = false; 
+         }   */
     }
 }
 
@@ -161,9 +267,9 @@ function clearBorders()
 
     for (var i = 0; i < list_contents.length; i++) 
     {
-        document.getElementById( 'content' + i ).children[0].classList.remove("enabled");
-        document.getElementById( 'contentplay' + i ).classList.remove("enabled");
-        document.getElementById( 'contentduration' + i ).classList.remove("enabled");
+        if(document.getElementById( 'content' + i )) document.getElementById( 'content' + i ).children[0].classList.remove("enabled");
+        if(document.getElementById( 'contentplay' + i )) document.getElementById( 'contentplay' + i ).classList.remove("enabled");
+        if(document.getElementById( 'contentduration' + i )) document.getElementById( 'contentduration' + i ).classList.remove("enabled");
     }
 }
 
@@ -207,6 +313,7 @@ function closeSettingsMenu2(id)
 
 function settingsFunc()
 {
+    closeSettingsMenus();
     window.scrollTo( 0, 0 );
 
     if ( document.getElementById( 'u110' ).style.visibility == 'hidden' ) 
@@ -215,15 +322,26 @@ function settingsFunc()
         document.getElementById( 'u112' ).style.visibility = '';
         document.getElementById( 'u112_options' ).style.visibility = ''; 
     }
-    else
+}
+
+function searchFunc()
+{
+    closeSettingsMenus();
+    window.scrollTo( 0, 0 );
+
+    if ( document.getElementById( 'u110' ).style.visibility == 'hidden' ) 
     {
-        closeSettingsMenus();
+        document.getElementById( 'u110' ).style.visibility = '';
+        document.getElementById( 'u109' ).style.visibility = '';
+        document.getElementById( 'u109_options' ).style.visibility = ''; 
     }
 }
 
 function closeSettingsMenus()
 {
     document.getElementById( 'u110' ).style.visibility = 'hidden';
+    document.getElementById( 'u109' ).style.visibility = 'hidden';
+    document.getElementById( 'u109_options' ).style.visibility = 'hidden'; 
     document.getElementById( 'u112' ).style.visibility = 'hidden';
     document.getElementById( 'u112_options' ).style.visibility = 'hidden'; 
     document.getElementById( 'u113' ).style.visibility = 'hidden';

@@ -36,6 +36,7 @@ function launchVoiceCommand( com )
 	else if ( com == 'menu_close' ) _ImAc.closeMenu();
 	else if ( com.includes("forward|") ) _ImAc.goForward(23);
 	else if ( com.includes("backward|") ) _ImAc.goBack( com.split("backward|")[1] );
+	else if ( com == 'return' ) window.history.back();
 
 }
 

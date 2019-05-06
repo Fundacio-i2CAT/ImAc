@@ -2,44 +2,89 @@
   "title": "ImAc",
   "contents": [
   {
-    "name": "1: Opera-1",
-    "thumbnail": "img/LOGO-IMAC.png",
+    "name": "Liceu Opera Piece 1",
+    "poster": "./img/opera1_cover.png",
+    "thumbnail": "img/opera1.png",
+    "description": "Performance of the “Roméo et Juliette” opera recorded at the Gran Teatre del Liceu Opera House (Barcelona). Piece 1.",
+    "acces": [
+    {
+      "ST": ["en", "es", "de", "ca"],
+      "SL": ["en", "es", "de", "ca"], 
+      "AD": ["en", "es", "de", "ca"],
+      "AST": ["en", "es", "de", "ca"]
+    }],
+    "language": "French",
+    "duration": "8:28",
     "url": "http://84.88.32.46/imac_content/pilot_1/OPERALICEU_01/stream.mpd",
     "audioChannels": 4,
+    "subtitles": [{}]
+  },
+  {
+    "name": "RBB News Abendschau",
+    "poster": "img/covers/Newsshow_Abendschau2.jpg",
+    "thumbnail": "img/covers/Newsshow_Abendschau.jpg",
+    "description": "Making-of video of the RBB news show “Abendschau”, taking you into the news room and the streets of Berlin where current events are covered by the RBB news team.",
+    "acces": [
+    {
+      "ST": ["en"],
+      "SL": ["en"]
+    }],
+    "language": "Deutsch",
+    "duration": "8:28",
+    "url": "http://84.88.32.46/imac_content/rbb/dash/stream.mpd",
+    "audioChannels": 2,
     "subtitles": [
     {
-      "de": "http://84.88.32.46/imac_content/pilot_1/OPERALICEU_01/CCMA_OPERALICEU01_subtitles_DE.xml",
-      "ca": "http://84.88.32.46/imac_content/pilot_1/OPERALICEU_01/CCMA_OPERALICEU01_subtitles_CAT.xml",
-      "en": "http://84.88.32.46/imac_content/pilot_1/OPERALICEU_01/CCMA_OPERALICEU01_subtitles_EN.xml",
-      "es": "http://84.88.32.46/imac_content/pilot_1/OPERALICEU_01/CCMA_OPERALICEU01_subtitles_CAST.xml"
-    },
-    {
-      "de": "http://84.88.32.46/imac_content/pilot_1/OPERALICEU_01/LICEU_CAST_E2R.xml",
-      "ca": "http://84.88.32.46/imac_content/pilot_1/OPERALICEU_01/LICEU_CAST_E2R.xml",
-      "en": "http://84.88.32.46/imac_content/pilot_1/OPERALICEU_01/LICEU_ENG_E2R.xml",
-      "es": "http://84.88.32.46/imac_content/pilot_1/OPERALICEU_01/LICEU_CAST_E2R.xml"
+      "en": "http://84.88.32.46/imac_content/rbb/RBB_Abendschau_short_subtitles_angles.xml"
     }],
     "signer": [
     {
-      "en": "http://84.88.32.46/imac_content/liceu/Dash/SL_ENG/stream.mpd",
-      "es": "http://84.88.32.46/imac_content/liceu/Dash/SL_ESP/stream.mpd",
-      "ca": "http://84.88.32.46/imac_content/liceu/Dash/SL_CAT/stream.mpd",
-      "de": "http://84.88.32.46/imac_content/liceu/Dash/SL_GER/stream.mpd"
+      "en": "http://84.88.32.46/imac_content/liceu/Dash/SL_GER/stream.mpd"
     }],
-    "ad": [
-    {
-      "en": "",
-      "ca": ""
-    }],
-    "ast": [
-    {
-      "en": "",
-      "ca": ""
-    }]
+    "ad": [{}],
+
+    "ast": [{}]
   },
-{
-    "name": "2: Opera-2",
-    "thumbnail": "img/LOGO-IMAC.png",
+  {
+    "name": "ARTE I Philip",
+    "poster": "./img/covers/IPhilip2.jpg",
+    "thumbnail": "img/i-philip-1100x750-dark(1).png",
+    "description": "23 years after Philip K. Dick’s death, in 2005, David Hanson, a young engineer in robotics, revealed his first android with human form, “Phil”.",
+    "acces": [
+    {
+      "ST": ["en", "es", "de", "ca"],
+      "SL": ["en", "es", "de", "ca"]
+    }],
+    "language": "English",
+    "duration": "8:28",
+    "url": "http://84.88.32.46/imac_content/pilot_1/RBB_Iphilip/stream.mpd",
+    "audioChannels": 2,
+    "subtitles": [
+    {
+      "de": "http://84.88.32.46/imac_content/pilot_1/RBB_Iphilip/RBB_IPhilip_subtitles_DE.xml",
+      "ca": "http://84.88.32.46/imac_content/pilot_1/RBB_Iphilip/RBB_IPhilip_subtitles_CAT.xml",
+      "es": "http://84.88.32.46/imac_content/pilot_1/RBB_Iphilip/RBB_IPhilip_subtitles_ES.xml",
+      "en": "http://84.88.32.46/imac_content/pilot_1/RBB_Iphilip/RBB_IPhilip_subtitles_EN.xml"
+    },
+    {
+      "de": "http://84.88.32.46/imac_content/pilot_1/RBB_Iphilip/RBB_IPhilip_subtitles_DE.xml",
+      "ca": "http://84.88.32.46/imac_content/pilot_1/RBB_Iphilip/RBB_IPhilip_subtitles_CAT.xml",
+      "es": "http://84.88.32.46/imac_content/pilot_1/RBB_Iphilip/RBB_IPhilip_subtitles_ES.xml",
+      "en": "http://84.88.32.46/imac_content/pilot_1/RBB_Iphilip/RBB_IPhilip_subtitles_EN.xml"
+    }],
+    "signer": [{}]
+  },
+  {
+    "name": "Liceu Opera Piece 2",
+    "poster": "./img/covers/opera2_cover.png",
+    "thumbnail": "img/opera2.PNG",
+    "description": "Performance of the “Roméo et Juliette” opera recorded at the Gran Teatre del Liceu Opera House (Barcelona). Piece 2.",
+    "acces": [
+    {
+      "ST": ["de", "ca"]
+    }],
+    "language": "French",
+    "duration": "8:28",
     "url": "http://84.88.32.46/imac_content/pilot_1/OPERALICEU_02/stream.mpd",
     "audioChannels": 4,
     "subtitles": [
@@ -51,25 +96,19 @@
       "de": "http://84.88.32.46/imac_content/pilot_1/OPERALICEU_02/CCMA_OPERALICEU02_subtitles_DE.xml",
       "ca": "http://84.88.32.46/imac_content/pilot_1/OPERALICEU_02/CCMA_OPERALICEU02_subtitles_CAT.xml"
     }],
-    "signer": [
-    {
-      "ca": "http://84.88.32.46/imac_content/liceu/Dash/SL_CAT/stream.mpd",
-      "de": "http://84.88.32.46/imac_content/liceu/Dash/SL_GER/stream.mpd"
-    }],
-    "ad": [
-    {
-      "en": "",
-      "ca": ""
-    }],
-    "ast": [
-    {
-      "en": "",
-      "ca": ""
-    }]
+    "signer": [{}]
   },
   {
-    "name": "3: Desconcert-1",
-    "thumbnail": "img/LOGO-IMAC.png",
+    "name": "Desconcert “Leyre”",
+    "poster": "./img/covers/desconcert1_cover.png",
+    "thumbnail": "img/desconcert1.png",
+    "description": "Performance of a catalan version of  “Leyre” song, recorded at Sala Apolo (Barcelona) during the third edition of “Desconcert”, a great festival of iCat FM.",
+    "acces": [
+    {
+      "ST": ["en", "de", "ca"]
+    }],
+    "language": "Català",
+    "duration": "4:32",
     "url": "http://84.88.32.46/imac_content/pilot_1/desconcert_1/stream.mpd",
     "audioChannels": 4,
     "subtitles": [
@@ -83,24 +122,21 @@
       "ca": "http://84.88.32.46/imac_content/pilot_1/desconcert_1/CCMA_Desconcert_Halldor_Mar_Leyre_subtitles_CAT.xml",
       "en": "http://84.88.32.46/imac_content/pilot_1/desconcert_1/CCMA_Desconcert_Halldor_Mar_Leyre_subtitles_EN.xml"
     }],
-    "signer": [
-    {
-      "de": "http://84.88.32.46/imac_content/liceu/Dash/SL_GER/stream.mpd"
-    }],
-    "ad": [
-    {
-      "en": "",
-      "ca": ""
-    }],
-    "ast": [
-    {
-      "en": "",
-      "ca": ""
-    }]
+    "signer": [{}],
+    "ad": [{}],
+    "ast": [{}]
   },
   {
-    "name": "4: Desconcert-2",
-    "thumbnail": "img/LOGO-IMAC.png",
+    "name": "Desconcert “Havana”",
+    "poster": "./img/covers/desconcert2_cover.png",
+    "thumbnail": "img/desconcert2.png",
+    "description": "Performance of a catalan version of  “Havana” song, recorded at Sala Apolo (Barcelona) during the third edition of “Desconcert”, a great festival of iCat FM.",
+    "acces": [
+    {
+      "ST": ["en", "de", "ca"]
+    }],
+    "language": "Català",
+    "duration": "8:28",
     "url": "http://84.88.32.46/imac_content/pilot_1/desconcert_2/stream.mpd",
     "audioChannels": 4,
     "subtitles": [
@@ -114,49 +150,23 @@
       "ca": "http://84.88.32.46/imac_content/pilot_1/desconcert_2/CCMA_Desconcert_Marion_Harrier_Havanna_subtitles_CAT.xml",
       "en": "http://84.88.32.46/imac_content/pilot_1/desconcert_2/CCMA_Desconcert_Marion_Harrier_Havanna_subtitles_EN.xml"
     }],
-    "signer": [
-    {
-      "de": "http://84.88.32.46/imac_content/liceu/Dash/SL_GER/stream.mpd"
-    }],
-    "ad": [
-    {
-      "en": "",
-      "ca": ""
-    }],
-    "ast": [
-    {
-      "en": "",
-      "ca": ""
-    }]
+    "signer": [{}],
+    "ad": [{}],
+    "ast": [{}]
   },
   {
-    "name": "5: Demo RBB",
-    "thumbnail": "img/LOGO-IMAC.png",
-    "url": "http://84.88.32.46/imac_content/rbb/dash/stream.mpd",
-    "audioChannels": 2,
-    "subtitles": [
+    "name": "Rapzember",
+    "poster": "img/covers/Rapzember2.jpg",
+    "thumbnail": "img/covers/Rapzember.jpg",
+    "description": "Lorem ipsum",
+    "acces": [
     {
-      "de": "http://84.88.32.46/imac_content/rbb/RBB_Abendschau_short_subtitles_angles.xml"
+      "ST": ["en", "es", "de", "ca"],
+      "SL": ["de"]
     }],
-    "signer": [
-    {
-      "en": "http://84.88.32.46/imac_content/liceu/Dash/SL_GER/stream.mpd"
-    }],
-    "ad": [
-    {
-      "en": "",
-      "ca": ""
-    }],
-    "ast": [
-    {
-      "en": "",
-      "ca": ""
-    }]
-  },
-  {
-    "name": "6: ARTE IPhilip",
-    "thumbnail": "img/LOGO-IMAC.png",
-    "url": "http://84.88.32.46/imac_content/pilot_1/RBB_Iphilip/stream.mpd",
+    "language": "Deutsch",
+    "duration": "8:28",
+    "url": "http://84.88.32.46/imac_content/pilot_1/rapzember/stream.mpd",
     "audioChannels": 2,
     "subtitles": [
     {
@@ -171,17 +181,9 @@
     }],
     "signer": [
     {
-      "de": "http://84.88.32.46/imac_content/liceu/Dash/SL_GER/stream.mpd"
+      "de": "http://84.88.32.46/imac_content/pilot_1/signer_rbb_new/stream.mpd"
     }],
-    "ad": [
-    {
-      "en": "",
-      "ca": ""
-    }],
-    "ast": [
-    {
-      "en": "",
-      "ca": ""
-    }]
+    "ad": [{}],
+    "ast": [{}]
   }]
 }

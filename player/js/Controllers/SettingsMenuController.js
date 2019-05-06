@@ -92,7 +92,8 @@ function SettingsMenuController(menuType) {
 	function UpdateData(){
     data.openSettingsMenuButtonFunc = function(){ AddVisualFeedbackOnClick('settings-button', function(){
           if(menuMgr.getMenuType() == 1) {
-                menuMgr.test();
+                menuMgr.ResetViews();
+                scene.getObjectByName( "pointer2" ).visible = true;
             }
             menuMgr.Load(SettingsOptionCtrl)
         } )};

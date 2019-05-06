@@ -101,7 +101,7 @@ SubSignManager = function() {
 
 		  		if ( autoPositioning ) changePositioning( isd.imac );
 		  		if ( radarAutoPositioning ) changeSimplePositioning( isd.imac );
-		    	if ( subtitleEnabled ) print3DText( isd.contents[0], isd.imac, isd.imacY );
+		    	if ( subtitleEnabled ) print3DText( isd.contents[0], isd.imac, -isd.imacY );
 
 		    	if ( subtitleIndicator == 'arrow' ) arrowInteraction();
 		    	if ( signIndicator == 'arrow' ) arrowSLInteraction();

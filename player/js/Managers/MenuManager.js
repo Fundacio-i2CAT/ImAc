@@ -243,9 +243,8 @@ function MenuManager() {
         VideoController.pauseAll();
 
         let previewMesh = vwStrucMMngr.Preview('preview');
-        //previewMesh.position.set( menuX, menuY, -67 ); //TODO
+        camera.add(previewMesh)
         
-        menuParent.add(previewMesh);
         previewCtrl = new PreviewController();
 
         menuMgr.ResetViews();

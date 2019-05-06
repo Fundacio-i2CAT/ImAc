@@ -81,8 +81,12 @@ THREE.InteractionsController = function () {
 
     //Closes the open multi option menu of the traditional menu when clicked outside any element.
     if(!intersects.length && menuMgr.getActualCtrl() && type != 'onDocumentMouseMove'){
-      menuMgr.getActualCtrl().Exit();
-      menuMgr.setActualCtrl('');
+      if(menuMgr.getMenuType() == 2){
+          menuMgr.getActualCtrl().Exit();
+          menuMgr.setActualCtrl('');
+      }else{
+          SettingsOptionCtrl.close();
+      }
     }
 
   	if ( intersects[0] && interactionState && type != 'onDocumentMouseMove'){

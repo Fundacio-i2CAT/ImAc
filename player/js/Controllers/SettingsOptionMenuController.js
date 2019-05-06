@@ -117,7 +117,7 @@ function SettingsOptionMenuController() {
         data.title = MenuDictionary.translate('Settings');
         data.parentColumnDropdown = AddDropdownOptions(settingsDropdownOpt);
         data.backMenuButtonFunc = function(){ AddVisualFeedbackOnClick('back-button', function(){ SettingsOptionCtrl.updateDropdownOptions(data.parentDropdownData)} )};
-        data.closeOptMenuButtonFunc = function(){ AddVisualFeedbackOnClick('close-button-opt', function(){ test() } )};
+        data.closeOptMenuButtonFunc = function(){ AddVisualFeedbackOnClick('close-button-opt', function(){ SettingsOptionCtrl.close() } )};
     }
 
 /**
@@ -196,7 +196,7 @@ function SettingsOptionMenuController() {
     view.UpdateView(data);
   }
 
-  function test(){
+  this.close = function(){
     menuMgr.ResetViews();
     menuMgr.removeMenuFromParent();
     menuMgr.Init(1);

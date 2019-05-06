@@ -796,11 +796,15 @@ SubSignManager = function() {
 	this.setSubIndicator = function(ind)
 	{
 		subtitleIndicator = ind;
-		textListMemory = [];
+		
+		if(subtitleEnabled || signEnabled){
+			textListMemory = [];
 
 		if ( ind != 'radar' ) removeRadar(); 
 
 		updateISD( VideoController.getMediaTime() );
+		}
+		
 	};
 
 	this.setSubSize = function(size)

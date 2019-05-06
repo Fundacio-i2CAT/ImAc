@@ -83,7 +83,7 @@ function ViewStructureMenuManager() {
         menuTrad.add(mesh);
 
         //The position depends on the menu type.
-        if(menuMgr.getMenuType()%2 == 0){
+        if(menuMgr.getMenuType() == 2){
             menuTrad.position.set( 0, -20, -67 );    
         } else {
             menuTrad.position.set( 0, 0, -67 );
@@ -530,7 +530,7 @@ function ViewStructureMenuManager() {
         tradOptionMenu.name = name;
 
          //The position depends on the menu type.
-        if(menuMgr.getMenuType()%2 == 0){
+        if(menuMgr.getMenuType() == 2){
             tradOptionMenu.position.set(9*menuWidth/32, menuHeight/2 + optHeight/2 + menuWidth/100, 0.01); // The +/100 in height is small margin
         } else {
             tradOptionMenu.position.set(0, 0, -67); 

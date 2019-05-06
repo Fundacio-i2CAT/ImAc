@@ -23,7 +23,7 @@ function MenuManager() {
         menuMgr.setMenuType(type);
 
         //The size depends on the menu type.
-        menuWidth = (menuType%2 == 0) ? 70 : 130;
+        menuWidth = (menuType == 2) ? 70 : 130;
         menuHeight = menuWidth/4;
         
         menuParent = _isHMD ? scene : camera;

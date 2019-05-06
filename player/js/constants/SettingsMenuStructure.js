@@ -245,7 +245,7 @@ const settingsIndicator = { title: 'Indicator', icon: './img/menu/indicator.png'
     {optId: 'settingsIndicatorNone', text: 'None', function:  function(){ 
         subController.setSubIndicator( "none" );
         SettingsOptionCtrl.setChildColumnActiveOpt(settingsIndicator.options[0].optId);} }, 
-    {optId: 'settingsIndicatorArrows', text: 'Arrows', function:  function(){ 
+    {optId: 'settingsIndicatorArrows', text: 'Arrow', function:  function(){ 
         subController.setSubIndicator( "arrow" );
         SettingsOptionCtrl.setChildColumnActiveOpt(settingsIndicator.options[1].optId);} },
     {optId: 'settingsIndicatorRadar', text: 'Radar', function:  function(){ 

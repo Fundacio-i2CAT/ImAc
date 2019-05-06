@@ -247,6 +247,7 @@ function MenuManager() {
  * @function      OpenPreview (name)
  */
     this.OpenPreview = function() {
+        VideoController.pauseAll();
         menuParent.add(vwStrucMMngr.Preview('preview'));
         previewCtrl = new PreviewController();
 
@@ -259,6 +260,7 @@ function MenuManager() {
             if(scene.getObjectByName("sign")) {
                 scene.getObjectByName("sign").visible = subController.getSignerEnabled();
             }
+            VideoController.playAll();
         },2000);
     }
 

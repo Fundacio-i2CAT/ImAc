@@ -59,6 +59,7 @@ var __etype = 0;
 var _fixedST = false;
 var _SLsubtitles = false;
 var _NonCont = false;
+var _iconf;
 
 
 /**
@@ -95,13 +96,13 @@ function init_webplayer()
 
                 if ( cookieconf && cookieconf != null )
                 {
-                    var iconf = JSON.parse( cookieconf );
+                    _iconf = JSON.parse( cookieconf );
 
-                    console.log( iconf )
-                    subController.setSTConfig( iconf );
-                    /*subController.setSLConfig( iconf.SL );
-                    _AudioManager.setADConfig( iconf.AD );
-                    _AudioManager.setASTConfig( iconf.AST );*/
+                    console.log( _iconf )
+                    subController.setSTConfig( _iconf );
+                    subController.setSLConfig( _iconf );
+                    _AudioManager.setADConfig( _iconf );
+                    _AudioManager.setASTConfig( _iconf );
                 }
                 ////////////////////////////////////////////////////////////////
 

@@ -352,10 +352,10 @@ AudioManager = function() {
 
     this.setADConfig = function(conf)
     {
-        adEnabled = conf.enabled;
-        adLang = conf.lang;
-        adVolume = conf.volume;
-        adPresentation = conf.mode;
+        //adEnabled = conf.enabled;
+        adLang = conf.accesslanguage;
+        adVolume = conf.advolume == 'max' ? 100 : conf.advolume == 'mid' ? 50 : 10;
+        adPresentation = conf.admode == 'god' ? 'VoiceOfGod' : conf.admode == 'friend' ? 'Friend' : 'Dynamic';
     };
 
     this.setADContent = function(content, lang)
@@ -462,10 +462,11 @@ AudioManager = function() {
 
     this.setASTConfig = function(conf)
     {
-        astEnabled = conf.enabled;
-        astLang = conf.lang;
-        astVolume = conf.volume;
-        astEasy = conf.easy;
+        //astEnabled = conf.enabled;
+        astLang = conf.accesslanguage;
+        astVolume = conf.astvolume == 'max' ? 100 : conf.astvolume == 'mid' ? 50 : 10;
+        astEasy = conf.aste2r == 'true' ? true : false;
+        astPresentation = conf.astmode == 'god' ? 'VoiceOfGod' : 'Dynamic';
     };
 
     this.setASTContent = function(url, lang)

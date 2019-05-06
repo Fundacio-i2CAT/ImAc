@@ -877,14 +877,15 @@ SubSignManager = function() {
 // Public Signer Setters
 //************************************************************************************
 
-	this.setSLConfig = function(conf)
+    this.setSLConfig = function(conf)
     {
-    	signEnabled = conf.enabled;
-    	signLang = conf.lang;
-    	signPosX = conf.position.x;
-		signPosY = conf.position.y;
+    	//signEnabled = conf.enabled;
+    	signLang = conf.accesslanguage;
+    	signPosX = conf.stposition == 'left' ? -1 : 1;
+		signPosY = -1;
     	signIndicator = conf.indicator;
-    	signArea = conf.area;
+    	signArea = conf.safearea == 'L' ? 70 : conf.safearea == 'M' ? 60 : 50;
+    	signerSize	= conf.slsize == 'L' ? 20 : conf.slsize == 'M' ? 18 : 16;
     };
 
 	this.setSignerPosition = function(x, y)

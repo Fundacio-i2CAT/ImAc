@@ -7,14 +7,17 @@ function AccessibilityOptionsMenuView() {
         //Update the Accesibility icon initial status depending if they are enabled or not.
         this.UpdateAccessibilityOptionsIconStatusView(data);
         //Adding the functions to the corresponding menu elements.
-        submenu.getObjectByName('show-st-button').children[0].onexecute = data.subtitlesButtonFunc;
-        submenu.getObjectByName('disable-st-button').children[0].onexecute = data.subtitlesButtonFunc;
-        submenu.getObjectByName('show-sl-button').children[0].onexecute =  data.signlanguageButtonFunc;
-        submenu.getObjectByName('disable-sl-button').children[0].onexecute = data.signlanguageButtonFunc;
-        submenu.getObjectByName('show-ad-button').children[0].onexecute = data.audioDescriptionButtonFunc;
-        submenu.getObjectByName('disable-ad-button').children[0].onexecute = data.audioDescriptionButtonFunc;
-        submenu.getObjectByName('show-ast-button').children[0].onexecute = data.audioSubtitlesButtonFunc;
-        submenu.getObjectByName('disable-ast-button').children[0].onexecute = data.audioSubtitlesButtonFunc;
+        if(list_contents[demoId].acces && list_contents[demoId].acces[0].ST) submenu.getObjectByName('show-st-button').children[0].onexecute = data.subtitlesButtonFunc;
+        if(list_contents[demoId].acces && list_contents[demoId].acces[0].ST) submenu.getObjectByName('disable-st-button').children[0].onexecute = data.subtitlesButtonFunc;
+
+        if(list_contents[demoId].acces && list_contents[demoId].acces[0].SL) submenu.getObjectByName('show-sl-button').children[0].onexecute =  data.signlanguageButtonFunc;
+        if(list_contents[demoId].acces && list_contents[demoId].acces[0].SL) submenu.getObjectByName('disable-sl-button').children[0].onexecute = data.signlanguageButtonFunc;
+
+        if(list_contents[demoId].acces && list_contents[demoId].acces[0].AD) submenu.getObjectByName('show-ad-button').children[0].onexecute = data.audioDescriptionButtonFunc;
+        if(list_contents[demoId].acces && list_contents[demoId].acces[0].AD) submenu.getObjectByName('disable-ad-button').children[0].onexecute = data.audioDescriptionButtonFunc;
+
+        if(list_contents[demoId].acces && list_contents[demoId].acces[0].AST) submenu.getObjectByName('show-ast-button').children[0].onexecute = data.audioSubtitlesButtonFunc;
+        if(list_contents[demoId].acces && list_contents[demoId].acces[0].AST) submenu.getObjectByName('disable-ast-button').children[0].onexecute = data.audioSubtitlesButtonFunc;
 
         //If this elements are visible add the function.
         /*if(submenu.getObjectByName('previewMenuButton')) submenu.getObjectByName('previewMenuButton').children[0].onexecute = data.previewButtonFunc;
@@ -57,16 +60,16 @@ function AccessibilityOptionsMenuView() {
  */
   this.UpdateAccessibilityOptionsIconStatusView = function(data){
 
-    submenu.getObjectByName('show-st-button').visible = data.isSTenabled;
-    submenu.getObjectByName('disable-st-button').visible = !data.isSTenabled;
+    if(list_contents[demoId].acces && list_contents[demoId].acces[0].ST) submenu.getObjectByName('show-st-button').visible = data.isSTenabled;
+    if(list_contents[demoId].acces && list_contents[demoId].acces[0].ST) submenu.getObjectByName('disable-st-button').visible = !data.isSTenabled;
 
-    submenu.getObjectByName('show-sl-button').visible = data.isSLenabled;
-    submenu.getObjectByName('disable-sl-button').visible = !data.isSLenabled;
+    if(list_contents[demoId].acces && list_contents[demoId].acces[0].SL) submenu.getObjectByName('show-sl-button').visible = data.isSLenabled;
+    if(list_contents[demoId].acces && list_contents[demoId].acces[0].SL) submenu.getObjectByName('disable-sl-button').visible = !data.isSLenabled;
 
-    submenu.getObjectByName('show-ad-button').visible = data.isADenabled;
-    submenu.getObjectByName('disable-ad-button').visible = !data.isADenabled;
+    if(list_contents[demoId].acces && list_contents[demoId].acces[0].AD) submenu.getObjectByName('show-ad-button').visible = data.isADenabled;
+    if(list_contents[demoId].acces && list_contents[demoId].acces[0].AD) submenu.getObjectByName('disable-ad-button').visible = !data.isADenabled;
 
-    submenu.getObjectByName('show-ast-button').visible = data.isASTenabled;
-    submenu.getObjectByName('disable-ast-button').visible = !data.isASTenabled;
+    if(list_contents[demoId].acces && list_contents[demoId].acces[0].AST) submenu.getObjectByName('show-ast-button').visible = data.isASTenabled;
+    if(list_contents[demoId].acces && list_contents[demoId].acces[0].AST) submenu.getObjectByName('disable-ast-button').visible = !data.isASTenabled;
   }
 }

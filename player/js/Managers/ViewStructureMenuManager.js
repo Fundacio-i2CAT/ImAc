@@ -279,7 +279,7 @@ function ViewStructureMenuManager() {
         stBtn.type =  'icon';
         stBtn.path = './img/acc_serv_icon/st_on.png';
         stBtn.color = 0xc91355;
-        stBtn.visible = true;
+        stBtn.visible = false;
         stBtn.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(i5*2, i5), new THREE.MeshBasicMaterial({visible: false}));
         stBtn.position = new THREE.Vector3( -3*menuWidth/8, -menuHeight/3, 0.01 );
         stBtn.onexecute = function() { console.log("This is the %s button", stBtn.name) };
@@ -291,7 +291,7 @@ function ViewStructureMenuManager() {
         stDisBtn.type =  'icon';
         stDisBtn.path = './img/acc_serv_icon/st_off.png';
         stDisBtn.color = 0xe6e6e6;
-        stDisBtn.visible = true;
+        stDisBtn.visible = false;
         stDisBtn.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(i5*2, i5), new THREE.MeshBasicMaterial({visible: false}));
         stDisBtn.position = new THREE.Vector3( -3*menuWidth/8, -menuHeight/3, 0.01 );
         stDisBtn.onexecute = function() { console.log("This is the %s button", stDisBtn.name) };
@@ -303,7 +303,7 @@ function ViewStructureMenuManager() {
         slBtn.type =  'icon';
         slBtn.path = './img/acc_serv_icon/sl_on.png';
         slBtn.color = 0xc91355;
-        slBtn.visible = true;
+        slBtn.visible = false;
         slBtn.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(i5*2, i5), new THREE.MeshBasicMaterial({visible: false}));
         slBtn.position = new THREE.Vector3( -menuWidth/8, -menuHeight/3, 0.01 );
         slBtn.onexecute = function() { console.log("This is the %s button", slBtn.name) };
@@ -315,7 +315,7 @@ function ViewStructureMenuManager() {
         slDisBtn.type =  'icon';
         slDisBtn.path = './img/acc_serv_icon/sl_off.png';
         slDisBtn.color = 0xe6e6e6;
-        slDisBtn.visible = true;
+        slDisBtn.visible = false;
         slDisBtn.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(i5*2, i5), new THREE.MeshBasicMaterial({visible: false}));
         slDisBtn.position = new THREE.Vector3( -menuWidth/8, -menuHeight/3, 0.01 );
         slDisBtn.onexecute = function() { console.log("This is the %s button", slDisBtn.name) };
@@ -327,7 +327,7 @@ function ViewStructureMenuManager() {
         adBtn.type =  'icon';
         adBtn.path = './img/acc_serv_icon/ad_on.png';
         adBtn.color = 0xc91355;
-        adBtn.visible = true;
+        adBtn.visible = false;
         adBtn.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(i5*2, i5), new THREE.MeshBasicMaterial({visible: false}));
         adBtn.position = new THREE.Vector3( menuWidth/8, -menuHeight/3, 0.01 );
         adBtn.onexecute = function() { console.log("This is the %s button", adBtn.name) };
@@ -339,7 +339,7 @@ function ViewStructureMenuManager() {
         adDisBtn.type =  'icon';
         adDisBtn.path = './img/acc_serv_icon/ad_off.png';
         adDisBtn.color = 0xe6e6e6;
-        adDisBtn.visible = true;
+        adDisBtn.visible = false;
         adDisBtn.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(i5*2, i5), new THREE.MeshBasicMaterial({visible: false}));
         adDisBtn.position = new THREE.Vector3( menuWidth/8, -menuHeight/3, 0.01 );
         adDisBtn.onexecute = function() { console.log("This is the %s button", adDisBtn.name) };
@@ -351,7 +351,7 @@ function ViewStructureMenuManager() {
         astBtn.type =  'icon';
         astBtn.path = './img/acc_serv_icon/ast_on.png';
         astBtn.color = 0xc91355;
-        astBtn.visible = true;
+        astBtn.visible = false;
         astBtn.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(i5*2, i5), new THREE.MeshBasicMaterial({visible: false}));
         astBtn.position = new THREE.Vector3( 3*menuWidth/8, -menuHeight/3, 0.01 );
         astBtn.onexecute = function() { console.log("This is the %s button", astBtn.name) };
@@ -363,7 +363,7 @@ function ViewStructureMenuManager() {
         astDisBtn.type =  'icon';
         astDisBtn.path = './img/acc_serv_icon/ast_off.png';
         astDisBtn.color = 0xe6e6e6;
-        astDisBtn.visible = true;
+        astDisBtn.visible = false;
         astDisBtn.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(i5*2, i5), new THREE.MeshBasicMaterial({visible: false}));
         astDisBtn.position = new THREE.Vector3( 3*menuWidth/8, -menuHeight/3, 0.01 );
         astDisBtn.onexecute = function() { console.log("This is the %s button", astDisBtn.name) };

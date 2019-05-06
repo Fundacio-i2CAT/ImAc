@@ -93,8 +93,9 @@ function SettingsMenuController(menuType) {
     data.openSettingsMenuButtonFunc = function(){ AddVisualFeedbackOnClick('settings-button', function(){
           if(menuMgr.getMenuType() == 1) {
                 menuMgr.ResetViews();
+                scene.getObjectByName( "pointer2" ).visible = true;
             }
-            menuMgr.Load(SettingsOptionCtrl);
+            menuMgr.Load(SettingsOptionCtrl)
         } )};
     data.previewButtonFunc = function(){ AddVisualFeedbackOnClick('preview-button', function(){menuMgr.OpenPreview()} )};
     data.menuTypeButtonFunc = function(){ AddVisualFeedbackOnClick(menuMgr.getMenuType() == 2 ? 'enhanced-menu-button' :'traditional-menu-button', function(){ settingsMgr.getChangeMenuTypeFunction()} )};

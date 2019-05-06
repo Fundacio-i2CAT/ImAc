@@ -283,7 +283,7 @@ VideoController = function() {
 
         getAdaptationSets().then(( str ) => { 
 
-            subController.enableSubtitles();
+            //subController.enableSubtitles();
             var firtsIteration = true;
             listOfVideoContents[0].vid.ontimeupdate = function() 
             {

@@ -148,10 +148,12 @@ SubSignManager = function() {
 	function generateSTConf(isdImac=0, isdImacY=0)
 	{
 		var offset = 0;
+		var stsizeajust = 1;
 		if ( !_SLsubtitles && signEnabled )
 		{
 			subArea = signArea;
-			offset = -signPosX * signerSize/2;
+			offset = -signPosX*0.8 * signerSize/2;
+			stsizeajust = 0.8;
 		}
 
 		var latitud = subPosY == 1 ? 30 * subArea/100 : -30 * subArea/100; 
@@ -162,7 +164,7 @@ SubSignManager = function() {
 
   		subConfig = {
 	        subtitleIndicator: subtitleIndicator,
-	        size: subSize * subAjust * esaySizeAjust,
+	        size: subSize * subAjust * esaySizeAjust * stsizeajust,
 	        area: subArea/130,
 	        opacity: subBackground,
 	        x: subPosX * subSize * subAjust * esaySizeAjust,
@@ -177,31 +179,6 @@ SubSignManager = function() {
 	function print3DText(isdContent, isdImac, isdImacY) 
 	{
 		generateSTConf( isdImac, isdImacY );
-		/*var offset = 0;
-		if ( !_SLsubtitles && signEnabled )
-		{
-			subArea = signArea;
-			offset = -signPosX * signerSize/2;
-		}
-
-		var latitud = subPosY == 1 ? 30 * subArea/100 : -30 * subArea/100; 
-  		var posY = _isHMD && !isExperimental ? 80 * Math.sin( Math.radians( latitud ) ) : 135 * Math.sin( Math.radians( latitud ) );
-  		var subAjust = _isHMD ? 1 : 0.97;
-  		var posZ = 75;
-  		var esaySizeAjust = subEasy ? 1.25 : 1;
-
-  		subConfig = {
-	        subtitleIndicator: subtitleIndicator,
-	        size: subSize * subAjust * esaySizeAjust,
-	        area: subArea/130,
-	        opacity: subBackground,
-	        x: subPosX * subSize * subAjust * esaySizeAjust,
-	        y: posY * 9/16,
-	        z: posZ,
-	        lon: -isdImac,
-	        lat: isdImacY,
-	        offset: offset
-	    };*/
 
 	  	if ( isdContent.contents.length > 0 )
 	  	{
@@ -349,8 +326,8 @@ SubSignManager = function() {
 
 	function createSigner()
 	{
-	   	var posX = ( 1.48*signArea/2-signerSize/2 ) *signPosX;
-	    var posY = ( 0.82*signArea/2-signerSize/2 ) *signPosY;
+	   	var posX = _isHMD ? 0.8* ( 1.48*signArea/2-signerSize/2 ) *signPosX : ( 1.48*signArea/2-signerSize/2 ) *signPosX;
+	    var posY = _isHMD ? 0.8* ( 0.82*signArea/2-signerSize/2 ) *signPosY : ( 0.82*signArea/2-signerSize/2 ) *signPosY;
 	    var posZ = 70;
 
 		var conf = {
@@ -369,8 +346,8 @@ SubSignManager = function() {
 	{
 		if ( scene.getObjectByName("sign") )
 		{
-		   	var posX = ( 1.48*signArea/2-signerSize/2 )*signPosX;
-		    var posY = ( 0.82*signArea/2-signerSize/2 )*signPosY;
+		   	var posX = _isHMD ? 0.8*( 1.48*signArea/2-signerSize/2 )*signPosX : ( 1.48*signArea/2-signerSize/2 )*signPosX;
+		    var posY = _isHMD ? 0.8*( 0.82*signArea/2-signerSize/2 )*signPosY : ( 0.82*signArea/2-signerSize/2 )*signPosY;
 		    var posZ = 70;
 
 		    scene.getObjectByName("sign").position.x = posX;
@@ -393,8 +370,8 @@ SubSignManager = function() {
     // Subtitles fixed under SL video
     function createSLSubtitle(textList, config)
     {
-    	var posX = ( 1.48*signArea/2-signerSize/2 ) *signPosX;
-	    var posY = ( 0.82*signArea/2-signerSize/2 ) *signPosY;
+    	var posX = _isHMD ? 0.8*( 1.48*signArea/2-signerSize/2 ) *signPosX : ( 1.48*signArea/2-signerSize/2 ) *signPosX;
+	    var posY = _isHMD ? 0.8*( 0.82*signArea/2-signerSize/2 ) *signPosY : ( 0.82*signArea/2-signerSize/2 ) *signPosY;
 	    var posZ = 70;
 
 		var slconfig = {

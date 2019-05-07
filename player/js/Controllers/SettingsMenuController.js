@@ -22,8 +22,6 @@ function SettingsMenuController(menuType) {
 	var view;
 	var viewStructure;
 
-	var SettingsOptionCtrl = new SettingsOptionMenuController(menuType)
-
 /**
  * This function initializes the data model with GetData() and updates the values with UpdateData() function.
  * It loads the viewStructure created in the MenuManager and turns its visibility to true.

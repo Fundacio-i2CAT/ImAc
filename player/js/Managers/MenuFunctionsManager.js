@@ -261,9 +261,9 @@ MenuFunctionsManager = function() {
         } else {
             menuMgr.ResetViews();
             //SettingsOptionCtrl.Exit();
-            menuMgr.Load(SettingsOptionCtrl);
+            
         }
-                
+        menuMgr.Load(SettingsOptionCtrl);       
     }
 
     this.getChangePointerSizeFunc = function(size){

@@ -1018,6 +1018,11 @@ SubSignManager = function() {
 		return x == signPosX;
 	};
 
+	this.checkSignSize = function(x)
+	{
+		return x == signerSize;
+	};
+
 	this.checkSignIndicator = function(x)
 	{
 		return x == signIndicator;

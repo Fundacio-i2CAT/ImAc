@@ -126,10 +126,10 @@ function SettingsOptionMenuController() {
  */
     function AddInteractivityToMenuElements(){
     	viewStructure.children.forEach(function(intrElement){
-    		if(intrElement.visible){
+    		if( intrElement.visible ){
     			interController.addInteractiveObject(intrElement);
     		}
-    	})
+    	});
     }
 
 /**
@@ -196,7 +196,7 @@ function SettingsOptionMenuController() {
     }
 
     this.close = function(){
-        if(menuMgr.getMenuType() == 2){
+        if( menuMgr.getMenuType() == 2 ){
             menuMgr.getActualCtrl().Exit();
             menuMgr.setActualCtrl('');
             data.activeMenuOpts = undefined;

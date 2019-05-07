@@ -24,9 +24,9 @@
  */
 function VolumeMenuController() {
 
-	var data;
-	var view;
-	var viewStructure;
+	let data;
+	let view;
+	let viewStructure;
 
 /**
  * This function initializes the data model with GetData() and updates the values with UpdateData() function.
@@ -56,15 +56,13 @@ function VolumeMenuController() {
  *
  * @function      Exit (name)
  */
-	this.Exit = function()
-    {
+	this.Exit = function(){
         // Works if the viewStructure is loaded.
-    	if(viewStructure)
-    	{
+    	if( viewStructure ){
 	    	viewStructure.visible = false;
 	    	viewStructure.children.forEach(function(intrElement){
 	    		interController.removeInteractiveObject(intrElement.name);
-	    	})
+	    	});
     	}
     }
 
@@ -73,8 +71,7 @@ function VolumeMenuController() {
  *
  * @return     {<type>}  The menu name.
  */
-	this.getMenuName = function()
-    {
+	this.getMenuName = function(){
     	return data.name;
     }
 
@@ -83,8 +80,7 @@ function VolumeMenuController() {
  *
  * @return     {<type>}  The menu index.
  */
-	this.getMenuIndex = function()
-    {
+	this.getMenuIndex = function(){
         return -1;
     }
 
@@ -94,12 +90,12 @@ function VolumeMenuController() {
  * @class      GetData (name)
  * @return     {VolumeLSMenuModel}  The data.
  */
-  function GetData(){
-    if (data == null){
-      data = new VolumeMenuModel();
+    function GetData(){
+        if( data == null ){
+            data = new VolumeMenuModel();
+        }
+        return data;
     }
-    return data;
-	}
 
 /**
  * { function_description }
@@ -107,14 +103,14 @@ function VolumeMenuController() {
  * @function      UpdateData (name)
  */
 	function UpdateData(){
-  	data.volumeLevel = _AudioManager.getVolume()*100+'%';
-  	data.isVolumeLevelVisible = false;
+        data.volumeLevel = _AudioManager.getVolume()*100+'%';
+        data.isVolumeLevelVisible = false;
 		data.isMuted = _AudioManager.isAudioMuted();
 
 		data.muteUnmuteMenuButtonFunc = function(){ AddVisualFeedbackOnClick(_AudioManager.isAudioMuted() ? 'unmute-volume-button' : 'mute-volume-button', function(){ MuteUnmuteVolumeFunc()} )};
 		data.plusVolumeMenuButtonFunc = function(){ AddVisualFeedbackOnClick('plus-volume-button', function(){ ChangeVolumeFunc(true)} )};
 		data.minusVolumeMenuButtonFunc = function(){ AddVisualFeedbackOnClick('minus-volume-button', function(){ ChangeVolumeFunc(false)} )};
-    data.isPreviewVisible = false;
+        data.isPreviewVisible = false;
   }
 
 /**
@@ -125,7 +121,7 @@ function VolumeMenuController() {
  * @param      {Function}  callback    The callback
  */
 	function AddVisualFeedbackOnClick(buttonName, callback){
-  	data.clickedButtonName = buttonName;
+        data.clickedButtonName = buttonName;
 		view.pressButtonFeedback(data);
 		setTimeout(callback, 300);
   }
@@ -136,38 +132,38 @@ function VolumeMenuController() {
  * @function      ChangeVolumeFunc (name)
  * @param      {number}  plus    The plus
  */
-	function ChangeVolumeFunc(plus){
-  	var sign = plus ? 1 : -1;
-    _AudioManager.changeVolume( 0.1*sign );
-    volumeLevelDisplayLogic();
-  };
+    function ChangeVolumeFunc(plus){
+        let sign = plus ? 1 : -1;
+        _AudioManager.changeVolume( 0.1*sign );
+        volumeLevelDisplayLogic();
+    };
 
 /**
  * [MuteUnmuteVolumeFunc description]
  * @function
  */
-  function MuteUnmuteVolumeFunc(){
+    function MuteUnmuteVolumeFunc(){
 		_AudioManager.isAudioMuted() ? _AudioManager.setunmute() : _AudioManager.setmute();
 		UpdateData();
 		view.UpdateView(data);
-    menuMgr.AddInteractionIfVisible(viewStructure);
-  };
+        menuMgr.AddInteractionIfVisible(viewStructure);
+    };
 
 /**
  * [volumeLevelDisplayLogic description]
  * @function
  * @return {[type]} [description]
  */
-  function volumeLevelDisplayLogic(){
+    function volumeLevelDisplayLogic(){
 		data.volumeLevel = _AudioManager.getVolume();
-    data.isVolumeLevelVisible =  true;
-    view.UpdateView(data);
+        data.isVolumeLevelVisible =  true;
+        view.UpdateView(data);
 
-    setTimeout(function(){
-    	(_AudioManager.getVolume()>0) ? _AudioManager.setunmute() : _AudioManager.setmute();
-    	data.isMuted = _AudioManager.isAudioMuted();
-			data.isVolumeLevelVisible =  false;
-			view.UpdateView(data);
-    }, 500);
-  };
+        setTimeout(function(){
+    	   (_AudioManager.getVolume()>0) ? _AudioManager.setunmute() : _AudioManager.setmute();
+    	   data.isMuted = _AudioManager.isAudioMuted();
+	       data.isVolumeLevelVisible =  false;
+	       view.UpdateView(data);
+        }, 500);
+    };
 }

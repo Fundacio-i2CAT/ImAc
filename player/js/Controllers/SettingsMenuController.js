@@ -50,24 +50,24 @@ function SettingsMenuController(menuType) {
  * @function      Exit (name)
  */
 	this.Exit = function(){
-  	menuMgr.setOptActiveIndex(0);
-    // Works if the viewStructure is loaded.
-  	if(viewStructure){
-    	viewStructure.visible = false;
-    	viewStructure.children.forEach(function(intrElement){
-    		interController.removeInteractiveObject(intrElement.name);
-    	})
-  	}
-  }
+      	menuMgr.setOptActiveIndex(0);
+        // Works if the viewStructure is loaded.
+      	if(viewStructure){
+        	viewStructure.visible = false;
+        	viewStructure.children.forEach(function(intrElement){
+        		interController.removeInteractiveObject(intrElement.name);
+        	})
+      	}
+    }
 
 /**
  * Gets the menu name.
  *
  * @return     {<type>}  The menu name.
  */
-  this.getMenuName = function(){
-  	return data.name;
-  }
+    this.getMenuName = function(){
+    	return data.name;
+    }
 
 /**
  * Gets the data.
@@ -75,12 +75,12 @@ function SettingsMenuController(menuType) {
  * @class      GetData (name)
  * @return     {SettingsLSMenuModel}  The data.
  */
-  function GetData(){
-	  if (data == null){
-      data = new SettingsMenuModel();
-	  }
-    return data;
-	}
+    function GetData(){
+        if (data == null){
+            data = new SettingsMenuModel();
+        }
+        return data;
+    }
 
 /**
  * { function_description }
@@ -88,21 +88,23 @@ function SettingsMenuController(menuType) {
  * @class      UpdateData (name)
  */
 	function UpdateData(){
-    data.openSettingsMenuButtonFunc = function(){ AddVisualFeedbackOnClick('settings-button', function(){
-          if(menuMgr.getMenuType() == 1) {
-                menuMgr.ResetViews();
-                if ( scene.getObjectByName( "pointer2" ) && _isHMD ){
-                    scene.getObjectByName( "pointer2" ).visible = true;
-                } else if ( scene.getObjectByName( "pointer" ) && _isHMD ) {
-                    scene.getObjectByName( "pointer" ).visible = true;
-                    scene.getObjectByName('pointer').scale.set(1*_pointerSize,1*_pointerSize,1*_pointerSize)
+        data.openSettingsMenuButtonFunc = function(){ 
+            AddVisualFeedbackOnClick('settings-button', function(){
+                if( menuMgr.getMenuType() == 1) {
+                    menuMgr.ResetViews();
+                    if( scene.getObjectByName( "pointer2" ) && _isHMD ){
+                        scene.getObjectByName( "pointer2" ).visible = true;
+                    }else if( scene.getObjectByName( "pointer" ) && _isHMD ) {
+                        scene.getObjectByName( "pointer" ).visible = true;
+                        scene.getObjectByName('pointer').scale.set(1*_pointerSize,1*_pointerSize,1*_pointerSize)
+                    }
                 }
-            }
-            menuMgr.Load(SettingsOptionCtrl)
-        } )};
-    data.previewButtonFunc = function(){ AddVisualFeedbackOnClick('preview-button', function(){menuMgr.OpenPreview()} )};
-    data.menuTypeButtonFunc = function(){ AddVisualFeedbackOnClick(menuMgr.getMenuType() == 2 ? 'enhanced-menu-button' :'traditional-menu-button', function(){ settingsMgr.getChangeMenuTypeFunction()} )};
-    data.isPreviewVisible = false;
+                menuMgr.Load(SettingsOptionCtrl)
+            });
+        };
+        data.previewButtonFunc = function(){ AddVisualFeedbackOnClick('preview-button', function(){menuMgr.OpenPreview()} )};
+        data.menuTypeButtonFunc = function(){ AddVisualFeedbackOnClick(menuMgr.getMenuType() == 2 ? 'enhanced-menu-button' :'traditional-menu-button', function(){ settingsMgr.getChangeMenuTypeFunction()} )};
+        data.isPreviewVisible = false;
   }
 
 /**
@@ -110,14 +112,13 @@ function SettingsMenuController(menuType) {
  *
  * @class      AddInteractivityToMenuElements (name)
  */
-  function AddInteractivityToMenuElements(){
-  	viewStructure.children.forEach(function(intrElement){
-  		if(intrElement.visible)
-  		{
-  			interController.addInteractiveObject(intrElement);
-  		}
-  	})
-  }
+    function AddInteractivityToMenuElements(){
+        viewStructure.children.forEach(function(intrElement){
+  		    if(intrElement.visible){
+  		        interController.addInteractiveObject(intrElement);
+            }
+        });
+    }
 
 /**
  * Adds a visual feedback on click.
@@ -126,9 +127,9 @@ function SettingsMenuController(menuType) {
  * @param      {<type>}    buttonName  The button name
  * @param      {Function}  callback    The callback
  */
-  function AddVisualFeedbackOnClick(buttonName, callback){
-  	data.clickedButtonName = buttonName;
-		view.pressButtonFeedback(data);
-		setTimeout(callback, 300);
-  }
+    function AddVisualFeedbackOnClick(buttonName, callback){
+    	data.clickedButtonName = buttonName;
+    	view.pressButtonFeedback(data);
+    	setTimeout(callback, 300);
+    }
 }

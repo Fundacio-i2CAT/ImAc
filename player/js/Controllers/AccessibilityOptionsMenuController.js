@@ -52,10 +52,8 @@ function AccessibilityOptionsMenuController(menuType) {
  *
  * @function      Exit (name)
  */
-	this.Exit = function()
-    {
-    	if(viewStructure)
-    	{
+	this.Exit = function(){
+    	if(viewStructure){
 	    	viewStructure.visible = false;
 	    	viewStructure.children.forEach(function(intrElement){
 	    		interController.removeInteractiveObject(intrElement.name);
@@ -68,8 +66,7 @@ function AccessibilityOptionsMenuController(menuType) {
  *
  * @return     {<type>}  The menu name.
  */
-    this.getMenuName = function()
-    {
+    this.getMenuName = function(){
     	return data.name;
     }
 
@@ -79,10 +76,8 @@ function AccessibilityOptionsMenuController(menuType) {
  * @class      GetData (name)
  * @return     {AAccessibilityOptionsMenuModel}  The data.
  */
-    function GetData()
-	{
-	    if (data == null)
-	    {
+    function GetData(){
+	    if (data == null){
 	        data = new AccessibilityOptionsMenuModel();
 	    }
 	    return data;

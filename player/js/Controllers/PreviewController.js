@@ -56,11 +56,9 @@ function PreviewController() {
  *
  * @function      Exit (name)
  */
-	this.Exit = function()
-    {
+	this.Exit = function(){
         // Works if the viewStructure is loaded.        
-    	if(viewStructure)
-    	{
+    	if(viewStructure){
 	    	viewStructure.visible = false;
 	    	viewStructure.children.forEach(function(intrElement){
 	    		interController.removeInteractiveObject(intrElement.name);
@@ -73,8 +71,7 @@ function PreviewController() {
  *
  * @return     {<type>}  The menu name.
  */
-	this.getMenuName = function()
-    {
+	this.getMenuName = function(){
     	return data.name;
     }
 
@@ -83,8 +80,7 @@ function PreviewController() {
  *
  * @return     {<type>}  The menu index.
  */
-	this.getMenuIndex = function()
-    {
+	this.getMenuIndex = function(){
         return -1;
     }
     
@@ -94,10 +90,8 @@ function PreviewController() {
  * @class      GetData (name)
  * @return     {MultiOptionsPreviewModel}  The data.
  */
-    function GetData()
-	{
-	    if (data == null)
-	    {
+    function GetData(){
+	    if (data == null){
 	        data = new PreviewModel();
 	    }
 	    return data;
@@ -108,8 +102,7 @@ function PreviewController() {
  *
  * @class      UpdateData (name)
  */
-	function UpdateData()
-    {
+	function UpdateData(){
         data.isArrowsVisible = false;
         data.isRadarVisible = false;
     	data.subtitlesPreview = setSubtitlePreview();
@@ -124,22 +117,15 @@ function PreviewController() {
      *
      * @return     {<type>}  { description_of_the_return_value }
      */
-    function setSubtitlePreview()
-    {
+    function setSubtitlePreview(){
     	let subConfig = subController.getSubtitleConfig();
     	let subPreviewText = "";
 
-    	if(subController.getSubSize() == 1)
-    	{
+    	if(subController.getSubSize() == 1){
     		subPreviewText += "Large ";
-    	}
-    	else if(subController.getSubSize() == 0.8)
-    	{
+    	} else if(subController.getSubSize() == 0.8){
     		subPreviewText += "Medium ";
-    	}
-    	else subPreviewText += "Small ";
-
-
+    	} else subPreviewText += "Small ";
 
     	subPreviewText += (subController.getSubPosition.y > 0) ? "top" : "bottom";
 
@@ -152,8 +138,11 @@ function PreviewController() {
         subtitleMesh = _moData.getPreviewSubtitleMesh( previewSTtext, subConfig);
         subtitleMesh.name = "subtitlespreview";
 
-        if(subConfig.subtitleIndicator === 'arrow') data.isArrowsVisible = true;
-        else if(subConfig.subtitleIndicator === 'radar') data.isRadarVisible = true;
+        if(subConfig.subtitleIndicator === 'arrow') {
+            data.isArrowsVisible = true;
+        } else if(subConfig.subtitleIndicator === 'radar') {
+            data.isRadarVisible = true;
+        }
         
         return subtitleMesh;
     }
@@ -163,8 +152,7 @@ function PreviewController() {
  *
  * @return     {<type>}  { description_of_the_return_value }
  */
-    function setAreaSTPreview()
-    {
+    function setAreaSTPreview(){
         subtitlesAreaMesh = _moData.getPlaneImageMesh(1.48*subController.getSubArea(), 0.82*subController.getSubArea(), './img/rect5044.png', 'areamesh', 5);
         subtitlesAreaMesh.position.z = -70;
         subtitlesAreaMesh.name = 'areaSTpreview';
@@ -176,8 +164,7 @@ function PreviewController() {
  *
  * @return     {<type>}  { description_of_the_return_value }
  */
-    function setAreaSLPreview()
-    {
+    function setAreaSLPreview(){
         signerAreaMesh = _moData.getPlaneImageMesh(1.48*subController.getSignerArea(), 0.82*subController.getSignerArea(), './img/rect5044.png', 'areamesh', 5);
         signerAreaMesh.position.z = -70;
         signerAreaMesh.name = 'areaSLpreview';
@@ -189,15 +176,13 @@ function PreviewController() {
  *
  * @return     {THREE}  { description_of_the_return_value }
  */
-    function setSignerPreview()
-    {
+    function setSignerPreview(){
         var size = subController.getSignerSize();
         var material = new THREE.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 1 }); 
         var geometry = new THREE.PlaneGeometry( size, size );
         var signerMesh =  new THREE.Mesh( geometry, material);
 
-        let position = 
-        {
+        let position = {
             x: ( 1.48*subController.getSignerArea()/2-size/2 )*subController.getSignerPosition().x,
             y: (0.82*subController.getSignerArea()/2-size/2) * subController.getSignerPosition().y
         };

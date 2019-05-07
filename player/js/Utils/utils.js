@@ -113,6 +113,7 @@ function createVRButton_1(renderer)
         button.style.display = '';
         button.style.left = 'calc(50% - 110px)';
         button.textContent = 'VR';
+        button.id ='button_1';
 
         button.onclick = function() {
 
@@ -165,6 +166,7 @@ function createVRButton_2(renderer)
         button.style.display = '';
         button.style.left = 'calc(50% + 10px)';
         button.textContent = 'NO VR';
+        button.id ='button_2';
         button.onclick = function () {
 
             enterfullscreen();

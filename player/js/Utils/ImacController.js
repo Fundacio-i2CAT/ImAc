@@ -37,6 +37,8 @@ function launchVoiceCommand( com )
 	else if ( com.includes("forward|") ) _ImAc.goForward(23);
 	else if ( com.includes("backward|") ) _ImAc.goBack( com.split("backward|")[1] );
 	else if ( com == 'return' ) window.history.back();
+	else if ( com == 'VR_on' ) document.getElementById('button_1').onclick()();
+	else if ( com == 'VR_off' ) document.getElementById('button_2').onclick()();
 
 }
 

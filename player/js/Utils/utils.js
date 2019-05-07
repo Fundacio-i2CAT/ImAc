@@ -83,7 +83,7 @@ function initReticulum(cam)
         reticle: {
             visible: false,
             restPoint: 50, //Defines the reticle's resting point when no object has been targeted
-            color: 0xffff00,
+            color: 0xe6e6e6,
             innerRadius: 0.0004,
             outerRadius: 0.003,
             hover: {
@@ -97,7 +97,7 @@ function initReticulum(cam)
         fuse: {
             visible: false,
             duration: 3,
-            color: 0x4669a7,
+            color: 0xc91355,
             innerRadius: 0.045,
             outerRadius: 0.06,
             vibrate: 100, //Set to 0 or [] to disable

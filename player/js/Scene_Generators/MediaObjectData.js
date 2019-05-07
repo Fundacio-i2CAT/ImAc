@@ -433,7 +433,7 @@ THREE.MediaObjectData = function () {
 
     this.createOpenMenuMesh = function()
     {
-        var openMenuText = getTextMesh( "Menu", 22, 0xffff00, "openmenutext" ); 
+        var openMenuText = getTextMesh( "Menu", 22, 0xe6e6e6, "openmenutext" ); 
         openMenuText.position.y = 6;
         openMenuText.position.z = -60;
         openMenuText.scale.set( 0.15, 0.15, 1 )

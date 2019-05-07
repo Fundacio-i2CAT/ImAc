@@ -172,12 +172,12 @@ function MenuManager() {
     this.createMenuActivationElement = function() {
         var geometry = new THREE.SphereGeometry( 99, 32, 16, Math.PI/2, Math.PI * 2,  2.35,  0.4 );
         geometry.scale( - 1, 1, 1 );
-        var material = new THREE.MeshBasicMaterial( {color: 0xffffff, side: THREE.FrontSide, transparent: true, opacity:0} );
+        var material = new THREE.MeshBasicMaterial( {color: 0xc91355, side: THREE.FrontSide, transparent: true, opacity:0} );
         menuActivationElement = new THREE.Mesh( geometry, material );
         menuActivationElement.name = 'openMenu';
 
         Reticulum.add( menuActivationElement, {
-            reticleHoverColor: 0x4669a7,
+            reticleHoverColor: 0xc91355,
             fuseDuration: 2, // Overrides global fuse duration
             fuseVisible: true,
             onGazeOver: function(){

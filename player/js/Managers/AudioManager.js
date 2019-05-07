@@ -18,7 +18,7 @@ AudioManager = function() {
     var _AD;  // AD audio element
     var adContent; // URL
     var adContentArray; // URL
-    var adVolume = 50; // Integer: Volume percentage
+    var adVolume = 100; // Integer: Volume percentage
     var adEnabled = false; // boolean
     var adLang; // string (en, de, ca, es)
     var adAvailableLang = []; // Array { name, value, default:bool }
@@ -177,32 +177,57 @@ AudioManager = function() {
 
     this.setmute = function()
     {
-        isMuted = true;
-        volume = activeVideoElement.volume;
-        activeVideoElement.volume = 0;
+        if ( adEnabled )
+        {
+            //isMuted = true;
+            //_AudioManager.setVolume( 'AD', 0 );
+            volume = activeVideoElement.volume;
+            activeVideoElement.volume = 0;
+        }
+        else {
+            isMuted = true;
+            volume = activeVideoElement.volume;
+            activeVideoElement.volume = 0;
+        }
     };
 
     this.setunmute = function()
     {
-        isMuted = false;
-        activeVideoElement.volume = volume > 0 ? volume : volumeChangeStep;
+        if ( adEnabled )
+        {
+            //isMuted = false;
+            //_AudioManager.setVolume( 'AD', 50 );
+            volume = activeVideoElement.volume;
+            activeVideoElement.volume = 0;
+        }
+        else {
+            isMuted = false;
+            activeVideoElement.volume = volume > 0 ? volume : 0.5;
+        }
     };
 
     this.changeVolume = function(value)
     {
-        var newVolume = activeVideoElement.volume + value;
+        if ( adEnabled )
+        {
+            var level = adVolume + (value*100)
+            _AudioManager.setVolume( 'AD', level);
+        }
+        else {
+            var newVolume = activeVideoElement.volume + value;
 
-        if ( newVolume < 0 )
-        {
-            newVolume = 0;
+            if ( newVolume < 0 )
+            {
+                newVolume = 0;
+            }
+            else if ( newVolume > 1 )
+            {
+                newVolume = 1;
+            }
+            
+            activeVideoElement.volume = newVolume;
+            volume = activeVideoElement.volume;
         }
-        else if ( newVolume > 1 )
-        {
-            newVolume = 1;
-        }
-        
-        activeVideoElement.volume = newVolume;
-        volume = activeVideoElement.volume;
     };
 
     this.isAmbisonics = function()
@@ -217,7 +242,8 @@ AudioManager = function() {
 
     this.getVolume = function()
     {
-        return Math.round(activeVideoElement.volume * 100) / 100
+        if ( adEnabled ) return Math.round(adVolume/100);
+        else return Math.round(activeVideoElement.volume * 100) / 100
     };
 
     this.getAudiContext = function()
@@ -263,7 +289,7 @@ AudioManager = function() {
     {
         if ( type == 'AD' )
         {
-            adVolume = level;
+            adVolume = level > 100 ? 100 : level < 0 ? 0 : level;
             if ( _AD ) _AD.volume = adVolume/100;
         }
         else if ( type == 'AST' )

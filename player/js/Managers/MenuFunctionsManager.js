@@ -14,17 +14,25 @@ MenuFunctionsManager = function() {
             var ste2r = subController.getSubEasy() ? 1 : 0;
             var aste2r = _AudioManager.getSubEasy() ? 1 : 0;
 
-            var sublang = list_contents[ demoId ].subtitles[ ste2r ][ lang ] ? lang : Object.keys( list_contents[ demoId ].subtitles[ ste2r ] )[ 0 ];
-            subController.setSubtitle( list_contents[ demoId ].subtitles[ ste2r ][ sublang ], sublang );
+            if ( list_contents[ demoId ].subtitles && list_contents[ demoId ].subtitles[ ste2r ] ) {
+                var sublang = list_contents[ demoId ].subtitles[ ste2r ][ lang ] ? lang : Object.keys( list_contents[ demoId ].subtitles[ ste2r ] )[ 0 ];
+                subController.setSubtitle( list_contents[ demoId ].subtitles[ ste2r ][ sublang ], sublang );
+            }
 
-            var siglang = list_contents[ demoId ].signer[ 0 ][ lang ] ? lang : Object.keys( list_contents[ demoId ].signer[ 0 ] )[ 0 ];
-            subController.setSignerContent( list_contents[ demoId ].signer[ 0 ][ siglang ], siglang );
+            if ( list_contents[ demoId ].signer && list_contents[ demoId ].signer[ 0 ] ) {
+                var siglang = list_contents[ demoId ].signer[ 0 ][ lang ] ? lang : Object.keys( list_contents[ demoId ].signer[ 0 ] )[ 0 ];
+                subController.setSignerContent( list_contents[ demoId ].signer[ 0 ][ siglang ], siglang );
+            }
 
-            var adlang = list_contents[ demoId ].ad[ 0 ][ lang ] ? lang : Object.keys( list_contents[ demoId ].ad[ 0 ] )[ 0 ];
-            _AudioManager.setADContent( list_contents[ demoId ].ad[ 0 ][ adlang ], adlang );
+            if ( list_contents[ demoId ].ad && list_contents[ demoId ].ad[ 0 ] ) {
+                var adlang = list_contents[ demoId ].ad[ 0 ][ lang ] ? lang : Object.keys( list_contents[ demoId ].ad[ 0 ] )[ 0 ];
+                _AudioManager.setADContent( list_contents[ demoId ].ad[ 0 ][ adlang ], adlang );
+            }
             
-            var astlang = list_contents[ demoId ].ast[ aste2r ][ lang ] ? lang : Object.keys( list_contents[ demoId ].ast[ aste2r ] )[ 0 ];
-            _AudioManager.setASTContent( list_contents[ demoId ].ast[ aste2r ][ astlang ], astlang );
+            if ( list_contents[ demoId ].ast && list_contents[ demoId ].ast[ aste2r ] ) {
+                var astlang = list_contents[ demoId ].ast[ aste2r ][ lang ] ? lang : Object.keys( list_contents[ demoId ].ast[ aste2r ] )[ 0 ];
+                _AudioManager.setASTContent( list_contents[ demoId ].ast[ aste2r ][ astlang ], astlang );
+            }
         }
     }
 

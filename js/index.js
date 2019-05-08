@@ -1813,7 +1813,7 @@ var _confMemory;
             .append(
                 $('<div id="btn_ast_min" class="container-4 Settings-option2">')
                 .attr('onclick', 'selectOption(this.id)')
-                .append( $('<p>' + _ImAc_Buttons.minimun[ _ImAc_default.mainlanguage ] + '</p>') )
+                .append( $('<p>' + _ImAc_Buttons.minimum[ _ImAc_default.mainlanguage ] + '</p>') )
                 .append('</div>')
             )
             .append(

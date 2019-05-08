@@ -313,7 +313,7 @@ var _confMemory;
 
             createAccesIcons( id );
 
-            document.getElementById( 'content_desc' ).innerHTML = list_contents[id].description || "";
+            document.getElementById( 'content_desc' ).innerHTML = list_contents[id].descriptionArray[0][ _ImAc_default.mainlanguage ] || "";
             document.getElementById( 'content_lang' ).innerHTML = "Audio: " + list_contents[id].language || "";
             document.getElementById( 'content_poster' ).src = list_contents[id].poster || "./img/u25_c.png";
 
@@ -451,7 +451,7 @@ var _confMemory;
             document.getElementById( 'btn_trad' ).className += " enabled";
             document.getElementById( 'btn_ls' ).classList.remove("enabled");
             document.getElementById( 'img_MenuDesc' ).src = _ImAcMeta.menutype.trad.img;
-            document.getElementById( 'text_Desc' ).innerHTML = _ImAcMeta.menutype.trad.text;     
+            document.getElementById( 'text_Desc' ).innerHTML = _ImAcMeta.menutype.trad[ _ImAc_default.mainlanguage ];     
         }
         else if ( id == 'btn_ls' )
         {
@@ -460,7 +460,7 @@ var _confMemory;
             document.getElementById( 'btn_ls' ).className += " enabled";
             document.getElementById( 'btn_trad' ).classList.remove("enabled");
             document.getElementById( 'img_MenuDesc' ).src = _ImAcMeta.menutype.ls.img;
-            document.getElementById( 'text_Desc' ).innerHTML = _ImAcMeta.menutype.ls.text;
+            document.getElementById( 'text_Desc' ).innerHTML = _ImAcMeta.menutype.ls[ _ImAc_default.mainlanguage ];
         }
         // Pointer size
         else if ( id == 'btn_pointer_S' )
@@ -471,7 +471,7 @@ var _confMemory;
             document.getElementById( 'btn_pointer_M' ).classList.remove("enabled");
             document.getElementById( 'btn_pointer_L' ).classList.remove("enabled");
             document.getElementById( 'img_MenuDesc' ).src = _ImAcMeta.pointersize.S.img;
-            document.getElementById( 'text_Desc' ).innerHTML = _ImAcMeta.pointersize.S.text;    
+            document.getElementById( 'text_Desc' ).innerHTML = _ImAcMeta.pointersize.S[ _ImAc_default.mainlanguage ];    
         }
         else if ( id == 'btn_pointer_M' )
         {
@@ -481,7 +481,7 @@ var _confMemory;
             document.getElementById( 'btn_pointer_S' ).classList.remove("enabled");
             document.getElementById( 'btn_pointer_L' ).classList.remove("enabled");
             document.getElementById( 'img_MenuDesc' ).src = _ImAcMeta.pointersize.M.img;
-            document.getElementById( 'text_Desc' ).innerHTML = _ImAcMeta.pointersize.M.text;
+            document.getElementById( 'text_Desc' ).innerHTML = _ImAcMeta.pointersize.M[ _ImAc_default.mainlanguage ];
         }
         else if ( id == 'btn_pointer_L' )
         {
@@ -491,7 +491,7 @@ var _confMemory;
             document.getElementById( 'btn_pointer_S' ).classList.remove("enabled");
             document.getElementById( 'btn_pointer_M' ).classList.remove("enabled");
             document.getElementById( 'img_MenuDesc' ).src = _ImAcMeta.pointersize.L.img;
-            document.getElementById( 'text_Desc' ).innerHTML = _ImAcMeta.pointersize.L.text;
+            document.getElementById( 'text_Desc' ).innerHTML = _ImAcMeta.pointersize.L[ _ImAc_default.mainlanguage ];
         }
         // Voice control
         else if ( id == 'btn_voice_on' )
@@ -504,7 +504,7 @@ var _confMemory;
             document.getElementById( 'btn_voice_on' ).className += " enabled";
             document.getElementById( 'btn_voice_off' ).classList.remove("enabled");
             document.getElementById( 'img_MenuDesc' ).src = _ImAcMeta.voicecontrol.on.img;
-            document.getElementById( 'text_Desc' ).innerHTML = _ImAcMeta.voicecontrol.on.text;
+            document.getElementById( 'text_Desc' ).innerHTML = _ImAcMeta.voicecontrol.on[ _ImAc_default.mainlanguage ];
         }
         else if ( id == 'btn_voice_off' )
         {
@@ -516,7 +516,7 @@ var _confMemory;
             document.getElementById( 'btn_voice_off' ).className += " enabled";
             document.getElementById( 'btn_voice_on' ).classList.remove("enabled");
             document.getElementById( 'img_MenuDesc' ).src = _ImAcMeta.voicecontrol.off.img;
-            document.getElementById( 'text_Desc' ).innerHTML = _ImAcMeta.voicecontrol.off.text;
+            document.getElementById( 'text_Desc' ).innerHTML = _ImAcMeta.voicecontrol.off[ _ImAc_default.mainlanguage ];
         }
         // User profile
         else if ( id == 'btn_user_save' )
@@ -528,7 +528,7 @@ var _confMemory;
             document.getElementById( 'btn_user_save' ).className += " enabled";
             document.getElementById( 'btn_user_del' ).classList.remove("enabled");
             document.getElementById( 'img_MenuDesc' ).src = _ImAcMeta.userprofile.save.img;
-            document.getElementById( 'text_Desc' ).innerHTML = _ImAcMeta.userprofile.save.text;
+            document.getElementById( 'text_Desc' ).innerHTML = _ImAcMeta.userprofile.save[ _ImAc_default.mainlanguage ];
         }
         else if ( id == 'btn_user_del' )
         {
@@ -540,7 +540,7 @@ var _confMemory;
             document.getElementById( 'btn_user_del' ).className += " enabled";
             document.getElementById( 'btn_user_save' ).classList.remove("enabled");
             document.getElementById( 'img_MenuDesc' ).src = _ImAcMeta.userprofile.del.img;
-            document.getElementById( 'text_Desc' ).innerHTML = _ImAcMeta.userprofile.del.text;
+            document.getElementById( 'text_Desc' ).innerHTML = _ImAcMeta.userprofile.del[ _ImAc_default.mainlanguage ];
         }
         // Accessibility language
         else if ( id == 'btn_lang_en' )
@@ -588,7 +588,7 @@ var _confMemory;
             document.getElementById( 'btn_ind_arrow' ).classList.remove("enabled");
             document.getElementById( 'btn_ind_none' ).classList.remove("enabled");
             document.getElementById( 'img_MenuDesc' ).src = _ImAcMeta.indicator.radar.img;
-            document.getElementById( 'text_Desc' ).innerHTML = _ImAcMeta.indicator.radar.text;
+            document.getElementById( 'text_Desc' ).innerHTML = _ImAcMeta.indicator.radar[ _ImAc_default.mainlanguage ];
         }
         else if ( id == 'btn_ind_arrow' )
         {
@@ -598,7 +598,7 @@ var _confMemory;
             document.getElementById( 'btn_ind_radar' ).classList.remove("enabled");
             document.getElementById( 'btn_ind_none' ).classList.remove("enabled");
             document.getElementById( 'img_MenuDesc' ).src = _ImAcMeta.indicator.arrow.img;
-            document.getElementById( 'text_Desc' ).innerHTML = _ImAcMeta.indicator.arrow.text;
+            document.getElementById( 'text_Desc' ).innerHTML = _ImAcMeta.indicator.arrow[ _ImAc_default.mainlanguage ];
         }
         else if ( id == 'btn_ind_none' )
         {
@@ -608,7 +608,7 @@ var _confMemory;
             document.getElementById( 'btn_ind_radar' ).classList.remove("enabled");
             document.getElementById( 'btn_ind_arrow' ).classList.remove("enabled");
             document.getElementById( 'img_MenuDesc' ).src = _ImAcMeta.indicator.none.img;
-            document.getElementById( 'text_Desc' ).innerHTML = _ImAcMeta.indicator.none.text;
+            document.getElementById( 'text_Desc' ).innerHTML = _ImAcMeta.indicator.none[ _ImAc_default.mainlanguage ];
         }
         // Safe Area
         else if ( id == 'btn_safearea_S' )
@@ -619,7 +619,7 @@ var _confMemory;
             document.getElementById( 'btn_safearea_M' ).classList.remove("enabled");
             document.getElementById( 'btn_safearea_L' ).classList.remove("enabled");
             document.getElementById( 'img_MenuDesc' ).src = _ImAcMeta.safearea.S.img;
-            document.getElementById( 'text_Desc' ).innerHTML = _ImAcMeta.safearea.S.text;
+            document.getElementById( 'text_Desc' ).innerHTML = _ImAcMeta.safearea.S[ _ImAc_default.mainlanguage ];
         }
         else if ( id == 'btn_safearea_M' )
         {
@@ -629,7 +629,7 @@ var _confMemory;
             document.getElementById( 'btn_safearea_S' ).classList.remove("enabled");
             document.getElementById( 'btn_safearea_L' ).classList.remove("enabled");
             document.getElementById( 'img_MenuDesc' ).src = _ImAcMeta.safearea.M.img;
-            document.getElementById( 'text_Desc' ).innerHTML = _ImAcMeta.safearea.M.text;
+            document.getElementById( 'text_Desc' ).innerHTML = _ImAcMeta.safearea.M[ _ImAc_default.mainlanguage ];
         }
         else if ( id == 'btn_safearea_L' )
         {
@@ -639,7 +639,7 @@ var _confMemory;
             document.getElementById( 'btn_safearea_S' ).classList.remove("enabled");
             document.getElementById( 'btn_safearea_M' ).classList.remove("enabled");
             document.getElementById( 'img_MenuDesc' ).src = _ImAcMeta.safearea.L.img;
-            document.getElementById( 'text_Desc' ).innerHTML = _ImAcMeta.safearea.L.text;
+            document.getElementById( 'text_Desc' ).innerHTML = _ImAcMeta.safearea.L[ _ImAc_default.mainlanguage ];
         }
         // ST Size
         else if ( id == 'btn_stsize_S' )
@@ -650,7 +650,7 @@ var _confMemory;
             document.getElementById( 'btn_stsize_M' ).classList.remove("enabled");
             document.getElementById( 'btn_stsize_L' ).classList.remove("enabled");
             document.getElementById( 'img_MenuDesc' ).src = _ImAcMeta.stsize.S.img;
-            document.getElementById( 'text_Desc' ).innerHTML = _ImAcMeta.stsize.S.text;
+            document.getElementById( 'text_Desc' ).innerHTML = _ImAcMeta.stsize.S[ _ImAc_default.mainlanguage ];
         }
         else if ( id == 'btn_stsize_M' )
         {
@@ -660,7 +660,7 @@ var _confMemory;
             document.getElementById( 'btn_stsize_S' ).classList.remove("enabled");
             document.getElementById( 'btn_stsize_L' ).classList.remove("enabled");
             document.getElementById( 'img_MenuDesc' ).src = _ImAcMeta.stsize.M.img;
-            document.getElementById( 'text_Desc' ).innerHTML = _ImAcMeta.stsize.M.text;
+            document.getElementById( 'text_Desc' ).innerHTML = _ImAcMeta.stsize.M[ _ImAc_default.mainlanguage ];
         }
         else if ( id == 'btn_stsize_L' )
         {
@@ -670,7 +670,7 @@ var _confMemory;
             document.getElementById( 'btn_stsize_M' ).classList.remove("enabled");
             document.getElementById( 'btn_stsize_S' ).classList.remove("enabled");
             document.getElementById( 'img_MenuDesc' ).src = _ImAcMeta.stsize.L.img;
-            document.getElementById( 'text_Desc' ).innerHTML = _ImAcMeta.stsize.L.text;
+            document.getElementById( 'text_Desc' ).innerHTML = _ImAcMeta.stsize.L[ _ImAc_default.mainlanguage ];
         }
         // ST Background
         else if ( id == 'btn_st_outline' )
@@ -680,7 +680,7 @@ var _confMemory;
             document.getElementById( 'btn_st_outline' ).className += " enabled";
             document.getElementById( 'btn_st_box' ).classList.remove("enabled");
             document.getElementById( 'img_MenuDesc' ).src = _ImAcMeta.stbackground.outline.img;
-            document.getElementById( 'text_Desc' ).innerHTML = _ImAcMeta.stbackground.outline.text;
+            document.getElementById( 'text_Desc' ).innerHTML = _ImAcMeta.stbackground.outline[ _ImAc_default.mainlanguage ];
         }
         else if ( id == 'btn_st_box' )
         {
@@ -689,7 +689,7 @@ var _confMemory;
             document.getElementById( 'btn_st_box' ).className += " enabled";
             document.getElementById( 'btn_st_outline' ).classList.remove("enabled");
             document.getElementById( 'img_MenuDesc' ).src = _ImAcMeta.stbackground.box.img;
-            document.getElementById( 'text_Desc' ).innerHTML = _ImAcMeta.stbackground.box.text;
+            document.getElementById( 'text_Desc' ).innerHTML = _ImAcMeta.stbackground.box[ _ImAc_default.mainlanguage ];
         }
         // ST Position
         else if ( id == 'btn_stpos_up' )
@@ -699,7 +699,7 @@ var _confMemory;
             document.getElementById( 'btn_stpos_up' ).className += " enabled";
             document.getElementById( 'btn_stpos_down' ).classList.remove("enabled");
             document.getElementById( 'img_MenuDesc' ).src = _ImAcMeta.stposition.up.img;
-            document.getElementById( 'text_Desc' ).innerHTML = _ImAcMeta.stposition.up.text;
+            document.getElementById( 'text_Desc' ).innerHTML = _ImAcMeta.stposition.up[ _ImAc_default.mainlanguage ];
         }
         else if ( id == 'btn_stpos_down' )
         {
@@ -708,7 +708,7 @@ var _confMemory;
             document.getElementById( 'btn_stpos_down' ).className += " enabled";
             document.getElementById( 'btn_stpos_up' ).classList.remove("enabled");
             document.getElementById( 'img_MenuDesc' ).src = _ImAcMeta.stposition.down.img;
-            document.getElementById( 'text_Desc' ).innerHTML = _ImAcMeta.stposition.down.text;
+            document.getElementById( 'text_Desc' ).innerHTML = _ImAcMeta.stposition.down[ _ImAc_default.mainlanguage ];
         }
         // ST Easy to Read
         else if ( id == 'btn_ste2r_on' )
@@ -718,7 +718,7 @@ var _confMemory;
             document.getElementById( 'btn_ste2r_on' ).className += " enabled";
             document.getElementById( 'btn_ste2r_off' ).classList.remove("enabled");
             document.getElementById( 'img_MenuDesc' ).src = _ImAcMeta.ste2r.on.img;
-            document.getElementById( 'text_Desc' ).innerHTML = _ImAcMeta.ste2r.on.text;
+            document.getElementById( 'text_Desc' ).innerHTML = _ImAcMeta.ste2r.on[ _ImAc_default.mainlanguage ];
         }
         else if ( id == 'btn_ste2r_off' )
         {
@@ -727,7 +727,7 @@ var _confMemory;
             document.getElementById( 'btn_ste2r_off' ).className += " enabled";
             document.getElementById( 'btn_ste2r_on' ).classList.remove("enabled");
             document.getElementById( 'img_MenuDesc' ).src = _ImAcMeta.ste2r.off.img;
-            document.getElementById( 'text_Desc' ).innerHTML = _ImAcMeta.ste2r.off.text;
+            document.getElementById( 'text_Desc' ).innerHTML = _ImAcMeta.ste2r.off[ _ImAc_default.mainlanguage ];
         }
         // SL Size
         else if ( id == 'btn_slsize_S' )
@@ -738,7 +738,7 @@ var _confMemory;
             document.getElementById( 'btn_slsize_M' ).classList.remove("enabled");
             document.getElementById( 'btn_slsize_L' ).classList.remove("enabled");
             document.getElementById( 'img_MenuDesc' ).src = _ImAcMeta.slsize.S.img;
-            document.getElementById( 'text_Desc' ).innerHTML = _ImAcMeta.slsize.S.text;
+            document.getElementById( 'text_Desc' ).innerHTML = _ImAcMeta.slsize.S[ _ImAc_default.mainlanguage ];
         }
         else if ( id == 'btn_slsize_M' )
         {
@@ -748,7 +748,7 @@ var _confMemory;
             document.getElementById( 'btn_slsize_S' ).classList.remove("enabled");
             document.getElementById( 'btn_slsize_L' ).classList.remove("enabled");
             document.getElementById( 'img_MenuDesc' ).src = _ImAcMeta.slsize.M.img;
-            document.getElementById( 'text_Desc' ).innerHTML = _ImAcMeta.slsize.M.text;
+            document.getElementById( 'text_Desc' ).innerHTML = _ImAcMeta.slsize.M[ _ImAc_default.mainlanguage ];
         }
         else if ( id == 'btn_slsize_L' )
         {
@@ -758,7 +758,7 @@ var _confMemory;
             document.getElementById( 'btn_slsize_M' ).classList.remove("enabled");
             document.getElementById( 'btn_slsize_S' ).classList.remove("enabled");
             document.getElementById( 'img_MenuDesc' ).src = _ImAcMeta.slsize.L.img;
-            document.getElementById( 'text_Desc' ).innerHTML = _ImAcMeta.slsize.L.text;
+            document.getElementById( 'text_Desc' ).innerHTML = _ImAcMeta.slsize.L[ _ImAc_default.mainlanguage ];
         }
         // SL Position
         else if ( id == 'btn_slpos_left' )
@@ -768,7 +768,7 @@ var _confMemory;
             document.getElementById( 'btn_slpos_left' ).className += " enabled";
             document.getElementById( 'btn_slpos_right' ).classList.remove("enabled");
             document.getElementById( 'img_MenuDesc' ).src = _ImAcMeta.slposition.left.img;
-            document.getElementById( 'text_Desc' ).innerHTML = _ImAcMeta.slposition.left.text;
+            document.getElementById( 'text_Desc' ).innerHTML = _ImAcMeta.slposition.left[ _ImAc_default.mainlanguage ];
         }
         else if ( id == 'btn_slpos_right' )
         {
@@ -777,7 +777,7 @@ var _confMemory;
             document.getElementById( 'btn_slpos_right' ).className += " enabled";
             document.getElementById( 'btn_slpos_left' ).classList.remove("enabled");
             document.getElementById( 'img_MenuDesc' ).src = _ImAcMeta.slposition.right.img;
-            document.getElementById( 'text_Desc' ).innerHTML = _ImAcMeta.slposition.right.text;
+            document.getElementById( 'text_Desc' ).innerHTML = _ImAcMeta.slposition.right[ _ImAc_default.mainlanguage ];
         }
         // AST Easy to Read
         else if ( id == 'btn_aste2r_on' )
@@ -787,7 +787,7 @@ var _confMemory;
             document.getElementById( 'btn_aste2r_on' ).className += " enabled";
             document.getElementById( 'btn_aste2r_off' ).classList.remove("enabled");
             document.getElementById( 'img_MenuDesc' ).src = _ImAcMeta.aste2r.on.img;
-            document.getElementById( 'text_Desc' ).innerHTML = _ImAcMeta.aste2r.on.text;
+            document.getElementById( 'text_Desc' ).innerHTML = _ImAcMeta.aste2r.on[ _ImAc_default.mainlanguage ];
         }
         else if ( id == 'btn_aste2r_off' )
         {
@@ -796,7 +796,7 @@ var _confMemory;
             document.getElementById( 'btn_aste2r_off' ).className += " enabled";
             document.getElementById( 'btn_aste2r_on' ).classList.remove("enabled");
             document.getElementById( 'img_MenuDesc' ).src = _ImAcMeta.aste2r.off.img;
-            document.getElementById( 'text_Desc' ).innerHTML = _ImAcMeta.aste2r.off.text;
+            document.getElementById( 'text_Desc' ).innerHTML = _ImAcMeta.aste2r.off[ _ImAc_default.mainlanguage ];
         }
         // AST Presentation Mode
         else if ( id == 'btn_ast_god' )
@@ -806,7 +806,7 @@ var _confMemory;
             document.getElementById( 'btn_ast_god' ).className += " enabled";
             document.getElementById( 'btn_ast_dynamic' ).classList.remove("enabled");
             document.getElementById( 'img_MenuDesc' ).src = _ImAcMeta.astmode.god.img;
-            document.getElementById( 'text_Desc' ).innerHTML = _ImAcMeta.astmode.god.text;
+            document.getElementById( 'text_Desc' ).innerHTML = _ImAcMeta.astmode.god[ _ImAc_default.mainlanguage ];
         }
         else if ( id == 'btn_ast_dynamic' )
         {
@@ -815,7 +815,7 @@ var _confMemory;
             document.getElementById( 'btn_ast_dynamic' ).className += " enabled";
             document.getElementById( 'btn_ast_god' ).classList.remove("enabled");
             document.getElementById( 'img_MenuDesc' ).src = _ImAcMeta.astmode.dynamic.img;
-            document.getElementById( 'text_Desc' ).innerHTML = _ImAcMeta.astmode.dynamic.text;
+            document.getElementById( 'text_Desc' ).innerHTML = _ImAcMeta.astmode.dynamic[ _ImAc_default.mainlanguage ];
         }
         // AST Volume
         else if ( id == 'btn_ast_min' )
@@ -826,7 +826,7 @@ var _confMemory;
             document.getElementById( 'btn_ast_mid' ).classList.remove("enabled");
             document.getElementById( 'btn_ast_max' ).classList.remove("enabled");
             document.getElementById( 'img_MenuDesc' ).src = _ImAcMeta.astvolume.min.img;
-            document.getElementById( 'text_Desc' ).innerHTML = _ImAcMeta.astvolume.min.text;
+            document.getElementById( 'text_Desc' ).innerHTML = _ImAcMeta.astvolume.min[ _ImAc_default.mainlanguage ];
         }
         else if ( id == 'btn_ast_mid' )
         {
@@ -836,7 +836,7 @@ var _confMemory;
             document.getElementById( 'btn_ast_min' ).classList.remove("enabled");
             document.getElementById( 'btn_ast_max' ).classList.remove("enabled");
             document.getElementById( 'img_MenuDesc' ).src = _ImAcMeta.astvolume.mid.img;
-            document.getElementById( 'text_Desc' ).innerHTML = _ImAcMeta.astvolume.mid.text;
+            document.getElementById( 'text_Desc' ).innerHTML = _ImAcMeta.astvolume.mid[ _ImAc_default.mainlanguage ];
         }
         else if ( id == 'btn_ast_max' )
         {
@@ -846,7 +846,7 @@ var _confMemory;
             document.getElementById( 'btn_ast_min' ).classList.remove("enabled");
             document.getElementById( 'btn_ast_mid' ).classList.remove("enabled");
             document.getElementById( 'img_MenuDesc' ).src = _ImAcMeta.astvolume.max.img;
-            document.getElementById( 'text_Desc' ).innerHTML = _ImAcMeta.astvolume.max.text;
+            document.getElementById( 'text_Desc' ).innerHTML = _ImAcMeta.astvolume.max[ _ImAc_default.mainlanguage ];
         }
         // AD Presentation Mode
         else if ( id == 'btn_ad_god' )
@@ -857,7 +857,7 @@ var _confMemory;
             document.getElementById( 'btn_ad_friend' ).classList.remove("enabled");
             document.getElementById( 'btn_ad_dynamic' ).classList.remove("enabled");
             document.getElementById( 'img_MenuDesc' ).src = _ImAcMeta.admode.god.img;
-            document.getElementById( 'text_Desc' ).innerHTML = _ImAcMeta.admode.god.text;
+            document.getElementById( 'text_Desc' ).innerHTML = _ImAcMeta.admode.god[ _ImAc_default.mainlanguage ];
         }
         else if ( id == 'btn_ad_friend' )
         {
@@ -867,7 +867,7 @@ var _confMemory;
             document.getElementById( 'btn_ad_god' ).classList.remove("enabled");
             document.getElementById( 'btn_ad_dynamic' ).classList.remove("enabled");
             document.getElementById( 'img_MenuDesc' ).src = _ImAcMeta.admode.friend.img;
-            document.getElementById( 'text_Desc' ).innerHTML = _ImAcMeta.admode.friend.text;
+            document.getElementById( 'text_Desc' ).innerHTML = _ImAcMeta.admode.friend[ _ImAc_default.mainlanguage ];
         }
         else if ( id == 'btn_ad_dynamic' )
         {
@@ -877,7 +877,7 @@ var _confMemory;
             document.getElementById( 'btn_ad_god' ).classList.remove("enabled");
             document.getElementById( 'btn_ad_friend' ).classList.remove("enabled");
             document.getElementById( 'img_MenuDesc' ).src = _ImAcMeta.admode.dynamic.img;
-            document.getElementById( 'text_Desc' ).innerHTML = _ImAcMeta.admode.dynamic.text;
+            document.getElementById( 'text_Desc' ).innerHTML = _ImAcMeta.admode.dynamic[ _ImAc_default.mainlanguage ];
         }
         // AD Volume
         else if ( id == 'btn_ad_min' )
@@ -888,7 +888,7 @@ var _confMemory;
             document.getElementById( 'btn_ad_mid' ).classList.remove("enabled");
             document.getElementById( 'btn_ad_max' ).classList.remove("enabled");
             document.getElementById( 'img_MenuDesc' ).src = _ImAcMeta.advolume.min.img;
-            document.getElementById( 'text_Desc' ).innerHTML = _ImAcMeta.advolume.min.text;
+            document.getElementById( 'text_Desc' ).innerHTML = _ImAcMeta.advolume.min[ _ImAc_default.mainlanguage ];
         }
         else if ( id == 'btn_ad_mid' )
         {
@@ -898,7 +898,7 @@ var _confMemory;
             document.getElementById( 'btn_ad_min' ).classList.remove("enabled");
             document.getElementById( 'btn_ad_max' ).classList.remove("enabled");
             document.getElementById( 'img_MenuDesc' ).src = _ImAcMeta.advolume.mid.img;
-            document.getElementById( 'text_Desc' ).innerHTML = _ImAcMeta.advolume.mid.text;
+            document.getElementById( 'text_Desc' ).innerHTML = _ImAcMeta.advolume.mid[ _ImAc_default.mainlanguage ];
         }
         else if ( id == 'btn_ad_max' )
         {
@@ -908,7 +908,7 @@ var _confMemory;
             document.getElementById( 'btn_ad_min' ).classList.remove("enabled");
             document.getElementById( 'btn_ad_mid' ).classList.remove("enabled");
             document.getElementById( 'img_MenuDesc' ).src = _ImAcMeta.advolume.max.img;
-            document.getElementById( 'text_Desc' ).innerHTML = _ImAcMeta.advolume.max.text;
+            document.getElementById( 'text_Desc' ).innerHTML = _ImAcMeta.advolume.max[ _ImAc_default.mainlanguage ];
         }
     }
 
@@ -925,7 +925,7 @@ var _confMemory;
         var index = ( _ImAc_default.menutype == 'traditional' ) ? 'trad' : 'ls';
 
         var img = _ImAcMeta.menutype[index].img;
-        var text = _ImAcMeta.menutype[index].text;
+        var text = _ImAcMeta.menutype[index][ _ImAc_default.mainlanguage ];
 
 
         $("#settingslvl3_0")
@@ -941,13 +941,13 @@ var _confMemory;
             .append(
                 $('<div id="btn_trad" class="container-6 Settings-option2">')
                 .attr('onclick', 'selectOption(this.id)')
-                .append( $('<p>Traditional</p>') )
+                .append( $('<p>' + _ImAc_Buttons.traditional[ _ImAc_default.mainlanguage ] + '</p>') )
                 .append('</div>')
             )
             .append(
                 $('<div id="btn_ls" class="container-6 Settings-option2">')
                 .attr('onclick', 'selectOption(this.id)')
-                .append( $('<p>Enhanced Accessibility</p>') )
+                .append( $('<p>' + _ImAc_Buttons.ls[ _ImAc_default.mainlanguage ] + '</p>') )
                 .append('</div>')
             )
             .append('</div>')
@@ -979,7 +979,7 @@ var _confMemory;
         document.getElementById( 'lvl2option01' ).className += " enabled";
 
         var img = _ImAcMeta.pointersize[ _ImAc_default.pointersize ].img;
-        var text = _ImAcMeta.pointersize[ _ImAc_default.pointersize ].text;
+        var text = _ImAcMeta.pointersize[ _ImAc_default.pointersize ][ _ImAc_default.mainlanguage ];
 
 
         $("#settingslvl3_0")
@@ -995,19 +995,19 @@ var _confMemory;
             .append(
                 $('<div id="btn_pointer_S" class="container-4 Settings-option2">')
                 .attr('onclick', 'selectOption(this.id)')
-                .append( $('<p>Small</p>') )
+                .append( $('<p>' + _ImAc_Buttons.small[ _ImAc_default.mainlanguage ] + '</p>') )
                 .append('</div>')
             )
             .append(
                 $('<div id="btn_pointer_M" class="container-4 Settings-option2">')
                 .attr('onclick', 'selectOption(this.id)')
-                .append( $('<p>Medium</p>') )
+                .append( $('<p>' + _ImAc_Buttons.medium[ _ImAc_default.mainlanguage ] + '</p>') )
                 .append('</div>')
             )
             .append(
                 $('<div id="btn_pointer_L" class="container-4 Settings-option2">')
                 .attr('onclick', 'selectOption(this.id)')
-                .append( $('<p>Large</p>') )
+                .append( $('<p>' + _ImAc_Buttons.big[ _ImAc_default.mainlanguage ] + '</p>') )
                 .append('</div>')
             )
             .append('</div>')
@@ -1043,7 +1043,7 @@ var _confMemory;
         document.getElementById( 'lvl2option02' ).className += " enabled";
 
         var img = _ImAcMeta.voicecontrol[ _ImAc_default.voicecontrol ].img;
-        var text = _ImAcMeta.voicecontrol[ _ImAc_default.voicecontrol ].text;
+        var text = _ImAcMeta.voicecontrol[ _ImAc_default.voicecontrol ][ _ImAc_default.mainlanguage ];
 
         $("#settingslvl3_0")
         .append(
@@ -1058,13 +1058,13 @@ var _confMemory;
             .append(
                 $('<div id="btn_voice_on" class="container-6 Settings-option2">')
                 .attr('onclick', 'selectOption(this.id)')
-                .append( $('<p>On</p>') )
+                .append( $('<p>' + _ImAc_Buttons.on[ _ImAc_default.mainlanguage ] + '</p>') )
                 .append('</div>')
             )
             .append(
                 $('<div id="btn_voice_off" class="container-6 Settings-option2">')
                 .attr('onclick', 'selectOption(this.id)')
-                .append( $('<p>Off</p>') )
+                .append( $('<p>' + _ImAc_Buttons.off[ _ImAc_default.mainlanguage ] + '</p>') )
                 .append('</div>')
             )
             .append('</div>')
@@ -1096,7 +1096,7 @@ var _confMemory;
         document.getElementById( 'lvl2option03' ).className += " enabled";
 
         var img = _ImAcMeta.userprofile[ _ImAc_default.userprofile ].img;
-        var text = _ImAcMeta.userprofile[ _ImAc_default.userprofile ].text;
+        var text = _ImAcMeta.userprofile[ _ImAc_default.userprofile ][ _ImAc_default.mainlanguage ];
 
         $("#settingslvl3_0")
         .append(
@@ -1111,13 +1111,13 @@ var _confMemory;
             .append(
                 $('<div id="btn_user_save" class="container-6 Settings-option2">')
                 .attr('onclick', 'selectOption(this.id)')
-                .append( $('<p>Save</p>') )
+                .append( $('<p>' + _ImAc_Buttons.save[ _ImAc_default.mainlanguage ] + '</p>') )
                 .append('</div>')
             )
             .append(
                 $('<div id="btn_user_del" class="container-6 Settings-option2">')
                 .attr('onclick', 'selectOption(this.id)')
-                .append( $('<p>Delete</p>') )
+                .append( $('<p>' + _ImAc_Buttons.del[ _ImAc_default.mainlanguage ] + '</p>') )
                 .append('</div>')
             )
             .append('</div>')
@@ -1152,7 +1152,7 @@ var _confMemory;
         clearSelectedLvl2(1,0,3);
         document.getElementById( 'lvl2option10' ).className += " enabled";
 
-        var text = _ImAcMeta.accesslanguage.text;
+        var text = _ImAcMeta.accesslanguage[ _ImAc_default.mainlanguage ];
 
 
         $("#settingslvl3_1")
@@ -1220,7 +1220,7 @@ var _confMemory;
         document.getElementById( 'lvl2option11' ).className += " enabled";
 
         var img = _ImAcMeta.indicator[ _ImAc_default.indicator ].img;
-        var text = _ImAcMeta.indicator[ _ImAc_default.indicator ].text;
+        var text = _ImAcMeta.indicator[ _ImAc_default.indicator ][ _ImAc_default.mainlanguage ];
 
 
         $("#settingslvl3_1")
@@ -1236,19 +1236,19 @@ var _confMemory;
             .append(
                 $('<div id="btn_ind_radar" class="container-4 Settings-option2">')
                 .attr('onclick', 'selectOption(this.id)')
-                .append( $('<p>Radar</p>') )
+                .append( $('<p>' + _ImAc_Buttons.radar[ _ImAc_default.mainlanguage ] + '</p>') )
                 .append('</div>')
             )
             .append(
                 $('<div id="btn_ind_arrow" class="container-4 Settings-option2">')
                 .attr('onclick', 'selectOption(this.id)')
-                .append( $('<p>Arrow</p>') )
+                .append( $('<p>' + _ImAc_Buttons.arrow[ _ImAc_default.mainlanguage ] + '</p>') )
                 .append('</div>')
             )
             .append(
                 $('<div id="btn_ind_none" class="container-4 Settings-option2">')
                 .attr('onclick', 'selectOption(this.id)')
-                .append( $('<p>None</p>') )
+                .append( $('<p>' + _ImAc_Buttons.none[ _ImAc_default.mainlanguage ] + '</p>') )
                 .append('</div>')
             )
             .append('</div>')
@@ -1284,7 +1284,7 @@ var _confMemory;
         document.getElementById( 'lvl2option12' ).className += " enabled";
 
         var img = _ImAcMeta.safearea[ _ImAc_default.safearea ].img;
-        var text = _ImAcMeta.safearea[ _ImAc_default.safearea ].text;
+        var text = _ImAcMeta.safearea[ _ImAc_default.safearea ][ _ImAc_default.mainlanguage ];
 
 
         $("#settingslvl3_1")
@@ -1300,19 +1300,19 @@ var _confMemory;
             .append(
                 $('<div id="btn_safearea_S" class="container-4 Settings-option2">')
                 .attr('onclick', 'selectOption(this.id)')
-                .append( $('<p>Small</p>') )
+                .append( $('<p>' + _ImAc_Buttons.small2[ _ImAc_default.mainlanguage ] + '</p>') )
                 .append('</div>')
             )
             .append(
                 $('<div id="btn_safearea_M" class="container-4 Settings-option2">')
                 .attr('onclick', 'selectOption(this.id)')
-                .append( $('<p>Medium</p>') )
+                .append( $('<p>' + _ImAc_Buttons.medium2[ _ImAc_default.mainlanguage ] + '</p>') )
                 .append('</div>')
             )
             .append(
                 $('<div id="btn_safearea_L" class="container-4 Settings-option2">')
                 .attr('onclick', 'selectOption(this.id)')
-                .append( $('<p>Large</p>') )
+                .append( $('<p>' + _ImAc_Buttons.large[ _ImAc_default.mainlanguage ] + '</p>') )
                 .append('</div>')
             )
             .append('</div>')
@@ -1352,7 +1352,7 @@ var _confMemory;
         document.getElementById( 'lvl2option20' ).className += " enabled";
 
         var img = _ImAcMeta.stsize[ _ImAc_default.stsize ].img;
-        var text = _ImAcMeta.stsize[ _ImAc_default.stsize ].text;
+        var text = _ImAcMeta.stsize[ _ImAc_default.stsize ][ _ImAc_default.mainlanguage ];
 
 
         $("#settingslvl3_2")
@@ -1368,19 +1368,19 @@ var _confMemory;
             .append(
                 $('<div id="btn_stsize_S" class="container-4 Settings-option2">')
                 .attr('onclick', 'selectOption(this.id)')
-                .append( $('<p>Small</p>') )
+                .append( $('<p>' + _ImAc_Buttons.small2[ _ImAc_default.mainlanguage ] + '</p>') )
                 .append('</div>')
             )
             .append(
                 $('<div id="btn_stsize_M" class="container-4 Settings-option2">')
                 .attr('onclick', 'selectOption(this.id)')
-                .append( $('<p>Medium</p>') )
+                .append( $('<p>' + _ImAc_Buttons.medium2[ _ImAc_default.mainlanguage ] + '</p>') )
                 .append('</div>')
             )
             .append(
                 $('<div id="btn_stsize_L" class="container-4 Settings-option2">')
                 .attr('onclick', 'selectOption(this.id)')
-                .append( $('<p>Large</p>') )
+                .append( $('<p>' + _ImAc_Buttons.large[ _ImAc_default.mainlanguage ] + '</p>') )
                 .append('</div>')
             )
             .append('</div>')
@@ -1416,7 +1416,7 @@ var _confMemory;
         document.getElementById( 'lvl2option21' ).className += " enabled";
 
         var img = _ImAcMeta.stbackground[ _ImAc_default.stbackground ].img;
-        var text = _ImAcMeta.stbackground[ _ImAc_default.stbackground ].text;
+        var text = _ImAcMeta.stbackground[ _ImAc_default.stbackground ][ _ImAc_default.mainlanguage ];
 
         $("#settingslvl3_2")
         .append(
@@ -1431,13 +1431,13 @@ var _confMemory;
             .append(
                 $('<div id="btn_st_outline" class="container-6 Settings-option2">')
                 .attr('onclick', 'selectOption(this.id)')
-                .append( $('<p>Outline</p>') )
+                .append( $('<p>' + _ImAc_Buttons.outline[ _ImAc_default.mainlanguage ] + '</p>') )
                 .append('</div>')
             )
             .append(
                 $('<div id="btn_st_box" class="container-6 Settings-option2">')
                 .attr('onclick', 'selectOption(this.id)')
-                .append( $('<p>Box</p>') )
+                .append( $('<p>' + _ImAc_Buttons.box[ _ImAc_default.mainlanguage ] + '</p>') )
                 .append('</div>')
             )
         )
@@ -1468,7 +1468,7 @@ var _confMemory;
         document.getElementById( 'lvl2option22' ).className += " enabled";
 
         var img = _ImAcMeta.stposition[ _ImAc_default.stposition ].img;
-        var text = _ImAcMeta.stposition[ _ImAc_default.stposition ].text;
+        var text = _ImAcMeta.stposition[ _ImAc_default.stposition ][ _ImAc_default.mainlanguage ];
 
         $("#settingslvl3_2")
         .append(
@@ -1483,13 +1483,13 @@ var _confMemory;
             .append(
                 $('<div id="btn_stpos_up" class="container-6 Settings-option2">')
                 .attr('onclick', 'selectOption(this.id)')
-                .append( $('<p>Top</p>') )
+                .append( $('<p>' + _ImAc_Buttons.top[ _ImAc_default.mainlanguage ] + '</p>') )
                 .append('</div>')
             )
             .append(
                 $('<div id="btn_stpos_down" class="container-6 Settings-option2">')
                 .attr('onclick', 'selectOption(this.id)')
-                .append( $('<p>Bottom</p>') )
+                .append( $('<p>' + _ImAc_Buttons.bottom[ _ImAc_default.mainlanguage ] + '</p>') )
                 .append('</div>')
             )
         )
@@ -1520,7 +1520,7 @@ var _confMemory;
         document.getElementById( 'lvl2option23' ).className += " enabled";
 
         var img = _ImAcMeta.ste2r[ _ImAc_default.ste2r ].img;
-        var text = _ImAcMeta.ste2r[ _ImAc_default.ste2r ].text;
+        var text = _ImAcMeta.ste2r[ _ImAc_default.ste2r ][ _ImAc_default.mainlanguage ];
 
         $("#settingslvl3_2")
         .append(
@@ -1535,13 +1535,13 @@ var _confMemory;
             .append(
                 $('<div id="btn_ste2r_on" class="container-6 Settings-option2">')
                 .attr('onclick', 'selectOption(this.id)')
-                .append( $('<p>On</p>') )
+                .append( $('<p>' + _ImAc_Buttons.on[ _ImAc_default.mainlanguage ] + '</p>') )
                 .append('</div>')
             )
             .append(
                 $('<div id="btn_ste2r_off" class="container-6 Settings-option2">')
                 .attr('onclick', 'selectOption(this.id)')
-                .append( $('<p>Off</p>') )
+                .append( $('<p>' + _ImAc_Buttons.off[ _ImAc_default.mainlanguage ] + '</p>') )
                 .append('</div>')
             )
         )
@@ -1576,7 +1576,7 @@ var _confMemory;
         document.getElementById( 'lvl2option30' ).className += " enabled";
 
         var img = _ImAcMeta.slsize[ _ImAc_default.slsize ].img;
-        var text = _ImAcMeta.slsize[ _ImAc_default.slsize ].text;
+        var text = _ImAcMeta.slsize[ _ImAc_default.slsize ][ _ImAc_default.mainlanguage ];
 
         $("#settingslvl3_3")
         .append(
@@ -1591,19 +1591,19 @@ var _confMemory;
             .append(
                 $('<div id="btn_slsize_S" class="container-4 Settings-option2">')
                 .attr('onclick', 'selectOption(this.id)')
-                .append( $('<p>Small</p>') )
+                .append( $('<p>' + _ImAc_Buttons.small[ _ImAc_default.mainlanguage ] + '</p>') )
                 .append('</div>')
             )
             .append(
                 $('<div id="btn_slsize_M" class="container-4 Settings-option2">')
                 .attr('onclick', 'selectOption(this.id)')
-                .append( $('<p>Medium</p>') )
+                .append( $('<p>' + _ImAc_Buttons.medium2[ _ImAc_default.mainlanguage ] + '</p>') )
                 .append('</div>')
             )
             .append(
                 $('<div id="btn_slsize_L" class="container-4 Settings-option2">')
                 .attr('onclick', 'selectOption(this.id)')
-                .append( $('<p>Large</p>') )
+                .append( $('<p>' + _ImAc_Buttons.large[ _ImAc_default.mainlanguage ] + '</p>') )
                 .append('</div>')
             )
         )
@@ -1638,7 +1638,7 @@ var _confMemory;
         document.getElementById( 'lvl2option31' ).className += " enabled";
 
         var img = _ImAcMeta.slposition[ _ImAc_default.slposition ].img;
-        var text = _ImAcMeta.slposition[ _ImAc_default.slposition ].text;
+        var text = _ImAcMeta.slposition[ _ImAc_default.slposition ][ _ImAc_default.mainlanguage ];
 
         $("#settingslvl3_3")
         .append(
@@ -1653,13 +1653,13 @@ var _confMemory;
             .append(
                 $('<div id="btn_slpos_left" class="container-6 Settings-option2">')
                 .attr('onclick', 'selectOption(this.id)')
-                .append( $('<p>Left</p>') )
+                .append( $('<p>' + _ImAc_Buttons.left[ _ImAc_default.mainlanguage ] + '</p>') )
                 .append('</div>')
             )
             .append(
                 $('<div id="btn_slpos_right" class="container-6 Settings-option2">')
                 .attr('onclick', 'selectOption(this.id)')
-                .append( $('<p>Right</p>') )
+                .append( $('<p>' + _ImAc_Buttons.right[ _ImAc_default.mainlanguage ] + '</p>') )
                 .append('</div>')
             )
         )
@@ -1694,7 +1694,7 @@ var _confMemory;
         document.getElementById( 'lvl2option40' ).className += " enabled";
 
         var img = _ImAcMeta.aste2r[ _ImAc_default.aste2r ].img;
-        var text = _ImAcMeta.aste2r[ _ImAc_default.aste2r ].text;
+        var text = _ImAcMeta.aste2r[ _ImAc_default.aste2r ][ _ImAc_default.mainlanguage ];
 
         $("#settingslvl3_4")
         .append(
@@ -1709,13 +1709,13 @@ var _confMemory;
             .append(
                 $('<div id="btn_aste2r_on" class="container-6 Settings-option2">')
                 .attr('onclick', 'selectOption(this.id)')
-                .append( $('<p>On</p>') )
+                .append( $('<p>' + _ImAc_Buttons.on[ _ImAc_default.mainlanguage ] + '</p>') )
                 .append('</div>')
             )
             .append(
                 $('<div id="btn_aste2r_off" class="container-6 Settings-option2">')
                 .attr('onclick', 'selectOption(this.id)')
-                .append( $('<p>Off</p>') )
+                .append( $('<p>' + _ImAc_Buttons.off[ _ImAc_default.mainlanguage ] + '</p>') )
                 .append('</div>')
             )
         )
@@ -1746,7 +1746,7 @@ var _confMemory;
         document.getElementById( 'lvl2option41' ).className += " enabled";
 
         var img = _ImAcMeta.astmode[ _ImAc_default.astmode ].img;
-        var text = _ImAcMeta.astmode[ _ImAc_default.astmode ].text;
+        var text = _ImAcMeta.astmode[ _ImAc_default.astmode ][ _ImAc_default.mainlanguage ];
 
         $("#settingslvl3_4")
         .append(
@@ -1761,13 +1761,13 @@ var _confMemory;
             .append(
                 $('<div id="btn_ast_god" class="container-6 Settings-option2">')
                 .attr('onclick', 'selectOption(this.id)')
-                .append( $('<p>Classic</p>') )
+                .append( $('<p>' + _ImAc_Buttons.classic[ _ImAc_default.mainlanguage ] + '</p>') )
                 .append('</div>')
             )
             .append(
                 $('<div id="btn_ast_dynamic" class="container-6 Settings-option2">')
                 .attr('onclick', 'selectOption(this.id)')
-                .append( $('<p>Dynamic</p>') )
+                .append( $('<p>' + _ImAc_Buttons.dynamic[ _ImAc_default.mainlanguage ] + '</p>') )
                 .append('</div>')
             )
         )
@@ -1798,7 +1798,7 @@ var _confMemory;
         document.getElementById( 'lvl2option42' ).className += " enabled";
 
         var img = _ImAcMeta.astvolume[ _ImAc_default.astvolume ].img;
-        var text = _ImAcMeta.astvolume[ _ImAc_default.astvolume ].text;
+        var text = _ImAcMeta.astvolume[ _ImAc_default.astvolume ][ _ImAc_default.mainlanguage ];
 
         $("#settingslvl3_4")
         .append(
@@ -1813,19 +1813,19 @@ var _confMemory;
             .append(
                 $('<div id="btn_ast_min" class="container-4 Settings-option2">')
                 .attr('onclick', 'selectOption(this.id)')
-                .append( $('<p>Minimum</p>') )
+                .append( $('<p>' + _ImAc_Buttons.minimun[ _ImAc_default.mainlanguage ] + '</p>') )
                 .append('</div>')
             )
             .append(
                 $('<div id="btn_ast_mid" class="container-4 Settings-option2">')
                 .attr('onclick', 'selectOption(this.id)')
-                .append( $('<p>Middle</p>') )
+                .append( $('<p>' + _ImAc_Buttons.middle[ _ImAc_default.mainlanguage ] + '</p>') )
                 .append('</div>')
             )
             .append(
                 $('<div id="btn_ast_max" class="container-4 Settings-option2">')
                 .attr('onclick', 'selectOption(this.id)')
-                .append( $('<p>Maximum</p>') )
+                .append( $('<p>' + _ImAc_Buttons.maximum[ _ImAc_default.mainlanguage ] + '</p>') )
                 .append('</div>')
             )
         )
@@ -1864,7 +1864,7 @@ var _confMemory;
         document.getElementById( 'lvl2option50' ).className += " enabled";
 
         var img = _ImAcMeta.admode[ _ImAc_default.admode ].img;
-        var text = _ImAcMeta.admode[ _ImAc_default.admode ].text;
+        var text = _ImAcMeta.admode[ _ImAc_default.admode ][ _ImAc_default.mainlanguage ];
 
         $("#settingslvl3_5")
         .append(
@@ -1879,19 +1879,19 @@ var _confMemory;
             .append(
                 $('<div id="btn_ad_god" class="container-4 Settings-option2">')
                 .attr('onclick', 'selectOption(this.id)')
-                .append( $('<p>Classic</p>') )
+                .append( $('<p>' + _ImAc_Buttons.classic[ _ImAc_default.mainlanguage ] + '</p>') )
                 .append('</div>')
             )
             .append(
                 $('<div id="btn_ad_friend" class="container-4 Settings-option2">')
                 .attr('onclick', 'selectOption(this.id)')
-                .append( $('<p>Static</p>') )
+                .append( $('<p>' + _ImAc_Buttons.statics[ _ImAc_default.mainlanguage ] + '</p>') )
                 .append('</div>')
             )
             .append(
                 $('<div id="btn_ad_dynamic" class="container-4 Settings-option2">')
                 .attr('onclick', 'selectOption(this.id)')
-                .append( $('<p>Dynamic</p>') )
+                .append( $('<p>' + _ImAc_Buttons.dynamic[ _ImAc_default.mainlanguage ] + '</p>') )
                 .append('</div>')
             )
         )
@@ -1926,7 +1926,7 @@ var _confMemory;
         document.getElementById( 'lvl2option51' ).className += " enabled";
 
         var img = _ImAcMeta.advolume[ _ImAc_default.advolume ].img;
-        var text = _ImAcMeta.advolume[ _ImAc_default.advolume ].text;
+        var text = _ImAcMeta.advolume[ _ImAc_default.advolume ][ _ImAc_default.mainlanguage ];
 
         $("#settingslvl3_5")
         .append(
@@ -1941,19 +1941,19 @@ var _confMemory;
             .append(
                 $('<div id="btn_ad_min" class="container-4 Settings-option2">')
                 .attr('onclick', 'selectOption(this.id)')
-                .append( $('<p>Minimum</p>') )
+                .append( $('<p>' + _ImAc_Buttons.minimum[ _ImAc_default.mainlanguage ] + '</p>') )
                 .append('</div>')
             )
             .append(
                 $('<div id="btn_ad_mid" class="container-4 Settings-option2">')
                 .attr('onclick', 'selectOption(this.id)')
-                .append( $('<p>Middle</p>') )
+                .append( $('<p>' + _ImAc_Buttons.middle[ _ImAc_default.mainlanguage ] + '</p>') )
                 .append('</div>')
             )
             .append(
                 $('<div id="btn_ad_max" class="container-4 Settings-option2">')
                 .attr('onclick', 'selectOption(this.id)')
-                .append( $('<p>Maximum</p>') )
+                .append( $('<p>' + _ImAc_Buttons.maximum[ _ImAc_default.mainlanguage ] + '</p>') )
                 .append('</div>')
             )
         )
@@ -2019,9 +2019,41 @@ var _confMemory;
         _ws_vc = undefined;
     }
 
+
+
+
 $(document).on('change','#langSelector',function(){
-    console.log( $(this).find("option:selected").attr('value') );
+
+    _ImAc_default.mainlanguage = $(this).find("option:selected").attr('value');
+
+    closeSettingsMenus();
+    translateAll( _ImAc_default.mainlanguage )
+    translateContentDesc( _ImAc_default.mainlanguage )
+    
+
+    console.log( _ImAc_default.mainlanguage );
+
 });
+
+function translateContentDesc(lang)
+{
+    var id = localStorage.ImAc_init;
+    if ( document.getElementById( 'content' + id ).children[0].classList.contains('enabled') ) 
+    {
+        document.getElementById( 'content_desc' ).innerHTML = list_contents[id].descriptionArray[0][ _ImAc_default.mainlanguage ] || "";
+    }
+    else 
+    {
+        if ( lang == 'ca')
+        {
+            document.getElementById('content_desc').innerHTML = "Gaudeix de continguts immersius amb serveis d'accessibilitat seleccionant el vídeo que vulguis visualitzar. Pots personalitzar la teva experiència mitjançant el menú Configuració, o més endavant mitjançant el menú del reproductor.";
+        }
+        else
+        {
+            document.getElementById('content_desc').innerHTML = 'Enjoy immersive contents with access services by selecting the video you want to watch. To customise your experience, go into settings or select a video and then go to the player menu.';
+        }
+    }
+}
 
 function translateAll(lang)
 {
@@ -2029,54 +2061,56 @@ function translateAll(lang)
     {
         document.getElementById('span_1').innerHTML = 'Config.';
         document.getElementById('span_2').innerHTML = 'Cerca';
-        document.getElementById('content_desc').innerHTML = "Gaudeix de continguts immersius amb serveis d'accessibilitat seleccionant el vídeo que vulguis visualitzar. Pots personalitzar la teva experiència mitjançant el menú Configuració, o més endavant mitjançant el menú del reproductor.";
         document.getElementById('span_3').innerHTML = "Mostra/Oculta l'informació &nbsp;";
         document.getElementById('span_4').innerHTML = '&nbsp;  Cerca';
         document.getElementById('span_5').innerHTML = '&nbsp;  Configuració';
         document.getElementById('span_6').innerHTML = '&nbsp;  Conf. general';
-        document.getElementById('span_7').innerHTML = "&nbsp;  Conf. d’accessibilitat";
-        document.getElementById('span_8').innerHTML = '&nbsp;  Conf. subtítols';
-        document.getElementById('span_9').innerHTML = '&nbsp;  Conf. llengua de signes';
-        document.getElementById('span_10').innerHTML = '&nbsp;   AD Settings';
-        document.getElementById('span_11').innerHTML = '&nbsp;   AST Settings';
-        document.getElementById('span_12').innerHTML = '&nbsp;  General Settings';
-        document.getElementById('span_13').innerHTML = '&nbsp;   Menu Type';
-        document.getElementById('span_14').innerHTML = '&nbsp;   Pointer Size';
-        document.getElementById('span_15').innerHTML = '&nbsp;   Voice Control';
-        document.getElementById('span_16').innerHTML = '&nbsp;   User Profile';
-        document.getElementById('span_17').innerHTML = 'Back';
-        document.getElementById('span_18').innerHTML = '&nbsp;  Access Settings';
+        document.getElementById('span_7').innerHTML = "&nbsp;Conf. d’accessibilitat";
+        document.getElementById('span_8').innerHTML = '&nbsp;  ST Configuració';
+        document.getElementById('span_9').innerHTML = '&nbsp;  SL Configuració';
+        document.getElementById('span_10').innerHTML = '&nbsp;   AD Configuració';
+        document.getElementById('span_11').innerHTML = '&nbsp;   AST Configuració';
+        document.getElementById('span_12').innerHTML = '&nbsp;  Configuració general';
+        document.getElementById('span_13').innerHTML = '&nbsp;   Tipus de menú';
+        document.getElementById('span_14').innerHTML = '&nbsp;   Mida del punter';
+        document.getElementById('span_15').innerHTML = '&nbsp;   Control de veu';
+        document.getElementById('span_16').innerHTML = "&nbsp;   Perfil d'usuari";
+        document.getElementById('span_17').innerHTML = 'Tornar';
+        document.getElementById('span_18').innerHTML = '&nbsp;  Configurqació d’accessibilitat';
         document.getElementById('span_19').innerHTML = '&nbsp;   Access Language';
-        document.getElementById('span_20').innerHTML = '&nbsp;   Indicator';
+        document.getElementById('span_20').innerHTML = '&nbsp;   Indicador';
         document.getElementById('span_21').innerHTML = '&nbsp;   Safe Area';
-        document.getElementById('span_22').innerHTML = 'Back';
-        document.getElementById('span_23').innerHTML = '&nbsp;  ST Settings';
-        document.getElementById('span_24').innerHTML = '&nbsp;   Size';
-        document.getElementById('span_25').innerHTML = '&nbsp;   Background';
-        document.getElementById('span_26').innerHTML = '&nbsp;   Position';
-        document.getElementById('span_27').innerHTML = '&nbsp;   Easy to Read';
-        document.getElementById('span_28').innerHTML = 'Back';
-        document.getElementById('span_29').innerHTML = '&nbsp;  SL Settings';
-        document.getElementById('span_30').innerHTML = '&nbsp;   Size';
-        document.getElementById('span_31').innerHTML = '&nbsp;   Position';
-        document.getElementById('span_32').innerHTML = 'Back';
-        document.getElementById('span_33').innerHTML = '&nbsp;  AST Settings';
-        document.getElementById('span_34').innerHTML = '&nbsp;   Easy to Read';
-        document.getElementById('span_35').innerHTML = '&nbsp;   Presentation Mode';
-        document.getElementById('span_36').innerHTML = '&nbsp;   Volume';
-        document.getElementById('span_37').innerHTML = 'Back';
-        document.getElementById('span_38').innerHTML = '&nbsp;  AD Settings';
-        document.getElementById('span_39').innerHTML = '&nbsp;   Presentation Mode';
-        document.getElementById('span_40').innerHTML = '&nbsp;   Volume';
-        document.getElementById('span_41').innerHTML = 'Back';
+        document.getElementById('span_22').innerHTML = 'Tornar';
+        document.getElementById('span_23').innerHTML = '&nbsp;  Configurqació de subtitols';
+        document.getElementById('span_24').innerHTML = '&nbsp;   Mida';
+        document.getElementById('span_25').innerHTML = '&nbsp;   Fons';
+        document.getElementById('span_26').innerHTML = '&nbsp;   Posició';
+        document.getElementById('span_27').innerHTML = '&nbsp;   Lectura fàcil';
+        document.getElementById('span_28').innerHTML = 'Tornar';
+        document.getElementById('span_29').innerHTML = '&nbsp;  Configuració de llengua de signes';
+        document.getElementById('span_30').innerHTML = '&nbsp;   Mida';
+        document.getElementById('span_31').innerHTML = '&nbsp;   Posició';
+        document.getElementById('span_32').innerHTML = 'Tornar';
+        document.getElementById('span_33').innerHTML = '&nbsp;  Configuració d’audiosubtítols';
+        document.getElementById('span_34').innerHTML = '&nbsp;   Lectura fàcil';
+        document.getElementById('span_35').innerHTML = '&nbsp;   Mode presentació';
+        document.getElementById('span_36').innerHTML = '&nbsp;   Volum';
+        document.getElementById('span_37').innerHTML = 'Tornar';
+        document.getElementById('span_38').innerHTML = '&nbsp;  Configuració d’audiodescripció';
+        document.getElementById('span_39').innerHTML = '&nbsp;   Mode presentació';
+        document.getElementById('span_40').innerHTML = '&nbsp;   Volum';
+        document.getElementById('span_41').innerHTML = 'Tornar';
         document.getElementById('span_42').innerHTML = 'Partners:';
-        document.getElementById('span_43').innerHTML = 'Filter by accessibilty service and language:';
+        document.getElementById('span_43').innerHTML = "Filtra per servei d’accessibilitat o idioma:";
+        document.getElementById('span_44').innerHTML = 'Subtitols';
+        document.getElementById('span_45').innerHTML = 'Llengua de signes';
+        document.getElementById('span_46').innerHTML = 'Audio- subtítols';
+        document.getElementById('span_47').innerHTML = 'Audio- descripció';
     }
     else
     {
         document.getElementById('span_1').innerHTML = 'Settings';
         document.getElementById('span_2').innerHTML = 'Search';
-        document.getElementById('content_desc').innerHTML = 'Enjoy immersive contents with access services by selecting the video you want to watch. To customise your experience, go into settings or select a video and then go to the player menu.';
         document.getElementById('span_3').innerHTML = 'Show/Hide content info &nbsp;';
         document.getElementById('span_4').innerHTML = '&nbsp;  Search';
         document.getElementById('span_5').innerHTML = '&nbsp;  Settings';
@@ -2118,7 +2152,10 @@ function translateAll(lang)
         document.getElementById('span_41').innerHTML = 'Back';
         document.getElementById('span_42').innerHTML = 'Partners:';
         document.getElementById('span_43').innerHTML = 'Filter by accessibilty service and language:';
-
+        document.getElementById('span_44').innerHTML = 'Subtitles';
+        document.getElementById('span_45').innerHTML = 'Sign Language';
+        document.getElementById('span_46').innerHTML = 'Audio Subtitles';
+        document.getElementById('span_47').innerHTML = 'Audio Description';
     }
     
 }

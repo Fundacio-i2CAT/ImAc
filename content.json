@@ -6,6 +6,13 @@
     "poster": "./img/opera1_cover.png",
     "thumbnail": "img/opera1.png",
     "description": "Performance of the “Roméo et Juliette” opera recorded at the Gran Teatre del Liceu Opera House (Barcelona). Piece 1.",
+    "descriptionArray": [
+    {
+      "de": "Aufführung der Oper “Roméo et Juliette”, aufgenommen im Gran Teatre del Liceu Opera House (Barcelona). Teil 1.",
+      "ca": "Representació de l'òpera “Romeo i Julieta” gravada al Gran Teatre del Liceu (Barcelona). Peça 1.",
+      "es": "Representación de la ópera “Romeo y Julieta” grabada en el Gran Teatro del Liceu (Barcelona). Pieza 1.",
+      "en": "Performance of the “Roméo et Juliette” opera recorded at the Gran Teatre del Liceu Opera House (Barcelona). Piece 1."
+    }],
     "acces": [
     {
       "ST": ["en", "es", "de", "ca"],
@@ -24,6 +31,13 @@
     "poster": "img/covers/Newsshow_Abendschau2.jpg",
     "thumbnail": "img/covers/Newsshow_Abendschau.jpg",
     "description": "Making-of video of the RBB news show “Abendschau”, taking you into the news room and the streets of Berlin where current events are covered by the RBB news team.",
+    "descriptionArray": [
+    {
+      "de": "Das Making-of Video der Nachrichtensendung Abendschau zeigt die Arbeit der Redaktion und begleitet das Team bei der Produktion von Nachrichtenbeiträgen in den Straßen von Berlin.",
+      "ca": "Vídeo sobre el making-of del programa informatiu d’RBB “Abendschau”, que et transportarà als interiors dels platós de notícies i als carrers de Berlín, on l'equip de reporters cobreix els últims esdeveniments.",
+      "es": "Vídeo sobre el making-of del programa informativo de RBB “Abendschau”, que te transportará a los interiores de los platós de noticias y a las calles de Berlín, donde el equipo de reporteros cubre los últimos acontecimientos.",
+      "en": "Making-of video of the RBB news show “Abendschau”, taking you into the news room and the streets of Berlin where current events are covered by the RBB news team."
+    }],
     "acces": [
     {
       "ST": ["en"],
@@ -49,6 +63,13 @@
     "poster": "./img/covers/IPhilip2.jpg",
     "thumbnail": "img/i-philip-1100x750-dark(1).png",
     "description": "23 years after Philip K. Dick’s death, in 2005, David Hanson, a young engineer in robotics, revealed his first android with human form, “Phil”.",
+    "descriptionArray": [
+    {
+      "de": "23 Jahre nach dem Tod von Philip K. Dick im Jahr 2005 präsentiert der Robotik-Designer David Hanson seinen ersten menschlichen Androiden, “Phil”.",
+      "ca": "23 anys després de la mort de Philip K. Dick, el 2005, David Hanson, un jove enginyer en robòtica, presenta el seu primer androide amb forma humana, “Phil”.",
+      "es": "23 años después de la muerte de Philip K. Dick, en 2005, David Hanson, un joven ingeniero en robótica, presenta su primer androide con forma humana, “Phil”.",
+      "en": "23 years after Philip K. Dick’s death, in 2005, David Hanson, a young engineer in robotics, revealed his first android with human form, “Phil”."
+    }],
     "acces": [
     {
       "ST": ["en", "es", "de", "ca"],
@@ -71,13 +92,23 @@
       "es": "http://84.88.32.46/imac_content/pilot_1/RBB_Iphilip/RBB_IPhilip_subtitles_ES.xml",
       "en": "http://84.88.32.46/imac_content/pilot_1/RBB_Iphilip/RBB_IPhilip_subtitles_EN.xml"
     }],
-    "signer": [{}]
+    "signer": [
+    {
+      "de": "http://84.88.32.46/imac_content/pilot_1/RBB_Iphilip/RBB_I/stream.mpd"
+    }]
   },
   {
     "name": "Liceu Opera Piece 2",
     "poster": "./img/covers/opera2_cover.png",
     "thumbnail": "img/opera2.PNG",
     "description": "Performance of the “Roméo et Juliette” opera recorded at the Gran Teatre del Liceu Opera House (Barcelona). Piece 2.",
+    "descriptionArray": [
+    {
+      "de": "Aufführung der Oper “Roméo et Juliette”, aufgenommen im Gran Teatre del Liceu Opera House (Barcelona). Teil 2.",
+      "ca": "Representació de l'òpera “Romeo i Julieta” gravada al Gran Teatre del Liceu (Barcelona). Peça 2.",
+      "es": "Representación de la ópera “Romeo y Julieta” grabada en el Gran Teatro del Liceu (Barcelona). Pieza 2.",
+      "en": "Performance of the “Roméo et Juliette” opera recorded at the Gran Teatre del Liceu Opera House (Barcelona). Piece 2."
+    }],
     "acces": [
     {
       "ST": ["de", "ca"]
@@ -102,6 +133,13 @@
     "poster": "./img/covers/desconcert1_cover.png",
     "thumbnail": "img/desconcert1.png",
     "description": "Performance of a catalan version of  “Leyre” song, recorded at Sala Apolo (Barcelona) during the third edition of “Desconcert”, a great festival of iCat FM.",
+    "descriptionArray": [
+    {
+      "de": "Performance einer katalanischen Version des “Leyre” Songs, aufgenommen beim 3. “Desconcert” Festival im Sala Apolo (Barcelona).",
+      "ca": "Interpretació d'una versió catalana de la cançó “Leyre”, gravada a la Sala Apolo (Barcelona) durant la tercera edició de “Desconcert”, un gran festival d’iCat FM.",
+      "es": "Interpretación de una versión catalana de la canción “Leyre”, grabada en la Sala Apolo (Barcelona) durante la tercera edición de “Desconcert”, un gran festival de iCat FM.",
+      "en": "Performance of a catalan version of  “Leyre” song, recorded at Sala Apolo (Barcelona) during the third edition of “Desconcert”, a great festival of iCat FM."
+    }],
     "acces": [
     {
       "ST": ["en", "de", "ca"]
@@ -130,6 +168,13 @@
     "poster": "./img/covers/desconcert2_cover.png",
     "thumbnail": "img/desconcert2.png",
     "description": "Performance of a catalan version of  “Havana” song, recorded at Sala Apolo (Barcelona) during the third edition of “Desconcert”, a great festival of iCat FM.",
+    "descriptionArray": [
+    {
+      "de": "Performance einer katalanischen Version des “Havana” Songs, aufgenommen beim 3. “Desconcert” Festival im Sala Apolo (Barcelona).",
+      "ca": "Interpretació d'una versió catalana de la cançó “Havana”, gravada a la Sala Apolo (Barcelona) durant la tercera edició de “Desconcert”, un gran festival d’iCat FM.",
+      "es": "Interpretación de una versión catalana de la canción “Havana”, grabada en la Sala Apolo (Barcelona) durante la tercera edición de “Desconcert”, un gran festival de iCat FM.",
+      "en": "Performance of a catalan version of  “Havana” song, recorded at Sala Apolo (Barcelona) during the third edition of “Desconcert”, a great festival of iCat FM."
+    }],
     "acces": [
     {
       "ST": ["en", "de", "ca"]
@@ -154,10 +199,44 @@
     "ast": [{}]
   },
   {
+    "name": "Holy Land E04",
+    "poster": "http://84.88.32.46/imac_content/pilot_1/HolyLand4/u57_c.png",
+    "thumbnail": "http://84.88.32.46/imac_content/pilot_1/HolyLand4/holy.png",
+    "description": "Episode 4: Witness the wall separating Israel and Palestine, then tour the modern cities of Tel Aviv and Jerusalem.",
+    "descriptionArray": [
+    {
+      "de": "Episode 4: Witness the wall separating Israel and Palestine, then tour the modern cities of Tel Aviv and Jerusalem.",
+      "ca": "Episode 4: Witness the wall separating Israel and Palestine, then tour the modern cities of Tel Aviv and Jerusalem.",
+      "es": "Episode 4: Witness the wall separating Israel and Palestine, then tour the modern cities of Tel Aviv and Jerusalem.",
+      "en": "Episode 4: Witness the wall separating Israel and Palestine, then tour the modern cities of Tel Aviv and Jerusalem."
+    }],
+    "acces": [
+    { 
+      "AD": ["en"]
+    }],
+    "language": "English",
+    "duration": "4:13",
+    "url": "http://84.88.32.46/imac_content/pilot_1/HolyLand4/stream.mpd",
+    "audioChannels": 4,
+    "subtitles": [{}],
+    "ad": [{
+        "en": {
+      "VoiceOfGod": "http://84.88.32.46/imac_content/pilot_1/HolyLand4/Holy_Land-E04-EN-AD-Classic.aac"
+  }
+    }]
+  },
+  {
     "name": "Rapzember",
     "poster": "img/covers/Rapzember2.jpg",
     "thumbnail": "img/covers/Rapzember.jpg",
     "description": "Lorem ipsum",
+    "descriptionArray": [
+    {
+      "de": " ",
+      "ca": " ",
+      "es": " ",
+      "en": " "
+    }],
     "acces": [
     {
       "ST": ["de", "ca"],

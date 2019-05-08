@@ -5,53 +5,189 @@ var list_contents;
 var _ws_vc;
 var _confMemory;
 
-/**
- * Initializes the web player.
- */	
-function init_webplayer() 
-{
-    localStorage.removeItem('dashjs_video_settings');
-    localStorage.removeItem('dashjs_video_bitrate');
-    localStorage.removeItem('dashjs_text_settings');
+//************************************************************************************
+// Main Functions
+//************************************************************************************
 
-    checkCookies();
-    
-    $.getJSON('./content.json', function(json)
+    /**
+     * Initializes the web player.
+     */	
+    function init_webplayer() 
     {
-        list_contents = json.contents;
+        localStorage.removeItem('dashjs_video_settings');
+        localStorage.removeItem('dashjs_video_bitrate');
+        localStorage.removeItem('dashjs_text_settings');
 
-        if ( localStorage.ImAc_voiceControl == 'on' ) connectVoiceControl( localStorage.ImAc_voiceControlId, "http://51.89.138.157:3000/" );
-
-        for (var i = 0; i < list_contents.length; i++) 
+        checkCookies();
+        
+        $.getJSON('./content.json', function(json)
         {
-            createListGroup( i, list_contents[i].thumbnail, list_contents[i].name, list_contents[i].duration );
+            list_contents = json.contents;
+
+            if ( localStorage.ImAc_voiceControl == 'on' ) connectVoiceControl( localStorage.ImAc_voiceControlId, "http://51.89.138.157:3000/" );
+
+            for (var i = 0; i < list_contents.length; i++) 
+            {
+                createListGroup( i, list_contents[i].thumbnail, list_contents[i].name, list_contents[i].duration );
+            }
+        });
+    }
+
+    /*
+    * Inicia la reproducció del contingut amb ID = id
+    */
+    function launchPlayer(id)
+    { 
+        localStorage.ImAc_init = id;
+        localStorage.ImAc_language = document.getElementById('langSelector').value;
+        _ImAc_default.mainlanguage = document.getElementById('langSelector').value;
+
+        if ( _ImAc_default.userprofile == 'save' )
+            document.cookie = "ImAcProfileConfig=" + encodeURIComponent( JSON.stringify( _ImAc_default ) ) + "; max-age=2592000;";
+
+        window.location = window.location.href + 'player/#' + id;
+    }
+
+    function playContent()
+    {
+        launchPlayer( localStorage.ImAc_init );
+    }
+
+//************************************************************************************
+// Functions to control cookies
+//************************************************************************************
+
+    function checkCookies()
+    {
+        var cookieconf = readCookie("ImAcProfileConfig");
+
+        if ( cookieconf && cookieconf != null )
+        {
+            _confMemory = _ImAc_default;
+            _ImAc_default = JSON.parse( cookieconf );
         }
-    });
-}
-
-function checkCookies()
-{
-    var cookieconf = readCookie("ImAcProfileConfig");
-
-    if ( cookieconf && cookieconf != null )
-    {
-        _confMemory = _ImAc_default;
-        _ImAc_default = JSON.parse( cookieconf );
-    }
-}
-
-function filterFunc()
-{
-    var optionslist = document.getElementsByName('is_name');
-    var checkedlist = [];
-
-    for (var i = 0; i < optionslist.length; i++) 
-    {
-        if ( optionslist[i].checked ) checkedlist.push( optionslist[i] );
     }
 
-    if ( checkedlist.length > 0 )
+    function readCookie(name)
     {
+        var nameEQ = name + "="; 
+        var ca = document.cookie.split(';');
+
+        for(var i=0;i < ca.length;i++) 
+        {
+            var c = ca[i];
+            while (c.charAt(0)==' ') c = c.substring(1,c.length);
+            if (c.indexOf(nameEQ) == 0) {
+              return decodeURIComponent( c.substring(nameEQ.length,c.length) );
+            }
+        }
+
+        return null;
+    }
+
+//************************************************************************************
+// Functions to filter and search contents
+//************************************************************************************
+
+    function filterFunc()
+    {
+        var optionslist = document.getElementsByName('is_name');
+        var checkedlist = [];
+
+        for (var i = 0; i < optionslist.length; i++) 
+        {
+            if ( optionslist[i].checked ) checkedlist.push( optionslist[i] );
+        }
+
+        if ( checkedlist.length > 0 )
+        {
+            var myNode = document.getElementById( "list_group" );
+            while (myNode.firstChild) {
+                myNode.removeChild(myNode.firstChild);
+            }
+
+            for (var i = 0; i < list_contents.length; i++) 
+            {
+                if ( list_contents[i].acces && checkAcces( list_contents[i].acces[0], checkedlist ) ) createListGroup( i, list_contents[i].thumbnail, list_contents[i].name, list_contents[i].duration );
+            }
+        }
+        else searchFuncByName();
+    }
+
+    function checkAccesLang(obj, lang)
+    {
+        var haslang = false;
+
+        if ( obj.ST )
+        {
+            for (var i = 0; i < obj.ST.length; i++) 
+            {
+                if ( obj.ST[i] == lang ) haslang = true;
+            }
+        }
+        if ( obj.SL )
+        {
+            for (var i = 0; i < obj.SL.length; i++) 
+            {
+                if ( obj.SL[i] == lang ) haslang = true;
+            }
+        }
+        if ( obj.AD )
+        {
+            for (var i = 0; i < obj.AD.length; i++) 
+            {
+                if ( obj.AD[i] == lang ) haslang = true;
+            }
+        }
+        if ( obj.AST )
+        {
+            for (var i = 0; i < obj.AST.length; i++) 
+            {
+                if ( obj.AST[i] == lang ) haslang = true;
+            }
+        }
+
+        return haslang;
+    }
+
+    function checkAcces(obj, checkedlist)
+    {
+        var hasacces = false;
+        for (var i = 0; i < checkedlist.length; i++) 
+        {
+            if ( checkedlist[i].id == 'st_check' && obj.ST ) hasacces = true;
+            else if ( checkedlist[i].id == 'st_check' )  { hasacces = false; break; }
+
+            if ( checkedlist[i].id == 'sl_check' && obj.SL ) hasacces = true;
+            else if ( checkedlist[i].id == 'sl_check' )  { hasacces = false; break; }
+
+            if ( checkedlist[i].id == 'ad_check' && obj.AD ) hasacces = true;
+            else if ( checkedlist[i].id == 'ad_check' )  { hasacces = false; break; }
+
+            if ( checkedlist[i].id == 'ast_check' && obj.AST ) hasacces = true;
+            else if ( checkedlist[i].id == 'ast_check' )  { hasacces = false; break; }
+
+
+            if ( checkedlist[i].id == 'en_check' && checkAccesLang(obj, 'en') ) hasacces = true;
+            else if ( checkedlist[i].id == 'en_check' )  { hasacces = false; break; }
+
+            if ( checkedlist[i].id == 'es_check' && checkAccesLang(obj, 'es') ) hasacces = true;
+            else if ( checkedlist[i].id == 'es_check' )  { hasacces = false; break; }
+
+            if ( checkedlist[i].id == 'de_check' && checkAccesLang(obj, 'de') ) hasacces = true;
+            else if ( checkedlist[i].id == 'de_check' )  { hasacces = false; break; }
+
+            if ( checkedlist[i].id == 'ca_check' && checkAccesLang(obj, 'ca') ) hasacces = true;
+            else if ( checkedlist[i].id == 'ca_check' )  { hasacces = false; break; }
+
+        }
+
+        return hasacces;
+    }
+
+    function searchFuncByName()
+    {
+        var name = document.getElementById('search').value;
         var myNode = document.getElementById( "list_group" );
         while (myNode.firstChild) {
             myNode.removeChild(myNode.firstChild);
@@ -59,312 +195,239 @@ function filterFunc()
 
         for (var i = 0; i < list_contents.length; i++) 
         {
-            if ( list_contents[i].acces && checkAcces( list_contents[i].acces[0], checkedlist ) ) createListGroup( i, list_contents[i].thumbnail, list_contents[i].name, list_contents[i].duration );
-        }
-    }
-    else searchFuncByName();
-
-}
-
-function checkAccesLang(obj, lang)
-{
-    var haslang = false;
-    if ( obj.ST )
-    {
-        for (var i = 0; i < obj.ST.length; i++) 
-        {
-            if ( obj.ST[i] == lang ) haslang = true;
-        }
-    }
-    if ( obj.SL )
-    {
-        for (var i = 0; i < obj.SL.length; i++) 
-        {
-            if ( obj.SL[i] == lang ) haslang = true;
-        }
-    }
-    if ( obj.AD )
-    {
-        for (var i = 0; i < obj.AD.length; i++) 
-        {
-            if ( obj.AD[i] == lang ) haslang = true;
-        }
-    }
-    if ( obj.AST )
-    {
-        for (var i = 0; i < obj.AST.length; i++) 
-        {
-            if ( obj.AST[i] == lang ) haslang = true;
+            if ( list_contents[i].name.toLowerCase().includes( name.toLowerCase() ) ) createListGroup( i, list_contents[i].thumbnail, list_contents[i].name, list_contents[i].duration );
         }
     }
 
-    return haslang;
-}
+//************************************************************************************
+// Function to show or hide the content description
+//************************************************************************************
 
-function checkAcces(obj, checkedlist)
-{
-    var hasacces = false;
-    for (var i = 0; i < checkedlist.length; i++) 
+    function toggleInfo()
     {
-        if ( checkedlist[i].id == 'st_check' && obj.ST ) hasacces = true;
-        else if ( checkedlist[i].id == 'st_check' )  { hasacces = false; break; }
-
-        if ( checkedlist[i].id == 'sl_check' && obj.SL ) hasacces = true;
-        else if ( checkedlist[i].id == 'sl_check' )  { hasacces = false; break; }
-
-        if ( checkedlist[i].id == 'ad_check' && obj.AD ) hasacces = true;
-        else if ( checkedlist[i].id == 'ad_check' )  { hasacces = false; break; }
-
-        if ( checkedlist[i].id == 'ast_check' && obj.AST ) hasacces = true;
-        else if ( checkedlist[i].id == 'ast_check' )  { hasacces = false; break; }
-
-
-        if ( checkedlist[i].id == 'en_check' && checkAccesLang(obj, 'en') ) hasacces = true;
-        else if ( checkedlist[i].id == 'en_check' )  { hasacces = false; break; }
-
-        if ( checkedlist[i].id == 'es_check' && checkAccesLang(obj, 'es') ) hasacces = true;
-        else if ( checkedlist[i].id == 'es_check' )  { hasacces = false; break; }
-
-        if ( checkedlist[i].id == 'de_check' && checkAccesLang(obj, 'de') ) hasacces = true;
-        else if ( checkedlist[i].id == 'de_check' )  { hasacces = false; break; }
-
-        if ( checkedlist[i].id == 'ca_check' && checkAccesLang(obj, 'ca') ) hasacces = true;
-        else if ( checkedlist[i].id == 'ca_check' )  { hasacces = false; break; }
-
+        var input = document.getElementById('togglebutton');
+        if(input.checked == false) {
+            //input.checked = true; 
+            document.getElementById('poster_container').style.display = 'none';
+        }
+        else {
+            document.getElementById('poster_container').style.display = 'inherit';
+            /*if(input.checked == true) {
+                input.checked = false; 
+             }   */
+        }
     }
 
-    return hasacces;
-}
+//************************************************************************************
+// Function to create the content list
+//************************************************************************************
 
-function searchFuncByName()
-{
-    var name = document.getElementById('search').value;
-    var myNode = document.getElementById( "list_group" );
-    while (myNode.firstChild) {
-        myNode.removeChild(myNode.firstChild);
-    }
-
-    for (var i = 0; i < list_contents.length; i++) 
+    // Funcio per a crear la llista de continguts
+    function createListGroup(i, imagePath, dataName, dataTime) 
     {
-        if ( list_contents[i].name.toLowerCase().includes( name.toLowerCase() ) ) createListGroup( i, list_contents[i].thumbnail, list_contents[i].name, list_contents[i].duration );
-    }
-}
-
-function toggleInfo()
-{
-    var input = document.getElementById('togglebutton');
-    if(input.checked == false) {
-        //input.checked = true; 
-        document.getElementById('poster_container').style.display = 'none';
-    }
-    else {
-        document.getElementById('poster_container').style.display = 'inherit';
-        /*if(input.checked == true) {
-            input.checked = false; 
-         }   */
-    }
-}
-
-// Funcio per a crear la llista de continguts
-function createListGroup(i, imagePath, dataName, dataTime) 
-{
-    $("#list_group")
-    .append(
-        $('<div class="Content-padding container-3">')
+        $("#list_group")
         .append(
-            $('<div class="Content-imgDiv">')
-            .attr('id','content'+i)
-            .attr('onclick', 'selectContent('+i+')')
+            $('<div class="Content-padding container-3">')
             .append(
-                $('<img class="Content-img">')
-                .attr('id', i)
-                .attr('src', imagePath)
-                .attr('alt', 'ImAc')
-                //.attr('onclick', 'selectXML(this.id)')
-                .append('</img>')
-            )
-            .append(
-                $('<h3>')
-                .append(dataName)
-                .append('</h3>')
-            )
-            .append('</div>')
-            .append(
-                $('<img class="Play-img">')
-                .attr('id', 'contentplay'+i)
-                .attr('src', "img/home/play_4_u79_c.png")
-                .attr('alt', 'Play')
-                .attr('onclick', 'launchPlayer(this.id)')
-                .append('</img>')
-            )
-            .append(
-                $('<div class="Content-duration">')
-                .attr('id', 'contentduration'+i)
-                .append( $('<p>'+ dataTime +'</p>') )
+                $('<div class="Content-imgDiv">')
+                .attr('id','content'+i)
+                .attr('onclick', 'selectContent('+i+')')
+                .append(
+                    $('<img class="Content-img">')
+                    .attr('id', i)
+                    .attr('src', imagePath)
+                    .attr('alt', 'ImAc')
+                    //.attr('onclick', 'selectXML(this.id)')
+                    .append('</img>')
+                )
+                .append(
+                    $('<h3>')
+                    .append(dataName)
+                    .append('</h3>')
+                )
+                .append('</div>')
+                .append(
+                    $('<img class="Play-img">')
+                    .attr('id', 'contentplay'+i)
+                    .attr('src', "img/play_4_u79_c.png")
+                    .attr('alt', 'Play')
+                    .attr('onclick', 'launchPlayer(this.id)')
+                    .append('</img>')
+                )
+                .append(
+                    $('<div class="Content-duration">')
+                    .attr('id', 'contentduration'+i)
+                    .append( $('<p>'+ dataTime +'</p>') )
+                    .append('</div>')
+                )
                 .append('</div>')
             )
             .append('</div>')
         )
-        .append('</div>')
-    )
-} 
+    } 
 
-function addAccesIcon(id, title, imgsrc) 
-{
-    $("#content_access")
-    .append(
-        $('<img>')
-        .attr('title', title)
-        .attr('src', imgsrc)
-        .attr('alt', id)
-        .append('</img>')
-    )
-} 
+//************************************************************************************
+// Functions to control the accessibility services available
+//************************************************************************************
 
-function createAccesIcons(id)
-{
-    if ( list_contents[id].acces ) {
-        if ( list_contents[id].acces[0].ST ) addAccesIcon( 'ST', 'Subtitles', 'img/150ppp/st_off.png' );
-        if ( list_contents[id].acces[0].SL ) addAccesIcon( 'SL', 'Sign language', 'img/150ppp/sl_off.png' ); 
-        if ( list_contents[id].acces[0].AD ) addAccesIcon( 'AD', 'Audio description', 'img/150ppp/ad_off.png' );
-        if ( list_contents[id].acces[0].AST ) addAccesIcon( 'AST', 'Audio subtitles', 'img/150ppp/ast_off.png' ); 
-    }
-}
-
-// Funcio per a mostrar el poster i la descripcio del contingut seleccionat
-// Canviar el borde del contingut per mostar seleccionat
-function selectContent(id)
-{
-    localStorage.ImAc_init = id;
-
-    if ( document.getElementById( 'content' + id ).children[0].classList.contains('enabled') ) 
+    function addAccesIcon(id, title, imgsrc) 
     {
-        launchPlayer( id );
-    }
-    else 
+        $("#content_access")
+        .append(
+            $('<img>')
+            .attr('title', title)
+            .attr('src', imgsrc)
+            .attr('alt', id)
+            .append('</img>')
+        )
+    } 
+
+    function createAccesIcons(id)
     {
-        document.getElementById( 'content_title' ).innerHTML = list_contents[id].name;
-        document.getElementById( 'content_access' ).innerHTML = "";
-
-        createAccesIcons( id );
-
-        document.getElementById( 'content_desc' ).innerHTML = list_contents[id].description || "";
-        document.getElementById( 'content_lang' ).innerHTML = "Audio: " + list_contents[id].language || "";
-        document.getElementById( 'content_poster' ).src = list_contents[id].poster || "./img/home/u25_c.png";
-
-        clearBorders();
-
-        document.getElementById( 'content' + id ).children[0].className += " enabled";
-        document.getElementById( 'contentplay' + id ).className += " enabled";
-        document.getElementById( 'contentduration' + id ).className += " enabled";
-        document.getElementById( 'play_poster_btn' ).className += " enabled";
-
-        window.scrollTo( 0, 0 );
+        if ( list_contents[id].acces ) {
+            if ( list_contents[id].acces[0].ST ) addAccesIcon( 'ST', 'Subtitles', 'img/150ppp/st_off.png' );
+            if ( list_contents[id].acces[0].SL ) addAccesIcon( 'SL', 'Sign language', 'img/150ppp/sl_off.png' ); 
+            if ( list_contents[id].acces[0].AD ) addAccesIcon( 'AD', 'Audio description', 'img/150ppp/ad_off.png' );
+            if ( list_contents[id].acces[0].AST ) addAccesIcon( 'AST', 'Audio subtitles', 'img/150ppp/ast_off.png' ); 
+        }
     }
-}
 
-function clearBorders()
-{
-    document.getElementById( 'play_poster_btn' ).classList.remove("enabled");
+//************************************************************************************
+// Functions to control the settings menus
+//************************************************************************************
 
-    for (var i = 0; i < list_contents.length; i++) 
+    // Funcio per a mostrar el poster i la descripcio del contingut seleccionat
+    // Canviar el borde del contingut per mostar seleccionat
+    function selectContent(id)
     {
-        if(document.getElementById( 'content' + i )) document.getElementById( 'content' + i ).children[0].classList.remove("enabled");
-        if(document.getElementById( 'contentplay' + i )) document.getElementById( 'contentplay' + i ).classList.remove("enabled");
-        if(document.getElementById( 'contentduration' + i )) document.getElementById( 'contentduration' + i ).classList.remove("enabled");
+        localStorage.ImAc_init = id;
+
+        if ( document.getElementById( 'content' + id ).children[0].classList.contains('enabled') ) 
+        {
+            launchPlayer( id );
+        }
+        else 
+        {
+            document.getElementById( 'content_title' ).innerHTML = list_contents[id].name;
+            document.getElementById( 'content_access' ).innerHTML = "";
+
+            createAccesIcons( id );
+
+            document.getElementById( 'content_desc' ).innerHTML = list_contents[id].description || "";
+            document.getElementById( 'content_lang' ).innerHTML = "Audio: " + list_contents[id].language || "";
+            document.getElementById( 'content_poster' ).src = list_contents[id].poster || "./img/u25_c.png";
+
+            clearBorders();
+
+            document.getElementById( 'content' + id ).children[0].className += " enabled";
+            document.getElementById( 'contentplay' + id ).className += " enabled";
+            document.getElementById( 'contentduration' + id ).className += " enabled";
+            document.getElementById( 'play_poster_btn' ).className += " enabled";
+
+            window.scrollTo( 0, 0 );
+        }
     }
-}
 
-function clearSelectedLvl2(id, n, l)
-{
-    for (var i = 0; i < l; i++) 
+    function clearBorders()
     {
-        if ( n != i && document.getElementById( 'lvl2option' + id + i )) document.getElementById( 'lvl2option' + id + i ).classList.remove("enabled");
+        document.getElementById( 'play_poster_btn' ).classList.remove("enabled");
+
+        for (var i = 0; i < list_contents.length; i++) 
+        {
+            if(document.getElementById( 'content' + i )) document.getElementById( 'content' + i ).children[0].classList.remove("enabled");
+            if(document.getElementById( 'contentplay' + i )) document.getElementById( 'contentplay' + i ).classList.remove("enabled");
+            if(document.getElementById( 'contentduration' + i )) document.getElementById( 'contentduration' + i ).classList.remove("enabled");
+        }
     }
-}
 
-function backSettingsMenu2(id)
-{
-    clearMenuLvl3( id );
-    clearSelectedLvl2( id, 6, 5 );
-    document.getElementById( 'u113' ).style.visibility = 'hidden';
-    document.getElementById( 'u113_options' + id ).style.visibility = 'hidden'; 
-    document.getElementById( 'u112' ).style.visibility = '';
-    document.getElementById( 'u112_options' ).style.visibility = ''; 
-
-}
-
-function openSettingsMenu2(id) 
-{
-    document.getElementById( 'u113' ).style.visibility = '';
-    document.getElementById( 'u113_options' + id ).style.visibility = ''; 
-    document.getElementById( 'u112' ).style.visibility = 'hidden';
-    document.getElementById( 'u112_options' ).style.visibility = 'hidden';  
-
-    openFirstOption( id );  
-}
-
-function closeSettingsMenu2(id)
-{
-    clearMenuLvl3( id );
-    clearSelectedLvl2( id, 6, 5 );
-    closeSettingsMenus();
-    document.getElementById( 'u113' ).style.visibility = 'hidden';
-    document.getElementById( 'u113_options' + id ).style.visibility = 'hidden'; 
-}
-
-function settingsFunc()
-{
-    closeSettingsMenus();
-    window.scrollTo( 0, 0 );
-
-    if ( document.getElementById( 'u110' ).style.visibility == 'hidden' ) 
+    function clearSelectedLvl2(id, n, l)
     {
-        document.getElementById( 'u110' ).style.visibility = '';
+        for (var i = 0; i < l; i++) 
+        {
+            if ( n != i && document.getElementById( 'lvl2option' + id + i )) document.getElementById( 'lvl2option' + id + i ).classList.remove("enabled");
+        }
+    }
+
+    function backSettingsMenu2(id)
+    {
+        clearMenuLvl3( id );
+        clearSelectedLvl2( id, 6, 5 );
+        document.getElementById( 'u113' ).style.visibility = 'hidden';
+        document.getElementById( 'u113_options' + id ).style.visibility = 'hidden'; 
         document.getElementById( 'u112' ).style.visibility = '';
         document.getElementById( 'u112_options' ).style.visibility = ''; 
     }
-}
 
-function searchFunc()
-{
-    closeSettingsMenus();
-    window.scrollTo( 0, 0 );
-
-    if ( document.getElementById( 'u110' ).style.visibility == 'hidden' ) 
+    function openSettingsMenu2(id) 
     {
-        document.getElementById( 'u110' ).style.visibility = '';
-        document.getElementById( 'u109' ).style.visibility = '';
-        document.getElementById( 'u109_options' ).style.visibility = ''; 
+        document.getElementById( 'u113' ).style.visibility = '';
+        document.getElementById( 'u113_options' + id ).style.visibility = ''; 
+        document.getElementById( 'u112' ).style.visibility = 'hidden';
+        document.getElementById( 'u112_options' ).style.visibility = 'hidden';  
+
+        openFirstOption( id );  
     }
-}
 
-function closeSettingsMenus()
-{
-    document.getElementById( 'u110' ).style.visibility = 'hidden';
-    document.getElementById( 'u109' ).style.visibility = 'hidden';
-    document.getElementById( 'u109_options' ).style.visibility = 'hidden'; 
-    document.getElementById( 'u112' ).style.visibility = 'hidden';
-    document.getElementById( 'u112_options' ).style.visibility = 'hidden'; 
-    document.getElementById( 'u113' ).style.visibility = 'hidden';
-    document.getElementById( 'u113_options0' ).style.visibility = 'hidden';  
-    document.getElementById( 'u113_options1' ).style.visibility = 'hidden'; 
-    document.getElementById( 'u113_options2' ).style.visibility = 'hidden'; 
-    document.getElementById( 'u113_options3' ).style.visibility = 'hidden'; 
-    document.getElementById( 'u113_options4' ).style.visibility = 'hidden';  
-    document.getElementById( 'u113_options5' ).style.visibility = 'hidden'; 
-}
+    function closeSettingsMenu2(id)
+    {
+        clearMenuLvl3( id );
+        clearSelectedLvl2( id, 6, 5 );
+        closeSettingsMenus();
+        document.getElementById( 'u113' ).style.visibility = 'hidden';
+        document.getElementById( 'u113_options' + id ).style.visibility = 'hidden'; 
+    }
 
-function openFirstOption(id)
-{
-    if ( id == 0 ) createMenuType();
-    else if ( id == 1 ) createAccesLang();
-    else if ( id == 2 ) createSTSize();
-    else if ( id == 3 ) createSLSize();
-    else if ( id == 4 ) createASTE2r();
-    else if ( id == 5 ) createADMode();
-}
+    function settingsFunc()
+    {
+        closeSettingsMenus();
+        window.scrollTo( 0, 0 );
 
+        if ( document.getElementById( 'u110' ).style.visibility == 'hidden' ) 
+        {
+            document.getElementById( 'u110' ).style.visibility = '';
+            document.getElementById( 'u112' ).style.visibility = '';
+            document.getElementById( 'u112_options' ).style.visibility = ''; 
+        }
+    }
+
+    function searchFunc()
+    {
+        closeSettingsMenus();
+        window.scrollTo( 0, 0 );
+
+        if ( document.getElementById( 'u110' ).style.visibility == 'hidden' ) 
+        {
+            document.getElementById( 'u110' ).style.visibility = '';
+            document.getElementById( 'u109' ).style.visibility = '';
+            document.getElementById( 'u109_options' ).style.visibility = ''; 
+        }
+    }
+
+    function closeSettingsMenus()
+    {
+        document.getElementById( 'u110' ).style.visibility = 'hidden';
+        document.getElementById( 'u109' ).style.visibility = 'hidden';
+        document.getElementById( 'u109_options' ).style.visibility = 'hidden'; 
+        document.getElementById( 'u112' ).style.visibility = 'hidden';
+        document.getElementById( 'u112_options' ).style.visibility = 'hidden'; 
+        document.getElementById( 'u113' ).style.visibility = 'hidden';
+        document.getElementById( 'u113_options0' ).style.visibility = 'hidden';  
+        document.getElementById( 'u113_options1' ).style.visibility = 'hidden'; 
+        document.getElementById( 'u113_options2' ).style.visibility = 'hidden'; 
+        document.getElementById( 'u113_options3' ).style.visibility = 'hidden'; 
+        document.getElementById( 'u113_options4' ).style.visibility = 'hidden';  
+        document.getElementById( 'u113_options5' ).style.visibility = 'hidden'; 
+    }
+
+    function openFirstOption(id)
+    {
+        if ( id == 0 ) createMenuType();
+        else if ( id == 1 ) createAccesLang();
+        else if ( id == 2 ) createSTSize();
+        else if ( id == 3 ) createSLSize();
+        else if ( id == 4 ) createASTE2r();
+        else if ( id == 5 ) createADMode();
+    }
 
 //************************************************************************************
 // Functions to create the settings options
@@ -1918,93 +1981,144 @@ function openFirstOption(id)
         }
     }
 
+//************************************************************************************
+// Voice Control Functions (experimental)
+//************************************************************************************
 
-
-/*
-* Inicia la reproducció del contingut amb ID = id
-*/
-function launchPlayer(id)
-{ 
-    localStorage.ImAc_init = id;
-    localStorage.ImAc_language = document.getElementById('langSelector').value;
-    _ImAc_default.mainlanguage = document.getElementById('langSelector').value;
-
-    if ( _ImAc_default.userprofile == 'save' )
-        document.cookie = "ImAcProfileConfig=" + encodeURIComponent( JSON.stringify( _ImAc_default ) ) + "; max-age=2592000;";
-
-    window.location = window.location.href + 'player/#' + id;
-}
-
-function playContent()
-{
-    launchPlayer( localStorage.ImAc_init );
-}
-
-function showUserProfileBox()
-{
-    var deviceId = prompt("Please enter your device ID:", "i2CAT");
-    if (deviceId == null || deviceId == "") {
-        connectVoiceControl();
-    } else {
-        connectVoiceControl( deviceId, "http://51.89.138.157:3000/" )
-    }
-}
-
-function connectVoiceControl( deviceId="i2CAT", ws_url="http://51.89.138.157:3000/" )
-{
-    _ws_vc = io( ws_url );
-
-    localStorage.ImAc_voiceControlId = deviceId;
-
-    _ws_vc.on('connect', function(){
-      _ws_vc.emit('setClientID', { customId:deviceId, type:'player', description:'ImAc Player' });
-    });
-
-    _ws_vc.on('command', function(msg){
-
-        if ( msg.includes("play_") ) launchPlayer( msg.substr(5, 2) );
-      
-        console.log( msg );
-    });
-}
-
-function disconnectVoiceControl()
-{
-    _ws_vc.disconnect();
-    _ws_vc = undefined;
-}
-
-function readCookie(name)
-{
-    var nameEQ = name + "="; 
-    var ca = document.cookie.split(';');
-
-    for(var i=0;i < ca.length;i++) 
+    function showUserProfileBox()
     {
-        var c = ca[i];
-        while (c.charAt(0)==' ') c = c.substring(1,c.length);
-        if (c.indexOf(nameEQ) == 0) {
-          return decodeURIComponent( c.substring(nameEQ.length,c.length) );
+        var deviceId = prompt("Please enter your device ID:", "i2CAT");
+        if (deviceId == null || deviceId == "") {
+            connectVoiceControl();
+        } else {
+            connectVoiceControl( deviceId, "http://51.89.138.157:3000/" )
         }
     }
 
-    return null;
-}
+    function connectVoiceControl( deviceId="i2CAT", ws_url="http://51.89.138.157:3000/" )
+    {
+        _ws_vc = io( ws_url );
 
+        localStorage.ImAc_voiceControlId = deviceId;
 
+        _ws_vc.on('connect', function(){
+          _ws_vc.emit('setClientID', { customId:deviceId, type:'player', description:'ImAc Player' });
+        });
 
+        _ws_vc.on('command', function(msg){
 
+            if ( msg.includes("play_") ) launchPlayer( msg.substr(5, 2) );
+          
+            console.log( msg );
+        });
+    }
 
+    function disconnectVoiceControl()
+    {
+        _ws_vc.disconnect();
+        _ws_vc = undefined;
+    }
 
+$(document).on('change','#langSelector',function(){
+    console.log( $(this).find("option:selected").attr('value') );
+});
 
+function translateAll(lang)
+{
+    if ( lang == 'ca')
+    {
+        document.getElementById('span_1').innerHTML = 'Config.';
+        document.getElementById('span_2').innerHTML = 'Cerca';
+        document.getElementById('content_desc').innerHTML = "Gaudeix de continguts immersius amb serveis d'accessibilitat seleccionant el vídeo que vulguis visualitzar. Pots personalitzar la teva experiència mitjançant el menú Configuració, o més endavant mitjançant el menú del reproductor.";
+        document.getElementById('span_3').innerHTML = "Mostra/Oculta l'informació &nbsp;";
+        document.getElementById('span_4').innerHTML = '&nbsp;  Cerca';
+        document.getElementById('span_5').innerHTML = '&nbsp;  Configuració';
+        document.getElementById('span_6').innerHTML = '&nbsp;  Conf. general';
+        document.getElementById('span_7').innerHTML = "&nbsp;  Conf. d’accessibilitat";
+        document.getElementById('span_8').innerHTML = '&nbsp;  Conf. subtítols';
+        document.getElementById('span_9').innerHTML = '&nbsp;  Conf. llengua de signes';
+        document.getElementById('span_10').innerHTML = '&nbsp;   AD Settings';
+        document.getElementById('span_11').innerHTML = '&nbsp;   AST Settings';
+        document.getElementById('span_12').innerHTML = '&nbsp;  General Settings';
+        document.getElementById('span_13').innerHTML = '&nbsp;   Menu Type';
+        document.getElementById('span_14').innerHTML = '&nbsp;   Pointer Size';
+        document.getElementById('span_15').innerHTML = '&nbsp;   Voice Control';
+        document.getElementById('span_16').innerHTML = '&nbsp;   User Profile';
+        document.getElementById('span_17').innerHTML = 'Back';
+        document.getElementById('span_18').innerHTML = '&nbsp;  Access Settings';
+        document.getElementById('span_19').innerHTML = '&nbsp;   Access Language';
+        document.getElementById('span_20').innerHTML = '&nbsp;   Indicator';
+        document.getElementById('span_21').innerHTML = '&nbsp;   Safe Area';
+        document.getElementById('span_22').innerHTML = 'Back';
+        document.getElementById('span_23').innerHTML = '&nbsp;  ST Settings';
+        document.getElementById('span_24').innerHTML = '&nbsp;   Size';
+        document.getElementById('span_25').innerHTML = '&nbsp;   Background';
+        document.getElementById('span_26').innerHTML = '&nbsp;   Position';
+        document.getElementById('span_27').innerHTML = '&nbsp;   Easy to Read';
+        document.getElementById('span_28').innerHTML = 'Back';
+        document.getElementById('span_29').innerHTML = '&nbsp;  SL Settings';
+        document.getElementById('span_30').innerHTML = '&nbsp;   Size';
+        document.getElementById('span_31').innerHTML = '&nbsp;   Position';
+        document.getElementById('span_32').innerHTML = 'Back';
+        document.getElementById('span_33').innerHTML = '&nbsp;  AST Settings';
+        document.getElementById('span_34').innerHTML = '&nbsp;   Easy to Read';
+        document.getElementById('span_35').innerHTML = '&nbsp;   Presentation Mode';
+        document.getElementById('span_36').innerHTML = '&nbsp;   Volume';
+        document.getElementById('span_37').innerHTML = 'Back';
+        document.getElementById('span_38').innerHTML = '&nbsp;  AD Settings';
+        document.getElementById('span_39').innerHTML = '&nbsp;   Presentation Mode';
+        document.getElementById('span_40').innerHTML = '&nbsp;   Volume';
+        document.getElementById('span_41').innerHTML = 'Back';
+        document.getElementById('span_42').innerHTML = 'Partners:';
+        document.getElementById('span_43').innerHTML = 'Filter by accessibilty service and language:';
+    }
+    else
+    {
+        document.getElementById('span_1').innerHTML = 'Settings';
+        document.getElementById('span_2').innerHTML = 'Search';
+        document.getElementById('content_desc').innerHTML = 'Enjoy immersive contents with access services by selecting the video you want to watch. To customise your experience, go into settings or select a video and then go to the player menu.';
+        document.getElementById('span_3').innerHTML = 'Show/Hide content info &nbsp;';
+        document.getElementById('span_4').innerHTML = '&nbsp;  Search';
+        document.getElementById('span_5').innerHTML = '&nbsp;  Settings';
+        document.getElementById('span_6').innerHTML = '&nbsp;   General Settings';
+        document.getElementById('span_7').innerHTML = '&nbsp;   Access Settings';
+        document.getElementById('span_8').innerHTML = '&nbsp;   ST Settings';
+        document.getElementById('span_9').innerHTML = '&nbsp;   SL Settings';
+        document.getElementById('span_10').innerHTML = '&nbsp;   AD Settings';
+        document.getElementById('span_11').innerHTML = '&nbsp;   AST Settings';
+        document.getElementById('span_12').innerHTML = '&nbsp;  General Settings';
+        document.getElementById('span_13').innerHTML = '&nbsp;   Menu Type';
+        document.getElementById('span_14').innerHTML = '&nbsp;   Pointer Size';
+        document.getElementById('span_15').innerHTML = '&nbsp;   Voice Control';
+        document.getElementById('span_16').innerHTML = '&nbsp;   User Profile';
+        document.getElementById('span_17').innerHTML = 'Back';
+        document.getElementById('span_18').innerHTML = '&nbsp;  Access Settings';
+        document.getElementById('span_19').innerHTML = '&nbsp;   Access Language';
+        document.getElementById('span_20').innerHTML = '&nbsp;   Indicator';
+        document.getElementById('span_21').innerHTML = '&nbsp;   Safe Area';
+        document.getElementById('span_22').innerHTML = 'Back';
+        document.getElementById('span_23').innerHTML = '&nbsp;  ST Settings';
+        document.getElementById('span_24').innerHTML = '&nbsp;   Size';
+        document.getElementById('span_25').innerHTML = '&nbsp;   Background';
+        document.getElementById('span_26').innerHTML = '&nbsp;   Position';
+        document.getElementById('span_27').innerHTML = '&nbsp;   Easy to Read';
+        document.getElementById('span_28').innerHTML = 'Back';
+        document.getElementById('span_29').innerHTML = '&nbsp;  SL Settings';
+        document.getElementById('span_30').innerHTML = '&nbsp;   Size';
+        document.getElementById('span_31').innerHTML = '&nbsp;   Position';
+        document.getElementById('span_32').innerHTML = 'Back';
+        document.getElementById('span_33').innerHTML = '&nbsp;  AST Settings';
+        document.getElementById('span_34').innerHTML = '&nbsp;   Easy to Read';
+        document.getElementById('span_35').innerHTML = '&nbsp;   Presentation Mode';
+        document.getElementById('span_36').innerHTML = '&nbsp;   Volume';
+        document.getElementById('span_37').innerHTML = 'Back';
+        document.getElementById('span_38').innerHTML = '&nbsp;  AD Settings';
+        document.getElementById('span_39').innerHTML = '&nbsp;   Presentation Mode';
+        document.getElementById('span_40').innerHTML = '&nbsp;   Volume';
+        document.getElementById('span_41').innerHTML = 'Back';
+        document.getElementById('span_42').innerHTML = 'Partners:';
+        document.getElementById('span_43').innerHTML = 'Filter by accessibilty service and language:';
 
-
-
-function selectXML(id)
-{  
-    //localStorage.ImAc_menuType = radios[i].value;
-    //localStorage.ImAc_language = radios2[i].value;
-    //localStorage.ImAc_server = document.getElementById('server_id').value;
-    //localStorage.ImAc_backgroundSub = radios3[i].value;
-    //localStorage.ImAc_init = id;
+    }
+    
 }

@@ -45,7 +45,7 @@
 				<img class="TopBar-image" src="./img/LOGO-IMAC.png" alt="logo ImAc">
 			</a>
 			<!-- Language selector -->
-			<div class="TopBar-options large">
+			<div id="topbar_lang" class="TopBar-options large">
 	      		<select id="langSelector" class="selectpicker" data-width="100%" data-style="TopBar-btn">
 					<option value="en">English (UK)</option>
 				  	<option value="es">Español (Esp)</option>
@@ -54,14 +54,14 @@
 				</select> 
 			</div>
 			<!-- Settings button -->
-			<div class="TopBar-options" onclick="settingsFunc()">
+			<div id="topbar_settings" class="TopBar-options" onclick="settingsFunc()">
 				<img src="img/settings_c.png" tabindex="0" alt="settings icon">
-				<span>Settings</span>
+				<span id="span_1">Settings</span>
       		</div>
       		<!-- Search button -->
-			<div class="TopBar-options" onclick="searchFunc()">
+			<div id="topbar_search" class="TopBar-options" onclick="searchFunc()">
   				<img src="img/search_c.png" tabindex="0" alt="search icon">
-  				<span>Search</span>	
+  				<span id="span_2">Search</span>	
       		</div>
     	</div>
   	</div>
@@ -89,7 +89,7 @@
 			<!-- Play button -->
 			<div id="play_poster_btn" class="Poster-play">
 				<div class="Poster-play-btn" onclick="playContent()">
-	  				<img src="img/home/img_play_button_u72_c.png" tabindex="0" alt="">
+	  				<img src="img/img_play_button_u72_c.png" tabindex="0" alt="">
 	  				<span>Play&nbsp;</span>	
 	      		</div>
 	        </div>
@@ -105,7 +105,7 @@
 		<!-- togle button container -->
 		<div class="Toggle-container container-12">
 			<div class="Toggle-options" onclick="toggleInfo()">
-				<span>Show/Hide content info &nbsp;</span>
+				<span id="span_3">Show/Hide content info &nbsp;</span>
       			<label class="switch">
   					<input id="togglebutton" type="checkbox" checked>
   					<span class="slider round"></span>
@@ -124,7 +124,7 @@
         <div id="u109_options" class="Menu-filter options" style="visibility: hidden;">
         	<div class="container-12 Settings-tittle">
           		<div class="Settings-option" onclick="closeSettingsMenus()">
-					<span>&nbsp;  Search</span>
+					<span id="span_4">&nbsp;  Search</span>
 					<img class="Settings-close" src="img/settings/close.png" tabindex="0" alt="Close">
 				</div>
           	</div>
@@ -140,7 +140,7 @@
           	</div>
           	<div class="container-12 Search-container">
           		<div class="Search-info">
-          			<p> Filter by accessibilty service and language: </p>
+          			<p><span id="span_43"> Filter by accessibilty service and language: </span></p>
           		</div>
           	</div>
           	<div class="container-12 Search-container">
@@ -222,44 +222,44 @@
         <div id="u112_options" class="Menu-settings options" style="visibility: hidden;">
         	<div class="container-12 Settings-tittle">
           		<div class="Settings-option" onclick="closeSettingsMenus()">
-					<span>&nbsp;  Settings</span>
+					<span id="span_5">&nbsp;  Settings</span>
 					<img class="Settings-close" src="img/settings/close.png" tabindex="0" alt="Close">
 				</div>
           	</div>
           	<div class="container-12">
           		<div class="Settings-option selectable" onclick="openSettingsMenu2(0)">
 	          		<img src="img/settings/settings.png" tabindex="0" alt="">
-					<span>&nbsp;   General Settings</span>
+					<span id="span_6">&nbsp;   General Settings</span>
 				</div>
           	</div>
           	<div class="container-12">
           		<div class="Settings-option selectable" onclick="openSettingsMenu2(1)">
 	          		<img src="img/150ppp/accessibility_icon.png" tabindex="0" alt="">
-					<span>&nbsp;   Access Settings</span>
+					<span id="span_7">&nbsp;   Access Settings</span>
 				</div>
           	</div>
           	<div class="container-12">
           		<div class="Settings-option selectable" onclick="openSettingsMenu2(2)">
 	          		<img src="img/150ppp/st_off.png" tabindex="0" alt="">
-					<span>&nbsp;   ST Settings</span>
+					<span id="span_8">&nbsp;   ST Settings</span>
 				</div>
           	</div>
           	<div class="container-12">
           		<div class="Settings-option selectable" onclick="openSettingsMenu2(3)">
 	          		<img src="img/150ppp/sl_off.png" tabindex="0" alt="">
-					<span>&nbsp;   SL Settings</span>
+					<span id="span_9">&nbsp;   SL Settings</span>
 				</div>
           	</div>
           	<div class="container-12">
           		<div class="Settings-option selectable" onclick="openSettingsMenu2(5)">
 	          		<img src="img/150ppp/ad_off.png" tabindex="0" alt="">
-					<span>&nbsp;   AD Settings</span>
+					<span id="span_10">&nbsp;   AD Settings</span>
 				</div>
           	</div>
           	<div class="container-12">
           		<div class="Settings-option selectable" onclick="openSettingsMenu2(4)">
 	          		<img src="img/150ppp/ast_off.png" tabindex="0" alt="">
-					<span>&nbsp;   AST Settings</span>
+					<span id="span_11">&nbsp;   AST Settings</span>
 				</div>
           	</div>   	
         </div>
@@ -270,7 +270,7 @@
         <div id="u113_options0" class="Menu-settings options2" style="visibility: hidden;">
         	<div class="container-12 Settings-tittle">
           		<div class="Settings-option" onclick="closeSettingsMenu2(0)">
-					<span>&nbsp;  General Settings</span>
+					<span id="span_12">&nbsp;  General Settings</span>
 					<img class="Settings-close" src="img/settings/close.png" tabindex="0" alt="Close">
 				</div>
           	</div>
@@ -284,25 +284,25 @@
 	          		<div class="container-12">
 		          		<div id="lvl2option00" class="Settings-option selectable" onclick="createMenuType()">
 			          		<img src="img/150ppp/menu_type.png" tabindex="0" alt="">
-							<span>&nbsp;   Menu Type</span>
+							<span id="span_13">&nbsp;   Menu Type</span>
 						</div>
 		          	</div>
 		          	<div class="container-12">
 		          		<div id="lvl2option01" class="Settings-option selectable" onclick="createPointerSize()">
 			          		<img src="img/150ppp/pointer_size.png" tabindex="0" alt="">
-							<span>&nbsp;   Pointer Size</span>
+							<span id="span_14">&nbsp;   Pointer Size</span>
 						</div>
 		          	</div>
 		          	<div class="container-12">
 		          		<div id="lvl2option02" class="Settings-option selectable" onclick="createVoiceControl()">
 			          		<img src="img/150ppp/voice_control.png" tabindex="0" alt="">
-							<span>&nbsp;   Voice Control</span>
+							<span id="span_15">&nbsp;   Voice Control</span>
 						</div>
 		          	</div>
 		          	<div class="container-12">
 		          		<div id="lvl2option03" class="Settings-option selectable" onclick="createUserProfile()">
 			          		<img src="img/150ppp/user.png" tabindex="0" alt="">
-							<span>&nbsp;   User Profile</span>
+							<span id="span_16">&nbsp;   User Profile</span>
 						</div>
 		          	</div>
 		          	<div class="container-12">
@@ -313,7 +313,7 @@
 		          	<div class="container-12">
 		          		<div class="Settings-option selectable back" onclick="backSettingsMenu2(0)">
 			          		<img src="img/settings/back.png" tabindex="0" alt="">
-							<span>Back</span>
+							<span id="span_17">Back</span>
 						</div>
 		          	</div>
 				</div>
@@ -322,7 +322,7 @@
         <div id="u113_options1" class="Menu-settings options2" style="visibility: hidden;">
         	<div class="container-12 Settings-tittle">
           		<div class="Settings-option" onclick="closeSettingsMenu2(1)">
-					<span>&nbsp;  Access Settings</span>
+					<span id="span_18">&nbsp;  Access Settings</span>
 					<img class="Settings-close" src="img/settings/close.png" tabindex="0" alt="Close">
 				</div>
           	</div>
@@ -336,19 +336,19 @@
 	          		<div class="container-12">
 		          		<div id="lvl2option10" class="Settings-option selectable" onclick="createAccesLang()">
 			          		<img src="img/150ppp/language.png" tabindex="0" alt="">
-							<span>&nbsp;   Access Language</span>
+							<span id="span_19">&nbsp;   Access Language</span>
 						</div>
 		          	</div>
 		          	<div class="container-12">
 		          		<div id="lvl2option11" class="Settings-option selectable" onclick="createIndicator()">
 			          		<img src="img/150ppp/indicator.png" tabindex="0" alt="">
-							<span>&nbsp;   Indicator</span>
+							<span id="span_20">&nbsp;   Indicator</span>
 						</div>
 		          	</div>
 		          	<div class="container-12">
 		          		<div id="lvl2option12" class="Settings-option selectable" onclick="createSafeArea()">
 			          		<img src="img/150ppp/safe_area.png" tabindex="0" alt="">
-							<span>&nbsp;   Safe Area</span>
+							<span id="span_21">&nbsp;   Safe Area</span>
 						</div>
 		          	</div>
 		          	<div class="container-12">
@@ -364,7 +364,7 @@
 		          	<div class="container-12">
 		          		<div class="Settings-option selectable back" onclick="backSettingsMenu2(1)">
 			          		<img src="img/settings/back.png" tabindex="0" alt="">
-							<span>Back</span>
+							<span id="span_22">Back</span>
 						</div>
 		          	</div>
 				</div>
@@ -373,7 +373,7 @@
         <div id="u113_options2" class="Menu-settings options2" style="visibility: hidden;">
         	<div class="container-12 Settings-tittle">
           		<div class="Settings-option" onclick="closeSettingsMenu2(2)">
-					<span>&nbsp;  ST Settings</span>
+					<span id="span_23">&nbsp;  ST Settings</span>
 					<img class="Settings-close" src="img/settings/close.png" tabindex="0" alt="Close">
 				</div>
           	</div>
@@ -387,25 +387,25 @@
 	          		<div class="container-12">
 		          		<div id="lvl2option20" class="Settings-option selectable" onclick="createSTSize()">
 			          		<img src="img/150ppp/st_font_size.png" tabindex="0" alt="">
-							<span>&nbsp;   Size</span>
+							<span id="span_24">&nbsp;   Size</span>
 						</div>
 		          	</div>
 		          	<div class="container-12">
 		          		<div id="lvl2option21" class="Settings-option selectable" onclick="createSTBackground()">
 			          		<img src="img/150ppp/st_background.png" tabindex="0" alt="">
-							<span>&nbsp;   Background</span>
+							<span id="span_25">&nbsp;   Background</span>
 						</div>
 		          	</div>
 		          	<div class="container-12">
 		          		<div id="lvl2option22" class="Settings-option selectable" onclick="createSTPosition()">
 			          		<img src="img/150ppp/st_position.png" tabindex="0" alt="">
-							<span>&nbsp;   Position</span>
+							<span id="span_26">&nbsp;   Position</span>
 						</div>
 		          	</div>
 		          	<div class="container-12">
 		          		<div id="lvl2option23" class="Settings-option selectable" onclick="createSTE2r()">
 			          		<img src="img/150ppp/easy_to_read.png" tabindex="0" alt="">
-							<span>&nbsp;   Easy to Read</span>
+							<span id="span_27">&nbsp;   Easy to Read</span>
 						</div>
 		          	</div>
 		          	<div class="container-12">
@@ -416,7 +416,7 @@
 		          	<div class="container-12">
 		          		<div class="Settings-option selectable back" onclick="backSettingsMenu2(2)">
 			          		<img src="img/settings/back.png" tabindex="0" alt="">
-							<span>Back</span>
+							<span id="span_28">Back</span>
 						</div>
 		          	</div>
 				</div>
@@ -425,7 +425,7 @@
         <div id="u113_options3" class="Menu-settings options2" style="visibility: hidden;">
         	<div class="container-12 Settings-tittle">
           		<div class="Settings-option" onclick="closeSettingsMenu2(3)">
-					<span>&nbsp;  SL Settings</span>
+					<span id="span_29">&nbsp;  SL Settings</span>
 					<img class="Settings-close" src="img/settings/close.png" tabindex="0" alt="Close">
 				</div>
           	</div>
@@ -439,13 +439,13 @@
 	          		<div class="container-12">
 		          		<div id="lvl2option30" class="Settings-option selectable" onclick="createSLSize()">
 			          		<img src="img/150ppp/sl_size.png" tabindex="0" alt="">
-							<span>&nbsp;   Size</span>
+							<span id="span_30">&nbsp;   Size</span>
 						</div>
 		          	</div>
 		          	<div class="container-12">
 		          		<div id="lvl2option31" class="Settings-option selectable" onclick="createSLPosition()">
 			          		<img src="img/150ppp/sl_position.png" tabindex="0" alt="">
-							<span>&nbsp;   Position</span>
+							<span id="span_31">&nbsp;   Position</span>
 						</div>
 		          	</div>
 		          	<div class="container-12">
@@ -466,7 +466,7 @@
 		          	<div class="container-12">
 		          		<div class="Settings-option selectable back" onclick="backSettingsMenu2(3)">
 			          		<img src="img/settings/back.png" tabindex="0" alt="">
-							<span>Back</span>
+							<span id="span_32">Back</span>
 						</div>
 		          	</div>
 				</div>
@@ -475,7 +475,7 @@
         <div id="u113_options4" class="Menu-settings options2" style="visibility: hidden;">
         	<div class="container-12 Settings-tittle">
           		<div class="Settings-option" onclick="closeSettingsMenu2(4)">
-					<span>&nbsp;  AST Settings</span>
+					<span id="span_33">&nbsp;  AST Settings</span>
 					<img class="Settings-close" src="img/settings/close.png" tabindex="0" alt="Close">
 				</div>
           	</div>
@@ -489,19 +489,19 @@
 	          		<div class="container-12">
 		          		<div id="lvl2option40" class="Settings-option selectable" onclick="createASTE2r()">
 			          		<img src="img/150ppp/easy_to_read.png" tabindex="0" alt="">
-							<span>&nbsp;   Easy to Read</span>
+							<span id="span_34">&nbsp;   Easy to Read</span>
 						</div>
 		          	</div>
 		          	<div class="container-12">
 		          		<div id="lvl2option41" class="Settings-option selectable" onclick="createASTMode()">
 			          		<img src="img/150ppp/ad_presentation_mode.png" tabindex="0" alt="">
-							<span>&nbsp;   Presentation Mode</span>
+							<span id="span_35">&nbsp;   Presentation Mode</span>
 						</div>
 		          	</div>
 		          	<div class="container-12">
 		          		<div id="lvl2option42" class="Settings-option selectable" onclick="createASTVolume()">
 			          		<img src="img/150ppp/volume.png" tabindex="0" alt="">
-							<span>&nbsp;   Volume</span>
+							<span id="span_36">&nbsp;   Volume</span>
 						</div>
 		          	</div>
 		          	<div class="container-12">
@@ -517,7 +517,7 @@
 		          	<div class="container-12">
 		          		<div class="Settings-option selectable back" onclick="backSettingsMenu2(4)">
 			          		<img src="img/settings/back.png" tabindex="0" alt="">
-							<span>Back</span>
+							<span id="span_37">Back</span>
 						</div>
 		          	</div>
 				</div>
@@ -526,7 +526,7 @@
         <div id="u113_options5" class="Menu-settings options2" style="visibility: hidden;">
         	<div class="container-12 Settings-tittle">
           		<div class="Settings-option" onclick="closeSettingsMenu2(5)">
-					<span>&nbsp;  AD Settings</span>
+					<span id="span_38">&nbsp;  AD Settings</span>
 					<img class="Settings-close" src="img/settings/close.png" tabindex="0" alt="Close">
 				</div>
           	</div>
@@ -540,13 +540,13 @@
 	          		<div class="container-12">
 		          		<div id="lvl2option50" class="Settings-option selectable" onclick="createADMode()">
 			          		<img src="img/150ppp/ad_presentation_mode.png" tabindex="0" alt="">
-							<span>&nbsp;   Presentation Mode</span>
+							<span id="span_39">&nbsp;   Presentation Mode</span>
 						</div>
 		          	</div>
 		          	<div class="container-12">
 		          		<div id="lvl2option51" class="Settings-option selectable" onclick="createADVolume()">
 			          		<img src="img/150ppp/volume.png" tabindex="0" alt="">
-							<span>&nbsp;   Volume</span>
+							<span id="span_40">&nbsp;   Volume</span>
 						</div>
 		          	</div>
 		          	<div class="container-12">
@@ -567,7 +567,7 @@
 		          	<div class="container-12">
 		          		<div class="Settings-option selectable back" onclick="backSettingsMenu2(5)">
 			          		<img src="img/settings/back.png" tabindex="0" alt="">
-							<span>Back</span>
+							<span id="span_41">Back</span>
 						</div>
 		          	</div>
 				</div>
@@ -581,7 +581,7 @@
 			<div class="FooterBar-container container">
 				<!-- Partners list -->
 				<div class="Footer-partners">
-					<p><span>Partners:</span></p>
+					<p><span id="span_42">Partners:</span></p>
 					<!-- i2CAT -->
 					<div class="Partners-container">
 						<a href="https://www.i2cat.net/">
@@ -663,14 +663,14 @@
 				      		</div>
 				      	</div>
 			      		<!-- Help button -->
-						<div class="Footer-options container-4">
+						<!--div class="Footer-options container-4">
 							<div class="Footer-links">
 				      			<a href="./help.html">
 									<img src="img/iconos_footer/help.png" alt="help icon">
 									<span>Help</span>
 				      			</a>
 				      		</div>
-      					</div>
+      					</div-->
 			      		<!-- ImAc project website link -->
 						<div class="Footer-options container-4">
 							<div class="Footer-links">

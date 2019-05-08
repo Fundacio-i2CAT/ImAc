@@ -173,15 +173,14 @@ body {
   padding: 0 1.2rem;
 }
 
-
 .Poster-play {
   right: 4vw;
-    top: 380px;
-    width: 35%;
-    position: absolute;
-    min-height: 60px;
-    z-index: 99;
-    visibility: hidden;
+  top: 380px;
+  width: 35%;
+  position: absolute;
+  min-height: 60px;
+  z-index: 99;
+  visibility: hidden;
 }
 
 .Poster-play.enabled {
@@ -276,23 +275,23 @@ body {
 }
 
 .Content-duration {
-      /* width: 100%; */
-    position: absolute;
-    top: 10vw;
-    right: 1.5vw;
-    text-align: right;
-    /* left: 35%; */
-    visibility: hidden;
-    padding: .4vw;
+    /* width: 100%; */
+  position: absolute;
+  top: 10vw;
+  right: 1.5vw;
+  text-align: right;
+  /* left: 35%; */
+  visibility: hidden;
+  padding: .4vw;
 }
 
 .Content-duration p {
-      font-size: 1.5vw;
-    font-family: 'Open Sans', sans-serif;
-    font-style: normal;
-    color: #E6E6E6;
-    padding: 0 0.5vw;
-    background-color: #0000007d;
+  font-size: 1.5vw;
+  font-family: 'Open Sans', sans-serif;
+  font-style: normal;
+  color: #E6E6E6;
+  padding: 0 0.5vw;
+  background-color: #0000007d;
 }
 
 .Content-duration.enabled {
@@ -462,20 +461,20 @@ body {
 ****************************************************/
 
 .Settings-backDiv {
-    border-width: 0px;
-    position: absolute;
-    left: 0px;
-    top: 0px;
-    width: 100%;
-    height: 100%;
-    background: inherit;
-    background-color: rgba(0, 0, 0, 0.949019607843137);
-    border: none;
-    border-radius: 0px;
-    -moz-box-shadow: none;
-    -webkit-box-shadow: none;
-    box-shadow: none;
-    z-index: 100;
+  border-width: 0px;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+  background: inherit;
+  background-color: rgba(0, 0, 0, 0.949019607843137);
+  border: none;
+  border-radius: 0px;
+  -moz-box-shadow: none;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  z-index: 100;
 }
 
 .Menu-filter {
@@ -507,21 +506,21 @@ body {
 
 /* The check */
 .check {
-      height: 50px;
-    display: block;
-    position: relative;
-    padding-left: 40px;
-    margin-top: 10px;
-    padding-right: 15px;
-    cursor: pointer;
-    color: #E6E6E6;
-    font-size: 21px;
-    font-weight: 400;
-    font-family: 'Open Sans', sans-serif;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
+  height: 50px;
+  display: block;
+  position: relative;
+  padding-left: 40px;
+  margin-top: 10px;
+  padding-right: 15px;
+  cursor: pointer;
+  color: #E6E6E6;
+  font-size: 21px;
+  font-weight: 400;
+  font-family: 'Open Sans', sans-serif;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 .check.services {
@@ -530,9 +529,9 @@ body {
 
 /* Hide the browser's default checkbox */
 .check input {
-    position: absolute;
-    opacity: 0;
-    cursor: pointer;
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
 }
 
 .check img {
@@ -542,60 +541,60 @@ body {
 
 /* Create a custom checkbox */
 .checkmark {
-    position: absolute;
-    top: 3px;
-    left: 0;
-    height: 30px;
-    width: 30px;
-    /* background-color: #21202000; */
-    border-color: rgb(204, 0, 102);
-    border-style: solid;
-    border-width: 3px;
-    border-radius: 5px;
+  position: absolute;
+  top: 3px;
+  left: 0;
+  height: 30px;
+  width: 30px;
+  /* background-color: #21202000; */
+  border-color: rgb(204, 0, 102);
+  border-style: solid;
+  border-width: 3px;
+  border-radius: 5px;
 }
 
 /* When the checkbox is checked, add a blue background */
 .check input:checked ~ .checkmark {
-    background-color: rgb(204, 0, 102)  ;
+  background-color: rgb(204, 0, 102)  ;
 }
 
 /* Create the checkmark/indicator (hidden when not checked) */
 .checkmark:after {
-    content: "";
-    position: absolute;
-    display: none;
+  content: "";
+  position: absolute;
+  display: none;
 }
 
 /* Show the checkmark when checked */
 .check input:checked ~ .checkmark:after {
-    display: block;
+  display: block;
 }
 
 /* Style the checkmark/indicator */
 .check .checkmark:after {
-    left: 7px;
-    top: 1px;
-    width: 9px;
-    height: 18px;
-    border: solid ;
-    border-color: #E6E6E6;
-    border-width: 0 3px 3px 0;
-    -webkit-transform: rotate(45deg);
-    -ms-transform: rotate(45deg);
-    transform: rotate(45deg);
+  left: 7px;
+  top: 1px;
+  width: 9px;
+  height: 18px;
+  border: solid ;
+  border-color: #E6E6E6;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
 }
 
 .Menu-settings {
   z-index: 101;
-    position: absolute;
-    top: 45px;
-    right: 12vw;
+  position: absolute;
+  top: 45px;
+  right: 12vw;
     
 }
 
 .Menu-settings.large {
   width: 811px;
-    height: 533px;
+  height: 533px;
 }
 
 .Menu-settings.large img {
@@ -668,14 +667,14 @@ body {
 .Settings-division {
   border-right: 2px dotted rgb(204, 0, 102);
   height: 455px;
-    top: -20px;
-    padding-top: 25px;
+  top: -20px;
+  padding-top: 25px;
 }
 
 .Settings-detail {
   text-align: center;
-      padding: 20px;
-      height: 190px;
+  padding: 20px;
+  height: 190px;
 }
 
 .Settings-option2{
@@ -719,8 +718,8 @@ body {
   font-family: 'Roboto', Arial;
   color: #E6E6E6;
   padding: 0 3.5rem;
-    overflow: hidden;
-    height: 85px;
+  overflow: hidden;
+  height: 85px;
 }
 
 #img_MenuDesc {
@@ -909,6 +908,23 @@ body {
 
 }
 
+@media only screen and (max-width: 650px) {
+
+  .Menu-filter {
+    left: 4vw;
+  }
+
+  .Poster-play {
+    right: 0;
+    top: 170px;
+  }
+
+  .Poster-play-btn {
+    width: 100px;
+    font-size: 2.2rem;
+  }
+}
+
 @media only screen and (max-width: 590px) {
 
   .Content-padding.container-3 {
@@ -961,10 +977,52 @@ body {
 
 }
 
+@media only screen and (max-width: 530px) {
+
+  .Menu-filter {
+    left: 0;
+  }
+
+  .Toggle-container {
+    visibility: hidden;
+  }
+  
+  .Content-access {
+    visibility: hidden;
+  }
+
+  .Poster-play {
+    right: 25%;
+    top: 180px;
+  }
+
+  .Poster-info p {
+    visibility: hidden;
+  }
+
+  .Poster-info h1 {
+    font-size: 2.9rem;
+    text-align: center;
+  }
+
+  .Poster-play-btn {
+    background-color: rgb(204, 0, 102);
+  }
+}
+
 @media only screen and (max-width: 480px) {
 
-  .TopBar-options {
+  #topbar_lang, #topbar_settings {
     display: none;
+  }
+
+  .TopBar-options {
+    font-size: 1.8rem;
+        width: 28vw;
+  }
+
+  .TopBar-options img {
+    width: 20px;
   }
 
   .Content-padding.container-3 {
@@ -1006,22 +1064,9 @@ body {
     border: 1.4vw solid rgb(204, 0, 102);
   }
 
-  .Content-access {
-    visibility: hidden;
-  }
+  
 
-  .Poster-info p {
-    visibility: hidden;
-  }
-
-  .Poster-info h1 {
-    font-size: 2.9rem;
-    text-align: center;
-  }
-
-  .Poster-play-btn {
-    background-color: rgb(204, 0, 102);
-  }
+  
 
   .Menu-settings {
     width: 88%;
@@ -1068,6 +1113,25 @@ body {
 
   #u114R.enabled, #u114L.enabled {
     display: inherit;
+  }
+
+  .Menu-filter {
+    width: 96vw;
+    margin:2vw;
+  }
+
+  #u109_img {
+    width: 96vw;
+    height: 700px;
+  }
+
+  .Menu-filter.options {
+    width: 94vw;
+    margin:3vw;
+  }
+
+  .Search-division {
+    width: 100%;
   }
   
 }

@@ -30,7 +30,7 @@
       "SL": ["en"]
     }],
     "language": "Deutsch",
-    "duration": "8:28",
+    "duration": "1:46",
     "url": "http://84.88.32.46/imac_content/rbb/dash/stream.mpd",
     "audioChannels": 2,
     "subtitles": [
@@ -42,7 +42,6 @@
       "en": "http://84.88.32.46/imac_content/liceu/Dash/SL_GER/stream.mpd"
     }],
     "ad": [{}],
-
     "ast": [{}]
   },
   {
@@ -56,7 +55,7 @@
       "SL": ["en", "es", "de", "ca"]
     }],
     "language": "English",
-    "duration": "8:28",
+    "duration": "14:44",
     "url": "http://84.88.32.46/imac_content/pilot_1/RBB_Iphilip/stream.mpd",
     "audioChannels": 2,
     "subtitles": [
@@ -84,7 +83,7 @@
       "ST": ["de", "ca"]
     }],
     "language": "French",
-    "duration": "8:28",
+    "duration": "8:15",
     "url": "http://84.88.32.46/imac_content/pilot_1/OPERALICEU_02/stream.mpd",
     "audioChannels": 4,
     "subtitles": [
@@ -136,7 +135,7 @@
       "ST": ["en", "de", "ca"]
     }],
     "language": "Català",
-    "duration": "8:28",
+    "duration": "4:12",
     "url": "http://84.88.32.46/imac_content/pilot_1/desconcert_2/stream.mpd",
     "audioChannels": 4,
     "subtitles": [
@@ -161,27 +160,25 @@
     "description": "Lorem ipsum",
     "acces": [
     {
-      "ST": ["en", "es", "de", "ca"],
+      "ST": ["de", "ca"],
       "SL": ["de"]
     }],
     "language": "Deutsch",
-    "duration": "8:28",
+    "duration": "3:10",
     "url": "http://84.88.32.46/imac_content/pilot_1/rapzember/stream.mpd",
     "audioChannels": 2,
     "subtitles": [
     {
-      "de": "http://84.88.32.46/imac_content/pilot_1/RBB_Iphilip/RBB_IPhilip_subtitles_DE.xml",
-      "ca": "http://84.88.32.46/imac_content/pilot_1/RBB_Iphilip/RBB_IPhilip_subtitles_CAT.xml",
-      "en": "http://84.88.32.46/imac_content/pilot_1/RBB_Iphilip/RBB_IPhilip_subtitles_EN.xml"
+      "de": "http://84.88.32.46/imac_content/pilot_1/rapzember/Rapzember.ebu-tt.positioning.xml",
+      "ca": "http://84.88.32.46/imac_content/pilot_1/rapzember/Rapzember_Cat.xml"
     },
     {
-      "de": "http://84.88.32.46/imac_content/pilot_1/RBB_Iphilip/RBB_IPhilip_subtitles_DE.xml",
-      "ca": "http://84.88.32.46/imac_content/pilot_1/RBB_Iphilip/RBB_IPhilip_subtitles_CAT.xml",
-      "en": "http://84.88.32.46/imac_content/pilot_1/RBB_Iphilip/RBB_IPhilip_subtitles_EN.xml"
+      "de": "http://84.88.32.46/imac_content/pilot_1/rapzember/Rapzember.ebu-tt.positioning.xml",
+      "ca": "http://84.88.32.46/imac_content/pilot_1/rapzember/Rapzember_Cat.xml"
     }],
     "signer": [
     {
-      "de": "http://84.88.32.46/imac_content/pilot_1/signer_rbb_new/stream.mpd"
+      "de": "http://84.88.32.46/imac_content/pilot_1/rapzember/signer_rbb_new/stream.mpd"
     }],
     "ad": [{}],
     "ast": [{}]

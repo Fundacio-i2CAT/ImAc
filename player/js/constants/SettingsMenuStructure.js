@@ -121,25 +121,25 @@ const generalSettings = { title: 'General', icon: './img/menu/settings_icon.png'
   * ╚═════════════════════════════════════╝
  */
 const settingsUILanguages = { title: 'Language', icon: './img/menu/language.png', parent: generalSettings, final: true, options: [
-    { optId: 'settingsUILanguageEngButton', text: 'English', default: function(){ return console.log() },
+    { optId: 'settingsUILanguageEngButton', text: 'English', default: function(){ return MenuDictionary.checkMainLanguage('en') },
         function:  function(){ 
             MenuFunctionsManager.getMainLanguageFunc('en');
             SettingsOptionCtrl.setChildColumnActiveOpt(settingsUILanguages.options[0].optId);
         }
     }, 
-    { optId: 'settingsUILanguageEspButton', text: 'Español', default: function(){ return console.log() },
+    { optId: 'settingsUILanguageEspButton', text: 'Español', default: function(){ return MenuDictionary.checkMainLanguage('es') },
         function:  function(){ 
             MenuFunctionsManager.getMainLanguageFunc('es');
             SettingsOptionCtrl.setChildColumnActiveOpt(settingsUILanguages.options[1].optId);
         }
     }, 
-    { optId: 'settingsUILanguageGerButton', text: 'Deutsch', default: function(){ return console.log() },
+    { optId: 'settingsUILanguageGerButton', text: 'Deutsch', default: function(){ return MenuDictionary.checkMainLanguage('de') },
         function:  function(){ 
             MenuFunctionsManager.getMainLanguageFunc('de');
             SettingsOptionCtrl.setChildColumnActiveOpt(settingsUILanguages.options[2].optId);
         } 
     }, 
-    { optId: 'settingsUILanguageCatButton', text: 'Català', default: function(){ return console.log() },
+    { optId: 'settingsUILanguageCatButton', text: 'Català', default: function(){ return MenuDictionary.checkMainLanguage('ca') },
         function:  function(){ 
             MenuFunctionsManager.getMainLanguageFunc('ca');
             SettingsOptionCtrl.setChildColumnActiveOpt(settingsUILanguages.options[3].optId);
@@ -159,13 +159,13 @@ const settingsUILanguages = { title: 'Language', icon: './img/menu/language.png'
  * ╚═════════════════════════════════════╝
 */
 const settigsVoiceControl = { title: 'VoiceControl', icon: './img/menu/voice_control.png', parent: generalSettings, final: true, options: [
-    { optId: 'voiceControlOnButton', text: 'On', default: function(){ return console.log() },
+    { optId: 'voiceControlOnButton', text: 'On', default: function(){ return _ws_vc != undefined },
         function:  function(){ 
             connectVoiceControl( localStorage.ImAc_voiceControlId, "http://51.89.138.157:3000/" );
             SettingsOptionCtrl.setChildColumnActiveOpt(settigsVoiceControl.options[0].optId);
         } 
     }, 
-    { optId: 'voiceControlOffButton', text: 'Off', default: function(){ return console.log() },
+    { optId: 'voiceControlOffButton', text: 'Off', default: function(){ return _ws_vc == undefined },
         function:  function(){ 
             console.log();
             SettingsOptionCtrl.setChildColumnActiveOpt(settigsVoiceControl.options[1].optId);
@@ -212,19 +212,19 @@ const settingsMenuType = { title: 'MenuType', icon: './img/menu/menu_type.png', 
  * ╚═════════════════════════════════════╝
 */
 const settingsPointerSize = { title: 'PointerSize', icon: './img/menu/pointer_size.png', parent: generalSettings, final: true, options: [
-    { optId: 'settingsMenuPointerLarge', text: 'Large', default: function(){ return console.log() },
+    { optId: 'settingsMenuPointerLarge', text: 'Large', default: function(){ return _pointerSize == 2 },
         function:  function(){ 
             MenuFunctionsManager.getChangePointerSizeFunc(2);
             SettingsOptionCtrl.setChildColumnActiveOpt(settingsPointerSize.options[0].optId);
         } 
     }, 
-    { optId: 'settingsMenuPointerMedium', text: 'Medium', default: function(){ return console.log() },
+    { optId: 'settingsMenuPointerMedium', text: 'Medium', default: function(){ return _pointerSize == 1 },
         function:  function(){ 
             MenuFunctionsManager.getChangePointerSizeFunc(1);
             SettingsOptionCtrl.setChildColumnActiveOpt(settingsPointerSize.options[1].optId);
         } 
     }, 
-    { optId: 'settingsMenuPointerSmall', text: 'Small', default: function(){ return console.log() },
+    { optId: 'settingsMenuPointerSmall', text: 'Small', default: function(){ return _pointerSize == 0.6 },
         function:  function(){ 
             MenuFunctionsManager.getChangePointerSizeFunc(0.6);
             SettingsOptionCtrl.setChildColumnActiveOpt(settingsPointerSize.options[2].optId);
@@ -304,25 +304,25 @@ const accessSettings = { title: 'Access', icon: './img/menu/accessibility_icon.p
  * ╚═════════════════════════════════════╝
 */
 const settingsAccesLanguages = { title: 'Language', icon: './img/menu/language.png', parent: accessSettings, final: true, options: [
-    { optId: 'settingsAccesLanguageEngButton', text: 'English', default: function(){ return console.log() },
+    { optId: 'settingsAccesLanguageEngButton', text: 'English', default: function(){ return subController.checkSubLanguage('en') },
         function: function(){ 
             MenuFunctionsManager.changeAccesLanguage('en')(); 
             SettingsOptionCtrl.setChildColumnActiveOpt(settingsAccesLanguages.options[0].optId);
         } 
     }, 
-    { optId: 'settingsAccesLanguageEspButton', text: 'Español', default: function(){ return console.log() },
+    { optId: 'settingsAccesLanguageEspButton', text: 'Español', default: function(){ return subController.checkSubLanguage('es') },
         function: function(){ 
             MenuFunctionsManager.changeAccesLanguage('es')(); 
             SettingsOptionCtrl.setChildColumnActiveOpt(settingsAccesLanguages.options[1].optId);
         } 
     }, 
-    { optId: 'settingsAccesLanguageGerButton', text: 'Deutsch', default: function(){ return console.log() },
+    { optId: 'settingsAccesLanguageGerButton', text: 'Deutsch', default: function(){ return subController.checkSubLanguage('de') },
         function: function(){ 
             MenuFunctionsManager.changeAccesLanguage('de')(); 
             SettingsOptionCtrl.setChildColumnActiveOpt(settingsAccesLanguages.options[2].optId);
         } 
     }, 
-    { optId: 'settingsAccesLanguageCatButton', text: 'Català', default: function(){ return console.log() },
+    { optId: 'settingsAccesLanguageCatButton', text: 'Català', default: function(){ return subController.checkSubLanguage('ca') },
         function: function(){ 
             MenuFunctionsManager.changeAccesLanguage('ca')(); 
             SettingsOptionCtrl.setChildColumnActiveOpt(settingsAccesLanguages.options[3].optId);

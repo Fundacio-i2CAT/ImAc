@@ -483,6 +483,22 @@ AudioManager = function() {
     };
 
 //************************************************************************************
+// Public AD Checkers
+//************************************************************************************
+
+    this.checkADPresentation = function(x)
+    {
+        return x == adPresentation;
+    };
+
+    this.checkADVolume = function(x)
+    {
+        return x == adVolume;
+    };   
+
+    
+
+//************************************************************************************
 // Public AST Setters
 //************************************************************************************
 
@@ -580,4 +596,23 @@ AudioManager = function() {
         astEasy = easy;
         this.setASTContent( xml, astLang );
     };   
+
+//************************************************************************************
+// Public AST Checkers
+//************************************************************************************
+
+    this.checkASTPresentation = function(x)
+    {
+        return x == astPresentation;
+    };
+
+    this.checkASTVolume = function(x)
+    {
+        return x == astVolume;
+    }; 
+
+    this.checkASTEasy = function(x)
+    {
+        return x == astEasy;
+    };  
 }

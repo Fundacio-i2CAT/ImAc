@@ -638,7 +638,7 @@ body {
 }
 
 .Settings-option.selectable {
-  padding: 1.2rem 2rem 1.2rem 4.2rem;
+  padding: 1.2rem 2rem 1.2rem 3rem;
   font-size: 3rem;
   font-family: 'Roboto', Arial;
   height: 70px;

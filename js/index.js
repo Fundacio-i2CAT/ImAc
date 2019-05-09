@@ -2019,143 +2019,245 @@ var _confMemory;
         _ws_vc = undefined;
     }
 
+//************************************************************************************
+// Functions to translate the web page
+//************************************************************************************
 
 
+    $(document).on('change','#langSelector',function(){
 
-$(document).on('change','#langSelector',function(){
+        _ImAc_default.mainlanguage = $(this).find("option:selected").attr('value');
 
-    _ImAc_default.mainlanguage = $(this).find("option:selected").attr('value');
+        closeSettingsMenus();
+        translateAll( _ImAc_default.mainlanguage )
+        translateContentDesc( _ImAc_default.mainlanguage )
+        
 
-    closeSettingsMenus();
-    translateAll( _ImAc_default.mainlanguage )
-    translateContentDesc( _ImAc_default.mainlanguage )
-    
+        console.log( _ImAc_default.mainlanguage );
 
-    console.log( _ImAc_default.mainlanguage );
+    });
 
-});
-
-function translateContentDesc(lang)
-{
-    var id = localStorage.ImAc_init;
-    if ( document.getElementById( 'content' + id ).children[0].classList.contains('enabled') ) 
+    function translateContentDesc(lang)
     {
-        document.getElementById( 'content_desc' ).innerHTML = list_contents[id].descriptionArray[0][ _ImAc_default.mainlanguage ] || "";
-    }
-    else 
-    {
-        if ( lang == 'ca')
+        var id = localStorage.ImAc_init;
+        if ( document.getElementById( 'content' + id ).children[0].classList.contains('enabled') ) 
         {
-            document.getElementById('content_desc').innerHTML = "Gaudeix de continguts immersius amb serveis d'accessibilitat seleccionant el vídeo que vulguis visualitzar. Pots personalitzar la teva experiència mitjançant el menú Configuració, o més endavant mitjançant el menú del reproductor.";
+            document.getElementById( 'content_desc' ).innerHTML = list_contents[id].descriptionArray[0][ _ImAc_default.mainlanguage ] || "";
+        }
+        else 
+        {
+            if ( lang == 'ca')
+            {
+                document.getElementById('content_desc').innerHTML = "Gaudeix de continguts immersius amb serveis d'accessibilitat seleccionant el vídeo que vulguis visualitzar. Pots personalitzar la teva experiència mitjançant el menú Configuració, o més endavant mitjançant el menú del reproductor.";
+            }
+            else
+            {
+                document.getElementById('content_desc').innerHTML = 'Enjoy immersive contents with access services by selecting the video you want to watch. To customise your experience, go into settings or select a video and then go to the player menu.';
+            }
+        }
+    }
+
+    function translateAll(lang)
+    {
+        if ( lang == 'ca' )
+        {
+            document.getElementById('span_1').innerHTML = 'Configuració';
+            document.getElementById('span_2').innerHTML = 'Cerca';
+            document.getElementById('span_3').innerHTML = "Mostra/Oculta l'informació &nbsp;";
+            document.getElementById('span_4').innerHTML = '&nbsp;  Cerca';
+            document.getElementById('span_5').innerHTML = '&nbsp;  Configuració';
+            document.getElementById('span_6').innerHTML = '&nbsp;  Conf. general';
+            document.getElementById('span_7').innerHTML = "&nbsp;Conf. d’accessibilitat";
+            document.getElementById('span_8').innerHTML = '&nbsp;  Subtitols';
+            document.getElementById('span_9').innerHTML = '&nbsp;  Llengua de signes';
+            document.getElementById('span_10').innerHTML = '&nbsp;   Audiodescripció';
+            document.getElementById('span_11').innerHTML = '&nbsp;   Audiosubtítols';
+            document.getElementById('span_12').innerHTML = '&nbsp;  Configuració general';
+            document.getElementById('span_13').innerHTML = '&nbsp;   Tipus de menú';
+            document.getElementById('span_14').innerHTML = '&nbsp;   Mida del punter';
+            document.getElementById('span_15').innerHTML = '&nbsp;   Control de veu';
+            document.getElementById('span_16').innerHTML = "&nbsp;   Perfil d'usuari";
+            document.getElementById('span_17').innerHTML = 'Tornar';
+            document.getElementById('span_18').innerHTML = '&nbsp;  Configurqació d’accessibilitat';
+            document.getElementById('span_19').innerHTML = '&nbsp;   Idioma';
+            document.getElementById('span_20').innerHTML = '&nbsp;   Indicador';
+            document.getElementById('span_21').innerHTML = '&nbsp;   Àrea de visió';
+            document.getElementById('span_22').innerHTML = 'Tornar';
+            document.getElementById('span_23').innerHTML = '&nbsp;  Configurqació de subtitols';
+            document.getElementById('span_24').innerHTML = '&nbsp;   Mida';
+            document.getElementById('span_25').innerHTML = '&nbsp;   Fons';
+            document.getElementById('span_26').innerHTML = '&nbsp;   Posició';
+            document.getElementById('span_27').innerHTML = '&nbsp;   Lectura fàcil';
+            document.getElementById('span_28').innerHTML = 'Tornar';
+            document.getElementById('span_29').innerHTML = '&nbsp;  Configuració de llengua de signes';
+            document.getElementById('span_30').innerHTML = '&nbsp;   Mida';
+            document.getElementById('span_31').innerHTML = '&nbsp;   Posició';
+            document.getElementById('span_32').innerHTML = 'Tornar';
+            document.getElementById('span_33').innerHTML = '&nbsp;  Configuració d’audiosubtítols';
+            document.getElementById('span_34').innerHTML = '&nbsp;   Lectura fàcil';
+            document.getElementById('span_35').innerHTML = '&nbsp;   Mode presentació';
+            document.getElementById('span_36').innerHTML = '&nbsp;   Volum';
+            document.getElementById('span_37').innerHTML = 'Tornar';
+            document.getElementById('span_38').innerHTML = '&nbsp;  Configuració d’audiodescripció';
+            document.getElementById('span_39').innerHTML = '&nbsp;   Mode presentació';
+            document.getElementById('span_40').innerHTML = '&nbsp;   Volum';
+            document.getElementById('span_41').innerHTML = 'Tornar';
+            document.getElementById('span_42').innerHTML = 'Partners:';
+            document.getElementById('span_43').innerHTML = "Filtra per servei d’accessibilitat o idioma:";
+            document.getElementById('span_44').innerHTML = 'Subtitols';
+            document.getElementById('span_45').innerHTML = 'Llengua de signes';
+            document.getElementById('span_46').innerHTML = 'Audio- subtítols';
+            document.getElementById('span_47').innerHTML = 'Audio- descripció';
+        }
+        else if ( lang == 'es' )
+        {
+            document.getElementById('span_1').innerHTML = 'Ajustes';
+            document.getElementById('span_2').innerHTML = 'Buscar';
+            document.getElementById('span_3').innerHTML = 'Muestra/Oculta la información &nbsp;';
+            document.getElementById('span_4').innerHTML = '&nbsp;  Buscar';
+            document.getElementById('span_5').innerHTML = '&nbsp;  Ajustes';
+            document.getElementById('span_6').innerHTML = '&nbsp;   Ajustes generales';
+            document.getElementById('span_7').innerHTML = '&nbsp;Ajustes accesibilidad';
+            document.getElementById('span_8').innerHTML = '&nbsp; Subtítulos';
+            document.getElementById('span_9').innerHTML = '&nbsp; Lengua de signos';
+            document.getElementById('span_10').innerHTML = '&nbsp; Audiodescripción';
+            document.getElementById('span_11').innerHTML = '&nbsp; Audiosubtítulos';
+            document.getElementById('span_12').innerHTML = '&nbsp;  Ajustes general';
+            document.getElementById('span_13').innerHTML = '&nbsp;   Tipo de menú';
+            document.getElementById('span_14').innerHTML = '&nbsp;   Tamaño del puntero';
+            document.getElementById('span_15').innerHTML = '&nbsp;   Control de voz';
+            document.getElementById('span_16').innerHTML = '&nbsp;   Perfil de usuario';
+            document.getElementById('span_17').innerHTML = 'Atras';
+            document.getElementById('span_18').innerHTML = '&nbsp;  Ajustes de accesibilidad';
+            document.getElementById('span_19').innerHTML = '&nbsp;   Idioma';
+            document.getElementById('span_20').innerHTML = '&nbsp;   Indicador';
+            document.getElementById('span_21').innerHTML = '&nbsp;   Área de visión';
+            document.getElementById('span_22').innerHTML = 'Atras';
+            document.getElementById('span_23').innerHTML = '&nbsp;  Ajustes de subtítulos';
+            document.getElementById('span_24').innerHTML = '&nbsp;   Tamaño';
+            document.getElementById('span_25').innerHTML = '&nbsp;   Fondo';
+            document.getElementById('span_26').innerHTML = '&nbsp;   Posición';
+            document.getElementById('span_27').innerHTML = '&nbsp;   Lectura fácil';
+            document.getElementById('span_28').innerHTML = 'Atras';
+            document.getElementById('span_29').innerHTML = '&nbsp;  Ajustes de lengua de signos';
+            document.getElementById('span_30').innerHTML = '&nbsp;   Tamaño';
+            document.getElementById('span_31').innerHTML = '&nbsp;   Posición';
+            document.getElementById('span_32').innerHTML = 'Atras';
+            document.getElementById('span_33').innerHTML = '&nbsp;  Ajustes de audiosubtítulos';
+            document.getElementById('span_34').innerHTML = '&nbsp;   Lectura fácil';
+            document.getElementById('span_35').innerHTML = '&nbsp;   Modo de presentación';
+            document.getElementById('span_36').innerHTML = '&nbsp;   Volumen';
+            document.getElementById('span_37').innerHTML = 'Atras';
+            document.getElementById('span_38').innerHTML = '&nbsp;  Ajustes de audiodescripción';
+            document.getElementById('span_39').innerHTML = '&nbsp;   Modo de presentación';
+            document.getElementById('span_40').innerHTML = '&nbsp;   Volumen';
+            document.getElementById('span_41').innerHTML = 'Atras';
+            document.getElementById('span_42').innerHTML = 'Partners:';
+            document.getElementById('span_43').innerHTML = 'Filtra por servicio de accesibilidad o idioma:';
+            document.getElementById('span_44').innerHTML = 'Subtítulos';
+            document.getElementById('span_45').innerHTML = 'Lengua de signos';
+            document.getElementById('span_46').innerHTML = 'Audio- subtítulos';
+            document.getElementById('span_47').innerHTML = 'Audio- descripción';
+        }
+        else if ( lang == 'de' )
+        {
+            document.getElementById('span_1').innerHTML = 'Einstellungen';
+            document.getElementById('span_2').innerHTML = 'Finden';
+            document.getElementById('span_3').innerHTML = 'Inhaltsinfo ein / ausblenden &nbsp;';
+            document.getElementById('span_4').innerHTML = '&nbsp;  Finden';
+            document.getElementById('span_5').innerHTML = '&nbsp;  Einstellungen';
+            document.getElementById('span_6').innerHTML = '&nbsp;   Allgemeine Einstellungen';
+            document.getElementById('span_7').innerHTML = '&nbsp;   Barrierefreie Dienste';
+            document.getElementById('span_8').innerHTML = '&nbsp;   Untertitel';
+            document.getElementById('span_9').innerHTML = '&nbsp;   Gebärdensprache';
+            document.getElementById('span_10').innerHTML = '&nbsp;   Audio Deskription';
+            document.getElementById('span_11').innerHTML = '&nbsp;   Voice over';
+            document.getElementById('span_12').innerHTML = '&nbsp;  Allgemeine Einstellungen';
+            document.getElementById('span_13').innerHTML = '&nbsp;   Art des Menüs';
+            document.getElementById('span_14').innerHTML = '&nbsp;   Pointergröße';
+            document.getElementById('span_15').innerHTML = '&nbsp;   Sprachsteuerung';
+            document.getElementById('span_16').innerHTML = '&nbsp;   Nutzerprofil';
+            document.getElementById('span_17').innerHTML = 'Back';
+            document.getElementById('span_18').innerHTML = '&nbsp;  Barrierefreie Dienste Einstellungen';
+            document.getElementById('span_19').innerHTML = '&nbsp;   Sprache';
+            document.getElementById('span_20').innerHTML = '&nbsp;   Indikator';
+            document.getElementById('span_21').innerHTML = '&nbsp;   Darstellungsbereich';
+            document.getElementById('span_22').innerHTML = 'Back';
+            document.getElementById('span_23').innerHTML = '&nbsp;  Untertitel Einstellungen';
+            document.getElementById('span_24').innerHTML = '&nbsp;   Größe';
+            document.getElementById('span_25').innerHTML = '&nbsp;   Hintergrund';
+            document.getElementById('span_26').innerHTML = '&nbsp;   Position';
+            document.getElementById('span_27').innerHTML = '&nbsp;   Einfache Sprache';
+            document.getElementById('span_28').innerHTML = 'Back';
+            document.getElementById('span_29').innerHTML = '&nbsp;  Gebärdensprache Einstellungen';
+            document.getElementById('span_30').innerHTML = '&nbsp;   Größe';
+            document.getElementById('span_31').innerHTML = '&nbsp;   Position';
+            document.getElementById('span_32').innerHTML = 'Back';
+            document.getElementById('span_33').innerHTML = '&nbsp;  Voice over Einstellungen';
+            document.getElementById('span_34').innerHTML = '&nbsp;   Einfache Sprache';
+            document.getElementById('span_35').innerHTML = '&nbsp;   Präsentationsmodus';
+            document.getElementById('span_36').innerHTML = '&nbsp;   Lautstärke';
+            document.getElementById('span_37').innerHTML = 'Back';
+            document.getElementById('span_38').innerHTML = '&nbsp;  Audio Deskription Einstellungen';
+            document.getElementById('span_39').innerHTML = '&nbsp;   Präsentationsmodus';
+            document.getElementById('span_40').innerHTML = '&nbsp;   Lautstärke';
+            document.getElementById('span_41').innerHTML = 'Back';
+            document.getElementById('span_42').innerHTML = 'Partners:';
+            document.getElementById('span_43').innerHTML = 'Filtern Sie nach Eingabehilfen und Sprache:';
+            document.getElementById('span_44').innerHTML = 'Untertitel';
+            document.getElementById('span_45').innerHTML = 'Gebärdensprache';
+            document.getElementById('span_46').innerHTML = 'Voice over';
+            document.getElementById('span_47').innerHTML = 'Audio Deskription';
         }
         else
         {
-            document.getElementById('content_desc').innerHTML = 'Enjoy immersive contents with access services by selecting the video you want to watch. To customise your experience, go into settings or select a video and then go to the player menu.';
+            document.getElementById('span_1').innerHTML = 'Settings';
+            document.getElementById('span_2').innerHTML = 'Search';
+            document.getElementById('span_3').innerHTML = 'Show/Hide content info &nbsp;';
+            document.getElementById('span_4').innerHTML = '&nbsp;  Search';
+            document.getElementById('span_5').innerHTML = '&nbsp;  Settings';
+            document.getElementById('span_6').innerHTML = '&nbsp;   General Settings';
+            document.getElementById('span_7').innerHTML = '&nbsp;   Access Settings';
+            document.getElementById('span_8').innerHTML = '&nbsp;   ST Settings';
+            document.getElementById('span_9').innerHTML = '&nbsp;   SL Settings';
+            document.getElementById('span_10').innerHTML = '&nbsp;   AD Settings';
+            document.getElementById('span_11').innerHTML = '&nbsp;   AST Settings';
+            document.getElementById('span_12').innerHTML = '&nbsp;  General Settings';
+            document.getElementById('span_13').innerHTML = '&nbsp;   Menu Type';
+            document.getElementById('span_14').innerHTML = '&nbsp;   Pointer Size';
+            document.getElementById('span_15').innerHTML = '&nbsp;   Voice Control';
+            document.getElementById('span_16').innerHTML = '&nbsp;   User Profile';
+            document.getElementById('span_17').innerHTML = 'Back';
+            document.getElementById('span_18').innerHTML = '&nbsp;  Access Settings';
+            document.getElementById('span_19').innerHTML = '&nbsp;   Access Language';
+            document.getElementById('span_20').innerHTML = '&nbsp;   Indicator';
+            document.getElementById('span_21').innerHTML = '&nbsp;   Safe Area';
+            document.getElementById('span_22').innerHTML = 'Back';
+            document.getElementById('span_23').innerHTML = '&nbsp;  ST Settings';
+            document.getElementById('span_24').innerHTML = '&nbsp;   Size';
+            document.getElementById('span_25').innerHTML = '&nbsp;   Background';
+            document.getElementById('span_26').innerHTML = '&nbsp;   Position';
+            document.getElementById('span_27').innerHTML = '&nbsp;   Easy to Read';
+            document.getElementById('span_28').innerHTML = 'Back';
+            document.getElementById('span_29').innerHTML = '&nbsp;  SL Settings';
+            document.getElementById('span_30').innerHTML = '&nbsp;   Size';
+            document.getElementById('span_31').innerHTML = '&nbsp;   Position';
+            document.getElementById('span_32').innerHTML = 'Back';
+            document.getElementById('span_33').innerHTML = '&nbsp;  AST Settings';
+            document.getElementById('span_34').innerHTML = '&nbsp;   Easy to Read';
+            document.getElementById('span_35').innerHTML = '&nbsp;   Presentation Mode';
+            document.getElementById('span_36').innerHTML = '&nbsp;   Volume';
+            document.getElementById('span_37').innerHTML = 'Back';
+            document.getElementById('span_38').innerHTML = '&nbsp;  AD Settings';
+            document.getElementById('span_39').innerHTML = '&nbsp;   Presentation Mode';
+            document.getElementById('span_40').innerHTML = '&nbsp;   Volume';
+            document.getElementById('span_41').innerHTML = 'Back';
+            document.getElementById('span_42').innerHTML = 'Partners:';
+            document.getElementById('span_43').innerHTML = 'Filter by accessibility service and language:';
+            document.getElementById('span_44').innerHTML = 'Subtitles';
+            document.getElementById('span_45').innerHTML = 'Sign Language';
+            document.getElementById('span_46').innerHTML = 'Audio Subtitles';
+            document.getElementById('span_47').innerHTML = 'Audio Description';
         }
+        
     }
-}
-
-function translateAll(lang)
-{
-    if ( lang == 'ca')
-    {
-        document.getElementById('span_1').innerHTML = 'Config.';
-        document.getElementById('span_2').innerHTML = 'Cerca';
-        document.getElementById('span_3').innerHTML = "Mostra/Oculta l'informació &nbsp;";
-        document.getElementById('span_4').innerHTML = '&nbsp;  Cerca';
-        document.getElementById('span_5').innerHTML = '&nbsp;  Configuració';
-        document.getElementById('span_6').innerHTML = '&nbsp;  Conf. general';
-        document.getElementById('span_7').innerHTML = "&nbsp;Conf. d’accessibilitat";
-        document.getElementById('span_8').innerHTML = '&nbsp;  ST Configuració';
-        document.getElementById('span_9').innerHTML = '&nbsp;  SL Configuració';
-        document.getElementById('span_10').innerHTML = '&nbsp;   AD Configuració';
-        document.getElementById('span_11').innerHTML = '&nbsp;   AST Configuració';
-        document.getElementById('span_12').innerHTML = '&nbsp;  Configuració general';
-        document.getElementById('span_13').innerHTML = '&nbsp;   Tipus de menú';
-        document.getElementById('span_14').innerHTML = '&nbsp;   Mida del punter';
-        document.getElementById('span_15').innerHTML = '&nbsp;   Control de veu';
-        document.getElementById('span_16').innerHTML = "&nbsp;   Perfil d'usuari";
-        document.getElementById('span_17').innerHTML = 'Tornar';
-        document.getElementById('span_18').innerHTML = '&nbsp;  Configurqació d’accessibilitat';
-        document.getElementById('span_19').innerHTML = '&nbsp;   Access Language';
-        document.getElementById('span_20').innerHTML = '&nbsp;   Indicador';
-        document.getElementById('span_21').innerHTML = '&nbsp;   Safe Area';
-        document.getElementById('span_22').innerHTML = 'Tornar';
-        document.getElementById('span_23').innerHTML = '&nbsp;  Configurqació de subtitols';
-        document.getElementById('span_24').innerHTML = '&nbsp;   Mida';
-        document.getElementById('span_25').innerHTML = '&nbsp;   Fons';
-        document.getElementById('span_26').innerHTML = '&nbsp;   Posició';
-        document.getElementById('span_27').innerHTML = '&nbsp;   Lectura fàcil';
-        document.getElementById('span_28').innerHTML = 'Tornar';
-        document.getElementById('span_29').innerHTML = '&nbsp;  Configuració de llengua de signes';
-        document.getElementById('span_30').innerHTML = '&nbsp;   Mida';
-        document.getElementById('span_31').innerHTML = '&nbsp;   Posició';
-        document.getElementById('span_32').innerHTML = 'Tornar';
-        document.getElementById('span_33').innerHTML = '&nbsp;  Configuració d’audiosubtítols';
-        document.getElementById('span_34').innerHTML = '&nbsp;   Lectura fàcil';
-        document.getElementById('span_35').innerHTML = '&nbsp;   Mode presentació';
-        document.getElementById('span_36').innerHTML = '&nbsp;   Volum';
-        document.getElementById('span_37').innerHTML = 'Tornar';
-        document.getElementById('span_38').innerHTML = '&nbsp;  Configuració d’audiodescripció';
-        document.getElementById('span_39').innerHTML = '&nbsp;   Mode presentació';
-        document.getElementById('span_40').innerHTML = '&nbsp;   Volum';
-        document.getElementById('span_41').innerHTML = 'Tornar';
-        document.getElementById('span_42').innerHTML = 'Partners:';
-        document.getElementById('span_43').innerHTML = "Filtra per servei d’accessibilitat o idioma:";
-        document.getElementById('span_44').innerHTML = 'Subtitols';
-        document.getElementById('span_45').innerHTML = 'Llengua de signes';
-        document.getElementById('span_46').innerHTML = 'Audio- subtítols';
-        document.getElementById('span_47').innerHTML = 'Audio- descripció';
-    }
-    else
-    {
-        document.getElementById('span_1').innerHTML = 'Settings';
-        document.getElementById('span_2').innerHTML = 'Search';
-        document.getElementById('span_3').innerHTML = 'Show/Hide content info &nbsp;';
-        document.getElementById('span_4').innerHTML = '&nbsp;  Search';
-        document.getElementById('span_5').innerHTML = '&nbsp;  Settings';
-        document.getElementById('span_6').innerHTML = '&nbsp;   General Settings';
-        document.getElementById('span_7').innerHTML = '&nbsp;   Access Settings';
-        document.getElementById('span_8').innerHTML = '&nbsp;   ST Settings';
-        document.getElementById('span_9').innerHTML = '&nbsp;   SL Settings';
-        document.getElementById('span_10').innerHTML = '&nbsp;   AD Settings';
-        document.getElementById('span_11').innerHTML = '&nbsp;   AST Settings';
-        document.getElementById('span_12').innerHTML = '&nbsp;  General Settings';
-        document.getElementById('span_13').innerHTML = '&nbsp;   Menu Type';
-        document.getElementById('span_14').innerHTML = '&nbsp;   Pointer Size';
-        document.getElementById('span_15').innerHTML = '&nbsp;   Voice Control';
-        document.getElementById('span_16').innerHTML = '&nbsp;   User Profile';
-        document.getElementById('span_17').innerHTML = 'Back';
-        document.getElementById('span_18').innerHTML = '&nbsp;  Access Settings';
-        document.getElementById('span_19').innerHTML = '&nbsp;   Access Language';
-        document.getElementById('span_20').innerHTML = '&nbsp;   Indicator';
-        document.getElementById('span_21').innerHTML = '&nbsp;   Safe Area';
-        document.getElementById('span_22').innerHTML = 'Back';
-        document.getElementById('span_23').innerHTML = '&nbsp;  ST Settings';
-        document.getElementById('span_24').innerHTML = '&nbsp;   Size';
-        document.getElementById('span_25').innerHTML = '&nbsp;   Background';
-        document.getElementById('span_26').innerHTML = '&nbsp;   Position';
-        document.getElementById('span_27').innerHTML = '&nbsp;   Easy to Read';
-        document.getElementById('span_28').innerHTML = 'Back';
-        document.getElementById('span_29').innerHTML = '&nbsp;  SL Settings';
-        document.getElementById('span_30').innerHTML = '&nbsp;   Size';
-        document.getElementById('span_31').innerHTML = '&nbsp;   Position';
-        document.getElementById('span_32').innerHTML = 'Back';
-        document.getElementById('span_33').innerHTML = '&nbsp;  AST Settings';
-        document.getElementById('span_34').innerHTML = '&nbsp;   Easy to Read';
-        document.getElementById('span_35').innerHTML = '&nbsp;   Presentation Mode';
-        document.getElementById('span_36').innerHTML = '&nbsp;   Volume';
-        document.getElementById('span_37').innerHTML = 'Back';
-        document.getElementById('span_38').innerHTML = '&nbsp;  AD Settings';
-        document.getElementById('span_39').innerHTML = '&nbsp;   Presentation Mode';
-        document.getElementById('span_40').innerHTML = '&nbsp;   Volume';
-        document.getElementById('span_41').innerHTML = 'Back';
-        document.getElementById('span_42').innerHTML = 'Partners:';
-        document.getElementById('span_43').innerHTML = 'Filter by accessibilty service and language:';
-        document.getElementById('span_44').innerHTML = 'Subtitles';
-        document.getElementById('span_45').innerHTML = 'Sign Language';
-        document.getElementById('span_46').innerHTML = 'Audio Subtitles';
-        document.getElementById('span_47').innerHTML = 'Audio Description';
-    }
-    
-}

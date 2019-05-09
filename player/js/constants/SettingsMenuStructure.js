@@ -1,5 +1,3 @@
-let optHeight;
-let optWidth
 /*************************************************************************************************************************************
   *                                                S E T T I N G S
 **************************************************************************************************************************************/
@@ -36,22 +34,22 @@ const settingsDropdownOpt = {title: 'Settings', final: false, options: [
             SettingsOptionCtrl.updateDropdownOptions(accessSettings);
         } 
     },
-    { optId: 'settingsST', icon: './img/acc_serv_icon/st_off.png', text: 'Subtitles', 
+    { optId: 'settingsST', icon: './img/acc_serv_icon/st_off.png', text: 'Subtitles', available: function() { return subController.checkisSubAvailable() },
         function: function(){
             SettingsOptionCtrl.updateDropdownOptions(settingsSubtitles);
         } 
     },
-    { optId: 'settingsSL', icon: './img/acc_serv_icon/sl_off.png', text: 'Signlanguage', 
+    { optId: 'settingsSL', icon: './img/acc_serv_icon/sl_off.png', text: 'Signlanguage', available: function() { return subController.checkisSignAvailable() },
         function: function(){ 
             SettingsOptionCtrl.updateDropdownOptions(settingsSignLanguage);
         } 
     },
-    { optId: 'settingsAD', icon: './img/acc_serv_icon/ad_off.png', text: 'Audiodescription', 
+    { optId: 'settingsAD', icon: './img/acc_serv_icon/ad_off.png', text: 'Audiodescription', available: function() { return _AudioManager.checkisADAvailable() },
         function: function(){ 
             SettingsOptionCtrl.updateDropdownOptions(settingsAudioDescription);
         } 
     },
-    { optId: 'settingsAST', icon: './img/acc_serv_icon/ast_off.png', text: 'Audiosubtitles', 
+    { optId: 'settingsAST', icon: './img/acc_serv_icon/ast_off.png', text: 'Audiosubtitles', available: function() { return _AudioManager.checkisASTAvailable() },
         function: function(){ 
             SettingsOptionCtrl.updateDropdownOptions(settingsAudioSubtitles);
         } 

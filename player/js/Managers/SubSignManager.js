@@ -1004,6 +1004,10 @@ SubSignManager = function() {
 		return x == subArea;
 	};	
 
+	this.checkisSubAvailable = function(){
+		return (list_contents[demoId].acces && list_contents[demoId].acces[0].ST);
+	}		
+
 //************************************************************************************
 // Public Signer Checkers
 //************************************************************************************
@@ -1037,6 +1041,10 @@ SubSignManager = function() {
 	{
 		return x == signArea;
 	};	
+
+	this.checkisSignAvailable = function(){
+		return (list_contents[demoId].acces && list_contents[demoId].acces[0].SL);
+	}
 
 //************************************************************************************
 // Public functions

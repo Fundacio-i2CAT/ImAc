@@ -496,6 +496,10 @@ AudioManager = function() {
         return x == adVolume;
     };   
 
+    this.checkisADAvailable = function(){
+        return (list_contents[demoId].acces && list_contents[demoId].acces[0].AD)
+    }
+
     
 
 //************************************************************************************
@@ -614,5 +618,9 @@ AudioManager = function() {
     this.checkASTEasy = function(x)
     {
         return x == astEasy;
-    };  
+    }; 
+
+    this.checkisASTAvailable = function(){
+        return (list_contents[demoId].acces && list_contents[demoId].acces[0].AST)
+    } 
 }

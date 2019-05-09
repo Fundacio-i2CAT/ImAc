@@ -152,17 +152,18 @@ function SettingsOptionMenuController() {
  * @param      {<type>}  elements  The elements
  */
     function AddDropdownOptions(menuOpts){
+        let options = menuOpts.options.filter(opt => !opt.available || opt.available());
         let dropdownInteractiveElements = [];
-        const h = optHeight*menuOpts.options.length;
+        const h = optHeight*options.length;
 
-        data.titleHeight = menuOpts.options.length * optHeight;
+        data.titleHeight = options.length * optHeight;
         data.hasParentDropdown = menuOpts.parent ? true : false;
         data.isFinalDrop = menuOpts.final;
         data.parentDropdownData = menuOpts.parent;
         data.title = MenuDictionary.translate( menuOpts.title );
         data.icon = menuOpts.icon;
 
-        menuOpts.options.forEach(function(opt, index){
+        options.forEach(function(opt, index){
             let dropdownIE = new InteractiveElementModel();
 
             dropdownIE.width = optWidth;

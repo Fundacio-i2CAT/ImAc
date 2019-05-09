@@ -2040,7 +2040,7 @@ var _confMemory;
     function translateContentDesc(lang)
     {
         var id = localStorage.ImAc_init;
-        if ( document.getElementById( 'content' + id ).children[0].classList.contains('enabled') ) 
+        if ( id && document.getElementById( 'content' + id ).children[0].classList.contains('enabled') ) 
         {
             document.getElementById( 'content_desc' ).innerHTML = list_contents[id].descriptionArray[0][ _ImAc_default.mainlanguage ] || "";
         }

@@ -60,6 +60,8 @@ var _fixedST = false;
 var _SLsubtitles = false;
 var _NonCont = false;
 var _iconf;
+var _userprofile = true;
+var _ws_vc;
 
 
 /**
@@ -103,6 +105,7 @@ function init_webplayer()
                     subController.setSLConfig( _iconf );
                     _AudioManager.setADConfig( _iconf );
                     _AudioManager.setASTConfig( _iconf );
+                    iniGeneralSettings( _iconf );
                 }
                 ////////////////////////////////////////////////////////////////
 

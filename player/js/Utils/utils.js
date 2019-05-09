@@ -226,6 +226,7 @@ function readCookie(name)
 
 function saveConfig()
 {
+    console.log('save config!!!')
     /*var iconfig = {
         ST: subController.getSTConfig(),
         SL: subController.getSLConfig(),
@@ -388,16 +389,29 @@ function addSphericalGrid()
 
 function connectVoiceControl( devoceId="i2CAT", ws_url="http://51.89.138.157:3000/" )
 {
-    var socket = io( ws_url );
+    _ws_vc = io( ws_url );
 
-    socket.on('connect', function(){
-      socket.emit('setClientID', { customId:devoceId, type:'player', description:'ImAc Player' });
+    _ws_vc.on('connect', function(){
+      _ws_vc.emit('setClientID', { customId:devoceId, type:'player', description:'ImAc Player' });
     });
 
-    socket.on('command', function(msg){
+    _ws_vc.on('command', function(msg){
 
         launchVoiceCommand( msg );
       
       console.log( msg );
     });
+}
+
+function disconnectVoiceControl()
+{
+    _ws_vc.disconnect();
+    _ws_vc = undefined;
+}
+
+
+function iniGeneralSettings(conf)
+{
+    _pointerSize = conf.pointersize == 'M' ? 1 : conf.pointersize == 'L' ? 2 : 0.6;// 2=Big, 1=Mid, 0.6=Small
+    _userprofile = conf.userprofile == 'save' ? true : false;
 }

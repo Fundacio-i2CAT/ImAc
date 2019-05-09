@@ -30,6 +30,8 @@ function cartesianToAngular (x, y, z)
     if (lon <= 0) lon += 360;
     lon = 360 - lon;
 
+    if (lat < 0) lat += 360;
+
     var outAng = {
         latitud : lat,
         longitud : lon,
@@ -81,7 +83,7 @@ function initReticulum(cam)
         reticle: {
             visible: false,
             restPoint: 50, //Defines the reticle's resting point when no object has been targeted
-            color: 0xffff00,
+            color: 0xe6e6e6,
             innerRadius: 0.0004,
             outerRadius: 0.003,
             hover: {
@@ -95,7 +97,7 @@ function initReticulum(cam)
         fuse: {
             visible: false,
             duration: 3,
-            color: 0x4669a7,
+            color: 0xc91355,
             innerRadius: 0.045,
             outerRadius: 0.06,
             vibrate: 100, //Set to 0 or [] to disable
@@ -111,6 +113,7 @@ function createVRButton_1(renderer)
         button.style.display = '';
         button.style.left = 'calc(50% - 110px)';
         button.textContent = 'VR';
+        button.id ='button_1';
 
         button.onclick = function() {
 
@@ -122,10 +125,11 @@ function createVRButton_1(renderer)
             display.isPresenting ? display.exitPresent() : display.requestPresent( [ { source: renderer.domElement } ] ).then(
                 function () { 
                     _isHMD = true;  
-                    createMenus();                      
+                    createMenus();                 
                 });
+            renderer.vr.setDevice( display );
         };
-        renderer.vr.setDevice( display );
+        //renderer.vr.setDevice( display );
     }
 
     var button = document.createElement( 'button' );
@@ -140,12 +144,19 @@ function createVRButton_1(renderer)
     navigator.getVRDisplays().then( function ( displays ) 
     {
         AplicationManager.setDisplays( displays );
-        displays.length > 0 ? showEnterVR( displays[ 0 ] ) : createMenus();
+        displays.length > 0 ? showEnterVR( displays[ 0 ] ) : createDelayedMenu();
     });
 
     AplicationManager.setVRButton1( button );
 
     return button;
+}
+
+function createDelayedMenu()
+{
+    setTimeout(function(){
+        createMenus()
+    },1000);
 }
 
 function createVRButton_2(renderer)
@@ -155,6 +166,7 @@ function createVRButton_2(renderer)
         button.style.display = '';
         button.style.left = 'calc(50% + 10px)';
         button.textContent = 'NO VR';
+        button.id ='button_2';
         button.onclick = function () {
 
             enterfullscreen();
@@ -180,22 +192,52 @@ function createVRButton_2(renderer)
     return button;
 }
 
-function createMenus ()
+function createMenus()
 {
-    switch ( localStorage.ImAc_menuType )
+    switch ( _iconf.menutype )
     {
-        case "LS_area":
-            //MenuManager.createMenu(false);
+        case "ls":
             menuMgr.Init(1);
             menuMgr.createMenuActivationElement();
             break;
         default:
             menuMgr.Init(2);
             menuMgr.createMenuActivationElement();
-            //MenuManager.createMenu(true);
-
             break;
     }
+}
+
+function readCookie(name)
+{
+    var nameEQ = name + "="; 
+    var ca = document.cookie.split(';');
+
+    for(var i=0;i < ca.length;i++) 
+    {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1,c.length);
+        if (c.indexOf(nameEQ) == 0) {
+          return decodeURIComponent( c.substring(nameEQ.length,c.length) );
+        }
+    }
+
+    return null;
+}
+
+function saveConfig()
+{
+    console.log('save config!!!')
+    /*var iconfig = {
+        ST: subController.getSTConfig(),
+        SL: subController.getSLConfig(),
+        AD: _AudioManager.getADConfig(),
+        AST: _AudioManager.getASTConfig()
+    };*/
+
+
+    //document.cookie = "ImAcProfileConfig=" + encodeURIComponent( JSON.stringify( iconfig ) ) + "; max-age=2592000;" //expires=" + expiresdate.toUTCString(); max-age = 1 mes
+
+
 }
 
 // Converts from degrees to radians.
@@ -207,3 +249,169 @@ Math.radians = function(degrees) {
 Math.degrees = function(radians) {
     return radians * (180 / Math.PI);
 };
+
+var emoji_1, emoji_2, emoji_3, emoji_4, emoji_5, emoji_6, emoji_7, emoji_8, emoji_9, emoji_10;
+
+function loadEmojisIcons()
+{
+    emoji_1 = new Image() 
+    emoji_1.src = "./img/emojis/image001.png"; 
+
+    emoji_2 = new Image() 
+    emoji_2.src = "./img/emojis/image002.png"; 
+
+    emoji_3 = new Image() 
+    emoji_3.src = "./img/emojis/image003.png"; 
+
+    emoji_4 = new Image() 
+    emoji_4.src = "./img/emojis/image004.png"; 
+
+    emoji_5 = new Image() 
+    emoji_5.src = "./img/emojis/image005.png"; 
+
+    emoji_6 = new Image() 
+    emoji_6.src = "./img/emojis/image006.png"; 
+
+    emoji_7 = new Image() 
+    emoji_7.src = "./img/emojis/image007.png"; 
+
+    emoji_8 = new Image() 
+    emoji_8.src = "./img/emojis/image008.png"; 
+}
+
+function startSync()
+{
+    var sync = new SyncController()
+    sync.init();
+}
+
+var SLTImes = [
+    { state: 'on', time: 16.07 },
+    { state: 'off', time: 25.23 },
+    { state: 'on', time: 51.19 },
+    { state: 'off', time: 80.20 },
+    { state: 'on', time: 81.04 },
+    { state: 'off', time: 97.01 },
+    { state: 'on', time: 109.13 },
+    { state: 'off', time: 115.00 },
+    { state: 'on', time: 116.22 },
+    { state: 'off', time: 159.24 },
+    { state: 'on', time: 160.03 },
+    { state: 'off', time: 175.04 },
+    { state: 'on', time: 177.11 },
+    { state: 'off', time: 331.13 },
+    { state: 'on', time: 347.08 },
+    { state: 'off', time: 366.14 },
+    { state: 'on', time: 368.15 },
+    { state: 'off', time: 377.07 },
+    { state: 'on', time: 389.16 },
+    { state: 'off', time: 505.08 },
+    { state: 'on', time: 520.21 },
+    { state: 'off', time: 526.16 },
+    { state: 'on', time: 530.13 },
+    { state: 'off', time: 539.06 },
+    { state: 'on', time: 547.13 },
+    { state: 'off', time: 574.20 },
+    { state: 'on', time: 585.05 },
+    { state: 'off', time: 593.20 },
+    { state: 'on', time: 601.06 },
+    { state: 'off', time: 607.22 },
+    { state: 'on', time: 611.20 },
+    { state: 'off', time: 623.16 },
+    { state: 'on', time: 643.23 },
+    { state: 'off', time: 659.03 },
+    { state: 'on', time: 659.23 },
+    { state: 'off', time: 663.12 },
+    { state: 'on', time: 678.18 },
+    { state: 'off', time: 697.23 },
+    { state: 'on', time: 698.19 },
+    { state: 'off', time: 745.05 }
+];
+
+
+function getViewDifPositionTest(sp, fov)
+{
+    var target = new THREE.Vector3();
+    var camView = camera.getWorldDirection( target );
+    var offset = camView.z >= 0 ? 180 : -0;
+
+    var lon = Math.degrees( Math.atan( camView.x/camView.z ) ) + offset;
+
+    lon = lon > 0 ? 360 - lon : - lon;
+
+    if ( ( lon - sp + 360 )%360 > fov && ( lon - sp + 360 )%360 <= 180 ) return -1; 
+    else if ( ( lon - sp + 360 )%360 > 180 && ( lon - sp + 360 )%360 <= 360 - fov ) return 1;
+    else return 0;
+}
+
+function addSphericalGrid()
+{
+    var radius = 40;
+    var segments = 36;
+    var rings = 18;
+
+    var geometry = new THREE.SphereGeometry(radius, segments, rings);
+    var material = new THREE.MeshBasicMaterial({
+      color: 0xF3A2B0,
+      wireframe: true
+    });
+
+    var cube = new THREE.Mesh(geometry, material);
+    scene.add(cube);
+
+    var radius = 40;
+    var segments = 36;
+    var rings = 18;
+
+    var geometry = new THREE.SphereGeometry(radius, segments, rings);
+    var material = new THREE.MeshBasicMaterial({
+      color: 0xF3A2B0,
+      wireframe: true
+    });
+
+    var cube = new THREE.Mesh(geometry, material);
+    scene.add(cube);
+
+    var radius = 35;
+    var segments = 4;
+    var rings = 4;
+
+    var geometry = new THREE.SphereGeometry(radius, segments, rings);
+    var material = new THREE.MeshBasicMaterial({
+      color: 0x0FA2B0,
+      wireframe: true
+    });
+
+    var cube = new THREE.Mesh(geometry, material);
+    scene.add(cube);
+}
+
+
+function connectVoiceControl( devoceId="i2CAT", ws_url="http://51.89.138.157:3000/" )
+{
+    _ws_vc = io( ws_url );
+
+    _ws_vc.on('connect', function(){
+      _ws_vc.emit('setClientID', { customId:devoceId, type:'player', description:'ImAc Player' });
+    });
+
+    _ws_vc.on('command', function(msg){
+
+        launchVoiceCommand( msg );
+      
+      console.log( msg );
+    });
+}
+
+function disconnectVoiceControl()
+{
+    _ws_vc.disconnect();
+    _ws_vc = undefined;
+}
+
+
+function iniGeneralSettings(conf)
+{
+    _pointerSize = conf.pointersize == 'M' ? 1 : conf.pointersize == 'L' ? 2 : 0.6;// 2=Big, 1=Mid, 0.6=Small
+    _userprofile = conf.userprofile == 'save' ? true : false;
+}

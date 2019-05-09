@@ -5,30 +5,9 @@ function runDemo()
 {
     _AudioManager.initializeAudio( VideoController.getListOfVideoContents()[0].vid, list_contents[demoId].audioChannels, camera.matrixWorld.elements );
 
-    MenuDictionary.setSubtitleLanguagesArray( list_contents[demoId].subtitles[0] );
-    MenuDictionary.setSignerLanguagesArray( list_contents[demoId].signer[0] );
-
     _moData.createPointer();
 
-    var lang = MenuDictionary.getMainLanguage();
-
-    subController.enableSubtitles();
-    subController.initSubtitle( 70, 0, -1, 'none' );
-
-    var xz = _moData.getPlaneImageMesh(16/2,9/2,'./img/open_menu_banner2.png', 'banner', 6);
-
-
-    var sublang = list_contents[demoId].subtitles[0][lang] ? lang : Object.keys(list_contents[demoId].subtitles[0])[0];
-    var siglang = list_contents[demoId].signer[0][lang] ? lang : Object.keys(list_contents[demoId].signer[0])[0];
-
-    subController.setSubtitle( list_contents[demoId].subtitles[0][sublang], sublang );
-
-    subController.setSignerContent( list_contents[demoId].signer[0][siglang], siglang );
-
-    initLanguageButtons(lang, siglang, sublang);
-
-    //VideoController.playAll();
-    VideoController.init();
+    var xz = _moData.getPlaneImageMesh(16/2,9/2,'./img/menu_72ppp.png', 'banner', 6);
 
     if ( !document.cookie.includes('ImAcCookie') )
     {
@@ -46,48 +25,264 @@ function runDemo()
             VideoController.playAll();
             scene.remove(xy)
             camera.remove(xz);
-            (localStorage.ImAc_backgroundSub == "outline") ? subController.setSubBackground(0) : subController.setSubBackground(0.5);
         },6000);
-    }
-    else 
-    {     
-        (localStorage.ImAc_backgroundSub == "outline") ? subController.setSubBackground(0) : subController.setSubBackground(0.5);
     }
 }
 
-function initLanguageButtons(lang, siglang, sublang)
+function runTest1() 
 {
-    if ( siglang == 'de' ) 
+    _AudioManager.initializeAudio( VideoController.getListOfVideoContents()[0].vid, list_contents[demoId].audioChannels, camera.matrixWorld.elements );
+    _moData.createPointer();
+
+    subController.enableSubtitles();
+    subController.initSubtitle( 70, 0, -1, 'arrow' );
+
+    if ( demoId == 1 || demoId == 3 ) _fixedST = true;
+
+    if ( demoId == 2 || demoId == 3 || demoId == 6 || demoId == 7) VideoController.seekAll( 391 );
+    else if ( demoId == 4 || demoId == 5 ) VideoController.seekAll( 110 );
+
+    else if ( demoId == 0 || demoId == 1 )
     {
-        signerLanguage = 'signerGerButton';
+        var interval5 = setTimeout( function() { window.location.reload() }, 360000);
+        VideoController.seekAll( 30 );
+    } 
+    else  
+    {
+        var interval5 = setTimeout( function() { window.location.reload() }, 225000);
+    }  
+}
+
+function runTest2() 
+{
+    _AudioManager.initializeAudio( VideoController.getListOfVideoContents()[0].vid, list_contents[demoId].audioChannels, camera.matrixWorld.elements );
+    _moData.createPointer();
+
+    var bannerTime = 10000;
+
+    var interval81 = setTimeout( function() {
+        subController.switchSigner( true );
+        //VideoController.playAll();
+        
+         },1000);
+
+    if ( demoId == 0 || demoId == 2 )
+    {
+        subController.enableSubtitles();
+        subController.initSubtitle( 70, 0, -1, 'arrow' );
     }
-    else if ( siglang == 'ca' ) 
+    else if ( demoId == 1 || demoId == 3 || demoId == 4 || demoId == 5 || demoId == 6 || demoId == 7)
     {
-        signerLanguage = 'signerCatButton';
-    }
-    else if ( siglang == 'es' ) 
-    {
-        signerLanguage = 'signerEspButton';
-    }
-    else if ( siglang == 'en' ) 
-    {
-        signerLanguage = 'signerEngButton';
+        subController.setSignerIndicator( 'arrow' );
     }
 
-    if ( sublang == 'de' ) 
+    if ( demoId == 5 || demoId == 7 ) _NonCont = true;
+    if ( demoId == 8 || demoId == 9 || demoId == 10 || demoId == 11 ) 
     {
-        subtitlesLanguage = 'subtitlesGerButton';
+        _SLsubtitles = true;
+
+        var interval82 = setTimeout( function() {
+        subController.enableSubtitles();
+        subController.initSubtitle( 70, 0, -1, 'arrow' );  },1200);
     }
-    else if ( sublang == 'ca' ) 
+
+    if ( demoId == 2 || demoId == 3 ) VideoController.seekAll( 250 ); //opera part 2
+    else if ( demoId == 6 || demoId == 7 || demoId == 10 || demoId == 11 ) VideoController.seekAll( 391 );
+    else if ( demoId == 8 || demoId == 9 ) 
     {
-        subtitlesLanguage = 'subtitlesCatButton';
+        VideoController.seekAll( 110 );
+        var interval5 = setTimeout( function() { window.location.reload() },280000);
     }
-    else if ( sublang == 'es' ) 
+    else if ( demoId == 0 || demoId == 1 ) 
     {
-        subtitlesLanguage = 'subtitlesEspButton';
+        var interval5 = setTimeout( function() { window.location.reload() },250000);
     }
-    else if ( sublang == 'en' ) 
+    else if ( demoId == 4 || demoId == 5 )
     {
-        subtitlesLanguage = 'subtitlesEngButton';
+        var interval5 = setTimeout( function() { window.location.reload() },360000);
+        VideoController.seekAll( 30 );
+    }   
+    if ( demoId == 10 || demoId == 11 ) 
+    {
+        var interval5 = setTimeout( function() { window.location.reload() },225000);
+    } 
+
+    var xz = _moData.getPlaneImageMesh(16*2,9*2,'./img/tests/black_2.png', 'name', 6);
+    var interval1 = setTimeout( function() { VideoController.pauseAll(); },1000);
+    var xy = _moData.getSphericalColorMesh( 60, 0x000000, 'colorsphere' )
+
+    xz.position.z = -10;
+    scene.add(xy)
+    camera.add(xz)
+
+    var interval2 = setTimeout( function() {
+        //console.warn('asdasfsaffafafadsfadfas')
+        VideoController.playAll();
+        scene.remove(xy)
+        camera.remove(xz);
+  
+    },bannerTime);
+}
+
+function runGADemo() 
+{
+    _AudioManager.initializeAudio( VideoController.getListOfVideoContents()[0].vid, list_contents[demoId].audioChannels, camera.matrixWorld.elements );
+
+    _moData.createPointer();
+
+    if ( demoId == 1 )
+    {
+        subController.setExperimental(true);
+        isLookAt = true;
+      
+        subController.enableSubtitles();
+        subController.initSubtitle( 70, 0, -1, 'none' );     
+    }
+
+    else if ( demoId == 2 || demoId == 3 || demoId == 4 )
+    {
+        var interval5 = setTimeout( function() { window.location.reload() },389000);
+        VideoController.seekAll( 30 );
+    }
+
+    else if ( demoId == 5 || demoId == 6 || demoId == 7 ) VideoController.seekAll( 390 );
+
+    if ( demoId == 4 || demoId == 7 ) __etype = 1;
+
+    var xz = _moData.getPlaneImageMesh(16/2,9/2,'./img/open_menu_banner2.png', 'banner', 6);
+
+    if ( !document.cookie.includes('ImAcCookie') )
+    {
+        document.cookie = "ImAcCookie=opened; max-age=3600;"; // 1 hora
+
+        var interval1 = setTimeout( function() { VideoController.pauseAll(); },1000);
+        var xy = _moData.getSphericalColorMesh( 60, 0x000000, 'colorsphere' )
+
+        xz.position.z = -10;
+        scene.add(xy)
+        camera.add(xz)
+
+        var interval2 = setTimeout( function() {
+            VideoController.playAll();
+            scene.remove(xy)
+            camera.remove(xz);
+        },6000);
+    }
+}
+
+
+function runUABDemo() 
+{
+    _AudioManager.initializeAudio( VideoController.getListOfVideoContents()[0].vid, list_contents[demoId].audioChannels, camera.matrixWorld.elements );
+
+    if ( demoId > 0 )
+    {
+        _moData.createPointer();
+
+        var lang = MenuDictionary.getMainLanguage();
+        var bannerTime = 10000;
+
+
+        if ( demoId == 1 )
+        {
+            subController.setExperimental(true);
+            isLookAt = true;
+
+            subController.enableSubtitles();
+            subController.initSubtitle( 70, 0, -1, 'none' );
+
+            var xz = _moData.getPlaneImageMesh(16*2,9*2,'./img/tests/holy_fixed_black_2.png', 'name', 6);
+        }
+        else if ( demoId == 2 )
+        {
+            subController.enableSubtitles();
+            subController.initSubtitle( 70, 0, -1, 'none' ); 
+
+            var xz = _moData.getPlaneImageMesh(16/2,9/2,'./img/tests/holy_always_black_2.png', 'name', 6);      
+        }
+        else if ( demoId == 3 )
+        {
+            subController.setExperimental(true);
+            isLookAt = true;
+          
+            subController.enableSubtitles();
+            subController.initSubtitle( 70, 0, -1, 'none' );  
+
+            var xz = _moData.getPlaneImageMesh(16/2,9/2,'./img/tests/holy_fixed_black_2.png', 'name', 6);
+        }
+        else if ( demoId == 4 )
+        {
+            subController.enableSubtitles();
+            subController.initSubtitle( 70, 0, -1, 'none' ); 
+
+            var xz = _moData.getPlaneImageMesh(16/2,9/2,'./img/tests/holy_always_black_2.png', 'name', 6);   
+        }
+        else if ( demoId == 5 )
+        {
+            subController.enableSubtitles();
+            subController.initSubtitle( 70, 0, -1, 'arrow' ); 
+
+            bannerTime += 10000;  
+
+            var xzz = _moData.getPlaneImageMesh(16/2,9/2,'./img/tests/philip_arrow_black.png', 'name2', 6); 
+            xzz.position.z = -10;
+            camera.add(xzz)
+
+            var interval3 = setTimeout( function() { camera.remove(xzz); camera.add(xz);},10000);
+
+            var interval5 = setTimeout( function() { window.location.reload() },389000);
+
+            var xz = _moData.getPlaneImageMesh(16/2,9/2,'./img/tests/philip_info_black.png', 'name', 6); 
+        }
+        else if ( demoId == 6 )
+        {
+            subController.enableSubtitles();
+            subController.initSubtitle( 70, 0, -1, 'radar' );
+
+            bannerTime += 10000;
+
+            var xzz = _moData.getPlaneImageMesh(16/2,9/2,'./img/tests/philip_radar_black.png', 'name2', 6); 
+            xzz.position.z = -10;
+            camera.add(xzz)
+
+            var interval3 = setTimeout( function() { camera.remove(xzz); camera.add(xz);},10000);
+
+            var interval5 = setTimeout( function() { window.location.reload() },389000);
+
+            var xz = _moData.getPlaneImageMesh(16/2,9/2,'./img/tests/philip_info_black.png', 'name', 6);
+        }
+        else if ( demoId == 7 )
+        {
+            subController.enableSubtitles();
+            subController.initSubtitle( 70, 0, -1, 'arrow' );    
+
+            var xz = _moData.getPlaneImageMesh(16/2,9/2,'./img/tests/philip_arrow_black.png', 'name', 6); 
+        }
+        else if ( demoId == 8 )
+        {
+            subController.enableSubtitles();
+            subController.initSubtitle( 70, 0, -1, 'radar' );
+
+            var xz = _moData.getPlaneImageMesh(16/2,9/2,'./img/tests/philip_radar_black.png', 'name', 6);
+        }
+
+
+        var interval1 = setTimeout( function() { VideoController.pauseAll(); },1000);
+        var xy = _moData.getSphericalColorMesh( 60, 0x000000, 'colorsphere' )
+
+        xz.position.z = -10;
+        scene.add(xy)
+        if ( demoId != 5 && demoId != 6 ) camera.add(xz)
+
+        var interval2 = setTimeout( function() {
+            VideoController.playAll();
+            scene.remove(xy)
+            camera.remove(xz);
+            if ( demoId == 7 || demoId == 8 ) VideoController.seekAll( 390 );
+            else if ( demoId == 5 || demoId == 6 ) VideoController.seekAll( 30 );
+
+           (localStorage.ImAc_backgroundSub == "outline") ? subController.setSubBackground(0) : subController.setSubBackground(0.5);
+        },bannerTime);
+
     }
 }

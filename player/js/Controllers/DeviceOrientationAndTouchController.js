@@ -5,10 +5,12 @@
 //* Orientation and touch controllers
 //*
 //**
-THREE.DeviceOrientationAndTouchController = function( object, objectPather, domElement, renderer ) {
+
+THREE.DeviceOrientationAndTouchController = function( object, domElement, renderer ) {
 
 	var scope = this;
-	var touchtime;
+	var touchtime = 0;
+	var touchcount = 0;
 
 	var raycaster = new THREE.Raycaster();
 	var interList = [];
@@ -16,31 +18,15 @@ THREE.DeviceOrientationAndTouchController = function( object, objectPather, domE
 	var _origin = new THREE.Vector3( 0.155, 1.21, -0.15 );
 
 	this.isAndroid = navigator.userAgent.toLowerCase().indexOf("android") > -1;
-
 	this.object = object;
-	this.objectPather = objectPather;
 	this.object.rotation.reorder( "YXZ" );
-	
-	
 	this.element = domElement || document;
-	
-	var container = document.getElementById( 'container' );
-	var mouse;
-
 	this.enabled = true;
-
-	this.deviceOrientation = {};
-	this.screenOrientation = window.orientation || 0;
-
-	this.alpha = 0;
-	this.enableManualDrag = true;
-	//this.alphaOffsetAngle = 0;//THREE.Math.degToRad(90);
 	
 	// Manual rotate override components
 	var startX = 0, startY = 0,
 	    currentX = 0, currentY = 0,
-	    scrollSpeedX, scrollSpeedY,
-	    tmpQuat = new THREE.Quaternion();
+	    scrollSpeedX, scrollSpeedY;
 
 	var CONTROLLER_STATE = {
 		AUTO: 0,
@@ -48,14 +34,12 @@ THREE.DeviceOrientationAndTouchController = function( object, objectPather, domE
 		MANUAL_ROTATE_DEVICE: 2
 	};
 
-	var appState = CONTROLLER_STATE.AUTO;
-	
+	var appState = CONTROLLER_STATE.AUTO;	
+
+	var tmpQuat = new THREE.Quaternion()
 	var deviceQuat = new THREE.Quaternion();
-
-	
-	this.objectPather = objectPather;
-
-	var mouse;
+	var mouse2D = new THREE.Vector2();
+	//var mouse3D = new THREE.Vector3();
 
 	this.enableManualDrag = true;
 
@@ -73,13 +57,6 @@ THREE.DeviceOrientationAndTouchController = function( object, objectPather, domE
 	{
 		interList = interList.filter(e => e.name != name);
 	};
-
-
-	var onScreenOrientationChangeEvent = function() 
-	{
-		scope.screenOrientation = window.orientation || 0;
-	};
-	
 	
 	var onWindowResize = function() 
 	{	
@@ -89,19 +66,39 @@ THREE.DeviceOrientationAndTouchController = function( object, objectPather, domE
 	};
 
 	this.onDocumentMouseDown = function ( event ) {
+
 		event.preventDefault();
 
-		tmpQuat.copy( scope.objectPather.quaternion );
+		if ( autopositioning == false ) 
+		{
+			if ( Date.now() - touchtime > 1200 ) touchcount = 0;
+
+			if (touchcount == 0) {
+				
+				touchcount++;
+				touchtime = Date.now();
+			}
+			else if (touchcount < 4) {
+				touchcount++;
+			}
+			else {
+				touchcount = 0;
+				menuMgr.initFirstMenuState();
+			}
+		}
+
+		//tmpQuat.copy( scope.objectPather.quaternion );
+		tmpQuat.copy( scope.object.quaternion );
 
 		startX = currentX = event.pageX;
 		startY = currentY = event.pageY;
 			
-		var mouse3D = new THREE.Vector2();
-        mouse3D.x = _isHMD ? 0 : ( event.clientX / window.innerWidth ) * 2 - 1;
-        mouse3D.y = _isHMD ? 0 : - ( event.clientY / window.innerHeight ) * 2 + 1;
+		//var mouse3D = new THREE.Vector2();
+        mouse2D.x = _isHMD ? 0 : ( event.clientX / window.innerWidth ) * 2 - 1;
+        mouse2D.y = _isHMD ? 0 : - ( event.clientY / window.innerHeight ) * 2 + 1;
 		
 		//INTERACTIVITY DETECT
-		interController.checkInteraction(mouse3D, scope.object, 'onDocumentMouseDown');
+		interController.checkInteraction(mouse2D, scope.object, 'onDocumentMouseDown');
 		
 		//changing state 
 		appState = CONTROLLER_STATE.MANUAL_ROTATE;
@@ -114,19 +111,8 @@ THREE.DeviceOrientationAndTouchController = function( object, objectPather, domE
 
 		this.element.addEventListener( 'mousemove', this.onDocumentMouseMove, false );
 		this.element.addEventListener( 'mouseup', this.onDocumentMouseUp, false );
-
-		/*if ( _isHMD ) {
-			var mouse3D = new THREE.Vector2();
-	        mouse3D.x = 0;
-	        mouse3D.y = 0;
-		}*/
 		
 	}.bind( this );
-
-	var onDeviceOrientationChangeEvent = function( event ) 
-	{
-		scope.deviceOrientation = event;
-	};
 
 	this.onDocumentMouseMove = function ( event ) {
 		currentX = event.pageX;
@@ -146,27 +132,68 @@ THREE.DeviceOrientationAndTouchController = function( object, objectPather, domE
 	
 	this.onDocumentTouchStart = function ( event ) {
 
-        //enterfullscreen();		
+        enterfullscreen();
 		event.preventDefault();
 		event.stopPropagation();
 
 		switch ( event.touches.length ) {
 			case 1: // ROTATE
+			
 				if ( this.enableManualDrag !== true ) return;
-				touchtime = Date.now();
-				
-				var mouse3D = new THREE.Vector2();
-				mouse3D.x = _isHMD ? 0 : ( event.touches[0].pageX / window.innerWidth ) * 2 - 1;
-                mouse3D.y = _isHMD ? 0 : - ( event.touches[0].pageY / window.innerHeight ) * 2 + 1;
+				if (autopositioning == true) {
+
+					if ( Date.now() - touchtime > 5000 ) touchcount = 0;
+
+					if (touchcount == 0) {
+						
+						touchcount++;
+						touchtime = Date.now();
+						navigator.vibrate([100]);
+					}
+					else if (touchcount < 4) {
+						touchcount++;
+						navigator.vibrate([50]);
+					}
+					else {
+						navigator.vibrate([500]);
+						touchcount = 0;
+						disableAutopositioning()
+					}
+					
+				}
+				else if ( scene.getObjectByName( "openMenu" ).visible ){
+
+					if ( Date.now() - touchtime > 1200 ) touchcount = 0;
+
+					if (touchcount == 0) {
+						
+						touchcount++;
+						touchtime = Date.now();
+					}
+					else if (touchcount < 4) {
+						touchcount++;
+					}
+					else {
+						navigator.vibrate([200]);
+						touchcount = 0;
+						menuMgr.initFirstMenuState();
+					}
+				}
+				//touchtime = Date.now();
+			
+				//var mouse3D = new THREE.Vector2();
+				mouse2D.x = _isHMD ? 0 : ( event.touches[0].pageX / window.innerWidth ) * 2 - 1;
+                mouse2D.y = _isHMD ? 0 : - ( event.touches[0].pageY / window.innerHeight ) * 2 + 1;
 				
 				//INTERACTIVITY DETECT
-                interController.checkInteraction(mouse3D, scope.object, 'onDocumentMouseDown');
+                interController.checkInteraction(mouse2D, scope.object, 'onDocumentMouseDown');
 
 				appState = CONTROLLER_STATE.MANUAL_ROTATE_DEVICE;
 
 				scope.enabled = false;
 
-				tmpQuat.copy( scope.objectPather.quaternion );
+				//tmpQuat.copy( scope.objectPather.quaternion );
+				tmpQuat.copy( scope.object.quaternion );
 
 				startX = currentX = event.touches[ 0 ].pageX;
 				startY = currentY = event.touches[ 0 ].pageY;
@@ -179,139 +206,98 @@ THREE.DeviceOrientationAndTouchController = function( object, objectPather, domE
 				this.element.addEventListener( 'touchend', this.onDocumentTouchEnd, false );
 
 				break;
-			case 2:
+			/*case 2:
 				for (var i=0; i < event.touches.length; i++) {
      				tpCache.push(event.touches[i]);
    				}
 
-				break;
+				break;*/
 		}
 	}.bind( this );
 
 	var myangle = 0;
 
+	function disableAutopositioning()
+	{
+    	subController.disableAutoPositioning();
+		autopositioning = false;
+		if ( scene.getObjectByName('subtitlesIndicatorNoneButton') ) scene.getObjectByName('subtitlesIndicatorNoneButton').onexecute();
+		if ( scene.getObjectByName('signerIndicatorNoneButton') ) scene.getObjectByName('signerIndicatorNoneButton').onexecute();
+	}
+
 	this.onkeydownStart = function ( event ) {
-		
-/*
-		if( !autopositioning )
+
+		switch ( event.keyCode ) 
 		{
-			switch ( event.keyCode ) 
-			{
-				case 37:
-	            	camera.rotation.y += Math.PI / 90;
+			case 27:  // Esc.
+				if ( autopositioning ) disableAutopositioning();
+				break;
 
-					if (AudioManager.isAmbisonics) AudioManager.updateRotationMatrix( camera.matrixWorld.elements );
-			        //subtitles3d.position.x += 0.1;
-	            	break;
+			case 37:  // left
+				scope.object.rotation.y += Math.PI/40;
+				break;
 
-	        	case 38:
-	            	camera.rotation.x += Math.PI / 180;
+			case 38:  // up
+				if ( scope.object.rotation.x < Math.PI/2 ) scope.object.rotation.x += Math.PI/20;
+				break;
 
-					if (AudioManager.isAmbisonics) AudioManager.updateRotationMatrix( camera.matrixWorld.elements );
+			case 39:  // right
+				scope.object.rotation.y -= Math.PI/40;
+				break;
 
-	            	break;
+			case 40:  // down
+				if ( scope.object.rotation.x > -Math.PI/2 ) scope.object.rotation.x -= Math.PI/20;
+				break;
 
-	        	case 39:
-	        		//subtitles3d.position.x -= 0.1;
-	            	camera.rotation.y -= Math.PI / 90;
+			case 32:  // space
+				VideoController.isPausedById(0) ? _ImAc.doPlay() : _ImAc.doPause();
+				break;
 
-					if (AudioManager.isAmbisonics) AudioManager.updateRotationMatrix( camera.matrixWorld.elements );
+			case 49:  // 1
+				subController.getSubtitleEnabled() ? subController.disableSubtiles() : subController.enableSubtitles();
+				break;
 
-	            	break;
+			case 50:  // 2
+				subController.getSignerEnabled() ? subController.switchSigner( false ) : subController.switchSigner( true );
+				break;
 
-	        	case 40:
-	            	camera.rotation.x -= Math.PI / 180;
+			case 77:  // m
+				if ( !autopositioning ) {
+					//xxx.swichtMenuState();
+					if ( scene.getObjectByName( "openMenu" ).visible ) menuMgr.initFirstMenuState();
+					else menuMgr.ResetViews();
+				}
+				break;
 
-					if (AudioManager.isAmbisonics) AudioManager.updateRotationMatrix( camera.matrixWorld.elements );
-
-	            	break;
-
-	        	case 32:
-
-	            	//moData.isPausedById(0) ? moData.playAll() : moData.pauseAll();
-	            	//camera.position.z += 10;
-	            	//camera.position.y += 5;
-
-	            	break;
-
-
-	        	case 87:
-
-	        		scene.getObjectByName(menuList[0].name).position.y += 1;
-	            	break;
-
-	        	case 83:
-
-	    			scene.getObjectByName(menuList[0].name).position.y -= 1;
-	        		break;
-
-	        	case 65:
-
-	        		myangle -= 120;
-
-	    			scene.getObjectByName(menuList[0].name).position.x = Math.sin(Math.radians(myangle))*69;
-	    			scene.getObjectByName(menuList[0].name).position.z = -Math.cos(Math.radians(myangle))*69;
-
-	    			scene.getObjectByName(menuList[0].name).rotation.y += Math.radians(120);
-
-	        		break;        			
-
-	    		case 68:
-
-	    			myangle += 120;
-
-	    			scene.getObjectByName(menuList[0].name).position.x = Math.sin(Math.radians(myangle))*69;
-	    			scene.getObjectByName(menuList[0].name).position.z = -Math.cos(Math.radians(myangle))*69;
-
-	    			scene.getObjectByName(menuList[0].name).rotation.y -= Math.radians(120);
-	    			
-	        		break;
-
-			}
-
+			default:
+				//console.log( event.keyCode )
+				break;
 		}
-*/
+
 	}.bind( this );
 
 	this.onDocumentTouchMove = function ( event ) {
-	
-		switch( event.touches.length ) {
+
+		if ( event.touches.length == 1 )
+		{
+			currentX = event.touches[ 0 ].pageX;
+			currentY = event.touches[ 0 ].pageY;
+		}
+
+		/*switch( event.touches.length ) {
 			case 1:
 				currentX = event.touches[ 0 ].pageX;
 				currentY = event.touches[ 0 ].pageY;
 				break;
 
-			case 2:
-				var point1=-1, point2=-1;
-   				for (var i=0; i < tpCache.length; i++) {
-     				if (tpCache[i].identifier == event.touches[0].identifier) point1 = i;
-     				if (tpCache[i].identifier == event.touches[1].identifier) point2 = i;
-   				}
-   				if (point1 >=0 && point2 >= 0) {
-    		 		// Calculate the difference between the start and move coordinates
-    		 		var diff1 = tpCache[point1].pageX - event.touches[0].pageX;
-     				var diff2 = tpCache[point2].pageX - event.touches[1].pageX;
-     				// This threshold is device dependent as well as application specific
-     				//var PINCH_THRESHHOLD = event.target.clientWidth / 10;
-     				if(tpCache[point1].pageX < tpCache[point2].pageX) {
-     					zoom(Math.trunc((diff1 - diff2)/10));
-     				}
-     				else {
-     					zoom(Math.trunc((diff2 - diff1)/10));
-     				}
-   				}
-   				else {
-     				// empty tpCache
-     				tpCache = new Array();
-   				}
-				break;
-		}
+			
+		}*/
 	}.bind( this );
 
 	this.onDocumentTouchEnd = function ( event ) 
 	{
 		//startAllAudios();		
-		tpCache = new Array();
+		//tpCache = new Array();
 		
 		this.element.removeEventListener( 'touchmove', this.onDocumentTouchMove, false );
 		this.element.removeEventListener( 'touchend', this.onDocumentTouchEnd, false );
@@ -324,44 +310,8 @@ THREE.DeviceOrientationAndTouchController = function( object, objectPather, domE
 		}
 	}.bind( this );
 
-	// The angles alpha, beta and gamma form a set of intrinsic Tait-Bryan angles of type Z-X'-Y''
-
-	var setObjectQuaternion = function() {
-
-		var zee = new THREE.Vector3( 0, 0, 1 );
-		var euler = new THREE.Euler();
-		var q0 = new THREE.Quaternion();
-		var q1 = new THREE.Quaternion( - Math.sqrt( 0.5 ), 0, 0, Math.sqrt( 0.5 ) ); // - PI/2 around the x-axis
-
-		return function( quaternion, alpha, beta, gamma, orient ) {
-
-			euler.set( beta, alpha, - gamma, 'YXZ' ); // 'ZXY' for the device, but 'YXZ' for us
-			quaternion.setFromEuler( euler ); // orient the device
-			quaternion.multiply( q1 ); // camera looks out the back of the device, not the top
-			quaternion.multiply( q0.setFromAxisAngle( zee, - orient ) ); // adjust for screen orientation
-		}
-	}();
-
-	
-	this.updateDeviceMove = function () {
-		
-		var alpha, beta, gamma, orient;
-		
-		return function () {
-			
-			if ( scope.enabled === false ) return;
-
-			alpha = scope.deviceOrientation.alpha ? THREE.Math.degToRad( scope.deviceOrientation.alpha ) : 0; // Z
-			beta = scope.deviceOrientation.beta ? THREE.Math.degToRad( scope.deviceOrientation.beta ) : 0; // X'
-			gamma = scope.deviceOrientation.gamma ? THREE.Math.degToRad( scope.deviceOrientation.gamma ) : 0; // Y''
-			orient = scope.screenOrientation ? THREE.Math.degToRad( scope.screenOrientation ) : 0; // O
-			setObjectQuaternion( scope.object.quaternion, alpha, beta, gamma, orient );
-			this.alpha = alpha;	
-		}
-	}();
-
 	this.updateManualMove = function () {
-				
+		
 		var lat, lon;
 		var phi, theta;
 
@@ -403,7 +353,8 @@ THREE.DeviceOrientationAndTouchController = function( object, objectPather, domE
 				rotQuat.set( 0, 0, Math.sin( ( realZ - objZ  ) / 2 ), Math.cos( ( realZ - objZ ) / 2 ) );
 				objQuat.multiply( rotQuat );
 
-				scope.objectPather.quaternion.copy( objQuat );
+				//scope.objectPather.quaternion.copy( objQuat );
+				scope.object.quaternion.copy( objQuat );
 			} 
 			else if ( appState === CONTROLLER_STATE.MANUAL_ROTATE_DEVICE && !autopositioning) 
 			{				
@@ -436,10 +387,9 @@ THREE.DeviceOrientationAndTouchController = function( object, objectPather, domE
 				rotQuat.set( 0, 0, Math.sin( ( realZ - objZ  ) / 2 ), Math.cos( ( realZ - objZ ) / 2 ) );
 				objQuat.multiply( rotQuat );
 
-				scope.objectPather.quaternion.copy( objQuat );
+				scope.object.quaternion.copy( objQuat );
 			}
 		};
-
 	}();
 
 	function sendVRInteraction(quat)
@@ -451,88 +401,104 @@ THREE.DeviceOrientationAndTouchController = function( object, objectPather, domE
 		interController.checkVRInteraction( _origin, direction );
 	}
 
-	var onVRControllerUpdate = function()
+	var gamepadConnected = false;
+
+	var openmenutimer = 0;
+	var openmenuinterval;
+
+	this.onVRControllerUpdate = function( event )
 	{
-		_moData.createPointer2();
+		if ( !gamepadConnected ) 
+		{
+			gamepadConnected = true;
+			_moData.createPointer2(); 
 
-		var controller = event.detail
-		controller.name = "controller"
-		/*var axesHelper = new THREE.AxesHelper( 5 );
-		controller.add( axesHelper )*/
-		scene.add( controller )
+			var controller = event.detail
+			controller.name = "controller"
 
-		controller.standingMatrix = renderer.vr.getStandingMatrix()
+			scene.add( controller )
 
-		var
-		meshColorOff = 0xDB3236,//  Red.
-		meshColorOn  = 0xF4C20D,//  Yellow.
-		controllerMaterial = new THREE.MeshStandardMaterial({ color: meshColorOff }),
-		controllerMesh = new THREE.Mesh(
-			new THREE.CylinderGeometry( 0.005, 0.05, 0.1, 15 ),
-			controllerMaterial
-		),
-		handleMesh = new THREE.Mesh(
-			new THREE.BoxGeometry( 0.03, 0.1, 0.03 ),
-			controllerMaterial
-		)
-		
-		controllerMaterial.flatShading = true
-		controllerMesh.rotation.x = -Math.PI / 2
-		handleMesh.position.y = -0.05
-		controllerMesh.visible = true
-		controllerMesh.add( handleMesh )
+			controller.standingMatrix = renderer.vr.getStandingMatrix()
 
-		/*var material = new THREE.LineBasicMaterial( { color: 0x7f7f7f } );
-        var geometry = new THREE.Geometry();
-        geometry.vertices.push(new THREE.Vector3( 0, 0, 0) );
-        geometry.vertices.push(new THREE.Vector3( 0, 1, 0) );
-        var line = new THREE.Line( geometry, material );
-        line.name = 'controllerline'
+			/*var
+			meshColorOff = 0xDB3236,//  Red.
+			meshColorOn  = 0xF4C20D,//  Yellow.
+			controllerMaterial = new THREE.MeshStandardMaterial({ color: meshColorOff }),
+			controllerMesh = new THREE.Mesh(
+				new THREE.CylinderGeometry( 0.005, 0.05, 0.1, 15 ),
+				controllerMaterial
+			),
+			handleMesh = new THREE.Mesh(
+				new THREE.BoxGeometry( 0.03, 0.1, 0.03 ),
+				controllerMaterial
+			)
+			
+			controllerMaterial.flatShading = true
+			controllerMesh.rotation.x = -Math.PI / 2
+			handleMesh.position.y = -0.05
+			controllerMesh.visible = true
+			controllerMesh.add( handleMesh )
 
-		controllerMesh.add( line );*/
+			controller.userData.mesh = controllerMesh//  So we can change the color later.
 
-		controller.userData.mesh = controllerMesh//  So we can change the color later.
+			controllerMesh.scale.set( 0.5,0.5,0.5 );
+			controller.add( controllerMesh )
 
-		controllerMesh.scale.set( 0.5,0.5,0.5 );
-		controller.add( controllerMesh )
+			castShadows( controller )
+			receiveShadows( controller )*/
 
-		castShadows( controller )
-		receiveShadows( controller )
-
-		controller.addEventListener( 'primary press began', function( event ){
-			event.target.userData.mesh.material.color.setHex( meshColorOn )
-			sendVRInteraction(event.target.quaternion)
-		})
-		controller.addEventListener( 'primary press ended', function( event ){
-			event.target.userData.mesh.material.color.setHex( meshColorOff )
-		})
-		controller.addEventListener( 'button_0 press began', function( event ){
-			event.target.userData.mesh.material.color.setHex( meshColorOn )
-			sendVRInteraction(event.target.quaternion)
-		})
-		controller.addEventListener( 'button_0 press ended', function( event ){
-			event.target.userData.mesh.material.color.setHex( meshColorOff )
-		})	
-		controller.addEventListener( 'thumbpad press began', function( event ){
-			event.target.userData.mesh.material.color.setHex( meshColorOn )
-			sendVRInteraction(event.target.quaternion)
-		})
-		controller.addEventListener( 'thumbpad press ended', function( event ){
-			event.target.userData.mesh.material.color.setHex( meshColorOff )
-		})	
-		controller.addEventListener( 'disconnected', function( event ){
-			controller.parent.remove( controller )
-		})
+			controller.addEventListener( 'primary press began', function( event ){
+				//event.target.userData.mesh.material.color.setHex( meshColorOn )
+				startMenuInterval()
+				sendVRInteraction(event.target.quaternion)
+			})
+			controller.addEventListener( 'primary press ended', function( event ){
+				//event.target.userData.mesh.material.color.setHex( meshColorOff )
+				stopMenuInterval()
+			})
+			controller.addEventListener( 'button_0 press began', function( event ){
+				//event.target.userData.mesh.material.color.setHex( meshColorOn )
+				startMenuInterval()
+				sendVRInteraction(event.target.quaternion)
+			})
+			controller.addEventListener( 'button_0 press ended', function( event ){
+				//event.target.userData.mesh.material.color.setHex( meshColorOff )
+				stopMenuInterval()
+			})	
+			controller.addEventListener( 'thumbpad press began', function( event ){
+				//event.target.userData.mesh.material.color.setHex( meshColorOn )
+				startMenuInterval()
+				sendVRInteraction(event.target.quaternion)
+			})
+			controller.addEventListener( 'thumbpad press ended', function( event ){
+				//event.target.userData.mesh.material.color.setHex( meshColorOff )
+				stopMenuInterval()
+			})	
+			controller.addEventListener( 'disconnected', function( event ){
+				controller.parent.remove( controller )
+			})
+		}
 	};
 
-var stover = false;	
+	function startMenuInterval()
+	{
+		if ( scene.getObjectByName( "openMenu" ).visible ) {
+			openmenuinterval = setInterval(function(){
+				openmenutimer++;
+				if ( openmenutimer == 3 ) menuMgr.initFirstMenuState();
+			}, 1000);
+		}
+	}
+
+	function stopMenuInterval()
+	{
+		clearInterval( openmenuinterval );
+		openmenutimer = 0;
+	}
 
 	this.update = function() {
 		
-		if (this.isAndroid && !autopositioning && _isHMD) 
-		{
-			this.updateDeviceMove();		
-		}
+		if (this.isAndroid && !autopositioning && _isHMD) {}
 		else if ( appState !== CONTROLLER_STATE.AUTO ) 
 		{
 			this.updateManualMove();	
@@ -550,22 +516,12 @@ var stover = false;
 
 	        var intersects = raycaster.intersectObjects( interList, true ); // false
 
-	        /*if ( !stover && intersects[0] && intersects[0].object && intersects[0].object.name == 'showSubtitlesMenuButton') {
-	        	stover = true;
-	        	scene.getObjectByName( 'showSubtitlesMenuButton' ).visible = false; 
-            	scene.getObjectByName( 'overSTbutton' ).visible = true; 
-	        }
-	        else if (stover && ( ( intersects[0] && intersects[0].object && intersects[0].object.name != 'showSubtitlesMenuButton' && intersects[0].object.name != 'overSTbutton' ) ) )
-	        {
-	        	stover = false;
-	        	scene.getObjectByName( 'showSubtitlesMenuButton' ).visible = true; 
-            	scene.getObjectByName( 'overSTbutton' ).visible = false;
-	        }*/
-
 	        var dist = intersects[0] ? intersects[0].distance : 50;
 
 	        var direction2 = new THREE.Vector3( 0, 0, -dist );
         	direction2.applyQuaternion(rot)
+
+        	var pointscale = menuMgr.getMenuType() == 1 ? 3*_pointerSize : 1*_pointerSize;
 
         	var p2 = scene.getObjectByName('pointer2').children[0];
             if ( p2 )
@@ -574,31 +530,23 @@ var stover = false;
                 p2.position.y = direction2.y;
                 p2.position.z = direction2.z;
 
-                p2.scale.set( dist/10,dist/10,dist/10 )
+                p2.scale.set( pointscale*dist/10,pointscale*dist/10,pointscale*dist/10 )
             }
 		}
 		else if(_isHMD)
 		{
 			var mouse3D = new THREE.Vector3( 0, 0, 0 );
-			interController.checkInteraction(mouse3D, scope.object, 'onDocumentMouseMove');
+			
+			interController.checkInteraction( mouse3D, scope.object, 'onDocumentMouseMove' );
 		}
 
 		_AudioManager.updateRotationMatrix( camera.matrixWorld.elements );
-
-		//subController.updateRadar();
 	};
 	
-	this.connect = function() {
-
-		onScreenOrientationChangeEvent();
-		
-		container.appendChild( domElement );
-
-		window.addEventListener( 'orientationchange', onScreenOrientationChangeEvent, false );	
-		window.addEventListener( 'deviceorientation', onDeviceOrientationChangeEvent, false );	
+	this.connect = function() 
+	{	
 		window.addEventListener( 'resize', onWindowResize, false );	
-
-		window.addEventListener( 'vr controller connected', onVRControllerUpdate, false);	
+		window.addEventListener( 'vr controller connected', this.onVRControllerUpdate, false);	
 
 		this.element.addEventListener( 'touchstart', this.onDocumentTouchStart, false );
 		this.element.addEventListener( 'mousedown', this.onDocumentMouseDown, false );
@@ -608,13 +556,10 @@ var stover = false;
 		scope.enabled = true;
 	};
 
-	this.disconnect = function() {
-
-		window.removeEventListener( 'orientationchange', onScreenOrientationChangeEvent, false );
-		window.removeEventListener( 'deviceorientation', onDeviceOrientationChangeEvent, false );
+	this.disconnect = function() 
+	{
 		window.removeEventListener( 'resize', onWindowResize, false );	
-
-		window.removeEventListener( 'vr controller connected', onVRControllerUpdate, false);		
+		window.removeEventListener( 'vr controller connected', this.onVRControllerUpdate, false);		
 
 		this.element.removeEventListener( 'touchstart', this.onDocumentTouchStart, false );
 		this.element.removeEventListener( 'mousedown', this.onDocumentMouseDown, false );

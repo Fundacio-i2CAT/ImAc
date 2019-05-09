@@ -2,6 +2,7 @@
 var camera;
 var scene;
 var controls;
+var rendertime = 0;
 
 function AplicationManager()
 {
@@ -13,23 +14,20 @@ function AplicationManager()
     var button_1;
     var button_2;
 
+    this.getRenderer = function() { return renderer };
+
     function initWorld()
     {
     	camera = new THREE.PerspectiveCamera( 60.0, window.innerWidth / window.innerHeight, 1, 1000 );
         camera.name = 'perspectivecamera';
-
-        this.CameraParentObject = new THREE.Object3D();
-        this.CameraParentObject.name = 'parentcamera';
-		this.CameraParentObject.add( camera );
-
 		scene = new THREE.Scene();
-		scene.add( this.CameraParentObject );
+        scene.add( camera );
     }
 
     function initRenderer()
     {
     	renderer = new THREE.WebGLRenderer({
-			antialias:true,
+			antialias: true,
 			premultipliedAlpha: false,
 			alpha: true
 		});
@@ -39,6 +37,11 @@ function AplicationManager()
 		renderer.setPixelRatio( Math.floor( window.devicePixelRatio ) );
 		renderer.setSize( window.innerWidth, window.innerHeight );
     }
+
+    this.autopos = function(isdImac)
+    {
+        renderer.vr.setCameraOrientation( camera.quaternion,isdImac )
+    };
 
     // Used when autopositioning is activated
     this.enableVR = function()
@@ -89,6 +92,10 @@ function AplicationManager()
 
     function render()
     {
+        /*var time =  performance.now();
+        console.log( time - rendertime )
+        rendertime = time;*/
+
     	THREE.VRController.update()
     	if ( controls ) controls.update();
     	renderer.render( scene, camera );
@@ -97,17 +104,25 @@ function AplicationManager()
 
     	if( THREE.VRController.getTouchPadState() && _isHMD ) 
     	{			
-			interController.checkInteraction( mouse3D, camera, 'onDocumentMouseDown' );
+			// afegir contador per a obrir el menu despres de fer 5 clicks
+            interController.checkInteraction( mouse3D, camera, 'onDocumentMouseDown' );
 		}
+        if ( _isHMD && subController.getSubtitleEnabled() )
+        {
+            subController.updateSTRotation();
+        }
+        if ( _isHMD && subController.getSignerEnabled() )
+        {
+            subController.updateSLRotation();
+        }
 
 		subController.updateRadar();
 
-		Reticulum.update();
+        Reticulum.update();
     }
 
     this.init = function()
     {
-		//blockContainer();
         console.log('Init AplicationManager')
 			
 		var container = document.getElementById( 'container' );
@@ -115,22 +130,20 @@ function AplicationManager()
         initWorld();
 		initRenderer();
 
-		controls = new THREE.DeviceOrientationAndTouchController( camera, CameraParentObject, renderer.domElement, renderer );
+        controls = new THREE.DeviceOrientationAndTouchController( camera, renderer.domElement, renderer );
 
 		container.appendChild( renderer.domElement );
 
 		_moData.createOpenMenuMesh();
 
-        //moData.createSphericalVideoInScene( mainContentURL, 'contentsphere' );
         scene.add( _moData.getSphericalVideoMesh( 100, mainContentURL, 'contentsphere' ) )
-		_moData.createCastShadows();
 
         if ( 'getVRDisplays' in navigator ) {
 
+            VideoController.init();
+
         	document.body.appendChild( createVRButton_1( renderer ) );
         	document.body.appendChild( createVRButton_2( renderer ) );
-
-        	//startAllVideos(); 
 
         	navigator.getVRDisplays().then( function ( displays ) 
         	{
@@ -138,14 +151,14 @@ function AplicationManager()
 				renderer.vr.enabled = true;
 				activateLogger();
 				renderer.animate( render );
-				//VideoController.playAll();
 			} );
         }
         else alert("This browser don't support VR content");
 
         initReticulum( camera );
-
-        //callback();
-        runDemo()
+        //if ( localStorage.ImAc_server ) _Sync.init( localStorage.ImAc_server );
+        runDemo();
+        //runTest1();
+        //runTest2();
 	};
 }

@@ -820,11 +820,12 @@
     }
 
     P.prototype.initFromNode = function (doc, parent, node, errorHandler) {
-        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        /// i2cat
         ContentElement.prototype.initFromNode.call(this, doc, parent, node, errorHandler);
         this.contents = [];
         this.id = elementGetXMLID(node);
         this.equirectangularLongitude = elementGetXMLImacPos(node);
+        this.equirectangularLatitude = elementGetXMLImacPosY(node);
     };
 
     /*
@@ -962,8 +963,14 @@
         return node && 'xml:id' in node.attributes ? node.attributes['xml:id'].value || null : null;
     }
 
+    // i2cat
     function elementGetXMLImacPos(node) {
         return node && 'imac:equirectangularLongitude' in node.attributes ? node.attributes['imac:equirectangularLongitude'].value : undefined;
+    }
+
+    // i2cat
+    function elementGetXMLImacPosY(node) {
+        return node && 'imac:equirectangularLatitude' in node.attributes ? node.attributes['imac:equirectangularLatitude'].value : undefined;
     }
 
     function elementGetRegionID(node) {
@@ -2083,14 +2090,6 @@ ctx.fillText("Hello World",20,50);
                 dom_element.style.display = "flex";
                 dom_element.style.flexDirection = "column";
 
-//////////////////////////////////////////////////////////////////////////////////////////////
-//                                                                                          //
-//              ADDED BY I2CAT                                                              //
-//                                                                                          //
-//////////////////////////////////////////////////////////////////////////////////////////////
-                attr = forcedDisplayAlign ? forcedDisplayAlign : attr;
-//////////////////////////////////////////////////////////////////////////////////////////////
-
                 if (attr === "before") {
 
                     dom_element.style.justifyContent = "flex-start";
@@ -2276,15 +2275,6 @@ ctx.fillText("Hello World",20,50);
 
                 var ta;
                 var dir = isd_element.styleAttrs[imscStyles.byName.direction.qname];
-
-
-                //////////////////////////////////////////////////////////////////////////////////////////////
-                //                                                                                          //
-                //              ADDED BY I2CAT                                                              //
-                //                                                                                          //
-                //////////////////////////////////////////////////////////////////////////////////////////////
-                attr = forcedTextAlign ? forcedTextAlign : attr;
-                //////////////////////////////////////////////////////////////////////////////////////////////
 
                 /* handle UAs that do not understand start or end */
 
@@ -2502,7 +2492,8 @@ ctx.fillText("Hello World",20,50);
      * @returns {Object} Opaque in-memory representation of an ISD
      */
 
-    var _imac = undefined;
+    var _imac = undefined;  //i2cat
+    var _imacY = undefined;  //i2cat
 
     imscISD.generateISD = function (tt, offset, errorHandler) {
 
@@ -2525,7 +2516,8 @@ ctx.fillText("Hello World",20,50);
                 /* add the region to the ISD */
 
                 isd.contents.push(c.element);
-                isd.imac = _imac;// >= 0 ? _imac : _imac + 360;
+                isd.imac = _imac;// >= 0 ? _imac : _imac + 360;  // i2cat
+                isd.imacY = _imacY;// >= 0 ? _imac : _imac + 360;  // i2cat
             }
 
 
@@ -2828,6 +2820,7 @@ ctx.fillText("Hello World",20,50);
             var elist = [];
 
             _imac = isd_element.equirectangularLongitude ? parseFloat(isd_element.equirectangularLongitude) : undefined;
+            _imacY = isd_element.equirectangularLatitude ? parseFloat(isd_element.equirectangularLatitude) : undefined;
 
             constructSpanList(isd_element, elist);
 
@@ -3004,7 +2997,8 @@ ctx.fillText("Hello World",20,50);
         //ptp manipulation
         if(this.kind === 'p'){
             this.id = ttelem.id || '';
-            this.equirectangularLongitude = ttelem.equirectangularLongitude;
+            this.equirectangularLongitude = ttelem.equirectangularLongitude; //i2cat
+            this.equirectangularLatitude = ttelem.equirectangularLatitude; //i2cat
         }
 
         /* deep copy of style attributes */

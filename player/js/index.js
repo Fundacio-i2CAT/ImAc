@@ -1,19 +1,20 @@
 
 // GLOBAL VARS
 
-var _PlayerVersion = 'v0.06.0';
+var _PlayerVersion = 'v0.07.0';
 
 var AplicationManager = new AplicationManager();
 var MenuFunctionsManager = new MenuFunctionsManager();
-//var moData = new THREE.MediaObject();
 
 var _moData = new THREE.MediaObjectData();
 
+var vwStrucMMngr = new ViewStructureMenuManager();
 var menuMgr = new MenuManager();
 var settingsMgr = new SettingsManager();
 
-//var MenuController = new THREE.MenuController();
 var MenuDictionary = new MenuDictionary();
+
+var _ManifestParser = new ManifestParser();
 
 var _AudioManager = new AudioManager();
 var subController = new SubSignManager();
@@ -22,6 +23,9 @@ var polyfill = new WebVRPolyfill();
 var statObj = new StatObject();
 
 var VideoController = new VideoController();
+
+var _ImAc = new ImAcController();
+var _Sync = new SyncController();
 
 let playpauseCtrl;
 let volumeCtrl;
@@ -33,8 +37,15 @@ let ADOptionCtrl;
 let ASTOptionCtrl;
 let vpbCtrl;
 let SettingsOptionCtrl;
+let multiOptionsPreviewCtrl;
+
+var menuParent;
+var menuHeight;
+var menuWidth;
 
 var loggerActivated = false;
+
+var sessionId = Date.now(); // logger
 
 var demoId = 1;
 
@@ -43,73 +54,21 @@ var mainContentURL = './resources/rapzember-young-hurn_edit.mp4';
 
 var list_contents;
 
-if ( annyang ) {
-  // Let's define a command.
-  var commands = {
-    //TEST WITH LOCALHOST
-    'hello': function() { console.log('Hello world!'); }
-    /*
-    'volume up': MenuFunctionsManager.getChangeVolumeFunc(true),
-    'apujar volum': MenuFunctionsManager.getChangeVolumeFunc(true),
-    'subir volumen': MenuFunctionsManager.getChangeVolumeFunc(true),
-    'lauter': MenuFunctionsManager.getChangeVolumeFunc(true),
+var __etype = 0;
 
-    'volume down': MenuFunctionsManager.getChangeVolumeFunc(false),
-    'abaixar volum': MenuFunctionsManager.getChangeVolumeFunc(false),
-    'bajar volumen': MenuFunctionsManager.getChangeVolumeFunc(false),
-    'leiser': MenuFunctionsManager.getChangeVolumeFunc(false),
-
-    'play': function() { console.log('play') },
-
-    'pause': MenuFunctionsManager.getPlayPauseFunc(false),
-    'pausar': MenuFunctionsManager.getPlayPauseFunc(false),
-
-    'seek forward': MenuFunctionsManager.getSeekFunc(true),
-    'avançar': MenuFunctionsManager.getSeekFunc(true),
-    'avanzar': MenuFunctionsManager.getSeekFunc(true),
-    'weiter': MenuFunctionsManager.getSeekFunc(true),
-
-    'seek back': MenuFunctionsManager.getSeekFunc(false),
-    'retrocedir': MenuFunctionsManager.getSeekFunc(false),
-    'retroceder': MenuFunctionsManager.getSeekFunc(false),
-    'zurück': MenuFunctionsManager.getSeekFunc(false),
-
-    'subtitles on': MenuFunctionsManager.getOnOffFunc('subtitlesOffButton'),
-    'activar subtitols': MenuFunctionsManager.getOnOffFunc('subtitlesOffButton'),
-    'activar subtitulos': MenuFunctionsManager.getOnOffFunc('subtitlesOffButton'),
-    'untertitel an': MenuFunctionsManager.getOnOffFunc('subtitlesOffButton'),
-
-    'subtitles off': MenuFunctionsManager.getOnOffFunc('subtitlesOnButton'),
-    'desactivar subtituls': MenuFunctionsManager.getOnOffFunc('subtitlesOnButton'),
-    'desactivar subtitulos': MenuFunctionsManager.getOnOffFunc('subtitlesOnButton'),
-    'untertitel aus': MenuFunctionsManager.getOnOffFunc('subtitlesOnButton'),
-
-    'open menu': MenuFunctionsManager.getOpenMenuFunc(true),
-    'obrir menu': MenuFunctionsManager.getOpenMenuFunc(true),
-    'abrir menu': MenuFunctionsManager.getOpenMenuFunc(true),
-    'Öffne Menü': MenuFunctionsManager.getOpenMenuFunc(true),
-
-    'close menu': MenuFunctionsManager.getCloseTradMenuFunc(),
-    'tancar menu': MenuFunctionsManager.getCloseTradMenuFunc(),
-    'cerrar menu': MenuFunctionsManager.getCloseTradMenuFunc(),
-    'Schließe Menü': MenuFunctionsManager.getCloseTradMenuFunc()
-    */
-  };
-
-  // Add our commands to annyang
-  annyang.addCommands(commands);
-
-  // Start listening.
-  annyang.start();
-}
-
+var _fixedST = false;
+var _SLsubtitles = false;
+var _NonCont = false;
+var _iconf;
+var _userprofile = true;
+var _ws_vc;
 
 
 /**
  * Initializes the web player.
- */	
+ */
 
-function init_webplayer() 
+function init_webplayer()
 {
 	console.log('Version: ' + _PlayerVersion);
 
@@ -123,6 +82,8 @@ function init_webplayer()
         {
             list_contents = json.contents;
 
+            loadEmojisIcons()
+
             if ( myhash && myhash[1] && myhash[1] < list_contents.length && list_contents[ myhash[1] ] && localStorage.ImAc_init == myhash[1] ) 
             {
                 localStorage.removeItem('ImAc_init');
@@ -130,18 +91,32 @@ function init_webplayer()
 
                 mainContentURL = list_contents[ myhash[1] ].url;
 
+                if ( localStorage.ImAc_voiceControl == 'on' ) connectVoiceControl( localStorage.ImAc_voiceControlId, "http://51.89.138.157:3000/" );
+
+                ///////////////////////////////////////////////////////////////
+                var cookieconf = readCookie("ImAcProfileConfig");
+
+                if ( cookieconf && cookieconf != null )
+                {
+                    _iconf = JSON.parse( cookieconf );
+
+                    console.log( _iconf )
+                    subController.setSTConfig( _iconf );
+                    subController.setSLConfig( _iconf );
+                    _AudioManager.setADConfig( _iconf );
+                    _AudioManager.setASTConfig( _iconf );
+                    iniGeneralSettings( _iconf );
+                }
+                ////////////////////////////////////////////////////////////////
+
                 demoId = myhash[1];
 
                 AplicationManager.init();
 
             }
-            else window.location = window.location.origin + window.location.pathname.slice(0, -7);       
+            else window.location = window.location.origin + window.location.pathname.slice(0, -7);
         });
     });
-    //moData.setFont('./css/fonts/helvetiker_bold.typeface.json');
 }
 
-$(window).on('hashchange', function() 
-{
-    window.location.reload();
-});
+$(window).on( 'hashchange', () => { window.location.reload() } );

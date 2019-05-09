@@ -9,76 +9,65 @@ THREE.InteractionsController = function () {
 	var interactionState = true;
 	var nameMenuActive;
 
-    var subtitlesActive = false;
-    var signerActive = false;
-    var pointerState = true;
+  var subtitlesActive = false;
+  var signerActive = false;
+  var pointerState = true;
 
-    var radarInteraction;
+  var radarInteraction;
 
 
 //************************************************************************************
 // Private Functions
 //************************************************************************************
 
-	function enableInteractions()
-	{
+	function enableInteractions(){
 		interactionState = true;
 	}
 
-	function disableInteractions()
-	{
+	function disableInteractions(){
 		interactionState = false;
 	}
 
-    this.getInteractiveObjectList = function ()
-    {
-        console.log(interactiveListObjects)
-    }
-
-	function getInteractiveObjectList()
-	{
+	function getInteractiveObjectList(){
 		console.log(interactiveListObjects)
-        return interactiveListObjects;
+    return interactiveListObjects;
 	}
 
-    function freeInteractionState(time)
-    {
-        var myVar = setTimeout(function()
-        {
-            interactionState = true;
-            clearTimeout(myVar);
-        },time); 
-    }
+  function freeInteractionState(time){
+    var myVar = setTimeout(function(){
+      interactionState = true;
+      clearTimeout(myVar);
+    },time);
+  }
 
-    function freePointerState(time)
-    {
-        var myVar = setTimeout(function()
-        {
-            pointerState = true;
-            clearTimeout(myVar);
-        },time); 
-    }
+  function freePointerState(time){
+    var myVar = setTimeout(function(){
+      pointerState = true;
+      clearTimeout(myVar);
+    },time);
+  }
 
 //************************************************************************************
 // Public Setters
 //************************************************************************************
 
-	this.setActiveMenuName = function(name)
-	{
+	this.setActiveMenuName = function(name){
 		nameMenuActive = name;
+	}
+
+	this.getInteractiveObjectList = function (){
+		console.log(interactiveListObjects)
 	}
 
 //************************************************************************************
 // Public Getters
 //************************************************************************************
 
-	this.getInteractionState = function()
-	{
+	this.getInteractionState = function(){
 		return interactionState;
 	};
 
-	this.getActiveMenuName = function()
-	{
+	this.getActiveMenuName = function(){
 		return nameMenuActive;
 	};
 
@@ -86,135 +75,100 @@ THREE.InteractionsController = function () {
 // Public Functions
 //************************************************************************************
 
-	this.checkInteraction = function(mouse3D, camera, type) 
-	{
-    	raycaster.setFromCamera( mouse3D, camera );
-    	var intersects = raycaster.intersectObjects( interactiveListObjects, true ); // false
-    	if ( intersects[0] && interactionState && type != 'onDocumentMouseMove')
-    	{
-            interactionState = false;
-    		var intersectedShapeId;
-			for(var inter = 0; inter < intersects.length; inter++)
-	        {
-                if ( intersects[inter].object.type == 'Mesh' && intersects[inter].object.onexecute ) 
-                {
-                    intersects[inter].object.onexecute();
-                    break;
-                }
-                
-                else if ( intersects[inter].object.type == 'Mesh' &&  intersects[inter].object.parent.name === 'video-progress-bar') 
-                {
-                    vpbCtrl.onClickSeek(mouse3D)
-                    break;
-                }
+	this.checkInteraction = function(mouse3D, camera, type){
+  	raycaster.setFromCamera( mouse3D, camera );
+  	var intersects = raycaster.intersectObjects( interactiveListObjects, true ); // false
 
-                else if ( intersects[inter].object.type == 'Mesh' && intersects[inter].object.name) 
-	        	{
+    //Closes the open multi option menu of the traditional menu when clicked outside any element.
+    if(!intersects.length && menuMgr.getActualCtrl() && type != 'onDocumentMouseMove'){
+        SettingsOptionCtrl.close();
+    }
+
+  	if ( intersects[0] && interactionState && type != 'onDocumentMouseMove'){
+      interactionState = false;
+  		var intersectedShapeId;
+			for(var inter = 0; inter < intersects.length; inter++){
+	      if ( intersects[inter].object.type == 'Mesh' && intersects[inter].object.onexecute ){
+	        intersects[inter].object.onexecute();
+	        break;
+	      }
+	      else if ( intersects[inter].object.type == 'Mesh' && intersects[inter].object.parent && intersects[inter].object.parent.name === 'video-progress-bar'){
+          vpbCtrl.onClickSeek(mouse3D)
+          break;
+	      }
+        else if ( intersects[inter].object.type == 'Mesh' && intersects[inter].object.name && intersects[inter].object.parent ){
 					intersectedShapeId = intersects[inter].object.name;
 					console.error(intersectedShapeId);
 					break;
 				}
-                else console.error("Error in checkInteraction")
+        else console.error("Error in checkInteraction")
 			}
-            freeInteractionState(500);
-    	}
-        else if ( _isHMD && intersects[0] && interactionState && pointerState )
-        {
-            //console.error('intersect')
-            if ( scene.getObjectByName( "pointer" ) ) scene.getObjectByName( "pointer" ).visible = true;
-            //pointerState = false;
-            //freePointerState(600);
-        }
-    	else if ( _isHMD && pointerState )
-    	{
-    		// TODO
-            if ( scene.getObjectByName( "pointer" ) ) scene.getObjectByName( "pointer" ).visible = false;
-    	}
-        /*else
-        {
-            var activeSecondaryMenuTrad = secMMgr.getActiveSecondaryMenuTrad();
-            if(activeSecondaryMenuTrad)
-            {
-                activeSecondaryMenuTrad.buttons.forEach(function(elem){
-                    interController.removeInteractiveObject(elem);
-                }); 
-              camera.remove(camera.getObjectByName(activeSecondaryMenuTrad.name));
-              //subController.switchSigner( interController.getSignerActive() );
-                
-            } 
-        }*/
+      freeInteractionState(500);
+  	}
 	};
 
-    this.checkVRInteraction = function(origin, direction) 
-    {
-        raycaster.set( origin, direction );
-
-        var intersects = raycaster.intersectObjects( interactiveListObjects, true ); // false
-
-        if ( intersects[0] && interactionState )
-        {
-            interactionState = false;
-            var intersectedShapeId;
-            for(var inter = 0; inter < intersects.length; inter++)
-            {
-                if ( intersects[inter].object.type == 'Mesh' && intersects[inter].object.onexecute ) 
-                {
-                    intersects[inter].object.onexecute();
-                    break;
-                }
-                else if ( intersects[inter].object.type == 'Mesh' &&  intersects[inter].object.parent.name === 'video-progress-bar') 
-                {
-                    vpbCtrl.onClickSeek(intersects[inter].point.normalize())
-                    break;
-                }
-
-            }
-            freeInteractionState(300);
+  this.checkVRInteraction = function(origin, direction){
+  	raycaster.set( origin, direction );
+    var intersects = raycaster.intersectObjects( interactiveListObjects, true ); // false
+    if ( intersects[0] && interactionState ){
+      interactionState = false;
+      var intersectedShapeId;
+      for(var inter = 0; inter < intersects.length; inter++){
+        if ( intersects[inter].object.type == 'Mesh' && intersects[inter].object.onexecute ){
+          intersects[inter].object.onexecute();
+          break;
         }
-    };
-
-    this.getSubtitlesActive = function()
-    {
-        return subtitlesActive;
-    };
-
-    this.getSignerActive = function()
-    {
-        return signerActive;
-    };
-
-    this.setSubtitlesActive = function(activated)
-    {
-        subtitlesActive = activated;
-    };
-
-    this.setSignerActive = function(activated)
-    {
-        signerActive = activated;
-    };
-
-	this.addInteractiveObject = function(object)
-	{
-        var index = interactiveListObjects.map(function(e) { return e.name; }).indexOf(object);
-
-        if (index < 0) {
-            interactiveListObjects.push(object);
-            controls.setInteractiveObject(object);
+        else if ( intersects[inter].object.type == 'Mesh' &&  intersects[inter].object.parent.name === 'video-progress-bar'){
+          vpbCtrl.onClickSeek(intersects[inter].point.normalize())
+          break;
         }
-        else console.error("Interactivity already exists in the list.")
+      }
+      freeInteractionState(300);
+    }
+  };
+
+  this.getSubtitlesActive = function(){
+  	return subtitlesActive;
+  };
+
+  this.getSignerActive = function(){
+    return signerActive;
+  };
+
+  this.setSubtitlesActive = function(activated){
+    subtitlesActive = activated;
+  };
+
+  this.setSignerActive = function(activated){
+    signerActive = activated;
+  };
+
+/**
+ * [description]
+ * @param  {[type]} object [description]
+ * @return {[type]}        [description]
+ */
+	this.addInteractiveObject = function(object){
+    let index = interactiveListObjects.map(function(e) { return e.name; }).indexOf(object.name);
+    if (index < 0){
+	    interactiveListObjects.push(object);
+	    controls.setInteractiveObject(object);
+    }
 	};
 
-    this.addInteractiveRadar = function(object)
-    {
-        radarInteraction = object;
-        var index = interactiveListObjects.map(function(e) { return e.name; }).indexOf(object);
-
-        if (index < 0) {
-            interactiveListObjects.push(object);
-            controls.setInteractiveObject(object);
-        }
-        else console.error("Interactivity already exists in the list.")
-    };
+/**
+ * [description]
+ * @param  {[type]} object [description]
+ * @return {[type]}        [description]
+ */
+  this.addInteractiveRadar = function(object){
+    radarInteraction = object;
+    let index = interactiveListObjects.map(function(e) { return e.name; }).indexOf(object.name);
+    if (index < 0){
+        interactiveListObjects.push(object);
+        controls.setInteractiveObject(object);
+    }
+  };
 
 	this.removeInteractiveObject = function(name)
 	{

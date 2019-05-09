@@ -2050,6 +2050,14 @@ var _confMemory;
             {
                 document.getElementById('content_desc').innerHTML = "Gaudeix de continguts immersius amb serveis d'accessibilitat seleccionant el vídeo que vulguis visualitzar. Pots personalitzar la teva experiència mitjançant el menú Configuració, o més endavant mitjançant el menú del reproductor.";
             }
+            else if ( lang == 'es')
+            {
+                document.getElementById('content_desc').innerHTML = 'Disfruta de contenidos inmersivos con servicios de accesibilidad seleccionando el vídeo que quieras visualizar. Puedes personalizar tu experiencia mediante el menú Ajustes, o más adelante mediante el menú del reproductor.';
+            }
+            else if ( lang == 'de')
+            {
+                document.getElementById('content_desc').innerHTML = 'Wählen Sie ein Videos aus und genießen Sie 360° Inhalte mit barrierefreien Diensten. Über die Einstellungen können Sie die Dienste anpassen bevor Sie das Video starten. Natürlich ist es auch möglich die Einstellung später direkt im Player-Menü zu verändern.';
+            }
             else
             {
                 document.getElementById('content_desc').innerHTML = 'Enjoy immersive contents with access services by selecting the video you want to watch. To customise your experience, go into settings or select a video and then go to the player menu.';

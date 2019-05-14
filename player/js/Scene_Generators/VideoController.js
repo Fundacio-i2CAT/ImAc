@@ -321,3 +321,30 @@ VideoController = function() {
         else if ( !listOfVideoContents[0].vid.paused ) this.pauseAll();
     }
 }
+
+
+var isSeeking = false;
+
+ 
+
+function addVideoEventListeners() {
+
+    var video = VideoController.getListOfVideoContents()[0].vid;
+
+    video.addEventListener('seeking', function() {
+
+        //log('video seeking');
+
+        isSeeking = true;
+
+    });
+
+    video.addEventListener('seeked', function() {
+
+        //log('video seeked');
+
+        isSeeking = false;
+
+    });
+
+}

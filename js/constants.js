@@ -34,11 +34,11 @@ var _ImAcMeta = {
 		},
 		ls: {
 			img: 'img/settings/lvl3/enhanced.png',
-			text: 'Variant of the traditional menu with the same features, but enlarged size adapted to low-vision users.',
-			en: 'Variant of the traditional menu with the same features, but enlarged size adapted to low-vision users.',
-			es: 'Variante del menú tradicional con las mismas funcionalidades, pero con mayor tamaño adaptado para usuarios con dificultades de visión.',
+			text: 'Variant of the traditional menu with the same features, but enlarged size.',
+			en: 'Variant of the traditional menu with the same features, but enlarged size.',
+			es: 'Variante del menú tradicional con las mismas funcionalidades, pero con mayor tamaño.',
 			de: 'Angepasstes, größeres Menü mit den gleichen Einstellungen wie beim Standard Menü.',
-			ca: 'Variant del menú tradicional amb les mateixes funcionalitats, però amb una mida més gran adaptada per a usuaris amb dificultats de visió.'
+			ca: 'Variant del menú tradicional amb les mateixes funcionalitats, però amb una mida més gran.'
 		}	
 	},
 	pointersize: {
@@ -414,7 +414,7 @@ var _ImAc_Buttons = {
 	large:     		{ ca: 'Gran', de: 'groß', en: 'Large', es: 'Grande' },
 	on:     		{ ca: 'Sí', de: 'An', en: 'On', es: 'Sí' },
 	off:     		{ ca: 'No', de: 'Aus', en: 'Off', es: 'No' },
-	save:     		{ ca: 'Guardar', de: 'Speichern', en: 'Save', es: 'Guardar' },
+	save:     		{ ca: 'Desar', de: 'Speichern', en: 'Save', es: 'Guardar' },
 	del:     		{ ca: 'Eliminar', de: 'Löschen', en: 'Delete', es: 'Eliminar' },
 	radar:     		{ ca: 'Radar', de: 'Radar', en: 'Radar', es: 'Radar' },
 	arrow:          { ca: 'Fletxa', de: 'Pfeil', en: 'Arrow', es: 'Flecha' },
@@ -429,7 +429,7 @@ var _ImAc_Buttons = {
 	statics:        { ca: 'Estàtic', de: 'Statisch', en: 'Static', es: 'Estático' },
 	dynamic:        { ca: 'Dinàmic', de: 'Dynamisch', en: 'Dynamic', es: 'Dinámico' },
 	minimum:        { ca: 'Minim', de: 'Minimum', en: 'Minimum', es: 'Mínimo' },
-	middle:         { ca: 'Mitg', de: 'Mitte', en: 'Middle', es: 'Medio' },
+	middle:         { ca: 'Mig', de: 'Mitte', en: 'Middle', es: 'Medio' },
 	maximum:        { ca: 'Màxim', de: 'höchste', en: 'Maximum', es: 'Máximo' }
 
 }

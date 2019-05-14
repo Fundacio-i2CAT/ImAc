@@ -7,34 +7,25 @@ function AccessibilityOptionsMenuView() {
         //Update the Accesibility icon initial status depending if they are enabled or not.
         this.UpdateAccessibilityOptionsIconStatusView(data);
         //Adding the functions to the corresponding menu elements.
-        if(list_contents[demoId].acces && list_contents[demoId].acces[0].ST) {
+        if( subController.checkisSubAvailable() ){
             submenu.getObjectByName('show-st-button').children[0].onexecute = data.subtitlesButtonFunc;
             submenu.getObjectByName('disable-st-button').children[0].onexecute = data.subtitlesButtonFunc;
         }
         
-
-        if(list_contents[demoId].acces && list_contents[demoId].acces[0].SL) {
+        if( subController.checkisSignAvailable() ){
             submenu.getObjectByName('show-sl-button').children[0].onexecute =  data.signlanguageButtonFunc;
             submenu.getObjectByName('disable-sl-button').children[0].onexecute = data.signlanguageButtonFunc;
         }
         
-
-        if(list_contents[demoId].acces && list_contents[demoId].acces[0].AD) {
+        if( _AudioManager.checkisADAvailable() ){
             submenu.getObjectByName('show-ad-button').children[0].onexecute = data.audioDescriptionButtonFunc;
             submenu.getObjectByName('disable-ad-button').children[0].onexecute = data.audioDescriptionButtonFunc;
         }
         
-
-        if(list_contents[demoId].acces && list_contents[demoId].acces[0].AST) {
+        if( _AudioManager.checkisASTAvailable() ){
             submenu.getObjectByName('show-ast-button').children[0].onexecute = data.audioSubtitlesButtonFunc;
             submenu.getObjectByName('disable-ast-button').children[0].onexecute = data.audioSubtitlesButtonFunc;
         }
-
-        //If this elements are visible add the function.
-        /*if(submenu.getObjectByName('previewMenuButton')) submenu.getObjectByName('previewMenuButton').children[0].onexecute = data.previewButtonFunc;
-        if(submenu.getObjectByName('forwardMenuButton')) submenu.getObjectByName('forwardMenuButton').children[0].onexecute = data.forwardMenuButtonFunc;
-    	if(submenu.getObjectByName('backMenuButton')) submenu.getObjectByName('backMenuButton').children[0].onexecute = data.backMenuButtonFunc;
-        if(submenu.getObjectByName('closeMenuButton')) submenu.getObjectByName('closeMenuButton').children[0].onexecute = data.closeMenuButtonFunc;*/
     }
 
 /**
@@ -71,37 +62,49 @@ function AccessibilityOptionsMenuView() {
  */
   this.UpdateAccessibilityOptionsIconStatusView = function(data){
 
-    if(list_contents[demoId].acces && list_contents[demoId].acces[0].ST) {
+    if( subController.checkisSubAvailable() ){
         submenu.getObjectByName('show-st-button').visible = data.isSTenabled;
         submenu.getObjectByName('disable-st-button').visible = !data.isSTenabled;
+        submenu.getObjectByName('disable-st-button').material.color.set( 0xe6e6e6 );
     } else{
         submenu.getObjectByName('disable-st-button').visible = true;
         submenu.getObjectByName('disable-st-button').material.color.set( 0x3a3a3a );
+        submenu.getObjectByName('show-st-button').visible = false;
+        submenu.getObjectByName('disable-st-button').children[0].onexecute = function() { console.log("This is the disable-st-button button") };
 
     }
 
-    if(list_contents[demoId].acces && list_contents[demoId].acces[0].SL) {
+    if( subController.checkisSignAvailable() ){
         submenu.getObjectByName('show-sl-button').visible = data.isSLenabled;
         submenu.getObjectByName('disable-sl-button').visible = !data.isSLenabled;
+        submenu.getObjectByName('disable-sl-button').material.color.set( 0xe6e6e6 );
     } else{
         submenu.getObjectByName('disable-sl-button').visible = true;
         submenu.getObjectByName('disable-sl-button').material.color.set( 0x3a3a3a );
+        submenu.getObjectByName('show-sl-button').visible = false;
+        submenu.getObjectByName('disable-sl-button').children[0].onexecute = function() { console.log("This is the disable-sl-button button") };
     }
 
-    if(list_contents[demoId].acces && list_contents[demoId].acces[0].AD) {
+    if( _AudioManager.checkisADAvailable() ){
         submenu.getObjectByName('show-ad-button').visible = data.isADenabled;
         submenu.getObjectByName('disable-ad-button').visible = !data.isADenabled;
+        submenu.getObjectByName('disable-ad-button').material.color.set( 0xe6e6e6 );
     } else{
         submenu.getObjectByName('disable-ad-button').visible = true;
         submenu.getObjectByName('disable-ad-button').material.color.set( 0x3a3a3a );
+        submenu.getObjectByName('show-ad-button').visible = false;
+        submenu.getObjectByName('disable-ad-button').children[0].onexecute = function() { console.log("This is the disable-ad-button button") };
     }
 
-    if(list_contents[demoId].acces && list_contents[demoId].acces[0].AST) {
+    if( _AudioManager.checkisASTAvailable() ){
         submenu.getObjectByName('show-ast-button').visible = data.isASTenabled;
         submenu.getObjectByName('disable-ast-button').visible = !data.isASTenabled;
+        submenu.getObjectByName('disable-ast-button').material.color.set( 0xe6e6e6 );
     } else{
         submenu.getObjectByName('disable-ast-button').visible = true;
         submenu.getObjectByName('disable-ast-button').material.color.set( 0x3a3a3a );
+        submenu.getObjectByName('show-ast-button').visible = false;
+        submenu.getObjectByName('disable-ast-button').children[0].onexecute = function() { console.log("This is the disable-ast-button button") };
     } 
   }
 }

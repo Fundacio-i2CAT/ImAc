@@ -11,27 +11,36 @@ MenuFunctionsManager = function() {
     {
         return function() 
         {
+            _iconf.accesslanguage = lang;
             var ste2r = subController.getSubEasy() ? 1 : 0;
             var aste2r = _AudioManager.getSubEasy() ? 1 : 0;
 
-            if ( list_contents[ demoId ].subtitles && list_contents[ demoId ].subtitles[ ste2r ] ) {
+            if ( list_contents[ demoId ].subtitles && list_contents[ demoId ].subtitles[ ste2r ] && subController.checkisSubAvailable()) {
                 var sublang = list_contents[ demoId ].subtitles[ ste2r ][ lang ] ? lang : Object.keys( list_contents[ demoId ].subtitles[ ste2r ] )[ 0 ];
                 subController.setSubtitle( list_contents[ demoId ].subtitles[ ste2r ][ sublang ], sublang );
+            } else {
+                subController.disableSubtiles();
             }
 
-            if ( list_contents[ demoId ].signer && list_contents[ demoId ].signer[ 0 ] ) {
+            if ( list_contents[ demoId ].signer && list_contents[ demoId ].signer[ 0 ] && subController.checkisSubAvailable()) {
                 var siglang = list_contents[ demoId ].signer[ 0 ][ lang ] ? lang : Object.keys( list_contents[ demoId ].signer[ 0 ] )[ 0 ];
                 subController.setSignerContent( list_contents[ demoId ].signer[ 0 ][ siglang ], siglang );
+            } else {
+                subController.disableSigner();
             }
 
-            if ( list_contents[ demoId ].ad && list_contents[ demoId ].ad[ 0 ] ) {
+            if ( list_contents[ demoId ].ad && list_contents[ demoId ].ad[ 0 ] && _AudioManager.checkisADAvailable()) {
                 var adlang = list_contents[ demoId ].ad[ 0 ][ lang ] ? lang : Object.keys( list_contents[ demoId ].ad[ 0 ] )[ 0 ];
                 _AudioManager.setADContent( list_contents[ demoId ].ad[ 0 ][ adlang ], adlang );
+            } else {
+                //_AudioManager.disableAD(); // TODO
             }
             
-            if ( list_contents[ demoId ].ast && list_contents[ demoId ].ast[ aste2r ] ) {
+            if ( list_contents[ demoId ].ast && list_contents[ demoId ].ast[ aste2r ] && _AudioManager.checkisASTAvailable()) {
                 var astlang = list_contents[ demoId ].ast[ aste2r ][ lang ] ? lang : Object.keys( list_contents[ demoId ].ast[ aste2r ] )[ 0 ];
                 _AudioManager.setASTContent( list_contents[ demoId ].ast[ aste2r ][ astlang ], astlang );
+            } else {
+                //_AudioManager.disableAST(); // TODO
             }
         }
     }

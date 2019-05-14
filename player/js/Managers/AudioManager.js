@@ -486,18 +486,25 @@ AudioManager = function() {
 // Public AD Checkers
 //************************************************************************************
 
-    this.checkADPresentation = function(x)
-    {
+    this.checkADPresentationDefault = function(x){
         return x == adPresentation;
     };
 
-    this.checkADVolume = function(x)
-    {
+    this.checkADPresentationAvailable = function(x){
+        if(list_contents[demoId].ad[0][subController.getSubLanguage()]){
+            if(list_contents[demoId].ad[0][subController.getSubLanguage()][x]){
+                return true
+            }
+        } 
+        return false
+    };
+
+    this.checkADVolume = function(x){
         return x == adVolume;
     };   
 
     this.checkisADAvailable = function(){
-        return (list_contents[demoId].acces && list_contents[demoId].acces[0].AD)
+        return (list_contents[demoId].acces && list_contents[demoId].acces[0].AD && list_contents[demoId].acces[0].AD.includes(_iconf.accesslanguage) );
     }
 
     
@@ -605,9 +612,18 @@ AudioManager = function() {
 // Public AST Checkers
 //************************************************************************************
 
-    this.checkASTPresentation = function(x)
-    {
+    this.checkASTPresentationDefault = function(x){
         return x == astPresentation;
+    };
+
+
+    this.checkASTPresentationAvailable = function(x){
+        if(list_contents[demoId].ast[0][subController.getSubLanguage()]){
+            if(list_contents[demoId].ast[0][subController.getSubLanguage()][x]){
+                return true
+            }
+        } 
+        return false
     };
 
     this.checkASTVolume = function(x)
@@ -621,6 +637,6 @@ AudioManager = function() {
     }; 
 
     this.checkisASTAvailable = function(){
-        return (list_contents[demoId].acces && list_contents[demoId].acces[0].AST)
+        return (list_contents[demoId].acces && list_contents[demoId].acces[0].AST && list_contents[demoId].acces[0].AST.includes(_iconf.accesslanguage));
     } 
 }

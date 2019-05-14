@@ -30,7 +30,7 @@ var _Sync = new SyncController();
 let playpauseCtrl;
 let volumeCtrl;
 let settingsCtrl;
-let multiOptionsCtrl;
+let accessOptionsCtrl;
 let STOptionCtrl;
 let SLOptionCtrl;
 let ADOptionCtrl;

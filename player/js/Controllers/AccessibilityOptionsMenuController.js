@@ -156,4 +156,8 @@ function AccessibilityOptionsMenuController(menuType) {
 		view.pressButtonFeedback(data);
 		setTimeout(callback, 300);
   }
+
+	this.updateView = function(){
+		view.UpdateView(data);
+	}
 }

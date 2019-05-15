@@ -40,8 +40,8 @@
     }],
     "acces": [
     {
-      "ST": ["en"],
-      "SL": ["en"]
+      "ST": ["de"],
+      "SL": ["de"]
     }],
     "language": "Deutsch",
     "duration": "1:46",
@@ -49,11 +49,11 @@
     "audioChannels": 2,
     "subtitles": [
     {
-      "en": "http://84.88.32.46/imac_content/rbb/RBB_Abendschau_short_subtitles_angles.xml"
+      "de": "http://84.88.32.46/imac_content/rbb/RBB_Abendschau_short_subtitles_angles.xml"
     }],
     "signer": [
     {
-      "en": "http://84.88.32.46/imac_content/liceu/Dash/SL_GER/stream.mpd"
+      "de": "http://84.88.32.46/imac_content/liceu/Dash/SL_GER/stream.mpd"
     }],
     "ad": [{}],
     "ast": [{}]
@@ -73,7 +73,7 @@
     "acces": [
     {
       "ST": ["en", "es", "de", "ca"],
-      "SL": ["en", "es", "de", "ca"]
+      "SL": ["de"]
     }],
     "language": "English",
     "duration": "14:44",

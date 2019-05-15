@@ -58,7 +58,7 @@ MenuFunctionsManager = function() {
     {
         return function() {
             subController.setSubPosition( 0, position );
-            subController.setSignerPosition( subController.getSignerPosition().x, position );
+            if ( subController.getSubtitleEnabled() ) subController.setSignerPosition( subController.getSignerPosition().x, position );
         }
     }
 

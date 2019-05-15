@@ -515,14 +515,14 @@ const settingsSubtitlesPosition = { title: 'Position', icon: './img/menu/st_posi
     { optId: 'subtitlesTopButton', text: 'Top', default: function(){ return subController.checkSubPosition(1)},
         function:  function(){
             subController.setSubPosition( 0, 1 );
-            subController.setSignerPosition( subController.getSignerPosition().x, 1 );
+            if ( subController.getSubtitleEnabled() ) subController.setSignerPosition( subController.getSignerPosition().x, 1 );
             SettingsOptionCtrl.setChildColumnActiveOpt(settingsSubtitlesPosition.options[0].optId);
         } 
     },
     { optId: 'subtitlesBottomButton', text: 'Bottom', default: function(){ return subController.checkSubPosition(-1) },
         function:  function(){ 
             subController.setSubPosition( 0, -1 );
-            subController.setSignerPosition( subController.getSignerPosition().x, -1 );
+            if ( subController.getSubtitleEnabled() ) subController.setSignerPosition( subController.getSignerPosition().x, -1 );
             SettingsOptionCtrl.setChildColumnActiveOpt(settingsSubtitlesPosition.options[1].optId);
         } 
     }]
@@ -629,19 +629,19 @@ const settingsSignLanguagePosition = { title: 'Position', icon: './img/menu/sl_p
 const settingsSignLanguageSize = { title: 'Size', icon: './img/menu/sl_size.png', parent: settingsSignLanguage, final: true, options: [
     { optId: 'signerSmallSizeButton', text: 'Small', default: function(){ return subController.checkSignSize(16) },
         function:  function(){ 
-            console.log();
+            subController.setSignerSize(16);
             SettingsOptionCtrl.setChildColumnActiveOpt(settingsSignLanguageSize.options[0].optId);
         } 
     }, 
     { optId: 'signerMediumSizeButton', text: 'Medium', default: function(){ return subController.checkSignSize(18) },
         function:  function(){ 
-            console.log();
+            subController.setSignerSize(18);
             SettingsOptionCtrl.setChildColumnActiveOpt(settingsSignLanguageSize.options[1].optId);
         } 
     },
     { optId: 'signerLargeSizeButton', text: 'Large', default: function(){ return subController.checkSignSize(20) },
         function:  function(){ 
-            console.log();
+            subController.setSignerSize(20);
             SettingsOptionCtrl.setChildColumnActiveOpt(settingsSignLanguageSize.options[2].optId);
         } 
     }]

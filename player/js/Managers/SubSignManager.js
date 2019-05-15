@@ -77,7 +77,7 @@ SubSignManager = function() {
 	var signEnabled = false; // boolean
 	var signPosX = 1; // left = -1, center = 0, right = 1
 	var signPosY = -1; // bottom = -1, center = 0, top = 1
-	var signIndicator = 'none';	 // none, arrow, move
+	//var signIndicator = 'none';	 // none, arrow, move
 	var signArea = 60; // small = 50, medium = 60, large = 70
 	var signLang; // string (en, de, ca, es)
 	var signAvailableLang = []; // Array { name, value, default:bool }
@@ -103,8 +103,10 @@ SubSignManager = function() {
 		  		if ( radarAutoPositioning ) changeSimplePositioning( isd.imac );
 		    	if ( subtitleEnabled ) print3DText( isd.contents[0], isd.imac, -isd.imacY );
 
-		    	if ( subtitleIndicator == 'arrow' ) arrowInteraction();
-		    	if ( signIndicator == 'arrow' ) arrowSLInteraction();
+		    	if ( subtitleIndicator == 'arrow' ) {
+		    		arrowInteraction();
+		    		arrowSLInteraction();
+		    	}
 
 		    	checkSpeakerPosition( isd.imac );
 		  	}
@@ -227,13 +229,13 @@ SubSignManager = function() {
 
 	function checkSignIdicator(position)
 	{
-		if ( signIndicator != 'none' ) 
+		if ( subtitleIndicator != 'none' ) 
 		{
-		  	if ( position == 'center' && signIndicator == 'move' ) 
+		  	if ( position == 'center' && subtitleIndicator == 'move' ) 
 		  	{
 		  		position = signPosX == -1 ? 'left' : 'right';
 		  	}
-			signIndicator != 'move' ? changeSignIndicator( position ) : changeSignPosition( position );
+			subtitleIndicator != 'move' ? changeSignIndicator( position ) : changeSignPosition( position );
 		}
 	}
 
@@ -332,7 +334,7 @@ SubSignManager = function() {
 
 		var conf = {
 			size: signerSize, // signArea/100
-			signIndicator: signIndicator,
+			signIndicator: subtitleIndicator,
 			x: posX,
 			y: posY,
 			z: posZ
@@ -357,8 +359,9 @@ SubSignManager = function() {
 
     function createSubtitle(textList, config)
     {
-    	if ( signEnabled ) 
+    	if ( signEnabled && subtitleIndicator == 'arrow' ) 
     	{
+    		scene.getObjectByName('backgroundSL').visible = false;
     		//config.size = config.size * 0.8;
     	}
         subtitleMesh = !_fixedST ? _moData.getEmojiSubtitleMesh( textList, config ) : _moData.getExpEmojiSubtitleMesh( textList, config );
@@ -376,7 +379,7 @@ SubSignManager = function() {
 
 		var slconfig = {
 			size: signerSize, // signArea/100
-			signIndicator: signIndicator,
+			subtitleIndicator: subtitleIndicator,
 			x: posX,
 			y: posY,
 			z: posZ
@@ -406,6 +409,7 @@ SubSignManager = function() {
         signerMesh.visible = false;
         var SLTimeout = setTimeout( function() { signerMesh.visible = true },700);
         camera.add( signerMesh );
+        subController.setSignerSize(signerSize)
     }
 
     function createRadar()
@@ -504,15 +508,6 @@ SubSignManager = function() {
     {
         if ( subtitleMesh )
         {
-        	/*subtitleMesh.children.forEach( function( elem ) 
-        	{ 
-        		elem.children.forEach( function( e ) 
-        		{
-        			if ( e.name == 'left' ) e.visible = pos == 'left' ? true : false;
-                    else if ( e.name == 'right' ) e.visible = pos == 'right' ? true : false;
-                }); 
-        	});*/ 
-
         	if ( scene.getObjectByName("right") ) {
 
 				scene.getObjectByName("right").visible = pos == 'right' ? true : false;
@@ -529,16 +524,6 @@ SubSignManager = function() {
     {
         if ( signerMesh )
         {
-        	/*signerMesh.children.forEach( function( elem ) 
-        	{ 
-	        	elem.children.forEach( function( e ) 
-	        	{
-	        		if ( e.name == 'left' ) e.visible = pos == 'left' ? true : false;
-	                else if ( e.name == 'right' ) e.visible = pos == 'right' ? true : false;
-	            }); 
-            });*/
-
-
             if ( scene.getObjectByName("rightSL") ) {
 
 				scene.getObjectByName("rightSL").visible = pos == 'right' ? true : false;
@@ -681,7 +666,7 @@ SubSignManager = function() {
 
 	this.getSignerIndicator = function()
 	{
-		return signIndicator;
+		return subtitleIndicator;
 	};
 
 	this.getSignerArea = function()
@@ -705,7 +690,7 @@ SubSignManager = function() {
     		enabled: signEnabled,
     		lang: signLang,
     		position: this.getSignerPosition(),
-    		indicator: signIndicator,
+    		indicator: subtitleIndicator,
     		area: signArea
     	};
     };
@@ -773,6 +758,8 @@ SubSignManager = function() {
 	this.setSubIndicator = function(ind)
 	{
 		subtitleIndicator = ind;
+
+		if ( signEnabled && subtitleIndicator == 'arrow' ) scene.getObjectByName('backgroundSL').visible = true;
 		
 		if(subtitleEnabled || signEnabled){
 			textListMemory = [];
@@ -883,7 +870,7 @@ SubSignManager = function() {
     	signLang = conf.accesslanguage;
     	signPosX = conf.stposition == 'left' ? -1 : 1;
 		signPosY = -1;
-    	signIndicator = conf.indicator;
+    	subtitleIndicator = conf.indicator;
     	signArea = conf.safearea == 'L' ? 70 : conf.safearea == 'M' ? 60 : 50;
     	signerSize	= conf.slsize == 'L' ? 20 : conf.slsize == 'M' ? 18 : 16;
     };
@@ -895,6 +882,16 @@ SubSignManager = function() {
 		updateSignerPosition();
 	};	
 
+	this.setSignerSize = function(size)
+	{
+		signerSize = size;
+		if ( scene.getObjectByName("sign") )
+		{
+			scene.getObjectByName("sign").scale.set(signerSize/20, signerSize/20, 1);
+		}
+		//updateSignerPosition();
+	};	
+
 	this.setSignerArea = function(size)
 	{
 		signArea = size;
@@ -904,8 +901,8 @@ SubSignManager = function() {
 
 	this.setSignerIndicator = function(ind)
 	{
-		signIndicator = ind;
-		if ( signIndicator == 'arrow' && scene.getObjectByName("backgroundSL") ) scene.getObjectByName("backgroundSL").visible = true;
+		subtitleIndicator = ind;
+		if ( subtitleIndicator == 'arrow' && scene.getObjectByName("backgroundSL") ) scene.getObjectByName("backgroundSL").visible = true;
 		else if ( scene.getObjectByName("backgroundSL") ) scene.getObjectByName("backgroundSL").visible = false;
 		updateSignerPosition();
 	};
@@ -1025,7 +1022,7 @@ SubSignManager = function() {
 
 	this.checkSignIndicator = function(x)
 	{
-		return x == signIndicator;
+		return x == subtitleIndicator;
 	};
 
 	this.checkSignLanguage = function(x)
@@ -1066,7 +1063,7 @@ SubSignManager = function() {
 		signArea = fov;
 		signPosX = x;
 		signPosY = y;
-		signIndicator = ind;
+		subtitleIndicator = ind;
 	};
 
 	this.enableSubtitles = function()

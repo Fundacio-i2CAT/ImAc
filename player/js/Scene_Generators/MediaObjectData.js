@@ -72,7 +72,8 @@ THREE.MediaObjectData = function () {
     this.getSignVideoMesh = function(url, name, config) 
     {
         var group = new THREE.Group();
-
+// TODO modify all config.size/20 to 1
+config.size=20;
         var geometry = new THREE.PlaneGeometry( config.size, config.size );
         var plane = getVideoMesh( geometry, url, name, 1 );
 
@@ -80,9 +81,10 @@ THREE.MediaObjectData = function () {
         var material = new THREE.MeshBasicMaterial( { color: 0x000000,  transparent: true, opacity: 0.5 } );
         var mesh = new THREE.Mesh( new THREE.PlaneGeometry( 38, 8.4 ), material );
 
-        setArrowToMesh( mesh, 120/6, 1, 0xffffff, 0x000000, 0, true ) 
-        mesh.position.y = -config.size/2 - 4.4/2;
-        mesh.scale.set( 0.97*70/130, 0.97*70/130, 1 )
+        setArrowToMesh( mesh, 120/6*config.size/20,config.size/20, 0xffffff, 0x000000, 0, true ) 
+        mesh.position.y = -config.size/2 - 4.4/2 * config.size/20;
+        //mesh.scale.set( 0.97*70/130, 0.97*70/130, 1 )
+        mesh.scale.set( 0.98*config.size/20*70/130, 0.98*config.size/20*70/130, 1 )
         mesh.children[0].visible = false;
         mesh.children[1].visible = false;
         mesh.visible = config.signIndicator == 'arrow' ? true : false;
@@ -98,7 +100,7 @@ THREE.MediaObjectData = function () {
         group.add( plane );
 
         if ( _isHMD ) group.rotation.z = -camera.rotation.z;
-        
+ 
         return group;
     };
 

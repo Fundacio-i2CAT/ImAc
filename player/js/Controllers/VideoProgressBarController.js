@@ -48,7 +48,7 @@ function VideoProgressBarController() {
 	}
 
 	function UpdateData(){
-        data.videoPlayOutTimeText = VideoController.getPlayoutTime(VideoController.getListOfVideoContents()[0].vid.currentTime);
+        data.videoPlayOutTimeText = VideoController.getPlayoutTime(VideoController.getListOfVideoContents()[0].vid.currentTime) || list_contents[demoId].duration;
 		data.playScaleX  = updatePlayProgressScale();
 		data.sliderPositionX = updateSliderPosition();
 		data.playPositionX = updatePlayProgressPosition();

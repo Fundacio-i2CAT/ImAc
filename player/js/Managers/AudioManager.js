@@ -490,13 +490,12 @@ AudioManager = function() {
         return x == adPresentation;
     };
 
-    this.checkADPresentationAvailable = function(x){
-        if(list_contents[demoId].ad[0][subController.getSubLanguage()]){
-            if(list_contents[demoId].ad[0][subController.getSubLanguage()][x]){
-                return true
-            }
-        } 
-        return false
+    this.checkADPresentationAvailable = function(val){
+        if(val){
+            return list_contents[demoId].ad[0][_iconf.accesslanguage].hasOwnProperty(val)
+        } else {
+            return list_contents[demoId].ad[0].hasOwnProperty(_iconf.accesslanguage)
+        }
     };
 
     this.checkADVolume = function(x){
@@ -617,13 +616,12 @@ AudioManager = function() {
     };
 
 
-    this.checkASTPresentationAvailable = function(x){
-        if(list_contents[demoId].ast[0][subController.getSubLanguage()]){
-            if(list_contents[demoId].ast[0][subController.getSubLanguage()][x]){
-                return true
-            }
-        } 
-        return false
+    this.checkASTPresentationAvailable = function(val){
+        if(val){
+            return list_contents[demoId].ast[0][_iconf.accesslanguage].hasOwnProperty(val)
+        } else {
+            return list_contents[demoId].ast[0].hasOwnProperty(_iconf.accesslanguage)
+        }
     };
 
     this.checkASTVolume = function(x)

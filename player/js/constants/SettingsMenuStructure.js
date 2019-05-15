@@ -694,7 +694,7 @@ const settingsSignLanguageSize = { title: 'Size', icon: './img/menu/sl_size.png'
    * @level 2
    *
    * ╔═════════════════════════════════════╗
-   * ║ (<)        Presetation              ║
+   * ║ (<)        Presentation             ║
    * ╠═════════════════════════════════════╣
    * ║ Classic                       Final ║
    * ║─────────────────────────────────────║
@@ -703,12 +703,12 @@ const settingsSignLanguageSize = { title: 'Size', icon: './img/menu/sl_size.png'
    * ║ Dynamic                       Final ║
    * ╚═════════════════════════════════════╝
   */
-const settingsAudioDescriptionPresentation = { title: 'Presetation', icon: './img/menu/ad_presentation_mode.png', parent: settingsAudioDescription, final: true, options: [
+const settingsAudioDescriptionPresentation = { title: 'Presentation', icon: './img/menu/ad_presentation_mode.png', parent: settingsAudioDescription, final: true, options: [
     { optId: 'adPresentationVoGButton', text: 'Classic', 
-        available: function() { return _AudioManager.checkADPresentationAvailable('VoiceofGod'); },
+        available: function() { return _AudioManager.checkADPresentationAvailable('VoiceOfGod'); },
         default: function(){ return _AudioManager.checkADPresentationDefault('VoiceOfGod'); },
         function:  function(){ 
-            _AudioManager.setADPresentation( 'VoiceofGod' );
+            _AudioManager.setADPresentation( 'VoiceOfGod' );
             SettingsOptionCtrl.setChildColumnActiveOpt(settingsAudioDescriptionPresentation.options[0].optId);
         } 
     },
@@ -843,14 +843,14 @@ const settingsAudioSubtitles = { title: 'Audiosubtitles', icon: './img/acc_serv_
    * @level 2
    *
    * ╔═════════════════════════════════════╗
-   * ║ (<)        Presetation              ║
+   * ║ (<)        Presentation             ║
    * ╠═════════════════════════════════════╣
    * ║ Classic                       Final ║
    * ║─────────────────────────────────────║
    * ║ Dynamic                       Final ║
    * ╚═════════════════════════════════════╝
   */
-const settingsAudioSubtitlesPresentation = { title: 'Presetation', icon: './img/menu/ad_presentation_mode.png', parent: settingsAudioSubtitles, final: true, options: [
+const settingsAudioSubtitlesPresentation = { title: 'Presentation', icon: './img/menu/ad_presentation_mode.png', parent: settingsAudioSubtitles, final: true, options: [
     { optId: 'astPresentationVoGButton', text: 'Classic', 
         available: function() { return _AudioManager.checkASTPresentationAvailable('VoiceOfGod'); },
         default: function(){ return _AudioManager.checkASTPresentationDefault('VoiceOfGod'); },

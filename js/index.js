@@ -995,13 +995,13 @@ var _confMemory;
             .append(
                 $('<div id="btn_pointer_S" class="container-4 Settings-option2">')
                 .attr('onclick', 'selectOption(this.id)')
-                .append( $('<p>' + _ImAc_Buttons.small[ _ImAc_default.mainlanguage ] + '</p>') )
+                .append( $('<p>' + _ImAc_Buttons.small2[ _ImAc_default.mainlanguage ] + '</p>') )
                 .append('</div>')
             )
             .append(
                 $('<div id="btn_pointer_M" class="container-4 Settings-option2">')
                 .attr('onclick', 'selectOption(this.id)')
-                .append( $('<p>' + _ImAc_Buttons.medium[ _ImAc_default.mainlanguage ] + '</p>') )
+                .append( $('<p>' + _ImAc_Buttons.medium2[ _ImAc_default.mainlanguage ] + '</p>') )
                 .append('</div>')
             )
             .append(
@@ -1591,7 +1591,7 @@ var _confMemory;
             .append(
                 $('<div id="btn_slsize_S" class="container-4 Settings-option2">')
                 .attr('onclick', 'selectOption(this.id)')
-                .append( $('<p>' + _ImAc_Buttons.small[ _ImAc_default.mainlanguage ] + '</p>') )
+                .append( $('<p>' + _ImAc_Buttons.small2[ _ImAc_default.mainlanguage ] + '</p>') )
                 .append('</div>')
             )
             .append(
@@ -2071,11 +2071,11 @@ var _confMemory;
         {
             document.getElementById('span_1').innerHTML = 'Configuració';
             document.getElementById('span_2').innerHTML = 'Cerca';
-            document.getElementById('span_3').innerHTML = "Mostra/Oculta l'informació &nbsp;";
+            document.getElementById('span_3').innerHTML = "Mostra/Oculta la informació &nbsp;";
             document.getElementById('span_4').innerHTML = '&nbsp;  Cerca';
             document.getElementById('span_5').innerHTML = '&nbsp;  Configuració';
             document.getElementById('span_6').innerHTML = '&nbsp;  Conf. general';
-            document.getElementById('span_7').innerHTML = "&nbsp;Conf. d’accessibilitat";
+            document.getElementById('span_7').innerHTML = "&nbsp;Conf. d'accessibilitat";
             document.getElementById('span_8').innerHTML = '&nbsp;  Subtítols';
             document.getElementById('span_9').innerHTML = '&nbsp;  Llengua de signes';
             document.getElementById('span_10').innerHTML = '&nbsp;   Audiodescripció';
@@ -2086,12 +2086,12 @@ var _confMemory;
             document.getElementById('span_15').innerHTML = '&nbsp;   Control de veu';
             document.getElementById('span_16').innerHTML = "&nbsp;   Perfil d'usuari";
             document.getElementById('span_17').innerHTML = 'Tornar';
-            document.getElementById('span_18').innerHTML = '&nbsp;  Configurqació d’accessibilitat';
+            document.getElementById('span_18').innerHTML = "&nbsp;  Configuració d'accessibilitat";
             document.getElementById('span_19').innerHTML = '&nbsp;   Idioma';
             document.getElementById('span_20').innerHTML = '&nbsp;   Indicador';
             document.getElementById('span_21').innerHTML = '&nbsp;   Àrea de visió';
             document.getElementById('span_22').innerHTML = 'Tornar';
-            document.getElementById('span_23').innerHTML = '&nbsp;  Configurqació de subtítols';
+            document.getElementById('span_23').innerHTML = '&nbsp;  Configuració de subtítols';
             document.getElementById('span_24').innerHTML = '&nbsp;   Mida';
             document.getElementById('span_25').innerHTML = '&nbsp;   Fons';
             document.getElementById('span_26').innerHTML = '&nbsp;   Posició';
@@ -2110,13 +2110,13 @@ var _confMemory;
             document.getElementById('span_39').innerHTML = '&nbsp;   Mode presentació';
             document.getElementById('span_40').innerHTML = '&nbsp;   Volum';
             document.getElementById('span_41').innerHTML = 'Tornar';
-            document.getElementById('span_42').innerHTML = 'Partners:';
-            document.getElementById('span_43').innerHTML = "Filtra per servei d’accessibilitat o idioma:";
+            document.getElementById('span_42').innerHTML = 'Socis:';
+            document.getElementById('span_43').innerHTML = "Filtra per servei d'accessibilitat o idioma:";
             document.getElementById('span_44').innerHTML = 'Subtítols';
             document.getElementById('span_45').innerHTML = 'Llengua de signes';
             document.getElementById('span_46').innerHTML = 'Audio- subtítols';
             document.getElementById('span_47').innerHTML = 'Audio- descripció';
-            document.getElementById('span_48').innerHTML = 'Aquest projecte ha rebut finançament del programa de recerca i innovació Horizon 2020 de la Unió Europea sota el contracte de subvenció núm. 761974';
+            document.getElementById('span_48').innerHTML = 'Aquest projecte ha rebut finançament del Programa de Recerca i Innovació Horizon 2020 de la Unió Europea sota el contracte de subvenció núm. 761974';
         }
         else if ( lang == 'es' )
         {
@@ -2161,13 +2161,13 @@ var _confMemory;
             document.getElementById('span_39').innerHTML = '&nbsp;   Modo presentación';
             document.getElementById('span_40').innerHTML = '&nbsp;   Volumen';
             document.getElementById('span_41').innerHTML = 'Atrás';
-            document.getElementById('span_42').innerHTML = 'Partners:';
+            document.getElementById('span_42').innerHTML = 'Socios:';
             document.getElementById('span_43').innerHTML = 'Filtra por servicio de accesibilidad o idioma:';
             document.getElementById('span_44').innerHTML = 'Subtítulos';
             document.getElementById('span_45').innerHTML = 'Lengua de signos';
             document.getElementById('span_46').innerHTML = 'Audio- subtítulos';
             document.getElementById('span_47').innerHTML = 'Audio- descripción';
-            document.getElementById('span_48').innerHTML = 'Este proyecto ha recibido financiación del programa de investigación e innovación Horizon 2020 de la Unión Europea en virtud del acuerdo de subvención nº 761974.';
+            document.getElementById('span_48').innerHTML = 'Este proyecto ha recibido financiación del Programa de Investigación e Innovación Horizon 2020 de la Unión Europea en virtud del acuerdo de subvención nº 761974.';
         }
         else if ( lang == 'de' )
         {
@@ -2269,7 +2269,7 @@ var _confMemory;
             document.getElementById('span_45').innerHTML = 'Sign Language';
             document.getElementById('span_46').innerHTML = 'Audio Subtitles';
             document.getElementById('span_47').innerHTML = 'Audio Description';
-            document.getElementById('span_48').innerHTML = 'This project has received funding from the European Union’s Horizon 2020 research and innovation programme under grant agreement No 761974';
+            document.getElementById('span_48').innerHTML = 'This project has received funding from the European Union’s Horizon 2020 Research and Innovation Programme under grant agreement No 761974';
         }
         
     }

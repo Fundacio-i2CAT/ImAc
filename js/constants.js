@@ -70,16 +70,16 @@ var _ImAcMeta = {
 	voicecontrol: {
 		on: {
 			img: 'img/settings/lvl3/phone_voice_control.png',
-			text: 'Activate / Deactivate voice control',
-			en: 'Activate / Deactivate voice control',
+			text: 'Activate / Deactivate voice control.',
+			en: 'Activate / Deactivate voice control.',
 			es: 'Activa o desactiva el control de voz.',
 			de: 'Aktivieren oder deaktivieren der Sprachsteuerung.',
 			ca: "Activa o desactiva el control de veu."
 		},
 		off: {
 			img: 'img/settings/lvl3/phone_voice_control.png',
-			text: 'Activate / Deactivate voice control',
-			en: 'Activate / Deactivate voice control',
+			text: 'Activate / Deactivate voice control.',
+			en: 'Activate / Deactivate voice control.',
 			es: 'Activa o desactiva el control de voz.',
 			de: 'Aktivieren oder deaktivieren der Sprachsteuerung.',
 			ca: "Activa o desactiva el control de veu."
@@ -113,24 +113,24 @@ var _ImAcMeta = {
 	indicator: {
 		radar: {
 			img: 'img/settings/lvl3/radar.png',
-			text: 'Select the indicator to finds the speakers.',
-			en: 'Select the indicator to finds the speakers.',
+			text: 'Select the indicator to find the speakers.',
+			en: 'Select the indicator to find the speakers.',
 			es: 'Selecciona el indicador para localizar a la persona que habla.',
 			de: 'Wählen Sie die Sprecheranzeige aus.',
 			ca: "Selecciona l'indicador per localitzar la persona que parla."
 		},
 		arrow: {
 			img: 'img/settings/lvl3/arrows.png',
-			text: 'Select the indicator to finds the speakers.',
-			en: 'Select the indicator to finds the speakers.',
+			text: 'Select the indicator to find the speakers.',
+			en: 'Select the indicator to find the speakers.',
 			es: 'Selecciona el indicador para localizar a la persona que habla.',
 			de: 'Wählen Sie die Sprecheranzeige aus.',
 			ca: "Selecciona l'indicador per localitzar la persona que parla."
 		},
 		none: {
 			img: 'img/settings/lvl3/none.png',
-			text: 'Select the indicator to finds the speakers.',
-			en: 'Select the indicator to finds the speakers.',
+			text: 'Select the indicator to find the speakers.',
+			en: 'Select the indicator to find the speakers.',
 			es: 'Selecciona el indicador para localizar a la persona que habla.',
 			de: 'Wählen Sie die Sprecheranzeige aus.',
 			ca: "Selecciona l'indicador per localitzar la persona que parla."
@@ -428,7 +428,7 @@ var _ImAc_Buttons = {
 	classic:        { ca: 'Clàssic', de: 'Classic', en: 'Classic', es: 'Clásico' },
 	statics:        { ca: 'Estàtic', de: 'Statisch', en: 'Static', es: 'Estático' },
 	dynamic:        { ca: 'Dinàmic', de: 'Dynamisch', en: 'Dynamic', es: 'Dinámico' },
-	minimum:        { ca: 'Minim', de: 'Minimum', en: 'Minimum', es: 'Mínimo' },
+	minimum:        { ca: 'Mínim', de: 'Minimum', en: 'Minimum', es: 'Mínimo' },
 	middle:         { ca: 'Mig', de: 'Mitte', en: 'Middle', es: 'Medio' },
 	maximum:        { ca: 'Màxim', de: 'höchste', en: 'Maximum', es: 'Máximo' }
 

@@ -15,9 +15,9 @@
     - UpdateMultiOptionsIconStatus (public)
 
  This controller is part of the MVC:
-    - (M) /player/js/Models/MultiOptionsLSMenuModel.js
-    - (V) /player/js/Views/MultiOptionsLSMenuView.js
-    - (C) /player/js/Controllers/MultiOptionsLSMenuController.js
+    - (M) /player/js/Models/AccessibilityOptionsMenuModel.js
+    - (V) /player/js/Views/AccessibilityOptionsMenuView.js
+    - (C) /player/js/Controllers/AccessibilityOptionsMenuController.js
  */
 function AccessibilityOptionsMenuController(menuType) {
 
@@ -160,7 +160,7 @@ function AccessibilityOptionsMenuController(menuType) {
 		data.clickedButtonName = buttonName;
 		view.pressButtonFeedback(data);
 		setTimeout(callback, 300);
-  }
+  	}
 
 	this.updateView = function(){
 
@@ -174,7 +174,8 @@ function AccessibilityOptionsMenuController(menuType) {
 		data.isADavailable = _AudioManager.checkisADAvailable();
 		data.isASTavailable = _AudioManager.checkisASTAvailable();
 
-
 		view.UpdateView(data);
+		//After the view is updated refresh the list of interctive elements depending on visibility.
+		menuMgr.AddInteractionIfVisible(viewStructure);
 	}
 }

@@ -486,15 +486,25 @@ AudioManager = function() {
 // Public AD Checkers
 //************************************************************************************
 
-    this.checkADPresentation = function(x)
-    {
+    this.checkADPresentationDefault = function(x){
         return x == adPresentation;
     };
 
-    this.checkADVolume = function(x)
-    {
+    this.checkADPresentationAvailable = function(val){
+        if(val){
+            return list_contents[demoId].ad[0][_iconf.accesslanguage].hasOwnProperty(val)
+        } else {
+            return list_contents[demoId].ad[0].hasOwnProperty(_iconf.accesslanguage)
+        }
+    };
+
+    this.checkADVolume = function(x){
         return x == adVolume;
     };   
+
+    this.checkisADAvailable = function(){
+        return (list_contents[demoId].acces && list_contents[demoId].acces[0].AD && list_contents[demoId].acces[0].AD.includes(_iconf.accesslanguage) );
+    }
 
     
 
@@ -601,9 +611,17 @@ AudioManager = function() {
 // Public AST Checkers
 //************************************************************************************
 
-    this.checkASTPresentation = function(x)
-    {
+    this.checkASTPresentationDefault = function(x){
         return x == astPresentation;
+    };
+
+
+    this.checkASTPresentationAvailable = function(val){
+        if(val){
+            return list_contents[demoId].ast[0][_iconf.accesslanguage].hasOwnProperty(val)
+        } else {
+            return list_contents[demoId].ast[0].hasOwnProperty(_iconf.accesslanguage)
+        }
     };
 
     this.checkASTVolume = function(x)
@@ -614,5 +632,9 @@ AudioManager = function() {
     this.checkASTEasy = function(x)
     {
         return x == astEasy;
-    };  
+    }; 
+
+    this.checkisASTAvailable = function(){
+        return (list_contents[demoId].acces && list_contents[demoId].acces[0].AST && list_contents[demoId].acces[0].AST.includes(_iconf.accesslanguage));
+    } 
 }

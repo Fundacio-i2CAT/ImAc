@@ -983,7 +983,8 @@ SubSignManager = function() {
 
 	this.checkSubLanguage = function(x)
 	{
-		return x == subLang;
+		//return x == subLang;
+		return x == _iconf.accesslanguage;
 	};
 
 	this.checkSubBackground = function(x)
@@ -1000,6 +1001,10 @@ SubSignManager = function() {
 	{
 		return x == subArea;
 	};	
+
+	this.checkisSubAvailable = function(){
+		return (list_contents[demoId].acces && list_contents[demoId].acces[0].ST && list_contents[demoId].acces[0].ST.includes(_iconf.accesslanguage));
+	}		
 
 //************************************************************************************
 // Public Signer Checkers
@@ -1027,13 +1032,18 @@ SubSignManager = function() {
 
 	this.checkSignLanguage = function(x)
 	{
-		return x == signLang;
+		//return x == signLang;
+		return x == _iconf.accesslanguage;
 	};
 
 	this.checkSignArea = function(x)
 	{
 		return x == signArea;
 	};	
+
+	this.checkisSignAvailable = function(){
+		return (list_contents[demoId].acces && list_contents[demoId].acces[0].SL && list_contents[demoId].acces[0].SL.includes(_iconf.accesslanguage));
+	}
 
 //************************************************************************************
 // Public functions
@@ -1106,6 +1116,11 @@ SubSignManager = function() {
 			enable ? createSigner() : removeSignVideo();
 		}		
 	};
+
+	this.disableSigner = function(){
+		removeSignVideo();
+		signEnabled = false;
+	}
 
 	this.updateRadar = function()
     {

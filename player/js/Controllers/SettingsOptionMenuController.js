@@ -14,16 +14,16 @@
 
     ... and some unique functionalities of this particular controller:
 
-    - AddDropdownElementsLS (private)
-    - AddDropdownElementsTrad (private)
+    - AddDropdownOptions (private)
     - UpdateDefaultLSMenuOption (private)
     - getHoritzontalLineDivisions (private)
+    - close (public)
 
 
  This controller is part of the MVC:
-    - (M) /player/js/Models/MultiOptionsLSMenuModel.js
-    - (V) /player/js/Views/MultiOptionsLSMenuView.js
-    - (C) /player/js/Controllers/MultiOptions/SettingsOptionMenuController.js
+    - (M) /player/js/Models/SettingsOptionMenuModel.js
+    - (V) /player/js/Views/SettingsOptionMenuView.js
+    - (C) /player/js/Controllers/SettingsOptionMenuController.js
 
  */
 function SettingsOptionMenuController() {
@@ -64,8 +64,7 @@ function SettingsOptionMenuController() {
 	    	viewStructure.children.forEach(function(intrElement){
 	    		interController.removeInteractiveObject(intrElement.name);
 	    	});
-
-            data.childColumnActiveOpt = undefined;
+            //data.childColumnActiveOpt = undefined;
     	}
 
     }
@@ -152,17 +151,20 @@ function SettingsOptionMenuController() {
  * @param      {<type>}  elements  The elements
  */
     function AddDropdownOptions(menuOpts){
-        let dropdownInteractiveElements = [];
-        const h = optHeight*menuOpts.options.length;
+        //The menuOpts.options array is filter in order to know the available submenus depending on the available accessibility options.
+        let options = menuOpts.options.filter(opt => !opt.available || opt.available());
 
-        data.titleHeight = menuOpts.options.length * optHeight;
+        let dropdownInteractiveElements = [];
+        const h = optHeight*options.length;
+
+        data.titleHeight = options.length * optHeight;
         data.hasParentDropdown = menuOpts.parent ? true : false;
         data.isFinalDrop = menuOpts.final;
         data.parentDropdownData = menuOpts.parent;
         data.title = MenuDictionary.translate( menuOpts.title );
         data.icon = menuOpts.icon;
 
-        menuOpts.options.forEach(function(opt, index){
+        options.forEach(function(opt, index){
             let dropdownIE = new InteractiveElementModel();
 
             dropdownIE.width = optWidth;

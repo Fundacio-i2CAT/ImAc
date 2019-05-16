@@ -11,6 +11,11 @@ function AccessibilityOptionsMenuModel()
 	this.isADenabled;
 	this.isASTenabled;
 
+	this.isSTavailable;
+	this.isSLavailable;
+	this.isADavailable;
+	this.isASTavailable;
+
 	this.subtitlesButtonFunc;
 	this.signlanguageButtonFunc;
 	this.audioDescriptionButtonFunc;

@@ -29,7 +29,6 @@ THREE.InteractionsController = function () {
 	}
 
 	function getInteractiveObjectList(){
-		console.log(interactiveListObjects)
     return interactiveListObjects;
 	}
 

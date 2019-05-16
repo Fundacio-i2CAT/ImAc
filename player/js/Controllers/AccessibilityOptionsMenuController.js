@@ -94,6 +94,11 @@ function AccessibilityOptionsMenuController(menuType) {
 		data.isADenabled = _AudioManager.getADEnabled();
 		data.isASTenabled = _AudioManager.getASTEnabled();
 
+		data.isSTavailable = subController.checkisSubAvailable();
+		data.isSLavailable = subController.checkisSignAvailable();
+		data.isADavailable = _AudioManager.checkisADAvailable();
+		data.isASTavailable = _AudioManager.checkisASTAvailable();
+
 //SUBTITLES
 		data.subtitlesButtonFunc =  function() {
 			AddVisualFeedbackOnClick(data.isSTenabled ? 'show-st-button' : 'disable-st-button', function(){
@@ -156,4 +161,20 @@ function AccessibilityOptionsMenuController(menuType) {
 		view.pressButtonFeedback(data);
 		setTimeout(callback, 300);
   }
+
+	this.updateView = function(){
+
+		data.isSTenabled = subController.getSubtitleEnabled();
+		data.isSLenabled = subController.getSignerEnabled();
+		data.isADenabled = _AudioManager.getADEnabled();
+		data.isASTenabled = _AudioManager.getASTEnabled();
+
+		data.isSTavailable = subController.checkisSubAvailable();
+		data.isSLavailable = subController.checkisSignAvailable();
+		data.isADavailable = _AudioManager.checkisADAvailable();
+		data.isASTavailable = _AudioManager.checkisASTAvailable();
+
+
+		view.UpdateView(data);
+	}
 }

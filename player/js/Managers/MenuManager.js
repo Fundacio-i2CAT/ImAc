@@ -35,46 +35,6 @@ function MenuManager() {
     }
 
 /**
- * { function_description }
- *
- * @class      NavigateForwardMenu (name)
- * @return     {<type>}  { description_of_the_return_value }
- */
-    this.NavigateForwardMenu = function() {
-        switch(actualCtrl.getMenuName()){
-            case playpauseCtrl.getMenuName():
-                return menuMgr.Load(volumeCtrl);
-            case volumeCtrl.getMenuName():
-                return menuMgr.Load(multiOptionsCtrl);
-            case multiOptionsCtrl.getMenuName():
-                return menuMgr.Load(settingsCtrl);
-            case settingsCtrl.getMenuName():
-                return menuMgr.Load(playpauseCtrl);
-        }
-    }
-
-/**
- * { function_description }
- *
- * @class      NavigateBackMenu (name)
- * @return     {<type>}  { description_of_the_return_value }
- */
-    this.NavigateBackMenu = function() {
-        switch(actualCtrl.getMenuName()){
-            case playpauseCtrl.getMenuName():
-                return menuMgr.Load(settingsCtrl);
-            case volumeCtrl.getMenuName():
-                return menuMgr.Load(playpauseCtrl)
-            case multiOptionsCtrl.getMenuName():
-                return menuMgr.Load(volumeCtrl);
-            case settingsCtrl.getMenuName():
-                return menuMgr.Load(multiOptionsCtrl)
-            case SettingsOptionCtrl.getMenuName():
-                return menuMgr.Load(settingsCtrl);
-        }
-    }
-
-/**
  * Sets the option active index.
  *
  * @param      {<type>}  newIndex  The new index
@@ -119,7 +79,7 @@ function MenuManager() {
         if(actualCtrl){
             actualCtrl.Exit();
             // Compare the saved index of the traditional option dropdown with the new controller index.
-            // If the index is deferent change the variable and initialize the doprdown
+            // If the index is different change the variable and initialize the doprdown
             if(optActiveIndex != controller.getMenuIndex()){
                 controller.Init();
                 optActiveIndex = controller.getMenuIndex();
@@ -326,8 +286,8 @@ function MenuManager() {
         settingsCtrl = new SettingsMenuController();
         controllers.push(settingsCtrl);
 
-        multiOptionsCtrl = new AccessibilityOptionsMenuController();
-        controllers.push(multiOptionsCtrl);
+        accessOptionsCtrl = new AccessibilityOptionsMenuController();
+        controllers.push(accessOptionsCtrl);
 
         SettingsOptionCtrl = new SettingsOptionMenuController();
         controllers.push(SettingsOptionCtrl);

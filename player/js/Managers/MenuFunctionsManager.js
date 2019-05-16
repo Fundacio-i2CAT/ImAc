@@ -11,27 +11,36 @@ MenuFunctionsManager = function() {
     {
         return function() 
         {
+            _iconf.accesslanguage = lang;
             var ste2r = subController.getSubEasy() ? 1 : 0;
             var aste2r = _AudioManager.getSubEasy() ? 1 : 0;
 
-            if ( list_contents[ demoId ].subtitles && list_contents[ demoId ].subtitles[ ste2r ] ) {
+            if ( list_contents[ demoId ].subtitles && list_contents[ demoId ].subtitles[ ste2r ] && subController.checkisSubAvailable()) {
                 var sublang = list_contents[ demoId ].subtitles[ ste2r ][ lang ] ? lang : Object.keys( list_contents[ demoId ].subtitles[ ste2r ] )[ 0 ];
                 subController.setSubtitle( list_contents[ demoId ].subtitles[ ste2r ][ sublang ], sublang );
+            } else {
+                subController.disableSubtiles();
             }
 
-            if ( list_contents[ demoId ].signer && list_contents[ demoId ].signer[ 0 ] ) {
+            if ( list_contents[ demoId ].signer && list_contents[ demoId ].signer[ 0 ] && subController.checkisSignAvailable()) {
                 var siglang = list_contents[ demoId ].signer[ 0 ][ lang ] ? lang : Object.keys( list_contents[ demoId ].signer[ 0 ] )[ 0 ];
                 subController.setSignerContent( list_contents[ demoId ].signer[ 0 ][ siglang ], siglang );
+            } else {
+                subController.disableSigner();
             }
 
-            if ( list_contents[ demoId ].ad && list_contents[ demoId ].ad[ 0 ] ) {
+            if ( list_contents[ demoId ].ad && list_contents[ demoId ].ad[ 0 ] && _AudioManager.checkisADAvailable()) {
                 var adlang = list_contents[ demoId ].ad[ 0 ][ lang ] ? lang : Object.keys( list_contents[ demoId ].ad[ 0 ] )[ 0 ];
                 _AudioManager.setADContent( list_contents[ demoId ].ad[ 0 ][ adlang ], adlang );
+            } else {
+                //_AudioManager.disableAD(); // TODO
             }
             
-            if ( list_contents[ demoId ].ast && list_contents[ demoId ].ast[ aste2r ] ) {
+            if ( list_contents[ demoId ].ast && list_contents[ demoId ].ast[ aste2r ] && _AudioManager.checkisASTAvailable()) {
                 var astlang = list_contents[ demoId ].ast[ aste2r ][ lang ] ? lang : Object.keys( list_contents[ demoId ].ast[ aste2r ] )[ 0 ];
                 _AudioManager.setASTContent( list_contents[ demoId ].ast[ aste2r ][ astlang ], astlang );
+            } else {
+                //_AudioManager.disableAST(); // TODO
             }
         }
     }
@@ -342,254 +351,8 @@ MenuFunctionsManager = function() {
     }
 
 
-/* DEPRECATED Options are enabled and disabled by clicking in the corresponding icon*/
-    this.getOnOffFunc = function(name){
-      switch ( name ){
-        case "subtitlesOnButton":
-            return getSubOnOffFunc( false );
-        case "subtitlesOffButton":
-            return getSubOnOffFunc( true );
-        case "signLanguageOnButton":
-            return getSignerOnOffFunc( false );
-        case "signLanguageOffButton":
-            return getSignerOnOffFunc( true );
-        case "audioDescriptionOnButton":
-            return getAudioDescOnOffFunc( false );
-        case "audioDescriptionOffButton":
-            return getAudioDescOnOffFunc( true );
-        case "audioSubtitlesOnButton":
-            return getAudioSubOnOffFunc( false );
-        case "audioSubtitlesOffButton":
-            return getAudioSubOnOffFunc( true );
-        default:
-            return undefined;
-      }
-    };
-
-
     this.changeAccesLanguage = function(lang)
     {
         return getUpdateAccesLanguage( lang );
     }
-
-    this.getButtonFunctionByName = function(name)
-    {
-        switch ( name )
-        {
-        // Subtitles
-            case "subtitlesEngButton":
-                var e2r = subController.getSubEasy() ? 1 : 0;
-                return getSubLanguageFunc( list_contents[demoId].subtitles[e2r]['en'], 'en' );
-
-            case "subtitlesEspButton":
-                var e2r = subController.getSubEasy() ? 1 : 0;
-                return getSubLanguageFunc( list_contents[demoId].subtitles[e2r]['es'], 'es' );
-
-            case "subtitlesGerButton":
-                var e2r = subController.getSubEasy() ? 1 : 0;
-                return getSubLanguageFunc( list_contents[demoId].subtitles[e2r]['de'], 'de' );
-
-            case "subtitlesCatButton":
-                var e2r = subController.getSubEasy() ? 1 : 0;
-                return getSubLanguageFunc( list_contents[demoId].subtitles[e2r]['ca'], 'ca' );
-
-            case "subtitlesEasyOn":
-                var url = getE2RURL();
-                return getSubEasyOnOffFunc( true, url );
-
-            case "subtitlesEasyOff":
-                return getSubEasyOnOffFunc( false, list_contents[demoId].subtitles[0][subController.getSubLanguage()] );
-
-            case "subtitlesTopButton":
-                return getSubPositionFunc( 1 );
-
-            case "subtitlesBottomButton":
-                return getSubPositionFunc( -1 );
-
-            case "subtitlesSemitrans":
-                return getSubBackgroundFunc( 0.5 );
-
-            case "subtitlesOutline":
-                return getSubBackgroundFunc( 0 );
-
-            case "subtitlesSmallSizeButton":
-                return getSubSizeFunc( 0.6 );
-
-            case "subtitlesMediumSizeButton":
-                return getSubSizeFunc( 0.8 );
-
-            case "subtitlesLargeSizeButton":
-                return getSubSizeFunc( 1 );
-
-            case "subtitlesIndicatorNoneButton":
-                return getSubIndicatorFunc( "none" );
-
-            case "subtitlesIndicatorArrowButton":
-                return getSubIndicatorFunc( "arrow" );
-
-            case "subtitlesIndicatorRadarButton":
-                return getSubIndicatorFunc( "radar" );
-
-            case "subtitlesIndicatorAutoButton":
-                return getSubAutoPositioningFunc();
-
-            case "subtitlesSmallAreaButton":
-                return getSubAreaFunc( 50 );
-
-            case "subtitlesMediumAreaButton":
-                return getSubAreaFunc( 60 );
-
-            case "subtitlesLargeAreaButton":
-                return getSubAreaFunc( 70 );
-
-        // Signer
-            case "signerEngButton":
-                return getSignerLanguageFunc( list_contents[demoId].signer[0]['en'], 'en' );
-
-            case "signerEspButton":
-                return getSignerLanguageFunc( list_contents[demoId].signer[0]['es'], 'es' );
-
-            case "signerGerButton":
-                return getSignerLanguageFunc( list_contents[demoId].signer[0]['de'], 'de' );
-
-            case "signerCatButton":
-                return getSignerLanguageFunc( list_contents[demoId].signer[0]['ca'], 'ca' );
-
-            case "signerRightButton":
-                return getSignerPositionFunc( 1 );
-
-            case "signerLeftButton":
-                return getSignerPositionFunc( -1 );
-
-            case "signerIndicatorNoneButton":
-                return getSignerIndicatorFunc( "none" );
-
-            case "signerIndicatorArrowButton":
-                return getSignerIndicatorFunc( "arrow" );
-
-            case "signerIndicatorRadarButton":
-                return getSubAutoPositioningFunc();
-
-            case "signerSmallAreaButton":
-                return getSignerAreaFunc( 40 );
-
-            case "signerMediumlAreaButton":
-                return getSignerAreaFunc( 50 );
-
-            case "signerLargeAreaButton":
-                return getSignerAreaFunc( 60 );
-
-        // Audio Description
-            case "adEngButton":
-                return getADLanguageFunc( list_contents[demoId].ad[0]['en'], 'en' );
-
-            case "adEspButton":
-                return getADLanguageFunc( list_contents[demoId].ad[0]['es'], 'es' );
-
-            case "adGerButton":
-                return getADLanguageFunc( list_contents[demoId].ad[0]['de'], 'de' );
-
-            case "adCatButton":
-                return getADLanguageFunc( list_contents[demoId].ad[0]['ca'], 'ca' );
-
-            case "adVOGButton":
-                return getADPresentationFunc( 'VoiceOfGod' );
-
-            case "adFriendButton":
-                return getADPresentationFunc( 'Friend' );
-
-            case "adDynamicButton":
-                return getADPresentationFunc( 'Dynamic' );
-
-            case 'adVolumeLowButton':
-                return getADVolumeFunc( 10 );
-
-            case 'adVolumeMidButton':
-                return getADVolumeFunc( 50 );
-
-            case 'adVolumeMaxButton':
-                return getADVolumeFunc( 100 );
-
-        // Audio Subtitles
-            case "astEngButton":
-                var e2r = _AudioManager.getSubEasy() ? 1 : 0;
-                return getASTLanguageFunc( list_contents[demoId].ast[e2r]['en'], 'en' );
-
-            case "astEspButton":
-                var e2r = _AudioManager.getSubEasy() ? 1 : 0;
-                return getASTLanguageFunc( list_contents[demoId].ast[e2r]['es'], 'es' );
-
-            case "astGerButton":
-                var e2r = _AudioManager.getSubEasy() ? 1 : 0;
-                return getASTLanguageFunc( list_contents[demoId].ast[e2r]['de'], 'de' );
-
-            case "astCatButton":
-                var e2r = _AudioManager.getSubEasy() ? 1 : 0;
-                return getASTLanguageFunc( list_contents[demoId].ast[e2r]['ca'], 'ca' );
-
-            case "astEasyOn":
-                var url = getASTe2rURL();
-                return getASTEasyOnOffFunc( true, url );
-
-            case "astEasyOff":
-                return getASTEasyOnOffFunc( false, list_contents[demoId].ast[0][_AudioManager.getASTLanguage()] );
-
-            case 'astVolumeLowButton':
-                return getASTVolumeFunc( 10 );
-
-            case 'astVolumeMidButton':
-                return getASTVolumeFunc( 50 );
-
-            case 'astVolumeMaxButton':
-                return getASTVolumeFunc( 100 );
-
-            case "astVOGButton":
-                return getASTPresentationFunc( 'VoiceOfGod' );
-
-            case "astDynamicButton":
-                return getASTPresentationFunc( 'Dynamic' );
-
-
-        // Settings
-            case "settingsLanguageEngButton":
-                return getMainLanguageFunc( 'en' );
-
-            case "settingsLanguageEspButton":
-                return getMainLanguageFunc( 'es' );
-
-            case "settingsLanguageGerButton":
-                return getMainLanguageFunc( 'de' );
-
-            case "settingsLanguageCatButton":
-                return getMainLanguageFunc( 'ca' );
-
-            case "voiceControlOnButton":
-                return getVoiceControlFunc( true );
-
-            case "voiceControlOffButton":
-                return getVoiceControlFunc( false );
-
-            case "saveUserProfileButton":
-                return getSaveConfigFunc();
-
-            case "settingsMenuTraditionalButton":
-                return settingsMgr.getChangeMenuTypeFunction(2);
-
-            case "settingsMenuLowSightedButton":
-                return settingsMgr.getChangeMenuTypeFunction(1);
-
-            case "settingsMenuPointerLarge":
-                return getChangePointerSizeFunc( 2 );
-
-            case "settingsMenuPointerMedium":
-                return getChangePointerSizeFunc( 1 );
-
-            case "settingsMenuPointerSmall":
-                return getChangePointerSizeFunc( 0.6 );
-
-        // Default
-            default:
-                return undefined;
-        }
-    };
 }

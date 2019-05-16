@@ -26,7 +26,6 @@ const settingsDropdownOpt = {title: 'Settings', final: false, options: [
     { optId: 'settingsGeneral', icon: './img/menu/settings_icon.png', text: 'General', 
         function: function(){ 
             SettingsOptionCtrl.updateDropdownOptions(generalSettings); 
-            SettingsOptionCtrl.setChildColumnActiveOpt(this.optId);
         }
     },
     { optId: 'settingsAccess', icon: './img/menu/accessibility_icon.png', text: 'Access', 

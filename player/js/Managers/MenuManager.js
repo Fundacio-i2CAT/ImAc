@@ -52,6 +52,9 @@ function MenuManager() {
         actualCtrl = newCtrl;
     }
 
+    this.setMenuType = function(type){
+        menuType = type;
+    }
 /**
  * Gets the actual control.
  *
@@ -59,10 +62,6 @@ function MenuManager() {
  */
     this.getActualCtrl = function() {
         return actualCtrl;
-    }
-
-    this.setMenuType = function(type){
-        menuType = type;
     }
 
     this.getMenuType = function(){
@@ -227,39 +226,7 @@ function MenuManager() {
         },2000);
     }
 
-/**
- * { function_description }
- *
- * @param      {<type>}  object  The object
- */
-    function resetMenuPosition(object) {
-        object.position.x = 0;
-        object.position.z = 0;
-        object.rotation.y = camera.rotation.y;
 
-        object.position.x = Math.sin(-camera.rotation.y)*67;
-        object.position.z = -Math.cos(camera.rotation.y)*67;
-    }
-
-/**
- * Adds a menu to parent.
- */
-    function addMenuToParent() {
-        const traditionalmenu = vwStrucMMngr.TraditionalMenu('traditional-menu');
-
-        if (_isHMD) {
-            traditionalmenu.scale.set( 0.8, 0.8, 0.8 );
-        }
-        menuParent.add(traditionalmenu);
-
-//Depending on the menu type the menu is attached to the menuParent or to the traditional menu
-        if(menuMgr.getMenuType()%2 == 0){
-            traditionalmenu.add(vwStrucMMngr.TraditionalOptionMenu('trad-option-menu'));
-        } else {
-            menuParent.add(vwStrucMMngr.TraditionalOptionMenu('trad-option-menu'));
-        }
-        
-    }
 
 /**
  * Removes a menu from parent.
@@ -270,6 +237,21 @@ function MenuManager() {
     }
 
 /**
+ * Adds interactivity to menu elements.
+ *
+ * @class      AddInteractivityToMenuElements (name)
+ */
+    this.AddInteractionIfVisible = function(viewStructure){
+        viewStructure.children.forEach(function(intrElement){
+            if(intrElement.visible) {
+                interController.addInteractiveObject(intrElement);
+            } else {
+                interController.removeInteractiveObject(intrElement.name)
+            }
+        });
+    };
+
+    /**
  * { function_description }
  *
  * @function      InitAllCtrl (name)
@@ -300,18 +282,37 @@ function MenuManager() {
         });
     }
 
-/**
- * Adds interactivity to menu elements.
+    /**
+ * { function_description }
  *
- * @class      AddInteractivityToMenuElements (name)
+ * @param      {<type>}  object  The object
  */
-  this.AddInteractionIfVisible = function(viewStructure){
-    viewStructure.children.forEach(function(intrElement){
-        if(intrElement.visible) {
-            interController.addInteractiveObject(intrElement);
-        } else {
-            interController.removeInteractiveObject(intrElement.name)
+    function resetMenuPosition(object) {
+        object.position.x = 0;
+        object.position.z = 0;
+        object.rotation.y = camera.rotation.y;
+
+        object.position.x = Math.sin(-camera.rotation.y)*67;
+        object.position.z = -Math.cos(camera.rotation.y)*67;
+    }
+
+/**
+ * Adds a menu to parent.
+ */
+    function addMenuToParent() {
+        const traditionalmenu = vwStrucMMngr.TraditionalMenu('traditional-menu');
+
+        if (_isHMD) {
+            traditionalmenu.scale.set( 0.8, 0.8, 0.8 );
         }
-    });
-  };
+        menuParent.add(traditionalmenu);
+
+        //Depending on the menu type the menu is attached to the menuParent or to the traditional menu
+        if(menuMgr.getMenuType() == 2){
+            traditionalmenu.add(vwStrucMMngr.TraditionalOptionMenu('trad-option-menu'));
+        } else {
+            menuParent.add(vwStrucMMngr.TraditionalOptionMenu('trad-option-menu'));
+        }
+        
+    }
 }

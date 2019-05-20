@@ -176,6 +176,11 @@ MenuDictionary = function() {
         return _mainLanguage == lang;
     };
 
+    this.isMainLanguageAvailable = function(lang){
+        return (subController.checkisSubAvailable(lang) || subController.checkisSignAvailable(lang) || 
+                 _AudioManager.checkisADAvailable(lang) || _AudioManager.checkisASTAvailable(lang));
+    };
+
 //************************************************************************************
 // Public Getters
 //************************************************************************************
@@ -183,6 +188,22 @@ MenuDictionary = function() {
     this.getMainLanguage = function(){
         return _mainLanguage;
     };
+
+    this.getAvailableLanguage = function(){
+
+        if(list_contents[demoId].acces[0].ST){
+            return list_contents[demoId].acces[0].ST[0]
+        }else if(list_contents[demoId].acces[0].SL){
+            return list_contents[demoId].acces[0].SL[0] 
+        } else if(list_contents[demoId].acces[0].AD){
+            return list_contents[demoId].acces[0].AD[0]
+        } else if(list_contents[demoId].acces[0].AST){
+            return list_contents[demoId].acces[0].AST[0]
+        } else{
+            return false;
+        }
+
+    }
 
 //************************************************************************************
 // Public Setters

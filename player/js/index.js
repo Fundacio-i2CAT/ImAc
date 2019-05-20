@@ -110,6 +110,7 @@ function init_webplayer()
                 ////////////////////////////////////////////////////////////////
 
                 demoId = myhash[1];
+                _iconf.accesslanguage = (MenuDictionary.isMainLanguageAvailable(_iconf.accesslanguage)) ? _iconf.accesslanguage : MenuDictionary.getAvailableLanguage();
 
                 AplicationManager.init();
 

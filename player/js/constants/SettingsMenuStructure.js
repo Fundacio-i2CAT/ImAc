@@ -119,7 +119,7 @@ const generalSettings = { title: 'General', icon: './img/menu/settings_icon.png'
   * ╚═════════════════════════════════════╝
  */
 const settingsUILanguages = { title: 'Language', icon: './img/menu/language.png', parent: generalSettings, final: true, options: [
-    { optId: 'settingsUILanguageEngButton', text: 'English', 
+    { optId: 'settingsUILanguageEngButton', text: 'English',
         default: function(){ return MenuDictionary.checkMainLanguage('en') },
         function:  function(){ 
             MenuFunctionsManager.getMainLanguageFunc('en');
@@ -254,6 +254,7 @@ const settingsUserProfile = { title: 'UserProfile', icon: './img/menu/user_profi
   */
 const accessSettings = { title: 'Access', icon: './img/menu/accessibility_icon.png', parent: settingsDropdownOpt, final: false, options: [
     { optId: 'settingsAccessLanguage', icon: './img/menu/language.png', text: 'Language', 
+        available: function(){ return MenuDictionary.getAvailableLanguage()},
         function: function(){ 
             SettingsOptionCtrl.updateDropdownOptions(settingsAccesLanguages);
         } 
@@ -288,6 +289,7 @@ const accessSettings = { title: 'Access', icon: './img/menu/accessibility_icon.p
 */
 const settingsAccesLanguages = { title: 'Language', icon: './img/menu/language.png', parent: accessSettings, final: true, options: [
     { optId: 'settingsAccesLanguageEngButton', text: 'English', 
+        available: function() { return MenuDictionary.isMainLanguageAvailable('en') }, 
         default: function(){ return subController.checkSubLanguage('en') },
         function: function(){ 
             MenuFunctionsManager.changeAccesLanguage('en')(); 
@@ -296,6 +298,7 @@ const settingsAccesLanguages = { title: 'Language', icon: './img/menu/language.p
         } 
     }, 
     { optId: 'settingsAccesLanguageEspButton', text: 'Español', 
+        available: function() { return MenuDictionary.isMainLanguageAvailable('es') },
         default: function(){ return subController.checkSubLanguage('es') },
         function: function(){ 
             MenuFunctionsManager.changeAccesLanguage('es')(); 
@@ -304,6 +307,7 @@ const settingsAccesLanguages = { title: 'Language', icon: './img/menu/language.p
         } 
     }, 
     { optId: 'settingsAccesLanguageGerButton', text: 'Deutsch', 
+        available: function() { return MenuDictionary.isMainLanguageAvailable('de') },
         default: function(){ return subController.checkSubLanguage('de') },
         function: function(){ 
             MenuFunctionsManager.changeAccesLanguage('de')(); 
@@ -312,6 +316,7 @@ const settingsAccesLanguages = { title: 'Language', icon: './img/menu/language.p
         } 
     }, 
     { optId: 'settingsAccesLanguageCatButton', text: 'Català', 
+        available: function() { return MenuDictionary.isMainLanguageAvailable('ca') },
         default: function(){ return subController.checkSubLanguage('ca') },
         function: function(){ 
             MenuFunctionsManager.changeAccesLanguage('ca')(); 

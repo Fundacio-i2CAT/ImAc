@@ -49,8 +49,8 @@
 	      		<select id="langSelector" class="selectpicker" data-width="100%" data-style="TopBar-btn">
 					<option value="en">English (UK)</option>
 				  	<option value="es">Español (Esp)</option>
-				  	<option value="de">Deutsch</option>
-				  	<option value="ca">Català</option>
+				  	<option value="de">Deutsch (De)</option>
+				  	<option value="ca">Català (Cat)</option>
 				</select> 
 			</div>
 			<!-- Settings button -->
@@ -106,7 +106,7 @@
 		<div class="Toggle-container container-12">
 			<div class="Toggle-options" onclick="toggleInfo()">
 				<span id="span_3">Show/Hide content info &nbsp;</span>
-      			<label class="switch">
+      			<label for="switchlabel" class="switch">
   					<input id="togglebutton" type="checkbox" checked>
   					<span class="slider round"></span>
 				</label>
@@ -133,7 +133,7 @@
 					<div class="input-group">
 						<input type="text" class="form-control" placeholder="Search contents by ID"  id="search">
 						<div class="input-group-btn">
-							<button class="btn btn-default" type="submit"  onclick="searchFuncByName()"><i class="glyphicon glyphicon-search"></i></button>
+							<button class="btn btn-default" type="submit"  onclick="searchFuncByName()"><span class="glyphicon glyphicon-search"></span></button>
 						</div>
 					</div>
 				</div>
@@ -146,7 +146,7 @@
           	<div class="container-12 Search-container">
           		<div class="container-6 Search-division">
 	          		<div class="container-12" style="visibility: inherit;">
-	          			<label class="check services">
+	          			<label for="stlabel"class="check services">
 	          				<span style="display:inline-block;vertical-align:top;">
 							    <img src="img/150ppp/st_off.png" tabindex="0" alt="">
 							</span>
@@ -156,7 +156,7 @@
 						    <input id="st_check" type="checkbox" name="is_name" onclick="filterFunc()">
 						  	<span class="checkmark"></span>
 						</label>
-						<label class="check services">
+						<label for="sllabel" class="check services">
 							<span style="display:inline-block;vertical-align:top;">
 							    <img src="img/150ppp/sl_off.png" tabindex="0" alt="">
 							</span>
@@ -166,7 +166,7 @@
 						    <input id="sl_check" type="checkbox"  name="is_name" onclick="filterFunc()">
 						  	<span class="checkmark"></span>
 						</label>
-						<label class="check services">
+						<label for="adlabel" class="check services">
 							<span style="display:inline-block;vertical-align:top;">
 							    <img src="img/150ppp/ad_off.png" tabindex="0" alt="">
 							</span>
@@ -176,7 +176,7 @@
 						    <input id="ad_check" type="checkbox"  name="is_name" onclick="filterFunc()">
 						  	<span class="checkmark"></span>
 						</label>
-						<label class="check services">
+						<label for="astlabel" class="check services">
 							<span style="display:inline-block;vertical-align:top;">
 							    <img src="img/150ppp/ast_off.png" tabindex="0" alt="">
 							</span>
@@ -190,19 +190,19 @@
 				</div>
 				<div class="container-6 Search-division">
 	          		<div class="container-12" style="visibility: inherit;">
-	          			<label class="check ">English
+	          			<label for="enlabel" class="check ">English
 						    <input id="en_check" type="checkbox"  name="is_name" onclick="filterFunc()">
 						  	<span class="checkmark"></span>
 						</label>
-						<label class="check ">Español
+						<label for="eslabel" class="check ">Español
 						    <input id="es_check" type="checkbox"  name="is_name" onclick="filterFunc()">
 						  	<span class="checkmark"></span>
 						</label>
-						<label class="check ">Deutsch
+						<label for="delabel" class="check ">Deutsch
 						    <input id="de_check" type="checkbox"  name="is_name" onclick="filterFunc()">
 						  	<span class="checkmark"></span>
 						</label>
-						<label class="check ">Català
+						<label for="calabel" class="check ">Català
 						    <input id="ca_check" type="checkbox"  name="is_name" onclick="filterFunc()">
 						  	<span class="checkmark"></span>
 						</label>

@@ -28,6 +28,7 @@ AudioManager = function() {
     // [AST] audio subtitles vars 
     var _AST;  
     var astContent; // URL
+    var astContentArray; // URL
     var astVolume = 50; // Integer: Volume percentage
     var astEnabled = false; // boolean
     var astLang; // string (en, de, ca, es)
@@ -86,6 +87,7 @@ AudioManager = function() {
             if ( foaRendererList[0] ) removeAudio( type );
 
             _AD = document.createElement('audio');
+            _AD.crossOrigin = "anonymous";
             _AD.src = adContent;
             _AD.volume = adVolume/100;
 
@@ -97,6 +99,7 @@ AudioManager = function() {
             if ( foaRendererList[1] ) removeAudio( type );
 
             _AST = document.createElement('audio');
+            _AST.crossOrigin = "anonymous";
             _AST.src = astContent;
             _AST.volume = astVolume/100;
 
@@ -523,8 +526,9 @@ AudioManager = function() {
 
     this.setASTContent = function(url, lang)
     {
-        astContent = url;
+        astContent = url[astPresentation] || url[Object.keys(url)[0]];
         astLang = lang;
+        console.log(astContent)
         if ( astEnabled ) addAudio( 'AST' );
     }; 
 
@@ -562,6 +566,7 @@ AudioManager = function() {
     this.setASTLanguagesArray = function(subList)
     {
         astAvailableLang = [];
+        astContentArray = subList;
 
         if ( subList['en'] ) 
         {

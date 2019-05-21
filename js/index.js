@@ -30,6 +30,9 @@ var _confMemory;
             {
                 createListGroup( i, list_contents[i].thumbnail, list_contents[i].name, list_contents[i].duration );
             }
+
+            translateAll( _ImAc_default.mainlanguage )
+            translateContentDesc( _ImAc_default.mainlanguage )
         });
     }
 

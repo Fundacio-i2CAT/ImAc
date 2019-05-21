@@ -37,7 +37,7 @@ MenuDictionary = function() {
     //                   ||                        ||                        ||                        ||                        ||
         audiodescription:{ ca: 'Audio descripció'  , de: 'Audiodeskription'  , en: 'Audio description' , es: 'Audio descripción' },
     //                   ||                        ||                        ||                        ||                        ||
-        audiosubtitles:  { ca: 'Audio subtitols'   , de: 'Audiountertitel'   , en: 'Audio subtitles'   , es: 'Audio subtitulos'  },
+        audiosubtitles:  { ca: 'Audio subtitols'   , de: 'Voice over'        , en: 'Audio subtitles'   , es: 'Audio subtitulos'  },
     //                   ||                        ||                        ||                        ||                        ||
         auto:            { ca: 'Auto'              , de: 'Auto'              , en: 'Auto'              , es: 'Auto'              },
     //                   ||                        ||                        ||                        ||                        ||
@@ -47,7 +47,7 @@ MenuDictionary = function() {
     //                   ||                        ||                        ||                        ||                        ||
         ca:              { ca: 'Català'            , de: 'Català'            , en: 'Català'            , es: 'Català'            },
     //                   ||                        ||                        ||                        ||                        ||
-        classic:         { ca: 'Clàssic'           , de: 'Classic'           , en: 'Classic'           , es: 'Clásico'           },
+        classic:         { ca: 'Clàssic'           , de: 'Klassisch'         , en: 'Classic'           , es: 'Clásico'           },
     //                   ||                        ||                        ||                        ||                        ||
         de:              { ca: 'Deutsch'           , de: 'Deutsch'           , en: 'Deutsch'           , es: 'Deutsch'           },
     //                   ||                        ||                        ||                        ||                        ||
@@ -93,7 +93,7 @@ MenuDictionary = function() {
     //                   ||                        ||                        ||                        ||                        ||
         radar:           { ca: 'Radar'             , de: 'Radar'             , en: 'Radar'             , es: 'Radar'             },
     //                   ||                        ||                        ||                        ||                        ||
-        right:           { ca: 'Dreta'             , de: 'Richtig'           , en: 'Right'             , es: 'Derecha'           },
+        right:           { ca: 'Dreta'             , de: 'Rechts'            , en: 'Right'             , es: 'Derecha'           },
     //                   ||                        ||                        ||                        ||                        ||
         safearea:        { ca: 'Area Segura'       , de: 'Darstellungsbereich', en: 'Safe Area'        , es: 'Area Segura'       },
     //                   ||                        ||                        ||                        ||                        ||
@@ -189,6 +189,14 @@ MenuDictionary = function() {
         return _mainLanguage;
     };
 
+/**
+ * 
+ * If the pre selected language is nmot available in any of the access options,
+ * the next available language is returned.
+ * If any languages are available the Access Language option will not be shown.
+ *
+ * @return     {boolean}  The next available language.
+ */
     this.getAvailableLanguage = function(){
 
         if(list_contents[demoId].acces[0].ST){

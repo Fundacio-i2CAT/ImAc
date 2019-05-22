@@ -293,7 +293,7 @@ VideoController = function() {
                 if( scene.getObjectByName( "video-progress-bar" ) && scene.getObjectByName( "video-progress-bar" ).visible )
                 {
                     vpbCtrl.updatePlayProgressBar();  
-                    playpauseCtrl.updatePlayOutTime();   
+                    mainMenuCtrl.updatePlayOutTime();   
                 }
                 if ( Math.trunc(listOfVideoContents[0].vid.currentTime)%10 == 0 && firtsIteration ) 
                 {

@@ -27,14 +27,7 @@ var VideoController = new VideoController();
 var _ImAc = new ImAcController();
 var _Sync = new SyncController();
 
-let playpauseCtrl;
-let volumeCtrl;
-let settingsCtrl;
-let accessOptionsCtrl;
-let STOptionCtrl;
-let SLOptionCtrl;
-let ADOptionCtrl;
-let ASTOptionCtrl;
+let mainMenuCtrl;
 let vpbCtrl;
 let SettingsOptionCtrl;
 let multiOptionsPreviewCtrl;

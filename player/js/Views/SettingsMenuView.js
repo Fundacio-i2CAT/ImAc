@@ -10,14 +10,7 @@ function SettingsMenuView() {
         submenu.getObjectByName('traditional-menu-button').children[0].onexecute = data.menuTypeButtonFunc;
 
         submenu.getObjectByName('enhanced-menu-button').visible = (menuMgr.getMenuType() == 2) ? true : false;
-        submenu.getObjectByName('enhanced-menu-button').children[0].onexecute = data.menuTypeButtonFunc;
-
-		//if(submenu.getObjectByName('forwardMenuButton')) submenu.getObjectByName('forwardMenuButton').children[0].onexecute = data.forwardMenuButtonFunc;
-		//if(submenu.getObjectByName('backMenuButton')) submenu.getObjectByName('backMenuButton').children[0].onexecute = data.backMenuButtonFunc;
-
-        //if(submenu.getObjectByName('closeMenuButton')) submenu.getObjectByName('closeMenuButton').children[0].onexecute = data.closeMenuButtonFunc;
-	        
-        
+        submenu.getObjectByName('enhanced-menu-button').children[0].onexecute = data.menuTypeButtonFunc;      
     }
 
     this.pressButtonFeedback = function(data)

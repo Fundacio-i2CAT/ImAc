@@ -92,7 +92,7 @@ THREE.InteractionsController = function () {
 	        break;
 	      }
 	      else if ( intersects[inter].object.type == 'Mesh' && intersects[inter].object.parent && intersects[inter].object.parent.name === 'video-progress-bar'){
-          vpbCtrl.onClickSeek(mouse3D)
+          mainMenuCtrl.onClickSeek(mouse3D)
           break;
 	      }
         else if ( intersects[inter].object.type == 'Mesh' && intersects[inter].object.name && intersects[inter].object.parent ){
@@ -118,7 +118,7 @@ THREE.InteractionsController = function () {
           break;
         }
         else if ( intersects[inter].object.type == 'Mesh' &&  intersects[inter].object.parent.name === 'video-progress-bar'){
-          vpbCtrl.onClickSeek(intersects[inter].point.normalize())
+          mainMenuCtrl.onClickSeek(intersects[inter].point.normalize())
           break;
         }
       }

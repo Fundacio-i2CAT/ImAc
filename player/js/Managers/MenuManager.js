@@ -266,11 +266,8 @@ function MenuManager() {
         SettingsOptionCtrl = new SettingsOptionMenuController();
         controllers.push(SettingsOptionCtrl);
 
-        vpbCtrl = new VideoProgressBarController();
-        controllers.push(vpbCtrl);
-
         controllers.forEach(function(controller){
-            controller.Init();
+            controller
         });
     }
 

@@ -53,4 +53,10 @@ function MainMenuModel() {
 	this.signlanguageButtonFunc;
 	this.audioDescriptionButtonFunc;
 	this.audioSubtitlesButtonFunc;
+
+	//Video progress bar
+	this.playScaleX;
+	this.playPositionX;
+	this.sliderPositionX;
+	this.videoPlayOutTimeText;
 }

@@ -488,10 +488,10 @@ function ViewStructureMenuManager() {
         vpb.add(videoTotalTime.create());
         vpb.add(videoPlayoutTime.create());
 
-
+        mainmenu.add(vpb);
+        
         // Add all the parent submenus to the traditionalmenu base.
         traditionalmenu.add(mainmenu);
-        traditionalmenu.add(vpb);
 
         return traditionalmenu;
     }

@@ -355,4 +355,19 @@ MenuFunctionsManager = function() {
     {
         return getUpdateAccesLanguage( lang );
     }
+
+    this.getChangeMenuTypeFunction = function(){
+
+        // TYPE 1 => Enhanced; TYPE 2 => Trdaitional;
+        let newType = (menuMgr.getMenuType()%2)+1;
+        menuMgr.ResetViews();
+        menuMgr.removeMenuFromParent();
+        menuMgr.Init(newType);
+        menuMgr.initFirstMenuState();   
+    }
+
+    this.checkMenuType = function(menuType)
+    {
+        return menuType == menuMgr.getMenuType();
+    }
 }

@@ -10,7 +10,6 @@ var _moData = new THREE.MediaObjectData();
 
 var vwStrucMMngr = new ViewStructureMenuManager();
 var menuMgr = new MenuManager();
-var settingsMgr = new SettingsManager();
 
 var MenuDictionary = new MenuDictionary();
 
@@ -28,7 +27,6 @@ var _ImAc = new ImAcController();
 var _Sync = new SyncController();
 
 let mainMenuCtrl;
-let vpbCtrl;
 let SettingsOptionCtrl;
 let multiOptionsPreviewCtrl;
 

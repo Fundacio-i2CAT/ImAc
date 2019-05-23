@@ -27,7 +27,7 @@
  * @property {string}   title                  The title shown in the dropdown menu.
  * @property {boolean}  final                  Is the dropdown in the last level.
  * @property {array}    options                Array of the different dropdown options
- * @property {string}   options[].optId        Id refence for the next dropdown level.
+ * @property {string}   options[].optId        Id reference for the next dropdown level.
  * @property {string}   options[].icon         Icon path.
  * @property {string}   options[].text         Title of the dropdown option.
  * @property {function} options[].available    Function that returns a bool true if option os available, false if option has to be omitted.
@@ -87,10 +87,10 @@ const settingsDropdownOpt = {title: 'Settings', final: false, options: [
  * @typedef  {Object}   generalSettings        Level 1.
  * @property {string}   title                  The title shown in the dropdown menu.
  * @property {string}   icon                   Icon path.
- * @property {Object}   parent                 Refence to previews dropdown menu for back navigation.
+ * @property {Object}   parent                  Reference to previews dropdown menu for back navigation.
  * @property {boolean}  final                  Is the dropdown in the last level.
  * @property {array}    options                Array of the different dropdown options
- * @property {string}   options[].optId        Id refence for the next dropdown level.
+ * @property {string}   options[].optId        Id reference for the next dropdown level.
  * @property {string}   options[].icon         Icon path.
  * @property {string}   options[].text         Title of the dropdown option.
  * @property {function} options[].function     Function executed when option is clicked.
@@ -135,10 +135,10 @@ const generalSettings = { title: 'General', icon: './img/menu/settings_icon.png'
  * @typedef  {Object}   settingsUILanguages    Level 2.
  * @property {string}   title                  The title shown in the dropdown menu.
  * @property {string}   icon                   Icon path.
- * @property {Object}   parent                 Refence to previews dropdown menu for back navigation.
+ * @property {Object}   parent                  Reference to previews dropdown menu for back navigation.
  * @property {boolean}  final                  Is the dropdown in the last level.
  * @property {array}    options                Array of the different dropdown options
- * @property {string}   options[].optId        Id refence for the next dropdown level.
+ * @property {string}   options[].optId        Id reference for the next dropdown level.
  * @property {string}   options[].text         Title of the dropdown option.
  * @property {function} options[].default      Function that returns a bool true if option is default and starts in yellow.
  * @property {function} options[].function     Function executed when option is clicked.
@@ -187,10 +187,10 @@ const settingsUILanguages = { title: 'Language', icon: './img/menu/language.png'
  * @typedef  {Object}   settigsVoiceControl    Level 2.
  * @property {string}   title                  The title shown in the dropdown menu.
  * @property {string}   icon                   Icon path.
- * @property {Object}   parent                 Refence to previews dropdown menu for back navigation.
+ * @property {Object}   parent                  Reference to previews dropdown menu for back navigation.
  * @property {boolean}  final                  Is the dropdown in the last level.
  * @property {array}    options                Array of the different dropdown options
- * @property {string}   options[].optId        Id refence for the next dropdown level.
+ * @property {string}   options[].optId        Id reference for the next dropdown level.
  * @property {string}   options[].text         Title of the dropdown option.
  * @property {function} options[].default      Function that returns a bool true if option is default and starts in yellow.
  * @property {function} options[].function     Function executed when option is clicked.
@@ -227,10 +227,10 @@ const settigsVoiceControl = { title: 'VoiceControl', icon: './img/menu/voice_con
  * @typedef  {Object}   settingsPointerSize    Level 2.
  * @property {string}   title                  The title shown in the dropdown menu.
  * @property {string}   icon                   Icon path.
- * @property {Object}   parent                 Refence to previews dropdown menu for back navigation.
+ * @property {Object}   parent                  Reference to previews dropdown menu for back navigation.
  * @property {boolean}  final                  Is the dropdown in the last level.
  * @property {array}    options                Array of the different dropdown options
- * @property {string}   options[].optId        Id refence for the next dropdown level.
+ * @property {string}   options[].optId        Id reference for the next dropdown level.
  * @property {string}   options[].text         Title of the dropdown option.
  * @property {function} options[].default      Function that returns a bool true if option is default and starts in yellow.
  * @property {function} options[].function     Function executed when option is clicked.
@@ -270,10 +270,10 @@ const settingsPointerSize = { title: 'PointerSize', icon: './img/menu/pointer_si
  * @typedef  {Object}   settingsUserProfile    Level 2.
  * @property {string}   title                  The title shown in the dropdown menu.
  * @property {string}   icon                   Icon path.
- * @property {Object}   parent                 Refence to previews dropdown menu for back navigation.
+ * @property {Object}   parent                  Reference to previews dropdown menu for back navigation.
  * @property {boolean}  final                  Is the dropdown in the last level.
  * @property {array}    options                Array of the different dropdown options
- * @property {string}   options[].optId        Id refence for the next dropdown level.
+ * @property {string}   options[].optId        Id reference for the next dropdown level.
  * @property {string}   options[].text         Title of the dropdown option.
  * @property {function} options[].function     Function executed when option is clicked.
  */
@@ -302,10 +302,10 @@ const settingsUserProfile = { title: 'UserProfile', icon: './img/menu/user_profi
  * @typedef  {Object}   accessSettings         Level 1.
  * @property {string}   title                  The title shown in the dropdown menu.
  * @property {string}   icon                   Icon path.
- * @property {Object}   parent                 Refence to previews dropdown menu for back navigation.
+ * @property {Object}   parent                 Reference to previews dropdown menu for back navigation.
  * @property {boolean}  final                  Is the dropdown in the last level.
  * @property {array}    options                Array of the different dropdown options
- * @property {string}   options[].optId        Id refence for the next dropdown level.
+ * @property {string}   options[].optId        Id reference for the next dropdown level.
  * @property {string}   options[].icon         Icon path.
  * @property {string}   options[].text         Title of the dropdown option.
  * @property {function} options[].available    Function that returns a bool true if option os available, false if option has to be omitted.
@@ -347,10 +347,10 @@ const accessSettings = { title: 'Access', icon: './img/menu/accessibility_icon.p
  * @typedef  {Object}   settingsAccesLanguages Level 2.
  * @property {string}   title                  The title shown in the dropdown menu.
  * @property {string}   icon                   Icon path.
- * @property {Object}   parent                 Refence to previews dropdown menu for back navigation.
+ * @property {Object}   parent                 Reference to previews dropdown menu for back navigation.
  * @property {boolean}  final                  Is the dropdown in the last level.
  * @property {array}    options                Array of the different dropdown options
- * @property {string}   options[].optId        Id refence for the next dropdown level.
+ * @property {string}   options[].optId        Id reference for the next dropdown level.
  * @property {string}   options[].text         Title of the dropdown option.
  * @property {function} options[].available    Function that returns a bool true if option os available, false if option has to be omitted.
  * @property {function} options[].default      Function that returns a bool true if option is default and starts in yellow.
@@ -410,10 +410,10 @@ const settingsAccesLanguages = { title: 'Language', icon: './img/menu/language.p
  * @typedef  {Object}   settingsIndicator      Level 2.
  * @property {string}   title                  The title shown in the dropdown menu.
  * @property {string}   icon                   Icon path.
- * @property {Object}   parent                 Refence to previews dropdown menu for back navigation.
+ * @property {Object}   parent                 Reference to previews dropdown menu for back navigation.
  * @property {boolean}  final                  Is the dropdown in the last level.
  * @property {array}    options                Array of the different dropdown options
- * @property {string}   options[].optId        Id refence for the next dropdown level.
+ * @property {string}   options[].optId        Id reference for the next dropdown level.
  * @property {string}   options[].text         Title of the dropdown option.
  * @property {function} options[].default      Function that returns a bool true if option is default and starts in yellow.
  * @property {function} options[].function     Function executed when option is clicked.
@@ -456,10 +456,10 @@ const settingsIndicator = { title: 'Indicator', icon: './img/menu/indicator.png'
  * @typedef  {Object}   settingsSafeArea       Level 2.
  * @property {string}   title                  The title shown in the dropdown menu.
  * @property {string}   icon                   Icon path.
- * @property {Object}   parent                 Refence to previews dropdown menu for back navigation.
+ * @property {Object}   parent                 Reference to previews dropdown menu for back navigation.
  * @property {boolean}  final                  Is the dropdown in the last level.
  * @property {array}    options                Array of the different dropdown options
- * @property {string}   options[].optId        Id refence for the next dropdown level.
+ * @property {string}   options[].optId        Id reference for the next dropdown level.
  * @property {string}   options[].text         Title of the dropdown option.
  * @property {function} options[].default      Function that returns a bool true if option is default and starts in yellow.
  * @property {function} options[].function     Function executed when option is clicked.
@@ -499,10 +499,10 @@ const settingsSafeArea = { title: 'SafeArea', icon: './img/menu/safe_area.png', 
  * @typedef  {Object}   settingsSubtitles      Level 1.
  * @property {string}   title                  The title shown in the dropdown menu.
  * @property {string}   icon                   Icon path.
- * @property {Object}   parent                 Refence to previews dropdown menu for back navigation.
+ * @property {Object}   parent                 Reference to previews dropdown menu for back navigation.
  * @property {boolean}  final                  Is the dropdown in the last level.
  * @property {array}    options                Array of the different dropdown options
- * @property {string}   options[].optId        Id refence for the next dropdown level.
+ * @property {string}   options[].optId        Id reference for the next dropdown level.
  * @property {string}   options[].icon         Icon path.
  * @property {string}   options[].text         Title of the dropdown option.
  * @property {function} options[].function     Function executed when option is clicked.
@@ -545,10 +545,10 @@ const settingsSubtitles = { title: 'Subtitles', icon: './img/acc_serv_icon/st_of
  * @typedef  {Object}   settingsSubtitlesSize  Level 2.
  * @property {string}   title                  The title shown in the dropdown menu.
  * @property {string}   icon                   Icon path.
- * @property {Object}   parent                 Refence to previews dropdown menu for back navigation.
+ * @property {Object}   parent                 Reference to previews dropdown menu for back navigation.
  * @property {boolean}  final                  Is the dropdown in the last level.
  * @property {array}    options                Array of the different dropdown options
- * @property {string}   options[].optId        Id refence for the next dropdown level.
+ * @property {string}   options[].optId        Id reference for the next dropdown level.
  * @property {string}   options[].text         Title of the dropdown option.
  * @property {function} options[].default      Function that returns a bool true if option is default and starts in yellow.
  * @property {function} options[].function     Function executed when option is clicked.
@@ -590,10 +590,10 @@ const settingsSubtitlesSize = { title: 'Size', icon: './img/menu/st_font_size.pn
  * @typedef  {Object}   settingsSubtitlesBackground  Level 2.
  * @property {string}   title                  The title shown in the dropdown menu.
  * @property {string}   icon                   Icon path.
- * @property {Object}   parent                 Refence to previews dropdown menu for back navigation.
+ * @property {Object}   parent                 Reference to previews dropdown menu for back navigation.
  * @property {boolean}  final                  Is the dropdown in the last level.
  * @property {array}    options                Array of the different dropdown options
- * @property {string}   options[].optId        Id refence for the next dropdown level.
+ * @property {string}   options[].optId        Id reference for the next dropdown level.
  * @property {string}   options[].text         Title of the dropdown option.
  * @property {function} options[].default      Function that returns a bool true if option is default and starts in yellow.
  * @property {function} options[].function     Function executed when option is clicked.
@@ -629,10 +629,10 @@ const settingsSubtitlesBackground = { title: 'Background', icon: './img/menu/st_
  * @typedef  {Object}   settingsSubtitlesPosition  Level 2.
  * @property {string}   title                  The title shown in the dropdown menu.
  * @property {string}   icon                   Icon path.
- * @property {Object}   parent                 Refence to previews dropdown menu for back navigation.
+ * @property {Object}   parent                 Reference to previews dropdown menu for back navigation.
  * @property {boolean}  final                  Is the dropdown in the last level.
  * @property {array}    options                Array of the different dropdown options
- * @property {string}   options[].optId        Id refence for the next dropdown level.
+ * @property {string}   options[].optId        Id reference for the next dropdown level.
  * @property {string}   options[].text         Title of the dropdown option.
  * @property {function} options[].default      Function that returns a bool true if option is default and starts in yellow.
  * @property {function} options[].function     Function executed when option is clicked.
@@ -669,10 +669,10 @@ const settingsSubtitlesPosition = { title: 'Position', icon: './img/menu/st_posi
  * @typedef  {Object}   settingsSubtitlesEasyToRead  Level 2.
  * @property {string}   title                  The title shown in the dropdown menu.
  * @property {string}   icon                   Icon path.
- * @property {Object}   parent                 Refence to previews dropdown menu for back navigation.
+ * @property {Object}   parent                 Reference to previews dropdown menu for back navigation.
  * @property {boolean}  final                  Is the dropdown in the last level.
  * @property {array}    options                Array of the different dropdown options
- * @property {string}   options[].optId        Id refence for the next dropdown level.
+ * @property {string}   options[].optId        Id reference for the next dropdown level.
  * @property {string}   options[].text         Title of the dropdown option.
  * @property {function} options[].default      Function that returns a bool true if option is default and starts in yellow.
  * @property {function} options[].function     Function executed when option is clicked.
@@ -708,10 +708,10 @@ const settingsSubtitlesEasyToRead = { title: 'EasytoRead', icon: './img/menu/eas
  * @typedef  {Object}   settingsSignLanguage   Level 1.
  * @property {string}   title                  The title shown in the dropdown menu.
  * @property {string}   icon                   Icon path.
- * @property {Object}   parent                 Refence to previews dropdown menu for back navigation.
+ * @property {Object}   parent                 Reference to previews dropdown menu for back navigation.
  * @property {boolean}  final                  Is the dropdown in the last level.
  * @property {array}    options                Array of the different dropdown options
- * @property {string}   options[].optId        Id refence for the next dropdown level.
+ * @property {string}   options[].optId        Id reference for the next dropdown level.
  * @property {string}   options[].icon         Icon path.
  * @property {string}   options[].text         Title of the dropdown option.
  * @property {function} options[].function     Function executed when option is clicked.
@@ -742,10 +742,10 @@ const settingsSignLanguage = { title: 'Signlanguage', icon: './img/acc_serv_icon
  * @typedef  {Object}   settingsSignLanguagePosition  Level 2.
  * @property {string}   title                  The title shown in the dropdown menu.
  * @property {string}   icon                   Icon path.
- * @property {Object}   parent                 Refence to previews dropdown menu for back navigation.
+ * @property {Object}   parent                 Reference to previews dropdown menu for back navigation.
  * @property {boolean}  final                  Is the dropdown in the last level.
  * @property {array}    options                Array of the different dropdown options
- * @property {string}   options[].optId        Id refence for the next dropdown level.
+ * @property {string}   options[].optId        Id reference for the next dropdown level.
  * @property {string}   options[].text         Title of the dropdown option.
  * @property {function} options[].default      Function that returns a bool true if option is default and starts in yellow.
  * @property {function} options[].function     Function executed when option is clicked.
@@ -782,10 +782,10 @@ const settingsSignLanguagePosition = { title: 'Position', icon: './img/menu/sl_p
  * @typedef  {Object}   settingsSignLanguageSize  Level 2.
  * @property {string}   title                  The title shown in the dropdown menu.
  * @property {string}   icon                   Icon path.
- * @property {Object}   parent                 Refence to previews dropdown menu for back navigation.
+ * @property {Object}   parent                 Reference to previews dropdown menu for back navigation.
  * @property {boolean}  final                  Is the dropdown in the last level.
  * @property {array}    options                Array of the different dropdown options
- * @property {string}   options[].optId        Id refence for the next dropdown level.
+ * @property {string}   options[].optId        Id reference for the next dropdown level.
  * @property {string}   options[].text         Title of the dropdown option.
  * @property {function} options[].default      Function that returns a bool true if option is default and starts in yellow.
  * @property {function} options[].function     Function executed when option is clicked.
@@ -828,10 +828,10 @@ const settingsSignLanguageSize = { title: 'Size', icon: './img/menu/sl_size.png'
  * @typedef  {Object}   settingsAudioDescription   Level 1.
  * @property {string}   title                  The title shown in the dropdown menu.
  * @property {string}   icon                   Icon path.
- * @property {Object}   parent                 Refence to previews dropdown menu for back navigation.
+ * @property {Object}   parent                 Reference to previews dropdown menu for back navigation.
  * @property {boolean}  final                  Is the dropdown in the last level.
  * @property {array}    options                Array of the different dropdown options
- * @property {string}   options[].optId        Id refence for the next dropdown level.
+ * @property {string}   options[].optId        Id reference for the next dropdown level.
  * @property {string}   options[].icon         Icon path.
  * @property {string}   options[].text         Title of the dropdown option.
  * @property {function} options[].available    Function that returns a bool true if option os available, false if option has to be omitted.
@@ -867,10 +867,10 @@ const settingsAudioDescription = { title: 'Audiodescription', icon: './img/acc_s
  * @typedef  {Object}   settingsAudioDescriptionPresentation  Level 2.
  * @property {string}   title                  The title shown in the dropdown menu.
  * @property {string}   icon                   Icon path.
- * @property {Object}   parent                 Refence to previews dropdown menu for back navigation.
+ * @property {Object}   parent                 Reference to previews dropdown menu for back navigation.
  * @property {boolean}  final                  Is the dropdown in the last level.
  * @property {array}    options                Array of the different dropdown options
- * @property {string}   options[].optId        Id refence for the next dropdown level.
+ * @property {string}   options[].optId        Id reference for the next dropdown level.
  * @property {string}   options[].text         Title of the dropdown option.
  * @property {function} options[].available    Function that returns a bool true if option os available, false if option has to be omitted.
  * @property {function} options[].default      Function that returns a bool true if option is default and starts in yellow.
@@ -919,10 +919,10 @@ const settingsAudioDescriptionPresentation = { title: 'Presentation', icon: './i
  * @typedef  {Object}   settingsAudioDescriptionVolume  Level 2.
  * @property {string}   title                  The title shown in the dropdown menu.
  * @property {string}   icon                   Icon path.
- * @property {Object}   parent                 Refence to previews dropdown menu for back navigation.
+ * @property {Object}   parent                 Reference to previews dropdown menu for back navigation.
  * @property {boolean}  final                  Is the dropdown in the last level.
  * @property {array}    options                Array of the different dropdown options
- * @property {string}   options[].optId        Id refence for the next dropdown level.
+ * @property {string}   options[].optId        Id reference for the next dropdown level.
  * @property {string}   options[].text         Title of the dropdown option.
  * @property {function} options[].available    Function that returns a bool true if option os available, false if option has to be omitted.
  * @property {function} options[].default      Function that returns a bool true if option is default and starts in yellow.
@@ -969,10 +969,10 @@ const settingsAudioDescriptionVolume = { title: 'Volume', icon: './img/menu/volu
  * @typedef  {Object}   settingsAudioSubtitles Level 1.
  * @property {string}   title                  The title shown in the dropdown menu.
  * @property {string}   icon                   Icon path.
- * @property {Object}   parent                 Refence to previews dropdown menu for back navigation.
+ * @property {Object}   parent                 Reference to previews dropdown menu for back navigation.
  * @property {boolean}  final                  Is the dropdown in the last level.
  * @property {array}    options                Array of the different dropdown options
- * @property {string}   options[].optId        Id refence for the next dropdown level.
+ * @property {string}   options[].optId        Id reference for the next dropdown level.
  * @property {string}   options[].icon         Icon path.
  * @property {string}   options[].text         Title of the dropdown option.
  * @property {function} options[].available    Function that returns a bool true if option os available, false if option has to be omitted.
@@ -1011,10 +1011,10 @@ const settingsAudioSubtitles = { title: 'Audiosubtitles', icon: './img/acc_serv_
  * @typedef  {Object}   settingsAudioSubtitlesEasyToRead  Level 2.
  * @property {string}   title                  The title shown in the dropdown menu.
  * @property {string}   icon                   Icon path.
- * @property {Object}   parent                 Refence to previews dropdown menu for back navigation.
+ * @property {Object}   parent                 Reference to previews dropdown menu for back navigation.
  * @property {boolean}  final                  Is the dropdown in the last level.
  * @property {array}    options                Array of the different dropdown options
- * @property {string}   options[].optId        Id refence for the next dropdown level.
+ * @property {string}   options[].optId        Id reference for the next dropdown level.
  * @property {string}   options[].text         Title of the dropdown option.
  * @property {function} options[].default      Function that returns a bool true if option is default and starts in yellow.
  * @property {function} options[].function     Function executed when option is clicked.
@@ -1049,10 +1049,10 @@ const settingsAudioSubtitlesEasyToRead = { title: 'EasytoRead', icon: './img/men
  * @typedef  {Object}   settingsAudioSubtitlesPresentation  Level 2.
  * @property {string}   title                  The title shown in the dropdown menu.
  * @property {string}   icon                   Icon path.
- * @property {Object}   parent                 Refence to previews dropdown menu for back navigation.
+ * @property {Object}   parent                 Reference to previews dropdown menu for back navigation.
  * @property {boolean}  final                  Is the dropdown in the last level.
  * @property {array}    options                Array of the different dropdown options
- * @property {string}   options[].optId        Id refence for the next dropdown level.
+ * @property {string}   options[].optId        Id reference for the next dropdown level.
  * @property {string}   options[].text         Title of the dropdown option.
  * @property {function} options[].available    Function that returns a bool true if option os available, false if option has to be omitted.
  * @property {function} options[].default      Function that returns a bool true if option is default and starts in yellow.
@@ -1092,10 +1092,10 @@ const settingsAudioSubtitlesPresentation = { title: 'Presentation', icon: './img
  * @typedef  {Object}   settingsAudioSubtitlesVolume  Level 2.
  * @property {string}   title                  The title shown in the dropdown menu.
  * @property {string}   icon                   Icon path.
- * @property {Object}   parent                 Refence to previews dropdown menu for back navigation.
+ * @property {Object}   parent                 Reference to previews dropdown menu for back navigation.
  * @property {boolean}  final                  Is the dropdown in the last level.
  * @property {array}    options                Array of the different dropdown options
- * @property {string}   options[].optId        Id refence for the next dropdown level.
+ * @property {string}   options[].optId        Id reference for the next dropdown level.
  * @property {string}   options[].text         Title of the dropdown option.
  * @property {function} options[].function     Function executed when option is clicked.
  */

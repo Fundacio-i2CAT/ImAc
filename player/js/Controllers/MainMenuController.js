@@ -52,7 +52,7 @@ function MainMenuController() {
      * This function 'closes' the submenu page.
      * Removes all the interactive elements from the 'interactiveListObjects' array stated in Managers/InteractionsController.js
      * Hides the viewStructure.
-     * This function is called when closing the menu or when navigating through the different menus in the Enhaced-Accessibility.
+     * This function is called when closing the menu.
      *
      * @function      Exit (name)
      */

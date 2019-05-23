@@ -42,7 +42,6 @@ function SettingsOptionMenuController() {
 		data = GetData();
 		UpdateData();
 
-        data.name = 'trad-option-menu';
         view = new SettingsOptionMenuView();
 
 		viewStructure = scene.getObjectByName(data.name);

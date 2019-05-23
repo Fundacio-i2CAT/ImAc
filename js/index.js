@@ -42,6 +42,7 @@ var _confMemory;
     function launchPlayer(id)
     { 
         localStorage.ImAc_init = id;
+        localStorage.ImAc_server = "";
         localStorage.ImAc_language = document.getElementById('langSelector').value;
         _ImAc_default.mainlanguage = document.getElementById('langSelector').value;
 
@@ -2177,7 +2178,7 @@ var _confMemory;
             document.getElementById('span_1').innerHTML = 'Einstellungen';
             document.getElementById('span_2').innerHTML = 'Finden';
             document.getElementById('span_3').innerHTML = 'Inhaltsinfo ein / ausblenden &nbsp;';
-            document.getElementById('span_4').innerHTML = '&nbsp;  Finden';
+            document.getElementById('span_4').innerHTML = '&nbsp;  Suche';
             document.getElementById('span_5').innerHTML = '&nbsp;  Einstellungen';
             document.getElementById('span_6').innerHTML = '&nbsp;   Allgemeine Einstellungen';
             document.getElementById('span_7').innerHTML = '&nbsp;   Barrierefreie Dienste';

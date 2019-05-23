@@ -136,7 +136,7 @@ body {
   padding-left: 9vw;
   z-index: 99;
   font-family: 'Roboto', Arial;
-  font-size: 2.3rem;
+  font-size: 2rem;
   color: #E6E6E6;
   width: 90%;
   height: 310px;
@@ -753,7 +753,7 @@ body {
   }
 
   .Poster-info p {
-    font-size: 1.7vw;
+    font-size: 1.3vw;
   }
 
   .Poster-play {
@@ -950,7 +950,7 @@ body {
   }
 
   .Poster-info p {
-    font-size: 1.1rem;
+    font-size: 1rem;
     width: 65%;
   }
 

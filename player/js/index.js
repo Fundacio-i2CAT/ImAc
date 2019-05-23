@@ -10,7 +10,6 @@ var _moData = new THREE.MediaObjectData();
 
 var vwStrucMMngr = new ViewStructureMenuManager();
 var menuMgr = new MenuManager();
-var settingsMgr = new SettingsManager();
 
 var MenuDictionary = new MenuDictionary();
 
@@ -27,15 +26,7 @@ var VideoController = new VideoController();
 var _ImAc = new ImAcController();
 var _Sync = new SyncController();
 
-let playpauseCtrl;
-let volumeCtrl;
-let settingsCtrl;
-let accessOptionsCtrl;
-let STOptionCtrl;
-let SLOptionCtrl;
-let ADOptionCtrl;
-let ASTOptionCtrl;
-let vpbCtrl;
+let mainMenuCtrl;
 let SettingsOptionCtrl;
 let multiOptionsPreviewCtrl;
 
@@ -62,6 +53,18 @@ var _NonCont = false;
 var _iconf;
 var _userprofile = true;
 var _ws_vc;
+
+var _pointerSize = 1; // 2=Big, 1=Mid, 0.6=Small
+
+var optHeight;
+var optWidth;
+var menuDefaultColor = 0xe6e6e6;
+var menuButtonActiveColor = 0xffff00;
+var secondarySubIndex = 0;
+
+var _isHMD = false;
+var autopositioning = false;
+var radarautopositioning = false;
 
 
 /**

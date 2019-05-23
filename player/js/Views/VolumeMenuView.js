@@ -1,6 +1,6 @@
 function VolumeMenuView() {
 
-    var submenu;
+    let submenu;
 
 	this.UpdateView = function(data){
     

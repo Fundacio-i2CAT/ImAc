@@ -114,7 +114,8 @@ function MenuManager() {
             scene.getObjectByName('pointer').scale.set(1*_pointerSize,1*_pointerSize,1*_pointerSize)
         }
 
-        playpauseCtrl.playAllFunc();
+        //playpauseCtrl.playAllFunc();
+        mainMenuCtrl.playAllFunc();
 
         if(menuParent.getObjectByName('traditional-menu')) {
             menuParent.getObjectByName('traditional-menu').visible = false;
@@ -259,26 +260,14 @@ function MenuManager() {
     function InitAllCtrl(){
         controllers = [];
 
-        playpauseCtrl = new PlayPauseMenuController();
-        controllers.push(playpauseCtrl);
-
-        volumeCtrl = new VolumeMenuController();
-        controllers.push(volumeCtrl);
-
-        settingsCtrl = new SettingsMenuController();
-        controllers.push(settingsCtrl);
-
-        accessOptionsCtrl = new AccessibilityOptionsMenuController();
-        controllers.push(accessOptionsCtrl);
+        mainMenuCtrl = new MainMenuController();
+        controllers.push(mainMenuCtrl);
 
         SettingsOptionCtrl = new SettingsOptionMenuController();
         controllers.push(SettingsOptionCtrl);
 
-        vpbCtrl = new VideoProgressBarController();
-        controllers.push(vpbCtrl);
-
         controllers.forEach(function(controller){
-            controller.Init();
+            controller
         });
     }
 

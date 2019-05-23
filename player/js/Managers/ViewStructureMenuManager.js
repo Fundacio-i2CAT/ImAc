@@ -113,12 +113,13 @@ function ViewStructureMenuManager() {
 
         var traditionalmenu = TraditionalMenuBase(name);
 
-/************************************\
-|    PLAYPAUSE TRADITIONAL SUB MENU  |
-\************************************/
-        var  playpausemenu =  new THREE.Group();
-        playpausemenu.name = 'playpause-menu-group';
 
+        var  mainmenu =  new THREE.Group();
+        mainmenu.name = 'main-menu-group';
+
+/************************************\
+|           PLAYPAUSE                |
+\************************************/
         var seekLBtn = new InteractiveElementModel();
         seekLBtn.width = i6;
         seekLBtn.height = i6;
@@ -181,17 +182,17 @@ function ViewStructureMenuManager() {
         closeBtn.onexecute = function() { console.log("This is the %s button", closeBtn.name) };
 
         // Add all the created elements to the parent group.
-        playpausemenu.add(seekLBtn.create());
-        playpausemenu.add(playBtn.create());
-        playpausemenu.add(pauseBtn.create());
-        playpausemenu.add(seekRBtn.create());
-        playpausemenu.add(closeBtn.create());
+        mainmenu.add(seekLBtn.create());
+        mainmenu.add(playBtn.create());
+        mainmenu.add(pauseBtn.create());
+        mainmenu.add(seekRBtn.create());
+        mainmenu.add(closeBtn.create());
 
 /************************************\
-|    VOLUME TRADITIONAL SUB MENU     |
+|               VOLUME               |
 \************************************/
-        var  volumemenu =  new THREE.Group();
-        volumemenu.name = 'volume-menu-group';
+        //var  volumemenu =  new THREE.Group();
+        //volumemenu.name = 'volume-menu-group';
 
         var minVolBtn = new InteractiveElementModel();
         minVolBtn.width = menuWidth/40;
@@ -253,24 +254,15 @@ function ViewStructureMenuManager() {
         volLvlTxt.position = new THREE.Vector3( -5*menuWidth/16, menuHeight/4, 0.01 );
 
         // Add all the created elements to the parent group.
-        volumemenu.add(minVolBtn.create());
-        volumemenu.add(plusVolBtn.create());
-        volumemenu.add(unmuteVolBtn.create());
-        volumemenu.add(muteVolBtn.create());
-        volumemenu.add(volLvlTxt.create());
-
-
-        /*for( let i = 1; i<=10; i++){
-            let volLvlDot = new THREE.Mesh( new THREE.CircleGeometry(0.5,32), new THREE.MeshBasicMaterial( { color: 0x00ff00 } ) );
-            volLvlDot.position.set( -9*menuWidth/20 + (i*60*menuWidth/2000), menuHeight/4, 0.01 );
-            volumemenu.add(volLvlDot);
-        }*/
+        mainmenu.add(minVolBtn.create());
+        mainmenu.add(plusVolBtn.create());
+        mainmenu.add(unmuteVolBtn.create());
+        mainmenu.add(muteVolBtn.create());
+        mainmenu.add(volLvlTxt.create());
 
 /************************************\
-| MULTI-OPTIONS TRADITIONAL SUB MENU |
+|       ACCESSIBILITY OPTIONS        |
 \************************************/
-        var  multioptionsmenu =  new THREE.Group();
-        multioptionsmenu.name = 'accessoptions-menu-group';
 
         var stBtn = new InteractiveElementModel();
         stBtn.width = i5;
@@ -369,22 +361,19 @@ function ViewStructureMenuManager() {
         astDisBtn.onexecute = function() { console.log("This is the %s button", astDisBtn.name) };
 
         // Add all the created elements to the parent group.
-        multioptionsmenu.add(stBtn.create());
-        multioptionsmenu.add(stDisBtn.create());
-        multioptionsmenu.add(slBtn.create());
-        multioptionsmenu.add(slDisBtn.create());
-        multioptionsmenu.add(adBtn.create());
-        multioptionsmenu.add(adDisBtn.create());
-        multioptionsmenu.add(astBtn.create());
-        multioptionsmenu.add(astDisBtn.create());
+        mainmenu.add(stBtn.create());
+        mainmenu.add(stDisBtn.create());
+        mainmenu.add(slBtn.create());
+        mainmenu.add(slDisBtn.create());
+        mainmenu.add(adBtn.create());
+        mainmenu.add(adDisBtn.create());
+        mainmenu.add(astBtn.create());
+        mainmenu.add(astDisBtn.create());
 
 
 /************************************\
-|   SETTINGS TRADITIONAL SUB MENU    |
+|            SETTINGS                |
 \************************************/
-        var  settingsmenu =  new THREE.Group();
-        settingsmenu.name = 'settings-menu-group';
-
         var settingsBtn = new InteractiveElementModel();
         settingsBtn.width = i6;
         settingsBtn.height = i6;
@@ -407,7 +396,7 @@ function ViewStructureMenuManager() {
         previewBtn.visible = true;
         previewBtn.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(i6, i6), new THREE.MeshBasicMaterial({visible: false}));
         previewBtn.position = new THREE.Vector3( 3*menuWidth/8, menuHeight/4, 0.01 );
-        settingsBtn.onexecute = function() { console.log("This is the %s button", previewBtn.name) };
+        previewBtn.onexecute = function() { console.log("This is the %s button", previewBtn.name) };
 
 //TODO: Add to controller and link to functions
         var tradMenuBtn = new InteractiveElementModel();
@@ -436,10 +425,10 @@ function ViewStructureMenuManager() {
 
 
         // Add all the created elements to the parent group.
-        settingsmenu.add(settingsBtn.create());
-        settingsmenu.add(previewBtn.create());
-        settingsmenu.add(tradMenuBtn.create());
-        settingsmenu.add(enhancedMenuBtn.create());
+        mainmenu.add(settingsBtn.create());
+        mainmenu.add(previewBtn.create());
+        mainmenu.add(tradMenuBtn.create());
+        mainmenu.add(enhancedMenuBtn.create());
 
 
 /************************************\
@@ -499,13 +488,10 @@ function ViewStructureMenuManager() {
         vpb.add(videoTotalTime.create());
         vpb.add(videoPlayoutTime.create());
 
-
+        mainmenu.add(vpb);
+        
         // Add all the parent submenus to the traditionalmenu base.
-        traditionalmenu.add(playpausemenu);
-        traditionalmenu.add(volumemenu);
-        traditionalmenu.add(settingsmenu);
-        traditionalmenu.add(multioptionsmenu);
-        traditionalmenu.add(vpb);
+        traditionalmenu.add(mainmenu);
 
         return traditionalmenu;
     }

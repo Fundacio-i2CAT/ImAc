@@ -15,9 +15,8 @@
         * _ManifestParser
         * _Sync
         * subController
-        * vpbCtrl
+        * mainMenuCtrl
         * scene
-        * playpauseCtrl
     
     FUNCTIONALITIES:
         * init = function()    --> Initialize the player contents
@@ -292,8 +291,8 @@ VideoController = function() {
                 if ( _NonCont ) subController.updateSLByTime( listOfVideoContents[0].vid.currentTime );
                 if( scene.getObjectByName( "video-progress-bar" ) && scene.getObjectByName( "video-progress-bar" ).visible )
                 {
-                    vpbCtrl.updatePlayProgressBar();  
-                    playpauseCtrl.updatePlayOutTime();   
+                    mainMenuCtrl.updatePlayProgressBar();  
+                    mainMenuCtrl.updatePlayOutTime();   
                 }
                 if ( Math.trunc(listOfVideoContents[0].vid.currentTime)%10 == 0 && firtsIteration ) 
                 {

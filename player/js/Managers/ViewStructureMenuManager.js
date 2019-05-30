@@ -444,7 +444,7 @@ function ViewStructureMenuManager() {
         vpb_background.position.set( 0, -menuHeight/24, 0.01);
         vpb_background.name = "background-progress";
 
-        let totaltime = VideoController.getPlayoutTime(VideoController.getListOfVideoContents()[0].vid.duration);
+        let totaltime = VideoController.getPlayoutTime(VideoController.getListOfVideoContents()[0].vid.duration) || list_contents[demoId].duration;
         
         var videoTotalTime = new InteractiveElementModel();
         videoTotalTime.width = 0;

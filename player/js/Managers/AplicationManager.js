@@ -38,11 +38,6 @@ function AplicationManager()
 		renderer.setSize( window.innerWidth, window.innerHeight );
     }
 
-    this.autopos = function(isdImac)
-    {
-        renderer.vr.setCameraOrientation( camera.quaternion,isdImac )
-    };
-
     // Used when autopositioning is activated
     this.enableVR = function()
     {

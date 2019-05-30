@@ -88,12 +88,14 @@ function MainMenuController() {
      * @class      UpdatePlayPauseData (name)
      */
 	function UpdatePlayPauseData(){
-        data.isPaused = VideoController.isPausedById(0);
-        data.isPreviewVisible = false;
-        data.playpauseMenuButtonFunc = function(){ AddVisualFeedbackOnClick(playPauseView, VideoController.isPausedById(0) ? 'play-button' : 'pause-button', function(){ PlayPauseFunc()} )};
-        data.seekForwardMenuButtonFunc = function(){ AddVisualFeedbackOnClick(playPauseView, 'forward-seek-button',  function(){ SeekFunc(true)} )};
-        data.seekBackMenuButtonFunc = function(){ AddVisualFeedbackOnClick(playPauseView, 'back-seek-button',  function(){ SeekFunc(false)} )};
-        data.closeMenuButtonFunc = function(){ AddVisualFeedbackOnClick(playPauseView, 'close-button', function(){ menuMgr.ResetViews()} )};
+        if (data) {
+            data.isPaused = VideoController.isPausedById(0);
+            data.isPreviewVisible = false;
+            data.playpauseMenuButtonFunc = function(){ AddVisualFeedbackOnClick(playPauseView, VideoController.isPausedById(0) ? 'play-button' : 'pause-button', function(){ PlayPauseFunc()} )};
+            data.seekForwardMenuButtonFunc = function(){ AddVisualFeedbackOnClick(playPauseView, 'forward-seek-button',  function(){ SeekFunc(true)} )};
+            data.seekBackMenuButtonFunc = function(){ AddVisualFeedbackOnClick(playPauseView, 'back-seek-button',  function(){ SeekFunc(false)} )};
+            data.closeMenuButtonFunc = function(){ AddVisualFeedbackOnClick(playPauseView, 'close-button', function(){ menuMgr.ResetViews()} )};
+        }
     };
 
     /**
@@ -203,10 +205,12 @@ function MainMenuController() {
      * @class      UpdateVideoProgressBarData (name)
      */
     function UpdateVideoProgressBarData(){
-        data.videoPlayOutTimeText = VideoController.getPlayoutTime(VideoController.getListOfVideoContents()[0].vid.currentTime) || list_contents[demoId].duration;
-        data.playScaleX  = updatePlayProgressScale();
-        data.sliderPositionX = updateSliderPosition();
-        data.playPositionX = updatePlayProgressPosition();
+        if (data) {
+            data.videoPlayOutTimeText = VideoController.getPlayoutTime(VideoController.getListOfVideoContents()[0].vid.currentTime);
+            data.playScaleX  = updatePlayProgressScale();
+            data.sliderPositionX = updateSliderPosition();
+            data.playPositionX = updatePlayProgressPosition();
+        }
     }
 
 
@@ -232,7 +236,7 @@ function MainMenuController() {
      */
     this.updatePlayOutTime = function(){
         UpdatePlayPauseData();
-        playPauseView.UpdateView(data);
+        if (playPauseView) playPauseView.UpdateView(data);
     };
 
     /**
@@ -381,7 +385,7 @@ function MainMenuController() {
      */
     this.updatePlayProgressBar = function(){
         UpdateVideoProgressBarData();
-        videoProgressBarView.UpdateView(data);
+        if (videoProgressBarView) videoProgressBarView.UpdateView(data);
     }
 
     /**

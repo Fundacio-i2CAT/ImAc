@@ -7,7 +7,7 @@ function runDemo()
 
     _moData.createPointer();
 
-    var xz = _moData.getPlaneImageMesh(16/2,9/2,'./img/menu_72ppp.png', 'banner', 6);
+    var xz = _moData.getPlaneImageMesh(16/2,9/2,'./img/banner_menu/' + localStorage.ImAc_language + '_150pp.png', 'banner', 6);
 
     if ( !document.cookie.includes('ImAcCookie') )
     {

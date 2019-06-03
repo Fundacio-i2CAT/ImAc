@@ -11,6 +11,7 @@ function MenuManager() {
     let actualCtrl;
     let menuActivationElement;
     let optActiveIndex;
+    let menu;
 
 /**
  * { function_description }
@@ -28,8 +29,26 @@ function MenuManager() {
         
         menuParent = _isHMD ? scene : camera;
 
-        addMenuToParent();
-        InitAllCtrl();
+        //Add the menu to the parent element.
+        if (_isHMD) {
+            console.log("This function is used. But is it vital?");
+            traditionalmenu.scale.set( 0.8, 0.8, 0.8 );
+        }
+        menuParent.add(vwStrucMMngr.TraditionalMenu('traditional-menu'));
+        menu = menuParent.getObjectByName('traditional-menu');
+
+        //Depending on the menu type the menu is attached to the menuParent or to the traditional menu
+        if(menuMgr.getMenuType() == 2){
+            menu.add(vwStrucMMngr.TraditionalOptionMenu('trad-option-menu'));
+        } else {
+            menuParent.add(vwStrucMMngr.TraditionalOptionMenu('trad-option-menu'));
+        }
+
+        mainMenuCtrl = new MainMenuController();
+        controllers.push(mainMenuCtrl);
+
+        SettingsOptionCtrl = new SettingsOptionMenuController();
+        controllers.push(SettingsOptionCtrl);
 
         menuMgr.ResetViews();
     }
@@ -117,8 +136,12 @@ function MenuManager() {
         //playpauseCtrl.playAllFunc();
         mainMenuCtrl.playAllFunc();
 
-        if(menuParent.getObjectByName('traditional-menu')) {
-            menuParent.getObjectByName('traditional-menu').visible = false;
+        if(menu) {
+            menu.visible = false;
+            //If the Enhaced menu is selected on initial settings, hide menu options which is not attached to the proper menu.
+            if(menuMgr.getMenuType() == 1){
+                menuParent.getObjectByName('trad-option-menu').visible = false;
+            } 
         }
 
         if(menuActivationElement){ 
@@ -184,49 +207,63 @@ function MenuManager() {
         SettingsOptionCtrl.Exit();
 
         if (_isHMD) {
-            resetMenuPosition( menuParent.getObjectByName('traditional-menu') )
+            resetMenuPosition( menu )
         }
 
-        menuParent.getObjectByName('traditional-menu').visible = true;
+        menu.visible = true;
     }
 
 /**
- * Opens a preview.
+ * Opens a preview during 2000ms. This function pauses the video so the user does not loose any content time.
+ * The preview consists of a pre visualitzation of the enabled access service users settings.
  *
  * @function      OpenPreview (name)
  */
     this.OpenPreview = function() {
-        let isSubmenuOpen = false;
+        let isSubmenuOpen = false; //Settings option menu state;
+        let autoPause = false; //Has the video been paused due to opening the preview.
+        let previewMesh = vwStrucMMngr.Preview('preview'); //Preview structre
+        previewCtrl = new PreviewController(); //Preview controller from the model (MVC);
+
+        //Save the settings options menu state (open/close) in isSubmenuOpen variable;
         if(actualCtrl && actualCtrl.getMenuName() === 'trad-option-menu') {
             isSubmenuOpen = true;
         }
-        VideoController.pauseAll();
-
-        let previewMesh = vwStrucMMngr.Preview('preview');
-        camera.add(previewMesh)
-        
-        previewCtrl = new PreviewController();
-
+        //If the video is already paused, do not apuse it again
+        if(!VideoController.isPausedById(demoId)){
+            autoPause = true; //The auto pasue in preview state is active.
+            VideoController.pauseAll(); //Auto pause the video during the preview.
+        }
+        //Add the preview element to the camera so the preview is allways centered in the user FoV.
+        camera.add(previewMesh);
+        //Remove all the menu elements from the camera/scene;
         menuMgr.ResetViews();
+        //Start the preview visualitzation.
         previewCtrl.Init();
+        //Return to the previous menu state in 2000ms.
         setTimeout(function() {
+            //Close the preview.
             previewCtrl.Exit();
-            VideoController.playAll();
+            //Only play if the auto pause is active. If the video was paused in first state do not play it.
+            if(autoPause){
+                VideoController.playAll();
+            }
+            //Start the menu in the first state.
             menuMgr.initFirstMenuState();
+            //Open the settings option menu if it was already open before opening the preview.
             if(isSubmenuOpen){
               menuMgr.Load(SettingsOptionCtrl);  
             } 
+            //Show subtitles if they where enabled.
             if(scene.getObjectByName("subtitles")){
                 scene.getObjectByName("subtitles").visible = subController.getSubtitleEnabled();
             }
-
+            //Show signer if it was enabled.
             if(scene.getObjectByName("sign")) {
                 scene.getObjectByName("sign").visible = subController.getSignerEnabled();
             }
-            
-        },2000);
+        },3000);
     }
-
 
 
 /**
@@ -255,25 +292,6 @@ function MenuManager() {
     /**
  * { function_description }
  *
- * @function      InitAllCtrl (name)
- */
-    function InitAllCtrl(){
-        controllers = [];
-
-        mainMenuCtrl = new MainMenuController();
-        controllers.push(mainMenuCtrl);
-
-        SettingsOptionCtrl = new SettingsOptionMenuController();
-        controllers.push(SettingsOptionCtrl);
-
-        controllers.forEach(function(controller){
-            controller
-        });
-    }
-
-    /**
- * { function_description }
- *
  * @param      {<type>}  object  The object
  */
     function resetMenuPosition(object) {
@@ -283,25 +301,5 @@ function MenuManager() {
 
         object.position.x = Math.sin(-camera.rotation.y)*67;
         object.position.z = -Math.cos(camera.rotation.y)*67;
-    }
-
-/**
- * Adds a menu to parent.
- */
-    function addMenuToParent() {
-        const traditionalmenu = vwStrucMMngr.TraditionalMenu('traditional-menu');
-
-        if (_isHMD) {
-            traditionalmenu.scale.set( 0.8, 0.8, 0.8 );
-        }
-        menuParent.add(traditionalmenu);
-
-        //Depending on the menu type the menu is attached to the menuParent or to the traditional menu
-        if(menuMgr.getMenuType() == 2){
-            traditionalmenu.add(vwStrucMMngr.TraditionalOptionMenu('trad-option-menu'));
-        } else {
-            menuParent.add(vwStrucMMngr.TraditionalOptionMenu('trad-option-menu'));
-        }
-        
     }
 }

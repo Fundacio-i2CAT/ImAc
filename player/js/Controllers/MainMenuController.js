@@ -1,3 +1,51 @@
+/**
+ * The MainMenuController is the one in charge of the initialitzacion and update of the main menu elements:
+ *      -   Play, pause and seek.
+ *      -   Volume level.
+ *      -   Settings and Preview.
+ *      -   Accessibility options.
+ *      -   Video progress bar.
+ *      
+ * The controller has some functions which are shared by all the different group elements.
+ *      - Init()
+ *      - Exit()
+ *      - GetData()
+ *      - AddVisualFeedbackOnClick()
+ *      
+ * For each element group we have individual functions:
+ *      - PlayPause:
+ *          · UpdatePlayPauseData()
+ *          · updatePlayOutTime()
+ *          · pauseAllFunc()
+ *          · playAllFunc()
+ *          · PlayPauseFunc()
+ *          · SeekFunc()
+ *          
+ *      - Volume:
+ *          · UpdateVolumeData()
+ *          · ChangeVolumeFunc() 
+ *          · MuteUnmuteVolumeFunc() 
+ *          · volumeLevelDisplayLogic()
+ *          
+ *      - Settings:
+ *          · UpdateSettingsData()
+ *          
+ *      - Access:
+ *          · UpdateAccessOptionsData():
+ *          . updateAccessOptionsView()
+ *          
+ *      - VPB:
+ *          · UpdateVideoProgressBarData():
+ *          · setSeekingProcess() 
+ *          · getSeekingProcess()
+ *          · updatePlayProgressBar()
+ *          · onClickSeek()
+ *          · updatePlayProgressPosition() 
+ *          · updateSliderPosition() 
+ *          · updatePlayProgressScale()
+ *          
+ * @class      MainMenuController (name)
+ */
 function MainMenuController() {
 
     let data;
@@ -52,7 +100,7 @@ function MainMenuController() {
      * This function 'closes' the submenu page.
      * Removes all the interactive elements from the 'interactiveListObjects' array stated in Managers/InteractionsController.js
      * Hides the viewStructure.
-     * This function is called when closing the menu or when navigating through the different menus in the Enhaced-Accessibility.
+     * This function is called when closing the menu.
      *
      * @function      Exit (name)
      */
@@ -79,6 +127,18 @@ function MainMenuController() {
             data = new MainMenuModel();
         }
         return data;
+    };
+        /**
+     * Adds a visual feedback on click.
+     *
+     * @class      AddVisualFeedbackOnClick (name)
+     * @param      {<type>}    buttonName  The button name
+     * @param      {Function}  callback    The callback
+     */
+    function AddVisualFeedbackOnClick(view, buttonName, callback){
+        data.clickedButtonName = buttonName;
+        view.pressButtonFeedback(data);
+        setTimeout(callback, 300);
     };
 
 
@@ -144,11 +204,13 @@ function MainMenuController() {
      * @class      UpdateAccessOptionsData (name)
      */
     function UpdateAccessOptionsData(){
+        //Save the state of all the accessibility services.
         data.isSTenabled = subController.getSubtitleEnabled();
         data.isSLenabled = subController.getSignerEnabled();
         data.isADenabled = _AudioManager.getADEnabled();
         data.isASTenabled = _AudioManager.getASTEnabled();
 
+        //Save the state of availability of all the accessibility services.
         data.isSTavailable = subController.checkisSubAvailable();
         data.isSLavailable = subController.checkisSignAvailable();
         data.isADavailable = _AudioManager.checkisADAvailable();
@@ -157,19 +219,25 @@ function MainMenuController() {
         //SUBTITLES
         data.subtitlesButtonFunc =  function() {
             AddVisualFeedbackOnClick(accessOptionsView, data.isSTenabled ? 'show-st-button' : 'disable-st-button', function(){
+                //Change the state of the subtiles from enabled to disabled and viceversa.
                 data.isSTenabled = !data.isSTenabled;
                 subController.switchSubtitles(data.isSTenabled);
+                
                 accessOptionsView.UpdateAccessibilityOptionsIconStatusView(data);
                 // Add interactivity to visible elements and remove interactivity to none visible elements.
                 menuMgr.AddInteractionIfVisible(viewStructure);
+                //If subtitles are disabled signer goes back to bottom position.
+                subController.setSignerPosition( subController.getSignerPosition().x, data.isSTenabled ? subController.getSubPosition().y : -1 );
             });
         };
 
         //SIGN LANGUAGE
         data.signlanguageButtonFunc = function() {
             AddVisualFeedbackOnClick(accessOptionsView, data.isSLenabled ? 'show-sl-button' : 'disable-sl-button',function(){
+                //Change the state of the signer from enabled to disabled and viceversa.
                 data.isSLenabled = !data.isSLenabled;
                 subController.switchSigner(data.isSLenabled);
+                
                 accessOptionsView.UpdateAccessibilityOptionsIconStatusView(data);
                 // Add interactivity to visible elements and remove interactivity to none visible elements.
                 menuMgr.AddInteractionIfVisible(viewStructure);
@@ -179,8 +247,10 @@ function MainMenuController() {
         //AUDIO DESCRIPTION
         data.audioDescriptionButtonFunc = function() {
             AddVisualFeedbackOnClick(accessOptionsView, data.isADenabled ? 'show-ad-button' : 'disable-ad-button',function(){
+                //Change the state of the audio description from enabled to disabled and viceversa.
                 data.isADenabled = !data.isADenabled;
                 _AudioManager.switchAD(data.isADenabled);
+                
                 accessOptionsView.UpdateAccessibilityOptionsIconStatusView(data);
                 // Add interactivity to visible elements and remove interactivity to none visible elements.
                 menuMgr.AddInteractionIfVisible(viewStructure);
@@ -190,8 +260,10 @@ function MainMenuController() {
         //AUDIO SUBTITLES
         data.audioSubtitlesButtonFunc = function() {
             AddVisualFeedbackOnClick(accessOptionsView, data.isASTenabled ? 'show-ast-button' : 'disable-ast-button', function(){
+                //Change the state of the audio subtitles from enabled to disabled and viceversa.
                 data.isASTenabled = !data.isASTenabled;
                 _AudioManager.switchAST(data.isASTenabled);
+                
                 accessOptionsView.UpdateAccessibilityOptionsIconStatusView(data);
                 // Add interactivity to visible elements and remove interactivity to none visible elements.
                 menuMgr.AddInteractionIfVisible(viewStructure);
@@ -214,18 +286,7 @@ function MainMenuController() {
     }
 
 
-    /**
-     * Adds a visual feedback on click.
-     *
-     * @class      AddVisualFeedbackOnClick (name)
-     * @param      {<type>}    buttonName  The button name
-     * @param      {Function}  callback    The callback
-     */
-    function AddVisualFeedbackOnClick(view, buttonName, callback){
-        data.clickedButtonName = buttonName;
-        view.pressButtonFeedback(data);
-        setTimeout(callback, 300);
-    };
+
 
 /*-----------------------------------------------------------------------
                     PlayPause controller functions

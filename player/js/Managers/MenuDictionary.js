@@ -69,7 +69,7 @@ MenuDictionary = function() {
     //                   ||                        ||                        ||                        ||                        ||
         left:            { ca: 'Esquerra'          , de: 'Links'             , en: 'Left'              , es: 'Izquierda'         },
     //                   ||                        ||                        ||                        ||                        ||
-        medium:          { ca: 'Mitjana'           , de: 'Mittel'            , en: 'Medium'            , es: 'Mediana'           },
+        medium:          { ca: 'Mitjana'           , de: 'Mittel'            , en: 'Medium'            , es: 'Mediano'           },
     //                   ||                        ||                        ||                        ||                        ||
         menutype:        { ca: 'Tipus menú'        , de: 'Menütyp'           , en: 'Menu type'         , es: 'Tipo menú'         },
     //                   ||                        ||                        ||                        ||                        ||
@@ -107,7 +107,7 @@ MenuDictionary = function() {
     //                   ||                        ||                        ||                        ||                        ||
         size:            { ca: 'Mida'              , de: 'Größe'             , en: 'Size'              , es: 'Tamaño'            },
     //                   ||                        ||                        ||                        ||                        ||
-        small:           { ca: 'Petita'            , de: 'Klein'             , en: 'Small'             , es: 'Pequeña'           },
+        small:           { ca: 'Petita'            , de: 'Klein'             , en: 'Small'             , es: 'Pequeño'           },
     //                   ||                        ||                        ||                        ||                        ||
         static:          { ca: 'Estàtic'            , de: 'Statisch'         , en: 'Static'            , es: 'Estático'          },
     //                   ||                        ||                        ||                        ||                        ||

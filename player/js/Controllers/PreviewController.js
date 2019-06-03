@@ -105,7 +105,7 @@ function PreviewController() {
 	function UpdateData(){
         data.isArrowsVisible = false;
         data.isRadarVisible = false;
-    	data.subtitlesPreview = setSubtitlePreview();
+    	data.subtitlesPreview = setSubtitlePreview(MenuDictionary.getMainLanguage());
     	data.areaSTPreview = setAreaSTPreview();
         data.signerPreview = setSignerPreview();
         data.areaSLPreview = setAreaSLPreview();
@@ -117,24 +117,90 @@ function PreviewController() {
      *
      * @return     {<type>}  { description_of_the_return_value }
      */
-    function setSubtitlePreview(){
-    	let subConfig = subController.getSubtitleConfig();
-    	let subPreviewText = "";
+    function setSubtitlePreview(lang){
 
-    	if(subController.getSubSize() == 1){
-    		subPreviewText += "Large ";
-    	} else if(subController.getSubSize() == 0.8){
-    		subPreviewText += "Medium ";
-    	} else subPreviewText += "Small ";
+        let subConfig = subController.getSubtitleConfig();
+        let subPreviewText = "";
+        let previewSTtext;
 
-    	subPreviewText += (subController.getSubPosition.y > 0) ? "top" : "bottom";
+        switch(lang){
 
-        let previewSTtext = [{
-            text: subPreviewText+" preview subtitle text",
-            color: "rgb(255,255,255)",
-            backgroundColor: "rgb(0,0,0)"
-        }]
+            case 'en': 
+            {
+                if(subController.getSubSize() == 1){
+                    subPreviewText += "Large ";
+                } else if(subController.getSubSize() == 0.8){
+                    subPreviewText += "Medium ";
+                } else subPreviewText += "Small ";
 
+                subPreviewText += (subController.getSubPosition.y > 0) ? "top" : "bottom";
+
+                previewSTtext = [{
+                    text: subPreviewText+" preview subtitle text",
+                    color: "rgb(255,255,255)",
+                    backgroundColor: "rgb(0,0,0)"
+                }];
+                break;
+            }
+
+            case 'de': 
+            {
+                if(subController.getSubSize() == 1){
+                    subPreviewText += "Large ";
+                } else if(subController.getSubSize() == 0.8){
+                    subPreviewText += "Medium ";
+                } else subPreviewText += "Small ";
+
+                subPreviewText += (subController.getSubPosition.y > 0) ? "top" : "bottom";
+
+                previewSTtext = [{
+                    text: subPreviewText+" preview subtitle text",
+                    color: "rgb(255,255,255)",
+                    backgroundColor: "rgb(0,0,0)"
+                }];
+                break;
+            }
+
+            case 'es': 
+            {
+                subPreviewText = "Previsualización de los subtitols ";
+                if(subController.getSubSize() == 1){
+                    subPreviewText += "grandes y posicion ";
+                } else if(subController.getSubSize() == 0.8){
+                    subPreviewText += "medianos y posicion ";
+                } else subPreviewText += "pequeños y posicion ";
+
+                subPreviewText += (subController.getSubPosition.y > 0) ? "arriba" : "abajo";
+
+                previewSTtext = [{
+                    text: subPreviewText,
+                    color: "rgb(255,255,255)",
+                    backgroundColor: "rgb(0,0,0)"
+                }];
+                break;
+            }
+
+            case 'ca': 
+            {
+                subPreviewText = "Previsualització del subtitols mida ";
+                if(subController.getSubSize() == 1){
+                    subPreviewText += "gran i posicion ";
+                } else if(subController.getSubSize() == 0.8){
+                    subPreviewText += "mitjana i posicion ";
+                } else subPreviewText += "petita i posicion ";
+
+                subPreviewText += (subController.getSubPosition.y > 0) ? "superior" : "inferior";
+
+                previewSTtext = [{
+                    text: subPreviewText,
+                    color: "rgb(255,255,255)",
+                    backgroundColor: "rgb(0,0,0)"
+                }];
+                break;
+            }
+        }
+
+    	
         subtitleMesh = _moData.getPreviewSubtitleMesh( previewSTtext, subConfig);
         subtitleMesh.name = "subtitlespreview";
 

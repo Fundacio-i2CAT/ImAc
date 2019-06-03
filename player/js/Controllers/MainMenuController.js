@@ -275,7 +275,7 @@ function MainMenuController() {
      * @class      UpdateVideoProgressBarData (name)
      */
     function UpdateVideoProgressBarData(){
-        data.videoPlayOutTimeText = VideoController.getPlayoutTime(VideoController.getListOfVideoContents()[0].vid.currentTime) || list_contents[demoId].duration;
+        data.videoPlayOutTimeText = VideoController.getPlayoutTime(VideoController.getListOfVideoContents()[0].vid.currentTime);
         data.playScaleX  = updatePlayProgressScale();
         data.sliderPositionX = updateSliderPosition();
         data.playPositionX = updatePlayProgressPosition();

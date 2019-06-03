@@ -236,13 +236,13 @@ const settigsVoiceControl = { title: 'VoiceControl', icon: './img/menu/voice_con
  * @property {function} options[].function     Function executed when option is clicked.
  */
 const settingsPointerSize = { title: 'PointerSize', icon: './img/menu/pointer_size.png', parent: generalSettings, final: true, options: [
-    { optId: 'settingsMenuPointerLarge', text: 'Large', 
-        default: function(){ return _pointerSize == 2 },
+    { optId: 'settingsMenuPointerSmall', text: 'Small', 
+        default: function(){ return _pointerSize == 0.6 },
         function:  function(){ 
-            MenuFunctionsManager.getChangePointerSizeFunc(2);
+            MenuFunctionsManager.getChangePointerSizeFunc(0.6);
             SettingsOptionCtrl.setChildColumnActiveOpt(settingsPointerSize.options[0].optId);
-        } 
-    }, 
+        }
+    },
     { optId: 'settingsMenuPointerMedium', text: 'Medium', 
         default: function(){ return _pointerSize == 1 },
         function:  function(){ 
@@ -250,12 +250,12 @@ const settingsPointerSize = { title: 'PointerSize', icon: './img/menu/pointer_si
             SettingsOptionCtrl.setChildColumnActiveOpt(settingsPointerSize.options[1].optId);
         } 
     }, 
-    { optId: 'settingsMenuPointerSmall', text: 'Small', 
-        default: function(){ return _pointerSize == 0.6 },
+    { optId: 'settingsMenuPointerLarge', text: 'Large', 
+        default: function(){ return _pointerSize == 2 },
         function:  function(){ 
-            MenuFunctionsManager.getChangePointerSizeFunc(0.6);
+            MenuFunctionsManager.getChangePointerSizeFunc(2);
             SettingsOptionCtrl.setChildColumnActiveOpt(settingsPointerSize.options[2].optId);
-        }
+        } 
     }]
 };
 

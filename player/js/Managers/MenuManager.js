@@ -11,6 +11,7 @@ function MenuManager() {
     let actualCtrl;
     let menuActivationElement;
     let optActiveIndex;
+    let menu;
 
 /**
  * { function_description }
@@ -28,8 +29,26 @@ function MenuManager() {
         
         menuParent = _isHMD ? scene : camera;
 
-        addMenuToParent();
-        InitAllCtrl();
+        //Add the menu to the parent element.
+        if (_isHMD) {
+            console.log("This function is used. But is it vital?");
+            traditionalmenu.scale.set( 0.8, 0.8, 0.8 );
+        }
+        menuParent.add(vwStrucMMngr.TraditionalMenu('traditional-menu'));
+        menu = menuParent.getObjectByName('traditional-menu');
+
+        //Depending on the menu type the menu is attached to the menuParent or to the traditional menu
+        if(menuMgr.getMenuType() == 2){
+            menu.add(vwStrucMMngr.TraditionalOptionMenu('trad-option-menu'));
+        } else {
+            menuParent.add(vwStrucMMngr.TraditionalOptionMenu('trad-option-menu'));
+        }
+
+        mainMenuCtrl = new MainMenuController();
+        controllers.push(mainMenuCtrl);
+
+        SettingsOptionCtrl = new SettingsOptionMenuController();
+        controllers.push(SettingsOptionCtrl);
 
         menuMgr.ResetViews();
     }
@@ -117,8 +136,12 @@ function MenuManager() {
         //playpauseCtrl.playAllFunc();
         mainMenuCtrl.playAllFunc();
 
-        if(menuParent.getObjectByName('traditional-menu')) {
-            menuParent.getObjectByName('traditional-menu').visible = false;
+        if(menu) {
+            menu.visible = false;
+            //If the Enhaced menu is selected on initial settings, hide menu options which is not attached to the proper menu.
+            if(menuMgr.getMenuType() == 1){
+                menuParent.getObjectByName('trad-option-menu').visible = false;
+            } 
         }
 
         if(menuActivationElement){ 
@@ -184,10 +207,10 @@ function MenuManager() {
         SettingsOptionCtrl.Exit();
 
         if (_isHMD) {
-            resetMenuPosition( menuParent.getObjectByName('traditional-menu') )
+            resetMenuPosition( menu )
         }
 
-        menuParent.getObjectByName('traditional-menu').visible = true;
+        menu.visible = true;
     }
 
 /**
@@ -239,7 +262,7 @@ function MenuManager() {
             if(scene.getObjectByName("sign")) {
                 scene.getObjectByName("sign").visible = subController.getSignerEnabled();
             }
-        },2000);
+        },3000);
     }
 
 
@@ -269,25 +292,6 @@ function MenuManager() {
     /**
  * { function_description }
  *
- * @function      InitAllCtrl (name)
- */
-    function InitAllCtrl(){
-        controllers = [];
-
-        mainMenuCtrl = new MainMenuController();
-        controllers.push(mainMenuCtrl);
-
-        SettingsOptionCtrl = new SettingsOptionMenuController();
-        controllers.push(SettingsOptionCtrl);
-
-        controllers.forEach(function(controller){
-            controller
-        });
-    }
-
-    /**
- * { function_description }
- *
  * @param      {<type>}  object  The object
  */
     function resetMenuPosition(object) {
@@ -297,25 +301,5 @@ function MenuManager() {
 
         object.position.x = Math.sin(-camera.rotation.y)*67;
         object.position.z = -Math.cos(camera.rotation.y)*67;
-    }
-
-/**
- * Adds a menu to parent.
- */
-    function addMenuToParent() {
-        const traditionalmenu = vwStrucMMngr.TraditionalMenu('traditional-menu');
-
-        if (_isHMD) {
-            traditionalmenu.scale.set( 0.8, 0.8, 0.8 );
-        }
-        menuParent.add(traditionalmenu);
-
-        //Depending on the menu type the menu is attached to the menuParent or to the traditional menu
-        if(menuMgr.getMenuType() == 2){
-            traditionalmenu.add(vwStrucMMngr.TraditionalOptionMenu('trad-option-menu'));
-        } else {
-            menuParent.add(vwStrucMMngr.TraditionalOptionMenu('trad-option-menu'));
-        }
-        
     }
 }

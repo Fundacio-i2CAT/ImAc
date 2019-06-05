@@ -5,6 +5,7 @@
 THREE.MediaObjectData = function () {
 
     var subtitleFont; 
+    var ST_font = "500 40px Roboto, Arial";
 
 //************************************************************************************
 // Public Setters
@@ -72,19 +73,17 @@ THREE.MediaObjectData = function () {
     this.getSignVideoMesh = function(url, name, config) 
     {
         var group = new THREE.Group();
-// TODO modify all config.size/20 to 1
-config.size=20;
-        var geometry = new THREE.PlaneGeometry( config.size, config.size );
-        var plane = getVideoMesh( geometry, url, name, 1 );
 
+config.size=20;
+        var geometry = new THREE.PlaneGeometry( 20, 20 );
+        var plane = getVideoMesh( geometry, url, name, 1 );
 
         var material = new THREE.MeshBasicMaterial( { color: 0x000000,  transparent: true, opacity: 0.5 } );
         var mesh = new THREE.Mesh( new THREE.PlaneGeometry( 38, 8.4 ), material );
 
-        setArrowToMesh( mesh, 120/6*config.size/20,config.size/20, 0xffffff, 0x000000, 0, true ) 
-        mesh.position.y = -config.size/2 - 4.4/2 * config.size/20;
-        //mesh.scale.set( 0.97*70/130, 0.97*70/130, 1 )
-        mesh.scale.set( 0.98*config.size/20*70/130, 0.98*config.size/20*70/130, 1 )
+        setArrowToMesh( mesh, 120/6, 1, 0xffffff, 0x000000, 0, true ) 
+        mesh.position.y = -10 -4.4/2;
+        mesh.scale.set( 0.98*70/130, 0.98*70/130, 1 )
         mesh.children[0].visible = false;
         mesh.children[1].visible = false;
         mesh.visible = config.signIndicator == 'arrow' ? true : false;
@@ -96,7 +95,6 @@ config.size=20;
         plane.position.x = config.x;
         plane.position.y = ( !_SLsubtitles && subController.checkSubtitleEnabled(true) ) ? config.y : config.y +3.4;
 
-        //return plane;
         group.add( plane );
 
         if ( _isHMD ) group.rotation.z = -camera.rotation.z;
@@ -104,42 +102,6 @@ config.size=20;
         return group;
     };
 
-    this.getSubtitleMesh = function(textList, config)
-    {
-        console.error('Deprecated function (getSubtitleMesh), please change to getEmojiSubtitleMesh')
-        /*var group = new THREE.Group();
-
-        for ( var i = 0, len = textList.length; i < len; ++i ) 
-        {
-            config.x = config.textAlign == 0 ? 0 : config.textAlign == -1 ? -config.size : config.size;
-
-            var mesh = getSubMesh( textList[i], config, config.opacity, len, i );
-            mesh.name = i;
-
-            group.add( mesh );
-        }
-        config.x = config.textAlign == 0 ? 0 : config.textAlign == -1 ? -config.size : config.size;
-
-        var font = "500 40px Roboto, Arial";
-
-        var mesh = getEmojiSubMesh( textList, config, font );
-        mesh.name = textList.length;
-
-        group.add( mesh );
-
-        if ( _isHMD ) group.rotation.z = -camera.rotation.z;
-        
-        return group;*/
-
-        var group = new THREE.Group();
-        var font = "500 40px Roboto, Arial";
-
-        group.add( getEmojiSubMesh( textList, config, font ) );
-
-        if ( _isHMD ) group.rotation.z = -camera.rotation.z;
-        
-        return group;
-    };
 
     this.getSLSubtitleMesh = function(textList, config, slconfig)
     {
@@ -149,8 +111,6 @@ config.size=20;
         var plane = new THREE.Mesh( new THREE.PlaneGeometry( slconfig.size, slconfig.size ), material );
 
         var group2 = new THREE.Group();
-        var font = "500 40px Roboto, Arial";
-
 
         var posY = ( 0.82*60/2-20/2 ) *-1;
 
@@ -159,7 +119,7 @@ config.size=20;
         config.z=0;
         config.size = 0.8*0.97;
 
-        group2.add(  getEmojiSubMesh3( textList, config, font ) );
+        group2.add(  getEmojiSubMesh3( textList, config, ST_font ) );
 
         group2.position.y = -slconfig.size/2 - 1.8;
         plane.add( group2 );
@@ -182,9 +142,8 @@ config.size=20;
     this.getPreviewSubtitleMesh = function(textList, config)
     {
         var group = new THREE.Group();
-        var font = "500 40px Roboto, Arial";
 
-        group.add( getPreviewSubMesh( textList, config, font ) );
+        group.add( getPreviewSubMesh( textList, config, ST_font ) );
 
         if ( _isHMD ) group.rotation.z = -camera.rotation.z;
         
@@ -195,9 +154,8 @@ config.size=20;
     this.getEmojiSubtitleMesh = function(textList, config)
     {
         var group = new THREE.Group();
-        var font = "500 40px Roboto, Arial";
 
-        group.add( getEmojiSubMesh( textList, config, font ) );
+        group.add( getEmojiSubMesh( textList, config, ST_font ) );
 
         if ( _isHMD ) group.rotation.z = -camera.rotation.z;
         
@@ -208,7 +166,6 @@ config.size=20;
     this.getExpEmojiSubtitleMesh = function(textList, config)
     {
         var group = new THREE.Group();
-        var font = "500 40px Roboto, Arial";
 
         var difPosition = config.lon ? getViewDifPositionTest( -config.lon, camera.fov ) : 0;
 
@@ -255,7 +212,7 @@ config.size=20;
         config.y = config.z * Math.sin( Math.radians( config.lat ) );
         config.z = config.z * Math.cos( Math.radians( config.lat ) );
 
-        var stmesh = getEmojiSubMesh( textList, config, font, true ) 
+        var stmesh = getEmojiSubMesh( textList, config, ST_font, true ) 
 
         if ( needajust ) {
             stmesh.position.x = config.z * Math.cos( Math.radians( lon-90 +config.lon) ) * Math.cos( Math.radians( -lat -20) );
@@ -272,82 +229,15 @@ config.size=20;
         return group;
     };
 
-    this.getExpSubtitleMesh = function(textList, config)
-    {
-        var group = new THREE.Group();
-        var group1 = new THREE.Group();
-        var group2 = new THREE.Group();
-        var group3 = new THREE.Group();
-
-        for ( var i = 0, len = textList.length; i < len; ++i ) 
-        {
-            config.x = config.textAlign == 0 ? 0 : config.textAlign == -1 ? -config.size : config.size;
-
-            var mesh = getSubMesh( textList[i], config, config.opacity, len, i );
-            mesh.name = i;
-            if (isLookAt) mesh.lookAt(new THREE.Vector3(0, 0, 0)); 
-
-            group1.add( mesh );
-        }
-
-        for ( var i = 0, len = textList.length; i < len; ++i ) 
-        {
-            config.x = config.textAlign == 0 ? 0 : config.textAlign == -1 ? -config.size : config.size;
-
-            var mesh = getSubMesh( textList[i], config, config.opacity, len, i );
-            mesh.name = i;
-            if (isLookAt) mesh.lookAt(new THREE.Vector3(0, 0, 0)); 
-
-            group2.add( mesh );
-        }
-
-        for ( var i = 0, len = textList.length; i < len; ++i ) 
-        {
-            config.x = config.textAlign == 0 ? 0 : config.textAlign == -1 ? -config.size : config.size;
-
-            var mesh = getSubMesh( textList[i], config, config.opacity, len, i );
-            mesh.name = i;
-            if (isLookAt) mesh.lookAt(new THREE.Vector3(0, 0, 0)); 
-
-            group3.add( mesh );
-        }
-
-        group2.rotation.y = Math.radians( 120 );
-        group3.rotation.y = Math.radians( 240 );
-
-        group.add( group1 );
-        group.add( group2 );
-        group.add( group3 );
-        
-        return group;
-    };
-
-    this.getRadarMesh = function()
+    this.getRadarMesh = function(img, name)
     {
         var imgGeometry = new THREE.PlaneGeometry( 14, 14 );
-        var mesh = getImageMesh( imgGeometry, './img/radar_7.png', 'radar', 3 );
+        var mesh = getImageMesh( imgGeometry, img, name, 3 );
 
         mesh.position.x = _isHMD ? 0.8*( 1.48*subController.getSubArea()/2-14/2 ) : ( 1.48*subController.getSubArea()/2-14/2 );
         mesh.position.y = _isHMD ? 0.09*( 0.82*subController.getSubArea()/2-14/2 ) * subController.getSubPosition().y : ( 0.82*subController.getSubArea()/2-14/2 ) * subController.getSubPosition().y;
 
         mesh.position.z = -76.001;
-
-        mesh.name = 'radarIndicartor';
-
-        return mesh;
-    };
-
-    this.getIconRadarMesh = function()
-    {
-        var imgGeometry = new THREE.PlaneGeometry( 14, 14 );
-        var mesh = getImageMesh( imgGeometry, './img/area_7.png', 'radar3', 3 );
-
-        mesh.position.x = _isHMD ? 0.8*( 1.48*subController.getSubArea()/2-14/2 ) : ( 1.48*subController.getSubArea()/2-14/2 );
-        mesh.position.y = _isHMD ? 0.09*( 0.82*subController.getSubArea()/2-14/2 ) * subController.getSubPosition().y : ( 0.82*subController.getSubArea()/2-14/2 ) * subController.getSubPosition().y;
-
-        mesh.position.z = -76.001;
-
-        mesh.name = 'radarIcon';
 
         return mesh;
     };
@@ -398,35 +288,6 @@ config.size=20;
         scene.add( pointer1 );
     };
 
-    this.createCastShadows = function()
-    {
-        applyDown = function( obj, key, value ) {
-            obj[ key ] = value
-            if( obj.children !== undefined && obj.children.length > 0 ) {
-                obj.children.forEach( function( child ){
-                    applyDown( child, key, value )
-                })
-            }
-        }
-        castShadows = function( obj ) {
-            applyDown( obj, 'castShadow', true )
-        }
-        receiveShadows = function( obj ) {
-            applyDown( obj, 'receiveShadow', true )
-        }
-
-        var light = new THREE.DirectionalLight( 0xFFFFFF, 1, 1000 )
-        light.position.set(  1, 100, -0.5 )
-        light.castShadow = true
-        light.shadow.mapSize.width  = 2048
-        light.shadow.mapSize.height = 2048
-        light.shadow.camera.near    =    1
-        light.shadow.camera.far     =   1200
-        scene.add( light )
-
-        scene.add( new THREE.HemisphereLight( 0x909090, 0x404040 ))
-    };
-
 
 //************************************************************************************
 // Experimental
@@ -462,9 +323,7 @@ config.size=20;
 
         //Create the final object to add to the scene
         let curveObject = new THREE.Line( geometry, material );
-        return curveObject
-
-        
+        return curveObject      
     }
 
     this.getMenuTextMesh = function(text, size, color, name, func, cw, ch)
@@ -507,170 +366,9 @@ config.size=20;
         return getImageMesh( geometry, url, name, order );
     };
 
-    this.getPlaneImageMesh2 = function(x, y, z, w, h, url, name, order) 
-    {
-        var geometry = new THREE.PlaneGeometry( w, h );
-        var mesh = getImageMesh( geometry, url, name, order );
-        mesh.position.set(x,y,z)
-
-        return mesh;
-    };
-
     this.getBackgroundMesh = function(w, h, c, o)
     {
         return getBackgroundMesh( w, h, c, o );
-    };
-
-    this.getNextIconMesh = function(w, h, c, r, name)
-    {
-        /* 8x8 Vector points for Next icon:
-                                
-          ___________+h___________
-         |     ____               |
-         |     5   6              |
-         |      \   \             |
-         |       \   \            |
-         |        \   \           |
-        -w        4    1          +w
-         |        /   /           |
-         |       /   /            |
-         |      /   /             |
-         |     3___2              | 
-         |___________-h___________| */
-
-        var nextIconShape = new THREE.Shape();
-
-        nextIconShape.moveTo( w/4, 0 ); //1
-        nextIconShape.quadraticCurveTo ( w/4, 0, -3*w/4, -h );     //1-2
-        nextIconShape.quadraticCurveTo ( -3*w/4, -h, -w, -3*h/4 ); //2-3
-        nextIconShape.quadraticCurveTo ( -w, -3*h/4, -w/4, 0 );    //3-4
-
-        nextIconShape.quadraticCurveTo ( -w/4, 0, -w, 3*h/4);      //4-5
-        nextIconShape.quadraticCurveTo ( -w, 3*h/4, -3*w/4, h );   //5-6
-        nextIconShape.quadraticCurveTo ( -3*w/4, h, w/4, 0);       //6-1
-
-        var coliderMesh = new THREE.Mesh( new THREE.PlaneGeometry(w*2, h*2), new THREE.MeshBasicMaterial({visible: false}));
-        var geometry = new THREE.ShapeGeometry( nextIconShape );
-        var material = new THREE.MeshBasicMaterial( { color: c } );
-        var nextMesh = new THREE.Mesh( geometry, material ) ;
-
-        nextMesh.rotation.z = r;
-        coliderMesh.name = name;
-
-        //interController.addInteractiveObject(coliderMesh);
-        nextMesh.add(coliderMesh);
-
-        return nextMesh;
-    };  
-
-    this.menuLineVerticalDivisions = function(w, h, color, divisions)
-    {
-        var linesMenuGroup =  new THREE.Group();
-        var line;
-        for (var i = 1; i<divisions; i++)
-        {
-            line = getLineMesh( color, new THREE.Vector3(  -w/2+i*w/divisions, h/2, 0 ), new THREE.Vector3( -w/2+i*w/divisions, -h/2, 0 ) );
-            linesMenuGroup.add( line );
-        }
-
-        linesMenuGroup.position.z = 0.05;
-
-        return linesMenuGroup;
-    };
-
-    this.getVerticalLineDivisions = function(w, h, color)
-    {
-        var linesMenuGroup =  new THREE.Group();
-        var line = getLineMesh( color, 
-            new THREE.Vector3( -w/6, h/2, 0 ),
-            new THREE.Vector3( -w/6, -h/2, 0 ) );
-
-        var line2 = line.clone();
-        line2.position.x = 2 * w/6;
-
-        linesMenuGroup.add( line );
-        linesMenuGroup.add( line2 );
-
-        linesMenuGroup.position.z = 0.05;
-
-        return linesMenuGroup;
-    };
-
-
-    this.getHoritzontalLineDivisions = function(w, h, color, numberofdivisions, row)
-    {
-        var linesHoritzontalGroup =  new THREE.Group();
-        var line = getLineMesh( color, 
-                    new THREE.Vector3( -w/6, 0, 0 ),
-                    new THREE.Vector3( w/6, 0, 0 ) );
-
-        switch( numberofdivisions )
-        {
-
-            case 2:
-                if( row > 1 ) line.position.x +=  w/3;
-                linesHoritzontalGroup.add( line );
-                return linesHoritzontalGroup;
-
-            case 3:
-                var line1 = line.clone();
-                var line2 = line.clone();
-                line1.position.y += h/6
-                line2.position.y -= h/6
-                if( row > 1 )
-                    {
-                      line1.position.x +=  w/3;  
-                      line2.position.x +=  w/3;  
-                    } 
-                linesHoritzontalGroup.add(line1);
-                linesHoritzontalGroup.add(line2);
-                return linesHoritzontalGroup;
-
-            case 4:
-                var line2 = line.clone();
-                var line3 = line.clone();
-                line2.position.y += h/4
-                line3.position.y -= h/4
-                if( row > 1 )
-                {
-                  line.position.x += w/3;
-                  line2.position.x += w/3; 
-                  line3.position.x += w/3;  
-                }
-                else if ( row == 0 )
-                {
-                    var line4 = line.clone();
-                    line4.position.x -= w/3;
-                    line4.position.y += h/4;
-                    linesHoritzontalGroup.add(line4);
-                } 
-                linesHoritzontalGroup.add(line);
-                linesHoritzontalGroup.add(line2);
-                linesHoritzontalGroup.add(line3);
-                return linesHoritzontalGroup;
-
-            case 5:
-                var line1 = line.clone();
-                var line2 = line.clone();
-                var line3 = line.clone();
-                var line4 = line.clone();
-
-                line1.position.y += h/8;
-                line2.position.y += 3*h/8;
-                line3.position.y -= h/8;
-                line4.position.y -= 3*h/8;
-
-
-                linesHoritzontalGroup.add(line1);
-                linesHoritzontalGroup.add(line2);
-                linesHoritzontalGroup.add(line3);
-                linesHoritzontalGroup.add(line4);
-
-                return linesHoritzontalGroup;
-
-            default:
-                return linesHoritzontalGroup;
-        }
     };
 
     this.roundedRect = function( ctx, width, height, radius ){
@@ -697,14 +395,6 @@ config.size=20;
         //ctx.lineTo( x + radius, y );
         //ctx.quadraticCurveTo( x, y, x, y + radius );
 
-      return ctx;
-    }
-
-    this.triangleTest = function( ctx, sx , sy, side){
-        ctx.moveTo(sx, sy);
-        ctx.lineTo(sx + side, sy);
-        ctx.lineTo(sx, sy - side);  
-        ctx.lineTo(sx, sy);    
       return ctx;
     }
 
@@ -750,145 +440,6 @@ config.size=20;
         var geometry = new THREE.PlaneGeometry( w, h ); 
         var mesh = new THREE.Mesh( geometry, material );
         mesh.position.z = -0.01;
-
-        return mesh;
-    }
-
-    function getArrowMesh(w, h, c, o)
-    {
-        var arrowShape = new THREE.Shape();
-
-        arrowShape.moveTo( -w/2, -h/4 );
-        arrowShape.quadraticCurveTo ( -w/2, -h/4, -w/2, h/4 );
-        arrowShape.quadraticCurveTo ( -w/2, h/4, 0, h/4 );
-        arrowShape.quadraticCurveTo ( 0, h/4, 0, h/2 );
-        arrowShape.quadraticCurveTo ( 0, h/2, w/2, 0 );
-        arrowShape.quadraticCurveTo ( w/2, 0, 0, -h/2 );
-        arrowShape.quadraticCurveTo ( 0, -h/2, 0, -h/4 );
-        arrowShape.quadraticCurveTo ( 0, -h/4, -w/2, -h/4 );
-
-        var geometry = new THREE.ShapeGeometry( arrowShape );
-        var material = new THREE.MeshBasicMaterial( { color: c, transparent: true } );
-        var mesh = new THREE.Mesh( geometry, material ) ;
-
-        if ( o == 0 )
-        {
-            var geometry = new THREE.Geometry();
-            geometry.vertices.push(
-                new THREE.Vector3( -w/2, -h/4, 0 ),
-                new THREE.Vector3( -w/2, h/4, 0 ),
-                new THREE.Vector3( 0, h/4, 0 ),
-                new THREE.Vector3( 0, h/2, 0 ),
-                new THREE.Vector3( w/2, 0, 0 ),
-                new THREE.Vector3( 0, -h/2, 0 ),
-                new THREE.Vector3( 0, -h/4, 0 ),
-                new THREE.Vector3( -w/2, -h/4, 0 )
-            );
-            var line = new THREE.Line( geometry, new THREE.LineBasicMaterial( { color: 0x000000, linewidth: 1.1 } ) );
-            //line.renderOrder = 6;
-            mesh.add(line)
-        }
-
-        mesh.position.z = 0.1;
-        mesh.visible = false;
-        
-        return mesh;
-    }
-
-    function getSubMesh(t, c, o, l, i)
-    {
-        console.error('Deprecated function (getSubMesh), change to getEmojiSubMesh ');
-
-        var textmaterial = new THREE.MeshBasicMaterial( { color: t.color } );
-        var textShape = new THREE.BufferGeometry();
-        var shapes = subtitleFont.generateShapes( /*'MMMMMWWWWWMMMMMWWWWWMMMMMWWWWWMMMMMQQ'*/t.text, 5*c.size );
-        var geometry = new THREE.ShapeGeometry( shapes );
-        geometry.computeBoundingBox();
-
-        var xMid = geometry.boundingBox.max.x - geometry.boundingBox.min.x;
-
-        textShape.fromGeometry( geometry );
-
-        var textplane = new THREE.Mesh( textShape, textmaterial );
-        textplane.position.x = -xMid/2;
-        textplane.position.y = -2*c.size;
-        textplane.position.z = 0.1;
-
-        var material = new THREE.MeshBasicMaterial( { color: t.backgroundColor, transparent: true, opacity: o } );
-        var geometry = new THREE.PlaneGeometry( xMid+4*c.size, 8.7*c.size ); 
-        var mesh = new THREE.Mesh( geometry, material );
-
-        mesh.add( textplane );
-
-
-        if ( o == 0 )
-        {
-            var matDark = new THREE.LineBasicMaterial( { color: t.backgroundColor,
-                linewidth: 1.1
-            } );
-
-            var holeShapes = [];
-            for ( var j = 0; j < shapes.length; j ++ ) {
-                var shape = shapes[ j ];
-                if ( shape.holes && shape.holes.length > 0 ) {
-                    for ( var k = 0; k < shape.holes.length; k ++ ) {
-                        var hole = shape.holes[ k ];
-                        holeShapes.push( hole );
-                    }
-                }
-            }
-            shapes.push.apply( shapes, holeShapes );
-            var lineText = new THREE.Object3D();
-            for ( var j = 0; j < shapes.length; j ++ ) {
-                var shape = shapes[ j ];
-                var points = shape.getPoints();
-                var geometry = new THREE.BufferGeometry().setFromPoints( points );
-                var lineMesh = new THREE.Line( geometry, matDark );
-                      
-
-                lineText.add( lineMesh );
-            }
-            lineText.position.x = -xMid/2;
-            lineText.position.y = -2*c.size;
-            lineText.position.z = 0.1;
-
-            mesh.add( lineText );
-        }
-
-        if ( i == l-1 && c.subtitleIndicator == 'arrow' )
-        {
-            // right arrow
-            var geometry = new THREE.PlaneGeometry( 6.7*c.size, 6.7*c.size );
-            var arrow = getImageMesh(geometry, './img/arrow_final.png', 'right', 3)
-            arrow.material.color.set( t.color );
-            //var arrow = getArrowMesh( 6.7*c.size, 6.7*c.size, t.color, o );
-            arrow.add( getBackgroundMesh ( 9.7*c.size, 8.7*c.size, t.backgroundColor, o ) );
-            arrow.position.x = xMid/2 + 6.8*c.size;
-            arrow.name = 'right';
-
-            mesh.add( arrow );
-
-            // left arrow
-            var geometry = new THREE.PlaneGeometry( 6.7*c.size, 6.7*c.size );
-            var arrow = getImageMesh(geometry, './img/arrow_final.png', 'left', 3)
-            arrow.material.color.set( t.color );
-            //var arrow = getArrowMesh( 6.7*c.size, 6.7*c.size, t.color, o );
-            arrow.rotation.z = Math.PI;
-            arrow.add( getBackgroundMesh ( 9.7*c.size, 8.7*c.size, t.backgroundColor, o ) );
-            arrow.position.x = -(xMid/2 + 6.8*c.size);
-            arrow.name = 'left';
-
-            mesh.add( arrow );
-        }
-
-        mesh.scale.set( c.area,c.area,1 );
-
-        mesh.position.z = - c.z;
-        mesh.position.y = c.displayAlign == 1 ? c.y - (9.57 * i * c.area *c.size) : c.y + (9.57 * (l-1-i) * c.area *c.size); //c.displayAlign == 'before'
-        mesh.position.x = c.x * (49 - xMid/2);
-
-        mesh.renderOrder = 3;
-        mesh.visible = true;
 
         return mesh;
     }
@@ -1132,117 +683,6 @@ config.size=20;
         return mesh;
     }
 
-    function getEmojiSubMesh2(t, c, o, i, font)
-    {
-        var canvas = document.getElementById("canvas");
-        var ctx = canvas.getContext("2d");
-        var text = /*'😃 ' + */t[0].text;
-        var ch = 50; // canvas height x line
-        var fh = 40; // font height
-        var drawing;
-        var il = 0; // emoji width
-
-        if ( text.indexOf("🤖") > -1 ) {
-            text = text.replace("🤖", "");
-            drawing = emoji_5; // robot
-            il = 63;
-        }
-        else if ( text.indexOf("😃") > -1 ) {
-            text = text.replace("😃", "");
-            drawing = emoji_1; // happy
-            il = 63;
-        }
-        else if ( text.indexOf("👏🏼") > -1 ) {
-            text = text.replace("👏🏼", "");
-            drawing = emoji_2; // hands
-            il = 63;
-        }
-        else if ( text.indexOf("😢") > -1 ) {
-            text = text.replace("😢", "");
-            drawing = emoji_3; // sad
-            il = 63;
-        }
-        else if ( text.indexOf("👣") > -1 ) {
-            text = text.replace("👣", "");
-            drawing = emoji_4; // steps
-            il = 63;
-        }
-        else if ( text.indexOf("📳") > -1 ) {
-            text = text.replace("📳", "");
-            drawing = emoji_6; // phone
-            il = 63;
-        }
-        else if ( text.indexOf("🌊") > -1 ) {
-            text = text.replace("🌊", "");
-            drawing = emoji_7; // wave
-            il = 63;
-        }
-        else if ( text.indexOf("🎶") > -1 ) {
-            text = text.replace("🎶", "");
-            drawing = emoji_8; // music
-            il = 63;
-        }
-        else if ( text.indexOf("🔌") > -1 ) {
-            text = text.replace("🔌", "");
-            drawing = emoji_9; // plug
-            il = 63;
-        }
-        else if ( text.indexOf("👂") > -1 ) {
-            text = text.replace("👂", "");
-            drawing = emoji_10; // noise
-            il = 63;
-        }
-
-        ctx.font = font;
-        var width = ctx.measureText( text ).width + il;
-        var width2 = t[1] ? ctx.measureText( t[1].text ).width : 0;
-        canvas.width = (width > width2) ? width + 20 : width2 + 20;
-        canvas.height = 50*i;
-
-        ctx.font = font;
-        if ( o != 0 ) {ctx.fillStyle = 'rgba(0,0,0,' + o + ')';
-        ctx.fillRect( 0, 0, il + canvas.width, 50);}
-        ctx.fillStyle = t[0].color;
-        ctx.fillText(text, il + (canvas.width - width)/2, 40);
-        if ( o == 0 )  {ctx.strokeStyle = "#000";
-        ctx.lineWidth = 2;
-        ctx.strokeText(text, il + (canvas.width - width)/2, 40);}
-
-        if( il > 0 ) {
-            ctx.drawImage(drawing, (canvas.width - width)/2, 0, 63, 50);
-        }
-
-        if ( t[1] ) {
-            var text2 = t[1].text;
-            ctx.font = font;
-            if ( o != 0 ) {ctx.fillStyle = 'rgba(0,0,0,' + o + ')';
-            ctx.fillRect( 0, 50, canvas.width, 50);}
-            ctx.fillStyle = t[1].color;     
-            ctx.fillText(text2, (canvas.width - width2)/2, 40+50);
-            if ( o == 0 ) {ctx.strokeStyle = "#000";
-            ctx.lineWidth = 2;
-            ctx.strokeText(text2, (canvas.width - width2)/2, 40+50);}
-        }
-
-        let texture = new THREE.CanvasTexture(canvas);
-        texture.needsUpdate = true;
-
-        var material = new THREE.MeshBasicMaterial( { map: texture,  transparent: true } );
-        var mesh = new THREE.Mesh( new THREE.PlaneGeometry( canvas.width/6, 50*i/6 ), material );
-
-        if ( c.subtitleIndicator == 'arrow' ) setArrowToMesh( mesh, canvas.width/6, c, t[0].color, t[0].backgroundColor, o );
-
-        mesh.scale.set( c.area,c.area,1 );
-
-        mesh.name = 'test';
-        mesh.renderOrder = 3;
-        mesh.position.z = - c.z;
-        mesh.position.y = c.y;
-        mesh.visible = true;
-
-        return mesh;
-    }
-
     function getPointMesh(w, h, c, o)
     {
         var pointer = new THREE.Mesh(
@@ -1251,16 +691,6 @@ config.size=20;
         );
 
         return pointer;
-    }
-
-    function getLineMesh(c, startvector, endvector, linewidth)
-    {
-        var material = new THREE.LineBasicMaterial( { color: c, linewidth: linewidth } );
-        var geometry = new THREE.Geometry();
-        geometry.vertices.push( startvector, endvector );
-        var line = new THREE.Line( geometry, material );
-
-        return line;
     }
 
     function getCubeGeometryByVertexUVs(size, f, l, r, t, b, bo)

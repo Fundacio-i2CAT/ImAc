@@ -41,12 +41,3 @@ function launchVoiceCommand( com )
 	else if ( com == 'VR_off' ) document.getElementById('button_2').onclick()();
 
 }
-
-
-
-
-
-
- //<p><input id="btnVolume_5" value="Volume 5" type="button" onclick="sendCommand('volume_x|5');" /></p>
-    
-    

@@ -156,9 +156,11 @@ VideoController = function() {
     {
         var vid = document.createElement( "video" );     
         vid.muted = true;
+        vid.crossOrigin = "anonymous";
         vid.autoplay = listOfVideoContents[0] && listOfVideoContents[0].vid.paused ? false : true;
         vid.preload = "auto"; 
         vid.loop = true;
+
 
         var type = getMediaType( url );
 

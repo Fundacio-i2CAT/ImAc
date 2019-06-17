@@ -206,12 +206,6 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 				this.element.addEventListener( 'touchend', this.onDocumentTouchEnd, false );
 
 				break;
-			/*case 2:
-				for (var i=0; i < event.touches.length; i++) {
-     				tpCache.push(event.touches[i]);
-   				}
-
-				break;*/
 		}
 	}.bind( this );
 
@@ -419,33 +413,6 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 			scene.add( controller )
 
 			controller.standingMatrix = renderer.vr.getStandingMatrix()
-
-			/*var
-			meshColorOff = 0xDB3236,//  Red.
-			meshColorOn  = 0xF4C20D,//  Yellow.
-			controllerMaterial = new THREE.MeshStandardMaterial({ color: meshColorOff }),
-			controllerMesh = new THREE.Mesh(
-				new THREE.CylinderGeometry( 0.005, 0.05, 0.1, 15 ),
-				controllerMaterial
-			),
-			handleMesh = new THREE.Mesh(
-				new THREE.BoxGeometry( 0.03, 0.1, 0.03 ),
-				controllerMaterial
-			)
-			
-			controllerMaterial.flatShading = true
-			controllerMesh.rotation.x = -Math.PI / 2
-			handleMesh.position.y = -0.05
-			controllerMesh.visible = true
-			controllerMesh.add( handleMesh )
-
-			controller.userData.mesh = controllerMesh//  So we can change the color later.
-
-			controllerMesh.scale.set( 0.5,0.5,0.5 );
-			controller.add( controllerMesh )
-
-			castShadows( controller )
-			receiveShadows( controller )*/
 
 			controller.addEventListener( 'primary press began', function( event ){
 				//event.target.userData.mesh.material.color.setHex( meshColorOn )

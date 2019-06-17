@@ -206,8 +206,7 @@ SubSignManager = function() {
 	      		removeSubtitle();
 
 			    //Save subtitle configuration for preview visualitzation. 
-			    if ( isExperimental ) createExpSubtitle( textList, subConfig );
-			    else if( _SLsubtitles ) createSLSubtitle( textList, subConfig );
+			    if( _SLsubtitles ) createSLSubtitle( textList, subConfig );
 			    else createSubtitle( textList, subConfig );
 
 	      		if ( subtitleIndicator == 'radar' ) createSpeakerRadar( textList[0].color, isdImac );
@@ -393,14 +392,6 @@ SubSignManager = function() {
         camera.add( subtitleMesh );
     }
 
-    // Fixed position subtitles for UAB
-    function createExpSubtitle(textList, config)
-    {
-    	subtitleMesh = _moData.getExpSubtitleMesh( textList, config );
-
-        scene.add( subtitleMesh );
-    }
-
     function createSignVideo(url, name, config)
     {
     	removeSignVideo();
@@ -415,8 +406,8 @@ SubSignManager = function() {
     function createRadar()
     {
     	if ( radarMesh ) removeRadar();
-    	radarMesh = _moData.getRadarMesh();
-    	radarMesh3 = _moData.getIconRadarMesh();
+    	radarMesh = _moData.getRadarMesh( './img/radar_7.png', 'radar' );
+    	radarMesh3 = _moData.getRadarMesh( './img/area_7.png', 'radar3' );
 
     	radarMesh.onexecute = function() {
 

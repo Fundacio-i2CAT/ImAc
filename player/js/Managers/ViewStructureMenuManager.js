@@ -28,14 +28,7 @@ function ViewStructureMenuManager() {
 	 */
     function TraditionalMenuBase(name){
 
-        let radius = 3*menuWidth/100;
-
-//NEEDS TO BE REMOVED, ONLY FOR TESTING PORPOUSES
-        /*let centerBtn = new THREE.Mesh( new THREE.CircleGeometry(0.5,32), new THREE.MeshBasicMaterial( { color: 0xff0000 } ) );
-        centerBtn.position.set( 0,0,-65 );
-        camera.add(centerBtn);*/
-//********************************************
-        
+        let radius = 3*menuWidth/100;        
         let menuTrad =  new THREE.Group();
         menuTrad.name = name;
 

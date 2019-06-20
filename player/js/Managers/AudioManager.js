@@ -326,6 +326,16 @@ AudioManager = function() {
         return adLang;
     };
 
+    this.getADPresentation = function()
+    {
+        return adPresentation;
+    };
+
+    this.getADVolume = function()
+    {
+        return adVolume;
+    };
+
     this.getADConfig = function()
     {
         return {
@@ -364,6 +374,16 @@ AudioManager = function() {
     {
         return astLang;
     };
+
+    this.getASTPresentation = function()
+    {
+        return astPresentation;
+    }
+
+    this.getASTVolume = function()
+    {
+        return astVolume;
+    }
 
     this.getASTConfig = function()
     {

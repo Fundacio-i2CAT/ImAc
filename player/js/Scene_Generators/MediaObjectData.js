@@ -74,7 +74,7 @@ THREE.MediaObjectData = function () {
     {
         var group = new THREE.Group();
 
-config.size=20;
+        config.size=20;
         var geometry = new THREE.PlaneGeometry( 20, 20 );
         var plane = getVideoMesh( geometry, url, name, 1 );
 

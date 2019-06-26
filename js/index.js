@@ -15,7 +15,7 @@ var UUID;
      */	
     function init_webplayer() 
     {
-        UUID = uuidv4();
+        UUID = localStorage.ImAc_UUID ? localStorage.ImAc_UUID || uuidv4();
         gtag('set', {'user_id': UUID});
         localStorage.ImAc_UUID = UUID;
 

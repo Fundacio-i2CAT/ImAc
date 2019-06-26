@@ -227,17 +227,30 @@ function readCookie(name)
 function saveConfig()
 {
     console.log('save config!!!')
-    /*var iconfig = {
-        ST: subController.getSTConfig(),
-        SL: subController.getSLConfig(),
-        AD: _AudioManager.getADConfig(),
-        AST: _AudioManager.getASTConfig()
-    };*/
 
+    if ( !_iconf ) _iconf = [];
 
-    //document.cookie = "ImAcProfileConfig=" + encodeURIComponent( JSON.stringify( iconfig ) ) + "; max-age=2592000;" //expires=" + expiresdate.toUTCString(); max-age = 1 mes
+    _iconf.menutype = _iconf.menutype ? _iconf.menutype : 'traditional';
+    _iconf.pointersize = _pointerSize == 1 ? 'M' : _pointerSize == 2 ? 'L' : 'S';
+    _iconf.voicecontrol = _ws_vc ? 'on' : 'off';
+    _iconf.userprofile = 'save';
+    _iconf.mainlanguage = localStorage.ImAc_language;
+    _iconf.accesslanguage = subController.getSubLanguage();
+    _iconf.indicator = subController.getSubIndicator();
+    _iconf.safearea = subController.getSubArea() == 70 ? 'L' : subController.getSubArea() == 60 ? 'M' : 'S';
+    _iconf.stsize = subController.getSubSize() == 1 ? 'L' : subController.getSubSize() == 0.8 ? 'M' : 'S';
+    _iconf.stbackground = subController.getSubBackground() == 0.5 ? 'box' : 'outline';
+    _iconf.stposition = subController.getSubPosition().y == -1 ? 'down' : 'up';
+    _iconf.ste2r = subController.getSubEasy() ? 'on' : 'off';
+    _iconf.slsize = subController.getSignerSize() == 20 ? 'L' : subController.getSignerSize() == 18 ? 'M' : 'S';
+    _iconf.slposition = subController.getSignerPosition().x == 1 ? 'right' : 'left';
+    _iconf.aste2r = _AudioManager.getSubEasy() ? 'on': 'off';
+    _iconf.astmode = _AudioManager.getASTPresentation() == 'VoiceOfGod' ? 'god' : 'dynamic';
+    _iconf.astvolume = _AudioManager.getASTVolume() == 100 ? 'max' : _AudioManager.getASTVolume() == 50 ? 'mid' : 'min';
+    _iconf.admode = _AudioManager.getADPresentation() == 'VoiceOfGod' ? 'god' : _AudioManager.getADPresentation() == 'Dynamic' ? 'dynamic' : 'friend';
+    _iconf.advolume = _AudioManager.getADVolume() == 100 ? 'max' : _AudioManager.getADVolume() == 50 ? 'mid' : 'min';
 
-
+    document.cookie = "ImAcProfileConfig=" + encodeURIComponent( JSON.stringify( _iconf ) ) + "; max-age=2592000;"; //expires=" + expiresdate.toUTCString(); max-age = 1 mes
 }
 
 // Converts from degrees to radians.

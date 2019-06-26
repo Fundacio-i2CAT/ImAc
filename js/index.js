@@ -17,7 +17,7 @@ var UUID;
     {
         UUID = uuidv4();
         gtag('set', {'user_id': UUID});
-        localStorage.ImAc_UUID == UUID;
+        localStorage.ImAc_UUID = UUID;
 
         localStorage.removeItem('dashjs_video_settings');
         localStorage.removeItem('dashjs_video_bitrate');

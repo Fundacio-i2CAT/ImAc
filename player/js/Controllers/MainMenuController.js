@@ -60,9 +60,10 @@ function MainMenuController() {
     let isSeeking;
 
     /**
-     * This function initializes and update all the datat and views of the different groups that compose the main menu.
+     * This function initializes and update all the datat and 
+     * views of the different groups that compose the main menu.
      *
-     * @function      Init (name)
+     * @function      Init 
      */
     this.Init = function(){
         mainMenuCtrl.setSeekingProcess(false);
@@ -104,7 +105,7 @@ function MainMenuController() {
      * Hides the viewStructure.
      * This function is called when closing the menu.
      *
-     * @function      Exit (name)
+     * @function      Exit
      */
     this.Exit = function(){
         //Works if the viewStructure is loaded.
@@ -119,10 +120,9 @@ function MainMenuController() {
     };
 
     /**
-     * Gets the data.
+     * Gets the data data model MainMenuModel and initializes it if null.
      *
-     * @function      GetData (name)
-     * @return     {PlayPauseMenuModel}  The data.
+     * @return     {<MainMenuModel>}  The data model.
      */
     function GetData(){
         if (data == null){
@@ -130,12 +130,13 @@ function MainMenuController() {
         }
         return data;
     };
-        /**
-     * Adds a visual feedback on click.
-     *
-     * @function      AddVisualFeedbackOnClick (name)
-     * @param      {<type>}    buttonName  The button name
-     * @param      {Function}  callback    The callback
+
+    /** 
+     * Adds a visual feedback on click that changes the size and color of the clicked element.
+     * 
+     * @param      {<View>}      view  Th view where the button is.
+     * @param      {<String>}    buttonName  The button name.
+     * @param      {Function}    callback    The function linked toi the button.
      */
     function AddVisualFeedbackOnClick(view, buttonName, callback){
         data.clickedButtonName = buttonName;
@@ -147,8 +148,6 @@ function MainMenuController() {
     /**
      * This function updates the data in the PlayPause group. 
      * It adds the functions to the different interactive elements (Play, Pause, Seek and Close buttons).
-     *
-     * @function      UpdatePlayPauseData (name)
      */
 	function UpdatePlayPauseData(){
         data.isPaused = VideoController.isPausedById(0);
@@ -162,8 +161,6 @@ function MainMenuController() {
      * This function updates the data in the Volume group. 
      * Adds the value of the volume level and its visibility.
      * It adds the functions to the different interactive elements (Mute/Unmute, plus and minus buttons).
-     *
-     * @function      UpdateVolumeData (name)
      */
     function UpdateVolumeData(){
         data.volumeLevel = _AudioManager.getVolume()*100+'%';
@@ -177,8 +174,6 @@ function MainMenuController() {
     /**
      * This function updates the data in the Settings group. 
      * It adds the functions to the different interactive elements (Settings, preview and menuType buttons).
-     *
-     * @function      UpdateSettingsData (name)
      */
     function UpdateSettingsData(){
         data.openSettingsMenuButtonFunc = function(){ 
@@ -203,8 +198,6 @@ function MainMenuController() {
      * This function updates the data in the AccessOptions group. 
      * Adds the functions to the different interactive elements (Subtitles, Sign Language, Audio Description and Audio Subtitle buttons).
      * Checks for the availability of the services. In case of unavailability the view will disable the button.
-     *
-     * @function      UpdateAccessOptionsData (name)
      */
     function UpdateAccessOptionsData(){
         //Save the state of all the accessibility services.
@@ -279,8 +272,6 @@ function MainMenuController() {
      * This function updates the data in the Video progress bar group. 
      * Updates the time and position of the slidder in the progress bar. 
      * Updates the scale in the X axes of the played time bar. 
-     *
-     * @function      UpdateVideoProgressBarData (name)
      */
     function UpdateVideoProgressBarData(){
         data.videoPlayOutTimeText = VideoController.getPlayoutTime(VideoController.getListOfVideoContents()[0].vid.currentTime);
@@ -331,9 +322,8 @@ function MainMenuController() {
     };
 
     /**
-     * { function_description }
-     *
-     * @function      PlayPauseFunc (name)
+     * Depending on the video status (play or pause) the video will be resumed or paused.
+     * The data model is updated together with the view and the interaction array.
      */
     function PlayPauseFunc(){
         VideoController.isPausedById(0) ? VideoController.playAll() : VideoController.pauseAll();
@@ -343,14 +333,13 @@ function MainMenuController() {
     };
 
     /**
-     * { function_description }
-     *
-     * @function      SeekFunc (name)
-     * @param      {number}  plus    The plus
+     * Seeks the video to a determine point depending on the 
+     * user click position over the video progress bar.
+     * 
+     * @param      {<Boolean>}  isPositive    Determines if the seek is forward or backwards.
      */
-    function SeekFunc(plus){
-        var sign = plus ? 1 : -1;
-        VideoController.seekAll( 5*sign );
+    function SeekFunc(isPositive){
+        VideoController.seekAll( 5 * (isPositive ? 1 : -1) );
         UpdatePlayPauseData();
         playPauseView.UpdateView(data);
     };
@@ -360,20 +349,19 @@ function MainMenuController() {
 -----------------------------------------------------------------------*/
 
     /**
-     * { function_description }
+     * Changes the valume of the volume depending on isPositive.
      *
-     * @function      ChangeVolumeFunc (name)
-     * @param      {number}  plus    The plus
+     * @param      {<Boolean>}  isPositive    Determines if the volume goes higher or lower
      */
-    function ChangeVolumeFunc(plus){
-        let sign = plus ? 1 : -1;
-        _AudioManager.changeVolume( 0.1*sign );
+    function ChangeVolumeFunc(isPositive){
+        _AudioManager.changeVolume( 0.1 * (isPositive ? 1 : -1) );
         volumeLevelDisplayLogic();
     };
 
     /**
-     * [MuteUnmuteVolumeFunc description]
-     * @function
+     * Controls the logic of the mute unmute buttons. 
+     * It updates the data, updates the view and adds 
+     * the corresponding interaction to the new visible button.
      */
     function MuteUnmuteVolumeFunc(){
         _AudioManager.isAudioMuted() ? _AudioManager.setunmute() : _AudioManager.setmute();
@@ -383,10 +371,10 @@ function MainMenuController() {
     };
 
     /**
-     * [volumeLevelDisplayLogic description]
-     * @function
-     * @return {[type]} [description]
-     */
+    * Displays the volumen level in % during 500ms every 
+    * time the user changes the value by clicking on the 
+    * plus or minus volumen level button.
+    */
     function volumeLevelDisplayLogic(){
         data.volumeLevel = _AudioManager.getVolume();
         data.isVolumeLevelVisible =  true;
@@ -429,9 +417,10 @@ function MainMenuController() {
                 Video progress bar controller functions
 -----------------------------------------------------------------------*/
     /**
-     * Sets the seeking process.
-     *
-     * @param      {<type>}  value   The value
+     * Sets the seeking process. 
+     * This function is used in order to blovk the user from seeing during a seeking process
+     * until the current seeking process has ended
+     * @param      {<Boolean>}  value   Is there a current seeking process beeing executed.
      */
     this.setSeekingProcess = function(value){
         isSeeking = value;
@@ -440,14 +429,14 @@ function MainMenuController() {
     /**
      * Gets the seeking process.
      *
-     * @return     {<type>}  The seeking process.
+     * @return     {<Boolean>}  The seeking process.
      */
     this.getSeekingProcess = function(){
         return isSeeking;
     }
 
     /**
-     * { function_description }
+     * This function updates the played colored bar automaticaly and with user interaction (onClick seek)
      */
     this.updatePlayProgressBar = function(){
         UpdateVideoProgressBarData();
@@ -455,9 +444,9 @@ function MainMenuController() {
     }
 
     /**
-     * This function when the users click in the progress bar it seeks the video to the click position.
+     * OnClick in the progress bar it seeks the video to the clicked position.
      *
-     * @param      {<type>}  mouse3D  The mouse 3d
+     * @param      {<Vector3>}  mouse3D  The mouse 3d
      */
     this.onClickSeek = function(mouse3D){
         if(!mainMenuCtrl.getSeekingProcess()){
@@ -477,9 +466,9 @@ function MainMenuController() {
     }
 
     /**
-     * { function_description }
+     * Determines the position of the play colored bar.
      *
-     * @return     {<type>}  { description_of_the_return_value }
+     * @return     {<Float>}  { description_of_the_return_value }
      */
     function updatePlayProgressPosition(){
         const play_progress =  scene.getObjectByName("play-progress");
@@ -491,9 +480,9 @@ function MainMenuController() {
     }
 
     /**
-     * This function calculates the new position of the slider depending on the current video time over the total video length.
+     * Calculates the new position of the slider depending on the current video time over the total video length.
      *
-     * @return     {number}  { New posistion of the slider }
+     * @return     {<Float>}  { New posistion of the slider }
      */
     function updateSliderPosition(){
         const progress_width = scene.getObjectByName("background-progress").geometry.parameters.shapes.currentPoint.x;
@@ -503,7 +492,7 @@ function MainMenuController() {
     /**
      * Returns the percentage of video reproduced.
      *
-     * @return     {number}  { video percentage reproduced }
+     * @return     {<Float>}  { video percentage reproduced }
      */
     function updatePlayProgressScale(){
         const totalTime = VideoController.getListOfVideoContents()[0].vid.duration;

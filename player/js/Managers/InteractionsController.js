@@ -87,6 +87,12 @@ THREE.InteractionsController = function () {
       interactionState = false;
   		var intersectedShapeId;
 			for(var inter = 0; inter < intersects.length; inter++){
+
+        gtag('event', 'UserInteraction', {
+            'event_category' : 'PlayerConfig',
+            'event_label' : intersects[inter].object.name
+        });
+
 	      if ( intersects[inter].object.type == 'Mesh' && intersects[inter].object.onexecute ){
 	        intersects[inter].object.onexecute();
 	        break;
@@ -113,6 +119,12 @@ THREE.InteractionsController = function () {
       interactionState = false;
       var intersectedShapeId;
       for(var inter = 0; inter < intersects.length; inter++){
+
+        gtag('event', 'VRInteraction', {
+            'event_category' : 'PlayerConfig',
+            'event_label' : intersects[inter].object.name
+        });
+
         if ( intersects[inter].object.type == 'Mesh' && intersects[inter].object.onexecute ){
           intersects[inter].object.onexecute();
           break;

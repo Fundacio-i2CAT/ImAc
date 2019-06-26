@@ -4,6 +4,7 @@
 var list_contents;
 var _ws_vc;
 var _confMemory;
+var UUID;
 
 //************************************************************************************
 // Main Functions
@@ -14,6 +15,10 @@ var _confMemory;
      */	
     function init_webplayer() 
     {
+        UUID = uuidv4();
+        gtag('set', {'user_id': UUID});
+        localStorage.ImAc_UUID == UUID;
+
         localStorage.removeItem('dashjs_video_settings');
         localStorage.removeItem('dashjs_video_bitrate');
         localStorage.removeItem('dashjs_text_settings');
@@ -36,11 +41,23 @@ var _confMemory;
         });
     }
 
+    function uuidv4() {
+      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+      });
+    }
+
     /*
-    * Inicia la reproducció del contingut amb ID = id
+    * Init the player with the content ID = id
     */
     function launchPlayer(id)
     { 
+        gtag('event', 'ContentId', {
+            'event_category' : 'LaunchPlayer',
+            'event_label' : id
+        });
+
         localStorage.ImAc_init = id;
         localStorage.ImAc_server = "";
         localStorage.ImAc_language = document.getElementById('langSelector').value;
@@ -300,8 +317,7 @@ var _confMemory;
 // Functions to control the settings menus
 //************************************************************************************
 
-    // Funcio per a mostrar el poster i la descripcio del contingut seleccionat
-    // Canviar el borde del contingut per mostar seleccionat
+    // Funtion to show the poster and the selected content description
     function selectContent(id)
     {
         localStorage.ImAc_init = id;
@@ -447,6 +463,11 @@ var _confMemory;
 
     function selectOption(id)
     {
+        gtag('event', 'SelectOption', {
+            'event_category' : 'PortalConfig',
+            'event_label' : id
+        });
+
         // Menu Type
         if ( id == 'btn_trad' )
         {
@@ -2071,6 +2092,11 @@ var _confMemory;
 
     function translateAll(lang)
     {
+        gtag('event', 'ChangeLanguage', {
+            'event_category' : 'PortalConfig',
+            'event_label' : lang
+        });
+
         if ( lang == 'ca' )
         {
             document.getElementById('span_1').innerHTML = 'Configuració';

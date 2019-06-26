@@ -1,3 +1,38 @@
+# ChangeLog release 0.7.0
+
+Player web used in ImAc project
+
+## Changelog
+
+	* Add: New portal interface
+	* Add: Search functionality in portal interface
+	* Add: Translate functionality in portal interface
+	* Add: Configuration menu in portal interface
+	* Add: Voice control functionalities
+	* Add: Buttons to enable or dissable the access. services (ST , SL , AD, AST) in the main menu player interface
+	* Add: Representation mode in AST services
+	* Add: Disable access options when language not available
+	* Add: Change SL size option
+	* Add: Links to the parthners webpages and ImAc social networks 	
+	* Modify: Player menu interface
+	* Modify: Configuration menu structure
+	* Modify: content.json adding duration, acces, description, poster and language parameters
+	* Modify: Access language, now there is only one language selector for all services
+	* Modify: Indicator, now there is the same for ST and SL
+	* Modify: Safe area, now there is the same for ST and SL
+	* Fix: Latitude subtitles position that is printed inverted
+	* Fix: Issue with SL arrows indicator
+	* Fix: Vocabulary issues
+
+### Known Bugs/Issues
+
+	* Flickering in the subtitles when move the head in Oculus Go and Samsung VR devices
+
+
+
+	
+	
+	
 # ChangeLog release 0.6.0
 
 Player web used in ImAc project

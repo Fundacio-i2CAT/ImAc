@@ -75,6 +75,8 @@ function init_webplayer()
 {
 	console.log('Version: ' + _PlayerVersion);
 
+    gtag('set', {'user_id': localStorage.ImAc_UUID});   
+
     var myhash = window.location.hash.split('#');
 
     _AudioManager.initAmbisonicResources();

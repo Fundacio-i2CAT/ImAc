@@ -191,7 +191,7 @@ MenuDictionary = function() {
 
 /**
  * 
- * If the pre selected language is nmot available in any of the access options,
+ * If the pre selected language is not available in any of the access options,
  * the next available language is returned.
  * If any languages are available the Access Language option will not be shown.
  *

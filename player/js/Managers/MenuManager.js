@@ -102,7 +102,8 @@ function MenuManager() {
                 controller.Init();
                 optActiveIndex = controller.getMenuIndex();
             } else{
-                // If the index is equal change the variable to 'undefined' in order to open the same dropdown just closed.
+                // If the index is equal change the variable to 'undefined' 
+                // in order to open the same dropdown just closed.
                 optActiveIndex = 0;
             }
             
@@ -114,7 +115,8 @@ function MenuManager() {
     }
 
 /**
- * Resets the visibility to false in all the low sighted menus and shows the menu activation area
+ * Resets the visibility to false in all the low 
+ * sighted menus and shows the menu activation area
  *
  * @class      ResetViews (name)
  */
@@ -138,7 +140,8 @@ function MenuManager() {
 
         if(menu) {
             menu.visible = false;
-            //If the Enhaced menu is selected on initial settings, hide menu options which is not attached to the proper menu.
+            // If the Enhaced menu is selected on initial settings, 
+            // hide menu options which is not attached to the proper menu.
             if(menuMgr.getMenuType() == 1){
                 menuParent.getObjectByName('trad-option-menu').visible = false;
             } 

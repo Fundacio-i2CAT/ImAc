@@ -53,36 +53,47 @@ function MenuManager() {
         menuMgr.ResetViews();
     }
 
-/**
- * Sets the option active index.
- *
- * @param      {<type>}  newIndex  The new index
- */
+    /**
+     * Sets the option active index.
+     *
+     * @param      {<Integer>}  newIndex  The new index
+     */
     this.setOptActiveIndex = function(newIndex) {
         optActiveIndex = newIndex;
     }
 
-/**
- * Sets the actual control.
- *
- * @param      {<type>}  newCtrl  The new control
- */
+    /**
+     * Sets the actual control.
+     *
+     * @param      {<Object>}  newCtrl  The new control
+     */
     this.setActualCtrl = function(newCtrl) {
         actualCtrl = newCtrl;
     }
 
-    this.setMenuType = function(type){
-        menuType = type;
-    }
-/**
- * Gets the actual control.
- *
- * @return     {<type>}  The actual control.
- */
+    /**
+     * Gets the actual control.
+     *
+     * @return     {<type>}  The actual control.
+     */
     this.getActualCtrl = function() {
         return actualCtrl;
     }
 
+    /**
+     * Sets the menu type.
+     *
+     * @param     {<Integer>}  The menu type (1 for HMD - 2 for PC).
+     */
+    this.setMenuType = function(type){
+        menuType = type;
+    }
+
+    /**
+     * Gets the menu type.
+     *
+     * @return     {<Integer>}  The menu type (1 for HMD - 2 for PC).
+     */
     this.getMenuType = function(){
         return menuType;
     }

@@ -260,6 +260,6 @@ paket-files/
 *.p12
 *.rc
 
-css/fonts/
+portal/css/fonts/
 player/resources/
 tests/

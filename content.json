@@ -3,8 +3,8 @@
   "contents": [
   {
     "name": "Liceu Opera Piece 1",
-    "poster": "./img/opera1_cover.png",
-    "thumbnail": "img/opera1.png",
+    "poster": "./portal/img/opera1_cover.png",
+    "thumbnail": "./portal/img/opera1.png",
     "description": "Performance of the “Roméo et Juliette” opera recorded at the Gran Teatre del Liceu Opera House (Barcelona). Piece 1.",
     "descriptionArray": [
     {
@@ -28,8 +28,8 @@
   },
   {
     "name": "RBB News Abendschau",
-    "poster": "img/covers/Newsshow_Abendschau2.jpg",
-    "thumbnail": "img/covers/Newsshow_Abendschau.jpg",
+    "poster": "./portal/img/covers/Newsshow_Abendschau2.jpg",
+    "thumbnail": "./portal/img/covers/Newsshow_Abendschau.jpg",
     "description": "Making-of video of the RBB news show “Abendschau”, taking you into the news room and the streets of Berlin where current events are covered by the RBB news team.",
     "descriptionArray": [
     {
@@ -60,8 +60,8 @@
   },
   {
     "name": "ARTE I Philip",
-    "poster": "./img/covers/IPhilip2.jpg",
-    "thumbnail": "img/i-philip-1100x750-dark(1).png",
+    "poster": "./portal/img/covers/IPhilip2.jpg",
+    "thumbnail": "./portal/img/i-philip-1100x750-dark(1).png",
     "description": "23 years after Philip K. Dick’s death, in 2005, David Hanson, a young engineer in robotics, revealed his first android with human form, “Phil”.",
     "descriptionArray": [
     {
@@ -99,8 +99,8 @@
   },
   {
     "name": "Liceu Opera Piece 2",
-    "poster": "./img/covers/opera2_cover.png",
-    "thumbnail": "img/opera2.PNG",
+    "poster": "./portal/img/covers/opera2_cover.png",
+    "thumbnail": "./portal/img/opera2.PNG",
     "description": "Performance of the “Roméo et Juliette” opera recorded at the Gran Teatre del Liceu Opera House (Barcelona). Piece 2.",
     "descriptionArray": [
     {
@@ -130,8 +130,8 @@
   },
   {
     "name": "Desconcert “Leyre”",
-    "poster": "./img/covers/desconcert1_cover.png",
-    "thumbnail": "img/desconcert1.png",
+    "poster": "./portal/img/covers/desconcert1_cover.png",
+    "thumbnail": "./portal/img/desconcert1.png",
     "description": "Performance of a catalan version of  “Leyre” song, recorded at Sala Apolo (Barcelona) during the third edition of “Desconcert”, a great festival of iCat FM.",
     "descriptionArray": [
     {
@@ -165,8 +165,8 @@
   },
   {
     "name": "Desconcert “Havana”",
-    "poster": "./img/covers/desconcert2_cover.png",
-    "thumbnail": "img/desconcert2.png",
+    "poster": "./portal/img/covers/desconcert2_cover.png",
+    "thumbnail": "./portal/img/desconcert2.png",
     "description": "Performance of a catalan version of  “Havana” song, recorded at Sala Apolo (Barcelona) during the third edition of “Desconcert”, a great festival of iCat FM.",
     "descriptionArray": [
     {
@@ -227,8 +227,8 @@
   },
   {
     "name": "Rapzember",
-    "poster": "img/covers/Rapzember2.jpg",
-    "thumbnail": "img/covers/Rapzember.jpg",
+    "poster": "./portal/img/covers/Rapzember2.jpg",
+    "thumbnail": "./portal/img/covers/Rapzember.jpg",
     "description": "Lorem ipsum",
     "descriptionArray": [
     {

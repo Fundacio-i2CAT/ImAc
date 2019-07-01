@@ -2,10 +2,14 @@
     <a href="http://www.imac-project.eu/">
         <img height="300px" width="774px" src="./img/LOGO-IMAC.png" />
     </a>
+    Follow the ImAc proyect in [Twitter](https://twitter.com/ImAcProject) and [YouTube](https://www.youtube.com/channel/UCfxyfFgC97BCv_hmiGVfe1Ar)
+
 </p>
 
 
-The goal of Immersive Accessibility (ImAc), which has been funded by the EU in the frame of the H2020 programme, is to explore how accessibility services can be integrated with immersive media. It is not acceptable that accessibility is regarded as an afterthought: rather it should be considered throughout the design, production and delivery process. ImAc will explore new deployment methods for these services (Subtitles, Audio Description, Audio Subtitling, Sign Language) in immersive environments. We will move away from the constraints of the current technology, into a Hyper-Personalized environment where the consumer can fully customize the experience to meet his personal needs. For example, it may be more appropriate for subtitles to be read out-loud or the Audio Description presented as text. The key action in ImAc will be to ensure immersive experiences are inclusive across different languages, addressing the needs of those with hearing and low vision problems, learning difficulties and the aged. We also foresee these services consumed by a wider audience, for personal convenience, learning language and language therapy – accessible content can add significant value to these related areas.
+<p>
+	The goal of Immersive Accessibility (ImAc), which has been funded by the EU in the frame of the H2020 programme, is to explore how accessibility services can be integrated with immersive media. It is not acceptable that accessibility is regarded as an afterthought: rather it should be considered throughout the design, production and delivery process. ImAc will explore new deployment methods for these services (Subtitles, Audio Description, Audio Subtitling, Sign Language) in immersive environments. We will move away from the constraints of the current technology, into a Hyper-Personalized environment where the consumer can fully customize the experience to meet his personal needs. For example, it may be more appropriate for subtitles to be read out-loud or the Audio Description presented as text. The key action in ImAc will be to ensure immersive experiences are inclusive across different languages, addressing the needs of those with hearing and low vision problems, learning difficulties and the aged. We also foresee these services consumed by a wider audience, for personal convenience, learning language and language therapy – accessible content can add significant value to these related areas.
+</p>
 
 
 ## Getting Started
@@ -51,9 +55,3 @@ This deliverable describes the architectural aspects, components and features of
 ## Acknowledgments
 
 This project has received funding from the European Union’s Horizon 2020 research and innovation programme under grant agreement [No 761974](https://cordis.europa.eu/project/rcn/211084/factsheet/en).
-
-
-
-<p align="center"><h1>ImAc Web Player</h1></p>
-
-Follow the ImAc proyect in [Twitter](https://twitter.com/ImAcProject) and [YouTube](https://www.youtube.com/channel/UCfxyfFgC97BCv_hmiGVfe1Ar)

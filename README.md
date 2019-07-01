@@ -2,10 +2,6 @@
     <a href="http://www.imac-project.eu/">
         <img height="300px" width="774px" src="./img/LOGO-IMAC.png" />
     </a>
-    <p align="center">
-    	Follow the ImAc proyect in [Twitter](https://twitter.com/ImAcProject) and [YouTube](https://www.youtube.com/channel/UCfxyfFgC97BCv_hmiGVfe1Ar)
-    </p>
-
 </p>
 
 

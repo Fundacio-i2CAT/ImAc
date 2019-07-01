@@ -1,6 +1,6 @@
 <p align="center">
     <a href="http://www.imac-project.eu/">
-        <img height="300px" width="774px" src="./img/LOGO-IMAC.png" />
+        <img height="300px" width="774px" src="./portal/img/LOGO-IMAC.png" />
     </a>
 </p>
 

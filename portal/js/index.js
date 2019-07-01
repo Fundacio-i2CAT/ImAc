@@ -270,7 +270,7 @@ var UUID;
                 .append(
                     $('<img class="Play-img">')
                     .attr('id', 'contentplay'+i)
-                    .attr('src', "img/play_4_u79_c.png")
+                    .attr('src', "./portal/img/play_4_u79_c.png")
                     .attr('alt', 'Play')
                     .attr('onclick', 'launchPlayer(this.id)')
                     .append('</img>')
@@ -306,10 +306,10 @@ var UUID;
     function createAccesIcons(id)
     {
         if ( list_contents[id].acces ) {
-            if ( list_contents[id].acces[0].ST ) addAccesIcon( 'ST', 'Subtitles', 'img/150ppp/st_off.png' );
-            if ( list_contents[id].acces[0].SL ) addAccesIcon( 'SL', 'Sign language', 'img/150ppp/sl_off.png' ); 
-            if ( list_contents[id].acces[0].AD ) addAccesIcon( 'AD', 'Audio description', 'img/150ppp/ad_off.png' );
-            if ( list_contents[id].acces[0].AST ) addAccesIcon( 'AST', 'Audio subtitles', 'img/150ppp/ast_off.png' ); 
+            if ( list_contents[id].acces[0].ST ) addAccesIcon( 'ST', 'Subtitles', './portal/img/150ppp/st_off.png' );
+            if ( list_contents[id].acces[0].SL ) addAccesIcon( 'SL', 'Sign language', './portal/img/150ppp/sl_off.png' ); 
+            if ( list_contents[id].acces[0].AD ) addAccesIcon( 'AD', 'Audio description', './portal/img/150ppp/ad_off.png' );
+            if ( list_contents[id].acces[0].AST ) addAccesIcon( 'AST', 'Audio subtitles', './portal/img/150ppp/ast_off.png' ); 
         }
     }
 
@@ -335,7 +335,7 @@ var UUID;
 
             document.getElementById( 'content_desc' ).innerHTML = list_contents[id].descriptionArray[0][ _ImAc_default.mainlanguage ] || "";
             document.getElementById( 'content_lang' ).innerHTML = "Audio: " + list_contents[id].language || "";
-            document.getElementById( 'content_poster' ).src = list_contents[id].poster || "./img/u25_c.png";
+            document.getElementById( 'content_poster' ).src = list_contents[id].poster || "./portal/img/u25_c.png";
 
             clearBorders();
 

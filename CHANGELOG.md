@@ -1,6 +1,46 @@
-# ChangeLog release 0.7.0
+# Release 0.8.0
 
-Player web used in ImAc project
+Date 27/06/2019
+
+## Changelog
+
+	* Add: Change SL size
+	* Add: Holy land 4 description
+	* Add: New covers
+	* Add: Only access languages with available languages are shown
+	* Add: New banner images
+	* Add: Save config into the player menu
+	* Add: remote bootstrap libs
+	* Add: Google Analytics
+    * Add: unique id per device
+	* Modify: Acces options are disabled when language is not available
+	* Modify: Open links in a new tap
+	* Modify: New MainMenuController that includes the old playpause volume settings and access controllers
+	* Modify: New MainMenuModel that includes the old playpause volume settings and access models
+	* Modify: Added videoProgressBarController to MainMenuController
+	* Fix: Issue with SL arrows
+	* Fix: Error in presentation title
+	* Fix: Presentation AD/AST listing when available
+	* Fix: Bug when active access option was unavailable and then available again could not be clicked.
+	* Fix: German translation
+	* Fix: Preview auto play when video was already pasued fixed
+	* Fix: When subtitles are disabled signer goes back to bottom
+	* Fix: Issue with search check box
+	* Fix: Issues with voice control
+	* Fix: Issues with data variable in mainmenucontroller
+	* Fix: Options menu title not hidden on start
+	* Fix: uuid issue
+
+
+### Known Bugs/Issues
+
+	* Flickering in the subtitles when move the head in Oculus Go and Samsung VR devices
+	* When small menu open subtitles and signer elements are behind
+
+
+# Release 0.7.0
+
+Date 9/05/2019
 
 ## Changelog
 
@@ -27,15 +67,15 @@ Player web used in ImAc project
 ### Known Bugs/Issues
 
 	* Flickering in the subtitles when move the head in Oculus Go and Samsung VR devices
-
+	* When small menu open subtitles and signer elements are behind
 
 
 	
 	
 	
-# ChangeLog release 0.6.0
+# Release 0.5.0
 
-Player web used in ImAc project
+Date 28/11/2018
 
 ## Changelog
 
@@ -62,5 +102,6 @@ Player web used in ImAc project
 
 	* Flickering in the subtitles when move the head in Oculus Go and Samsung VR devices
 	* Auto-positioning functionality does not let you open the menu again
+	* When small menu open subtitles and signer elements are behind
 
 

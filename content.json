@@ -3,8 +3,8 @@
   "contents": [
   {
     "name": "Liceu Opera Piece 1",
-    "poster": "./img/opera1_cover.png",
-    "thumbnail": "img/opera1.png",
+    "poster": "./portal/img/opera1_cover.png",
+    "thumbnail": "./portal/img/opera1.png",
     "description": "Performance of the “Roméo et Juliette” opera recorded at the Gran Teatre del Liceu Opera House (Barcelona). Piece 1.",
     "descriptionArray": [
     {
@@ -27,80 +27,9 @@
     "subtitles": [{}]
   },
   {
-    "name": "RBB News Abendschau",
-    "poster": "img/covers/Newsshow_Abendschau2.jpg",
-    "thumbnail": "img/covers/Newsshow_Abendschau.jpg",
-    "description": "Making-of video of the RBB news show “Abendschau”, taking you into the news room and the streets of Berlin where current events are covered by the RBB news team.",
-    "descriptionArray": [
-    {
-      "de": "Das Making-of Video der Nachrichtensendung Abendschau zeigt die Arbeit der Redaktion und begleitet das Team bei der Produktion von Nachrichtenbeiträgen in den Straßen von Berlin.",
-      "ca": "Vídeo sobre el making-of del programa informatiu d’RBB “Abendschau”, que et transportarà als interiors dels platós de notícies i als carrers de Berlín, on l'equip de reporters cobreix els últims esdeveniments.",
-      "es": "Vídeo sobre el making-of del programa informativo de RBB “Abendschau”, que te transportará a los interiores de los platós de noticias y a las calles de Berlín, donde el equipo de reporteros cubre los últimos acontecimientos.",
-      "en": "Making-of video of the RBB news show “Abendschau”, taking you into the news room and the streets of Berlin where current events are covered by the RBB news team."
-    }],
-    "acces": [
-    {
-      "ST": ["de"],
-      "SL": ["de"]
-    }],
-    "language": "Deutsch",
-    "duration": "1:46",
-    "url": "http://84.88.32.46/imac_content/rbb/dash/stream.mpd",
-    "audioChannels": 2,
-    "subtitles": [
-    {
-      "de": "http://84.88.32.46/imac_content/rbb/RBB_Abendschau_short_subtitles_angles.xml"
-    }],
-    "signer": [
-    {
-      "de": "http://84.88.32.46/imac_content/liceu/Dash/SL_GER/stream.mpd"
-    }],
-    "ad": [{}],
-    "ast": [{}]
-  },
-  {
-    "name": "ARTE I Philip",
-    "poster": "./img/covers/IPhilip2.jpg",
-    "thumbnail": "img/i-philip-1100x750-dark(1).png",
-    "description": "23 years after Philip K. Dick’s death, in 2005, David Hanson, a young engineer in robotics, revealed his first android with human form, “Phil”.",
-    "descriptionArray": [
-    {
-      "de": "23 Jahre nach dem Tod von Philip K. Dick im Jahr 2005 präsentiert der Robotik-Designer David Hanson seinen ersten menschlichen Androiden, “Phil”.",
-      "ca": "23 anys després de la mort de Philip K. Dick, el 2005, David Hanson, un jove enginyer en robòtica, presenta el seu primer androide amb forma humana, “Phil”.",
-      "es": "23 años después de la muerte de Philip K. Dick, en 2005, David Hanson, un joven ingeniero en robótica, presenta su primer androide con forma humana, “Phil”.",
-      "en": "23 years after Philip K. Dick’s death, in 2005, David Hanson, a young engineer in robotics, revealed his first android with human form, “Phil”."
-    }],
-    "acces": [
-    {
-      "ST": ["en", "es", "de", "ca"],
-      "SL": ["de"]
-    }],
-    "language": "English",
-    "duration": "14:44",
-    "url": "http://84.88.32.46/imac_content/pilot_1/RBB_Iphilip/stream.mpd",
-    "audioChannels": 2,
-    "subtitles": [
-    {
-      "de": "http://84.88.32.46/imac_content/pilot_1/RBB_Iphilip/RBB_IPhilip_subtitles_DE.xml",
-      "ca": "http://84.88.32.46/imac_content/pilot_1/RBB_Iphilip/RBB_IPhilip_subtitles_CAT.xml",
-      "es": "http://84.88.32.46/imac_content/pilot_1/RBB_Iphilip/RBB_IPhilip_subtitles_ES.xml",
-      "en": "http://84.88.32.46/imac_content/pilot_1/RBB_Iphilip/RBB_IPhilip_subtitles_EN.xml"
-    },
-    {
-      "de": "http://84.88.32.46/imac_content/pilot_1/RBB_Iphilip/RBB_IPhilip_subtitles_DE.xml",
-      "ca": "http://84.88.32.46/imac_content/pilot_1/RBB_Iphilip/RBB_IPhilip_subtitles_CAT.xml",
-      "es": "http://84.88.32.46/imac_content/pilot_1/RBB_Iphilip/RBB_IPhilip_subtitles_ES.xml",
-      "en": "http://84.88.32.46/imac_content/pilot_1/RBB_Iphilip/RBB_IPhilip_subtitles_EN.xml"
-    }],
-    "signer": [
-    {
-      "de": "http://84.88.32.46/imac_content/pilot_1/RBB_Iphilip/RBB_I/stream.mpd"
-    }]
-  },
-  {
     "name": "Liceu Opera Piece 2",
-    "poster": "./img/covers/opera2_cover.png",
-    "thumbnail": "img/opera2.PNG",
+    "poster": "./portal/img/covers/opera2_cover.png",
+    "thumbnail": "./portal/img/opera2.PNG",
     "description": "Performance of the “Roméo et Juliette” opera recorded at the Gran Teatre del Liceu Opera House (Barcelona). Piece 2.",
     "descriptionArray": [
     {
@@ -130,8 +59,8 @@
   },
   {
     "name": "Desconcert “Leyre”",
-    "poster": "./img/covers/desconcert1_cover.png",
-    "thumbnail": "img/desconcert1.png",
+    "poster": "./portal/img/covers/desconcert1_cover.png",
+    "thumbnail": "./portal/img/desconcert1.png",
     "description": "Performance of a catalan version of  “Leyre” song, recorded at Sala Apolo (Barcelona) during the third edition of “Desconcert”, a great festival of iCat FM.",
     "descriptionArray": [
     {
@@ -165,8 +94,8 @@
   },
   {
     "name": "Desconcert “Havana”",
-    "poster": "./img/covers/desconcert2_cover.png",
-    "thumbnail": "img/desconcert2.png",
+    "poster": "./portal/img/covers/desconcert2_cover.png",
+    "thumbnail": "./portal/img/desconcert2.png",
     "description": "Performance of a catalan version of  “Havana” song, recorded at Sala Apolo (Barcelona) during the third edition of “Desconcert”, a great festival of iCat FM.",
     "descriptionArray": [
     {
@@ -227,8 +156,8 @@
   },
   {
     "name": "Rapzember",
-    "poster": "img/covers/Rapzember2.jpg",
-    "thumbnail": "img/covers/Rapzember.jpg",
+    "poster": "./portal/img/covers/Rapzember2.jpg",
+    "thumbnail": "./portal/img/covers/Rapzember.jpg",
     "description": "Lorem ipsum",
     "descriptionArray": [
     {

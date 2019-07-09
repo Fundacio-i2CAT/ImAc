@@ -19,10 +19,8 @@ function SettingsOptionMenuView() {
         submenu.getObjectByName('close-button-opt').children[0].onexecute = data.closeOptMenuButtonFunc;
 
 		submenu.getObjectByName('tradoptionmenutitle').add(updateTitle(data));
-
-		
         submenu.getObjectByName('tradoptionmenutitle').position.y = optHeight/2 * data.parentColumnDropdown.length;
-        //submenu.getObjectByName('parentcolumndropdown').position.y = submenu.getObjectByName('tradoptionmenutitle').position.y + subController.getSubPosition().y * optHeight/2;
+
         submenu.getObjectByName('parentcolumndropdown').children = [];
 
 //TODO: CHECK FOREACH
@@ -47,8 +45,6 @@ function SettingsOptionMenuView() {
         mesh.name = 'tradoptionmenubackground';
 
         submenu.remove(submenu.getObjectByName('tradoptionmenubackground')).add(mesh);
-        //submenu.getObjectByName('tradoptionmenubackground').position.y = subController.getSubPosition().y * data.parentColumnDropdown.length*(optHeight/2);
-        //submenu.getObjectByName('tradoptionmenubackground').position.y = subController.getSubPosition().y * menuHeight;
 	}
 
 	function updateTitle(data) {

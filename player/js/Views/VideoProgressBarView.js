@@ -1,21 +1,20 @@
 function VideoProgressBarView() {
 
-	let menu;
+	let submenu;
 	let vpb;
 	this.UpdateView = function(data){
-		menu = scene.getObjectByName(data.name);
-		vpb = menu.getObjectByName('video-progress-bar');
+		submenu = scene.getObjectByName(data.name);
+		vpb = submenu.getObjectByName('video-progress-bar');
        
-        menu.getObjectByName("play-progress").scale.set(data.playScaleX,1,1);
-        menu.getObjectByName("play-progress").position.x = data.playPositionX;
-        menu.getObjectByName("slider-progress").position.x = data.sliderPositionX;
+        submenu.getObjectByName("play-progress").scale.set(data.playScaleX,1,1);
+        submenu.getObjectByName("play-progress").position.x = data.playPositionX;
+        submenu.getObjectByName("slider-progress").position.x = data.sliderPositionX;
 
         mainMenuCtrl.setSeekingProcess(false);
         vpb.add(refreshPlayOutTime(data));
 	}
 
 	function refreshPlayOutTime(data){
-	    //menu = scene.getObjectByName(data.name);
 	    vpb.remove(scene.getObjectByName('video-playout-time'));
 
 	    let playouttime = new InteractiveElementModel();

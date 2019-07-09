@@ -291,7 +291,7 @@ VideoController = function() {
                 if (listOfVideoContents[0].vid.currentTime >= listOfVideoContents[0].vid.duration - 0.5) window.location.reload();
                 subController.updateSubtitleByTime( listOfVideoContents[0].vid.currentTime );
                 if ( _NonCont ) subController.updateSLByTime( listOfVideoContents[0].vid.currentTime );
-                if( scene.getObjectByName('traditional-menu') && scene.getObjectByName('traditional-menu').visible )
+                if( scene.getObjectByName('trad-main-menu') && scene.getObjectByName('trad-main-menu').visible )
                 {
                     mainMenuCtrl.updatePlayProgressBar();  
                     mainMenuCtrl.updatePlayOutTime();   

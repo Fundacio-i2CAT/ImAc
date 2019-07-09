@@ -264,7 +264,9 @@ function MenuManager() {
                 VideoController.playAll();
             }
             //Start the menu in the first state.
-            menuMgr.initFirstMenuState();
+            if(menuMgr.getMenuType() == 2){
+                menuMgr.initFirstMenuState();
+            } 
             //Open the settings option menu if it was already open before opening the preview.
             if(isSubmenuOpen){
               menuMgr.Load(SettingsOptionCtrl);  

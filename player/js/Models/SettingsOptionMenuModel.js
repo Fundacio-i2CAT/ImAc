@@ -7,6 +7,7 @@ function SettingsOptionMenuModel() {
 	this.parentColumnDropdown;
 	this.backMenuButtonFunc;
 	this.closeOptMenuButtonFunc;
+	this.previewButtonFunc;
 	this.icon;
 	this.titleHeight;
 	this.isFinalDrop;

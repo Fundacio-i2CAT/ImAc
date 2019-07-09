@@ -549,6 +549,18 @@ function ViewStructureMenuManager() {
         closeBtn.position = new THREE.Vector3( optWidth/2 - menuWidth/35, 0, 0.01 );
         closeBtn.onexecute = function() { console.log("This is the %s button", closeBtn.name) };
 
+        var previewBtn = new InteractiveElementModel();
+        previewBtn.width = menuWidth/30;
+        previewBtn.height = menuWidth/30;
+        previewBtn.name = 'preview-button';
+        previewBtn.type =  'icon';
+        previewBtn.path = './img/menu/preview.png';
+        previewBtn.color = 0xe6e6e6;
+        previewBtn.visible = false;
+        previewBtn.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(menuWidth/30, menuWidth/30), new THREE.MeshBasicMaterial({visible: false}));
+        previewBtn.position = new THREE.Vector3( optWidth/2 - menuWidth/15, 0, 0.01 );
+        previewBtn.onexecute = function() { console.log("This is the %s button", previewBtn.name) };
+
         let optTitle = new InteractiveElementModel();
         optTitle.width = 18*menuWidth/200;
         optTitle.height = optHeight;
@@ -568,6 +580,7 @@ function ViewStructureMenuManager() {
         tradOptionMenuTitle.add(backBtn.create());
         tradOptionMenuTitle.add(closeBtn.create());
         tradOptionMenuTitle.add(optTitle.create());
+        tradOptionMenuTitle.add(previewBtn.create());
 
         // Add all the parent elements to the traditional option menu.
         tradOptionMenu.add(tradOptionMenuTitle);

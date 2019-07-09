@@ -115,6 +115,8 @@ function SettingsOptionMenuController() {
         data.parentColumnDropdown = AddDropdownOptions((data.activeMenuOpts)? data.activeMenuOpts : settingsDropdownOpt);
         data.backMenuButtonFunc = function(){ AddVisualFeedbackOnClick('back-button', function(){ SettingsOptionCtrl.updateDropdownOptions(data.parentDropdownData)} )};
         data.closeOptMenuButtonFunc = function(){ AddVisualFeedbackOnClick('close-button-opt', function(){ SettingsOptionCtrl.close() } )};
+        data.previewButtonFunc = function(){ AddVisualFeedbackOnClick('preview-button', function(){menuMgr.OpenPreview()} )};
+
     }
 
 /**

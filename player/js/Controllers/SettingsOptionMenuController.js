@@ -154,9 +154,8 @@ function SettingsOptionMenuController() {
         let options = menuOpts.options.filter(opt => !opt.available || opt.available());
 
         let dropdownInteractiveElements = [];
-        const h = optHeight*options.length;
+        const h = optHeight/2*options.length;
 
-        data.titleHeight = options.length * optHeight;
         data.hasParentDropdown = menuOpts.parent ? true : false;
         data.isFinalDrop = menuOpts.final;
         data.parentDropdownData = menuOpts.parent;
@@ -178,6 +177,7 @@ function SettingsOptionMenuController() {
             dropdownIE.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(dropdownIE.width, dropdownIE.height), new THREE.MeshBasicMaterial({visible:  false}));
             dropdownIE.onexecute = opt.function; 
             dropdownIE.position = new THREE.Vector3(0, h - (index+1)*optHeight, 0.01);
+
 
             dropdownInteractiveElements.push(dropdownIE.create());
         });

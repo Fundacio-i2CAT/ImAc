@@ -1,6 +1,6 @@
 
 function MainMenuModel() {
-	this.name = 'main-menu-group';
+	this.name = 'trad-main-menu';
 
 	//PlayPause
 	this.isPaused;

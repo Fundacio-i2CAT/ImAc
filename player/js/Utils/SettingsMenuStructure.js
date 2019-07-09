@@ -96,7 +96,7 @@ const settingsDropdownOpt = {title: 'Settings', final: false, options: [
  * @property {function} options[].function     Function executed when option is clicked.
  */
 const generalSettings = { title: 'General', icon: './img/menu/settings_icon.png', parent: settingsDropdownOpt, final: false, options: [
-    { optId: 'settingsLanguages', icon: './img/menu/language.png', text: 'Language', 
+    { optId: 'settingsLanguages', icon: './img/menu/language.png', text: 'LanguageMenu', 
         function: function(){ 
             SettingsOptionCtrl.updateDropdownOptions(settingsUILanguages);
         } 
@@ -114,6 +114,11 @@ const generalSettings = { title: 'General', icon: './img/menu/settings_icon.png'
     { optId: 'settingsUserProfile', icon: './img/menu/user_profile.png', text: 'UserProfile', 
         function: function(){ 
             SettingsOptionCtrl.updateDropdownOptions(settingsUserProfile);
+        } 
+    },
+    { optId: 'openMenuSystem', icon: '', text: 'OpenMenu', 
+        function: function(){ 
+            SettingsOptionCtrl.updateDropdownOptions(openMenuSystem);
         } 
     }]
 };
@@ -143,7 +148,7 @@ const generalSettings = { title: 'General', icon: './img/menu/settings_icon.png'
  * @property {function} options[].default      Function that returns a bool true if option is default and starts in yellow.
  * @property {function} options[].function     Function executed when option is clicked.
  */
-const settingsUILanguages = { title: 'Language', icon: './img/menu/language.png', parent: generalSettings, final: true, options: [
+const settingsUILanguages = { title: 'LanguageMenu', icon: './img/menu/language.png', parent: generalSettings, final: true, options: [
     { optId: 'settingsUILanguageEngButton', text: 'English',
         default: function(){ return MenuDictionary.checkMainLanguage('en') },
         function:  function(){ 
@@ -482,6 +487,30 @@ const settingsSafeArea = { title: 'SafeArea', icon: './img/menu/safe_area.png', 
 };
 
 
+const openMenuSystem = { title: 'OpenMenu', icon: '', parent: generalSettings, final: true, options: [
+    { optId: 'openMenuUp', text: 'Up', 
+        default: function(){ return menuUpDown == 1 },
+        function:  function(){
+            //console.log("Open Menu Up");
+            scene.remove(scene.getObjectByName('openMenu'));
+            menuMgr.createMenuActivationElement(0.35);
+            menuUpDown = 1;
+            SettingsOptionCtrl.setChildColumnActiveOpt(openMenuSystem.options[0].optId);
+        } 
+    }, 
+    { optId: 'OpenMenuDown', text: 'Down', 
+        default: function(){ return menuUpDown == -1 },
+        function:  function(){ 
+            //console.log("Open Menu Down");
+            scene.remove(scene.getObjectByName('openMenu'));
+            menuMgr.createMenuActivationElement(2.35);
+            menuUpDown = -1;
+            SettingsOptionCtrl.setChildColumnActiveOpt(openMenuSystem.options[1].optId);
+
+        } 
+    }]
+};
+
 /* *************************************** S U B T I T L E S    (ST) ***************************************
  * ╔═════════════════════════════════════╗
  * ║ (<)        ST Settings           X  ║
@@ -644,6 +673,7 @@ const settingsSubtitlesPosition = { title: 'Position', icon: './img/menu/st_posi
             subController.setSubPosition( 0, 1 );
             if ( subController.getSubtitleEnabled() ) subController.setSignerPosition( subController.getSignerPosition().x, 1 );
             SettingsOptionCtrl.setChildColumnActiveOpt(settingsSubtitlesPosition.options[0].optId);
+            menu.getObjectByName('trad-main-menu').position.y = -25;
         } 
     },
     { optId: 'subtitlesBottomButton', text: 'Bottom', 
@@ -652,6 +682,7 @@ const settingsSubtitlesPosition = { title: 'Position', icon: './img/menu/st_posi
             subController.setSubPosition( 0, -1 );
             if ( subController.getSubtitleEnabled() ) subController.setSignerPosition( subController.getSignerPosition().x, -1 );
             SettingsOptionCtrl.setChildColumnActiveOpt(settingsSubtitlesPosition.options[1].optId);
+            menu.getObjectByName('trad-main-menu').position.y = 25;
         } 
     }]
 };
@@ -756,6 +787,8 @@ const settingsSignLanguagePosition = { title: 'Position', icon: './img/menu/sl_p
         function:  function(){ 
             subController.setSignerPosition( 1, subController.getSubPosition().y);
             SettingsOptionCtrl.setChildColumnActiveOpt(settingsSignLanguagePosition.options[0].optId);
+            menu.getObjectByName('trad-option-menu').position.x = -9*menuWidth/32;
+
         } 
     },
     { optId: 'signerLeftButton', text: 'Left', 
@@ -763,6 +796,8 @@ const settingsSignLanguagePosition = { title: 'Position', icon: './img/menu/sl_p
         function:  function(){ 
             subController.setSignerPosition( -1, subController.getSubPosition().y);
             SettingsOptionCtrl.setChildColumnActiveOpt(settingsSignLanguagePosition.options[1].optId);
+            menu.getObjectByName('trad-option-menu').position.x = 9*menuWidth/32;
+
         } 
     }]
 };

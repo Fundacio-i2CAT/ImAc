@@ -198,11 +198,11 @@ function createMenus()
     {
         case "ls":
             menuMgr.Init(1);
-            menuMgr.createMenuActivationElement();
+            menuMgr.createMenuActivationElement(0.35);
             break;
         default:
             menuMgr.Init(2);
-            menuMgr.createMenuActivationElement();
+            menuMgr.createMenuActivationElement(0.35);
             break;
     }
 }

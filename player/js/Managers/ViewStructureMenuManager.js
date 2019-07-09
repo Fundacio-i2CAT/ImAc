@@ -28,16 +28,17 @@ function ViewStructureMenuManager() {
 	 */
     function TraditionalMenuBase(name){
 
+        let menuBase =  new THREE.Group();
+        menuBase.name = name;
         let radius = 3*menuWidth/100;        
-        let menuTrad =  new THREE.Group();
-        menuTrad.name = name;
+
 
         let menuShape = _moData.roundedRect( new THREE.Shape(), menuWidth, menuHeight, radius );
         let material = new THREE.MeshBasicMaterial( { color: 0x111111});
         let geometry = new THREE.ShapeGeometry( menuShape );
         let mesh =  new THREE.Mesh( geometry, material);
 
-        mesh.name = 'trad-menu-base';
+        mesh.name = 'trad-menu-background';
 
         let menuTradLineDivisions =  new THREE.Group();
         menuTradLineDivisions.name = 'trad-menu-lines';
@@ -71,18 +72,10 @@ function ViewStructureMenuManager() {
         menuTradLineDivisions.add(lineV3);
         menuTradLineDivisions.add(lineBot);
 
-        mesh.add(menuTradLineDivisions);
+        menuBase.add(menuTradLineDivisions);
+        menuBase.add(mesh)
 
-        menuTrad.add(mesh);
-
-        //The position depends on the menu type.
-        if(menuMgr.getMenuType() == 2){
-            menuTrad.position.set( 0, -20, -67 );    
-        } else {
-            menuTrad.position.set( 0, 0, -67 );
-        }
-
-        return menuTrad;
+        return menuBase;
     }
 
 /**************************************************************
@@ -98,17 +91,16 @@ function ViewStructureMenuManager() {
 	 */
     this.TraditionalMenu = function(name){
         
+        var  mainmenu =  new THREE.Group();
+        mainmenu.name = name;
+
         let i5 = menuWidth/20;
         let i4 = menuWidth/25;
 
         let i6 = 6*menuWidth/100;
         let i10 = 10*menuWidth/100;
 
-        var traditionalmenu = TraditionalMenuBase(name);
-
-
-        var  mainmenu =  new THREE.Group();
-        mainmenu.name = 'main-menu-group';
+        var traditionalmenuBase = TraditionalMenuBase('trad-menu-base');
 
 /************************************\
 |           PLAYPAUSE                |
@@ -163,15 +155,15 @@ function ViewStructureMenuManager() {
         seekRBtn.onexecute = function() { console.log("This is the %s button", seekRBtn.name) };
 
         var closeBtn = new InteractiveElementModel();
-        closeBtn.width = menuWidth/30;
-        closeBtn.height = menuWidth/30;
+        closeBtn.width = menuWidth/25;
+        closeBtn.height = menuWidth/25;
         closeBtn.name = 'close-button';
         closeBtn.type =  'icon';
         closeBtn.path = './img/menu/close.png';
         closeBtn.color = 0xe6e6e6;
         closeBtn.visible = true;
         closeBtn.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(menuWidth/25, menuWidth/25), new THREE.MeshBasicMaterial({visible: false}));
-        closeBtn.position = new THREE.Vector3( menuWidth/2 - menuWidth/30, menuHeight/2 - menuWidth/30, 0.01 );
+        closeBtn.position = new THREE.Vector3( menuWidth/2 - menuWidth/25, menuHeight/2 - menuWidth/25, 0.01 );
         closeBtn.onexecute = function() { console.log("This is the %s button", closeBtn.name) };
 
         // Add all the created elements to the parent group.
@@ -393,27 +385,27 @@ function ViewStructureMenuManager() {
 
 //TODO: Add to controller and link to functions
         var tradMenuBtn = new InteractiveElementModel();
-        tradMenuBtn.width = menuWidth/30;
-        tradMenuBtn.height = menuWidth/30;
+        tradMenuBtn.width = menuWidth/25;
+        tradMenuBtn.height = menuWidth/25;
         tradMenuBtn.name = 'traditional-menu-button';
         tradMenuBtn.type =  'icon';
         tradMenuBtn.path = './img/menu/traditional.png';
         tradMenuBtn.color = 0xe6e6e6;
         tradMenuBtn.visible = true;
         tradMenuBtn.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(menuWidth/25, menuWidth/25), new THREE.MeshBasicMaterial({visible: false}));
-        tradMenuBtn.position = new THREE.Vector3( -menuWidth/2 + menuWidth/30, menuHeight/2 - menuWidth/30, 0.01 );
+        tradMenuBtn.position = new THREE.Vector3( -menuWidth/2 + menuWidth/25, menuHeight/2 - menuWidth/25, 0.01 );
         tradMenuBtn.onexecute = function() { console.log("This is the %s button", tradMenuBtn.name) };
 
         var enhancedMenuBtn = new InteractiveElementModel();
-        enhancedMenuBtn.width = menuWidth/30;
-        enhancedMenuBtn.height = menuWidth/30;
+        enhancedMenuBtn.width = menuWidth/25;
+        enhancedMenuBtn.height = menuWidth/25;
         enhancedMenuBtn.name = 'enhanced-menu-button';
         enhancedMenuBtn.type =  'icon';
         enhancedMenuBtn.path = './img/menu/enhanced.png';
         enhancedMenuBtn.color = 0xe6e6e6;
         enhancedMenuBtn.visible = true;
         enhancedMenuBtn.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(menuWidth/25, menuWidth/25), new THREE.MeshBasicMaterial({visible: false}));
-        enhancedMenuBtn.position = new THREE.Vector3( -menuWidth/2 + menuWidth/30, menuHeight/2 - menuWidth/30, 0.01 );
+        enhancedMenuBtn.position = new THREE.Vector3( -menuWidth/2 + menuWidth/25, menuHeight/2 - menuWidth/25, 0.01 );
         enhancedMenuBtn.onexecute = function() { console.log("This is the %s button", enhancedMenuBtn.name) };
 
 
@@ -482,11 +474,16 @@ function ViewStructureMenuManager() {
         vpb.add(videoPlayoutTime.create());
 
         mainmenu.add(vpb);
+        mainmenu.add(traditionalmenuBase);
         
-        // Add all the parent submenus to the traditionalmenu base.
-        traditionalmenu.add(mainmenu);
+        //The position depends on the menu type.
+        if(menuMgr.getMenuType() == 2){
+            mainmenu.position.set( 0, -1 * subController.getSubPosition().y * 25, -67 );    
+        } else {
+            mainmenu.position.set( 0, 0, -67 );
+        }
 
-        return traditionalmenu;
+        return mainmenu;
     }
 
 /**
@@ -510,7 +507,7 @@ function ViewStructureMenuManager() {
 
          //The position depends on the menu type.
         if(menuMgr.getMenuType() == 2){
-            tradOptionMenu.position.set(9*menuWidth/32, menuHeight/2 + optHeight/2 + menuWidth/100, 0.01); // The +/100 in height is small margin
+            tradOptionMenu.position.set(-subController.getSignerPosition().x * 9*menuWidth/32, 0, 0.01); // The +/100 in height is small margin
         } else {
             tradOptionMenu.position.set(0, 0, -67); 
         }

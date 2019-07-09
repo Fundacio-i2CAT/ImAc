@@ -11,7 +11,6 @@ function MenuManager() {
     let actualCtrl;
     let menuActivationElement;
     let optActiveIndex;
-    let menu;
 
 /**
  * { function_description }
@@ -34,14 +33,15 @@ function MenuManager() {
             console.log("This function is used. But is it vital?");
             traditionalmenu.scale.set( 0.8, 0.8, 0.8 );
         }
-        menuParent.add(vwStrucMMngr.TraditionalMenu('traditional-menu'));
-        menu = menuParent.getObjectByName('traditional-menu');
+        menu = vwStrucMMngr.TraditionalMenu('trad-main-menu');
+        menuParent.add(menu);
 
+        settingsMenu = vwStrucMMngr.TraditionalOptionMenu('trad-option-menu')
         //Depending on the menu type the menu is attached to the menuParent or to the traditional menu
         if(menuMgr.getMenuType() == 2){
-            menu.add(vwStrucMMngr.TraditionalOptionMenu('trad-option-menu'));
+            menu.add(settingsMenu);
         } else {
-            menuParent.add(vwStrucMMngr.TraditionalOptionMenu('trad-option-menu'));
+            menuParent.add(settingsMenu);
         }
 
         mainMenuCtrl = new MainMenuController();
@@ -166,9 +166,10 @@ function MenuManager() {
 /**
  * Creates a menu activation element.
  */
-    this.createMenuActivationElement = function() {
-        var geometry = new THREE.SphereGeometry( 99, 32, 16, Math.PI/2, Math.PI * 2,  2.35,  0.4 );
-        geometry.scale( - 1, 1, 1 );
+    this.createMenuActivationElement = function(start) {
+        //var geometry = new THREE.SphereGeometry( 99, 32, 16, Math.PI/2, Math.PI * 2,  2.35,  0.4 );
+        var geometry = new THREE.SphereGeometry( 99, 32, 16, Math.PI/2, Math.PI * 2, start,  0.4 );
+        geometry.scale( -1, 1, 1 );
         var material = new THREE.MeshBasicMaterial( {color: 0xc91355, side: THREE.FrontSide, transparent: true, opacity:0} );
         menuActivationElement = new THREE.Mesh( geometry, material );
         menuActivationElement.name = 'openMenu';
@@ -284,7 +285,7 @@ function MenuManager() {
  * Removes a menu from parent.
  */
     this.removeMenuFromParent = function() {
-        menuParent.remove(scene.getObjectByName('traditional-menu'));
+        menuParent.remove(scene.getObjectByName('trad-main-menu'));
         menuParent.remove(scene.getObjectByName('trad-option-menu'));
     }
 

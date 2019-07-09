@@ -30,9 +30,16 @@ let mainMenuCtrl;
 let SettingsOptionCtrl;
 let multiOptionsPreviewCtrl;
 
-var menuParent;
-var menuHeight;
-var menuWidth;
+let menu;
+let settingsMenu;
+let menuParent;
+let menuHeight;
+let menuWidth;
+let menuPositionY;
+let mensuSettingsPostionX;
+
+let menuUpDown = 1;
+
 
 var loggerActivated = false;
 

@@ -55,7 +55,7 @@ THREE.InteractionsController = function () {
 	}
 
 	this.getInteractiveObjectList = function (){
-		console.log(interactiveListObjects)
+		return interactiveListObjects;
 	}
 
 //************************************************************************************
@@ -74,24 +74,25 @@ THREE.InteractionsController = function () {
 // Public Functions
 //************************************************************************************
 
-	this.checkInteraction = function(mouse3D, camera, type){
-  	raycaster.setFromCamera( mouse3D, camera );
-  	var intersects = raycaster.intersectObjects( interactiveListObjects, true ); // false
 
-    //Closes the open multi option menu of the traditional menu when clicked outside any element.
-    if(!intersects.length && menuMgr.getActualCtrl() && type != 'onDocumentMouseMove'){
-        SettingsOptionCtrl.close();
-    }
+    this.checkInteraction = function(mouse3D, camera, type){
+        raycaster.setFromCamera( mouse3D, camera );
+        var intersects = raycaster.intersectObjects( interactiveListObjects, true ); // false
+
+        //Closes the open multi option menu of the traditional menu when clicked outside any element.
+        if(!intersects.length && menuMgr.getActualCtrl() && type != 'onDocumentMouseMove'){
+            SettingsOptionCtrl.close();
+        }
 
   	if ( intersects[0] && interactionState && type != 'onDocumentMouseMove'){
-      interactionState = false;
-  		var intersectedShapeId;
+            interactionState = false;
+  		    var intersectedShapeId;
 			for(var inter = 0; inter < intersects.length; inter++){
 
-        gtag('event', 'UserInteraction', {
-            'event_category' : 'PlayerConfig',
-            'event_label' : intersects[inter].object.name
-        });
+            gtag('event', 'UserInteraction', {
+                'event_category' : 'PlayerConfig',
+                'event_label' : intersects[inter].object.name
+            });
 
 	      if ( intersects[inter].object.type == 'Mesh' && intersects[inter].object.onexecute ){
 	        intersects[inter].object.onexecute();
@@ -112,47 +113,47 @@ THREE.InteractionsController = function () {
   	}
 	};
 
-  this.checkVRInteraction = function(origin, direction){
-  	raycaster.set( origin, direction );
-    var intersects = raycaster.intersectObjects( interactiveListObjects, true ); // false
-    if ( intersects[0] && interactionState ){
-      interactionState = false;
-      var intersectedShapeId;
-      for(var inter = 0; inter < intersects.length; inter++){
+    this.checkVRInteraction = function(origin, direction){
+        raycaster.set( origin, direction );
+        var intersects = raycaster.intersectObjects( interactiveListObjects, true ); // false
+        if ( intersects[0] && interactionState ){
+            interactionState = false;
+            var intersectedShapeId;
+            for(var inter = 0; inter < intersects.length; inter++){
 
-        gtag('event', 'VRInteraction', {
-            'event_category' : 'PlayerConfig',
-            'event_label' : intersects[inter].object.name
-        });
+                gtag('event', 'VRInteraction', {
+                    'event_category' : 'PlayerConfig',
+                    'event_label' : intersects[inter].object.name
+                });
 
-        if ( intersects[inter].object.type == 'Mesh' && intersects[inter].object.onexecute ){
-          intersects[inter].object.onexecute();
-          break;
+                if ( intersects[inter].object.type == 'Mesh' && intersects[inter].object.onexecute ){
+                    intersects[inter].object.onexecute();
+                    break;
+                }
+                else if ( intersects[inter].object.type == 'Mesh' &&  intersects[inter].object.parent.name === 'video-progress-bar'){
+                    mainMenuCtrl.onClickSeek(intersects[inter].point.normalize())
+                    break;
+                }
+            }
+            freeInteractionState(300);
         }
-        else if ( intersects[inter].object.type == 'Mesh' &&  intersects[inter].object.parent.name === 'video-progress-bar'){
-          mainMenuCtrl.onClickSeek(intersects[inter].point.normalize())
-          break;
-        }
-      }
-      freeInteractionState(300);
-    }
-  };
+    };
 
-  this.getSubtitlesActive = function(){
-  	return subtitlesActive;
-  };
+    this.getSubtitlesActive = function(){
+    	return subtitlesActive;
+    };
 
-  this.getSignerActive = function(){
-    return signerActive;
-  };
+    this.getSignerActive = function(){
+        return signerActive;
+    };
 
-  this.setSubtitlesActive = function(activated){
-    subtitlesActive = activated;
-  };
+    this.setSubtitlesActive = function(activated){
+        subtitlesActive = activated;
+    };
 
-  this.setSignerActive = function(activated){
-    signerActive = activated;
-  };
+    this.setSignerActive = function(activated){
+        signerActive = activated;
+    };
 
 /**
  * [description]
@@ -160,11 +161,11 @@ THREE.InteractionsController = function () {
  * @return {[type]}        [description]
  */
 	this.addInteractiveObject = function(object){
-    let index = interactiveListObjects.map(function(e) { return e.name; }).indexOf(object.name);
-    if (index < 0){
-	    interactiveListObjects.push(object);
-	    controls.setInteractiveObject(object);
-    }
+        let index = interactiveListObjects.map(function(e) { return e.name; }).indexOf(object.name);
+        if (index < 0){
+    	    interactiveListObjects.push(object);
+    	    controls.setInteractiveObject(object);
+        }
 	};
 
 /**
@@ -172,30 +173,27 @@ THREE.InteractionsController = function () {
  * @param  {[type]} object [description]
  * @return {[type]}        [description]
  */
-  this.addInteractiveRadar = function(object){
-    radarInteraction = object;
-    let index = interactiveListObjects.map(function(e) { return e.name; }).indexOf(object.name);
-    if (index < 0){
-        interactiveListObjects.push(object);
-        controls.setInteractiveObject(object);
-    }
-  };
+    this.addInteractiveRadar = function(object){
+        radarInteraction = object;
+        let index = interactiveListObjects.map(function(e) { return e.name; }).indexOf(object.name);
+        if (index < 0){
+            interactiveListObjects.push(object);
+            controls.setInteractiveObject(object);
+        }
+    };
 
-	this.removeInteractiveObject = function(name)
-	{
+	this.removeInteractiveObject = function(name){
 		interactiveListObjects = interactiveListObjects.filter(e => e.name != name);
         controls.removeInteractiveObject(name);
 	}
 
-    this.removeInteractiveRadar = function(name)
-    {
+    this.removeInteractiveRadar = function(name){
         radarInteraction = undefined;
         interactiveListObjects = interactiveListObjects.filter(e => e.name != name);
         controls.removeInteractiveObject(name);
     }
 
-    this.clearInteractiveObjectList = function(name)
-    {
+    this.clearInteractiveObjectList = function(name){
         interactiveListObjects = [];
         if (radarInteraction) this.addInteractiveRadar(radarInteraction);
     }

@@ -272,6 +272,16 @@ function ViewStructureMenuManager() {
         stDisBtn.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(i5*2, i5), new THREE.MeshBasicMaterial({visible: false}));
         stDisBtn.position = new THREE.Vector3( -3*menuWidth/8, -menuHeight/3, 0.01 );
         stDisBtn.onexecute = function() { console.log("This is the %s button", stDisBtn.name) };
+
+        var stTooltip = new InteractiveElementModel();
+        stTooltip.width = i6;
+        stTooltip.height = i6;
+        stTooltip.name = 'tooltip-st-button';
+        stTooltip.type =  'icon';
+        stTooltip.path = './img/menu_ai_icons/ST.png';
+        stTooltip.color = 0xe6e6e6;
+        stTooltip.visible = false;
+        stTooltip.position = new THREE.Vector3( -7*menuWidth/16, -menuHeight/3, 0.01 );
        
         var slBtn = new InteractiveElementModel();
         slBtn.width = i5;
@@ -297,6 +307,16 @@ function ViewStructureMenuManager() {
         slDisBtn.position = new THREE.Vector3( -menuWidth/8, -menuHeight/3, 0.01 );
         slDisBtn.onexecute = function() { console.log("This is the %s button", slDisBtn.name) };
 
+        var slTooltip = new InteractiveElementModel();
+        slTooltip.width = i6;
+        slTooltip.height = i6;
+        slTooltip.name = 'tooltip-sl-button';
+        slTooltip.type =  'icon';
+        slTooltip.path = './img/menu_ai_icons/SL.png';
+        slTooltip.color = 0xe6e6e6;
+        slTooltip.visible = false;
+        slTooltip.position = new THREE.Vector3( -3*menuWidth/16, -menuHeight/3, 0.01 );
+
         var adBtn = new InteractiveElementModel();
         adBtn.width = i5;
         adBtn.height = i5;
@@ -320,6 +340,16 @@ function ViewStructureMenuManager() {
         adDisBtn.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(i5*2, i5), new THREE.MeshBasicMaterial({visible: false}));
         adDisBtn.position = new THREE.Vector3( menuWidth/8, -menuHeight/3, 0.01 );
         adDisBtn.onexecute = function() { console.log("This is the %s button", adDisBtn.name) };
+
+        var adTooltip = new InteractiveElementModel();
+        adTooltip.width = i6;
+        adTooltip.height = i6;
+        adTooltip.name = 'tooltip-ad-button';
+        adTooltip.type =  'icon';
+        adTooltip.path = './img/menu_ai_icons/AD.png';
+        adTooltip.color = 0xe6e6e6;
+        adTooltip.visible = false;
+        adTooltip.position = new THREE.Vector3( 1*menuWidth/16, -menuHeight/3, 0.01 );
 
         var astBtn = new InteractiveElementModel();
         astBtn.width = i5;
@@ -345,15 +375,30 @@ function ViewStructureMenuManager() {
         astDisBtn.position = new THREE.Vector3( 3*menuWidth/8, -menuHeight/3, 0.01 );
         astDisBtn.onexecute = function() { console.log("This is the %s button", astDisBtn.name) };
 
+        var astTooltip = new InteractiveElementModel();
+        astTooltip.width = i6;
+        astTooltip.height = i6;
+        astTooltip.name = 'tooltip-ast-button';
+        astTooltip.type =  'icon';
+        astTooltip.path = './img/menu_ai_icons/AST.png';
+        astTooltip.color = 0xe6e6e6;
+        astTooltip.visible = false;
+        astTooltip.position = new THREE.Vector3( 5*menuWidth/16, -menuHeight/3, 0.01 );
+
         // Add all the created elements to the parent group.
         mainmenu.add(stBtn.create());
         mainmenu.add(stDisBtn.create());
+        mainmenu.add(stTooltip.create()); 
         mainmenu.add(slBtn.create());
         mainmenu.add(slDisBtn.create());
+        mainmenu.add(slTooltip.create()); 
         mainmenu.add(adBtn.create());
         mainmenu.add(adDisBtn.create());
+        mainmenu.add(adTooltip.create()); 
         mainmenu.add(astBtn.create());
         mainmenu.add(astDisBtn.create());
+        mainmenu.add(astTooltip.create()); 
+
 
 
 /************************************\

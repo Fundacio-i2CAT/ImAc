@@ -10,9 +10,16 @@ function AplicationManager()
     var _display;
 
     var mouse3D = new THREE.Vector2( 0, 0 );
+    var raycaster;
 
     var button_1;
     var button_2;
+
+    var INTERSECTEDHOVER = [],
+        WASHOVERED = [],
+        INTERSECTEDCLICK = [];
+    var intersects;
+
 
     this.getRenderer = function() { return renderer };
 
@@ -85,35 +92,9 @@ function AplicationManager()
 		}
 	}
 
-    function render()
-    {
-        /*var time =  performance.now();
-        console.log( time - rendertime )
-        rendertime = time;*/
-
-    	THREE.VRController.update()
-    	if ( controls ) controls.update();
-    	renderer.render( scene, camera );
-
-    	_AudioManager.updateRotationMatrix( camera.matrixWorld.elements );
-
-    	if( THREE.VRController.getTouchPadState() && _isHMD ) 
-    	{			
-			// afegir contador per a obrir el menu despres de fer 5 clicks
-            interController.checkInteraction( mouse3D, camera, 'onDocumentMouseDown' );
-		}
-        if ( _isHMD && subController.getSubtitleEnabled() )
-        {
-            subController.updateSTRotation();
-        }
-        if ( _isHMD && subController.getSignerEnabled() )
-        {
-            subController.updateSLRotation();
-        }
-
-		subController.updateRadar();
-
-        Reticulum.update();
+    function render(){
+        renderer.render( scene, camera );
+        intersects = raycaster.intersectObjects(scene.children, true);
     }
 
     this.init = function()
@@ -125,6 +106,7 @@ function AplicationManager()
         initWorld();
 		initRenderer();
 
+        // CONTROLS
         controls = new THREE.DeviceOrientationAndTouchController( camera, renderer.domElement, renderer );
 
 		container.appendChild( renderer.domElement );
@@ -150,8 +132,171 @@ function AplicationManager()
         }
         else alert("This browser don't support VR content");
 
-        initReticulum( camera );
         if ( localStorage.ImAc_server ) _Sync.init( localStorage.ImAc_server );
-        runDemo();
+        runDemo();    
+
+
+        // --- init & events -------------------------------------------------
+        raycaster = new THREE.Raycaster();
+        document.addEventListener('mousemove', onDocumentMouseMove, false);
+        document.addEventListener('mousedown', onDocumentMouseDown, false);
+
+
+        /**
+         * needs to go out next to Init in separate and private.
+         */
+        animate(); 
+
 	};
+
+    function onDocumentMouseMove(event) {
+        event.preventDefault();
+        mouse3D.x = (event.clientX / window.innerWidth) * 2 - 1;
+        mouse3D.y = -(event.clientY / window.innerHeight) * 2 + 1;
+    }
+
+    function onDocumentMouseDown(event) {
+        event.preventDefault();
+        mouse3D.x = (event.clientX / window.innerWidth) * 2 - 1;
+        mouse3D.y = -(event.clientY / window.innerHeight) * 2 + 1;
+    }
+
+    function animate() 
+    {
+        requestAnimationFrame( animate );
+        render();       
+        update();
+    }
+
+    function update()
+    {
+        /*var time =  performance.now();
+        console.log( time - rendertime )
+        rendertime = time;*/
+
+        THREE.VRController.update()
+        //if ( controls ) controls.update();
+        
+
+        _AudioManager.updateRotationMatrix( camera.matrixWorld.elements );
+
+        if( THREE.VRController.getTouchPadState() && _isHMD ) 
+        {           
+            // afegir contador per a obrir el menu despres de fer 5 clicks
+            interController.checkInteraction( mouse3D, camera, 'onDocumentMouseDown' );
+        }
+        if ( _isHMD && subController.getSubtitleEnabled() )
+        {
+            subController.updateSTRotation();
+        }
+        if ( _isHMD && subController.getSignerEnabled() )
+        {
+            subController.updateSLRotation();
+        }
+
+        subController.updateRadar();
+
+
+        raycaster.setFromCamera(mouse3D, camera);
+        intersects = raycaster.intersectObjects(scene.children, true);
+
+//CREATE A SEPARATE FUNCTION!!!
+        // --- HOVER handling --------------------------------------
+        if (intersects.length > 0) {
+
+            let accessIcons = [ scene.getObjectByName('show-st-button'), scene.getObjectByName('disable-st-button'),
+                            scene.getObjectByName('show-sl-button'), scene.getObjectByName('disable-sl-button'),
+                            scene.getObjectByName('show-ad-button'), scene.getObjectByName('disable-ad-button'), 
+                            scene.getObjectByName('show-ast-button'),scene.getObjectByName('disable-ast-button')];
+
+            let parentName = intersects[0].object.parent.name;
+            let accessIconsIndex = accessIcons.indexOf(intersects[0].object.parent)
+
+            if (parentName && accessIconsIndex != -1) {
+                for (let i = 0; i < accessIcons.length; i++) {
+                    let element = accessIcons[i];
+
+                    if (parentName === element.name) {          
+                        // only push into array if it's not already in!
+                        if (INTERSECTEDHOVER.indexOf(element) === -1) {
+                            INTERSECTEDHOVER.push(element);          
+                        }
+                    }
+                }
+            }
+
+            else {
+                if (INTERSECTEDHOVER.length > 0) {
+                    //get last element
+                    let lastElement = INTERSECTEDHOVER[INTERSECTEDHOVER.length - 1];
+                    INTERSECTEDHOVER.pop();
+                    WASHOVERED.push(lastElement);
+                }
+                if (WASHOVERED.length > 0 ) {
+                    for (let i = 0; i < WASHOVERED.length; i++) {
+                        onMouseOut(WASHOVERED[i]);
+                    }
+                }
+            }
+            if (INTERSECTEDHOVER.length > 0) {
+                for (let i = 0; i < INTERSECTEDHOVER.length; i++) {
+                    onMouseOver(INTERSECTEDHOVER[i]);
+                }
+            } 
+        } 
+
+        Reticulum.update();
+        initReticulum( camera );
+
+        controls.update();
+    }
+
+// MOVE TO ANOTHER LOCATION
+    function onMouseOver(obj){
+        switch(obj.name){
+            case "show-st-button":
+            case "disable-st-button":
+                scene.getObjectByName('tooltip-st-button').visible = true;
+                break;
+            case "show-sl-button":
+            case "disable-sl-button":
+                scene.getObjectByName('tooltip-sl-button').visible = true;
+                break;
+            case "show-ad-button":
+            case "disable-ad-button":
+                scene.getObjectByName('tooltip-ad-button').visible = true;
+                break;
+            case "show-ast-button":
+            case "disable-ast-button":
+                scene.getObjectByName('tooltip-ast-button').visible = true;
+                break;
+        }
+    }
+
+// MOVE TO ANOTHER LOCATION
+    function onMouseOut(obj){
+        switch(obj.name){
+            case "show-st-button":
+            case "disable-st-button":
+                scene.getObjectByName('tooltip-st-button').visible = false;
+                break;
+            case "show-sl-button":
+            case "disable-sl-button":
+                scene.getObjectByName('tooltip-sl-button').visible = false;
+                break;
+            case "show-ad-button":
+            case "disable-ad-button":
+                scene.getObjectByName('tooltip-ad-button').visible = false;
+                break;
+            case "show-ast-button":
+            case "disable-ast-button":
+                scene.getObjectByName('tooltip-ast-button').visible = false;
+                break;
+        }
+        //Remove the element from the array
+        let index = WASHOVERED.indexOf(obj);
+        if (index > -1) {
+            WASHOVERED.splice(index, 1);
+        }
+    }
 }

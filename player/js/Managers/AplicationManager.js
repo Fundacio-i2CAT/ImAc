@@ -4,6 +4,7 @@ var scene;
 var controls;
 var rendertime = 0;
 
+
 function AplicationManager()
 {
     var renderer;
@@ -15,35 +16,14 @@ function AplicationManager()
     var button_1;
     var button_2;
 
-    var INTERSECTEDHOVER = [],
-        WASHOVERED = [],
-        INTERSECTEDCLICK = [];
     var intersects;
+
+    var INTERSECTEDHOVER = [];
+    var WASHOVERED = [];
+    var INTERSECTEDCLICK = [];
 
 
     this.getRenderer = function() { return renderer };
-
-    function initWorld()
-    {
-    	camera = new THREE.PerspectiveCamera( 60.0, window.innerWidth / window.innerHeight, 1, 1000 );
-        camera.name = 'perspectivecamera';
-		scene = new THREE.Scene();
-        scene.add( camera );
-    }
-
-    function initRenderer()
-    {
-    	renderer = new THREE.WebGLRenderer({
-			antialias: true,
-			premultipliedAlpha: false,
-			alpha: true
-		});
-
-		renderer.domElement.id = 'WebGLRenderer';
-		renderer.sortObjects = true;
-		renderer.setPixelRatio( Math.floor( window.devicePixelRatio ) );
-		renderer.setSize( window.innerWidth, window.innerHeight );
-    }
 
     // Used when autopositioning is activated
     this.enableVR = function()
@@ -102,9 +82,26 @@ function AplicationManager()
         console.log('Init AplicationManager')
 			
 		var container = document.getElementById( 'container' );
+
+
+        // Init World
+        camera = new THREE.PerspectiveCamera( 60.0, window.innerWidth / window.innerHeight, 1, 1000 );
+        camera.name = 'perspectivecamera';
+        scene = new THREE.Scene();
+        scene.add( camera );
+
+        // Init Render
+        renderer = new THREE.WebGLRenderer({
+            antialias: true,
+            premultipliedAlpha: false,
+            alpha: true
+        });
+
+        renderer.domElement.id = 'WebGLRenderer';
+        renderer.sortObjects = true;
+        renderer.setPixelRatio( Math.floor( window.devicePixelRatio ) );
+        renderer.setSize( window.innerWidth, window.innerHeight );
 	
-        initWorld();
-		initRenderer();
 
         // CONTROLS
         controls = new THREE.DeviceOrientationAndTouchController( camera, renderer.domElement, renderer );
@@ -133,39 +130,28 @@ function AplicationManager()
         else alert("This browser don't support VR content");
 
         if ( localStorage.ImAc_server ) _Sync.init( localStorage.ImAc_server );
-        runDemo();    
+        runDemo();  
 
+        initReticulum( camera );
 
         // --- init & events -------------------------------------------------
         raycaster = new THREE.Raycaster();
+
         document.addEventListener('mousemove', onDocumentMouseMove, false);
-        document.addEventListener('mousedown', onDocumentMouseDown, false);
+        //document.addEventListener('mousedown', onDocumentMouseDown, false);
 
-
-        /**
-         * needs to go out next to Init in separate and private.
-         */
         animate(); 
-
 	};
 
-    function onDocumentMouseMove(event) {
-        event.preventDefault();
-        mouse3D.x = (event.clientX / window.innerWidth) * 2 - 1;
-        mouse3D.y = -(event.clientY / window.innerHeight) * 2 + 1;
-    }
 
-    function onDocumentMouseDown(event) {
-        event.preventDefault();
-        mouse3D.x = (event.clientX / window.innerWidth) * 2 - 1;
-        mouse3D.y = -(event.clientY / window.innerHeight) * 2 + 1;
-    }
 
     function animate() 
     {
         requestAnimationFrame( animate );
         render();       
         update();
+
+        Reticulum.update();
     }
 
     function update()
@@ -196,11 +182,27 @@ function AplicationManager()
 
         subController.updateRadar();
 
+        // find intersections
 
-        raycaster.setFromCamera(mouse3D, camera);
-        intersects = raycaster.intersectObjects(scene.children, true);
+        // create a Ray with origin at the mouse position
+        //   and direction into the scene (camera direction)
+        raycaster.setFromCamera( mouse3D, camera );
+        var intersects = raycaster.intersectObjects(scene.children, true);
 
-//CREATE A SEPARATE FUNCTION!!!
+        showAccessIconTooltip(intersects);
+
+        controls.update();
+    }
+
+    function onDocumentMouseMove(event) {
+      event.preventDefault();
+
+      mouse3D.x = (event.clientX / window.innerWidth) * 2 - 1;
+      mouse3D.y = -(event.clientY / window.innerHeight) * 2 + 1;
+    }
+
+
+    function showAccessIconTooltip(intersects){
         // --- HOVER handling --------------------------------------
         if (intersects.length > 0) {
 
@@ -213,6 +215,8 @@ function AplicationManager()
             let accessIconsIndex = accessIcons.indexOf(intersects[0].object.parent)
 
             if (parentName && accessIconsIndex != -1) {
+                console.log('parentName')
+                console.log(parentName)
                 for (let i = 0; i < accessIcons.length; i++) {
                     let element = accessIcons[i];
 
@@ -244,14 +248,8 @@ function AplicationManager()
                 }
             } 
         } 
-
-        Reticulum.update();
-        initReticulum( camera );
-
-        controls.update();
     }
 
-// MOVE TO ANOTHER LOCATION
     function onMouseOver(obj){
         switch(obj.name){
             case "show-st-button":
@@ -273,7 +271,6 @@ function AplicationManager()
         }
     }
 
-// MOVE TO ANOTHER LOCATION
     function onMouseOut(obj){
         switch(obj.name){
             case "show-st-button":

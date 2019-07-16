@@ -277,8 +277,9 @@ function ViewStructureMenuManager() {
         stTooltip.width = i6;
         stTooltip.height = i6;
         stTooltip.name = 'tooltip-st-button';
-        stTooltip.type =  'icon';
-        stTooltip.path = './img/menu_ai_icons/ST.png';
+        stTooltip.type =  'text';
+        stTooltip.text = 'ST';
+        stTooltip.textSize = menuWidth/45;
         stTooltip.color = 0xe6e6e6;
         stTooltip.visible = false;
         stTooltip.position = new THREE.Vector3( -7*menuWidth/16, -menuHeight/3, 0.01 );
@@ -311,8 +312,9 @@ function ViewStructureMenuManager() {
         slTooltip.width = i6;
         slTooltip.height = i6;
         slTooltip.name = 'tooltip-sl-button';
-        slTooltip.type =  'icon';
-        slTooltip.path = './img/menu_ai_icons/SL.png';
+        slTooltip.type =  'text';
+        slTooltip.text = 'SL';
+        slTooltip.textSize = menuWidth/45;
         slTooltip.color = 0xe6e6e6;
         slTooltip.visible = false;
         slTooltip.position = new THREE.Vector3( -3*menuWidth/16, -menuHeight/3, 0.01 );
@@ -345,8 +347,9 @@ function ViewStructureMenuManager() {
         adTooltip.width = i6;
         adTooltip.height = i6;
         adTooltip.name = 'tooltip-ad-button';
-        adTooltip.type =  'icon';
-        adTooltip.path = './img/menu_ai_icons/AD.png';
+        adTooltip.type =  'text';
+        adTooltip.text = 'AD';
+        adTooltip.textSize = menuWidth/45;
         adTooltip.color = 0xe6e6e6;
         adTooltip.visible = false;
         adTooltip.position = new THREE.Vector3( 1*menuWidth/16, -menuHeight/3, 0.01 );
@@ -379,8 +382,9 @@ function ViewStructureMenuManager() {
         astTooltip.width = i6;
         astTooltip.height = i6;
         astTooltip.name = 'tooltip-ast-button';
-        astTooltip.type =  'icon';
-        astTooltip.path = './img/menu_ai_icons/AST.png';
+        astTooltip.type =  'text';
+        astTooltip.text = 'AST';
+        astTooltip.textSize = menuWidth/45;
         astTooltip.color = 0xe6e6e6;
         astTooltip.visible = false;
         astTooltip.position = new THREE.Vector3( 5*menuWidth/16, -menuHeight/3, 0.01 );

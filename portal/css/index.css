@@ -407,6 +407,15 @@ body {
   max-height: 70px;
 }
 
+.Partners-container.xl {
+  width: 30%;
+  height: 8vw;
+  float: left;
+  position: relative;
+  min-height: 40px;
+  max-height: 70px;
+}
+
 .Partners-container img {
   max-height: 100%;
   max-width: 100%;
@@ -427,7 +436,8 @@ body {
   color: #949494;
   font-size: 1.4rem;
   font-family: 'Roboto', Arial;
-  padding-right: 6rem;
+  padding-left: 2rem;
+  text-align: right;
 }
 
 .Footer-options { 
@@ -506,7 +516,7 @@ body {
 
 /* The check */
 .check {
-  height: 50px;
+  height: 45px;
   display: block;
   position: relative;
   padding-left: 40px;
@@ -514,7 +524,7 @@ body {
   padding-right: 15px;
   cursor: pointer;
   color: #E6E6E6;
-  font-size: 21px;
+  font-size: 20px;
   font-weight: 400;
   font-family: 'Open Sans', sans-serif;
   -webkit-user-select: none;
@@ -524,7 +534,7 @@ body {
 }
 
 .check.services {
-  font-size: 2rem;
+  font-size: 1.8rem;
 }
 
 /* Hide the browser's default checkbox */
@@ -535,7 +545,7 @@ body {
 }
 
 .check img {
-  width: 30px;
+  width: 25px;
   padding-top: 3px;
 }
 
@@ -544,8 +554,8 @@ body {
   position: absolute;
   top: 3px;
   left: 0;
-  height: 30px;
-  width: 30px;
+  height: 25px;
+  width: 25px;
   /* background-color: #21202000; */
   border-color: rgb(204, 0, 102);
   border-style: solid;
@@ -574,8 +584,8 @@ body {
 .check .checkmark:after {
   left: 7px;
   top: 1px;
-  width: 9px;
-  height: 18px;
+  width: 6px;
+  height: 15px;
   border: solid ;
   border-color: #E6E6E6;
   border-width: 0 3px 3px 0;
@@ -1200,4 +1210,20 @@ input:checked + .slider:before {
 
 .slider.round:before {
   border-radius: 50%;
+}
+
+.gobutton {
+  background: rgb(204, 0, 102);
+    border-color: rgb(204, 0, 102);
+    border-radius: 5px;
+    padding: 5px 15px;
+    color: #E6E6E6;
+    display: inline-block;
+    font: normal bold 20px/1 "Roboto", sans-serif;
+    text-align: center;
+    text-shadow: 1px 1px #000000;
+}
+
+.Search-button {
+  text-align: center;
 }

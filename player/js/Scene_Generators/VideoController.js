@@ -31,6 +31,12 @@ VideoController = function() {
     var listOfAudioContents = [];
     var ft = true;
 
+    var playEvent = new Event('playevent');
+    var pauseEvent = new Event('pauseevent');
+
+    //document.addEventListener('playevent', function (e) { console.error('playevent run') }, false);
+    //document.addEventListener('pauseevent', function (e) { console.error('pauseevent run') }, false);
+
 //************************************************************************************
 // Private Functions
 //************************************************************************************
@@ -212,6 +218,8 @@ VideoController = function() {
 
     this.playAll = function()
     {
+        document.dispatchEvent(playEvent);
+
     	listOfVideoContents.forEach( function( elem ) { 
             if (elem.vid.paused) {
                 elem.vid.play().then( _ => {  syncVideos() }); 
@@ -226,6 +234,8 @@ VideoController = function() {
 
     this.pauseAll = function()
     {
+        document.dispatchEvent(pauseEvent);
+
     	listOfVideoContents.forEach( function( elem ) { elem.vid.pause(); } ); 
         listOfAudioContents.forEach( function( elem ) { elem.pause(); } );
     };

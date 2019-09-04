@@ -34,16 +34,25 @@ SyncController = function() {
 	var _wcUrl;
 	var _csUrl;
 
+	var _roomID = 23;
+
 	/**
 	 * Initialize the library
 	 *
 	 * @param  {ip}
 	*/
-	this.init = function( ip )
+	this.init = function( ip, rid=24 )
 	{
 		first_entry = true;
-		connection_CII( 'ws://' + ip + ':4649/dvbcsscii' );
+		connection_CII( 'ws://' + ip + ':4649/' + rid + '/dvbcsscii' );
+		//connection_NEW( 'ws://' + ip + ':4649/new' );
 	};
+
+	this.room = function()
+	{
+		//connection_NEW( '192.168.10.128' );
+		connection_NEW( '195.81.194.222' );
+	}
 
 	/**
 	 * Function used to do Play, Pause and Seek actions synchronously
@@ -219,5 +228,20 @@ SyncController = function() {
 		{
 			cs_ws.send( JSON.stringify( scene.children ) );
 		};
+	}
+
+
+
+
+	function connection_NEW(ip)
+	{
+		var cii_ws = new WebSocket( 'ws://' + ip + ':4649/new' );
+
+		cii_ws.onmessage = function(message) 
+		{
+			_roomID = message.data;
+			console.log( _roomID );
+			_Sync.init( ip, _roomID )
+		}
 	}
 }

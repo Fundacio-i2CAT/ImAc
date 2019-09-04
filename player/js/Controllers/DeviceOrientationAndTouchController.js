@@ -40,8 +40,31 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 	var deviceQuat = new THREE.Quaternion();
 	var mouse2D = new THREE.Vector2();
 	//var mouse3D = new THREE.Vector3();
+    var sliderSelection;
+    var tpCache = new Array();
 
 	this.enableManualDrag = true;
+
+	function zoom(n) {
+		// Important! ==> [( 0 < camera.fov < 180 )]
+		if (camera.fov-n < 10) 
+		{
+			camera.fov = 10;
+		}
+		else if (camera.fov-n > 60) 
+		{
+			camera.fov = 60;
+		}
+		else 
+		{
+			camera.fov -= n;
+		}
+		camera.updateProjectionMatrix();
+	}
+
+
+
+
 
 	this.setInteractiveObject = function(object)
 	{
@@ -71,14 +94,14 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 
 		if ( autopositioning == false ) 
 		{
-			if ( Date.now() - touchtime > 1200 ) touchcount = 0;
+			if ( Date.now() - touchtime > 300 ) touchcount = 0;
 
 			if (touchcount == 0) {
 				
 				touchcount++;
 				touchtime = Date.now();
 			}
-			else if (touchcount < 4) {
+			else if (touchcount < 1) {
 				touchcount++;
 			}
 			else {
@@ -163,14 +186,14 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 				}
 				else if ( scene.getObjectByName( "openMenu" ).visible ){
 
-					if ( Date.now() - touchtime > 1200 ) touchcount = 0;
+					if ( Date.now() - touchtime > 300 ) touchcount = 0;
 
 					if (touchcount == 0) {
 						
 						touchcount++;
 						touchtime = Date.now();
 					}
-					else if (touchcount < 4) {
+					else if (touchcount < 1) {
 						touchcount++;
 					}
 					else {
@@ -204,6 +227,13 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 
 				this.element.addEventListener( 'touchmove', this.onDocumentTouchMove, false );
 				this.element.addEventListener( 'touchend', this.onDocumentTouchEnd, false );
+
+				break;
+
+			case 2:
+				for (var i=0; i < event.touches.length; i++) {
+     				tpCache.push(event.touches[i]);
+   				}
 
 				break;
 		}
@@ -255,6 +285,35 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 				subController.getSignerEnabled() ? subController.switchSigner( false ) : subController.switchSigner( true );
 				break;
 
+			case 51:  // 3
+				camera.fov = camera.fov * 0.5;
+
+				camera.children.forEach( function( e ) 
+	        	{
+	        		//e.visible = pos == 'left' ? true : false;
+	        		e.scale.set( e.scale.x * 0.5, e.scale.x * 0.5, 1)
+	            }); 
+
+
+				camera.updateProjectionMatrix();
+				break;
+
+			case 52:  // 4
+
+				if (camera.fov * 2 <= 60) {
+
+					camera.fov = camera.fov * 2;
+
+					camera.children.forEach( function( e ) 
+		        	{
+		        		//e.visible = pos == 'left' ? true : false;
+		        		e.scale.set( e.scale.x * 2, e.scale.x * 2, 1)
+		            }); 
+					//camera.fovx += 10;
+					camera.updateProjectionMatrix();
+				}
+				break;
+
 			case 77:  // m
 				if ( !autopositioning ) {
 					//xxx.swichtMenuState();
@@ -278,6 +337,59 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 			currentY = event.touches[ 0 ].pageY;
 		}
 
+		else if ( event.touches.length == 2 )
+		{
+			var point1=-1, point2=-1;
+			for (var i=0; i < tpCache.length; i++) {
+				if (tpCache[i].identifier == event.touches[0].identifier) point1 = i;
+				if (tpCache[i].identifier == event.touches[1].identifier) point2 = i;
+			}
+			if (point1 >=0 && point2 >= 0) {
+	 		// Calculate the difference between the start and move coordinates
+	 		var diff1 = tpCache[point1].pageX - event.touches[0].pageX;
+				var diff2 = tpCache[point2].pageX - event.touches[1].pageX;
+				// This threshold is device dependent as well as application specific
+				//var PINCH_THRESHHOLD = event.target.clientWidth / 10;
+				if ( ( tpCache[point1].pageX < tpCache[point2].pageX && (diff1 - diff2) > 0 ) || ( tpCache[point1].pageX > tpCache[point2].pageX && (diff2 - diff1) > 0 ) ) {
+					//zoom(Math.trunc((diff1 - diff2)/20));
+
+					if (camera.fov * 0.8 >= 10) {
+						camera.fov = camera.fov * 0.8;
+
+						camera.children.forEach( function( e ) 
+			        	{
+			        		//e.visible = pos == 'left' ? true : false;
+			        		e.scale.set( e.scale.x * 0.8, e.scale.x * 0.8, 1)
+			            }); 
+
+						camera.updateProjectionMatrix();
+					}
+
+
+				}
+				else {
+					//zoom(Math.trunc((diff2 - diff1)/20));
+
+					if (camera.fov * 1.25 <= 60) {
+
+						camera.fov = camera.fov * 1.25;
+
+						camera.children.forEach( function( e ) 
+			        	{
+			        		//e.visible = pos == 'left' ? true : false;
+			        		e.scale.set( e.scale.x * 1.25, e.scale.x * 1.25, 1)
+			            }); 
+						//camera.fovx += 10;
+						camera.updateProjectionMatrix();
+					}
+				}
+			}
+			else {
+				// empty tpCache
+				tpCache = new Array();
+			}
+		}
+
 		/*switch( event.touches.length ) {
 			case 1:
 				currentX = event.touches[ 0 ].pageX;
@@ -291,7 +403,7 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 	this.onDocumentTouchEnd = function ( event ) 
 	{
 		//startAllAudios();		
-		//tpCache = new Array();
+		tpCache = new Array();
 		
 		this.element.removeEventListener( 'touchmove', this.onDocumentTouchMove, false );
 		this.element.removeEventListener( 'touchend', this.onDocumentTouchEnd, false );
@@ -305,7 +417,7 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 	}.bind( this );
 
 	this.updateManualMove = function () {
-		
+
 		var lat, lon;
 		var phi, theta;
 
@@ -455,6 +567,22 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 				if ( openmenutimer == 3 ) menuMgr.initFirstMenuState();
 			}, 1000);
 		}
+		else {
+			if ( Date.now() - touchtime > 300 ) touchcount = 0;
+
+			if (touchcount == 0) {
+				
+				touchcount++;
+				touchtime = Date.now();
+			}
+			else if (touchcount < 1) {
+				touchcount++;
+			}
+			else {
+				touchcount = 0;
+				menuMgr.initFirstMenuState();
+			}
+		}
 	}
 
 	function stopMenuInterval()
@@ -464,7 +592,6 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 	}
 
 	this.update = function() {
-		
 		if (this.isAndroid && !autopositioning && _isHMD) {}
 		else if ( appState !== CONTROLLER_STATE.AUTO ) 
 		{

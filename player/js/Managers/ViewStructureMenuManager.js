@@ -278,7 +278,7 @@ function ViewStructureMenuManager() {
         stTooltip.height = i6;
         stTooltip.name = 'tooltip-st-button';
         stTooltip.type =  'text';
-        stTooltip.text = 'ST';
+        stTooltip.text = MenuDictionary.translate( 'st' );
         stTooltip.textSize = menuWidth/45;
         stTooltip.color = 0xe6e6e6;
         stTooltip.visible = false;
@@ -313,7 +313,7 @@ function ViewStructureMenuManager() {
         slTooltip.height = i6;
         slTooltip.name = 'tooltip-sl-button';
         slTooltip.type =  'text';
-        slTooltip.text = 'SL';
+        slTooltip.text = MenuDictionary.translate( 'sl' );
         slTooltip.textSize = menuWidth/45;
         slTooltip.color = 0xe6e6e6;
         slTooltip.visible = false;
@@ -348,7 +348,7 @@ function ViewStructureMenuManager() {
         adTooltip.height = i6;
         adTooltip.name = 'tooltip-ad-button';
         adTooltip.type =  'text';
-        adTooltip.text = 'AD';
+        adTooltip.text = MenuDictionary.translate( 'ad' );
         adTooltip.textSize = menuWidth/45;
         adTooltip.color = 0xe6e6e6;
         adTooltip.visible = false;
@@ -383,7 +383,7 @@ function ViewStructureMenuManager() {
         astTooltip.height = i6;
         astTooltip.name = 'tooltip-ast-button';
         astTooltip.type =  'text';
-        astTooltip.text = 'AST';
+        astTooltip.text = MenuDictionary.translate( 'ast' );
         astTooltip.textSize = menuWidth/45;
         astTooltip.color = 0xe6e6e6;
         astTooltip.visible = false;

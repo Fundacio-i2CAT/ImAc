@@ -14,4 +14,5 @@ function SettingsOptionMenuModel() {
 	this.hasParentDropdown;
 	this.parentDropdownData;
 	this.activeMenuOpts;
+	this.isPreviewVisible;
 }

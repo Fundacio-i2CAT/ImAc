@@ -8,8 +8,8 @@ function SettingsOptionMenuView() {
             submenu.position.y = subController.getSubPosition().y * (menuHeight/2 + optHeight/2 + menuWidth/100 + data.parentColumnDropdown.length*(optHeight/2))
         } else {
             submenu.position.y = 0;
-            submenu.getObjectByName('preview-button').visible = true;
-            submenu.getObjectByName('preview-button').children[0].onexecute = data.previewButtonFunc;
+            submenu.getObjectByName('preview-button').visible = data.isPreviewVisible;
+            submenu.getObjectByName('preview-button').children[0].onexecute = (data.isPreviewVisible) ? data.previewButtonFunc : null;
         }
 
 		submenu.getObjectByName('back-button').visible = data.isFinalDrop || data.hasParentDropdown;

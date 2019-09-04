@@ -163,6 +163,7 @@ function SettingsOptionMenuController() {
         data.parentDropdownData = menuOpts.parent;
         data.title = MenuDictionary.translate( menuOpts.title );
         data.icon = menuOpts.icon;
+        data.isPreviewVisible = menuOpts.preview ? true : false;
 
         options.forEach(function(opt, index){
             let dropdownIE = new InteractiveElementModel();

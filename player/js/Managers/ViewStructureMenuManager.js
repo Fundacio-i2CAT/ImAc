@@ -8,14 +8,14 @@
  *
  *  TRADITIONAL MENU:
  *  	- TraditionalMenu (public)
- *  	- TraditionalOptionMenu (public)
+ *  	- TraditionalOptionMenu (public)http://192.168.11.102:8080/ImAc/portal/img/gradient_up.png
  */
 
 function ViewStructureMenuManager() {
 
 /**************************************************************
  *
- *                     M E N U 		B A S E S
+ *                     M E N U         B A S E S
  *
  **************************************************************/
 
@@ -554,7 +554,7 @@ function ViewStructureMenuManager() {
 
         tradOptionMenu.name = name;
 
-         //The position depends on the menu type.
+        // The position depends on the menu type.
         if(menuMgr.getMenuType() == 2){
             tradOptionMenu.position.set(-subController.getSignerPosition().x * 9*menuWidth/32, 0, 0.01); // The +/100 in height is small margin
         } else {

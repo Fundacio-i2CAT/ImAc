@@ -27,13 +27,15 @@ function MenuManager() {
         menuHeight = menuWidth/4;
         
         menuParent = _isHMD ? scene : camera;
+        menu = vwStrucMMngr.TraditionalMenu('trad-main-menu');
+
 
         //Add the menu to the parent element.
         if (_isHMD) {
             console.log("This function is used. But is it vital?");
-            traditionalmenu.scale.set( 0.8, 0.8, 0.8 );
+            menu.scale.set( 0.8, 0.8, 0.8 );
+            //traditionalmenu.scale.set( 0.8, 0.8, 0.8 );
         }
-        menu = vwStrucMMngr.TraditionalMenu('trad-main-menu');
         menuParent.add(menu);
 
         settingsMenu = vwStrucMMngr.TraditionalOptionMenu('trad-option-menu')
@@ -167,8 +169,8 @@ function MenuManager() {
  * Creates a menu activation element.
  */
     this.createMenuActivationElement = function(start) {
-        //var geometry = new THREE.SphereGeometry( 99, 32, 16, Math.PI/2, Math.PI * 2,  2.35,  0.4 );
-        var geometry = new THREE.SphereGeometry( 99, 32, 16, Math.PI/2, Math.PI * 2, start,  0.4 );
+        var geometry = new THREE.SphereGeometry( 99, 32, 16, Math.PI/2, Math.PI * 2,  2.35,  0.4 );
+        //var geometry = new THREE.SphereGeometry( 99, 32, 16, Math.PI/2, Math.PI * 2, start,  0.4 );
         geometry.scale( -1, 1, 1 );
         var material = new THREE.MeshBasicMaterial( {color: 0xc91355, side: THREE.FrontSide, transparent: true, opacity:0} );
         menuActivationElement = new THREE.Mesh( geometry, material );

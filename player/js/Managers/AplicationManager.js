@@ -154,6 +154,9 @@ function AplicationManager()
         Reticulum.update();
     }
 
+    var touchtime = 0;
+    var touchcount = 0;
+
     function update()
     {
         /*var time =  performance.now();
@@ -168,8 +171,23 @@ function AplicationManager()
 
         if( THREE.VRController.getTouchPadState() && _isHMD ) 
         {           
-            // afegir contador per a obrir el menu despres de fer 5 clicks
             interController.checkInteraction( mouse3D, camera, 'onDocumentMouseDown' );
+
+            // function to open menu with double click
+            if ( Date.now() - touchtime > 300 ) touchcount = 0;
+
+            if (touchcount == 0) {
+                
+                touchcount++;
+                touchtime = Date.now();
+            }
+            else if (touchcount < 1) {
+                touchcount++;
+            }
+            else {
+                touchcount = 0;
+                menuMgr.initFirstMenuState();
+            }
         }
         if ( _isHMD && subController.getSubtitleEnabled() )
         {

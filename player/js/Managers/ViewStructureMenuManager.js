@@ -454,8 +454,42 @@ function ViewStructureMenuManager() {
         enhancedMenuBtn.color = 0xe6e6e6;
         enhancedMenuBtn.visible = true;
         enhancedMenuBtn.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(menuWidth/25, menuWidth/25), new THREE.MeshBasicMaterial({visible: false}));
-        enhancedMenuBtn.position = new THREE.Vector3( -menuWidth/2 + menuWidth/25, menuHeight/2 - menuWidth/25, 0.01 );
+        enhancedMenuBtn.position = new THREE.Vector3(-menuWidth/2 + menuWidth/25, menuHeight/2 - menuWidth/25, 0.01 );
         enhancedMenuBtn.onexecute = function() { console.log("This is the %s button", enhancedMenuBtn.name) };
+
+// TO BE CHANGED AFTER IFA
+
+        let enhancedMenuBtnGroup =  new THREE.Group();
+
+        enhancedMenuBtnGroup.name = 'enhanced-menu-button-group';
+
+        let menuShape = _moData.roundedRect( new THREE.Shape(), 2.5 * menuWidth/25, 2.5 * menuWidth/25, 3*menuWidth/100 );
+        let material = new THREE.MeshBasicMaterial( { color: 0x111111});
+        let geometry = new THREE.ShapeGeometry( menuShape );
+        let mesh =  new THREE.Mesh( geometry, material);
+
+        var enhancedMenuBtnZoom = new InteractiveElementModel();
+        enhancedMenuBtnZoom.width = 2 * menuWidth/25;
+        enhancedMenuBtnZoom.height = 2 * menuWidth/25;
+        enhancedMenuBtnZoom.name = 'enhanced-menu-button-zoom';
+        enhancedMenuBtnZoom.type =  'icon';
+        enhancedMenuBtnZoom.path = './img/menu/enhanced.png';
+        enhancedMenuBtnZoom.color = 0xe6e6e6;
+        enhancedMenuBtnZoom.visible = true;
+        enhancedMenuBtnZoom.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(menuWidth/25, menuWidth/25), new THREE.MeshBasicMaterial({visible: false}));
+        enhancedMenuBtnZoom.position = new THREE.Vector3( 0, 0, 0.01 );
+        enhancedMenuBtnZoom.onexecute = function() { console.log("This is the %s button", enhancedMenuBtn.name) };
+  
+        mesh.add(enhancedMenuBtnZoom.create());
+        mesh.position.set(-menuWidth/2 + menuWidth/25, menuHeight/2 - menuWidth/25, 0.02 );
+
+        enhancedMenuBtnGroup.add(mesh);
+
+        enhancedMenuBtnGroup.visible = false;
+
+
+        mainmenu.add(enhancedMenuBtnGroup);
+
 
 
         // Add all the created elements to the parent group.

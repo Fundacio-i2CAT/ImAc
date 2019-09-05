@@ -206,7 +206,8 @@ function AplicationManager()
         // --- HOVER handling --------------------------------------
         if (intersects.length > 0) {
 
-            let accessIcons = [ scene.getObjectByName('show-st-button'), scene.getObjectByName('disable-st-button'),
+            let accessIcons = [ scene.getObjectByName('enhanced-menu-button'),scene.getObjectByName('enhanced-menu-button-group'),
+                            scene.getObjectByName('show-st-button'), scene.getObjectByName('disable-st-button'),
                             scene.getObjectByName('show-sl-button'), scene.getObjectByName('disable-sl-button'),
                             scene.getObjectByName('show-ad-button'), scene.getObjectByName('disable-ad-button'), 
                             scene.getObjectByName('show-ast-button'),scene.getObjectByName('disable-ast-button')];
@@ -268,6 +269,9 @@ function AplicationManager()
             case "disable-ast-button":
                 scene.getObjectByName('tooltip-ast-button').visible = true;
                 break;
+            case "enhanced-menu-button":
+                scene.getObjectByName('enhanced-menu-button-group').visible = true;
+                break;
         }
     }
 
@@ -288,6 +292,9 @@ function AplicationManager()
             case "show-ast-button":
             case "disable-ast-button":
                 scene.getObjectByName('tooltip-ast-button').visible = false;
+                break;
+            case "enhanced-menu-button-group":
+                scene.getObjectByName('enhanced-menu-button-group').visible = false;
                 break;
         }
         //Remove the element from the array

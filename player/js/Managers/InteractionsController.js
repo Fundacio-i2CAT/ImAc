@@ -139,6 +139,68 @@ THREE.InteractionsController = function () {
         }
     };
 
+    var tooltipVisible = false;
+
+    this.checkVRHoverInteraction = function(origin, direction){
+        raycaster.set( origin, direction );
+        var intersects = raycaster.intersectObjects( interactiveListObjects, true ); // false
+
+        //showAccessIconTooltip(intersects)
+        if ( intersects[0] ){
+            for(var inter = 0; inter < intersects.length; inter++){
+
+                if ( intersects[inter].object.type == 'Mesh' && intersects[inter].object.onexecute ){
+                    //intersects[inter].object.onexecute();
+                    if ( intersects[inter].object.name == 'disable-st-button' ||
+                        intersects[inter].object.name == 'disable-sl-button' ||
+                        intersects[inter].object.name == 'disable-ad-button' ||
+                        intersects[inter].object.name == 'disable-ast-button' ||
+                        intersects[inter].object.name == 'show-st-button' ||
+                        intersects[inter].object.name == 'show-sl-button' ||
+                        intersects[inter].object.name == 'show-ad-button' ||
+                        intersects[inter].object.name == 'show-ast-button'  ) onMouseOver( intersects[inter].object.name )
+                    else if ( tooltipVisible ) clearMouseOver();
+
+                    break;
+                }
+            }
+        }
+        else if ( tooltipVisible ) clearMouseOver();
+    };
+
+
+    function onMouseOver(name){
+        clearMouseOver();
+        tooltipVisible = true;
+        switch(name){
+            case "show-st-button":
+            case "disable-st-button":
+                scene.getObjectByName('tooltip-st-button').visible = true;
+                break;
+            case "show-sl-button":
+            case "disable-sl-button":
+                scene.getObjectByName('tooltip-sl-button').visible = true;
+                break;
+            case "show-ad-button":
+            case "disable-ad-button":
+                scene.getObjectByName('tooltip-ad-button').visible = true;
+                break;
+            case "show-ast-button":
+            case "disable-ast-button":
+                scene.getObjectByName('tooltip-ast-button').visible = true;
+                break;
+        }
+    }
+
+    function clearMouseOver(){
+        scene.getObjectByName('tooltip-st-button').visible = false;
+        scene.getObjectByName('tooltip-sl-button').visible = false;
+        scene.getObjectByName('tooltip-ad-button').visible = false;
+        scene.getObjectByName('tooltip-ast-button').visible = false;
+        tooltipVisible = false;
+    }
+
+
     this.getSubtitlesActive = function(){
     	return subtitlesActive;
     };

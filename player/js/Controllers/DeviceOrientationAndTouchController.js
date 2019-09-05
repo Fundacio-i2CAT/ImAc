@@ -561,13 +561,13 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 
 	function startMenuInterval()
 	{
-		if ( scene.getObjectByName( "openMenu" ).visible ) {
+		/*if ( scene.getObjectByName( "openMenu" ).visible ) {
 			openmenuinterval = setInterval(function(){
 				openmenutimer++;
 				if ( openmenutimer == 3 ) menuMgr.initFirstMenuState();
 			}, 1000);
 		}
-		else {
+		else {*/
 			if ( Date.now() - touchtime > 300 ) touchcount = 0;
 
 			if (touchcount == 0) {
@@ -582,7 +582,7 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 				touchcount = 0;
 				menuMgr.initFirstMenuState();
 			}
-		}
+		//}
 	}
 
 	function stopMenuInterval()
@@ -590,6 +590,8 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 		clearInterval( openmenuinterval );
 		openmenutimer = 0;
 	}
+
+	
 
 	this.update = function() {
 		if (this.isAndroid && !autopositioning && _isHMD) {}
@@ -626,6 +628,13 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 
                 p2.scale.set( pointscale*dist/10,pointscale*dist/10,pointscale*dist/10 )
             }
+
+           	if ( scene.getObjectByName( "openMenu" ).visible ) {
+
+				
+			}
+			else interController.checkVRHoverInteraction( _origin, direction );
+
 		}
 		else if(_isHMD)
 		{

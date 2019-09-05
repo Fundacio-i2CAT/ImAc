@@ -424,7 +424,8 @@ const settingsAccesLanguages = { title: 'Language', icon: './img/menu/language.p
  * @property {function} options[].default      Function that returns a bool true if option is default and starts in yellow.
  * @property {function} options[].function     Function executed when option is clicked.
  */
-const settingsIndicator = { title: 'Indicator', icon: './img/menu/indicator.png', parent: accessSettings, final: true, options: [
+const settingsIndicator = { title: 'Indicator', icon: './img/menu/indicator.png', parent: accessSettings, final: true, preview: true,
+options: [
     { optId: 'settingsIndicatorNone', text: 'None', 
         default: function(){ return subController.checkSubIndicator('none') },
         function: function(){ 
@@ -470,7 +471,8 @@ const settingsIndicator = { title: 'Indicator', icon: './img/menu/indicator.png'
  * @property {function} options[].default      Function that returns a bool true if option is default and starts in yellow.
  * @property {function} options[].function     Function executed when option is clicked.
  */
-const settingsSafeArea = { title: 'SafeArea', icon: './img/menu/safe_area.png', parent: accessSettings, final: true, options: [
+const settingsSafeArea = { title: 'SafeArea', icon: './img/menu/safe_area.png', parent: accessSettings, final: true, preview: true,
+ options: [
     { optId: 'settingsSafeAreaSmall', text: 'Small', 
         default: function(){ return subController.checkSubArea(50) },
         function:  function(){ 
@@ -750,18 +752,22 @@ const settingsSubtitlesPosition = { title: 'Position', icon: './img/menu/st_posi
             default: function(){ return subController.checkSubPosition(1)},
             function:  function(){
                 subController.setSubPosition( 0, 1 );
-                if ( subController.getSubtitleEnabled() ) subController.setSignerPosition( subController.getSignerPosition().x, 1 );
                 SettingsOptionCtrl.setChildColumnActiveOpt(settingsSubtitlesPosition.options[0].optId);
-                menu.getObjectByName('trad-main-menu').position.y = -25;
+                if ( subController.getSubtitleEnabled() ){
+                    subController.setSignerPosition( subController.getSignerPosition().x, 1 );
+                    menu.getObjectByName('trad-main-menu').position.y = -25;
+                } 
             } 
         },
         { optId: 'subtitlesBottomButton', text: 'Bottom', 
             default: function(){ return subController.checkSubPosition(-1) },
             function:  function(){ 
                 subController.setSubPosition( 0, -1 );
-                if ( subController.getSubtitleEnabled() ) subController.setSignerPosition( subController.getSignerPosition().x, -1 );
                 SettingsOptionCtrl.setChildColumnActiveOpt(settingsSubtitlesPosition.options[1].optId);
-                menu.getObjectByName('trad-main-menu').position.y = 25;
+                if ( subController.getSubtitleEnabled() ) {
+                    subController.setSignerPosition( subController.getSignerPosition().x, -1 );
+                    menu.getObjectByName('trad-main-menu').position.y = 25;
+                }
             } 
         }]
 };

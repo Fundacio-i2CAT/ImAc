@@ -527,7 +527,12 @@ function ViewStructureMenuManager() {
         
         //The position depends on the menu type.
         if(menuMgr.getMenuType() == 2){
-            mainmenu.position.set( 0, -1 * subController.getSubPosition().y * 25, -67 );    
+            if ( subController.getSubtitleEnabled() ){
+                mainmenu.position.set( 0, -1 * subController.getSubPosition().y * 25, -67 );
+            } else {
+                mainmenu.position.set( 0, -25, -67 );
+            }
+                
         } else {
             mainmenu.position.set( 0, 0, -67 );
         }

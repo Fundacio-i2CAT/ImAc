@@ -199,6 +199,10 @@ function SettingsOptionMenuController() {
         view.UpdateView(data);
     }
 
+    this.UpdateView = function(){
+        view.UpdateView(data);
+    }
+
     this.close = function(){
         if( menuMgr.getMenuType() == 2 ){
             menuMgr.getActualCtrl().Exit();

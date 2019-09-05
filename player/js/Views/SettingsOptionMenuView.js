@@ -2,10 +2,15 @@ function SettingsOptionMenuView() {
 	let submenu;
 
 	this.UpdateView = function(data) {
-        
 		submenu = scene.getObjectByName(data.name);
         if(menuMgr.getMenuType() == 2){
-            submenu.position.y = subController.getSubPosition().y * (menuHeight/2 + optHeight/2 + menuWidth/100 + data.parentColumnDropdown.length*(optHeight/2))
+            // Locate menu depending on the state of the ST (enabled/disabled)
+            if ( subController.getSubtitleEnabled() ){
+                submenu.position.y = subController.getSubPosition().y * (menuHeight/2 + optHeight/2 + menuWidth/100 + data.parentColumnDropdown.length*(optHeight/2))
+            }
+            else{
+                submenu.position.y = menuHeight/2 + optHeight/2 + menuWidth/100 + data.parentColumnDropdown.length*(optHeight/2);
+            }
         } else {
             submenu.position.y = 0;
             submenu.getObjectByName('preview-button').visible = data.isPreviewVisible;

@@ -563,6 +563,7 @@ const settingsSubtitles = { title: 'Subtitles', icon: './img/acc_serv_icon/st_of
         } 
     },
     { optId: 'subtitlesEasyRead', icon: './img/menu/easy_to_read.png', text: 'Easytoread', 
+        available: function() { return  subController.checkSubEasyAvailable(subController.getSubLanguage()) },
         function:  function(){ 
             SettingsOptionCtrl.updateDropdownOptions(settingsSubtitlesEasyToRead);
         } 
@@ -797,14 +798,14 @@ const settingsSubtitlesEasyToRead = { title: 'EasytoRead', icon: './img/menu/eas
     { optId: 'subtitlesEasyOn', text: 'On', 
         default: function(){ return subController.checkSubEasy(true) },
         function:  function(){ 
-            subController.setSubEasy( true, getE2RURL() );
+            subController.setSubEasy( true, list_contents[demoId].subtitles[1][subController.getSubLanguage()] );
             SettingsOptionCtrl.setChildColumnActiveOpt(settingsSubtitlesEasyToRead.options[0].optId)
         } 
     },
     { optId: 'subtitlesEasyOff', text: 'Off', 
         default: function(){ return subController.checkSubEasy(false) },
         function:  function(){ 
-            subController.setSubEasy( false, list_contents[demoId].subtitles[0][subController.getSubLanguage()] );
+            subController.setSubEasy( false, list_contents[demoId].subtitles[1][subController.getSubLanguage()] );
             SettingsOptionCtrl.setChildColumnActiveOpt(settingsSubtitlesEasyToRead.options[1].optId);
         } 
     }]

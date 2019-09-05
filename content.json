@@ -3,8 +3,8 @@
   "contents": [
   {
     "name": "Liceu Opera Piece 1",
-    "poster": "./portal/img/opera1_cover.png",
-    "thumbnail": "./portal/img/opera1.png",
+    "poster": "./img/opera1_cover.png",
+    "thumbnail": "img/opera1.png",
     "description": "Performance of the “Roméo et Juliette” opera recorded at the Gran Teatre del Liceu Opera House (Barcelona). Piece 1.",
     "descriptionArray": [
     {
@@ -22,14 +22,14 @@
     }],
     "language": "French",
     "duration": "8:28",
-    "url": "http://84.88.32.46/imac_content/pilot_1/OPERALICEU_01/stream.mpd",
+    "url": "https://imac.gpac-licensing.com/imac_content/pilot_1/OPERALICEU_01/stream.mpd",
     "audioChannels": 4,
     "subtitles": [{}]
   },
-  {
+{
     "name": "Liceu Opera Piece 2",
-    "poster": "./portal/img/covers/opera2_cover.png",
-    "thumbnail": "./portal/img/opera2.PNG",
+    "poster": "./img/covers/opera2_cover.png",
+    "thumbnail": "img/opera2.PNG",
     "description": "Performance of the “Roméo et Juliette” opera recorded at the Gran Teatre del Liceu Opera House (Barcelona). Piece 2.",
     "descriptionArray": [
     {
@@ -44,23 +44,49 @@
     }],
     "language": "French",
     "duration": "8:15",
-    "url": "http://84.88.32.46/imac_content/pilot_1/OPERALICEU_02/stream.mpd",
+    "url": "https://imac.gpac-licensing.com/imac_content/pilot_1/OPERALICEU_02/stream.mpd",
     "audioChannels": 4,
     "subtitles": [
     {
-      "de": "http://84.88.32.46/imac_content/pilot_1/OPERALICEU_02/CCMA_OPERALICEU02_subtitles_DE.xml",
-      "ca": "http://84.88.32.46/imac_content/pilot_1/OPERALICEU_02/CCMA_OPERALICEU02_subtitles_CAT.xml"
+      "de": "https://imac.gpac-licensing.com/imac_content/pilot_1/OPERALICEU_02/CCMA_OPERALICEU02_subtitles_DE.xml",
+      "ca": "https://imac.gpac-licensing.com/imac_content/pilot_1/OPERALICEU_02/CCMA_OPERALICEU02_subtitles_CAT.xml"
     },
     {
-      "de": "http://84.88.32.46/imac_content/pilot_1/OPERALICEU_02/CCMA_OPERALICEU02_subtitles_DE.xml",
-      "ca": "http://84.88.32.46/imac_content/pilot_1/OPERALICEU_02/CCMA_OPERALICEU02_subtitles_CAT.xml"
+      "de": "https://imac.gpac-licensing.com/imac_content/pilot_1/OPERALICEU_02/CCMA_OPERALICEU02_subtitles_DE.xml",
+      "ca": "https://imac.gpac-licensing.com/imac_content/pilot_1/OPERALICEU_02/CCMA_OPERALICEU02_subtitles_CAT.xml"
     }],
     "signer": [{}]
   },
   {
+    "name": "360° Abendschau",
+    "poster": "img/covers/Abendschau_cover.jpg",
+    "thumbnail": "img/covers/Abendschau_thumb.jpg",
+    "description": "Making-of video of the RBB news show “Abendschau”, taking you into the news room and the streets of Berlin where current events are covered by the RBB news team.",
+    "descriptionArray": [
+    {
+      "de": "Das 360° Video der Abendschau entführt den Zuschauer in das Redaktionsgeschehen und ermöglicht mitten in der schwirrenden Hauptstadtregion zu sein oder direkt neben dem Regisseur zu sitzen.",
+      "ca": "Vídeo sobre el making-of del programa informatiu d’RBB “Abendschau”, que et transportarà als interiors dels platós de notícies i als carrers de Berlín, on l'equip de reporters cobreix els últims esdeveniments.",
+      "es": "Vídeo sobre el making-of del programa informativo de RBB “Abendschau”, que te transportará a los interiores de los platós de noticias y a las calles de Berlín, donde el equipo de reporteros cubre los últimos acontecimientos.",
+      "en": "The 360° video of the Abendschau takes the viewer into the editorial world and makes it possible to be in the middle of the buzzing capital or to sit directly next to the director."
+    }],
+    "acces": [
+    {
+      "ST": ["de"]
+    }],
+    "language": "Deutsch",
+    "duration": "1:46",
+    "url": "https://imac.gpac-licensing.com/imac_content/rbb/dash/stream.mpd",
+    "audioChannels": 2,
+    "subtitles": [
+    {
+      "de": "https://imac.gpac-licensing.com/imac_content/rbb/RBB_Abendschau_short_subtitles_angles.xml"
+    }],
+    "signer": [{}]
+  },
+   {
     "name": "Desconcert “Leyre”",
-    "poster": "./portal/img/covers/desconcert1_cover.png",
-    "thumbnail": "./portal/img/desconcert1.png",
+    "poster": "./img/covers/desconcert1_cover.png",
+    "thumbnail": "img/desconcert1.png",
     "description": "Performance of a catalan version of  “Leyre” song, recorded at Sala Apolo (Barcelona) during the third edition of “Desconcert”, a great festival of iCat FM.",
     "descriptionArray": [
     {
@@ -75,18 +101,18 @@
     }],
     "language": "Català",
     "duration": "4:32",
-    "url": "http://84.88.32.46/imac_content/pilot_1/desconcert_1/stream.mpd",
+    "url": "https://imac.gpac-licensing.com/imac_content/pilot_1/desconcert_1/stream.mpd",
     "audioChannels": 4,
     "subtitles": [
     {
-      "de": "http://84.88.32.46/imac_content/pilot_1/desconcert_1/CCMA_Desconcert_Halldor_Mar_Leyre_subtitles_DE.xml",
-      "ca": "http://84.88.32.46/imac_content/pilot_1/desconcert_1/CCMA_Desconcert_Halldor_Mar_Leyre_subtitles_CAT.xml",
-      "en": "http://84.88.32.46/imac_content/pilot_1/desconcert_1/CCMA_Desconcert_Halldor_Mar_Leyre_subtitles_EN.xml"
+      "de": "https://imac.gpac-licensing.com/imac_content/pilot_1/desconcert_1/CCMA_Desconcert_Halldor_Mar_Leyre_subtitles_DE.xml",
+      "ca": "https://imac.gpac-licensing.com/imac_content/pilot_1/desconcert_1/CCMA_Desconcert_Halldor_Mar_Leyre_subtitles_CAT.xml",
+      "en": "https://imac.gpac-licensing.com/imac_content/pilot_1/desconcert_1/CCMA_Desconcert_Halldor_Mar_Leyre_subtitles_EN.xml"
     },
     {
-      "de": "http://84.88.32.46/imac_content/pilot_1/desconcert_1/CCMA_Desconcert_Halldor_Mar_Leyre_subtitles_DE.xml",
-      "ca": "http://84.88.32.46/imac_content/pilot_1/desconcert_1/CCMA_Desconcert_Halldor_Mar_Leyre_subtitles_CAT.xml",
-      "en": "http://84.88.32.46/imac_content/pilot_1/desconcert_1/CCMA_Desconcert_Halldor_Mar_Leyre_subtitles_EN.xml"
+      "de": "https://imac.gpac-licensing.com/imac_content/pilot_1/desconcert_1/CCMA_Desconcert_Halldor_Mar_Leyre_subtitles_DE.xml",
+      "ca": "https://imac.gpac-licensing.com/imac_content/pilot_1/desconcert_1/CCMA_Desconcert_Halldor_Mar_Leyre_subtitles_CAT.xml",
+      "en": "https://imac.gpac-licensing.com/imac_content/pilot_1/desconcert_1/CCMA_Desconcert_Halldor_Mar_Leyre_subtitles_EN.xml"
     }],
     "signer": [{}],
     "ad": [{}],
@@ -94,8 +120,8 @@
   },
   {
     "name": "Desconcert “Havana”",
-    "poster": "./portal/img/covers/desconcert2_cover.png",
-    "thumbnail": "./portal/img/desconcert2.png",
+    "poster": "./img/covers/desconcert2_cover.png",
+    "thumbnail": "img/desconcert2.png",
     "description": "Performance of a catalan version of  “Havana” song, recorded at Sala Apolo (Barcelona) during the third edition of “Desconcert”, a great festival of iCat FM.",
     "descriptionArray": [
     {
@@ -110,33 +136,33 @@
     }],
     "language": "Català",
     "duration": "4:12",
-    "url": "http://84.88.32.46/imac_content/pilot_1/desconcert_2/stream.mpd",
+    "url": "https://imac.gpac-licensing.com/imac_content/pilot_1/desconcert_2/stream.mpd",
     "audioChannels": 4,
     "subtitles": [
     {
-      "de": "http://84.88.32.46/imac_content/pilot_1/desconcert_2/CCMA_Desconcert_Marion_Harrier_Havanna_subtitles_DE.xml",
-      "ca": "http://84.88.32.46/imac_content/pilot_1/desconcert_2/CCMA_Desconcert_Marion_Harrier_Havanna_subtitles_CAT.xml",
-      "en": "http://84.88.32.46/imac_content/pilot_1/desconcert_2/CCMA_Desconcert_Marion_Harrier_Havanna_subtitles_EN.xml"
+      "de": "https://imac.gpac-licensing.com/imac_content/pilot_1/desconcert_2/CCMA_Desconcert_Marion_Harrier_Havanna_subtitles_DE.xml",
+      "ca": "https://imac.gpac-licensing.com/imac_content/pilot_1/desconcert_2/CCMA_Desconcert_Marion_Harrier_Havanna_subtitles_CAT.xml",
+      "en": "https://imac.gpac-licensing.com/imac_content/pilot_1/desconcert_2/CCMA_Desconcert_Marion_Harrier_Havanna_subtitles_EN.xml"
     },
     {
-      "de": "http://84.88.32.46/imac_content/pilot_1/desconcert_2/CCMA_Desconcert_Marion_Harrier_Havanna_subtitles_DE.xml",
-      "ca": "http://84.88.32.46/imac_content/pilot_1/desconcert_2/CCMA_Desconcert_Marion_Harrier_Havanna_subtitles_CAT.xml",
-      "en": "http://84.88.32.46/imac_content/pilot_1/desconcert_2/CCMA_Desconcert_Marion_Harrier_Havanna_subtitles_EN.xml"
+      "de": "https://imac.gpac-licensing.com/imac_content/pilot_1/desconcert_2/CCMA_Desconcert_Marion_Harrier_Havanna_subtitles_DE.xml",
+      "ca": "https://imac.gpac-licensing.com/imac_content/pilot_1/desconcert_2/CCMA_Desconcert_Marion_Harrier_Havanna_subtitles_CAT.xml",
+      "en": "https://imac.gpac-licensing.com/imac_content/pilot_1/desconcert_2/CCMA_Desconcert_Marion_Harrier_Havanna_subtitles_EN.xml"
     }],
     "signer": [{}],
     "ad": [{}],
     "ast": [{}]
   },
   {
-    "name": "Holy Land E04",
-    "poster": "http://84.88.32.46/imac_content/pilot_1/HolyLand4/u57_c.png",
-    "thumbnail": "http://84.88.32.46/imac_content/pilot_1/HolyLand4/holy.png",
+    "name": "Holy Land Episode 4",
+    "poster": "https://imac.gpac-licensing.com/imac_content/pilot_1/HolyLand4/u57_c.png",
+    "thumbnail": "https://imac.gpac-licensing.com/imac_content/pilot_1/HolyLand4/holy.png",
     "description": "Episode 4: Witness the wall separating Israel and Palestine, then tour the modern cities of Tel Aviv and Jerusalem.",
     "descriptionArray": [
     {
-      "de": "Episode 4: Erleben Sie die Mauer, die Israel und Palästina trennt, und besuchen Sie dann die modernen Städte Tel Aviv und Jerusalem.",
+      "de": "Episode 4: Erleben Sie die Mauer, die Israel und Pal�stina trennt, und besuchen Sie dann die modernen St�dte Tel Aviv und Jerusalem.",
       "ca": "Episodi 4: Visita el mur que separa Israel i Palestina, i recorre les modernes ciutats de Tel Aviv i Jerusalem.",
-      "es": "Episodio 4: Visita el muro que separa a Israel y Palestina y recorre las modernas ciudades de Tel Aviv y Jerusalén.",
+      "es": "Episodio 4: Visita el muro que separa a Israel y Palestina y recorre las modernas ciudades de Tel Aviv y Jerusal�n.",
       "en": "Episode 4: Witness the wall separating Israel and Palestine, then tour the modern cities of Tel Aviv and Jerusalem."
     }],
     "acces": [
@@ -145,26 +171,26 @@
     }],
     "language": "English",
     "duration": "4:13",
-    "url": "http://84.88.32.46/imac_content/pilot_1/HolyLand4/stream.mpd",
+    "url": "https://imac.gpac-licensing.com/imac_content/pilot_1/HolyLand4/stream.mpd",
     "audioChannels": 4,
     "subtitles": [{}],
     "ad": [{
         "en": {
-      "VoiceOfGod": "http://84.88.32.46/imac_content/pilot_1/HolyLand4/Holy_Land-E04-EN-AD-Classic.aac"
+      "VoiceOfGod": "https://imac.gpac-licensing.com/imac_content/pilot_1/HolyLand4/Holy_Land-E04-EN-AD-Classic.aac"
   }
     }]
   },
   {
     "name": "Rapzember",
-    "poster": "./portal/img/covers/Rapzember2.jpg",
-    "thumbnail": "./portal/img/covers/Rapzember.jpg",
-    "description": "Lorem ipsum",
+    "poster": "img/covers/Rapzember_cover.jpg",
+    "thumbnail": "img/covers/Rapzember_thumb.jpg",
+    "description": "25 hours under the sign of Rap - that's Rapzember on Fritz.  The video shows an interview with the musician Young Hurn in the studio of the radio station.",
     "descriptionArray": [
     {
-      "de": " ",
+      "de": "25 Stunden im Zeichen des Rap - das ist der Rapzember auf Fritz.  Das Video zeigt ein Interview mit dem Musiker Young Hurn im Studio des Radiosenders.",
       "ca": " ",
       "es": " ",
-      "en": " "
+      "en": "25 hours under the sign of Rap - that's Rapzember on Fritz.  The video shows an interview with the musician Young Hurn in the studio of the radio station."
     }],
     "acces": [
     {
@@ -173,20 +199,20 @@
     }],
     "language": "Deutsch",
     "duration": "3:10",
-    "url": "http://84.88.32.46/imac_content/pilot_1/rapzember/stream.mpd",
+    "url": "https://imac.gpac-licensing.com/imac_content/pilot_1/rapzember/stream.mpd",
     "audioChannels": 2,
     "subtitles": [
     {
-      "de": "http://84.88.32.46/imac_content/pilot_1/rapzember/Rapzember.ebu-tt.positioning.xml",
-      "ca": "http://84.88.32.46/imac_content/pilot_1/rapzember/Rapzember_Cat.xml"
+      "de": "https://imac.gpac-licensing.com/imac_content/pilot_1/rapzember/Rapzember.ebu-tt.positioning.xml",
+      "ca": "https://imac.gpac-licensing.com/imac_content/pilot_1/rapzember/Rapzember_Cat.xml"
     },
     {
-      "de": "http://84.88.32.46/imac_content/pilot_1/rapzember/Rapzember.ebu-tt.positioning.xml",
-      "ca": "http://84.88.32.46/imac_content/pilot_1/rapzember/Rapzember_Cat.xml"
+      "de": "https://imac.gpac-licensing.com/imac_content/pilot_1/rapzember/Rapzember.ebu-tt.positioning.xml",
+      "ca": "https://imac.gpac-licensing.com/imac_content/pilot_1/rapzember/Rapzember_Cat.xml"
     }],
     "signer": [
     {
-      "de": "http://84.88.32.46/imac_content/pilot_1/rapzember/signer_rbb_new/stream.mpd"
+      "de": "https://imac.gpac-licensing.com/imac_content/pilot_1/rapzember/signer_rbb_new/stream.mpd"
     }],
     "ad": [{}],
     "ast": [{}]

@@ -995,7 +995,16 @@ SubSignManager = function() {
 
 	this.checkisSubAvailable = function(lang){
 		return (list_contents[demoId].acces && list_contents[demoId].acces[0].ST && list_contents[demoId].acces[0].ST.includes((lang) ? lang : _iconf.accesslanguage));
-	}		
+	};
+
+	this.checkSubEasyAvailable = function(lang)
+	{
+		console.log(list_contents[demoId].subtitles);
+		console.log(list_contents[demoId].subtitles[1]);
+		console.log(list_contents[demoId].subtitles[1][lang]);
+
+		return (list_contents[demoId].subtitles && list_contents[demoId].subtitles[1] && list_contents[demoId].subtitles[1][lang]);
+	};	
 
 //************************************************************************************
 // Public Signer Checkers

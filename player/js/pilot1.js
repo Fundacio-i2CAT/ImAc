@@ -24,6 +24,6 @@ function runDemo()
             VideoController.playAll();
             scene.remove(xy)
             camera.remove(xz);
-        },6000);
+        },10000);
     }
 }

@@ -75,6 +75,10 @@ function AplicationManager()
     function render(){
         renderer.render( scene, camera );
         intersects = raycaster.intersectObjects(scene.children, true);
+
+        update();
+
+        Reticulum.update();
     }
 
     this.init = function()
@@ -140,7 +144,7 @@ function AplicationManager()
         document.addEventListener('mousemove', onDocumentMouseMove, false);
         //document.addEventListener('mousedown', onDocumentMouseDown, false);
 
-        animate(); 
+        //animate(); 
 	};
 
 

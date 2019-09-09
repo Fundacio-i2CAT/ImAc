@@ -16,7 +16,7 @@ function runDemo()
         var interval1 = setTimeout( function() { VideoController.pauseAll(); },1000);
         var xy = _moData.getSphericalColorMesh( 60, 0x000000, 'colorsphere' );
 
-        xz.position.z = -10;
+        xz.position.z = -8;
         scene.add(xy)
         camera.add(xz)
 

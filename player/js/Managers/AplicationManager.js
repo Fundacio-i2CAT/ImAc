@@ -186,7 +186,8 @@ function AplicationManager()
             }
             else {
                 touchcount = 0;
-                menuMgr.initFirstMenuState();
+                if ( scene.getObjectByName( "openMenu" ).visible ) menuMgr.initFirstMenuState();
+                else menuMgr.ResetViews();  
             }
         }
         if ( _isHMD && subController.getSubtitleEnabled() )

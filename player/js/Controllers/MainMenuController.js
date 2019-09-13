@@ -219,11 +219,14 @@ function MainMenuController() {
                 //Change the state of the subtiles from enabled to disabled and viceversa.
                 data.isSTenabled = !data.isSTenabled;
 
-                if ( data.isSTenabled ){
-                    menu.position.set( 0, -1 * subController.getSubPosition().y * 25, -67 );
-                } else {
-                    menu.position.set( 0, -25, -67 );
+                if(menuMgr.getMenuType() == 2){
+                    if ( data.isSTenabled ){
+                        menu.position.set( 0, -1 * subController.getSubPosition().y * 25, -67 );
+                    } else {
+                        menu.position.set( 0, -25, -67 );
+                    }
                 }
+
 
                 subController.switchSubtitles(data.isSTenabled);
 

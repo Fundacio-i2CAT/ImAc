@@ -239,8 +239,6 @@ function AplicationManager()
             let accessIconsIndex = accessIcons.indexOf(intersects[0].object.parent)
 
             if (parentName && accessIconsIndex != -1) {
-                console.log('parentName')
-                console.log(parentName)
                 for (let i = 0; i < accessIcons.length; i++) {
                     let element = accessIcons[i];
 

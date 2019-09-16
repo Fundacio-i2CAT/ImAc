@@ -132,7 +132,7 @@ body {
 
 .Poster-info {
   position: absolute;
-  top: 240px;
+  top: 130px; /*240px;*/
   padding-left: 9vw;
   z-index: 99;
   font-family: 'Roboto', Arial;
@@ -154,6 +154,88 @@ body {
   padding: 10px 0;
   width: 50%;
 }
+
+.SS-container {
+  right: 9vw;
+  top: 150px;
+  width: 30%;
+  position: absolute;
+  min-height: 200px;
+  z-index: 99;
+  background-color: rgba(0, 0, 0, .6);
+  border-radius: 1rem;
+  border: 2px solid rgba(204, 0, 102, 0);
+}
+
+.center {
+  margin: auto;
+  display: block;
+}
+
+.SS-input-group {
+  text-align: center;
+  display: table;
+  border-collapse: separate;
+  padding: 0 2rem 2rem 2rem;
+  width: 100%;
+}
+
+.SS-input-group.output {
+  padding: 2rem;
+  margin: auto;
+  display: block;
+}
+
+.SS-container2 {
+  display: none;
+  right: 9vw;
+  top: 150px;
+  width: 30%;
+  position: absolute;
+  min-height: 50px;
+  z-index: 99;
+  background-color: rgba(0, 0, 0, .6);
+  border-radius: 1rem;
+  border: 2px solid rgba(204, 0, 102, 0);
+}
+
+.RoomID-container {
+  font-size: 3rem;
+  font-weight: bold;
+  font-family: 'Open Sans', sans-serif;
+  color: #E6E6E6;
+}
+
+.SS-button-container {
+  text-align: center;
+  padding: 0 2rem 2rem 2rem;
+}
+
+.form-control.dark {
+  font-size: 18px;
+    line-height: 1.42857143;
+    font-family: 'Open Sans', sans-serif;
+    color: #E6E6E6;
+    background-color: #000;
+}
+
+.btn-SS {
+    color: #E6E6E6;
+    background-color:rgb(50, 50, 50);
+    border-color: rgba(204, 0, 102, 0);
+    width: 100%;
+    font-size: 18px;
+    line-height: 1.42857143;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.btn-SS:hover {
+  background-color: rgb(204, 0, 102);
+  color: #E6E6E6;
+  font-size: 18px;
+    line-height: 1.42857143;
+    font-family: 'Open Sans', sans-serif;
+} 
 
 .Content-access {
   margin-bottom: 10px;
@@ -636,6 +718,12 @@ body {
   cursor: pointer;
 }
 
+.Settings-option.small {
+  font-size: 2.5rem;
+  padding: 1rem 1rem;
+  cursor: default;
+}
+
 .Settings-option.selectable img {
   width: 45px;
   height: 45px;
@@ -753,7 +841,7 @@ body {
   }
 
   .Poster-info {
-    top: calc(36vw - 200px);
+    /*top: calc(36vw - 200px);*/
     height: 29vw;
     max-height: 290px;
   }
@@ -863,7 +951,7 @@ body {
   }
 
   .Poster-info {
-    top: 115px;
+    top: 80px;
     height: 33vw;
   }
 

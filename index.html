@@ -97,6 +97,42 @@
 				
 				<p><span id="content_desc"> Enjoy immersive contents with access services by selecting the video you want to watch. To customise your experience, go into settings or select a video and then go to the player menu.</span></p>
 			</div>
+
+			<!-- Second Screen section -->
+			<div id="ss_container" class="SS-container" style="visibility: hidden;">
+				<div class="container-12 Settings-tittle">
+	          		<div class="Settings-option small">
+						<span id="span_s1">&nbsp;  Second screen panel</span>
+						<!--img class="Settings-close" src="./portal/img/settings/close.png" tabindex="0" alt="Close"-->
+					</div>
+	          	</div>
+				<div class="container-12" id="input_room_box">
+					<div class="SS-input-group center">
+						<input type="text" class="form-control dark" placeholder="Insert the session ID"  id="sessionUUID">
+					</div>
+				</div>
+				<div class="container-6" id="button_room_box1">
+					<div class="SS-button-container center">
+						<button class="btn btn-SS" onclick="createSessionByID()"><span id="span_s2"> Create</span></button>
+					</div>
+				</div>
+				<div class="container-6" id="button_room_box2">
+					<div class="SS-button-container center">
+						<button class="btn btn-SS" onclick="joinSessionByID()"><span id="span_s3"> Join</span></button>
+					</div>
+	      		</div>
+	        </div>
+
+	        <!-- Second Screen section -->
+			<div id="roomIDdiv" class="SS-container2">
+	          	<div class="container-12">
+					<div class="SS-input-group output" id="roomIDdiv">
+						<span class="RoomID-container" id="span_s0">
+					</div>
+				</div>
+	        </div>
+
+			
 			<!-- Play button -->
 			<div id="play_poster_btn" class="Poster-play">
 				<div class="Poster-play-btn" onclick="playContent()">
@@ -222,7 +258,7 @@
           	</div> 
           	<div class="container-12 Search-container">
           		<div class="Search-info Search-button">
-          			<button class="gobutton" onclick="closeSettingsMenus()"> Go! </button>
+          			<button class="gobutton" onclick="closeSettingsMenus()"> <span id="span_49">Go! </span> </button>
           		</div>
           	</div>	
         </div>

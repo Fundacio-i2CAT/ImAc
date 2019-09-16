@@ -23,6 +23,8 @@ var UUID;
         localStorage.removeItem('dashjs_video_bitrate');
         localStorage.removeItem('dashjs_text_settings');
 
+        localStorage.ImAc_roomID = undefined;
+
         checkCookies();
         
         $.getJSON('./content.json', function(json)
@@ -73,6 +75,60 @@ var UUID;
     {
         launchPlayer( localStorage.ImAc_init );
     }
+
+//************************************************************************************
+// Functions to control second screen sessions
+//************************************************************************************
+
+    function createSessionByID()
+    {
+        var uuid = document.getElementById('sessionUUID').value;
+        //connection_NEW( '195.81.194.222' );
+        connection_NEW( '192.168.10.128', uuid );
+    }
+
+    function joinSessionByID()
+    {
+        var uuid = document.getElementById('sessionUUID').value;
+
+        connection_JOIN( '192.168.10.128', uuid );
+    }
+
+    function connection_NEW(ip, uuid)
+    {
+        var new_ws = new WebSocket( 'ws://' + ip + ':4649/' + uuid + '/new' );
+
+        new_ws.onmessage = function(message) 
+        {
+            if ( message.data == 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx-exist' ) alert('ID used');
+            else 
+            {
+                document.getElementById('roomIDdiv').style.display = 'inherit';
+                document.getElementById('ss_container').style.display = 'none';
+
+                document.getElementById( 'span_s0' ).innerHTML = "Session ID: " + message.data;
+                localStorage.ImAc_roomID = message.data;
+                console.log( localStorage.ImAc_roomID );
+            } 
+        }
+    }
+
+    function connection_JOIN(ip, uuid)
+    {
+        var new_ws = new WebSocket( 'ws://' + ip + ':4649/' + uuid + '/join' );
+
+        new_ws.onmessage = function(message) 
+        {
+            if ( message.data == 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx-nonexist' ) alert('La sesion no existe');
+            else if ( message.data == 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx-noncontent' ) alert('Aun no hay contenido');
+            else 
+            {
+                //localStorage.ImAc_roomID = uuid;
+                launchPlayer( message.data );
+            } 
+        }
+    }
+
 
 //************************************************************************************
 // Functions to control cookies
@@ -2147,6 +2203,7 @@ var UUID;
             document.getElementById('span_46').innerHTML = 'Audio- subtítols';
             document.getElementById('span_47').innerHTML = 'Audio- descripció';
             document.getElementById('span_48').innerHTML = 'Aquest projecte ha rebut finançament del Programa de Recerca i Innovació Horizon 2020 de la Unió Europea sota el contracte de subvenció núm. 761974';
+            document.getElementById('span_49').innerHTML = 'Aplicar';
         }
         else if ( lang == 'es' )
         {
@@ -2198,6 +2255,7 @@ var UUID;
             document.getElementById('span_46').innerHTML = 'Audio- subtítulos';
             document.getElementById('span_47').innerHTML = 'Audio- descripción';
             document.getElementById('span_48').innerHTML = 'Este proyecto ha recibido financiación del Programa de Investigación e Innovación Horizon 2020 de la Unión Europea en virtud del acuerdo de subvención nº 761974.';
+            document.getElementById('span_49').innerHTML = 'Aplicar';
         }
         else if ( lang == 'de' )
         {
@@ -2249,6 +2307,7 @@ var UUID;
             document.getElementById('span_46').innerHTML = 'Voice &nbsp; over';
             document.getElementById('span_47').innerHTML = 'Audio Deskription';
             document.getElementById('span_48').innerHTML = 'Dieses Projekt wurde aus Mitteln des Forschungs- und Innovationsprogramms „Horizont 2020“ der Europäischen Union im Rahmen der Finanzhilfevereinbarung Nr. 761974 finanziert';
+            document.getElementById('span_49').innerHTML = 'Los!';
         }
         else
         {
@@ -2300,6 +2359,7 @@ var UUID;
             document.getElementById('span_46').innerHTML = 'Audio Subtitles';
             document.getElementById('span_47').innerHTML = 'Audio Description';
             document.getElementById('span_48').innerHTML = 'This project has received funding from the European Union’s Horizon 2020 Research and Innovation Programme under grant agreement No 761974';
+            document.getElementById('span_49').innerHTML = 'Go!';
         }
         
     }

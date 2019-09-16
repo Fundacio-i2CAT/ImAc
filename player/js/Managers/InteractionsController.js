@@ -84,33 +84,33 @@ THREE.InteractionsController = function () {
             SettingsOptionCtrl.close();
         }
 
-  	if ( intersects[0] && interactionState && type != 'onDocumentMouseMove'){
+  	    if ( intersects[0] && interactionState && type != 'onDocumentMouseMove'){
             interactionState = false;
   		    var intersectedShapeId;
 			for(var inter = 0; inter < intersects.length; inter++){
 
-            gtag('event', 'UserInteraction', {
-                'event_category' : 'PlayerConfig',
-                'event_label' : intersects[inter].object.name
-            });
+                gtag('event', 'UserInteraction', {
+                    'event_category' : 'PlayerConfig',
+                    'event_label' : intersects[inter].object.name
+                });
 
-	      if ( intersects[inter].object.type == 'Mesh' && intersects[inter].object.onexecute ){
-	        intersects[inter].object.onexecute();
-	        break;
-	      }
-	      else if ( intersects[inter].object.type == 'Mesh' && intersects[inter].object.parent && intersects[inter].object.parent.name === 'video-progress-bar'){
-          mainMenuCtrl.onClickSeek(mouse3D)
-          break;
-	      }
-        else if ( intersects[inter].object.type == 'Mesh' && intersects[inter].object.name && intersects[inter].object.parent ){
-					intersectedShapeId = intersects[inter].object.name;
-					console.error(intersectedShapeId);
-					break;
-				}
-        else console.error("Error in checkInteraction")
-			}
-      freeInteractionState(500);
-  	}
+                if ( intersects[inter].object.type == 'Mesh' && intersects[inter].object.onexecute ){
+    	            intersects[inter].object.onexecute();
+    	            break;
+                }
+                else if ( intersects[inter].object.type == 'Mesh' && intersects[inter].object.parent && intersects[inter].object.parent.name === 'video-progress-bar'){
+                  mainMenuCtrl.onClickSeek(mouse3D)
+                  break;
+                }
+                else if ( intersects[inter].object.type == 'Mesh' && intersects[inter].object.name && intersects[inter].object.parent ){
+    				intersectedShapeId = intersects[inter].object.name;
+    				console.error(intersectedShapeId);
+    				break;
+    			}
+                else console.error("Error in checkInteraction")
+    		}
+            freeInteractionState(500);
+	    }
 	};
 
     this.checkVRInteraction = function(origin, direction){
@@ -158,7 +158,8 @@ THREE.InteractionsController = function () {
                         intersects[inter].object.name == 'show-st-button' ||
                         intersects[inter].object.name == 'show-sl-button' ||
                         intersects[inter].object.name == 'show-ad-button' ||
-                        intersects[inter].object.name == 'show-ast-button'  ) onMouseOver( intersects[inter].object.name )
+                        intersects[inter].object.name == 'show-ast-button' ||
+                        intersects[inter].object.name == 'enhanced-menu-button-group'  ) onMouseOver( intersects[inter].object.name )
                     else if ( tooltipVisible ) clearMouseOver();
 
                     break;
@@ -189,6 +190,9 @@ THREE.InteractionsController = function () {
             case "disable-ast-button":
                 scene.getObjectByName('tooltip-ast-button').visible = true;
                 break;
+            case "enhanced-menu-button":
+                scene.getObjectByName('enhanced-menu-button-group').visible = true;
+                break;
         }
     }
 
@@ -197,6 +201,7 @@ THREE.InteractionsController = function () {
         scene.getObjectByName('tooltip-sl-button').visible = false;
         scene.getObjectByName('tooltip-ad-button').visible = false;
         scene.getObjectByName('tooltip-ast-button').visible = false;
+        scene.getObjectByName('enhanced-menu-button-group').visible = false;
         tooltipVisible = false;
     }
 

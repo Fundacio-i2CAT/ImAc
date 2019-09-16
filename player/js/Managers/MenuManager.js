@@ -192,7 +192,7 @@ function MenuManager() {
             },
             onGazeLong: function(){
 
-                menuMgr.initFirstMenuState(); // Initialize the first menu state when the time has expired.
+                menuMgr.initFirstMenuState(); // Initialize the first menu state when the time has expired.         
 
             }
         });
@@ -228,6 +228,9 @@ function MenuManager() {
         }
 
         menu.visible = true;
+
+       // let timerCloseMenu = setTimeout( function(){ menuMgr.ResetViews() }, 3000);       
+
     }
 
 /**

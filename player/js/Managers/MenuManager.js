@@ -32,7 +32,7 @@ function MenuManager() {
 
         //Add the menu to the parent element.
         if (_isHMD) {
-            console.log("This function is used. But is it vital?");
+            //console.log("This function is used. But is it vital?");
             menu.scale.set( 0.8, 0.8, 0.8 );
             //traditionalmenu.scale.set( 0.8, 0.8, 0.8 );
         }

@@ -33,6 +33,7 @@ VideoController = function() {
 
     var playEvent = new Event('playevent');
     var pauseEvent = new Event('pauseevent');
+    var seekEvent = new Event('seekevent');
 
     //document.addEventListener('playevent', function (e) { console.error('playevent run') }, false);
     //document.addEventListener('pauseevent', function (e) { console.error('pauseevent run') }, false);
@@ -134,6 +135,8 @@ VideoController = function() {
 
     function changeAllPlaybackRate(value)
     {
+        if ( value < 0.5 ) value = 0.5;
+
         listOfVideoContents.forEach( function( elem ) { elem.vid.playbackRate = value; } ); 
         listOfAudioContents.forEach( function( elem ) { elem.playbackRate  = value; } );
     }
@@ -242,6 +245,8 @@ VideoController = function() {
 
     this.seekAll = function(time)
     {
+        document.dispatchEvent(seekEvent);
+
         _Sync.vc( 'play', (listOfVideoContents[0].vid.currentTime + time) * 1000000000 )
         changeAllCurrentTime( time );
     };   
@@ -291,6 +296,8 @@ VideoController = function() {
             if (periodCount > 0) _ManifestParser.updateSignerVideo(periodCount);
             periodCount += 1;
         });
+
+        if ( localStorage.ImAc_roomID != undefined && localStorage.ImAc_roomID != "undefined" ) setTimeout( () => {  _Sync.init( "192.168.10.128", localStorage.ImAc_roomID ); }, 1000);
 
         getAdaptationSets().then(( str ) => { 
 

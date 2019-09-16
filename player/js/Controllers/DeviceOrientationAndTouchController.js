@@ -147,9 +147,8 @@ var _mouseMoved = false;
 	}.bind( this );
 
 	this.onDocumentMouseUp = function ( event ) {
-		console.error('onDocumentMouseUp')
 
-		if ( !_mouseMoved ) menuMgr.initFirstMenuState();
+		if ( scene.getObjectByName( "openMenu" ).visible && !_mouseMoved ) menuMgr.initFirstMenuState();
 
 		_mouseMoved = false;
 
@@ -413,7 +412,7 @@ var _mouseMoved = false;
 
 	this.onDocumentTouchEnd = function ( event ) 
 	{
-		if ( !_mouseMoved ) menuMgr.initFirstMenuState();
+		if ( scene.getObjectByName( "openMenu" ).visible && !_mouseMoved ) menuMgr.initFirstMenuState();
 
 		_mouseMoved = false;
 

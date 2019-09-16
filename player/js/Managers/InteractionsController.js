@@ -130,7 +130,7 @@ THREE.InteractionsController = function () {
                     intersects[inter].object.onexecute();
                     break;
                 }
-                else if ( intersects[inter].object.type == 'Mesh' &&  intersects[inter].object.parent.name === 'video-progress-bar'){
+                else if ( intersects[inter] && intersects[inter].object && intersects[inter].object.parent && intersects[inter].object.type == 'Mesh' &&  intersects[inter].object.parent.name === 'video-progress-bar'){
                     mainMenuCtrl.onClickSeek(intersects[inter].point.normalize())
                     break;
                 }

@@ -148,8 +148,10 @@ var _mouseMoved = false;
 
 	this.onDocumentMouseUp = function ( event ) {
 
-		if ( scene.getObjectByName( "openMenu" ).visible && !_mouseMoved ) menuMgr.initFirstMenuState();
-
+		//if ( scene.getObjectByName( "openMenu" ).visible && !_mouseMoved ) menuMgr.initFirstMenuState();
+		if ( menuMgr.getMenuType() == 2 && scene.getObjectByName( 'trad-main-menu' ).visible == false && !_mouseMoved ) menuMgr.initFirstMenuState();
+		else if ( menuMgr.getMenuType() == 1 && scene.getObjectByName( 'trad-option-menu' ).visible == false && scene.getObjectByName( 'trad-main-menu' ).visible == false && !_mouseMoved ) menuMgr.initFirstMenuState();
+		// scene.getObjectByName( 'trad-option-menu' ).visible == false && scene.getObjectByName( 'trad-main-menu' ).visible == false
 		_mouseMoved = false;
 
 		this.element.removeEventListener( 'mousemove', this.onDocumentMouseMove, false );
@@ -412,7 +414,10 @@ var _mouseMoved = false;
 
 	this.onDocumentTouchEnd = function ( event ) 
 	{
-		if ( scene.getObjectByName( "openMenu" ).visible && !_mouseMoved ) menuMgr.initFirstMenuState();
+		//if ( scene.getObjectByName( "openMenu" ).visible && !_mouseMoved ) menuMgr.initFirstMenuState();
+		if ( menuMgr.getMenuType() == 2 && scene.getObjectByName( 'trad-main-menu' ).visible == false && !_mouseMoved ) menuMgr.initFirstMenuState();
+		else if ( menuMgr.getMenuType() == 1 && scene.getObjectByName( 'trad-option-menu' ).visible == false && scene.getObjectByName( 'trad-main-menu' ).visible == false && !_mouseMoved ) menuMgr.initFirstMenuState();
+		
 
 		_mouseMoved = false;
 
@@ -575,7 +580,10 @@ var _mouseMoved = false;
 
 	function startMenuInterval()
 	{
-		if ( scene.getObjectByName( "openMenu" ).visible ) menuMgr.initFirstMenuState();
+		//if ( scene.getObjectByName( "openMenu" ).visible ) menuMgr.initFirstMenuState();
+		if ( menuMgr.getMenuType() == 2 && scene.getObjectByName( 'trad-main-menu' ).visible == false ) menuMgr.initFirstMenuState();
+		else if ( menuMgr.getMenuType() == 1 && scene.getObjectByName( 'trad-option-menu' ).visible == false && scene.getObjectByName( 'trad-main-menu' ).visible == false ) menuMgr.initFirstMenuState();
+		
 		/*if ( scene.getObjectByName( "openMenu" ).visible ) {
 			openmenuinterval = setInterval(function(){
 				openmenutimer++;

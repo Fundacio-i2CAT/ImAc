@@ -194,7 +194,10 @@ function AplicationManager()
                 else menuMgr.ResetViews();  
             }*/
 
-            if ( scene.getObjectByName( "openMenu" ).visible ) menuMgr.initFirstMenuState();
+            //if ( scene.getObjectByName( "openMenu" ).visible ) menuMgr.initFirstMenuState();
+            if ( menuMgr.getMenuType() == 2 && scene.getObjectByName( 'trad-main-menu' ).visible == false ) menuMgr.initFirstMenuState();
+            else if ( menuMgr.getMenuType() == 1 && scene.getObjectByName( 'trad-option-menu' ).visible == false && scene.getObjectByName( 'trad-main-menu' ).visible == false ) menuMgr.initFirstMenuState();
+        
         }
         if ( _isHMD && subController.getSubtitleEnabled() )
         {

@@ -756,9 +756,12 @@ const settingsSubtitlesPosition = { title: 'Position', icon: './img/menu/st_posi
                 SettingsOptionCtrl.setChildColumnActiveOpt(settingsSubtitlesPosition.options[0].optId);
                 if ( subController.getSubtitleEnabled() ){
                     subController.setSignerPosition( subController.getSignerPosition().x, 1 );
-                    if(menuMgr.getMenuType() == 2){
+                    
+                    //MENU ONLY DOWN (uncomment for up/down options)
+                    /*if(menuMgr.getMenuType() == 2){
                         menu.getObjectByName('trad-main-menu').position.y = -25;
-                    }
+                    }*/
+
                 } 
             } 
         },
@@ -769,9 +772,12 @@ const settingsSubtitlesPosition = { title: 'Position', icon: './img/menu/st_posi
                 SettingsOptionCtrl.setChildColumnActiveOpt(settingsSubtitlesPosition.options[1].optId);
                 if ( subController.getSubtitleEnabled() ) {
                     subController.setSignerPosition( subController.getSignerPosition().x, -1 );
-                    if(menuMgr.getMenuType() == 2){
+                    
+                    //MENU ONLY DOWN (uncomment for up/down options)
+                    /*if(menuMgr.getMenuType() == 2){
                         menu.getObjectByName('trad-main-menu').position.y = 25;
-                    }                }
+                    }*/
+                                    }
             } 
         }]
 };
@@ -949,7 +955,9 @@ const settingsSignLanguagePosition = { title: 'Position', icon: './img/menu/sl_p
             function:  function(){ 
                 subController.setSignerPosition( 1, subController.getSubPosition().y);
                 SettingsOptionCtrl.setChildColumnActiveOpt(settingsSignLanguagePosition.options[0].optId);
-                menu.getObjectByName('trad-option-menu').position.x = -9*menuWidth/32;
+                
+                //MENU ALLWAYS RIGHT (uncomment for left/right movement)
+                //menu.getObjectByName('trad-option-menu').position.x = -9*menuWidth/32;
 
             } 
         },
@@ -958,7 +966,9 @@ const settingsSignLanguagePosition = { title: 'Position', icon: './img/menu/sl_p
             function:  function(){ 
                 subController.setSignerPosition( -1, subController.getSubPosition().y);
                 SettingsOptionCtrl.setChildColumnActiveOpt(settingsSignLanguagePosition.options[1].optId);
-                menu.getObjectByName('trad-option-menu').position.x = 9*menuWidth/32;
+
+                //MENU ALLWAYS RIGHT (uncomment for left/right movement)
+                //menu.getObjectByName('trad-option-menu').position.x = 9*menuWidth/32;
 
             } 
         }]

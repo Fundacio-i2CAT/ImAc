@@ -561,11 +561,14 @@ function ViewStructureMenuManager() {
         
         //The position depends on the menu type.
         if(menuMgr.getMenuType() == 2){
-            if ( subController.getSubtitleEnabled() ){
+            mainmenu.position.set( 0, -25, -67 );
+
+            //MENU ONLY DOWN (uncomment for up/down options)
+            /*if ( subController.getSubtitleEnabled() ){
                 mainmenu.position.set( 0, -1 * subController.getSubPosition().y * 25, -67 );
             } else {
                 mainmenu.position.set( 0, -25, -67 );
-            }
+            }*/
                 
         } else {
             mainmenu.position.set( 0, 0, -67 );
@@ -595,7 +598,11 @@ function ViewStructureMenuManager() {
 
         // The position depends on the menu type.
         if(menuMgr.getMenuType() == 2){
-            tradOptionMenu.position.set(-subController.getSignerPosition().x * 9*menuWidth/32, 0, 0.01); // The +/100 in height is small margin
+            tradOptionMenu.position.set(9*menuWidth/32, 0, 0.01);
+
+            //MENU ALLWAYS RIGHT (uncomment for left/right movement)
+            //tradOptionMenu.position.set(-subController.getSignerPosition().x * 9*menuWidth/32, 0, 0.01); // The +/100 in height is small margin
+           
         } else {
             tradOptionMenu.position.set(0, 0, -67); 
         }

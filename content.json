@@ -3,8 +3,8 @@
   "contents": [
   {
     "name": "Liceu Opera Piece 1",
-    "poster": "./img/opera1_cover.png",
-    "thumbnail": "img/opera1.png",
+    "poster": "./portal/img/opera1_cover.png",
+    "thumbnail": "portal/img/opera1.png",
     "description": "Performance of the “Roméo et Juliette” opera recorded at the Gran Teatre del Liceu Opera House (Barcelona). Piece 1.",
     "descriptionArray": [
     {
@@ -28,8 +28,8 @@
   },
 {
     "name": "Liceu Opera Piece 2",
-    "poster": "./img/covers/opera2_cover.png",
-    "thumbnail": "img/opera2.PNG",
+    "poster": "./portal/img/covers/opera2_cover.png",
+    "thumbnail": "portal/img/opera2.PNG",
     "description": "Performance of the “Roméo et Juliette” opera recorded at the Gran Teatre del Liceu Opera House (Barcelona). Piece 2.",
     "descriptionArray": [
     {
@@ -59,8 +59,8 @@
   },
   {
     "name": "360° Abendschau",
-    "poster": "img/covers/Abendschau_cover.jpg",
-    "thumbnail": "img/covers/Abendschau_thumb.jpg",
+    "poster": "portal/img/covers/Abendschau_cover.jpg",
+    "thumbnail": "portal/img/covers/Abendschau_thumb.jpg",
     "description": "Making-of video of the RBB news show “Abendschau”, taking you into the news room and the streets of Berlin where current events are covered by the RBB news team.",
     "descriptionArray": [
     {
@@ -85,8 +85,8 @@
   },
    {
     "name": "Desconcert “Leyre”",
-    "poster": "./img/covers/desconcert1_cover.png",
-    "thumbnail": "img/desconcert1.png",
+    "poster": ".portal//img/covers/desconcert1_cover.png",
+    "thumbnail": "portal/img/desconcert1.png",
     "description": "Performance of a catalan version of  “Leyre” song, recorded at Sala Apolo (Barcelona) during the third edition of “Desconcert”, a great festival of iCat FM.",
     "descriptionArray": [
     {
@@ -120,8 +120,8 @@
   },
   {
     "name": "Desconcert “Havana”",
-    "poster": "./img/covers/desconcert2_cover.png",
-    "thumbnail": "img/desconcert2.png",
+    "poster": "./portal/img/covers/desconcert2_cover.png",
+    "thumbnail": "portal/img/desconcert2.png",
     "description": "Performance of a catalan version of  “Havana” song, recorded at Sala Apolo (Barcelona) during the third edition of “Desconcert”, a great festival of iCat FM.",
     "descriptionArray": [
     {
@@ -182,8 +182,8 @@
   },
   {
     "name": "Rapzember",
-    "poster": "img/covers/Rapzember_cover.jpg",
-    "thumbnail": "img/covers/Rapzember_thumb.jpg",
+    "poster": "portal/img/covers/Rapzember_cover.jpg",
+    "thumbnail": "portal/img/covers/Rapzember_thumb.jpg",
     "description": "25 hours under the sign of Rap - that's Rapzember on Fritz.  The video shows an interview with the musician Young Hurn in the studio of the radio station.",
     "descriptionArray": [
     {

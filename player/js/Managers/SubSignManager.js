@@ -1210,4 +1210,29 @@ SubSignManager = function() {
     	});
     	return SLstate;
     }
+
+
+    this.changeSTmode = function(mode)
+    {
+    	removeSubtitle();
+
+    	if ( mode == 0 ) 
+    	{
+    		_fixedST = false;
+    		isExperimental = false;
+    	}
+    	else if ( mode == 1 )
+    	{
+    		_fixedST = true;
+    		isExperimental = false;
+    	}
+    	else {
+    		_fixedST = true;
+    		isExperimental = true;
+    	}
+
+    	textListMemory = [];
+
+		updateISD( VideoController.getMediaTime() );
+    }
 }

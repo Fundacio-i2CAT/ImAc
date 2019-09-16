@@ -779,6 +779,12 @@ const settingsSubtitlesPosition = { title: 'Position', icon: './img/menu/st_posi
                     }*/
                                     }
             } 
+        },
+        { optId: 'subtitlesSpeakerButton', text: 'Speaker', 
+            default: function(){ return subController.checkSubPosition(0)},
+            function:  function(){
+                //ADD HERE THE FUNCTION
+            } 
         }]
 };
 

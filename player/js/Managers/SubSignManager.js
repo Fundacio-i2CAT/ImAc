@@ -360,7 +360,7 @@ SubSignManager = function() {
     {
     	if ( signEnabled && subtitleIndicator == 'arrow' ) 
     	{
-    		scene.getObjectByName('backgroundSL').visible = false;
+    		//scene.getObjectByName('backgroundSL').visible = false;
     		//config.size = config.size * 0.8;
     	}
         subtitleMesh = !_fixedST ? _moData.getEmojiSubtitleMesh( textList, config ) : _moData.getExpEmojiSubtitleMesh( textList, config );
@@ -761,10 +761,10 @@ SubSignManager = function() {
 		if(subtitleEnabled || signEnabled){
 			textListMemory = [];
 
-		if ( ind != 'radar' ) removeRadar(); 
-		else if ( ind == 'radar' ) createRadar(); 
+			if ( ind != 'radar' ) removeRadar(); 
+			else if ( ind == 'radar' ) createRadar(); 
 
-		updateISD( VideoController.getMediaTime() );
+			updateISD( VideoController.getMediaTime() );
 		}
 		
 	};

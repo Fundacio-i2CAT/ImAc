@@ -751,11 +751,18 @@ SubSignManager = function() {
 		subtitleIndicator = ind;
 
 		if ( signEnabled && subtitleIndicator == 'arrow' ) scene.getObjectByName('backgroundSL').visible = true;
+		else if ( signEnabled && subtitleIndicator == 'none' ) 
+		{
+			scene.getObjectByName("backgroundSL").visible = false;
+			scene.getObjectByName("rightSL").visible = false;
+			scene.getObjectByName("leftSL").visible = false;
+		}
 		
 		if(subtitleEnabled || signEnabled){
 			textListMemory = [];
 
 		if ( ind != 'radar' ) removeRadar(); 
+		else if ( ind == 'radar' ) createRadar(); 
 
 		updateISD( VideoController.getMediaTime() );
 		}
@@ -894,7 +901,12 @@ SubSignManager = function() {
 	{
 		subtitleIndicator = ind;
 		if ( subtitleIndicator == 'arrow' && scene.getObjectByName("backgroundSL") ) scene.getObjectByName("backgroundSL").visible = true;
-		else if ( scene.getObjectByName("backgroundSL") ) scene.getObjectByName("backgroundSL").visible = false;
+		else if ( scene.getObjectByName("backgroundSL") ) 
+		{
+			scene.getObjectByName("backgroundSL").visible = false;
+			scene.getObjectByName("rightSL").visible = false;
+			scene.getObjectByName("leftSL").visible = false;
+		}
 		updateSignerPosition();
 	};
 

@@ -92,7 +92,7 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 
 		event.preventDefault();
 
-		if ( autopositioning == false ) 
+		/*if ( autopositioning == false ) 
 		{
 			if ( Date.now() - touchtime > 300 ) touchcount = 0;
 
@@ -108,7 +108,7 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 				touchcount = 0;
 				menuMgr.initFirstMenuState();
 			}
-		}
+		}*/
 
 		//tmpQuat.copy( scope.objectPather.quaternion );
 		tmpQuat.copy( scope.object.quaternion );
@@ -137,12 +137,21 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 		
 	}.bind( this );
 
+
+var _mouseMoved = false;
+
 	this.onDocumentMouseMove = function ( event ) {
+		_mouseMoved = true;
 		currentX = event.pageX;
 		currentY = event.pageY;
 	}.bind( this );
 
 	this.onDocumentMouseUp = function ( event ) {
+		console.error('onDocumentMouseUp')
+
+		if ( !_mouseMoved ) menuMgr.initFirstMenuState();
+
+		_mouseMoved = false;
 
 		this.element.removeEventListener( 'mousemove', this.onDocumentMouseMove, false );
 		this.element.removeEventListener( 'mouseup', this.onDocumentMouseUp, false );
@@ -184,7 +193,7 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 					}
 					
 				}
-				else if ( scene.getObjectByName( "openMenu" ).visible ){
+				/*else if ( scene.getObjectByName( "openMenu" ).visible ){
 
 					if ( Date.now() - touchtime > 300 ) touchcount = 0;
 
@@ -201,7 +210,7 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 						touchcount = 0;
 						menuMgr.initFirstMenuState();
 					}
-				}
+				}*/
 				//touchtime = Date.now();
 			
 				//var mouse3D = new THREE.Vector2();
@@ -331,6 +340,8 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 
 	this.onDocumentTouchMove = function ( event ) {
 
+		_mouseMoved = true;
+
 		if ( event.touches.length == 1 )
 		{
 			currentX = event.touches[ 0 ].pageX;
@@ -402,6 +413,10 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 
 	this.onDocumentTouchEnd = function ( event ) 
 	{
+		if ( !_mouseMoved ) menuMgr.initFirstMenuState();
+
+		_mouseMoved = false;
+
 		//startAllAudios();		
 		tpCache = new Array();
 		
@@ -561,6 +576,7 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 
 	function startMenuInterval()
 	{
+		if ( scene.getObjectByName( "openMenu" ).visible ) menuMgr.initFirstMenuState();
 		/*if ( scene.getObjectByName( "openMenu" ).visible ) {
 			openmenuinterval = setInterval(function(){
 				openmenutimer++;
@@ -568,7 +584,7 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 			}, 1000);
 		}
 		else {*/
-			if ( Date.now() - touchtime > 300 ) touchcount = 0;
+			/*if ( Date.now() - touchtime > 300 ) touchcount = 0;
 
 			if (touchcount == 0) {
 				
@@ -582,7 +598,7 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 				touchcount = 0;
 				if ( scene.getObjectByName( "openMenu" ).visible ) menuMgr.initFirstMenuState();
 				else menuMgr.ResetViews();
-			}
+			}*/
 		//}
 	}
 

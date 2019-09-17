@@ -159,7 +159,7 @@ THREE.InteractionsController = function () {
                         intersects[inter].object.name == 'show-sl-button' ||
                         intersects[inter].object.name == 'show-ad-button' ||
                         intersects[inter].object.name == 'show-ast-button' ||
-                        intersects[inter].object.name == 'enhanced-menu-button-group'  ) onMouseOver( intersects[inter].object.name )
+                        intersects[inter].object.name == 'enhanced-menu-button'  ) onMouseOver( intersects[inter].object.name )
                     else if ( tooltipVisible ) clearMouseOver();
 
                     break;

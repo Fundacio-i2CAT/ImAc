@@ -519,11 +519,22 @@ var _mouseMoved = false;
 
 	function sendVRInteraction(quat)
 	{
-		var direction = new THREE.Vector3( 0, 0, -1 );
+		if ( menuMgr.getMenuType() == 2 && scene.getObjectByName( 'trad-main-menu' ).visible == false ) 
+		{
+			menuMgr.initFirstMenuState();
+		}
+		else if ( menuMgr.getMenuType() == 1 && scene.getObjectByName( 'trad-option-menu' ).visible == false && scene.getObjectByName( 'trad-main-menu' ).visible == false ) 
+		{
+			menuMgr.initFirstMenuState();
+		}
+		else
+		{
+			var direction = new THREE.Vector3( 0, 0, -1 );
 
-		direction.applyQuaternion( quat ).normalize();
+			direction.applyQuaternion( quat ).normalize();
 
-		interController.checkVRInteraction( _origin, direction );
+			interController.checkVRInteraction( _origin, direction );
+		}
 	}
 
 	var gamepadConnected = false;
@@ -547,7 +558,7 @@ var _mouseMoved = false;
 
 			controller.addEventListener( 'primary press began', function( event ){
 				//event.target.userData.mesh.material.color.setHex( meshColorOn )
-				startMenuInterval()
+				//startMenuInterval()
 				sendVRInteraction(event.target.quaternion)
 			})
 			controller.addEventListener( 'primary press ended', function( event ){
@@ -556,7 +567,7 @@ var _mouseMoved = false;
 			})
 			controller.addEventListener( 'button_0 press began', function( event ){
 				//event.target.userData.mesh.material.color.setHex( meshColorOn )
-				startMenuInterval()
+				//startMenuInterval()
 				sendVRInteraction(event.target.quaternion)
 			})
 			controller.addEventListener( 'button_0 press ended', function( event ){
@@ -565,7 +576,7 @@ var _mouseMoved = false;
 			})	
 			controller.addEventListener( 'thumbpad press began', function( event ){
 				//event.target.userData.mesh.material.color.setHex( meshColorOn )
-				startMenuInterval()
+				//startMenuInterval()
 				sendVRInteraction(event.target.quaternion)
 			})
 			controller.addEventListener( 'thumbpad press ended', function( event ){

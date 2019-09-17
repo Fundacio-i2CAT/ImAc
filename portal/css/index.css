@@ -157,7 +157,7 @@ body {
 
 .SS-container {
   right: 9vw;
-  top: 150px;
+  top: 100px;
   width: 30%;
   position: absolute;
   min-height: 200px;
@@ -189,7 +189,7 @@ body {
 .SS-container2 {
   display: none;
   right: 9vw;
-  top: 150px;
+  top: 100px;
   width: 30%;
   position: absolute;
   min-height: 50px;
@@ -236,6 +236,10 @@ body {
     line-height: 1.42857143;
     font-family: 'Open Sans', sans-serif;
 } 
+
+.btn-SS:focus {
+  color: #E6E6E6;
+}
 
 .Content-access {
   margin-bottom: 10px;
@@ -880,6 +884,10 @@ body {
     top: 45px;
     left: 4vw;
   }
+
+  .FooterBar {
+    min-height: 340px;
+  }
 }
 
 @media only screen and (max-width: 876px) {
@@ -998,6 +1006,20 @@ body {
 
   .Content-access {
     margin-bottom: 6px;
+  }
+
+  .SS-container {
+    top: 70px;
+  }
+
+  .SS-container2 {
+    top: 70px;
+  }
+
+  .Settings-option.small {
+    font-size: 1.8rem;
+    padding: 1rem 1rem;
+    cursor: default;
   }
   
 }

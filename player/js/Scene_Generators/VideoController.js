@@ -143,17 +143,37 @@ VideoController = function() {
 
     function syncAll(dif)
     {  
-        dif = parseInt( dif*100 )/100;       
-        if ( dif > -0.05 && dif < 0.05 ) {} 
+        dif = parseInt( dif*100 )/100;  
 
-        else if ( dif < -1 || dif > 1 ) 
+        //console.log(dif) 
+
+        if ( _isHMD ) 
         {
-            changeAllCurrentTime( -dif );
+            if ( dif > -0.2 && dif < 0.2 ) {} 
+
+            else if ( dif < -1 || dif > 1 ) 
+            {
+                changeAllCurrentTime( -dif );
+            } 
+            else
+            {
+                changeAllPlaybackRate( 1 - dif );
+                setTimeout( () => { changeAllPlaybackRate( 1 ) }, 900);
+            }
         } 
         else 
         {
-            changeAllPlaybackRate( 1 - dif );
-            setTimeout( () => { changeAllPlaybackRate( 1 ) }, 900);
+            if ( dif > -0.05 && dif < 0.05 ) {} 
+
+            else if ( dif < -1 || dif > 1 ) 
+            {
+                changeAllCurrentTime( -dif );
+            } 
+            else
+            {
+                changeAllPlaybackRate( 1 - dif );
+                setTimeout( () => { changeAllPlaybackRate( 1 ) }, 900);
+            }
         }
     }
 
@@ -297,7 +317,7 @@ VideoController = function() {
             periodCount += 1;
         });
 
-        if ( localStorage.ImAc_roomID != undefined && localStorage.ImAc_roomID != "undefined" ) setTimeout( () => {  _Sync.init( "192.168.10.128", localStorage.ImAc_roomID ); }, 1000);
+        if ( localStorage.ImAc_roomID != undefined && localStorage.ImAc_roomID != "undefined" ) setTimeout( () => {  _Sync.init( "195.81.194.222", localStorage.ImAc_roomID ); }, 2000);
 
         getAdaptationSets().then(( str ) => { 
 

@@ -396,7 +396,45 @@ THREE.MediaObjectData = function () {
         //ctx.quadraticCurveTo( x, y, x, y + radius );
 
       return ctx;
-    }
+    };
+
+    this.getExpSubtitleMesh = function(textList, config)
+    {
+        var group = new THREE.Group();
+        var group1 = new THREE.Group();
+        var group2 = new THREE.Group();
+        var group3 = new THREE.Group();
+
+        config.y = -20;
+        
+        var mesh = getEmojiSubMesh( textList, config, ST_font, true )
+        mesh.lookAt(new THREE.Vector3(0, 0, 0)); 
+
+        group1.add( mesh );
+
+
+        var mesh = getEmojiSubMesh( textList, config, ST_font, true )
+        mesh.lookAt(new THREE.Vector3(0, 0, 0)); 
+
+        group2.add( mesh );
+
+
+        var mesh = getEmojiSubMesh( textList, config, ST_font, true )
+        mesh.lookAt(new THREE.Vector3(0, 0, 0)); 
+
+        group3.add( mesh );
+        
+
+        group2.rotation.y = Math.radians( 120 );
+        group3.rotation.y = Math.radians( 240 );
+
+        group.add( group1 );
+        group.add( group2 );
+        group.add( group3 );
+        
+        return group;
+    };
+
 
 //************************************************************************************
 // Private Functions

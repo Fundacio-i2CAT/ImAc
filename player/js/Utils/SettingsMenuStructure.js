@@ -753,6 +753,8 @@ const settingsSubtitlesPosition = { title: 'Position', icon: './img/menu/st_posi
             default: function(){ return subController.checkSubPosition(1)},
             function:  function(){
                 subController.setSubPosition( 0, 1 );
+                // experimental fixed position mode
+                subController.changeSTmode(0);
                 SettingsOptionCtrl.setChildColumnActiveOpt(settingsSubtitlesPosition.options[0].optId);
                 if ( subController.getSubtitleEnabled() ){
                     subController.setSignerPosition( subController.getSignerPosition().x, 1 );
@@ -769,6 +771,8 @@ const settingsSubtitlesPosition = { title: 'Position', icon: './img/menu/st_posi
             default: function(){ return subController.checkSubPosition(-1) },
             function:  function(){ 
                 subController.setSubPosition( 0, -1 );
+                // experimental fixed position mode
+                subController.changeSTmode(0);
                 SettingsOptionCtrl.setChildColumnActiveOpt(settingsSubtitlesPosition.options[1].optId);
                 if ( subController.getSubtitleEnabled() ) {
                     subController.setSignerPosition( subController.getSignerPosition().x, -1 );
@@ -784,7 +788,17 @@ const settingsSubtitlesPosition = { title: 'Position', icon: './img/menu/st_posi
         { optId: 'subtitlesSpeakerButton', text: 'Speaker', 
             default: function(){ return subController.checkSubPosition(0)},
             function:  function(){
-                //ADD HERE THE FUNCTION
+                // experimental speaker position mode
+                subController.changeSTmode(1);
+                SettingsOptionCtrl.setChildColumnActiveOpt(settingsSubtitlesPosition.options[2].optId);
+            } 
+        },
+        { optId: 'subtitlesScenex3Button', text: 'Scene', 
+            default: function(){ return subController.checkSubPosition(3)},
+            function:  function(){
+                // experimental speaker position mode
+                subController.changeSTmode(2);
+                SettingsOptionCtrl.setChildColumnActiveOpt(settingsSubtitlesPosition.options[3].optId);
             } 
         }]
 };

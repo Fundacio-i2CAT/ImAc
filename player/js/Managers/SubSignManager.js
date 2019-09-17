@@ -207,7 +207,8 @@ SubSignManager = function() {
 
 			    //Save subtitle configuration for preview visualitzation. 
 			    if( _SLsubtitles ) createSLSubtitle( textList, subConfig );
-			    else createSubtitle( textList, subConfig );
+			    //else createSubtitle( textList, subConfig );
+			    else isExperimental ? createExpSubtitle( textList, subConfig ) : createSubtitle( textList, subConfig );
 
 	      		if ( subtitleIndicator == 'radar' ) createSpeakerRadar( textList[0].color, isdImac );
 
@@ -360,14 +361,23 @@ SubSignManager = function() {
     {
     	if ( signEnabled && subtitleIndicator == 'arrow' ) 
     	{
-    		scene.getObjectByName('backgroundSL').visible = false;
+    		//scene.getObjectByName('backgroundSL').visible = false;
     		//config.size = config.size * 0.8;
     	}
+
         subtitleMesh = !_fixedST ? _moData.getEmojiSubtitleMesh( textList, config ) : _moData.getExpEmojiSubtitleMesh( textList, config );
         subtitleMesh.name = "subtitles";
 
         _fixedST ? scene.add( subtitleMesh ) : camera.add( subtitleMesh );
     }
+
+    function createExpSubtitle(textList, config)
+    {
+    	subtitleMesh = _moData.getExpSubtitleMesh( textList, config );
+
+        scene.add( subtitleMesh );
+    }
+
 
     // Subtitles fixed under SL video
     function createSLSubtitle(textList, config)
@@ -751,13 +761,20 @@ SubSignManager = function() {
 		subtitleIndicator = ind;
 
 		if ( signEnabled && subtitleIndicator == 'arrow' ) scene.getObjectByName('backgroundSL').visible = true;
+		else if ( signEnabled && subtitleIndicator == 'none' ) 
+		{
+			scene.getObjectByName("backgroundSL").visible = false;
+			scene.getObjectByName("rightSL").visible = false;
+			scene.getObjectByName("leftSL").visible = false;
+		}
 		
 		if(subtitleEnabled || signEnabled){
 			textListMemory = [];
 
-		if ( ind != 'radar' ) removeRadar(); 
+			if ( ind != 'radar' ) removeRadar(); 
+			else if ( ind == 'radar' ) createRadar(); 
 
-		updateISD( VideoController.getMediaTime() );
+			updateISD( VideoController.getMediaTime() );
 		}
 		
 	};
@@ -894,7 +911,12 @@ SubSignManager = function() {
 	{
 		subtitleIndicator = ind;
 		if ( subtitleIndicator == 'arrow' && scene.getObjectByName("backgroundSL") ) scene.getObjectByName("backgroundSL").visible = true;
-		else if ( scene.getObjectByName("backgroundSL") ) scene.getObjectByName("backgroundSL").visible = false;
+		else if ( scene.getObjectByName("backgroundSL") ) 
+		{
+			scene.getObjectByName("backgroundSL").visible = false;
+			scene.getObjectByName("rightSL").visible = false;
+			scene.getObjectByName("leftSL").visible = false;
+		}
 		updateSignerPosition();
 	};
 
@@ -959,7 +981,11 @@ SubSignManager = function() {
 
 	this.checkSubPosition = function(x)
 	{
-		return x == subPosY;
+		if ( _fixedST ) {
+			if ( !isExperimental ) return x == 0 ? true : false;
+			else return x == 3 ? true : false;
+		}
+		else return x == subPosY;
 	};
 
 	this.checkSubIndicator = function(x)
@@ -1193,5 +1219,30 @@ SubSignManager = function() {
     		else SLstate = (elem.state == 'on') ? true : false;
     	});
     	return SLstate;
+    }
+
+
+    this.changeSTmode = function(mode)
+    {
+    	removeSubtitle();
+
+    	if ( mode == 0 ) 
+    	{
+    		_fixedST = false;
+    		isExperimental = false;
+    	}
+    	else if ( mode == 1 )
+    	{
+    		_fixedST = true;
+    		isExperimental = false;
+    	}
+    	else {
+    		_fixedST = true;
+    		isExperimental = true;
+    	}
+
+    	textListMemory = [];
+
+		updateISD( VideoController.getMediaTime() );
     }
 }

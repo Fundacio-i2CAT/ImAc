@@ -178,7 +178,7 @@ function AplicationManager()
             interController.checkInteraction( mouse3D, camera, 'onDocumentMouseDown' );
 
             // function to open menu with double click
-            if ( Date.now() - touchtime > 300 ) touchcount = 0;
+            /*if ( Date.now() - touchtime > 300 ) touchcount = 0;
 
             if (touchcount == 0) {
                 
@@ -192,7 +192,12 @@ function AplicationManager()
                 touchcount = 0;
                 if ( scene.getObjectByName( "openMenu" ).visible ) menuMgr.initFirstMenuState();
                 else menuMgr.ResetViews();  
-            }
+            }*/
+
+            //if ( scene.getObjectByName( "openMenu" ).visible ) menuMgr.initFirstMenuState();
+            if ( menuMgr.getMenuType() == 2 && scene.getObjectByName( 'trad-main-menu' ).visible == false ) menuMgr.initFirstMenuState();
+            else if ( menuMgr.getMenuType() == 1 && scene.getObjectByName( 'trad-option-menu' ).visible == false && scene.getObjectByName( 'trad-main-menu' ).visible == false ) menuMgr.initFirstMenuState();
+        
         }
         if ( _isHMD && subController.getSubtitleEnabled() )
         {

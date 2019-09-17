@@ -781,7 +781,8 @@ const settingsSubtitlesPosition = { title: 'Position', icon: './img/menu/st_posi
                     /*if(menuMgr.getMenuType() == 2){
                         menu.getObjectByName('trad-main-menu').position.y = 25;
                     }*/
-                                    }
+                    
+                }
             } 
         },
         { optId: 'subtitlesSpeakerButton', text: 'Speaker', 

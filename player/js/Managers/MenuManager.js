@@ -229,7 +229,7 @@ function MenuManager() {
 
         menu.visible = true;
 
-       // let timerCloseMenu = setTimeout( function(){ menuMgr.ResetViews() }, 3000);       
+       //timerCloseMenu = setTimeout( function(){ menuMgr.ResetViews() }, 5000);       
 
     }
 

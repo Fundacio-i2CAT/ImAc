@@ -73,6 +73,8 @@ var _isHMD = false;
 var autopositioning = false;
 var radarautopositioning = false;
 
+let timerCloseMenu;
+
 
 /**
  * Initializes the web player.

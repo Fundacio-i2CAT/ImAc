@@ -210,6 +210,11 @@ function AplicationManager()
 
         subController.updateRadar();
 
+
+        interController.checkInteractionSubMenuHover( mouse3D, camera);
+
+
+
         // find intersections
 
         // create a Ray with origin at the mouse position

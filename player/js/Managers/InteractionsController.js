@@ -9,11 +9,16 @@ THREE.InteractionsController = function () {
 	var interactionState = true;
 	var nameMenuActive;
 
-  var subtitlesActive = false;
-  var signerActive = false;
-  var pointerState = true;
+    var subtitlesActive = false;
+    var signerActive = false;
+    var pointerState = true;
 
-  var radarInteraction;
+    var radarInteraction;
+
+    let hoverElementName = '';
+    let hoverElementColor;
+    let optionHoverAnimation;
+
 
 
 //************************************************************************************
@@ -73,6 +78,69 @@ THREE.InteractionsController = function () {
 //************************************************************************************
 // Public Functions
 //************************************************************************************
+
+/**
+ * This function changes color of the different sub menu options when user hovers over.
+ *
+ * @param      {<type>}  mouse3D  The mouse 3d
+ * @param      {<type>}  camera   The camera
+ */
+    this.checkInteractionSubMenuHover = function(mouse3D, camera){
+        raycaster.setFromCamera( mouse3D, camera );
+
+        let elementArray = (scene.getObjectByName("trad-option-menu")) ? scene.getObjectByName("trad-option-menu").children  : [];
+        var intersects = raycaster.intersectObjects( elementArray , true ); // false
+
+        if ( intersects[0]){
+            if(intersects[0].object.name.localeCompare('settings-opt-title') == 0){
+                //DUPLICATED CODE 1
+                if(hoverElementName && scene.getObjectByName(hoverElementName)){
+                    scene.getObjectByName(hoverElementName).children[0].material.color.set( 0xe6e6e6 );
+                    scene.getObjectByName(hoverElementName).children[1].material.color.set( 0xe6e6e6 );
+                    
+                    clearTimeout(optionHoverAnimation);
+                    scene.getObjectByName(hoverElementName).children[0].rotation.z = 0; 
+                    hoverElementName = '';
+                }
+            }
+            if(intersects[0].object.type.localeCompare('Mesh') == 0 && intersects[0].object.onexecute){
+                hoverElementColor = scene.getObjectByName(intersects[0].object.name).children[0].material.color;
+
+                if(intersects[0].object.name.localeCompare(hoverElementName) != 0){
+
+                    if(scene.getObjectByName(intersects[0].object.name).children.length > 1){
+                        //Change color on selection;
+                        scene.getObjectByName(intersects[0].object.name).children[0].material.color.set( 0xc91355 );
+                        scene.getObjectByName(intersects[0].object.name).children[1].material.color.set( 0xc91355 ); 
+
+                        scene.getObjectByName(intersects[0].object.name).children[0].rotation.z = -Math.PI/8; //Rotate icon for animation
+                        
+                        optionHoverAnimation = setTimeout( function(){ 
+                            scene.getObjectByName(intersects[0].object.name).children[0].rotation.z = 0; //Back to initial rotation.
+                        }, 150); 
+
+                        if(hoverElementName && scene.getObjectByName(hoverElementName)){
+                            scene.getObjectByName(hoverElementName).children[0].material.color.set( 0xe6e6e6 );
+                            scene.getObjectByName(hoverElementName).children[1].material.color.set( 0xe6e6e6 );
+                        } 
+                        hoverElementName = intersects[0].object.name;
+                        hoverElementColor = scene.getObjectByName(intersects[0].object.name).children[0].material.color;
+                    }
+                }
+            }
+        
+        } else {
+            //DUPLICATED CODE 2
+            if(hoverElementName && scene.getObjectByName(hoverElementName)){
+                scene.getObjectByName(hoverElementName).children[0].material.color.set( 0xe6e6e6 );
+                scene.getObjectByName(hoverElementName).children[1].material.color.set( 0xe6e6e6 );
+                
+                clearTimeout(optionHoverAnimation);
+                scene.getObjectByName(hoverElementName).children[0].rotation.z = 0; 
+                hoverElementName = '';
+            }
+        }
+    }
 
 
     this.checkInteraction = function(mouse3D, camera, type){

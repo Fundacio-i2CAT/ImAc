@@ -431,7 +431,7 @@ function MainMenuController() {
 -----------------------------------------------------------------------*/
     /**
      * Sets the seeking process. 
-     * This function is used in order to blovk the user from seeing during a seeking process
+     * This function is used in order to block the user from seeing during a seeking process
      * until the current seeking process has ended
      * @param      {<Boolean>}  value   Is there a current seeking process beeing executed.
      */

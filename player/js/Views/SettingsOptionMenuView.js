@@ -65,7 +65,6 @@ function SettingsOptionMenuView() {
         optTitle.width = 18*menuWidth/200;
         optTitle.height = optHeight;
         optTitle.name = 'settings-opt-title';
-        optTitle.name = 'settings-opt-title';
         //optTitle.type =  'mix';
         optTitle.type =  'text';
         optTitle.text = MenuDictionary.translate( data.title );
@@ -74,6 +73,7 @@ function SettingsOptionMenuView() {
         optTitle.color = 0xe6e6e6;
         optTitle.visible = true;
         optTitle.position = new THREE.Vector3( 0, 0, 0.01 );
+        optTitle.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(optTitle.width,  optHeight), new THREE.MeshBasicMaterial({visible:  false}));
 
 		return optTitle.create();
 	}

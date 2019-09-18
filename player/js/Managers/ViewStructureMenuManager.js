@@ -667,6 +667,7 @@ function ViewStructureMenuManager() {
         optTitle.textSize =  menuWidth/40;
         optTitle.color = 0xe6e6e6;
         optTitle.visible = true;
+        optTitle.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(optTitle.width, optHeight), new THREE.MeshBasicMaterial({visible:  false}));
         optTitle.position = new THREE.Vector3( 0, 0, 0.01 );
 
 

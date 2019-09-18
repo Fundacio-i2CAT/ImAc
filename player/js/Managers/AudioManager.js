@@ -546,10 +546,12 @@ AudioManager = function() {
 
     this.setASTContent = function(url, lang)
     {
-        astContent = url[astPresentation] || url[Object.keys(url)[0]];
-        astLang = lang;
-        console.log(astContent)
-        if ( astEnabled ) addAudio( 'AST' );
+        if ( url ) {
+            astContent = url[astPresentation] || url[Object.keys(url)[0]];
+            astLang = lang;
+            console.log(astContent)
+            if ( astEnabled ) addAudio( 'AST' );
+        }
     }; 
 
     this.setASTPresentation = function(value)

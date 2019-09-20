@@ -141,9 +141,12 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 var _mouseMoved = false;
 
 	this.onDocumentMouseMove = function ( event ) {
-		_mouseMoved = true;
-		currentX = event.pageX;
-		currentY = event.pageY;
+		if ( event.pageX != startX && event.pageX != startX )
+		{
+			_mouseMoved = true;
+			currentX = event.pageX;
+			currentY = event.pageY;
+		}
 	}.bind( this );
 
 	this.onDocumentMouseUp = function ( event ) {

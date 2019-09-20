@@ -110,7 +110,7 @@ SubSignManager = function() {
 
 		    	if ( subtitleIndicator == 'arrow' ) {
 		    		arrowInteraction();
-		    		arrowSLInteraction();
+		    		if (!subtitleEnabled) arrowSLInteraction();
 		    	}
 
 		    	checkSpeakerPosition( isd.imac );
@@ -593,7 +593,7 @@ SubSignManager = function() {
 
     function changeSignIndicator(pos)
     {
-        if ( signerMesh )
+        if ( signerMesh && !subtitleEnabled )
         {
             if ( scene.getObjectByName("rightSL") ) {
 
@@ -1216,6 +1216,12 @@ SubSignManager = function() {
 			removeSubtitle();
 			removeRadar();
 		}
+		else if ( signEnabled ) 
+		{
+			scene.getObjectByName("rightSL").visible = false;
+			scene.getObjectByName("leftSL").visible = false;
+		}
+
 		subtitleEnabled = enable;
 	}
 

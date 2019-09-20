@@ -6,6 +6,8 @@ var _ws_vc;
 var _confMemory;
 var UUID;
 
+var _SyncServerIP = '195.81.194.222';
+
 //************************************************************************************
 // Main Functions
 //************************************************************************************
@@ -83,15 +85,18 @@ var UUID;
     function createSessionByID()
     {
         var uuid = document.getElementById('sessionUUID').value;
+
+        if ( uuid && uuid.length > 0 ) connection_NEW( _SyncServerIP, uuid );
+        else alert('Invalid ID')
         //connection_NEW( '195.81.194.222' );
-        connection_NEW( '192.168.10.128', uuid );
+        //connection_NEW( '192.168.10.128', uuid );
     }
 
     function joinSessionByID()
     {
         var uuid = document.getElementById('sessionUUID').value;
 
-        connection_JOIN( '192.168.10.128', uuid );
+        connection_JOIN( _SyncServerIP, uuid );
     }
 
     function connection_NEW(ip, uuid)
@@ -123,7 +128,7 @@ var UUID;
             else if ( message.data == 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx-noncontent' ) alert('Aun no hay contenido');
             else 
             {
-                //localStorage.ImAc_roomID = uuid;
+                localStorage.ImAc_roomID = uuid;
                 launchPlayer( message.data );
             } 
         }

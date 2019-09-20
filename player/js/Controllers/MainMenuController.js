@@ -314,7 +314,8 @@ function MainMenuController() {
      */
     this.pauseAllFunc = function(){
         PlayPauseMemory = true;
-        VideoController.pauseAll();
+        //VideoController.pauseAll();
+        _ImAc.doPause();
         UpdatePlayPauseData();
         playPauseView.UpdateView(data);
         menuMgr.AddInteractionIfVisible(viewStructure);
@@ -328,7 +329,8 @@ function MainMenuController() {
     this.playAllFunc = function(){
         if ( PlayPauseMemory ){
             PlayPauseMemory = false;
-            VideoController.playAll();
+            //VideoController.playAll();
+            _ImAc.doPlay();
             UpdatePlayPauseData();
             playPauseView.UpdateView(data);
         }
@@ -339,7 +341,8 @@ function MainMenuController() {
      * The data model is updated together with the view and the interaction array.
      */
     function PlayPauseFunc(){
-        VideoController.isPausedById(0) ? VideoController.playAll() : VideoController.pauseAll();
+        //VideoController.isPausedById(0) ? VideoController.playAll() : VideoController.pauseAll();
+        VideoController.isPausedById(0) ? _ImAc.doPlay() : _ImAc.doPause();
         UpdatePlayPauseData();
         playPauseView.UpdateView(data);
         menuMgr.AddInteractionIfVisible(viewStructure);

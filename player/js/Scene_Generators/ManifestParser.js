@@ -94,7 +94,7 @@ ManifestParser = function() {
         if ( ast_list ) restartASTContent( ast_list, ast_list_e2r );
 
         var lang = MenuDictionary.getMainLanguage();
-        
+      
         setSTContent( lang );
         setSLContent( lang ); 
         setADContent( lang ); 
@@ -159,6 +159,7 @@ ManifestParser = function() {
         var cookielang = subController.getSubLanguage();
         var sublang = cookielang ? cookielang : list_contents[demoId].subtitles[0][lang] ? lang : Object.keys(list_contents[demoId].subtitles[0])[0];
         subController.setSubtitle( list_contents[demoId].subtitles[0][sublang], sublang );
+        //subController.setSLSubtitle( list_contents[demoId].subtitles[0][sublang], sublang );
         subController.setSubtitleLanguagesArray( list_contents[demoId].subtitles[0] );
     }
 
@@ -170,6 +171,11 @@ ManifestParser = function() {
             var siglang = cookielang ? cookielang : list_contents[demoId].signer[0][lang] ? lang : Object.keys(list_contents[demoId].signer[0])[0];
             subController.setSignerContent( list_contents[demoId].signer[0][siglang], siglang );
             subController.setSignerLanguagesArray( list_contents[demoId].signer[0] );
+
+            if ( list_contents[ demoId ].st4sl && list_contents[ demoId ].st4sl[ 0 ] ) {
+                var sigSTlang = list_contents[ demoId ].st4sl[ 0 ][ lang ] ? lang : Object.keys( list_contents[ demoId ].st4sl[ 0 ] )[ 0 ];
+                subController.setSLSubtitle( list_contents[demoId].st4sl[0][sigSTlang], sigSTlang ); 
+            }
         }
     }
 

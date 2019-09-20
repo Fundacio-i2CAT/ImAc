@@ -15,8 +15,11 @@ THREE.InteractionsController = function () {
 
     var radarInteraction;
 
-    let hoverElementName = '';
-    let hoverElementColor;
+    let hoverSubMenuOpt = '';
+    let hoverSubMenuOptColor;
+
+    let hoverAccessIcon = '';
+
     let optionHoverAnimation;
 
 
@@ -79,6 +82,74 @@ THREE.InteractionsController = function () {
 // Public Functions
 //************************************************************************************
 
+    this.showAccessIconTooltip = function(mouse3D, camera){
+        raycaster.setFromCamera( mouse3D, camera );
+
+        let accessIcons = [ scene.getObjectByName('enhanced-menu-button'),
+                            scene.getObjectByName('show-st-button'), scene.getObjectByName('disable-st-button'),
+                            scene.getObjectByName('show-sl-button'), scene.getObjectByName('disable-sl-button'),
+                            scene.getObjectByName('show-ad-button'), scene.getObjectByName('disable-ad-button'), 
+                            scene.getObjectByName('show-ast-button'),scene.getObjectByName('disable-ast-button')];
+
+        let elementArrayAccess = (scene.getObjectByName("trad-main-menu")) ? accessIcons : [];
+        var intersects = raycaster.intersectObjects( elementArrayAccess , true ); // false
+
+        if ( intersects[0]){
+            if(intersects[0].object.type.localeCompare('Mesh') == 0 && intersects[0].object.onexecute){
+
+                hoverAccessIcon = intersects[0].object.name;
+
+                // POSIBLE DUPLICATE CODE
+                switch(intersects[0].object.name){
+                    case "show-st-button":
+                    case "disable-st-button":
+                        scene.getObjectByName('tooltip-st-button').visible = true;
+                        break;
+                    case "show-sl-button":
+                    case "disable-sl-button":
+                        scene.getObjectByName('tooltip-sl-button').visible = true;
+                        break;
+                    case "show-ad-button":
+                    case "disable-ad-button":
+                        scene.getObjectByName('tooltip-ad-button').visible = true;
+                        break;
+                    case "show-ast-button":
+                    case "disable-ast-button":
+                        scene.getObjectByName('tooltip-ast-button').visible = true;
+                        break;
+                    case "enhanced-menu-button":
+                        scene.getObjectByName('enhanced-menu-button-group').visible = true;
+                        break;
+                }
+            }
+        } else {
+            // POSIBLE DUPLICATE CODE
+            switch(hoverAccessIcon){
+                case "show-st-button":
+                case "disable-st-button":
+                    scene.getObjectByName('tooltip-st-button').visible = false;
+                    break;
+                case "show-sl-button":
+                case "disable-sl-button":
+                    scene.getObjectByName('tooltip-sl-button').visible = false;
+                    break;
+                case "show-ad-button":
+                case "disable-ad-button":
+                    scene.getObjectByName('tooltip-ad-button').visible = false;
+                    break;
+                case "show-ast-button":
+                case "disable-ast-button":
+                    scene.getObjectByName('tooltip-ast-button').visible = false;
+                    break;
+                case "enhanced-menu-button":
+                    scene.getObjectByName('enhanced-menu-button-group').visible = false;
+                    break;                    
+            }
+            hoverAccessIcon = '';
+        }
+    }
+
+
 /**
  * This function changes color of the different sub menu options when user hovers over.
  *
@@ -94,50 +165,58 @@ THREE.InteractionsController = function () {
         if ( intersects[0]){
             if(intersects[0].object.name.localeCompare('settings-opt-title') == 0){
                 //DUPLICATED CODE 1
-                if(hoverElementName && scene.getObjectByName(hoverElementName)){
-                    scene.getObjectByName(hoverElementName).children[0].material.color.set( 0xe6e6e6 );
-                    scene.getObjectByName(hoverElementName).children[1].material.color.set( 0xe6e6e6 );
-                    
-                    clearTimeout(optionHoverAnimation);
-                    scene.getObjectByName(hoverElementName).children[0].rotation.z = 0; 
-                    hoverElementName = '';
+                if(hoverSubMenuOpt && scene.getObjectByName(hoverSubMenuOpt)){
+                    scene.getObjectByName(hoverSubMenuOpt).children[0].material.color.set( 0xe6e6e6 );
+                    if(scene.getObjectByName(hoverSubMenuOpt).children.length > 1){
+                        scene.getObjectByName(hoverSubMenuOpt).children[1].material.color.set( 0xe6e6e6 );
+                        scene.getObjectByName(hoverSubMenuOpt).children[0].rotation.z = 0;
+                        clearTimeout(optionHoverAnimation);
+                    }                    
+                     
+                    hoverSubMenuOpt = '';
                 }
             }
             if(intersects[0].object.type.localeCompare('Mesh') == 0 && intersects[0].object.onexecute){
-                hoverElementColor = scene.getObjectByName(intersects[0].object.name).children[0].material.color;
+                hoverSubMenuOptColor = scene.getObjectByName(intersects[0].object.name).children[0].material.color;
 
-                if(intersects[0].object.name.localeCompare(hoverElementName) != 0){
+                if(intersects[0].object.name.localeCompare(hoverSubMenuOpt) != 0){
 
+                    //Change color on selection;
+                    scene.getObjectByName(intersects[0].object.name).children[0].material.color.set( 0xffff00 );
                     if(scene.getObjectByName(intersects[0].object.name).children.length > 1){
-                        //Change color on selection;
-                        scene.getObjectByName(intersects[0].object.name).children[0].material.color.set( 0xc91355 );
-                        scene.getObjectByName(intersects[0].object.name).children[1].material.color.set( 0xc91355 ); 
-
+                        scene.getObjectByName(intersects[0].object.name).children[1].material.color.set( 0xffff00 ); 
                         scene.getObjectByName(intersects[0].object.name).children[0].rotation.z = -Math.PI/8; //Rotate icon for animation
-                        
+                        // Some time this error appears 
+                        // Uncaught TypeError: Cannot read property 'children' of undefined line 121
                         optionHoverAnimation = setTimeout( function(){ 
                             scene.getObjectByName(intersects[0].object.name).children[0].rotation.z = 0; //Back to initial rotation.
                         }, 150); 
-
-                        if(hoverElementName && scene.getObjectByName(hoverElementName)){
-                            scene.getObjectByName(hoverElementName).children[0].material.color.set( 0xe6e6e6 );
-                            scene.getObjectByName(hoverElementName).children[1].material.color.set( 0xe6e6e6 );
-                        } 
-                        hoverElementName = intersects[0].object.name;
-                        hoverElementColor = scene.getObjectByName(intersects[0].object.name).children[0].material.color;
                     }
+                       
+
+                    if(hoverSubMenuOpt && scene.getObjectByName(hoverSubMenuOpt)){
+                        scene.getObjectByName(hoverSubMenuOpt).children[0].material.color.set( 0xe6e6e6 );
+                        if(scene.getObjectByName(hoverSubMenuOpt).children.length > 1){
+                            scene.getObjectByName(hoverSubMenuOpt).children[1].material.color.set( 0xe6e6e6 );
+                        }
+                    } 
+                    hoverSubMenuOpt = intersects[0].object.name;
+                    hoverSubMenuOptColor = scene.getObjectByName(intersects[0].object.name).children[0].material.color;
                 }
             }
         
         } else {
             //DUPLICATED CODE 2
-            if(hoverElementName && scene.getObjectByName(hoverElementName)){
-                scene.getObjectByName(hoverElementName).children[0].material.color.set( 0xe6e6e6 );
-                scene.getObjectByName(hoverElementName).children[1].material.color.set( 0xe6e6e6 );
+            if(hoverSubMenuOpt && scene.getObjectByName(hoverSubMenuOpt)){
+                scene.getObjectByName(hoverSubMenuOpt).children[0].material.color.set( 0xe6e6e6 );
+                if(scene.getObjectByName(hoverSubMenuOpt).children.length > 1){
+                    scene.getObjectByName(hoverSubMenuOpt).children[1].material.color.set( 0xe6e6e6 );
+                    clearTimeout(optionHoverAnimation);
+                    scene.getObjectByName(hoverSubMenuOpt).children[0].rotation.z = 0; 
+                }
                 
-                clearTimeout(optionHoverAnimation);
-                scene.getObjectByName(hoverElementName).children[0].rotation.z = 0; 
-                hoverElementName = '';
+                
+                hoverSubMenuOpt = '';
             }
         }
     }

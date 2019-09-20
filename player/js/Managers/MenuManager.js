@@ -145,7 +145,7 @@ function MenuManager() {
             scene.getObjectByName( "pointer2" ).visible = false;
         } else if ( scene.getObjectByName( "pointer" ) && _isHMD ) {
             scene.getObjectByName( "pointer" ).visible = false;
-            scene.getObjectByName('pointer').scale.set(1*_pointerSize,1*_pointerSize,1*_pointerSize)
+            scene.getObjectByName('pointer').scale.set(1*_pointerSize,1*_pointerSize,1*_pointerSize);
         }
 
         //playpauseCtrl.playAllFunc();

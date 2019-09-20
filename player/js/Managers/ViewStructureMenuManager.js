@@ -471,14 +471,14 @@ function ViewStructureMenuManager() {
         var enhancedMenuBtnZoom = new InteractiveElementModel();
         enhancedMenuBtnZoom.width = 2 * menuWidth/25;
         enhancedMenuBtnZoom.height = 2 * menuWidth/25;
-        enhancedMenuBtnZoom.name = 'enhanced-menu-button-zoom';
+        enhancedMenuBtnZoom.name = 'enhanced-menu-button-zomm';
         enhancedMenuBtnZoom.type =  'icon';
         enhancedMenuBtnZoom.path = './img/menu/enhanced.png';
         enhancedMenuBtnZoom.color = 0xe6e6e6;
         enhancedMenuBtnZoom.visible = true;
         enhancedMenuBtnZoom.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(menuWidth/25, menuWidth/25), new THREE.MeshBasicMaterial({visible: false}));
         enhancedMenuBtnZoom.position = new THREE.Vector3( 0, 0, 0.01 );
-        enhancedMenuBtnZoom.onexecute = function() { console.log("This is the %s button", enhancedMenuBtn.name) };
+        enhancedMenuBtnZoom.onexecute = function() { console.log("This is the %s button", enhancedMenuBtnZoom.name) };
   
         mesh.add(enhancedMenuBtnZoom.create());
         mesh.position.set(-menuWidth/2 + menuWidth/25, menuHeight/2 - menuWidth/25, 0.02 );
@@ -619,6 +619,17 @@ function ViewStructureMenuManager() {
 
         let line = _moData.createLine( 0xc91355, new THREE.Vector3( -optWidth/2, -optHeight/2, 0.01 ), new THREE.Vector3( optWidth/2, -optHeight/2, 0.01 ) );
 
+        var checkMark = new InteractiveElementModel();
+        checkMark.width = menuWidth/20;
+        checkMark.height = menuWidth/20;
+        checkMark.name = 'checkmark';
+        checkMark.type =  'icon';
+        checkMark.path = './img/menu/checkMark.png';
+        checkMark.color = 0xe6e6e6;
+        checkMark.visible = false;
+        checkMark.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry( menuWidth/20, menuWidth/20), new THREE.MeshBasicMaterial({visible: false}));
+        checkMark.position = new THREE.Vector3( 0, 0, 0.01 );
+
         var backBtn = new InteractiveElementModel();
         backBtn.width = menuWidth/30;
         backBtn.height = menuWidth/30;
@@ -679,6 +690,7 @@ function ViewStructureMenuManager() {
         tradOptionMenuTitle.add(previewBtn.create());
 
         // Add all the parent elements to the traditional option menu.
+        tradOptionMenu.add(checkMark.create());
         tradOptionMenu.add(tradOptionMenuTitle);
         tradOptionMenu.add(tradOptionMenuBackground);
         tradOptionMenu.add(tradOptionMenuDropdown);

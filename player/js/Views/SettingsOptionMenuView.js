@@ -34,9 +34,19 @@ function SettingsOptionMenuView() {
 
         submenu.getObjectByName('parentcolumndropdown').children = [];
 
+        submenu.getObjectByName('checkmark').visible = data.isFinalDrop; 
+
+        if(data.default){
+            submenu.getObjectByName('checkmark').position.x = -1.5*menuWidth/8;
+            submenu.getObjectByName('checkmark').position.y = data.default.position.y;
+        }
+       
 //TODO: CHECK FOREACH
 		data.parentColumnDropdown.forEach(function(element, index){
+
+            //These distances need to be changed or compared in differente devices.
 			element.position.x = menuWidth/8 + element.width - 2.2*menuWidth/8;
+            if (data.isFinalDrop) element.position.x += 1.5*menuWidth/80;
             element.children[0].children[0].position.x = 7*menuWidth/50;
   			submenu.getObjectByName('parentcolumndropdown').add(element)
 		});

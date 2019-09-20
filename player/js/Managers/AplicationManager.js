@@ -18,11 +18,6 @@ function AplicationManager()
 
     var intersects;
 
-    var INTERSECTEDHOVER = [];
-    var WASHOVERED = [];
-    var INTERSECTEDCLICK = [];
-
-
     this.getRenderer = function() { return renderer };
 
     // Used when autopositioning is activated
@@ -211,18 +206,8 @@ function AplicationManager()
         subController.updateRadar();
 
 
-        interController.checkInteractionSubMenuHover( mouse3D, camera);
-
-
-
-        // find intersections
-
-        // create a Ray with origin at the mouse position
-        //   and direction into the scene (camera direction)
-        raycaster.setFromCamera( mouse3D, camera );
-        var intersects = raycaster.intersectObjects(scene.children, true);
-
-        showAccessIconTooltip(intersects);
+        interController.checkInteractionSubMenuHover(mouse3D, camera);
+        interController.showAccessIconTooltip(mouse3D, camera);
 
         controls.update();
     }
@@ -232,106 +217,5 @@ function AplicationManager()
 
       mouse3D.x = (event.clientX / window.innerWidth) * 2 - 1;
       mouse3D.y = -(event.clientY / window.innerHeight) * 2 + 1;
-    }
-
-
-    function showAccessIconTooltip(intersects){
-        // --- HOVER handling --------------------------------------
-        if (intersects.length > 0) {
-
-            let accessIcons = [ scene.getObjectByName('enhanced-menu-button'),scene.getObjectByName('enhanced-menu-button-group'),
-                            scene.getObjectByName('show-st-button'), scene.getObjectByName('disable-st-button'),
-                            scene.getObjectByName('show-sl-button'), scene.getObjectByName('disable-sl-button'),
-                            scene.getObjectByName('show-ad-button'), scene.getObjectByName('disable-ad-button'), 
-                            scene.getObjectByName('show-ast-button'),scene.getObjectByName('disable-ast-button')];
-
-            let parentName = intersects[0].object.parent.name;
-            let accessIconsIndex = accessIcons.indexOf(intersects[0].object.parent)
-
-            if (parentName && accessIconsIndex != -1) {
-                for (let i = 0; i < accessIcons.length; i++) {
-                    let element = accessIcons[i];
-
-                    if (parentName === element.name) {          
-                        // only push into array if it's not already in!
-                        if (INTERSECTEDHOVER.indexOf(element) === -1) {
-                            INTERSECTEDHOVER.push(element);          
-                        }
-                    }
-                }
-            }
-
-            else {
-                if (INTERSECTEDHOVER.length > 0) {
-                    //get last element
-                    let lastElement = INTERSECTEDHOVER[INTERSECTEDHOVER.length - 1];
-                    INTERSECTEDHOVER.pop();
-                    WASHOVERED.push(lastElement);
-                }
-                if (WASHOVERED.length > 0 ) {
-                    for (let i = 0; i < WASHOVERED.length; i++) {
-                        onMouseOut(WASHOVERED[i]);
-                    }
-                }
-            }
-            if (INTERSECTEDHOVER.length > 0) {
-                for (let i = 0; i < INTERSECTEDHOVER.length; i++) {
-                    onMouseOver(INTERSECTEDHOVER[i]);
-                }
-            } 
-        } 
-    }
-
-    function onMouseOver(obj){
-        switch(obj.name){
-            case "show-st-button":
-            case "disable-st-button":
-                scene.getObjectByName('tooltip-st-button').visible = true;
-                break;
-            case "show-sl-button":
-            case "disable-sl-button":
-                scene.getObjectByName('tooltip-sl-button').visible = true;
-                break;
-            case "show-ad-button":
-            case "disable-ad-button":
-                scene.getObjectByName('tooltip-ad-button').visible = true;
-                break;
-            case "show-ast-button":
-            case "disable-ast-button":
-                scene.getObjectByName('tooltip-ast-button').visible = true;
-                break;
-            case "enhanced-menu-button":
-                scene.getObjectByName('enhanced-menu-button-group').visible = true;
-                break;
-        }
-    }
-
-    function onMouseOut(obj){
-        switch(obj.name){
-            case "show-st-button":
-            case "disable-st-button":
-                scene.getObjectByName('tooltip-st-button').visible = false;
-                break;
-            case "show-sl-button":
-            case "disable-sl-button":
-                scene.getObjectByName('tooltip-sl-button').visible = false;
-                break;
-            case "show-ad-button":
-            case "disable-ad-button":
-                scene.getObjectByName('tooltip-ad-button').visible = false;
-                break;
-            case "show-ast-button":
-            case "disable-ast-button":
-                scene.getObjectByName('tooltip-ast-button').visible = false;
-                break;
-            case "enhanced-menu-button-group":
-                scene.getObjectByName('enhanced-menu-button-group').visible = false;
-                break;
-        }
-        //Remove the element from the array
-        let index = WASHOVERED.indexOf(obj);
-        if (index > -1) {
-            WASHOVERED.splice(index, 1);
-        }
     }
 }

@@ -32,7 +32,11 @@ MenuFunctionsManager = function() {
                         subController.setSignerContent( list_contents[ demoId ].signer[ 0 ][ siglang ], siglang );
                     } else {
                         subController.disableSigner();
-                    }                
+                    } 
+                    if ( list_contents[ demoId ].st4sl && list_contents[ demoId ].st4sl[ 0 ] && subController.checkisSignAvailable()) {
+                        var siglang = list_contents[ demoId ].st4sl[ 0 ][ lang ] ? lang : Object.keys( list_contents[ demoId ].st4sl[ 0 ] )[ 0 ];
+                        subController.setSLSubtitle( list_contents[demoId].st4sl[0][sublang], sublang ); 
+                    }              
                     break;
 
                 case 'ad':

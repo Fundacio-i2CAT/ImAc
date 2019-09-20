@@ -92,7 +92,7 @@ THREE.InteractionsController = function () {
                             scene.getObjectByName('show-ast-button'),scene.getObjectByName('disable-ast-button')];
 
         let elementArrayAccess = (scene.getObjectByName("trad-main-menu")) ? accessIcons : [];
-        var intersects = raycaster.intersectObjects( elementArrayAccess , true ); // false
+        var intersects = raycaster.intersectObjects( elementArrayAccess , true );
 
         if ( intersects[0]){
             if(intersects[0].object.type.localeCompare('Mesh') == 0 && intersects[0].object.onexecute){
@@ -160,7 +160,7 @@ THREE.InteractionsController = function () {
         raycaster.setFromCamera( mouse3D, camera );
 
         let elementArray = (scene.getObjectByName("trad-option-menu")) ? scene.getObjectByName("trad-option-menu").children  : [];
-        var intersects = raycaster.intersectObjects( elementArray , true ); // false
+        var intersects = raycaster.intersectObjects( elementArray , true );
 
         if ( intersects[0]){
             if(intersects[0].object.name.localeCompare('settings-opt-title') == 0){
@@ -213,9 +213,7 @@ THREE.InteractionsController = function () {
                     scene.getObjectByName(hoverSubMenuOpt).children[1].material.color.set( 0xe6e6e6 );
                     clearTimeout(optionHoverAnimation);
                     scene.getObjectByName(hoverSubMenuOpt).children[0].rotation.z = 0; 
-                }
-                
-                
+                }               
                 hoverSubMenuOpt = '';
             }
         }
@@ -290,7 +288,7 @@ THREE.InteractionsController = function () {
 
     this.checkVRHoverInteraction = function(origin, direction){
         raycaster.set( origin, direction );
-        var intersects = raycaster.intersectObjects( interactiveListObjects, true ); // false
+        var intersects = raycaster.intersectObjects( interactiveListObjects, true );
 
         //showAccessIconTooltip(intersects)
         if ( intersects[0] ){

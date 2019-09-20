@@ -624,7 +624,7 @@ function ViewStructureMenuManager() {
         checkMark.height = menuWidth/20;
         checkMark.name = 'checkmark';
         checkMark.type =  'icon';
-        checkMark.path = './img/menu/checkMark.png';
+        checkMark.path = './img/menu/checkmark.png';
         checkMark.color = 0xe6e6e6;
         checkMark.visible = false;
         checkMark.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry( menuWidth/20, menuWidth/20), new THREE.MeshBasicMaterial({visible: false}));

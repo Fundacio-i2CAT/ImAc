@@ -370,11 +370,6 @@ AudioManager = function() {
         return astEasy;
     };
 
-    this.getASTLanguage = function()
-    {
-        return astLang;
-    };
-
     this.getASTPresentation = function()
     {
         return astPresentation;
@@ -526,7 +521,12 @@ AudioManager = function() {
     };   
 
     this.checkisADAvailable = function(lang){
-        return (list_contents[demoId].acces && list_contents[demoId].acces[0].AD && list_contents[demoId].acces[0].AD.includes((lang) ? lang : _iconf.accesslanguage) );
+
+        if(lang){
+            return (list_contents[demoId].acces[0].AD && list_contents[demoId].acces[0].AD.includes((lang))); 
+        } else{
+             return (list_contents[demoId].acces && list_contents[demoId].acces[0].AD)
+        }
     }
 
     
@@ -662,6 +662,11 @@ AudioManager = function() {
     }; 
 
     this.checkisASTAvailable = function(lang){
-        return (list_contents[demoId].acces && list_contents[demoId].acces[0].AST && list_contents[demoId].acces[0].AST.includes((lang) ? lang : _iconf.accesslanguage));
+
+        if(lang){
+            return (list_contents[demoId].acces[0].AST && list_contents[demoId].acces[0].AST.includes((lang))); 
+        } else{
+             return (list_contents[demoId].acces && list_contents[demoId].acces[0].AST)
+        }
     } 
 }

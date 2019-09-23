@@ -205,9 +205,14 @@ function AplicationManager()
 
         subController.updateRadar();
 
-
-        interController.checkInteractionSubMenuHover(mouse3D, camera);
-        interController.showAccessIconTooltip(mouse3D, camera);
+        if(scene.getObjectByName('trad-option-menu')){
+            interController.checkInteractionSubMenuHover(mouse3D, camera, false);
+        }
+        
+        if(scene.getObjectByName('trad-main-menu')){
+            interController.showAccessIconTooltip(mouse3D, camera, false);    
+        }
+        
 
         controls.update();
     }

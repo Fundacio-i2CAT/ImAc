@@ -674,7 +674,14 @@ var _mouseMoved = false;
 
 				
 			}
-			else interController.checkVRHoverInteraction( _origin, direction );
+			//else{}
+	        if(scene.getObjectByName('trad-option-menu')){
+        		interController.checkInteractionSubMenuHover(mouse3D, camera, true);
+	        }
+	        
+	        if(scene.getObjectByName('trad-main-menu')){
+	            interController.showAccessIconTooltip( _origin, direction, true );   
+	        }
 
 		}
 		else if(_isHMD)

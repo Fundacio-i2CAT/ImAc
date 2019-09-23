@@ -21,7 +21,9 @@ THREE.InteractionsController = function () {
     let hoverAccessIcon = '';
 
     let optionHoverAnimation;
+    let hoverTimer;
 
+    let tooltipVisible = false;
 
 
 //************************************************************************************
@@ -82,8 +84,13 @@ THREE.InteractionsController = function () {
 // Public Functions
 //************************************************************************************
 
-    this.showAccessIconTooltip = function(mouse3D, camera){
-        raycaster.setFromCamera( mouse3D, camera );
+    this.showAccessIconTooltip = function( origin, direction, isVR){
+        if(isVR){
+            raycaster.set( origin, direction );
+        }
+        else{
+            raycaster.setFromCamera(  origin, direction );
+        }
 
         let accessIcons = [ scene.getObjectByName('enhanced-menu-button'),
                             scene.getObjectByName('show-st-button'), scene.getObjectByName('disable-st-button'),
@@ -96,56 +103,16 @@ THREE.InteractionsController = function () {
 
         if ( intersects[0]){
             if(intersects[0].object.type.localeCompare('Mesh') == 0 && intersects[0].object.onexecute){
-
-                hoverAccessIcon = intersects[0].object.name;
-
-                // POSIBLE DUPLICATE CODE
-                switch(intersects[0].object.name){
-                    case "show-st-button":
-                    case "disable-st-button":
-                        scene.getObjectByName('tooltip-st-button').visible = true;
-                        break;
-                    case "show-sl-button":
-                    case "disable-sl-button":
-                        scene.getObjectByName('tooltip-sl-button').visible = true;
-                        break;
-                    case "show-ad-button":
-                    case "disable-ad-button":
-                        scene.getObjectByName('tooltip-ad-button').visible = true;
-                        break;
-                    case "show-ast-button":
-                    case "disable-ast-button":
-                        scene.getObjectByName('tooltip-ast-button').visible = true;
-                        break;
-                    case "enhanced-menu-button":
-                        scene.getObjectByName('enhanced-menu-button-group').visible = true;
-                        break;
+                if( intersects[0].object.name.localeCompare(hoverAccessIcon) != 0 ){
+                    hoverAccessIcon = intersects[0].object.name;
+                    onMouseOver(intersects[0].object.name)
                 }
             }
         } else {
-            // POSIBLE DUPLICATE CODE
-            switch(hoverAccessIcon){
-                case "show-st-button":
-                case "disable-st-button":
-                    scene.getObjectByName('tooltip-st-button').visible = false;
-                    break;
-                case "show-sl-button":
-                case "disable-sl-button":
-                    scene.getObjectByName('tooltip-sl-button').visible = false;
-                    break;
-                case "show-ad-button":
-                case "disable-ad-button":
-                    scene.getObjectByName('tooltip-ad-button').visible = false;
-                    break;
-                case "show-ast-button":
-                case "disable-ast-button":
-                    scene.getObjectByName('tooltip-ast-button').visible = false;
-                    break;
-                case "enhanced-menu-button":
-                    scene.getObjectByName('enhanced-menu-button-group').visible = false;
-                    break;                    
-            }
-            hoverAccessIcon = '';
+            if ( tooltipVisible ){ 
+                hoverAccessIcon = '';
+                onMouseOut();
+            } 
         }
     }
 
@@ -156,8 +123,13 @@ THREE.InteractionsController = function () {
  * @param      {<type>}  mouse3D  The mouse 3d
  * @param      {<type>}  camera   The camera
  */
-    this.checkInteractionSubMenuHover = function(mouse3D, camera){
-        raycaster.setFromCamera( mouse3D, camera );
+    this.checkInteractionSubMenuHover = function(origin, direction, isVR){
+        if(isVR){
+            raycaster.set( origin, direction );
+        }
+        else{
+            raycaster.setFromCamera(  origin, direction );
+        }
 
         let elementArray = (scene.getObjectByName("trad-option-menu")) ? scene.getObjectByName("trad-option-menu").children  : [];
         var intersects = raycaster.intersectObjects( elementArray , true );
@@ -284,9 +256,8 @@ THREE.InteractionsController = function () {
         }
     };
 
-    var tooltipVisible = false;
 
-    this.checkVRHoverInteraction = function(origin, direction){
+    /*this.checkVRHoverInteraction = function(origin, direction, isVR){
         raycaster.set( origin, direction );
         var intersects = raycaster.intersectObjects( interactiveListObjects, true );
 
@@ -305,18 +276,18 @@ THREE.InteractionsController = function () {
                         intersects[inter].object.name == 'show-ad-button' ||
                         intersects[inter].object.name == 'show-ast-button' ||
                         intersects[inter].object.name == 'enhanced-menu-button'  ) onMouseOver( intersects[inter].object.name )
-                    else if ( tooltipVisible ) clearMouseOver();
+                    else if ( tooltipVisible ) onMouseOut();
 
                     break;
                 }
             }
         }
-        else if ( tooltipVisible ) clearMouseOver();
-    };
+        else if ( tooltipVisible ) onMouseOut();
+    };*/
 
 
     function onMouseOver(name){
-        clearMouseOver();
+        onMouseOut();
         tooltipVisible = true;
         switch(name){
             case "show-st-button":
@@ -341,7 +312,7 @@ THREE.InteractionsController = function () {
         }
     }
 
-    function clearMouseOver(){
+    function onMouseOut(){
         scene.getObjectByName('tooltip-st-button').visible = false;
         scene.getObjectByName('tooltip-sl-button').visible = false;
         scene.getObjectByName('tooltip-ad-button').visible = false;

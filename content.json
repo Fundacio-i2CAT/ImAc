@@ -4,7 +4,7 @@
   {
     "name": "Liceu Opera Piece 1",
     "poster": "./portal/img/opera1_cover.png",
-    "thumbnail": "portal/img/opera1.png",
+    "thumbnail": "./portal/img/opera1.png",
     "description": "Performance of the “Roméo et Juliette” opera recorded at the Gran Teatre del Liceu Opera House (Barcelona). Piece 1.",
     "descriptionArray": [
     {
@@ -29,7 +29,7 @@
 {
     "name": "Liceu Opera Piece 2",
     "poster": "./portal/img/covers/opera2_cover.png",
-    "thumbnail": "portal/img/opera2.PNG",
+    "thumbnail": "./portal/img/opera2.PNG",
     "description": "Performance of the “Roméo et Juliette” opera recorded at the Gran Teatre del Liceu Opera House (Barcelona). Piece 2.",
     "descriptionArray": [
     {
@@ -59,8 +59,8 @@
   },
   {
     "name": "360° Abendschau",
-    "poster": "portal/img/covers/Abendschau_cover.jpg",
-    "thumbnail": "portal/img/covers/Abendschau_thumb.jpg",
+    "poster": "./portal/img/covers/Abendschau_cover.jpg",
+    "thumbnail": "./portal/img/covers/Abendschau_thumb.jpg",
     "description": "Making-of video of the RBB news show “Abendschau”, taking you into the news room and the streets of Berlin where current events are covered by the RBB news team.",
     "descriptionArray": [
     {
@@ -71,7 +71,8 @@
     }],
     "acces": [
     {
-      "ST": ["de"]
+      "ST": ["de"],
+      "SL": ["de"]
     }],
     "language": "Deutsch",
     "duration": "1:46",
@@ -81,12 +82,62 @@
     {
       "de": "https://imac.gpac-licensing.com/imac_content/rbb/RBB_Abendschau_short_subtitles_angles.xml"
     }],
-    "signer": [{}]
+    "signer": [
+    {
+        "de": "https://imac.gpac-licensing.com/imac_content/rbb/SL/stream.mpd"
+    }],
+    "st4sl": [
+    {
+      "de": "https://imac.gpac-licensing.com/imac_content/rbb/RBB_Abendschau_short_DE_20190816-111322.xml"
+    }]
+  },
+  {
+    "name": "I,Philip",
+    "poster": "./portal/img/covers/IPhilip2.jpg",
+    "thumbnail": "./portal/img/covers/iPhilip_thumb.jpg",
+    "description": "23 years after Philip K. Dick’s death, in 2005, David Hanson, a young engineer in robotics, revealed his first android with human form, “Phil”.",
+    "descriptionArray": [
+    {
+      "de": "23 Jahre nach dem Tod von Philip K. Dick im Jahr 2005 präsentiert der Robotik-Designer David Hanson seinen ersten menschlichen Androiden, „Phil“.„I, Philip“ erzählt aus der subjektiven Perspektive von Phil, wie dieser Menschen begegnet, mit ihnen spricht und sich an eine Liebesgeschichte erinnert. Handelt es sich hierbei um eine Erinnerung aus dem Leben des echten Philip K. Dick?",
+      "ca": "23 anys després de la mort de Philip K. Dick, el 2005, David Hanson, un jove enginyer en robòtica, presenta el seu primer androide amb forma humana, “Phil”.",
+      "es": "23 años después de la muerte de Philip K. Dick, en 2005, David Hanson, un joven ingeniero en robótica, presenta su primer androide con forma humana, “Phil”.",
+      "en": "23 years after Philip K. Dick’s death, in 2005, David Hanson, a young engineer in robotics, revealed his first android with human form, “Phil”. ”I Philip” immerses you in the memories of what could be the last love affair of the writer. But aren’t these memories the fruit of the imagination of an android which learned, little by little, how to become a human?"
+    }],
+    "acces": [
+    {
+      "ST": ["en", "es", "de", "ca"],
+      "SL": ["de"]
+    }],
+    "language": "English",
+    "duration": "14:44",
+    "url": "https://imac.gpac-licensing.com/imac_content/pilot_1/RBB_Iphilip/stream.mpd",
+    "audioChannels": 2,
+    "subtitles": [
+    {
+      "de": "https://imac.gpac-licensing.com/imac_content/pilot_1/RBB_Iphilip/RBB_IPhilip_subtitles_DE.xml",
+      "ca": "https://imac.gpac-licensing.com/imac_content/pilot_1/RBB_Iphilip/RBB_IPhilip_subtitles_with_vertical_angles_CAT_Revised_V2.xml",
+      "es": "https://imac.gpac-licensing.com/imac_content/pilot_1/RBB_Iphilip/RBB_IPhilip_subtitles_ES.xml",
+      "en": "https://imac.gpac-licensing.com/imac_content/pilot_1/RBB_Iphilip/RBB_IPhilip_subtitles_EN.xml"
+    },
+    {
+      "de": "https://imac.gpac-licensing.com/imac_content/pilot_1/RBB_Iphilip/RBB_IPhilip_subtitles_DE.xml",
+      "ca": "https://imac.gpac-licensing.com/imac_content/pilot_1/RBB_Iphilip/RBB_IPhilip_subtitles_with_vertical_angles_CAT_Revised_V2.xml",
+      "es": "https://imac.gpac-licensing.com/imac_content/pilot_1/RBB_Iphilip/RBB_IPhilip_subtitles_ES.xml",
+      "en": "https://imac.gpac-licensing.com/imac_content/pilot_1/RBB_Iphilip/RBB_IPhilip_subtitles_EN.xml"
+    }],
+    "signer": [
+    {
+      "de": "https://imac.gpac-licensing.com/imac_content/pilot_1/RBB_Iphilip/RBB_I/stream.mpd"
+    }],
+    "st4sl": [
+    {
+      "de": "https://imac.gpac-licensing.com/imac_content/pilot_1/RBB_Iphilip/RBB_IPhilip_ST4SL_text.xml"
+    }]
   },
    {
     "name": "Desconcert “Leyre”",
-    "poster": ".portal//img/covers/desconcert1_cover.png",
-    "thumbnail": "portal/img/desconcert1.png",
+    "poster": "./portal/img/covers/desconcert1_cover.png",
+    "thumbnail": "./portal/img/desconcert1.png",
     "description": "Performance of a catalan version of  “Leyre” song, recorded at Sala Apolo (Barcelona) during the third edition of “Desconcert”, a great festival of iCat FM.",
     "descriptionArray": [
     {
@@ -121,7 +172,7 @@
   {
     "name": "Desconcert “Havana”",
     "poster": "./portal/img/covers/desconcert2_cover.png",
-    "thumbnail": "portal/img/desconcert2.png",
+    "thumbnail": "./portal/img/desconcert2.png",
     "description": "Performance of a catalan version of  “Havana” song, recorded at Sala Apolo (Barcelona) during the third edition of “Desconcert”, a great festival of iCat FM.",
     "descriptionArray": [
     {
@@ -182,8 +233,8 @@
   },
   {
     "name": "Rapzember",
-    "poster": "portal/img/covers/Rapzember_cover.jpg",
-    "thumbnail": "portal/img/covers/Rapzember_thumb.jpg",
+    "poster": "./portal/img/covers/Rapzember_cover.jpg",
+    "thumbnail": "./portal/img/covers/Rapzember_thumb.jpg",
     "description": "25 hours under the sign of Rap - that's Rapzember on Fritz.  The video shows an interview with the musician Young Hurn in the studio of the radio station.",
     "descriptionArray": [
     {
@@ -216,5 +267,27 @@
     }],
     "ad": [{}],
     "ast": [{}]
+  },
+  {
+    "name": "RBB Crime Scene",
+    "poster": "",
+    "thumbnail": "https://imac.gpac-licensing.com/acm/instances/keyframes/RBB_CrimeScene_H264_4K_audio_stereo-low.mp4_10.jpg",
+    "description": "",
+    "descriptionArray": [
+    {
+      "de": "",
+      "ca": "",
+      "es": "",
+      "en": ""
+    }],
+    "acces": [
+    {
+      "ST": ["de","en"]
+    }],
+    "language": "Deutsch",
+    "duration": "29:15",
+    "url": "https://imac.gpac-licensing.com/817/manifest.mpd",
+    "audioChannels": 4,
+    "subtitles": [{}]
   }]
 }

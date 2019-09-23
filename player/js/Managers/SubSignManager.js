@@ -1119,7 +1119,12 @@ SubSignManager = function() {
 	};	
 
 	this.checkisSubAvailable = function(lang){
-		return (list_contents[demoId].acces && list_contents[demoId].acces[0].ST && list_contents[demoId].acces[0].ST.includes((lang) ? lang : _iconf.accesslanguage));
+
+		if(lang){
+			return (list_contents[demoId].acces[0].ST && list_contents[demoId].acces[0].ST.includes((lang)));
+		} else{
+			return (list_contents[demoId].acces && list_contents[demoId].acces[0].ST );
+		}
 	};
 
 	this.checkSubEasyAvailable = function(lang)
@@ -1153,8 +1158,8 @@ SubSignManager = function() {
 
 	this.checkSignLanguage = function(x)
 	{
-		//return x == signLang;
-		return x == _iconf.accesslanguage;
+		return x == signLang;
+		//return x == _iconf.accesslanguage;
 	};
 
 	this.checkSignArea = function(x)
@@ -1163,7 +1168,11 @@ SubSignManager = function() {
 	};	
 
 	this.checkisSignAvailable = function(lang){
-		return (list_contents[demoId].acces && list_contents[demoId].acces[0].SL && list_contents[demoId].acces[0].SL.includes((lang) ? lang : _iconf.accesslanguage));
+		if(lang){
+			return (list_contents[demoId].acces[0].SL && list_contents[demoId].acces[0].SL.includes((lang)));
+		} else{
+			return (list_contents[demoId].acces && list_contents[demoId].acces[0].SL );
+		}
 	}
 
 //************************************************************************************

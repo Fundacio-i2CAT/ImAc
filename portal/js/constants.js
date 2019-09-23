@@ -6,20 +6,24 @@ var _ImAc_default = {
     voicecontrol: 'off',
     userprofile: 'save',
     mainlanguage: 'en',
-    accesslanguage: 'en',
+    //accesslanguage: 'en',
     indicator: 'none',
     safearea: 'L',
     stsize: 'L',
     stbackground: 'box',
     stposition: 'down',
     ste2r: 'off',
+    stlanguage: 'en',
     slsize: 'M',
     slposition: 'right',
+    sllanguage: 'en',
     aste2r: 'off',
     astmode: 'dynamic',
     astvolume: 'mid',
+    astlanguage: 'en',
     admode: 'dynamic',
-    advolume: 'mid'
+    advolume: 'mid',
+    adlanguage: 'en'
 }
 
 var _ImAcMeta = {
@@ -104,6 +108,34 @@ var _ImAcMeta = {
 		}	
 	},
 	accesslanguage: {
+		text: 'Language of Access Services.',
+		en: 'Language of Access Services.',
+		es: 'Selecciona el idioma de los servicios de accesibilidad.',
+		de: 'Sprache der barrierefreien Dienste.',
+		ca: "Selecciona l'idioma dels serveis d'accessibilitat."
+	},
+	stlanguage: {
+		text: 'Language of the Subtitles.',
+		en: 'Language of the Subtitles.',
+		es: 'Selecciona el idioma de los subtítulos.',
+		de: 'Sprache der barrierefreien Dienste.',
+		ca: "Selecciona l'idioma dels subtítols."
+	},
+	sllanguage: {
+		text: 'Language of Access Services.',
+		en: 'Language of Access Services.',
+		es: 'Selecciona el idioma de los servicios de accesibilidad.',
+		de: 'Sprache der barrierefreien Dienste.',
+		ca: "Selecciona l'idioma dels serveis d'accessibilitat."
+	},
+	astlanguage: {
+		text: 'Language of Access Services.',
+		en: 'Language of Access Services.',
+		es: 'Selecciona el idioma de los servicios de accesibilidad.',
+		de: 'Sprache der barrierefreien Dienste.',
+		ca: "Selecciona l'idioma dels serveis d'accessibilitat."
+	},
+	adlanguage: {
 		text: 'Language of Access Services.',
 		en: 'Language of Access Services.',
 		es: 'Selecciona el idioma de los servicios de accesibilidad.',

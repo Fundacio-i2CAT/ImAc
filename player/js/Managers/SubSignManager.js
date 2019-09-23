@@ -71,7 +71,7 @@ SubSignManager = function() {
 	var subPosY = -1; // before = top = 1, center = 0, after = bottom = -1 
 	var subtitleIndicator = 'none'; // none, arrow, radar, move
 	var subSize = 1; // small = 0.6, medium = 0.8, large = 1
-	var subLang; // string (en, de, ca, es)
+	var subLang = 'en'; // string (en, de, ca, es)
 	var subBackground = 0.5; // semi-transparent = 0.5, outline = 0
 	var subEasy = false; // boolean
 	var subArea = 70; // small = 50, medium = 60, large = 70
@@ -84,7 +84,7 @@ SubSignManager = function() {
 	var signPosY = -1; // bottom = -1, center = 0, top = 1
 	//var signIndicator = 'none';	 // none, arrow, move
 	var signArea = 60; // small = 50, medium = 60, large = 70
-	var signLang; // string (en, de, ca, es)
+	var signLang = 'en'; // string (en, de, ca, es)
 	var signAvailableLang = []; // Array { name, value, default:bool }
 	var signerSize = 20;
 
@@ -110,7 +110,7 @@ SubSignManager = function() {
 
 		    	if ( subtitleIndicator == 'arrow' ) {
 		    		arrowInteraction();
-		    		arrowSLInteraction();
+		    		if (!subtitleEnabled) arrowSLInteraction();
 		    	}
 
 		    	checkSpeakerPosition( isd.imac );
@@ -593,7 +593,7 @@ SubSignManager = function() {
 
     function changeSignIndicator(pos)
     {
-        if ( signerMesh )
+        if ( signerMesh && !subtitleEnabled )
         {
             if ( scene.getObjectByName("rightSL") ) {
 
@@ -786,7 +786,8 @@ SubSignManager = function() {
 	this.setSTConfig = function(conf)
     {
     	//subtitleEnabled = conf.enabled;
-    	subLang = conf.accesslanguage;
+    	//subLang = getSTAvailableLang( conf.stlanguage );
+    	subLang = conf.stlanguage;
     	subPosX = 0;
 		subPosY = conf.stposition == 'down' ? -1 : 1;
     	subtitleIndicator = conf.indicator;
@@ -833,7 +834,7 @@ SubSignManager = function() {
 
 	this.setSLSubtitle = function(xml, lang)
 	{
-		subLang = lang;
+		signLang = lang;
 		var r = new XMLHttpRequest();
 
 	  	r.open( "GET", xml );
@@ -973,7 +974,9 @@ SubSignManager = function() {
     this.setSLConfig = function(conf)
     {
     	//signEnabled = conf.enabled;
-    	signLang = conf.accesslanguage;
+
+    	//signLang = getSLAvailableLang( conf.sllanguage );
+    	signLang = conf.sllanguage;
     	signPosX = conf.stposition == 'left' ? -1 : 1;
 		signPosY = -1;
     	subtitleIndicator = conf.indicator;
@@ -1100,7 +1103,7 @@ SubSignManager = function() {
 	this.checkSubLanguage = function(x)
 	{
 		//return x == subLang;
-		return x == _iconf.accesslanguage;
+		return x == _iconf.stlanguage;
 	};
 
 	this.checkSubBackground = function(x)
@@ -1119,12 +1122,8 @@ SubSignManager = function() {
 	};	
 
 	this.checkisSubAvailable = function(lang){
-
-		if(lang){
-			return (list_contents[demoId].acces[0].ST && list_contents[demoId].acces[0].ST.includes((lang)));
-		} else{
-			return (list_contents[demoId].acces && list_contents[demoId].acces[0].ST );
-		}
+		if ( !lang && list_contents[demoId].acces[0].ST ) lang = list_contents[demoId].acces[0].ST[0];
+		return (list_contents[demoId].acces && list_contents[demoId].acces[0].ST && list_contents[demoId].acces[0].ST.includes((lang) ? lang : _iconf.stlanguage));
 	};
 
 	this.checkSubEasyAvailable = function(lang)
@@ -1158,8 +1157,8 @@ SubSignManager = function() {
 
 	this.checkSignLanguage = function(x)
 	{
-		return x == signLang;
-		//return x == _iconf.accesslanguage;
+		//return x == signLang;
+		return x == _iconf.sllanguage;
 	};
 
 	this.checkSignArea = function(x)
@@ -1168,11 +1167,8 @@ SubSignManager = function() {
 	};	
 
 	this.checkisSignAvailable = function(lang){
-		if(lang){
-			return (list_contents[demoId].acces[0].SL && list_contents[demoId].acces[0].SL.includes((lang)));
-		} else{
-			return (list_contents[demoId].acces && list_contents[demoId].acces[0].SL );
-		}
+		if ( !lang && list_contents[demoId].acces[0].SL ) lang = list_contents[demoId].acces[0].SL[0];
+		return (list_contents[demoId].acces && list_contents[demoId].acces[0].SL && list_contents[demoId].acces[0].SL.includes((lang) ? lang : _iconf.sllanguage));
 	}
 
 //************************************************************************************
@@ -1225,6 +1221,12 @@ SubSignManager = function() {
 			removeSubtitle();
 			removeRadar();
 		}
+		else if ( signEnabled && scene.getObjectByName("rightSL") ) 
+		{
+			scene.getObjectByName("rightSL").visible = false;
+			scene.getObjectByName("leftSL").visible = false;
+		}
+
 		subtitleEnabled = enable;
 	}
 
@@ -1354,4 +1356,27 @@ SubSignManager = function() {
 
 		updateISD( VideoController.getMediaTime() );
     }
+
+    this.getSTAvailableLang = function(lang)
+   	{
+   		if ( list_contents[demoId].subtitles[0][lang] ) 
+   		{
+   			return lang;
+   		}
+   		else if ( list_contents[demoId].acces[0].ST && list_contents[demoId].subtitles[0][list_contents[demoId].acces[0].ST[0]] ) {
+   			_iconf.stlanguage = list_contents[demoId].acces[0].ST[0];
+   			return list_contents[demoId].acces[0].ST[0];
+   		}
+   		else return;
+   	}
+
+   	this.getSLAvailableLang = function(lang)
+   	{
+   		if ( list_contents[demoId].signer[0][lang] ) return lang;
+   		else if ( list_contents[demoId].acces[0].SL && list_contents[demoId].signer[0][list_contents[demoId].acces[0].SL[0]] ) {
+   			_iconf.sllanguage = list_contents[demoId].acces[0].SL[0];
+   			return list_contents[demoId].acces[0].SL[0];
+   		}
+   		else return;
+   	}
 }

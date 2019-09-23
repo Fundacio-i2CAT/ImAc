@@ -786,7 +786,8 @@ SubSignManager = function() {
 	this.setSTConfig = function(conf)
     {
     	//subtitleEnabled = conf.enabled;
-    	subLang = getSTAvailableLang( conf.stlanguage );
+    	//subLang = getSTAvailableLang( conf.stlanguage );
+    	subLang = conf.stlanguage;
     	subPosX = 0;
 		subPosY = conf.stposition == 'down' ? -1 : 1;
     	subtitleIndicator = conf.indicator;
@@ -974,7 +975,8 @@ SubSignManager = function() {
     {
     	//signEnabled = conf.enabled;
 
-    	signLang = getSLAvailableLang( conf.sllanguage );
+    	//signLang = getSLAvailableLang( conf.sllanguage );
+    	signLang = conf.sllanguage;
     	signPosX = conf.stposition == 'left' ? -1 : 1;
 		signPosY = -1;
     	subtitleIndicator = conf.indicator;
@@ -1219,7 +1221,7 @@ SubSignManager = function() {
 			removeSubtitle();
 			removeRadar();
 		}
-		else if ( signEnabled ) 
+		else if ( signEnabled && scene.getObjectByName("rightSL") ) 
 		{
 			scene.getObjectByName("rightSL").visible = false;
 			scene.getObjectByName("leftSL").visible = false;
@@ -1355,7 +1357,7 @@ SubSignManager = function() {
 		updateISD( VideoController.getMediaTime() );
     }
 
-    function getSTAvailableLang(lang)
+    this.getSTAvailableLang = function(lang)
    	{
    		if ( list_contents[demoId].subtitles[0][lang] ) 
    		{
@@ -1368,7 +1370,7 @@ SubSignManager = function() {
    		else return;
    	}
 
-   	function getSLAvailableLang(lang)
+   	this.getSLAvailableLang = function(lang)
    	{
    		if ( list_contents[demoId].signer[0][lang] ) return lang;
    		else if ( list_contents[demoId].acces[0].SL && list_contents[demoId].signer[0][list_contents[demoId].acces[0].SL[0]] ) {

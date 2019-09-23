@@ -156,7 +156,7 @@ ManifestParser = function() {
 
     function setSTContent(lang)
     {
-        var cookielang = _iconf.stlanguage; //subController.getSubLanguage();
+        var cookielang = subController.getSTAvailableLang( _iconf.stlanguage ); //subController.getSubLanguage();
         var sublang = cookielang ? cookielang : list_contents[demoId].subtitles[0][lang] ? lang : Object.keys(list_contents[demoId].subtitles[0])[0];
         subController.setSubtitle( list_contents[demoId].subtitles[0][sublang], sublang );
         subController.setSubtitleLanguagesArray( list_contents[demoId].subtitles[0] );
@@ -166,7 +166,7 @@ ManifestParser = function() {
     {
         if ( list_contents[demoId].signer && list_contents[demoId].signer[0] ) 
         {
-            var cookielang = _iconf.sllanguage; //subController.getSignerLanguage();
+            var cookielang = subController.getSLAvailableLang( _iconf.sllanguage ); //subController.getSignerLanguage();
             var siglang = cookielang ? cookielang : list_contents[demoId].signer[0][lang] ? lang : Object.keys(list_contents[demoId].signer[0])[0];
             subController.setSignerContent( list_contents[demoId].signer[0][siglang], siglang );
             subController.setSignerLanguagesArray( list_contents[demoId].signer[0] );

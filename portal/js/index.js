@@ -8,6 +8,7 @@ var UUID;
 
 var _SyncServerIP = '195.81.194.222';
 
+
 //************************************************************************************
 // Main Functions
 //************************************************************************************
@@ -145,8 +146,13 @@ var _SyncServerIP = '195.81.194.222';
 
         if ( cookieconf && cookieconf != null )
         {
-            _confMemory = _ImAc_default;
-            _ImAc_default = JSON.parse( cookieconf );
+            var conf = JSON.parse( cookieconf );
+            // validate new version of _ImAc_default
+            if ( !conf.accesslanguage ) 
+            {
+                _confMemory = _ImAc_default;
+                _ImAc_default = JSON.parse( cookieconf );
+            }
         }
     }
 
@@ -503,7 +509,8 @@ var _SyncServerIP = '195.81.194.222';
     function openFirstOption(id)
     {
         if ( id == 0 ) createMenuType();
-        else if ( id == 1 ) createAccesLang();
+        //else if ( id == 1 ) createAccesLang();
+        else if ( id == 1 ) createIndicator();
         else if ( id == 2 ) createSTSize();
         else if ( id == 3 ) createSLSize();
         else if ( id == 4 ) createASTE2r();
@@ -664,6 +671,154 @@ var _SyncServerIP = '195.81.194.222';
             document.getElementById( 'btn_lang_en' ).classList.remove("enabled");
             document.getElementById( 'btn_lang_es' ).classList.remove("enabled");
             document.getElementById( 'btn_lang_de' ).classList.remove("enabled");
+        }
+        // ST language
+        else if ( id == 'btn_stlang_en' )
+        {
+            _ImAc_default.stlanguage = 'en';
+
+            document.getElementById( 'btn_stlang_en' ).className += " enabled";
+            document.getElementById( 'btn_stlang_es' ).classList.remove("enabled");
+            document.getElementById( 'btn_stlang_de' ).classList.remove("enabled");
+            document.getElementById( 'btn_stlang_ca' ).classList.remove("enabled");
+        }
+        else if ( id == 'btn_stlang_es' )
+        {
+            _ImAc_default.stlanguage = 'es';
+
+            document.getElementById( 'btn_stlang_es' ).className += " enabled";
+            document.getElementById( 'btn_stlang_en' ).classList.remove("enabled");
+            document.getElementById( 'btn_stlang_de' ).classList.remove("enabled");
+            document.getElementById( 'btn_stlang_ca' ).classList.remove("enabled");
+        }
+        else if ( id == 'btn_stlang_de' )
+        {
+            _ImAc_default.stlanguage = 'de';
+
+            document.getElementById( 'btn_stlang_de' ).className += " enabled";
+            document.getElementById( 'btn_stlang_en' ).classList.remove("enabled");
+            document.getElementById( 'btn_stlang_es' ).classList.remove("enabled");
+            document.getElementById( 'btn_stlang_ca' ).classList.remove("enabled");
+        }
+        else if ( id == 'btn_stlang_ca' )
+        {
+            _ImAc_default.stlanguage = 'ca';
+
+            document.getElementById( 'btn_stlang_ca' ).className += " enabled";
+            document.getElementById( 'btn_stlang_en' ).classList.remove("enabled");
+            document.getElementById( 'btn_stlang_es' ).classList.remove("enabled");
+            document.getElementById( 'btn_stlang_de' ).classList.remove("enabled");
+        }
+        // SL language
+        else if ( id == 'btn_sllang_en' )
+        {
+            _ImAc_default.sllanguage = 'en';
+
+            document.getElementById( 'btn_sllang_en' ).className += " enabled";
+            document.getElementById( 'btn_sllang_es' ).classList.remove("enabled");
+            document.getElementById( 'btn_sllang_de' ).classList.remove("enabled");
+            document.getElementById( 'btn_sllang_ca' ).classList.remove("enabled");
+        }
+        else if ( id == 'btn_sllang_es' )
+        {
+            _ImAc_default.sllanguage = 'es';
+
+            document.getElementById( 'btn_sllang_es' ).className += " enabled";
+            document.getElementById( 'btn_sllang_en' ).classList.remove("enabled");
+            document.getElementById( 'btn_sllang_de' ).classList.remove("enabled");
+            document.getElementById( 'btn_sllang_ca' ).classList.remove("enabled");
+        }
+        else if ( id == 'btn_sllang_de' )
+        {
+            _ImAc_default.sllanguage = 'de';
+
+            document.getElementById( 'btn_sllang_de' ).className += " enabled";
+            document.getElementById( 'btn_sllang_en' ).classList.remove("enabled");
+            document.getElementById( 'btn_sllang_es' ).classList.remove("enabled");
+            document.getElementById( 'btn_sllang_ca' ).classList.remove("enabled");
+        }
+        else if ( id == 'btn_sllang_ca' )
+        {
+            _ImAc_default.sllanguage = 'ca';
+
+            document.getElementById( 'btn_sllang_ca' ).className += " enabled";
+            document.getElementById( 'btn_sllang_en' ).classList.remove("enabled");
+            document.getElementById( 'btn_sllang_es' ).classList.remove("enabled");
+            document.getElementById( 'btn_sllang_de' ).classList.remove("enabled");
+        }
+        // AST language
+        else if ( id == 'btn_astlang_en' )
+        {
+            _ImAc_default.astlanguage = 'en';
+
+            document.getElementById( 'btn_astlang_en' ).className += " enabled";
+            document.getElementById( 'btn_astlang_es' ).classList.remove("enabled");
+            document.getElementById( 'btn_astlang_de' ).classList.remove("enabled");
+            document.getElementById( 'btn_astlang_ca' ).classList.remove("enabled");
+        }
+        else if ( id == 'btn_astlang_es' )
+        {
+            _ImAc_default.astlanguage = 'es';
+
+            document.getElementById( 'btn_astlang_es' ).className += " enabled";
+            document.getElementById( 'btn_astlang_en' ).classList.remove("enabled");
+            document.getElementById( 'btn_astlang_de' ).classList.remove("enabled");
+            document.getElementById( 'btn_astlang_ca' ).classList.remove("enabled");
+        }
+        else if ( id == 'btn_astlang_de' )
+        {
+            _ImAc_default.astlanguage = 'de';
+
+            document.getElementById( 'btn_astlang_de' ).className += " enabled";
+            document.getElementById( 'btn_astlang_en' ).classList.remove("enabled");
+            document.getElementById( 'btn_astlang_es' ).classList.remove("enabled");
+            document.getElementById( 'btn_astlang_ca' ).classList.remove("enabled");
+        }
+        else if ( id == 'btn_astlang_ca' )
+        {
+            _ImAc_default.astlanguage = 'ca';
+
+            document.getElementById( 'btn_astlang_ca' ).className += " enabled";
+            document.getElementById( 'btn_astlang_en' ).classList.remove("enabled");
+            document.getElementById( 'btn_astlang_es' ).classList.remove("enabled");
+            document.getElementById( 'btn_astlang_de' ).classList.remove("enabled");
+        }
+        // AD language
+        else if ( id == 'btn_adlang_en' )
+        {
+            _ImAc_default.adlanguage = 'en';
+
+            document.getElementById( 'btn_adlang_en' ).className += " enabled";
+            document.getElementById( 'btn_adlang_es' ).classList.remove("enabled");
+            document.getElementById( 'btn_adlang_de' ).classList.remove("enabled");
+            document.getElementById( 'btn_adlang_ca' ).classList.remove("enabled");
+        }
+        else if ( id == 'btn_adlang_es' )
+        {
+            _ImAc_default.adlanguage = 'es';
+
+            document.getElementById( 'btn_adlang_es' ).className += " enabled";
+            document.getElementById( 'btn_adlang_en' ).classList.remove("enabled");
+            document.getElementById( 'btn_adlang_de' ).classList.remove("enabled");
+            document.getElementById( 'btn_adlang_ca' ).classList.remove("enabled");
+        }
+        else if ( id == 'btn_adlang_de' )
+        {
+            _ImAc_default.adlanguage = 'de';
+
+            document.getElementById( 'btn_adlang_de' ).className += " enabled";
+            document.getElementById( 'btn_adlang_en' ).classList.remove("enabled");
+            document.getElementById( 'btn_adlang_es' ).classList.remove("enabled");
+            document.getElementById( 'btn_adlang_ca' ).classList.remove("enabled");
+        }
+        else if ( id == 'btn_adlang_ca' )
+        {
+            _ImAc_default.adlanguage = 'ca';
+
+            document.getElementById( 'btn_adlang_ca' ).className += " enabled";
+            document.getElementById( 'btn_adlang_en' ).classList.remove("enabled");
+            document.getElementById( 'btn_adlang_es' ).classList.remove("enabled");
+            document.getElementById( 'btn_adlang_de' ).classList.remove("enabled");
         }
         // Indicator
         else if ( id == 'btn_ind_radar' )
@@ -1434,7 +1589,7 @@ var _SyncServerIP = '195.81.194.222';
     function createSTSize()
     {
         clearMenuLvl3(2);
-        clearSelectedLvl2(2,0,4);
+        clearSelectedLvl2(2,0,5);
         document.getElementById( 'lvl2option20' ).className += " enabled";
 
         var img = _ImAcMeta.stsize[ _ImAc_default.stsize ].img;
@@ -1498,7 +1653,7 @@ var _SyncServerIP = '195.81.194.222';
     function createSTBackground()
     {
         clearMenuLvl3(2);
-        clearSelectedLvl2(2,1,4);
+        clearSelectedLvl2(2,1,5);
         document.getElementById( 'lvl2option21' ).className += " enabled";
 
         var img = _ImAcMeta.stbackground[ _ImAc_default.stbackground ].img;
@@ -1550,7 +1705,7 @@ var _SyncServerIP = '195.81.194.222';
     function createSTPosition()
     {
         clearMenuLvl3(2);
-        clearSelectedLvl2(2,2,4);
+        clearSelectedLvl2(2,2,5);
         document.getElementById( 'lvl2option22' ).className += " enabled";
 
         var img = _ImAcMeta.stposition[ _ImAc_default.stposition ].img;
@@ -1602,7 +1757,7 @@ var _SyncServerIP = '195.81.194.222';
     function createSTE2r()
     {
         clearMenuLvl3(2);
-        clearSelectedLvl2(2,3,4);
+        clearSelectedLvl2(2,3,5);
         document.getElementById( 'lvl2option23' ).className += " enabled";
 
         var img = _ImAcMeta.ste2r[ _ImAc_default.ste2r ].img;
@@ -1651,6 +1806,73 @@ var _SyncServerIP = '195.81.194.222';
         }
     }
 
+    function createSTLang()
+    {
+        clearMenuLvl3(2);
+        clearSelectedLvl2(2,4,5);
+        document.getElementById( 'lvl2option24' ).className += " enabled";
+
+        var text = _ImAcMeta.stlanguage[ _ImAc_default.mainlanguage ];
+
+
+        $("#settingslvl3_2")
+        .append(
+            $('<div class="container-12">')
+            .append(
+                $('<div id="btn_stlang_en" class="container-12 Settings-option2">')
+                .attr('onclick', 'selectOption(this.id)')
+                .append( $('<p>English</p>') )
+                .append('</div>')
+            )
+            .append(
+                $('<div id="btn_stlang_es" class="container-12 Settings-option2">')
+                .attr('onclick', 'selectOption(this.id)')
+                .append( $('<p>Español</p>') )
+                .append('</div>')
+            )
+            .append(
+                $('<div id="btn_stlang_de" class="container-12 Settings-option2">')
+                .attr('onclick', 'selectOption(this.id)')
+                .append( $('<p>Deutsch</p>') )
+                .append('</div>')
+            )
+            .append(
+                $('<div id="btn_stlang_ca" class="container-12 Settings-option2">')
+                .attr('onclick', 'selectOption(this.id)')
+                .append( $('<p>Català</p>') )
+                .append('</div>')
+            )
+            .append('</div>')
+        )
+        .append(
+            $('<div class="container-12 Settings-desc">')
+            .append(
+                $('</br><p id="text_Desc">')
+                .append( text )
+                .append('</p>')
+            )
+            .append('</div>')
+        )
+
+        if ( _ImAc_default.stlanguage == 'en' )
+        {
+            document.getElementById( 'btn_stlang_en' ).className += " enabled";
+        }
+        else if ( _ImAc_default.stlanguage == 'es' )
+        {
+            document.getElementById( 'btn_stlang_es' ).className += " enabled";
+        }
+        else if ( _ImAc_default.stlanguage == 'de' )
+        {
+            document.getElementById( 'btn_stlang_de' ).className += " enabled";
+        }
+        else 
+        {
+            document.getElementById( 'btn_stlang_ca' ).className += " enabled";
+        }
+
+    }
+
 //************************************************************************************
 // SL Settings Options
 //************************************************************************************
@@ -1658,7 +1880,7 @@ var _SyncServerIP = '195.81.194.222';
     function createSLSize()
     {
         clearMenuLvl3(3);
-        clearSelectedLvl2(3,0,2);
+        clearSelectedLvl2(3,0,3);
         document.getElementById( 'lvl2option30' ).className += " enabled";
 
         var img = _ImAcMeta.slsize[ _ImAc_default.slsize ].img;
@@ -1720,7 +1942,7 @@ var _SyncServerIP = '195.81.194.222';
     function createSLPosition()
     {
         clearMenuLvl3(3);
-        clearSelectedLvl2(3,1,2);
+        clearSelectedLvl2(3,1,3);
         document.getElementById( 'lvl2option31' ).className += " enabled";
 
         var img = _ImAcMeta.slposition[ _ImAc_default.slposition ].img;
@@ -1769,6 +1991,73 @@ var _SyncServerIP = '195.81.194.222';
         }
     }
 
+    function createSLLang()
+    {
+        clearMenuLvl3(3);
+        clearSelectedLvl2(3,2,3);
+        document.getElementById( 'lvl2option32' ).className += " enabled";
+
+        var text = _ImAcMeta.sllanguage[ _ImAc_default.mainlanguage ];
+
+
+        $("#settingslvl3_3")
+        .append(
+            $('<div class="container-12">')
+            .append(
+                $('<div id="btn_sllang_en" class="container-12 Settings-option2">')
+                .attr('onclick', 'selectOption(this.id)')
+                .append( $('<p>English</p>') )
+                .append('</div>')
+            )
+            .append(
+                $('<div id="btn_sllang_es" class="container-12 Settings-option2">')
+                .attr('onclick', 'selectOption(this.id)')
+                .append( $('<p>Español</p>') )
+                .append('</div>')
+            )
+            .append(
+                $('<div id="btn_sllang_de" class="container-12 Settings-option2">')
+                .attr('onclick', 'selectOption(this.id)')
+                .append( $('<p>Deutsch</p>') )
+                .append('</div>')
+            )
+            .append(
+                $('<div id="btn_sllang_ca" class="container-12 Settings-option2">')
+                .attr('onclick', 'selectOption(this.id)')
+                .append( $('<p>Català</p>') )
+                .append('</div>')
+            )
+            .append('</div>')
+        )
+        .append(
+            $('<div class="container-12 Settings-desc">')
+            .append(
+                $('</br><p id="text_Desc">')
+                .append( text )
+                .append('</p>')
+            )
+            .append('</div>')
+        )
+
+        if ( _ImAc_default.sllanguage == 'en' )
+        {
+            document.getElementById( 'btn_sllang_en' ).className += " enabled";
+        }
+        else if ( _ImAc_default.sllanguage == 'es' )
+        {
+            document.getElementById( 'btn_sllang_es' ).className += " enabled";
+        }
+        else if ( _ImAc_default.sllanguage == 'de' )
+        {
+            document.getElementById( 'btn_sllang_de' ).className += " enabled";
+        }
+        else 
+        {
+            document.getElementById( 'btn_sllang_ca' ).className += " enabled";
+        }
+
+    }
+
 //************************************************************************************
 // AST Settings Options
 //************************************************************************************
@@ -1776,7 +2065,7 @@ var _SyncServerIP = '195.81.194.222';
     function createASTE2r()
     {
         clearMenuLvl3(4);
-        clearSelectedLvl2(4,0,3);
+        clearSelectedLvl2(4,0,4);
         document.getElementById( 'lvl2option40' ).className += " enabled";
 
         var img = _ImAcMeta.aste2r[ _ImAc_default.aste2r ].img;
@@ -1828,7 +2117,7 @@ var _SyncServerIP = '195.81.194.222';
     function createASTMode()
     {
         clearMenuLvl3(4);
-        clearSelectedLvl2(4,1,3);
+        clearSelectedLvl2(4,1,4);
         document.getElementById( 'lvl2option41' ).className += " enabled";
 
         var img = _ImAcMeta.astmode[ _ImAc_default.astmode ].img;
@@ -1880,7 +2169,7 @@ var _SyncServerIP = '195.81.194.222';
     function createASTVolume()
     {
         clearMenuLvl3(4);
-        clearSelectedLvl2(4,2,3);
+        clearSelectedLvl2(4,2,4);
         document.getElementById( 'lvl2option42' ).className += " enabled";
 
         var img = _ImAcMeta.astvolume[ _ImAc_default.astvolume ].img;
@@ -1939,6 +2228,73 @@ var _SyncServerIP = '195.81.194.222';
         }
     }
 
+    function createASTLang()
+    {
+        clearMenuLvl3(4);
+        clearSelectedLvl2(4,3,4);
+        document.getElementById( 'lvl2option43' ).className += " enabled";
+
+        var text = _ImAcMeta.astlanguage[ _ImAc_default.mainlanguage ];
+
+
+        $("#settingslvl3_4")
+        .append(
+            $('<div class="container-12">')
+            .append(
+                $('<div id="btn_astlang_en" class="container-12 Settings-option2">')
+                .attr('onclick', 'selectOption(this.id)')
+                .append( $('<p>English</p>') )
+                .append('</div>')
+            )
+            .append(
+                $('<div id="btn_astlang_es" class="container-12 Settings-option2">')
+                .attr('onclick', 'selectOption(this.id)')
+                .append( $('<p>Español</p>') )
+                .append('</div>')
+            )
+            .append(
+                $('<div id="btn_astlang_de" class="container-12 Settings-option2">')
+                .attr('onclick', 'selectOption(this.id)')
+                .append( $('<p>Deutsch</p>') )
+                .append('</div>')
+            )
+            .append(
+                $('<div id="btn_astlang_ca" class="container-12 Settings-option2">')
+                .attr('onclick', 'selectOption(this.id)')
+                .append( $('<p>Català</p>') )
+                .append('</div>')
+            )
+            .append('</div>')
+        )
+        .append(
+            $('<div class="container-12 Settings-desc">')
+            .append(
+                $('</br><p id="text_Desc">')
+                .append( text )
+                .append('</p>')
+            )
+            .append('</div>')
+        )
+
+        if ( _ImAc_default.astlanguage == 'en' )
+        {
+            document.getElementById( 'btn_astlang_en' ).className += " enabled";
+        }
+        else if ( _ImAc_default.astlanguage == 'es' )
+        {
+            document.getElementById( 'btn_astlang_es' ).className += " enabled";
+        }
+        else if ( _ImAc_default.astlanguage == 'de' )
+        {
+            document.getElementById( 'btn_astlang_de' ).className += " enabled";
+        }
+        else 
+        {
+            document.getElementById( 'btn_astlang_ca' ).className += " enabled";
+        }
+
+    }
+
 //************************************************************************************
 // AD Settings Options
 //************************************************************************************
@@ -1946,7 +2302,7 @@ var _SyncServerIP = '195.81.194.222';
     function createADMode()
     {
         clearMenuLvl3(5);
-        clearSelectedLvl2(5,0,2);
+        clearSelectedLvl2(5,0,3);
         document.getElementById( 'lvl2option50' ).className += " enabled";
 
         var img = _ImAcMeta.admode[ _ImAc_default.admode ].img;
@@ -2008,7 +2364,7 @@ var _SyncServerIP = '195.81.194.222';
     function createADVolume()
     {
         clearMenuLvl3(5);
-        clearSelectedLvl2(5,1,2);
+        clearSelectedLvl2(5,1,3);
         document.getElementById( 'lvl2option51' ).className += " enabled";
 
         var img = _ImAcMeta.advolume[ _ImAc_default.advolume ].img;
@@ -2065,6 +2421,73 @@ var _SyncServerIP = '195.81.194.222';
         {
             document.getElementById( 'btn_ad_max' ).className += " enabled";
         }
+    }
+
+    function createADLang()
+    {
+        clearMenuLvl3(5);
+        clearSelectedLvl2(5,2,3);
+        document.getElementById( 'lvl2option52' ).className += " enabled";
+
+        var text = _ImAcMeta.astlanguage[ _ImAc_default.mainlanguage ];
+
+
+        $("#settingslvl3_5")
+        .append(
+            $('<div class="container-12">')
+            .append(
+                $('<div id="btn_adlang_en" class="container-12 Settings-option2">')
+                .attr('onclick', 'selectOption(this.id)')
+                .append( $('<p>English</p>') )
+                .append('</div>')
+            )
+            .append(
+                $('<div id="btn_adlang_es" class="container-12 Settings-option2">')
+                .attr('onclick', 'selectOption(this.id)')
+                .append( $('<p>Español</p>') )
+                .append('</div>')
+            )
+            .append(
+                $('<div id="btn_adlang_de" class="container-12 Settings-option2">')
+                .attr('onclick', 'selectOption(this.id)')
+                .append( $('<p>Deutsch</p>') )
+                .append('</div>')
+            )
+            .append(
+                $('<div id="btn_adlang_ca" class="container-12 Settings-option2">')
+                .attr('onclick', 'selectOption(this.id)')
+                .append( $('<p>Català</p>') )
+                .append('</div>')
+            )
+            .append('</div>')
+        )
+        .append(
+            $('<div class="container-12 Settings-desc">')
+            .append(
+                $('</br><p id="text_Desc">')
+                .append( text )
+                .append('</p>')
+            )
+            .append('</div>')
+        )
+
+        if ( _ImAc_default.adlanguage == 'en' )
+        {
+            document.getElementById( 'btn_adlang_en' ).className += " enabled";
+        }
+        else if ( _ImAc_default.adlanguage == 'es' )
+        {
+            document.getElementById( 'btn_adlang_es' ).className += " enabled";
+        }
+        else if ( _ImAc_default.adlanguage == 'de' )
+        {
+            document.getElementById( 'btn_adlang_de' ).className += " enabled";
+        }
+        else 
+        {
+            document.getElementById( 'btn_adlang_ca' ).className += " enabled";
+        }
+
     }
 
 //************************************************************************************
@@ -2178,7 +2601,8 @@ var _SyncServerIP = '195.81.194.222';
             document.getElementById('span_16').innerHTML = "&nbsp;   Perfil d'usuari";
             document.getElementById('span_17').innerHTML = 'Tornar';
             document.getElementById('span_18').innerHTML = "&nbsp;  Configuració d'accessibilitat";
-            document.getElementById('span_19').innerHTML = '&nbsp;   Idioma';
+            //document.getElementById('span_19').innerHTML = '&nbsp;   Idioma';
+            document.getElementById('span_19_1').innerHTML = '&nbsp;   Idioma';
             document.getElementById('span_20').innerHTML = '&nbsp;   Indicador';
             document.getElementById('span_21').innerHTML = '&nbsp;   Àrea de visió';
             document.getElementById('span_22').innerHTML = 'Tornar';
@@ -2230,7 +2654,8 @@ var _SyncServerIP = '195.81.194.222';
             document.getElementById('span_16').innerHTML = '&nbsp;   Perfil de usuario';
             document.getElementById('span_17').innerHTML = 'Atrás';
             document.getElementById('span_18').innerHTML = '&nbsp;  Ajustes de accesibilidad';
-            document.getElementById('span_19').innerHTML = '&nbsp;   Idioma';
+            //document.getElementById('span_19').innerHTML = '&nbsp;   Idioma';
+            document.getElementById('span_19_1').innerHTML = '&nbsp;   Idioma';
             document.getElementById('span_20').innerHTML = '&nbsp;   Indicador';
             document.getElementById('span_21').innerHTML = '&nbsp;   Área de visión';
             document.getElementById('span_22').innerHTML = 'Atrás';
@@ -2282,7 +2707,8 @@ var _SyncServerIP = '195.81.194.222';
             document.getElementById('span_16').innerHTML = '&nbsp;   Nutzerprofil';
             document.getElementById('span_17').innerHTML = 'Back';
             document.getElementById('span_18').innerHTML = '&nbsp;  Barrierefreie Dienste Einstellungen';
-            document.getElementById('span_19').innerHTML = '&nbsp;   Sprache';
+            //document.getElementById('span_19').innerHTML = '&nbsp;   Sprache';
+            document.getElementById('span_19_1').innerHTML = '&nbsp;   Sprache';
             document.getElementById('span_20').innerHTML = '&nbsp;   Indikator';
             document.getElementById('span_21').innerHTML = '&nbsp;   Darstellungsbereich';
             document.getElementById('span_22').innerHTML = 'Back';
@@ -2334,7 +2760,8 @@ var _SyncServerIP = '195.81.194.222';
             document.getElementById('span_16').innerHTML = '&nbsp;   User Profile';
             document.getElementById('span_17').innerHTML = 'Back';
             document.getElementById('span_18').innerHTML = '&nbsp;  Access Settings';
-            document.getElementById('span_19').innerHTML = '&nbsp;   Access Language';
+            //document.getElementById('span_19').innerHTML = '&nbsp;   Access Language';
+            document.getElementById('span_19_1').innerHTML = '&nbsp;   Language';
             document.getElementById('span_20').innerHTML = '&nbsp;   Indicator';
             document.getElementById('span_21').innerHTML = '&nbsp;   Safe Area';
             document.getElementById('span_22').innerHTML = 'Back';

@@ -20,7 +20,7 @@ AudioManager = function() {
     var adContentArray; // URL
     var adVolume = 100; // Integer: Volume percentage
     var adEnabled = false; // boolean
-    var adLang; // string (en, de, ca, es)
+    var adLang = 'en'; // string (en, de, ca, es)
     var adAvailableLang = []; // Array { name, value, default:bool }
     var adAvailablePresentation = [];
     var adPresentation = 'VoiceOfGod'; // string (VoiceOfGod (classic), Friend (static), Dynamic)
@@ -31,7 +31,7 @@ AudioManager = function() {
     var astContentArray; // URL
     var astVolume = 50; // Integer: Volume percentage
     var astEnabled = false; // boolean
-    var astLang; // string (en, de, ca, es)
+    var astLang = 'en'; // string (en, de, ca, es)
     var astAvailableLang = []; // Array { name, value, default:bool }
     var astEasy = false; // boolean
     var astAvailablePresentation = [];
@@ -402,7 +402,7 @@ AudioManager = function() {
     this.setADConfig = function(conf)
     {
         //adEnabled = conf.enabled;
-        adLang = conf.accesslanguage;
+        adLang = conf.adlanguage;
         adVolume = conf.advolume == 'max' ? 100 : conf.advolume == 'mid' ? 50 : 10;
         adPresentation = conf.admode == 'god' ? 'VoiceOfGod' : conf.admode == 'friend' ? 'Friend' : 'Dynamic';
     };
@@ -515,9 +515,9 @@ AudioManager = function() {
 
     this.checkADPresentationAvailable = function(val){
         if(val){
-            return list_contents[demoId].ad[0][_iconf.accesslanguage].hasOwnProperty(val)
+            return list_contents[demoId].ad[0][_iconf.adlanguage].hasOwnProperty(val)
         } else {
-            return list_contents[demoId].ad[0].hasOwnProperty(_iconf.accesslanguage)
+            return list_contents[demoId].ad[0].hasOwnProperty(_iconf.adlanguage)
         }
     };
 
@@ -526,7 +526,7 @@ AudioManager = function() {
     };   
 
     this.checkisADAvailable = function(lang){
-        return (list_contents[demoId].acces && list_contents[demoId].acces[0].AD && list_contents[demoId].acces[0].AD.includes((lang) ? lang : _iconf.accesslanguage) );
+        return (list_contents[demoId].acces && list_contents[demoId].acces[0].AD && list_contents[demoId].acces[0].AD.includes((lang) ? lang : _iconf.adlanguage) );
     }
 
     
@@ -538,7 +538,7 @@ AudioManager = function() {
     this.setASTConfig = function(conf)
     {
         //astEnabled = conf.enabled;
-        astLang = conf.accesslanguage;
+        astLang = conf.astlanguage;
         astVolume = conf.astvolume == 'max' ? 100 : conf.astvolume == 'mid' ? 50 : 10;
         astEasy = conf.aste2r == 'true' ? true : false;
         astPresentation = conf.astmode == 'god' ? 'VoiceOfGod' : 'Dynamic';
@@ -645,9 +645,9 @@ AudioManager = function() {
 
     this.checkASTPresentationAvailable = function(val){
         if(val){
-            return list_contents[demoId].ast[0][_iconf.accesslanguage].hasOwnProperty(val)
+            return list_contents[demoId].ast[0][_iconf.astlanguage].hasOwnProperty(val)
         } else {
-            return list_contents[demoId].ast[0].hasOwnProperty(_iconf.accesslanguage)
+            return list_contents[demoId].ast[0].hasOwnProperty(_iconf.astlanguage)
         }
     };
 
@@ -662,6 +662,6 @@ AudioManager = function() {
     }; 
 
     this.checkisASTAvailable = function(lang){
-        return (list_contents[demoId].acces && list_contents[demoId].acces[0].AST && list_contents[demoId].acces[0].AST.includes((lang) ? lang : _iconf.accesslanguage));
+        return (list_contents[demoId].acces && list_contents[demoId].acces[0].AST && list_contents[demoId].acces[0].AST.includes((lang) ? lang : _iconf.astlanguage));
     } 
 }

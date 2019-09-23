@@ -100,6 +100,8 @@ function init_webplayer()
 
             if ( myhash && myhash[1] && myhash[1] < list_contents.length && list_contents[ myhash[1] ] && localStorage.ImAc_init == myhash[1] ) 
             {
+                demoId = myhash[1];
+                
                 localStorage.removeItem('ImAc_init');
                 localStorage.ImAc_language ? MenuDictionary.setMainLanguage( localStorage.ImAc_language ) : MenuDictionary.setMainLanguage( 'en' );
 
@@ -123,11 +125,9 @@ function init_webplayer()
                 }
                 ////////////////////////////////////////////////////////////////
 
-                demoId = myhash[1];
-
                 if ( !_iconf ) _iconf = [];
                 
-                _iconf.accesslanguage = (MenuDictionary.isMainLanguageAvailable(_iconf.accesslanguage)) ? _iconf.accesslanguage : MenuDictionary.getAvailableLanguage();
+                //_iconf.accesslanguage = (MenuDictionary.isMainLanguageAvailable(_iconf.accesslanguage)) ? _iconf.accesslanguage : MenuDictionary.getAvailableLanguage();
 
                 AplicationManager.init();
 

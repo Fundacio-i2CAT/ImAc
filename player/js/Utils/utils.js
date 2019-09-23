@@ -235,7 +235,11 @@ function saveConfig()
     _iconf.voicecontrol = _ws_vc ? 'on' : 'off';
     _iconf.userprofile = 'save';
     _iconf.mainlanguage = localStorage.ImAc_language;
-    _iconf.accesslanguage = subController.getSubLanguage();
+    //_iconf.accesslanguage = subController.getSubLanguage();
+    _iconf.stlanguage = subController.getSubLanguage();
+    _iconf.sllanguage = subController.getSignerLanguage();
+    _iconf.astlanguage = _AudioManager.getASTLanguage();
+    _iconf.adlanguage = _AudioManager.getADLanguage();
     _iconf.indicator = subController.getSubIndicator();
     _iconf.safearea = subController.getSubArea() == 70 ? 'L' : subController.getSubArea() == 60 ? 'M' : 'S';
     _iconf.stsize = subController.getSubSize() == 1 ? 'L' : subController.getSubSize() == 0.8 ? 'M' : 'S';

@@ -549,7 +549,6 @@ AudioManager = function() {
         if ( url ) {
             astContent = url[astPresentation] || url[Object.keys(url)[0]];
             astLang = lang;
-            console.log(astContent)
             if ( astEnabled ) addAudio( 'AST' );
         }
     }; 

@@ -317,9 +317,11 @@ VideoController = function() {
             periodCount += 1;
         });
 
-        if ( localStorage.ImAc_roomID != undefined && localStorage.ImAc_roomID != "undefined" ) setTimeout( () => {  _Sync.init( "195.81.194.222", localStorage.ImAc_roomID ); }, 2000);
+        //if ( localStorage.ImAc_roomID != undefined && localStorage.ImAc_roomID != "undefined" ) setTimeout( () => {  _Sync.init( "195.81.194.222", localStorage.ImAc_roomID ); }, 2000);
 
         getAdaptationSets().then(( str ) => { 
+
+            if ( localStorage.ImAc_roomID != undefined && localStorage.ImAc_roomID != "undefined" ) setTimeout( () => {  _Sync.init( "195.81.194.222", localStorage.ImAc_roomID ); }, 2000);
 
             //subController.enableSubtitles();
             var firtsIteration = true;

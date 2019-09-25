@@ -2,7 +2,6 @@
 var camera;
 var scene;
 var controls;
-var rendertime = 0;
 
 
 function AplicationManager()
@@ -11,12 +10,9 @@ function AplicationManager()
     var _display;
 
     var mouse3D = new THREE.Vector2( 0, 0 );
-    var raycaster;
 
     var button_1;
     var button_2;
-
-    var intersects;
 
     this.getRenderer = function() { return renderer };
 
@@ -69,7 +65,6 @@ function AplicationManager()
 
     function render(){
         renderer.render( scene, camera );
-        intersects = raycaster.intersectObjects(scene.children, true);
 
         update();
 
@@ -133,67 +128,35 @@ function AplicationManager()
 
         initReticulum( camera );
 
-        // --- init & events -------------------------------------------------
-        raycaster = new THREE.Raycaster();
-
         document.addEventListener('mousemove', onDocumentMouseMove, false);
         //document.addEventListener('mousedown', onDocumentMouseDown, false);
-
-        //animate(); 
 	};
 
 
-
-    function animate() 
-    {
-        requestAnimationFrame( animate );
-        render();       
-        update();
-
-        Reticulum.update();
-    }
-
-    var touchtime = 0;
-    var touchcount = 0;
-
     function update()
     {
-        /*var time =  performance.now();
-        console.log( time - rendertime )
-        rendertime = time;*/
+        THREE.VRController.update();
 
-        THREE.VRController.update()
+
         //if ( controls ) controls.update();
         
-
         _AudioManager.updateRotationMatrix( camera.matrixWorld.elements );
 
         if( THREE.VRController.getTouchPadState() && _isHMD ) 
         {           
             interController.checkInteraction( mouse3D, camera, 'onDocumentMouseDown' );
 
-            // function to open menu with double click
-            /*if ( Date.now() - touchtime > 300 ) touchcount = 0;
-
-            if (touchcount == 0) {
-                
-                touchcount++;
-                touchtime = Date.now();
+            // function to open menu with a simple click
+            if ( menuMgr.getMenuType() == 2 && scene.getObjectByName( 'trad-main-menu' ).visible == false ) 
+            {
+                menuMgr.initFirstMenuState();
             }
-            else if (touchcount < 1) {
-                touchcount++;
-            }
-            else {
-                touchcount = 0;
-                if ( scene.getObjectByName( "openMenu" ).visible ) menuMgr.initFirstMenuState();
-                else menuMgr.ResetViews();  
-            }*/
-
-            //if ( scene.getObjectByName( "openMenu" ).visible ) menuMgr.initFirstMenuState();
-            if ( menuMgr.getMenuType() == 2 && scene.getObjectByName( 'trad-main-menu' ).visible == false ) menuMgr.initFirstMenuState();
-            else if ( menuMgr.getMenuType() == 1 && scene.getObjectByName( 'trad-option-menu' ).visible == false && scene.getObjectByName( 'trad-main-menu' ).visible == false ) menuMgr.initFirstMenuState();
-        
+            else if ( menuMgr.getMenuType() == 1 && scene.getObjectByName( 'trad-option-menu' ).visible == false && scene.getObjectByName( 'trad-main-menu' ).visible == false ) 
+            {
+                menuMgr.initFirstMenuState();
+            }     
         }
+
         if ( _isHMD && subController.getSubtitleEnabled() )
         {
             subController.updateSTRotation();
@@ -205,22 +168,21 @@ function AplicationManager()
 
         subController.updateRadar();
 
-        if(scene.getObjectByName('trad-option-menu')){
-            interController.checkInteractionSubMenuHover(mouse3D, camera, false);
+        if( !_isHMD && scene.getObjectByName('trad-option-menu') ) {
+            interController.checkInteractionSubMenuHover( mouse3D, camera, false );
         }
         
-        if(scene.getObjectByName('trad-main-menu')){
-            interController.showAccessIconTooltip(mouse3D, camera, false);    
+        if( !_isHMD && scene.getObjectByName('trad-main-menu') ) {
+            interController.showAccessIconTooltip( mouse3D, camera, false );    
         }
         
-
         controls.update();
     }
 
     function onDocumentMouseMove(event) {
-      event.preventDefault();
+        event.preventDefault();
 
-      mouse3D.x = (event.clientX / window.innerWidth) * 2 - 1;
-      mouse3D.y = -(event.clientY / window.innerHeight) * 2 + 1;
+        mouse3D.x = (event.clientX / window.innerWidth) * 2 - 1;
+        mouse3D.y = -(event.clientY / window.innerHeight) * 2 + 1;
     }
 }

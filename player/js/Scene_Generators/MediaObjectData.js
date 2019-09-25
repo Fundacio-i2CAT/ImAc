@@ -1015,7 +1015,7 @@ THREE.MediaObjectData = function () {
 
     function getTextMesh(text, size, color, name, func, cw, ch)
     {
-        console.warn('This function need to be updated')
+        //console.warn('This function need to be updated')
         var textShape = new THREE.BufferGeometry();
         var textmaterial = new THREE.MeshBasicMaterial( { color: color} );
         var shapes = subtitleFont.generateShapes( text, size );

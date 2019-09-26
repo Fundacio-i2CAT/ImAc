@@ -88,7 +88,7 @@ function SettingsOptionMenuController() {
 
     this.setChildColumnActiveOpt = function(name){
         data.childColumnActiveOpt = name;
-        data.default = scene.getObjectByName(name).children[0];
+        if ( scene.getObjectByName(name) ) data.default = scene.getObjectByName(name).children[0];
         view.UpdateView(data);
     }
 

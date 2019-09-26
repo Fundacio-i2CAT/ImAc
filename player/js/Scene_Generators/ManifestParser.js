@@ -203,9 +203,9 @@ ManifestParser = function() {
 
     function setSTContent(lang)
     {
-        if ( list_contents[demoId].subtitles && list_contents[demoId].subtitles[0] && Object.entries(list_contents[0].subtitles[0]).length > 0 ) 
+        if ( list_contents[demoId].subtitles && list_contents[demoId].subtitles[0] && Object.entries(list_contents[demoId].subtitles[0]).length > 0 ) 
         {
-            var cookielang = subController.getSTAvailableLang( _iconf.stlanguage ); //subController.getSubLanguage();
+            var cookielang = subController.getSTAvailableLang( _iconf.stlanguage, 0 ); //subController.getSubLanguage();
             var sublang = cookielang ? cookielang : list_contents[demoId].subtitles[0][lang] ? lang : Object.keys(list_contents[demoId].subtitles[0])[0];
             subController.setSubtitle( list_contents[demoId].subtitles[0][sublang], sublang );
             subController.setSubtitleLanguagesArray( list_contents[demoId].subtitles[0] );

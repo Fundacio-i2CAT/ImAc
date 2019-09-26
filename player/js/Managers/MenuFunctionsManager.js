@@ -19,8 +19,13 @@ MenuFunctionsManager = function() {
 
                 case 'st':
                     //_iconf.stlanguage = lang;
-                    if ( list_contents[ demoId ].subtitles && list_contents[ demoId ].subtitles[ ste2r ] && subController.checkisSubAvailable( lang )) {
-                        var sublang = list_contents[ demoId ].subtitles[ ste2r ][ lang ] ? lang : Object.keys( list_contents[ demoId ].subtitles[ ste2r ] )[ 0 ];
+
+                    if ( list_contents[ demoId ].subtitles && list_contents[ demoId ].subtitles[ ste2r ] && subController.checkisSubAvailable( lang )) 
+                    {
+                        var cookielang = subController.getSTAvailableLang( _iconf.stlanguage, ste2r ); //subController.getSubLanguage();
+                        var sublang = cookielang ? cookielang : list_contents[demoId].subtitles[ste2r][lang] ? lang : Object.keys(list_contents[demoId].subtitles[ste2r])[0];
+
+                        //var sublang = list_contents[ demoId ].subtitles[ ste2r ][ lang ] ? lang : Object.keys( list_contents[ demoId ].subtitles[ ste2r ] )[ 0 ];
                         subController.setSubtitle( list_contents[ demoId ].subtitles[ ste2r ][ sublang ], sublang );
                     } else {
                         subController.disableSubtiles();

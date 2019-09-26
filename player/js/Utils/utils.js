@@ -464,6 +464,7 @@ function initExtraAdAudio()
         // Listener to know when the audio is ended
         audio.onended = function() {
             extraADenabled = false;
+            _blockControls = false;
             // Play all of the ImAc contents
             _ImAc.doPlay();
 

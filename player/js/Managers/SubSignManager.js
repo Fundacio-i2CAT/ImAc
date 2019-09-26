@@ -1357,13 +1357,13 @@ SubSignManager = function() {
 		updateISD( VideoController.getMediaTime() );
     }
 
-    this.getSTAvailableLang = function(lang)
+    this.getSTAvailableLang = function(lang, e2r=0)
    	{
-   		if ( list_contents[demoId].subtitles[0][lang] ) 
+   		if ( list_contents[demoId].subtitles[e2r][lang] ) 
    		{
    			return lang;
    		}
-   		else if ( list_contents[demoId].acces[0].ST && list_contents[demoId].subtitles[0][list_contents[demoId].acces[0].ST[0]] ) {
+   		else if ( list_contents[demoId].acces[0].ST && list_contents[demoId].subtitles[e2r][list_contents[demoId].acces[0].ST[0]] ) {
    			_iconf.stlanguage = list_contents[demoId].acces[0].ST[0];
    			return list_contents[demoId].acces[0].ST[0];
    		}

@@ -212,7 +212,6 @@ AudioManager = function() {
 
     this.changeVolume = function(value)
     {
-        console.log(value)
         if ( adEnabled )
         {
             /*var level = adVolume + (value*100)

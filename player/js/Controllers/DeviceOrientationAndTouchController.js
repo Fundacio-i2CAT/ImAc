@@ -151,8 +151,10 @@ var _mouseMoved = false;
 
 	this.onDocumentMouseUp = function ( event ) {
 
+		if ( _blockControls ) initExtraAdAudio();
+
 		//if ( scene.getObjectByName( "openMenu" ).visible && !_mouseMoved ) menuMgr.initFirstMenuState();
-		if ( menuMgr.getMenuType() == 2 && scene.getObjectByName( 'trad-main-menu' ).visible == false && !_mouseMoved ) menuMgr.initFirstMenuState();
+		else if ( menuMgr.getMenuType() == 2 && scene.getObjectByName( 'trad-main-menu' ).visible == false && !_mouseMoved ) menuMgr.initFirstMenuState();
 		else if ( menuMgr.getMenuType() == 1 && scene.getObjectByName( 'trad-option-menu' ).visible == false && scene.getObjectByName( 'trad-main-menu' ).visible == false && !_mouseMoved ) menuMgr.initFirstMenuState();
 		// scene.getObjectByName( 'trad-option-menu' ).visible == false && scene.getObjectByName( 'trad-main-menu' ).visible == false
 		_mouseMoved = false;
@@ -424,7 +426,8 @@ var _mouseMoved = false;
 	this.onDocumentTouchEnd = function ( event ) 
 	{
 		//if ( scene.getObjectByName( "openMenu" ).visible && !_mouseMoved ) menuMgr.initFirstMenuState();
-		if ( menuMgr.getMenuType() == 2 && scene.getObjectByName( 'trad-main-menu' ).visible == false && !_mouseMoved ) menuMgr.initFirstMenuState();
+		if ( _blockControls ) initExtraAdAudio();
+		else if ( menuMgr.getMenuType() == 2 && scene.getObjectByName( 'trad-main-menu' ).visible == false && !_mouseMoved ) menuMgr.initFirstMenuState();
 		else if ( menuMgr.getMenuType() == 1 && scene.getObjectByName( 'trad-option-menu' ).visible == false && scene.getObjectByName( 'trad-main-menu' ).visible == false && !_mouseMoved ) menuMgr.initFirstMenuState();
 		
 
@@ -528,7 +531,8 @@ var _mouseMoved = false;
 
 	function sendVRInteraction(quat)
 	{
-		if ( menuMgr.getMenuType() == 2 && scene.getObjectByName( 'trad-main-menu' ).visible == false ) 
+		if ( _blockControls ) initExtraAdAudio();
+		else if ( menuMgr.getMenuType() == 2 && scene.getObjectByName( 'trad-main-menu' ).visible == false ) 
 		{
 			menuMgr.initFirstMenuState();
 		}

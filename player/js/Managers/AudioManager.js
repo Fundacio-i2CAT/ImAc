@@ -19,6 +19,7 @@ AudioManager = function() {
     var adContent; // URL
     var adContentArray; // URL
     var adVolume = 100; // Integer: Volume percentage
+    var adGain = 1;
     var adEnabled = false; // boolean
     var adLang = 'en'; // string (en, de, ca, es)
     var adAvailableLang = []; // Array { name, value, default:bool }
@@ -211,10 +212,25 @@ AudioManager = function() {
 
     this.changeVolume = function(value)
     {
+        console.log(value)
         if ( adEnabled )
         {
-            var level = adVolume + (value*100)
-            _AudioManager.setVolume( 'AD', level);
+            /*var level = adVolume + (value*100)
+            _AudioManager.setVolume( 'AD', level);*/
+
+            var newVolume = _AD.volume + value;
+
+            if ( newVolume < 0 )
+            {
+                newVolume = 0;
+            }
+            else if ( newVolume > 1 )
+            {
+                newVolume = 1;
+            }
+            
+            _AD.volume = newVolume;
+            volume = _AD.volume;
         }
         else {
             var newVolume = activeVideoElement.volume + value;
@@ -245,7 +261,7 @@ AudioManager = function() {
 
     this.getVolume = function()
     {
-        if ( adEnabled ) return Math.round(adVolume/100);
+        if ( adEnabled ) return Math.round(_AD.volume * 100) / 100;
         else return Math.round(activeVideoElement.volume * 100) / 100
     };
 
@@ -399,11 +415,13 @@ AudioManager = function() {
 // Public AD Setters
 //************************************************************************************
 
+    // Need modify conf.advolume to conf.adGain
     this.setADConfig = function(conf)
     {
         //adEnabled = conf.enabled;
         adLang = conf.adlanguage;
-        adVolume = conf.advolume == 'max' ? 100 : conf.advolume == 'mid' ? 50 : 10;
+        adVolume = 100;
+        adGain = conf.advolume == 'max' ? 1 : conf.advolume == 'mid' ? 0.5 : 0.1;
         adPresentation = conf.admode == 'god' ? 'VoiceOfGod' : conf.admode == 'friend' ? 'Friend' : 'Dynamic';
     };
 

@@ -73,6 +73,8 @@ var _isHMD = false;
 var autopositioning = false;
 var radarautopositioning = false;
 
+var _blockControls = false;
+
 let timerCloseMenu;
 
 

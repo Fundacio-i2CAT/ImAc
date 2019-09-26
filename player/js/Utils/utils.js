@@ -432,3 +432,49 @@ function iniGeneralSettings(conf)
     _pointerSize = conf.pointersize == 'M' ? 1 : conf.pointersize == 'L' ? 2 : 0.6;// 2=Big, 1=Mid, 0.6=Small
     _userprofile = conf.userprofile == 'save' ? true : false;
 }
+
+
+// Funcion para activar una pista de audio adicional pausando el contenido principal
+var extraADenabled = false;
+
+function initExtraAdAudio()
+{
+    if ( !extraADenabled )
+    {
+        console.log('init Extra AD')
+
+        extraADenabled = true;
+
+        var url = _ManifestParser.getExtraAD();
+
+        /*
+        / sera necesario implentar funcion que bloquee el menu 
+        / para evitar que el usuario pueda hacer play antes que
+        / acabe la reproduccion del audio.
+        */
+
+        // Pause all of the ImAc contents
+        _ImAc.doPause();
+
+        // Creates a new audio object and play it
+        var audio = new Audio( url );
+        audio.play();
+        audio.volume = 1;
+
+        // Listener to know when the audio is ended
+        audio.onended = function() {
+            extraADenabled = false;
+            // Play all of the ImAc contents
+            _ImAc.doPlay();
+
+        }; 
+    }
+
+}
+
+
+function checkExtraADListByTime(time)
+{
+    _ManifestParser.checkExtraAD( Math.trunc(time*100)/100, _AudioManager.getADLanguage() );
+}
+

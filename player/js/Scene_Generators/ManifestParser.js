@@ -27,6 +27,9 @@ ManifestParser = function() {
 	
 	var _mpd;
 
+    var extraAD_list = [];
+    var last_time = -1;
+
 	this.init = function(mpd) 
 	{
 		_mpd = mpd;
@@ -64,8 +67,19 @@ ManifestParser = function() {
                 var representationArray = elem.Representation_asArray;
                 if ( !ad_list ) ad_list = {};
                 var ad_modeList = {};
-                representationArray.forEach( function( representation ) {        
-                 	ad_modeList[ representation.mode ] = _mpd.manifest.baseUri + representation.BaseURL;
+                representationArray.forEach( function( representation ) {  
+                    if ( representation.mode ) ad_modeList[ representation.mode ] = _mpd.manifest.baseUri + representation.BaseURL;
+                    else if ( representation.parent_group_id ) 
+                    {
+                        var extraAD = {};
+                        extraAD.init = representation.init;
+                        extraAD.parentId = representation.parent_group_id;
+                        extraAD.url = _mpd.manifest.baseUri + representation.BaseURL;
+                        extraAD.lang = MenuDictionary.translate( elem.lang );
+
+                        extraAD_list.push( extraAD );
+                    }
+                 	//ad_modeList[ representation.mode ] = _mpd.manifest.baseUri + representation.BaseURL;
                 });
                 ad_list[ MenuDictionary.translate( elem.lang ) ] = ad_modeList;
             }
@@ -124,6 +138,39 @@ ManifestParser = function() {
         else subController.removeSignVideoByPeriod();    
     };
 
+    var extraURL;
+
+    this.checkExtraAD = function(time, lang)
+    {
+        extraAD_list.forEach( function( elem ) {
+            if ( elem.init != last_time && elem.init >= time-0.1 && elem.init <= time+0.1 && elem.lang == lang ) 
+            {
+                last_time = elem.init;
+
+                extraURL = elem.url;
+                // init beep!
+                var audio = new Audio('./resources/beep.mp3' );
+                audio.play();
+                // disable all user interactions
+                _blockControls = true;
+
+                //document.addEventListener('click', onClickEvent, false);
+                // start setTimeout of 5 seconds
+                setTimeout( () => {
+                    if ( !extraADenabled ) _blockControls = false;
+                    extraURL = undefined;
+                }, 5000);
+
+                
+            }
+        });
+    }
+
+    this.getExtraAD = function()
+    {
+        return extraURL;
+    };
+
 //************************************************************************************
 // Private Functions
 //************************************************************************************
@@ -156,10 +203,13 @@ ManifestParser = function() {
 
     function setSTContent(lang)
     {
-        var cookielang = subController.getSTAvailableLang( _iconf.stlanguage ); //subController.getSubLanguage();
-        var sublang = cookielang ? cookielang : list_contents[demoId].subtitles[0][lang] ? lang : Object.keys(list_contents[demoId].subtitles[0])[0];
-        subController.setSubtitle( list_contents[demoId].subtitles[0][sublang], sublang );
-        subController.setSubtitleLanguagesArray( list_contents[demoId].subtitles[0] );
+        if ( list_contents[demoId].subtitles && list_contents[demoId].subtitles[0] && Object.entries(list_contents[0].subtitles[0]).length > 0 ) 
+        {
+            var cookielang = subController.getSTAvailableLang( _iconf.stlanguage ); //subController.getSubLanguage();
+            var sublang = cookielang ? cookielang : list_contents[demoId].subtitles[0][lang] ? lang : Object.keys(list_contents[demoId].subtitles[0])[0];
+            subController.setSubtitle( list_contents[demoId].subtitles[0][sublang], sublang );
+            subController.setSubtitleLanguagesArray( list_contents[demoId].subtitles[0] );
+        }
     }
 
     function setSLContent(lang)

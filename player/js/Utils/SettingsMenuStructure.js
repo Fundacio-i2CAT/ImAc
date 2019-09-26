@@ -1395,7 +1395,7 @@ const settingsAudioSubtitlesEasyToRead = { title: 'EasytoRead', icon: './img/men
     { optId: 'astEasyOn', text: 'On', 
         default: function(){ return _AudioManager.checkASTEasy(true); },
         function:  function(){ 
-            _AudioManager.setSubEasy(  true, getASTe2rURL() );
+            _AudioManager.setSubEasy(  true, list_contents[demoId].ast[1][_AudioManager.getASTLanguage()] );
             SettingsOptionCtrl.setChildColumnActiveOpt(settingsAudioSubtitlesEasyToRead.options[0].optId);
         } 
     },

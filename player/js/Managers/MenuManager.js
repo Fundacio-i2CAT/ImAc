@@ -250,7 +250,7 @@ function MenuManager() {
             isSubmenuOpen = true;
         }
         //If the video is already paused, do not apuse it again
-        if(!VideoController.isPausedById(demoId)){
+        if(!VideoController.isPausedById(0)){
             autoPause = true; //The auto pasue in preview state is active.
             VideoController.pauseAll(); //Auto pause the video during the preview.
         }

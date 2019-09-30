@@ -18,6 +18,8 @@ ImAcController = function()
 	this.disableAST = function() { MenuFunctionsManager.getOnOffFunc( 'audioSubtitlesOnButton' )() };
 	this.openMenu = function() { MenuFunctionsManager.getopenMenu()() };
 	this.closeMenu = function() { MenuFunctionsManager.getcloseMenu()() };
+	this.zoomIn = function() { doZoom( 'in' ) };
+	this.zoomOut = function() { doZoom( 'out' ) };
 }
 
 function launchVoiceCommand( com )
@@ -39,5 +41,8 @@ function launchVoiceCommand( com )
 	else if ( com == 'return' ) window.history.back();
 	else if ( com == 'VR_on' ) document.getElementById('button_1').onclick()();
 	else if ( com == 'VR_off' ) document.getElementById('button_2').onclick()();
+	// new functionalities
+	else if ( com == 'zoom_in' ) _ImAc.zoomIn();
+	else if ( com == 'zoom_out' ) _ImAc.zoomOut();
 
 }

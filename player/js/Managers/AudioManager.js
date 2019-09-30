@@ -445,6 +445,7 @@ AudioManager = function() {
         adVolume = 100;
         adGain = conf.advolume == 'max' ? 1 : conf.advolume == 'mid' ? 0.5 : 0.1;
         adPresentation = conf.admode == 'god' ? 'VoiceOfGod' : conf.admode == 'friend' ? 'Friend' : 'Dynamic';
+        extraADSpeed = conf.adspeed == 'x100' ? 1 : conf.adspeed == 'x125' ? 1.25 : 1.5;
     };
 
     this.setADContent = function(content, lang)

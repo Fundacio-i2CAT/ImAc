@@ -253,8 +253,9 @@ function saveConfig()
     _iconf.astvolume = _AudioManager.getASTVolume() == 100 ? 'max' : _AudioManager.getASTVolume() == 50 ? 'mid' : 'min';
     _iconf.admode = _AudioManager.getADPresentation() == 'VoiceOfGod' ? 'god' : _AudioManager.getADPresentation() == 'Dynamic' ? 'dynamic' : 'friend';
     _iconf.advolume = _AudioManager.getADVolume() == 100 ? 'max' : _AudioManager.getADVolume() == 50 ? 'mid' : 'min';
+    _iconf.adspeed = _AudioManager.getExtraADSpeed() == 1 ? 'x100' : _AudioManager.getExtraADSpeed() == 1.25 ? 'x125' : 'x150';
 
-    document.cookie = "ImAcProfileConfig=" + encodeURIComponent( JSON.stringify( _iconf ) ) + "; max-age=2592000;"; //expires=" + expiresdate.toUTCString(); max-age = 1 mes
+    document.cookie = "ImAcProfileConfig=" + encodeURIComponent( JSON.stringify( _iconf ) ) + "; max-age=2592000" + "; path=/"; //expires=" + expiresdate.toUTCString(); max-age = 1 mes
 }
 
 // Converts from degrees to radians.
@@ -480,6 +481,31 @@ function checkExtraADListByTime(time)
 function changeSpeed(obj, speed)
 {
     obj.playbackRate = speed;
+}
+
+function doZoom(mode)
+{
+    if ( mode == 'in' )
+    {
+        camera.fov = camera.fov * 0.5;
+        camera.children.forEach( function( e ) 
+        {
+            e.scale.set( e.scale.x * 0.5, e.scale.x * 0.5, 1)
+        }); 
+
+        camera.updateProjectionMatrix();
+    }
+    else if (camera.fov * 2 <= 60) 
+    {
+        camera.fov = camera.fov * 2;
+        camera.children.forEach( function( e ) 
+        {
+            //e.visible = pos == 'left' ? true : false;
+            e.scale.set( e.scale.x * 2, e.scale.x * 2, 1)
+        }); 
+        //camera.fovx += 10;
+        camera.updateProjectionMatrix();
+    }
 }
 
 

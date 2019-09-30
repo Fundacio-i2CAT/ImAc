@@ -65,7 +65,7 @@ var _AudioEnabled = false;
             if ( !_AudioEnabled )
             {
                 _AudioEnabled = true;
-                
+
                 var audio = new Audio( list_contents[id].url );
                 audio.play();
                 audio.volume = 1;
@@ -86,7 +86,7 @@ var _AudioEnabled = false;
             _ImAc_default.mainlanguage = document.getElementById('langSelector').value;
 
             if ( _ImAc_default.userprofile == 'save' )
-                document.cookie = "ImAcProfileConfig=" + encodeURIComponent( JSON.stringify( _ImAc_default ) ) + "; max-age=2592000;";
+                document.cookie = "ImAcProfileConfig=" + encodeURIComponent( JSON.stringify( _ImAc_default ) ) + "; max-age=2592000" + "; path=/";
 
             window.location = window.location.href + 'player/#' + id;
         }
@@ -171,7 +171,7 @@ var _AudioEnabled = false;
         {
             var conf = JSON.parse( cookieconf );
             // validate new version of _ImAc_default
-            if ( !conf.accesslanguage ) 
+            if ( !conf.accesslanguage && conf.adspeed ) 
             {
                 _confMemory = _ImAc_default;
                 _ImAc_default = JSON.parse( cookieconf );
@@ -1173,6 +1173,31 @@ var _AudioEnabled = false;
             document.getElementById( 'btn_ad_mid' ).classList.remove("enabled");
             document.getElementById( 'img_MenuDesc' ).src = _ImAcMeta.advolume.max.img;
             document.getElementById( 'text_Desc' ).innerHTML = _ImAcMeta.advolume.max[ _ImAc_default.mainlanguage ];
+        }
+        // AD Speed
+        else if ( id == 'btn_ad_x100' )
+        {
+            _ImAc_default.adspeed = 'x100';
+
+            document.getElementById( 'btn_ad_x100' ).className += " enabled";
+            document.getElementById( 'btn_ad_x125' ).classList.remove("enabled");
+            document.getElementById( 'btn_ad_x150' ).classList.remove("enabled");
+        }
+        else if ( id == 'btn_ad_x125' )
+        {
+            _ImAc_default.adspeed = 'x125';
+
+            document.getElementById( 'btn_ad_x125' ).className += " enabled";
+            document.getElementById( 'btn_ad_x100' ).classList.remove("enabled");
+            document.getElementById( 'btn_ad_x150' ).classList.remove("enabled");
+        }
+        else if ( id == 'btn_ad_x150' )
+        {
+            _ImAc_default.adspeed = 'x150';
+
+            document.getElementById( 'btn_ad_x150' ).className += " enabled";
+            document.getElementById( 'btn_ad_x100' ).classList.remove("enabled");
+            document.getElementById( 'btn_ad_x125' ).classList.remove("enabled");
         }
     }
 
@@ -2325,7 +2350,7 @@ var _AudioEnabled = false;
     function createADMode()
     {
         clearMenuLvl3(5);
-        clearSelectedLvl2(5,0,3);
+        clearSelectedLvl2(5,0,4);
         document.getElementById( 'lvl2option50' ).className += " enabled";
 
         var img = _ImAcMeta.admode[ _ImAc_default.admode ].img;
@@ -2387,7 +2412,7 @@ var _AudioEnabled = false;
     function createADVolume()
     {
         clearMenuLvl3(5);
-        clearSelectedLvl2(5,1,3);
+        clearSelectedLvl2(5,1,4);
         document.getElementById( 'lvl2option51' ).className += " enabled";
 
         var img = _ImAcMeta.advolume[ _ImAc_default.advolume ].img;
@@ -2449,10 +2474,10 @@ var _AudioEnabled = false;
     function createADLang()
     {
         clearMenuLvl3(5);
-        clearSelectedLvl2(5,2,3);
+        clearSelectedLvl2(5,2,4);
         document.getElementById( 'lvl2option52' ).className += " enabled";
 
-        var text = _ImAcMeta.astlanguage[ _ImAc_default.mainlanguage ];
+        var text = _ImAcMeta.adlanguage[ _ImAc_default.mainlanguage ];
 
 
         $("#settingslvl3_5")
@@ -2509,6 +2534,63 @@ var _AudioEnabled = false;
         else 
         {
             document.getElementById( 'btn_adlang_ca' ).className += " enabled";
+        }
+
+    }
+
+    function createADSpeed()
+    {
+        clearMenuLvl3(5);
+        clearSelectedLvl2(5,3,4);
+        document.getElementById( 'lvl2option53' ).className += " enabled";
+
+        var text = _ImAcMeta.adspeed[ _ImAc_default.mainlanguage ];
+
+
+        $("#settingslvl3_5")
+        .append(
+            $('<div class="container-12">')
+            .append(
+                $('<div id="btn_ad_x100" class="container-12 Settings-option2">')
+                .attr('onclick', 'selectOption(this.id)')
+                .append( $('<p>x1</p>') )
+                .append('</div>')
+            )
+            .append(
+                $('<div id="btn_ad_x125" class="container-12 Settings-option2">')
+                .attr('onclick', 'selectOption(this.id)')
+                .append( $('<p>x1.25</p>') )
+                .append('</div>')
+            )
+            .append(
+                $('<div id="btn_ad_x150" class="container-12 Settings-option2">')
+                .attr('onclick', 'selectOption(this.id)')
+                .append( $('<p>x1.5</p>') )
+                .append('</div>')
+            )
+            .append('</div>')
+        )
+        .append(
+            $('<div class="container-12 Settings-desc">')
+            .append(
+                $('</br><p id="text_Desc">')
+                .append( text )
+                .append('</p>')
+            )
+            .append('</div>')
+        )
+
+        if ( _ImAc_default.adspeed == 'x100' )
+        {
+            document.getElementById( 'btn_ad_x100' ).className += " enabled";
+        }
+        else if ( _ImAc_default.adspeed == 'x125' )
+        {
+            document.getElementById( 'btn_ad_x125' ).className += " enabled";
+        }
+        else 
+        {
+            document.getElementById( 'btn_ad_x150' ).className += " enabled";
         }
 
     }

@@ -1085,7 +1085,7 @@ const settingsAudioDescription = { title: 'Audiodescription', icon: './img/acc_s
             SettingsOptionCtrl.updateDropdownOptions(settingsAudioDescriptionVolume);
         } 
     },*/
-    { optId: 'audioDescriptionSpeed', icon: './img/menu/volume_mute_icon.png', text: 'Extra AD Speed', 
+    { optId: 'audioDescriptionSpeed', icon: './img/menu/volume_mute_icon.png', text: 'Extended AD Rate', 
         function:  function(){ 
             SettingsOptionCtrl.updateDropdownOptions(settingsAudioDescriptionSpeed);
         } 

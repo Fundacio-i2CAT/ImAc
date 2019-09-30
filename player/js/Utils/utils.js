@@ -253,8 +253,9 @@ function saveConfig()
     _iconf.astvolume = _AudioManager.getASTVolume() == 100 ? 'max' : _AudioManager.getASTVolume() == 50 ? 'mid' : 'min';
     _iconf.admode = _AudioManager.getADPresentation() == 'VoiceOfGod' ? 'god' : _AudioManager.getADPresentation() == 'Dynamic' ? 'dynamic' : 'friend';
     _iconf.advolume = _AudioManager.getADVolume() == 100 ? 'max' : _AudioManager.getADVolume() == 50 ? 'mid' : 'min';
+    _iconf.adspeed = _AudioManager.getExtraADSpeed() == 1 ? 'x100' : _AudioManager.getExtraADSpeed() == 1.25 ? 'x125' : 'x150';
 
-    document.cookie = "ImAcProfileConfig=" + encodeURIComponent( JSON.stringify( _iconf ) ) + "; max-age=2592000;"; //expires=" + expiresdate.toUTCString(); max-age = 1 mes
+    document.cookie = "ImAcProfileConfig=" + encodeURIComponent( JSON.stringify( _iconf ) ) + "; max-age=2592000" + "; path=/"; //expires=" + expiresdate.toUTCString(); max-age = 1 mes
 }
 
 // Converts from degrees to radians.
@@ -447,12 +448,6 @@ function initExtraAdAudio()
 
         var url = _ManifestParser.getExtraAD();
 
-        /*
-        / sera necesario implentar funcion que bloquee el menu 
-        / para evitar que el usuario pueda hacer play antes que
-        / acabe la reproduccion del audio.
-        */
-
         // Pause all of the ImAc contents
         _ImAc.doPause();
 
@@ -461,10 +456,15 @@ function initExtraAdAudio()
         audio.play();
         audio.volume = 1;
 
+        // modify audio playback rate
+        audio.playbackRate = _AudioManager.getExtraADSpeed();
+
         // Listener to know when the audio is ended
         audio.onended = function() {
             extraADenabled = false;
             _blockControls = false;
+
+            _ImAc.goBack( VideoController.getMediaTime() - _ManifestParser.getExtraADTime() );
             // Play all of the ImAc contents
             _ImAc.doPlay();
 
@@ -473,9 +473,39 @@ function initExtraAdAudio()
 
 }
 
-
 function checkExtraADListByTime(time)
 {
     _ManifestParser.checkExtraAD( Math.trunc(time*100)/100, _AudioManager.getADLanguage() );
 }
+
+function changeSpeed(obj, speed)
+{
+    obj.playbackRate = speed;
+}
+
+function doZoom(mode)
+{
+    if ( mode == 'in' )
+    {
+        camera.fov = camera.fov * 0.5;
+        camera.children.forEach( function( e ) 
+        {
+            e.scale.set( e.scale.x * 0.5, e.scale.x * 0.5, 1)
+        }); 
+
+        camera.updateProjectionMatrix();
+    }
+    else if (camera.fov * 2 <= 60) 
+    {
+        camera.fov = camera.fov * 2;
+        camera.children.forEach( function( e ) 
+        {
+            //e.visible = pos == 'left' ? true : false;
+            e.scale.set( e.scale.x * 2, e.scale.x * 2, 1)
+        }); 
+        //camera.fovx += 10;
+        camera.updateProjectionMatrix();
+    }
+}
+
 

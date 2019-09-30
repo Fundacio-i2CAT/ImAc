@@ -23,7 +23,8 @@ var _ImAc_default = {
     astlanguage: 'en',
     admode: 'dynamic',
     advolume: 'mid',
-    adlanguage: 'en'
+    adlanguage: 'en',
+    adspeed: 'x100'
 }
 
 var _ImAcMeta = {
@@ -431,6 +432,13 @@ var _ImAcMeta = {
 			de: 'Ändern der Lautstärke der Audio Deskription.',
 			ca: "Ajusta el volum de l’audiodescripció."
 		}	
+	},
+	adspeed: {
+		text: 'Playback Rate of the extended AD.',
+		en: 'Playback Rate of the extended AD.',
+		es: 'Selecciona la velocidad de reproducción del extended AD.',
+		de: 'Playback Rate of the extended AD.',
+		ca: "Selecciona la velocitat de reproducció del extended AD."
 	}
 }
 

@@ -304,32 +304,15 @@ var _mouseMoved = false;
 				break;
 
 			case 51:  // 3
-				camera.fov = camera.fov * 0.5;
 
-				camera.children.forEach( function( e ) 
-	        	{
-	        		//e.visible = pos == 'left' ? true : false;
-	        		e.scale.set( e.scale.x * 0.5, e.scale.x * 0.5, 1)
-	            }); 
+				doZoom( 'in' );
 
-
-				camera.updateProjectionMatrix();
 				break;
 
 			case 52:  // 4
 
-				if (camera.fov * 2 <= 60) {
+				doZoom( 'out' );
 
-					camera.fov = camera.fov * 2;
-
-					camera.children.forEach( function( e ) 
-		        	{
-		        		//e.visible = pos == 'left' ? true : false;
-		        		e.scale.set( e.scale.x * 2, e.scale.x * 2, 1)
-		            }); 
-					//camera.fovx += 10;
-					camera.updateProjectionMatrix();
-				}
 				break;
 
 			case 77:  // m
@@ -352,6 +335,7 @@ var _mouseMoved = false;
 		}
 
 	}.bind( this );
+
 
 	this.onDocumentTouchMove = function ( event ) {
 

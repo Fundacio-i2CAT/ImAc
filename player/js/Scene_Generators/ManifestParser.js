@@ -143,23 +143,22 @@ ManifestParser = function() {
     this.checkExtraAD = function(time, lang)
     {
         extraAD_list.forEach( function( elem ) {
-            if ( elem.init != last_time && elem.init >= time-0.1 && elem.init <= time+0.1 && elem.lang == lang ) 
+            if ( elem.init != last_time && elem.init >= time-0.2 && elem.init <= time+0.2 && elem.lang == lang ) 
             {
                 last_time = elem.init;
-
                 extraURL = elem.url;
-                // init beep!
-                var audio = new Audio('./resources/beep.mp3' );
-                audio.play();
+
+                // init beep! + delay 1 seg to start de beep + low volumen
+                _AudioManager.startBeep(1000);
+                
                 // disable all user interactions
                 _blockControls = true;
 
-                //document.addEventListener('click', onClickEvent, false);
-                // start setTimeout of 5 seconds
+                // start setTimeout of 6 seconds
                 setTimeout( () => {
                     if ( !extraADenabled ) _blockControls = false;
                     extraURL = undefined;
-                }, 5000);
+                }, 6000);
 
                 
             }
@@ -169,6 +168,11 @@ ManifestParser = function() {
     this.getExtraAD = function()
     {
         return extraURL;
+    };
+
+    this.getExtraADTime = function()
+    {
+        return last_time;
     };
 
 //************************************************************************************

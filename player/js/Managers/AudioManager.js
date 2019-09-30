@@ -38,6 +38,8 @@ AudioManager = function() {
     var astAvailablePresentation = [];
     var astPresentation = 'VoiceOfGod'; // string (VoiceOfGod (classic), Dynamic)
 
+    var extraADSpeed = 1;
+
 //************************************************************************************
 // Private Functions
 //************************************************************************************
@@ -315,7 +317,23 @@ AudioManager = function() {
             astVolume = level;
             if ( _AST ) _AST.volume = astVolume/100;
         }
-    };   
+    };  
+
+    this.startBeep = function(time)
+    {
+        if ( adEnabled ) _AD.volume = _AD.volume /2;
+
+        setTimeout( () => {
+
+            var audio = new Audio('./resources/beep.mp3' );
+            audio.play();
+
+            audio.onended = function() {
+                if ( adEnabled ) _AD.volume = _AD.volume *2;
+            }
+
+        }, time);
+    } 
 
 //************************************************************************************
 // Public AD Getters
@@ -359,6 +377,11 @@ AudioManager = function() {
             volume: adVolume,
             mode: adPresentation
         };
+    };
+
+    this.getExtraADSpeed = function()
+    {
+        return extraADSpeed;
     };
 
 //************************************************************************************
@@ -422,6 +445,7 @@ AudioManager = function() {
         adVolume = 100;
         adGain = conf.advolume == 'max' ? 1 : conf.advolume == 'mid' ? 0.5 : 0.1;
         adPresentation = conf.admode == 'god' ? 'VoiceOfGod' : conf.admode == 'friend' ? 'Friend' : 'Dynamic';
+        extraADSpeed = conf.adspeed == 'x100' ? 1 : conf.adspeed == 'x125' ? 1.25 : 1.5;
     };
 
     this.setADContent = function(content, lang)
@@ -522,6 +546,11 @@ AudioManager = function() {
         }
     };
 
+    this.setExtraADSpeed = function(speed)
+    {
+        extraADSpeed = speed;
+    }
+
 //************************************************************************************
 // Public AD Checkers
 //************************************************************************************
@@ -544,7 +573,12 @@ AudioManager = function() {
 
     this.checkisADAvailable = function(lang){
         return (list_contents[demoId].acces && list_contents[demoId].acces[0].AD && list_contents[demoId].acces[0].AD.includes((lang) ? lang : _iconf.adlanguage) );
-    }
+    };
+
+    this.checkExtraADSpeed = function(speed)
+    {
+        return extraADSpeed == speed;
+    };
 
     
 

@@ -192,6 +192,23 @@ THREE.InteractionsController = function () {
     }
 
 
+    this.checkInteractionVPB = function(origin, direction, isVR){
+
+        if(isVR){
+            raycaster.set( origin, direction );
+        }
+        else{
+            raycaster.setFromCamera(  origin, direction );
+        }
+
+        let elementArray = (scene.getObjectByName("trad-main-menu")) ? [scene.getObjectByName('background-progress'), scene.getObjectByName('slider-progress')] : [];
+        var intersects = raycaster.intersectObjects( elementArray , true );
+
+        if ( intersects[0] && intersects[0].object.name.localeCompare('slider-progress') != 0){
+            mainMenuCtrl.onClickSeek(intersects[0].object.worldToLocal(intersects[0].point));
+        }
+    }
+
     this.checkInteraction = function(mouse3D, camera, type){
         raycaster.setFromCamera( mouse3D, camera );
         var intersects = raycaster.intersectObjects( interactiveListObjects, true ); // false
@@ -214,10 +231,6 @@ THREE.InteractionsController = function () {
                 if ( intersects[inter].object.type == 'Mesh' && intersects[inter].object.onexecute ){
     	            intersects[inter].object.onexecute();
     	            break;
-                }
-                else if ( intersects[inter].object.type == 'Mesh' && intersects[inter].object.parent && intersects[inter].object.parent.name === 'video-progress-bar'){
-                  mainMenuCtrl.onClickSeek(mouse3D)
-                  break;
                 }
                 else if ( intersects[inter].object.type == 'Mesh' && intersects[inter].object.name && intersects[inter].object.parent ){
     				intersectedShapeId = intersects[inter].object.name;
@@ -247,44 +260,10 @@ THREE.InteractionsController = function () {
                     intersects[inter].object.onexecute();
                     break;
                 }
-                else if ( intersects[inter] && intersects[inter].object && intersects[inter].object.parent && intersects[inter].object.type == 'Mesh' &&  intersects[inter].object.parent.name === 'video-progress-bar'){
-                    mainMenuCtrl.onClickSeek(intersects[inter].point.normalize())
-                    break;
-                }
             }
             freeInteractionState(300);
         }
     };
-
-
-    /*this.checkVRHoverInteraction = function(origin, direction, isVR){
-        raycaster.set( origin, direction );
-        var intersects = raycaster.intersectObjects( interactiveListObjects, true );
-
-        //showAccessIconTooltip(intersects)
-        if ( intersects[0] ){
-            for(var inter = 0; inter < intersects.length; inter++){
-
-                if ( intersects[inter].object.type == 'Mesh' && intersects[inter].object.onexecute ){
-                    //intersects[inter].object.onexecute();
-                    if ( intersects[inter].object.name == 'disable-st-button' ||
-                        intersects[inter].object.name == 'disable-sl-button' ||
-                        intersects[inter].object.name == 'disable-ad-button' ||
-                        intersects[inter].object.name == 'disable-ast-button' ||
-                        intersects[inter].object.name == 'show-st-button' ||
-                        intersects[inter].object.name == 'show-sl-button' ||
-                        intersects[inter].object.name == 'show-ad-button' ||
-                        intersects[inter].object.name == 'show-ast-button' ||
-                        intersects[inter].object.name == 'enhanced-menu-button'  ) onMouseOver( intersects[inter].object.name )
-                    else if ( tooltipVisible ) onMouseOut();
-
-                    break;
-                }
-            }
-        }
-        else if ( tooltipVisible ) onMouseOut();
-    };*/
-
 
     function onMouseOver(name){
         onMouseOut();

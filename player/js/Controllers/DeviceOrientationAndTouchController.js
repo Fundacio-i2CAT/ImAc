@@ -122,6 +122,9 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 		
 		//INTERACTIVITY DETECT
 		interController.checkInteraction(mouse2D, scope.object, 'onDocumentMouseDown');
+	
+	    interController.checkInteractionVPB( mouse2D, scope.object, false);
+
 		
 		//changing state 
 		appState = CONTROLLER_STATE.MANUAL_ROTATE;
@@ -547,6 +550,9 @@ var _mouseMoved = false;
 			direction.applyQuaternion( quat ).normalize();
 
 			interController.checkVRInteraction( _origin, direction );
+
+	    	interController.checkInteractionVPB( _origin, direction, true);
+
 		}
 	}
 

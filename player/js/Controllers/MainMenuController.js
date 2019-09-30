@@ -464,19 +464,16 @@ function MainMenuController() {
      *
      * @param      {<Vector3>}  mouse3D  The mouse 3d
      */
-    this.onClickSeek = function(mouse3D){
+    this.onClickSeek = function(intersectedPoint){
         if(!mainMenuCtrl.getSeekingProcess()){
             mainMenuCtrl.setSeekingProcess(true);
-            
-            const h = (Math.tan(30*Math.PI/180)*67)*2;
-            const w = h*window.innerWidth/window.innerHeight;
-            let norm_vpb_w = (4*menuWidth/5) / (w/2);
-            let slider_position_norm = scene.getObjectByName('slider-progress').position.x / (w/2);
-            let time_diff = mouse3D.x - slider_position_norm;
+
+            let time_diff = intersectedPoint.x - scene.getObjectByName('slider-progress').position.x;
 
             if(Math.round(time_diff*100) != 0){
-                let new_seek_time = Math.round(VideoController.getListOfVideoContents()[0].vid.duration*time_diff/(norm_vpb_w));
+                let new_seek_time = Math.round(VideoController.getListOfVideoContents()[0].vid.duration*time_diff/(4*menuWidth/5));
                 VideoController.seekAll(new_seek_time);
+
             } else console.log("You clicked over the slidder");
         } else console.log("Seeking process running");
     }

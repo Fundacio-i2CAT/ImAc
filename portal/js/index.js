@@ -8,6 +8,8 @@ var UUID;
 
 var _SyncServerIP = '195.81.194.222';
 
+var _AudioEnabled = false;
+
 
 //************************************************************************************
 // Main Functions
@@ -58,25 +60,46 @@ var _SyncServerIP = '195.81.194.222';
     */
     function launchPlayer(id)
     { 
-        gtag('event', 'ContentId', {
-            'event_category' : 'LaunchPlayer',
-            'event_label' : id
-        });
+        if ( list_contents[id].url.split('.').pop() == 'mp3')
+        {
+            if ( !_AudioEnabled )
+            {
+                _AudioEnabled = true;
+                
+                var audio = new Audio( list_contents[id].url );
+                audio.play();
+                audio.volume = 1;
 
-        localStorage.ImAc_init = id;
-        localStorage.ImAc_server = "";
-        localStorage.ImAc_language = document.getElementById('langSelector').value;
-        _ImAc_default.mainlanguage = document.getElementById('langSelector').value;
+                audio.onended = function() { _AudioEnabled = false };
+            }
+        }
+        else 
+        {
+            gtag('event', 'ContentId', {
+                'event_category' : 'LaunchPlayer',
+                'event_label' : id
+            });
 
-        if ( _ImAc_default.userprofile == 'save' )
-            document.cookie = "ImAcProfileConfig=" + encodeURIComponent( JSON.stringify( _ImAc_default ) ) + "; max-age=2592000;";
+            localStorage.ImAc_init = id;
+            localStorage.ImAc_server = "";
+            localStorage.ImAc_language = document.getElementById('langSelector').value;
+            _ImAc_default.mainlanguage = document.getElementById('langSelector').value;
 
-        window.location = window.location.href + 'player/#' + id;
+            if ( _ImAc_default.userprofile == 'save' )
+                document.cookie = "ImAcProfileConfig=" + encodeURIComponent( JSON.stringify( _ImAc_default ) ) + "; max-age=2592000;";
+
+            window.location = window.location.href + 'player/#' + id;
+        }
     }
 
     function playContent()
     {
         launchPlayer( localStorage.ImAc_init );
+    }
+
+    function checkContentTypeById(id)
+    {
+        console.log( list_contents[id].url.split('.').pop() )
     }
 
 //************************************************************************************

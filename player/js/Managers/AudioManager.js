@@ -38,6 +38,8 @@ AudioManager = function() {
     var astAvailablePresentation = [];
     var astPresentation = 'VoiceOfGod'; // string (VoiceOfGod (classic), Dynamic)
 
+    var extraADSpeed = 1;
+
 //************************************************************************************
 // Private Functions
 //************************************************************************************
@@ -377,6 +379,11 @@ AudioManager = function() {
         };
     };
 
+    this.getExtraADSpeed = function()
+    {
+        return extraADSpeed;
+    };
+
 //************************************************************************************
 // Public AST Getters
 //************************************************************************************
@@ -538,6 +545,11 @@ AudioManager = function() {
         }
     };
 
+    this.setExtraADSpeed = function(speed)
+    {
+        extraADSpeed = speed;
+    }
+
 //************************************************************************************
 // Public AD Checkers
 //************************************************************************************
@@ -560,7 +572,12 @@ AudioManager = function() {
 
     this.checkisADAvailable = function(lang){
         return (list_contents[demoId].acces && list_contents[demoId].acces[0].AD && list_contents[demoId].acces[0].AD.includes((lang) ? lang : _iconf.adlanguage) );
-    }
+    };
+
+    this.checkExtraADSpeed = function(speed)
+    {
+        return extraADSpeed == speed;
+    };
 
     
 

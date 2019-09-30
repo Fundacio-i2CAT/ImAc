@@ -1080,12 +1080,18 @@ const settingsAudioDescription = { title: 'Audiodescription', icon: './img/acc_s
             SettingsOptionCtrl.updateDropdownOptions(settingsAudioDescriptionPresentation);
         } 
     },
-    { optId: 'audioDescriptionVolume', icon: './img/menu/volume_mute_icon.png', text: 'Volume', 
+    /*{ optId: 'audioDescriptionVolume', icon: './img/menu/volume_mute_icon.png', text: 'Volume', 
         function:  function(){ 
             SettingsOptionCtrl.updateDropdownOptions(settingsAudioDescriptionVolume);
         } 
+    },*/
+    { optId: 'audioDescriptionSpeed', icon: './img/menu/volume_mute_icon.png', text: 'Extra AD Speed', 
+        function:  function(){ 
+            SettingsOptionCtrl.updateDropdownOptions(settingsAudioDescriptionSpeed);
+        } 
     }]
 };
+
 
 /* *************************************** A U D I O   D E S C R I P T I O N   L A N G U A G E S ***************************************
  * ╔═════════════════════════════════════╗
@@ -1249,6 +1255,55 @@ const settingsAudioDescriptionVolume = { title: 'Volume', icon: './img/menu/volu
         function:  function(){ 
             _AudioManager.setVolume( 'AD', 100 );
             SettingsOptionCtrl.setChildColumnActiveOpt(settingsAudioDescriptionVolume.options[2].optId);
+        } 
+    }]
+};
+
+
+/* *************************************** A U D I O   D E S C R I P T I O N   S P E E D ***************************************
+ * ╔═════════════════════════════════════╗
+ * ║ (<)      Extra AD speed          X  ║
+ * ╠═════════════════════════════════════╣
+ * ║ x1                            Final ║
+ * ║─────────────────────────────────────║
+ * ║ x1.25                         Final ║
+ * ║─────────────────────────────────────║
+ * ║ x1.5                          Final ║
+ * ╚═════════════════════════════════════╝
+ * Visual example of dropdown
+ *
+ * @typedef  {Object}   settingsAudioDescriptionSpeed  Level 2.
+ * @property {string}   title                  The title shown in the dropdown menu.
+ * @property {string}   icon                   Icon path.
+ * @property {Object}   parent                 Reference to previews dropdown menu for back navigation.
+ * @property {boolean}  final                  Is the dropdown in the last level.
+ * @property {array}    options                Array of the different dropdown options
+ * @property {string}   options[].optId        Id reference for the next dropdown level.
+ * @property {string}   options[].text         Title of the dropdown option.
+ * @property {function} options[].available    Function that returns a bool true if option os available, false if option has to be omitted.
+ * @property {function} options[].default      Function that returns a bool true if option is default and starts in yellow.
+ * @property {function} options[].function     Function executed when option is clicked.
+ */
+const settingsAudioDescriptionSpeed = { title: 'Speed', icon: './img/menu/volume_mute_icon.png', parent: settingsAudioDescription, final: true, options: [
+    { optId: 'adSpeed100Button', text: 'x1', 
+        default: function(){ return _AudioManager.checkExtraADSpeed( 1 ); },
+        function:  function(){ 
+            _AudioManager.setExtraADSpeed( 1 );
+            SettingsOptionCtrl.setChildColumnActiveOpt(settingsAudioDescriptionSpeed.options[0].optId);
+        } 
+    },
+    { optId: 'adSpeed125Button', text: 'x1.25', 
+        default: function(){ return _AudioManager.checkExtraADSpeed( 1.25 ); },
+        function:  function(){
+            _AudioManager.setExtraADSpeed( 1.25 );
+            SettingsOptionCtrl.setChildColumnActiveOpt(settingsAudioDescriptionSpeed.options[1].optId);
+        } 
+    },
+    { optId: 'adSpeed150Button', text: 'x1.5', 
+        default: function(){ return _AudioManager.checkExtraADSpeed( 1.5 ); },
+        function:  function(){ 
+            _AudioManager.setExtraADSpeed( 1.5 );
+            SettingsOptionCtrl.setChildColumnActiveOpt(settingsAudioDescriptionSpeed.options[2].optId);
         } 
     }]
 };

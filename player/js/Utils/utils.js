@@ -455,6 +455,9 @@ function initExtraAdAudio()
         audio.play();
         audio.volume = 1;
 
+        // modify audio playback rate
+        audio.playbackRate = _AudioManager.setExtraADSpeed();
+
         // Listener to know when the audio is ended
         audio.onended = function() {
             extraADenabled = false;
@@ -469,9 +472,14 @@ function initExtraAdAudio()
 
 }
 
-
 function checkExtraADListByTime(time)
 {
     _ManifestParser.checkExtraAD( Math.trunc(time*100)/100, _AudioManager.getADLanguage() );
 }
+
+function changeSpeed(obj, speed)
+{
+    obj.playbackRate = speed;
+}
+
 

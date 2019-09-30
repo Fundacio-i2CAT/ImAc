@@ -456,7 +456,7 @@ function initExtraAdAudio()
         audio.volume = 1;
 
         // modify audio playback rate
-        audio.playbackRate = _AudioManager.setExtraADSpeed();
+        audio.playbackRate = _AudioManager.getExtraADSpeed();
 
         // Listener to know when the audio is ended
         audio.onended = function() {

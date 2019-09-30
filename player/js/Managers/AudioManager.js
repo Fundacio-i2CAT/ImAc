@@ -315,7 +315,23 @@ AudioManager = function() {
             astVolume = level;
             if ( _AST ) _AST.volume = astVolume/100;
         }
-    };   
+    };  
+
+    this.startBeep = function(time)
+    {
+        if ( adEnabled ) _AD.volume = _AD.volume /2;
+
+        setTimeout( () => {
+
+            var audio = new Audio('./resources/beep.mp3' );
+            audio.play();
+
+            audio.onended = function() {
+                if ( adEnabled ) _AD.volume = _AD.volume *2;
+            }
+
+        }, time);
+    } 
 
 //************************************************************************************
 // Public AD Getters

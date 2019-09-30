@@ -447,12 +447,6 @@ function initExtraAdAudio()
 
         var url = _ManifestParser.getExtraAD();
 
-        /*
-        / sera necesario implentar funcion que bloquee el menu 
-        / para evitar que el usuario pueda hacer play antes que
-        / acabe la reproduccion del audio.
-        */
-
         // Pause all of the ImAc contents
         _ImAc.doPause();
 
@@ -465,6 +459,8 @@ function initExtraAdAudio()
         audio.onended = function() {
             extraADenabled = false;
             _blockControls = false;
+
+            _ImAc.goBack( VideoController.getMediaTime() - _ManifestParser.getExtraADTime() );
             // Play all of the ImAc contents
             _ImAc.doPlay();
 

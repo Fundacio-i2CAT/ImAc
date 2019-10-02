@@ -466,6 +466,17 @@ SubSignManager = function() {
 
     	subtitleSLMesh = _moData.getSLSubtitleMesh( textList, subBackground, slconfig );
 
+    	// check zoom
+        if ( camera.fov < 60 )
+        {
+        	subtitleSLMesh.scale.set( subtitleSLMesh.scale.x * 0.5, subtitleSLMesh.scale.y * 0.5, 1)
+
+        	if ( camera.fov < 30 )
+	        {
+	        	subtitleSLMesh.scale.set( subtitleSLMesh.scale.x * 0.5, subtitleSLMesh.scale.y * 0.5, 1)
+	        }
+        }
+
         camera.add( subtitleSLMesh );
     }
 

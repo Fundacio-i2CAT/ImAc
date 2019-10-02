@@ -1241,7 +1241,7 @@ const settingsAudioDescriptionVolume = { title: 'Volume', icon: './img/menu/volu
         available: function() { return _AudioManager.checkADGainAvailable('low'); },
         default: function(){ return _AudioManager.checkADGain('low'); },
         function:  function(){ 
-            _AudioManager.setADGain( 1 );
+            _AudioManager.setADGain( 'low' );
             SettingsOptionCtrl.setChildColumnActiveOpt(settingsAudioDescriptionVolume.options[0].optId);
         } 
     },
@@ -1249,7 +1249,7 @@ const settingsAudioDescriptionVolume = { title: 'Volume', icon: './img/menu/volu
         available: function() { return _AudioManager.checkADGainAvailable('medium'); },
         default: function(){ return _AudioManager.checkADGain('medium'); },
         function:  function(){
-            _AudioManager.setADGain( 2 );
+            _AudioManager.setADGain( 'medium' );
             SettingsOptionCtrl.setChildColumnActiveOpt(settingsAudioDescriptionVolume.options[1].optId);
         } 
     },
@@ -1257,7 +1257,7 @@ const settingsAudioDescriptionVolume = { title: 'Volume', icon: './img/menu/volu
         available: function() { return _AudioManager.checkADGainAvailable('high'); },
         default: function(){ return _AudioManager.checkADGain('high'); },
         function:  function(){ 
-            _AudioManager.setADGain( 3 );
+            _AudioManager.setADGain( 'high' );
             SettingsOptionCtrl.setChildColumnActiveOpt(settingsAudioDescriptionVolume.options[2].optId);
         } 
     }]

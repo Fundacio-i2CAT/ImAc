@@ -19,7 +19,7 @@ AudioManager = function() {
     var adContent; // URL
     var adContentArray; // URL
     var adVolume = 100; // Integer: Volume percentage
-    var adGain = 1;
+    var adGain = 'high'; // String (high, medium, low)
     var adEnabled = false; // boolean
     var adLang = 'en'; // string (en, de, ca, es)
     var adAvailableLang = []; // Array { name, value, default:bool }
@@ -30,7 +30,7 @@ AudioManager = function() {
     var _AST;  
     var astContent; // URL
     var astContentArray; // URL
-    var astVolume = 50; // Integer: Volume percentage
+    var astVolume = 100; // Integer: Volume percentage
     var astEnabled = false; // boolean
     var astLang = 'en'; // string (en, de, ca, es)
     var astAvailableLang = []; // Array { name, value, default:bool }
@@ -453,7 +453,7 @@ AudioManager = function() {
         //adEnabled = conf.enabled;
         adLang = conf.adlanguage;
         adVolume = 100;
-        adGain = conf.advolume == 'max' ? 3 : conf.advolume == 'mid' ? 2 : 1;
+        adGain = conf.advolume == 'max' ? 'high' : conf.advolume == 'mid' ? 'medium' : 'low';
         adPresentation = conf.admode == 'god' ? 'VoiceOfGod' : conf.admode == 'friend' ? 'Friend' : 'Dynamic';
         extraADSpeed = conf.adspeed == 'x100' ? 1 : conf.adspeed == 'x125' ? 1.25 : 1.5;
     };

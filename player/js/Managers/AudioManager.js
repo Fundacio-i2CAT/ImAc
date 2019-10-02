@@ -384,6 +384,16 @@ AudioManager = function() {
         return extraADSpeed;
     };
 
+    this.getADAvailableLang = function(lang)
+   {
+       if ( list_contents[demoId].ad[0][lang] ) return lang;
+       else if ( list_contents[demoId].acces[0].AD && list_contents[demoId].ad[0][list_contents[demoId].acces[0].AD[0]] ) {
+           _iconf.adlanguage = list_contents[demoId].acces[0].AD[0];
+           return list_contents[demoId].acces[0].AD[0];
+       }
+       else return;
+   }
+
 //************************************************************************************
 // Public AST Getters
 //************************************************************************************
@@ -443,7 +453,7 @@ AudioManager = function() {
         //adEnabled = conf.enabled;
         adLang = conf.adlanguage;
         adVolume = 100;
-        adGain = conf.advolume == 'max' ? 1 : conf.advolume == 'mid' ? 0.5 : 0.1;
+        adGain = conf.advolume == 'max' ? 3 : conf.advolume == 'mid' ? 2 : 1;
         adPresentation = conf.admode == 'god' ? 'VoiceOfGod' : conf.admode == 'friend' ? 'Friend' : 'Dynamic';
         extraADSpeed = conf.adspeed == 'x100' ? 1 : conf.adspeed == 'x125' ? 1.25 : 1.5;
     };
@@ -453,7 +463,10 @@ AudioManager = function() {
         adLang = lang;
         if ( content )
         {
-            adContent = content[adPresentation];
+            if ( !content[adPresentation] ) adPresentation = Object.keys( content );
+            if ( !content[adPresentation][adGain] ) adGain = Object.keys( content[adPresentation] );
+
+            adContent = content[adPresentation][adGain];
             
             if ( adEnabled ) addAudio( 'AD' );
         }
@@ -462,7 +475,7 @@ AudioManager = function() {
     this.setADPresentation = function(value)
     {
         adPresentation = value;
-        adContent = adContentArray[adLang][adPresentation];
+        adContent = adContentArray[adLang][adPresentation][adGain];
         if ( adEnabled ) addAudio( 'AD' );
     };
 
@@ -551,6 +564,13 @@ AudioManager = function() {
         extraADSpeed = speed;
     }
 
+    this.setADGain = function(gain)
+    {
+        adGain = gain;
+        adContent = adContentArray[adLang][adPresentation][adGain];
+        if ( adEnabled ) addAudio( 'AD' );
+    }
+
 //************************************************************************************
 // Public AD Checkers
 //************************************************************************************
@@ -579,6 +599,11 @@ AudioManager = function() {
     {
         return extraADSpeed == speed;
     };
+
+    this.checkADGain = function(gain)
+    {
+        return adGain == gain;
+    }
 
     
 

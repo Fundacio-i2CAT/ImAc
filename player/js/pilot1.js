@@ -26,4 +26,33 @@ function runDemo()
             camera.remove(xz);
         },8000);
     }
+
+
+    // Test conditions
+
+    // Modificar button VR ??
+
+    // AD pilot -> HL 1, 2, 3 + extra AD (9 contents + AI)
+    if ( window.location.pathname.indexOf('adtest/') > 0 ) 
+    {
+        var interval11 = setTimeout( function() { _AudioManager.switchAD( true ); },1000);
+    }
+    // AST pilot -> Opera amb nous AST (4 contents + AI)
+    else if ( window.location.pathname.indexOf('testast/') > 0 )
+    {
+        var interval11 = setTimeout( function() { _AudioManager.switchAST( true ); },1000);
+    }
+    // AD pilot -> HL 4 + voice control + menu gran (1 content + AI ? )
+    else if ( window.location.pathname.indexOf('testvoice/') > 0 )
+    {
+        // activar menu gran per defecte
+
+        var interval11 = setTimeout( function() {
+            menuMgr.removeMenuFromParent();
+            menuMgr.Init( 1 );
+        },2000);
+        
+        // activar voice control (activar del del portal)
+    }
+
 }

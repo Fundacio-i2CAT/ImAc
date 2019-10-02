@@ -1080,11 +1080,11 @@ const settingsAudioDescription = { title: 'Audiodescription', icon: './img/acc_s
             SettingsOptionCtrl.updateDropdownOptions(settingsAudioDescriptionPresentation);
         } 
     },
-    /*{ optId: 'audioDescriptionVolume', icon: './img/menu/volume_mute_icon.png', text: 'Volume', 
+    { optId: 'audioDescriptionVolume', icon: './img/menu/volume_mute_icon.png', text: 'Volume', 
         function:  function(){ 
             SettingsOptionCtrl.updateDropdownOptions(settingsAudioDescriptionVolume);
         } 
-    },*/
+    },
     { optId: 'audioDescriptionSpeed', icon: './img/menu/volume_mute_icon.png', text: 'Extended AD Rate', 
         function:  function(){ 
             SettingsOptionCtrl.updateDropdownOptions(settingsAudioDescriptionSpeed);
@@ -1237,23 +1237,23 @@ const settingsAudioDescriptionPresentation = { title: 'Presentation', icon: './i
  */
 const settingsAudioDescriptionVolume = { title: 'Volume', icon: './img/menu/volume_mute_icon.png', parent: settingsAudioDescription, final: true, options: [
     { optId: 'adVolumeMinButton', text: 'Minimum', 
-        default: function(){ return _AudioManager.checkADVolume(10); },
+        default: function(){ return _AudioManager.checkADGain(1); },
         function:  function(){ 
-            _AudioManager.setVolume( 'AD', 10 );
+            _AudioManager.setADGain( 1 );
             SettingsOptionCtrl.setChildColumnActiveOpt(settingsAudioDescriptionVolume.options[0].optId);
         } 
     },
     { optId: 'adVolumeMidButton', text: 'Medium', 
-        default: function(){ return _AudioManager.checkADVolume(50); },
+        default: function(){ return _AudioManager.checkADGain(2); },
         function:  function(){
-            _AudioManager.setVolume( 'AD', 50 );
+            _AudioManager.setADGain( 2 );
             SettingsOptionCtrl.setChildColumnActiveOpt(settingsAudioDescriptionVolume.options[1].optId);
         } 
     },
     { optId: 'adVolumeMaxButton', text: 'Maximum', 
-        default: function(){ return _AudioManager.checkADVolume(100); },
+        default: function(){ return _AudioManager.checkADGain(3); },
         function:  function(){ 
-            _AudioManager.setVolume( 'AD', 100 );
+            _AudioManager.setADGain( 3 );
             SettingsOptionCtrl.setChildColumnActiveOpt(settingsAudioDescriptionVolume.options[2].optId);
         } 
     }]

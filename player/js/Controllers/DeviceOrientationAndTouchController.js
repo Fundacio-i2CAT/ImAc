@@ -566,7 +566,7 @@ var _mouseMoved = false;
 			})
 			controller.addEventListener( 'primary press ended', function( event ){
 				//event.target.userData.mesh.material.color.setHex( meshColorOff )
-				stopMenuInterval()
+				//stopMenuInterval()
 			})
 			controller.addEventListener( 'button_0 press began', function( event ){
 				//event.target.userData.mesh.material.color.setHex( meshColorOn )
@@ -575,7 +575,7 @@ var _mouseMoved = false;
 			})
 			controller.addEventListener( 'button_0 press ended', function( event ){
 				//event.target.userData.mesh.material.color.setHex( meshColorOff )
-				stopMenuInterval()
+				//stopMenuInterval()
 			})	
 			controller.addEventListener( 'thumbpad press began', function( event ){
 				//event.target.userData.mesh.material.color.setHex( meshColorOn )
@@ -584,7 +584,7 @@ var _mouseMoved = false;
 			})
 			controller.addEventListener( 'thumbpad press ended', function( event ){
 				//event.target.userData.mesh.material.color.setHex( meshColorOff )
-				stopMenuInterval()
+				//stopMenuInterval()
 			})	
 			controller.addEventListener( 'disconnected', function( event ){
 				controller.parent.remove( controller )

@@ -1238,24 +1238,24 @@ const settingsAudioDescriptionPresentation = { title: 'Presentation', icon: './i
  */
 const settingsAudioDescriptionVolume = { title: 'Volume', icon: './img/menu/volume_mute_icon.png', parent: settingsAudioDescription, final: true, options: [
     { optId: 'adVolumeMinButton', text: 'Minimum', 
-        available: function() { return _AudioManager.checkADGainAvailable(1); },
-        default: function(){ return _AudioManager.checkADGain(1); },
+        available: function() { return _AudioManager.checkADGainAvailable('low'); },
+        default: function(){ return _AudioManager.checkADGain('low'); },
         function:  function(){ 
             _AudioManager.setADGain( 1 );
             SettingsOptionCtrl.setChildColumnActiveOpt(settingsAudioDescriptionVolume.options[0].optId);
         } 
     },
     { optId: 'adVolumeMidButton', text: 'Medium', 
-        available: function() { return _AudioManager.checkADGainAvailable(2); },
-        default: function(){ return _AudioManager.checkADGain(2); },
+        available: function() { return _AudioManager.checkADGainAvailable('medium'); },
+        default: function(){ return _AudioManager.checkADGain('medium'); },
         function:  function(){
             _AudioManager.setADGain( 2 );
             SettingsOptionCtrl.setChildColumnActiveOpt(settingsAudioDescriptionVolume.options[1].optId);
         } 
     },
     { optId: 'adVolumeMaxButton', text: 'Maximum', 
-        available: function() { return _AudioManager.checkADGainAvailable(3); },
-        default: function(){ return _AudioManager.checkADGain(3); },
+        available: function() { return _AudioManager.checkADGainAvailable('high'); },
+        default: function(){ return _AudioManager.checkADGain('high'); },
         function:  function(){ 
             _AudioManager.setADGain( 3 );
             SettingsOptionCtrl.setChildColumnActiveOpt(settingsAudioDescriptionVolume.options[2].optId);

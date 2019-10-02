@@ -603,7 +603,15 @@ AudioManager = function() {
     this.checkADGain = function(gain)
     {
         return adGain == gain;
-    }
+    };
+
+    this.checkADGainAvailable = function(val){
+        if(val){
+            return list_contents[demoId].ad[0][adLang][adPresentation].hasOwnProperty(val)
+        } else {
+            return list_contents[demoId].ad[0][adLang].hasOwnProperty( adPresentation )
+        }
+    };
 
     
 

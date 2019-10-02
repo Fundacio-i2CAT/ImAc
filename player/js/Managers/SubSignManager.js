@@ -427,6 +427,17 @@ SubSignManager = function() {
         subtitleMesh = !_fixedST ? _moData.getEmojiSubtitleMesh( textList, config ) : _moData.getExpEmojiSubtitleMesh( textList, config );
         subtitleMesh.name = "subtitles";
 
+        // check zoom
+        if ( !_fixedST && camera.fov < 60 )
+        {
+        	subtitleMesh.scale.set( subtitleMesh.scale.x * 0.5, subtitleMesh.scale.y * 0.5, 1)
+
+        	if ( camera.fov < 30 )
+	        {
+	        	subtitleMesh.scale.set( subtitleMesh.scale.x * 0.5, subtitleMesh.scale.y * 0.5, 1)
+	        }
+        }
+
         _fixedST ? scene.add( subtitleMesh ) : camera.add( subtitleMesh );
     }
 

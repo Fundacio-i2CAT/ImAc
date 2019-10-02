@@ -485,23 +485,23 @@ function changeSpeed(obj, speed)
 
 function doZoom(mode)
 {
-    if ( mode == 'in' )
+    if ( mode == 'in' && camera.fov * 0.5 >= 15 )
     {
         camera.fov = camera.fov * 0.5;
         camera.children.forEach( function( e ) 
         {
-            e.scale.set( e.scale.x * 0.5, e.scale.x * 0.5, 1)
+            e.scale.set( e.scale.x * 0.5, e.scale.y * 0.5, 1)
         }); 
 
         camera.updateProjectionMatrix();
     }
-    else if (camera.fov * 2 <= 60) 
+    else if ( mode == 'out' && camera.fov * 2 <= 60 ) 
     {
         camera.fov = camera.fov * 2;
         camera.children.forEach( function( e ) 
         {
             //e.visible = pos == 'left' ? true : false;
-            e.scale.set( e.scale.x * 2, e.scale.x * 2, 1)
+            e.scale.set( e.scale.x * 2, e.scale.y * 2, 1)
         }); 
         //camera.fovx += 10;
         camera.updateProjectionMatrix();

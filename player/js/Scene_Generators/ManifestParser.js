@@ -181,6 +181,11 @@ ManifestParser = function() {
         return last_time;
     };
 
+    this.hasExtraADLlist = function()
+    {
+        return extraAD_list.length > 0;
+    }
+
 //************************************************************************************
 // Private Functions
 //************************************************************************************

@@ -143,6 +143,13 @@ MenuFunctionsManager = function() {
         }
     };
 
+    this.getUpdateVolumeFunc = function(volume)
+    {
+        return function() {
+            _AudioManager.setNewVolume( volume );
+        }
+    }
+
     function getSubOnOffFunc(isEnabled)
     {
         return function() {

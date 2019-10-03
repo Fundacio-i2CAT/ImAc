@@ -267,10 +267,11 @@ VideoController = function() {
 
     this.seekAll = function(time)
     {
-        document.dispatchEvent(seekEvent);
+        if (document.dispatchEvent(seekEvent)){ //Custom code
 
-        _Sync.vc( 'play', (listOfVideoContents[0].vid.currentTime + time) * 1000000000 )
-        changeAllCurrentTime( time );
+            _Sync.vc( 'play', (listOfVideoContents[0].vid.currentTime + time) * 1000000000 )
+            changeAllCurrentTime( time );
+        }
     };   
 
     this.speedAll = function(speed)

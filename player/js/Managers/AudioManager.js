@@ -317,7 +317,24 @@ AudioManager = function() {
             astVolume = level;
             if ( _AST ) _AST.volume = astVolume/100;
         }
-    };  
+    }; 
+
+    this.setNewVolume = function(newVolume)
+    {
+        if ( newVolume < 0 ) newVolume = 0;
+        else if ( newVolume > 1 ) newVolume = 1;
+
+        if ( adEnabled )
+        {
+            _AD.volume = newVolume;
+            volume = _AD.volume;
+        }
+        else 
+        {
+            activeVideoElement.volume = newVolume;
+            volume = activeVideoElement.volume;
+        }
+    } 
 
     this.startBeep = function(time)
     {
@@ -616,9 +633,7 @@ AudioManager = function() {
         } else {
             return list_contents[demoId].ad[0][adLang].hasOwnProperty( adPresentation )
         }
-    };
-
-    
+    };  
 
 //************************************************************************************
 // Public AST Setters

@@ -1288,7 +1288,7 @@ const settingsAudioDescriptionVolume = { title: 'Volume', icon: './img/menu/volu
  * @property {function} options[].default      Function that returns a bool true if option is default and starts in yellow.
  * @property {function} options[].function     Function executed when option is clicked.
  */
-const settingsAudioDescriptionSpeed = { title: 'Speed', icon: './img/menu/volume_mute_icon.png', parent: settingsAudioDescription, final: true, options: [
+const settingsAudioDescriptionSpeed = { title: 'Speed', icon: './img/menu/indicator.png', parent: settingsAudioDescription, final: true, options: [
     { optId: 'adSpeed100Button', text: 'x1', 
         default: function(){ return _AudioManager.checkExtraADSpeed( 1 ); },
         function:  function(){ 

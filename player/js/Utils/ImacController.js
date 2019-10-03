@@ -20,6 +20,7 @@ ImAcController = function()
 	this.closeMenu = function() { MenuFunctionsManager.getcloseMenu()() };
 	this.zoomIn = function() { doZoom( 'in' ) };
 	this.zoomOut = function() { doZoom( 'out' ) };
+	this.showExtraAD = function() { MenuFunctionsManager.getActiveExtraADFunc()() };
 }
 
 function launchVoiceCommand( com )
@@ -44,5 +45,7 @@ function launchVoiceCommand( com )
 	// new functionalities
 	else if ( com == 'zoom_in' ) _ImAc.zoomIn();
 	else if ( com == 'zoom_out' ) _ImAc.zoomOut();
+	else if ( com == 'extended_AD_on' ) _ImAc.showExtraAD();
+	else if ( com == 'extended_AD_off' ) console.log('off') //_ImAc.showExtraAD();
 
 }

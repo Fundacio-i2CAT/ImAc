@@ -187,6 +187,11 @@ MenuFunctionsManager = function() {
         menuMgr.initFirstMenuState();   
     }
 
+    this.getActiveExtraADFunc = function()
+    {
+        if ( _blockControls ) initExtraAdAudio();
+    }
+
     this.checkMenuType = function(menuType)
     {
         return menuType == menuMgr.getMenuType();

@@ -241,26 +241,28 @@ VideoController = function() {
 
     this.playAll = function()
     {
-        document.dispatchEvent(playEvent);
+        if (document.dispatchEvent(playEvent)){ //Custom code
 
-    	listOfVideoContents.forEach( function( elem ) { 
-            if (elem.vid.paused) {
-                elem.vid.play().then( _ => {  syncVideos() }); 
-            }
-        }); 
-        listOfAudioContents.forEach( function( elem ) { 
-            if (elem.paused) {
-                elem.play().then( _ => {  syncVideos() }); 
-            }
-        }); 
+        	listOfVideoContents.forEach( function( elem ) { 
+                if (elem.vid.paused) {
+                    elem.vid.play().then( _ => {  syncVideos() }); 
+                }
+            }); 
+            listOfAudioContents.forEach( function( elem ) { 
+                if (elem.paused) {
+                    elem.play().then( _ => {  syncVideos() }); 
+                }
+            }); 
+        }
     };
 
     this.pauseAll = function()
     {
-        document.dispatchEvent(pauseEvent);
+        if (document.dispatchEvent(pauseEvent)){ //Custom code
 
-    	listOfVideoContents.forEach( function( elem ) { elem.vid.pause(); } ); 
-        listOfAudioContents.forEach( function( elem ) { elem.pause(); } );
+        	listOfVideoContents.forEach( function( elem ) { elem.vid.pause(); } ); 
+            listOfAudioContents.forEach( function( elem ) { elem.pause(); } );
+        }
     };
 
     this.seekAll = function(time)
@@ -364,6 +366,12 @@ VideoController = function() {
         }
         else if ( !listOfVideoContents[0].vid.paused ) this.pauseAll();
     }
+
+    this.getMediaDuration = function()
+    {
+        return listOfVideoContents[0].vid.duration;
+    };
+
 }
 
 

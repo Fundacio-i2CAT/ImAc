@@ -369,6 +369,11 @@ AudioManager = function() {
         return adVolume;
     };
 
+    this.getADGain = function()
+    {
+        return adGain;
+    };
+
     this.getADConfig = function()
     {
         return {

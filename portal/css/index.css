@@ -452,6 +452,26 @@ body {
   min-height: 1px;
 }
 
+.container-80 {
+  width: 80%;
+  float: left;
+  position: relative;
+  min-height: 1px;
+}
+
+.container-20 {
+  width: 20%;
+  float: right;
+  position: relative;
+  min-height: 1px;
+}
+
+.container-20 img {
+  width: 50%;
+  min-width: 60px;
+  margin: 0 2rem;
+}
+
 /***************************************************
 * Footer styles
 ****************************************************/

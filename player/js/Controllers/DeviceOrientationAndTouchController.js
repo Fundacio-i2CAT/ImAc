@@ -339,7 +339,7 @@ var _mouseMoved = false;
 
 	this.onDocumentTouchMove = function ( event ) {
 
-		_mouseMoved = true;
+		if ( Math.abs( startX - event.touches[ 0 ].pageX ) > 10 || Math.abs( startY - event.touches[ 0 ].pageY ) > 10 ) _mouseMoved = true;
 
 		if ( event.touches.length == 1 )
 		{
@@ -356,20 +356,20 @@ var _mouseMoved = false;
 			}
 			if (point1 >=0 && point2 >= 0) {
 	 		// Calculate the difference between the start and move coordinates
-	 		var diff1 = tpCache[point1].pageX - event.touches[0].pageX;
+	 			var diff1 = tpCache[point1].pageX - event.touches[0].pageX;
 				var diff2 = tpCache[point2].pageX - event.touches[1].pageX;
 				// This threshold is device dependent as well as application specific
 				//var PINCH_THRESHHOLD = event.target.clientWidth / 10;
 				if ( ( tpCache[point1].pageX < tpCache[point2].pageX && (diff1 - diff2) > 0 ) || ( tpCache[point1].pageX > tpCache[point2].pageX && (diff2 - diff1) > 0 ) ) {
 					//zoom(Math.trunc((diff1 - diff2)/20));
 
-					if (camera.fov * 0.8 >= 10) {
-						camera.fov = camera.fov * 0.8;
+					if ( camera.fov == 60 ) {
+						camera.fov = 30;
 
 						camera.children.forEach( function( e ) 
 			        	{
 			        		//e.visible = pos == 'left' ? true : false;
-			        		e.scale.set( e.scale.x * 0.8, e.scale.x * 0.8, 1)
+			        		e.scale.set( e.scale.x * 0.5, e.scale.y * 0.5, 1)
 			            }); 
 
 						camera.updateProjectionMatrix();
@@ -380,14 +380,14 @@ var _mouseMoved = false;
 				else {
 					//zoom(Math.trunc((diff2 - diff1)/20));
 
-					if (camera.fov * 1.25 <= 60) {
+					if ( camera.fov == 30 ) {
 
-						camera.fov = camera.fov * 1.25;
+						camera.fov = 60;
 
 						camera.children.forEach( function( e ) 
 			        	{
 			        		//e.visible = pos == 'left' ? true : false;
-			        		e.scale.set( e.scale.x * 1.25, e.scale.x * 1.25, 1)
+			        		e.scale.set( e.scale.x * 2, e.scale.y * 2, 1)
 			            }); 
 						//camera.fovx += 10;
 						camera.updateProjectionMatrix();

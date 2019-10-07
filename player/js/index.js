@@ -77,6 +77,7 @@ var _blockControls = false;
 
 let timerCloseMenu;
 
+let sliderSelection;
 
 /**
  * Initializes the web player.

@@ -56,6 +56,7 @@ function MainMenuModel() {
 
 	//Video progress bar
 	this.playScaleX;
+	this.seekScaleX;
 	this.playPositionX;
 	this.sliderPositionX;
 	this.videoPlayOutTimeText;

@@ -166,6 +166,39 @@ function ViewStructureMenuManager() {
         closeBtn.position = new THREE.Vector3( menuWidth/2 - menuWidth/25, menuHeight/2 - menuWidth/25, 0.01 );
         closeBtn.onexecute = function() { console.log("This is the %s button", closeBtn.name) };
 
+
+
+        let closeBtnGroup =  new THREE.Group();
+
+        closeBtnGroup.name = 'close-button-group';
+
+        let menuShapeCloseBtn = _moData.roundedRect( new THREE.Shape(), 2.5 * menuWidth/25, 2.5 * menuWidth/25, 3*menuWidth/100 );
+        let materialCloseBtn = new THREE.MeshBasicMaterial( { color: 0x111111});
+        let geometryCloseBtn = new THREE.ShapeGeometry( menuShapeCloseBtn );
+        let meshCloseBtn =  new THREE.Mesh( geometryCloseBtn, materialCloseBtn);
+
+        var closeBtnZoom = new InteractiveElementModel();
+        closeBtnZoom.width = 2 * menuWidth/25;
+        closeBtnZoom.height = 2 * menuWidth/25;
+        closeBtnZoom.name = 'close-button-zoom';
+        closeBtnZoom.type =  'icon';
+        closeBtnZoom.path = './img/menu/close.png';
+        closeBtnZoom.color = 0xe6e6e6;
+        closeBtnZoom.visible = true;
+        closeBtnZoom.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(menuWidth/25, menuWidth/25), new THREE.MeshBasicMaterial({visible: false}));
+        closeBtnZoom.position = new THREE.Vector3( 0, 0, 0.01 );
+        closeBtnZoom.onexecute = function() { console.log("This is the %s button", closeBtnZoom.name) };
+  
+        meshCloseBtn.add(closeBtnZoom.create());
+        meshCloseBtn.position.set(menuWidth/2 - menuWidth/25, menuHeight/2 - menuWidth/25, 0.02 );
+
+        closeBtnGroup.add(meshCloseBtn);
+        closeBtnGroup.visible = false;
+
+        mainmenu.add(closeBtnGroup);
+
+
+
         // Add all the created elements to the parent group.
         mainmenu.add(seekLBtn.create());
         mainmenu.add(playBtn.create());
@@ -471,7 +504,7 @@ function ViewStructureMenuManager() {
         var enhancedMenuBtnZoom = new InteractiveElementModel();
         enhancedMenuBtnZoom.width = 2 * menuWidth/25;
         enhancedMenuBtnZoom.height = 2 * menuWidth/25;
-        enhancedMenuBtnZoom.name = 'enhanced-menu-button-zomm';
+        enhancedMenuBtnZoom.name = 'enhanced-menu-button-zoom';
         enhancedMenuBtnZoom.type =  'icon';
         enhancedMenuBtnZoom.path = './img/menu/enhanced.png';
         enhancedMenuBtnZoom.color = 0xe6e6e6;
@@ -509,8 +542,15 @@ function ViewStructureMenuManager() {
         vpb.visible = true;
 
         var vpb_background =  new THREE.Mesh( new THREE.ShapeGeometry( vpb_shape_background ), new THREE.MeshBasicMaterial( { color:  0x666666, transparent: true, opacity: 0.8 }));
+        
         vpb_background.position.set( 0, -menuHeight/24, 0.01);
         vpb_background.name = "background-progress";
+
+        // Interaction area 
+        let coliderMesh = new THREE.Mesh( new THREE.PlaneGeometry(4*menuWidth/5, menuHeight/10), new THREE.MeshBasicMaterial({visible: false}));
+        coliderMesh.name = vpb_background.name;
+        coliderMesh.position.z = 0.01
+        vpb_background.add(coliderMesh);
 
         let totaltime = VideoController.getPlayoutTime(VideoController.getListOfVideoContents()[0].vid.duration) || list_contents[demoId].duration;
         
@@ -537,21 +577,28 @@ function ViewStructureMenuManager() {
         videoPlayoutTime.position = new THREE.Vector3( -9*menuWidth/20, -menuHeight/24, 0.01 );
 
         let vpbPlayLeftBorder = new THREE.Mesh( new THREE.CircleGeometry(menuWidth/200,32), new THREE.MeshBasicMaterial( { color: 0xc91355 } ) );
-        vpbPlayLeftBorder.position.set( -4*menuWidth/10 + menuWidth/200, -menuHeight/24, 0.02);
+        vpbPlayLeftBorder.position.set( -4*menuWidth/10 + menuWidth/200, -menuHeight/24, 0.03);
         vpb.add(vpbPlayLeftBorder);
 
-        var vpb_play =  new THREE.Mesh( new THREE.PlaneGeometry( 4*menuWidth/5, menuHeight/25 ), new THREE.MeshBasicMaterial( { color:  0xc91355, transparent: true, opacity: 1 }));
-        vpb_play.position.set( -4*menuWidth/10 + menuWidth/200, -menuHeight/24, 0.02 );
+        var vpb_play =  new THREE.Mesh( new THREE.ShapeGeometry( vpb_shape_background ), new THREE.MeshBasicMaterial( { color:  0xc91355, transparent: true, opacity: 1 }));
+        vpb_play.position.set( 0, -menuHeight/24, 0.03 );
         vpb_play.name = "play-progress";
 
-        var vpb_time_slider = new THREE.Mesh( new THREE.CircleGeometry(menuWidth/100,32), new THREE.MeshBasicMaterial( { color: 0xe6e6e6 } ) );
-        vpb_time_slider.position.set( -4*menuWidth/10, -menuHeight/24, 0.03 );
+        var vpb_seek =  new THREE.Mesh( new THREE.ShapeGeometry( vpb_shape_background ), new THREE.MeshBasicMaterial( { color:  0x939393, transparent: true, opacity: 1 }));
+        vpb_seek.position.set( 0, -menuHeight/24, 0.02 );
+        vpb_seek.visible = false;
+        vpb_seek.name = "seek-progress";
+
+        var vpb_time_slider = new THREE.Mesh( new THREE.CircleGeometry(6*menuWidth/500,32), new THREE.MeshBasicMaterial( { color: 0xc91355 } ) );
+        vpb_time_slider.visible = false;
+        vpb_time_slider.position.set( -4*menuWidth/10, -menuHeight/24, 0.04 );
         vpb_time_slider.name = "slider-progress";
 
         // Add all the created elements to the parent group.
         vpb.add(vpb_background);
         vpb.add(vpb_play);
-        vpb.add( vpb_time_slider );
+        vpb.add(vpb_time_slider);
+        vpb.add(vpb_seek);
 
         vpb.add(videoTotalTime.create());
         vpb.add(videoPlayoutTime.create());

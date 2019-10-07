@@ -40,8 +40,9 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 	var deviceQuat = new THREE.Quaternion();
 	var mouse2D = new THREE.Vector2();
 	//var mouse3D = new THREE.Vector3();
-    var sliderSelection;
     var tpCache = new Array();
+
+    var _mouseMoved = false;
 
 	this.enableManualDrag = true;
 
@@ -61,9 +62,6 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 		}
 		camera.updateProjectionMatrix();
 	}
-
-
-
 
 
 	this.setInteractiveObject = function(object)
@@ -122,9 +120,9 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 		
 		//INTERACTIVITY DETECT
 		interController.checkInteraction(mouse2D, scope.object, 'onDocumentMouseDown');
-	
-	    interController.checkInteractionVPB( mouse2D, scope.object, false);
-
+        if( !_isHMD && scene.getObjectByName('trad-main-menu') && scene.getObjectByName('trad-main-menu').visible) {
+	    	interController.checkInteractionVPB( mouse2D, scope.object);   
+        }
 		
 		//changing state 
 		appState = CONTROLLER_STATE.MANUAL_ROTATE;
@@ -141,14 +139,26 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 	}.bind( this );
 
 
-var _mouseMoved = false;
-
 	this.onDocumentMouseMove = function ( event ) {
-		if ( event.pageX != startX && event.pageX != startX )
+		// While the user has selected the slider in order to week, no video rotation is posible.
+		if ( event.pageX != startX && event.pageX != startX  && !sliderSelection)
 		{
 			_mouseMoved = true;
 			currentX = event.pageX;
 			currentY = event.pageY;
+		}
+
+ 		if( scene.getObjectByName('trad-main-menu') && scene.getObjectByName('trad-main-menu').visible ){
+
+ 			mouse2D.x = _isHMD ? 0 : ( event.clientX / window.innerWidth ) * 2 - 1;
+        	mouse2D.y = _isHMD ? 0 : - ( event.clientY / window.innerHeight ) * 2 + 1;
+
+        	raycaster.setFromCamera(  mouse2D, scope.object );
+			/**
+			 * This function updates the position of the slider after 
+			 * been clicked and during the mousemmove event.
+			 */
+			mainMenuCtrl.updatePositionOnMouseMove(raycaster, sliderSelection);
 		}
 	}.bind( this );
 
@@ -161,6 +171,12 @@ var _mouseMoved = false;
 		else if ( menuMgr.getMenuType() == 1 && scene.getObjectByName( 'trad-option-menu' ).visible == false && scene.getObjectByName( 'trad-main-menu' ).visible == false && !_mouseMoved ) menuMgr.initFirstMenuState();
 		// scene.getObjectByName( 'trad-option-menu' ).visible == false && scene.getObjectByName( 'trad-main-menu' ).visible == false
 		_mouseMoved = false;
+
+		if (sliderSelection) {
+			mainMenuCtrl.setSlidingStatus(false);
+			mainMenuCtrl.onSlideSeek();
+			sliderSelection = null;
+		}
 
 		this.element.removeEventListener( 'mousemove', this.onDocumentMouseMove, false );
 		this.element.removeEventListener( 'mouseup', this.onDocumentMouseUp, false );
@@ -179,7 +195,6 @@ var _mouseMoved = false;
 
 		switch ( event.touches.length ) {
 			case 1: // ROTATE
-			
 				if ( this.enableManualDrag !== true ) return;
 				if (autopositioning == true) {
 
@@ -323,11 +338,11 @@ var _mouseMoved = false;
 				}
 				break;
 
-			//TEST	
+			/*/TEST	
 			case 81:
 				clearTimeout(timerCloseMenu);
 				timerCloseMenu = setTimeout( function(){ menuMgr.ResetViews() }, 5000);
-				break;
+				break;*/
 
 			default:
 				//console.log( event.keyCode )
@@ -387,7 +402,7 @@ var _mouseMoved = false;
 						camera.children.forEach( function( e ) 
 			        	{
 			        		//e.visible = pos == 'left' ? true : false;
-			        		e.scale.set( e.scale.x * 1.25, e.scale.x * 1.25, 1)
+			        		e.scale.set( e.scale.x * 1.25, e.scale.x * 1.25, 1);
 			            }); 
 						//camera.fovx += 10;
 						camera.updateProjectionMatrix();
@@ -535,7 +550,7 @@ var _mouseMoved = false;
 
 			interController.checkVRInteraction( _origin, direction );
 
-	    	interController.checkInteractionVPB( _origin, direction, true);
+	    	interController.checkInteractionVPB( _origin, direction);
 
 		}
 	}
@@ -549,6 +564,8 @@ var _mouseMoved = false;
 	{
 		if ( !gamepadConnected ) 
 		{
+			console.log(event);
+
 			gamepadConnected = true;
 			_moData.createPointer2(); 
 
@@ -566,6 +583,8 @@ var _mouseMoved = false;
 			})
 			controller.addEventListener( 'primary press ended', function( event ){
 				//event.target.userData.mesh.material.color.setHex( meshColorOff )
+
+				//Reset slider status and seek to the final slider position after press envent ends;
 				stopMenuInterval()
 			})
 			controller.addEventListener( 'button_0 press began', function( event ){
@@ -625,6 +644,11 @@ var _mouseMoved = false;
 
 	function stopMenuInterval()
 	{
+		if (sliderSelection) {
+			mainMenuCtrl.setSlidingStatus(false);
+			mainMenuCtrl.onSlideSeek();
+			sliderSelection = null;
+		}
 		clearInterval( openmenuinterval );
 		openmenutimer = 0;
 	}
@@ -675,11 +699,16 @@ var _mouseMoved = false;
 
 			//else{}
 	        if(scene.getObjectByName('trad-option-menu')){
-        		interController.checkInteractionSubMenuHover( _origin, direction, true);
+        		interController.checkInteractionSubMenuHover( _origin, direction);
 	        }
 	        
 	        if(scene.getObjectByName('trad-main-menu')){
-	            interController.showAccessIconTooltip( _origin, direction, true );   
+	            interController.accessIconsHoverOver( _origin, direction);  
+	            interController.vpbHoverOver( _origin, direction );
+	        }
+
+	        if(sliderSelection){
+				mainMenuCtrl.updatePositionOnMouseMove(raycaster, sliderSelection);
 	        }
 
 		}

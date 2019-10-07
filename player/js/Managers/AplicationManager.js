@@ -169,11 +169,12 @@ function AplicationManager()
         subController.updateRadar();
 
         if( !_isHMD && scene.getObjectByName('trad-option-menu') ) {
-            interController.checkInteractionSubMenuHover( mouse3D, camera, false );
+            interController.checkInteractionSubMenuHover( mouse3D, camera);
         }
         
         if( !_isHMD && scene.getObjectByName('trad-main-menu') ) {
-            interController.showAccessIconTooltip( mouse3D, camera, false );    
+            interController.accessIconsHoverOver( mouse3D, camera );  
+            interController.vpbHoverOver( mouse3D, camera )
         }
         
         controls.update();

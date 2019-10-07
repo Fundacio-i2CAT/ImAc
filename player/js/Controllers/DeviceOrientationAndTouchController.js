@@ -656,6 +656,12 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 	
 
 	this.update = function() {
+		if (this.isAndroid){
+	        if(scene.getObjectByName('trad-main-menu')){
+	        	scene.getObjectByName('slider-progress').visible = true;
+	        }	
+		}
+		
 		if (this.isAndroid && !autopositioning && _isHMD) {}
 		else if ( appState !== CONTROLLER_STATE.AUTO ) 
 		{
@@ -690,14 +696,7 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 
                 p2.scale.set( pointscale*dist/10,pointscale*dist/10,pointscale*dist/10 )
             }
-
-           	if ( scene.getObjectByName( "openMenu" ).visible ) {
-
-				
-			}
-			//else interController.checkVRHoverInteraction( _origin, direction );
-
-			//else{}
+ç
 	        if(scene.getObjectByName('trad-option-menu')){
         		interController.checkInteractionSubMenuHover( _origin, direction);
 	        }

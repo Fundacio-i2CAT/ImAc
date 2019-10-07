@@ -143,6 +143,13 @@ MenuFunctionsManager = function() {
         }
     };
 
+    this.getUpdateVolumeFunc = function(volume)
+    {
+        return function() {
+            _AudioManager.setNewVolume( volume );
+        }
+    }
+
     function getSubOnOffFunc(isEnabled)
     {
         return function() {
@@ -185,6 +192,11 @@ MenuFunctionsManager = function() {
         menuMgr.removeMenuFromParent();
         menuMgr.Init(newType);
         menuMgr.initFirstMenuState();   
+    }
+
+    this.getActiveExtraADFunc = function()
+    {
+        if ( _blockControls ) initExtraAdAudio();
     }
 
     this.checkMenuType = function(menuType)

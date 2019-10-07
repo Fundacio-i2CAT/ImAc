@@ -68,7 +68,13 @@ ManifestParser = function() {
                 if ( !ad_list ) ad_list = {};
                 var ad_modeList = {};
                 representationArray.forEach( function( representation ) {  
-                    if ( representation.mode ) ad_modeList[ representation.mode ] = _mpd.manifest.baseUri + representation.BaseURL;
+                    //if ( representation.mode ) ad_modeList[ representation.mode ] = _mpd.manifest.baseUri + representation.BaseURL;
+                    if ( representation.mode ) 
+                    {
+                        if ( !ad_modeList[ representation.mode ] ) ad_modeList[ representation.mode ] = {};
+                        //console.log(representation)
+                        ad_modeList[ representation.mode ][representation.gain] = _mpd.manifest.baseUri + representation.BaseURL;
+                    }
                     else if ( representation.parent_group_id ) 
                     {
                         var extraAD = {};
@@ -175,6 +181,11 @@ ManifestParser = function() {
         return last_time;
     };
 
+    this.hasExtraADLlist = function()
+    {
+        return extraAD_list.length > 0;
+    }
+
 //************************************************************************************
 // Private Functions
 //************************************************************************************
@@ -236,7 +247,7 @@ ManifestParser = function() {
     {
         if ( list_contents[demoId].ad && list_contents[demoId].ad[0] ) 
         {
-            var cookielang = _AudioManager.getADLanguage();
+            var cookielang = _AudioManager.getADAvailableLang( _iconf.adlanguage ); //_AudioManager.getADLanguage();
             var adlang = cookielang ? cookielang : list_contents[demoId].ad[0][lang] ? lang : Object.keys(list_contents[demoId].ad[0])[0];
             _AudioManager.setADContent( list_contents[demoId].ad[0][adlang], adlang );
             _AudioManager.setADLanguagesArray( list_contents[demoId].ad[0] );

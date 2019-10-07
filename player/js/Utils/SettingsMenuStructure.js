@@ -1080,12 +1080,14 @@ const settingsAudioDescription = { title: 'Audiodescription', icon: './img/acc_s
             SettingsOptionCtrl.updateDropdownOptions(settingsAudioDescriptionPresentation);
         } 
     },
-    /*{ optId: 'audioDescriptionVolume', icon: './img/menu/volume_mute_icon.png', text: 'Volume', 
+    { optId: 'audioDescriptionVolume', icon: './img/menu/volume_mute_icon.png', text: 'Volume', 
+        available: function() { return _AudioManager.checkADGainAvailable(); },
         function:  function(){ 
             SettingsOptionCtrl.updateDropdownOptions(settingsAudioDescriptionVolume);
         } 
-    },*/
-    { optId: 'audioDescriptionSpeed', icon: './img/menu/volume_mute_icon.png', text: 'Extended AD Rate', 
+    },
+    { optId: 'audioDescriptionSpeed', icon: './img/menu/volume_mute_icon.png', text: 'Extended AD Rate',
+        available: function() { return _ManifestParser.hasExtraADLlist(); }, 
         function:  function(){ 
             SettingsOptionCtrl.updateDropdownOptions(settingsAudioDescriptionSpeed);
         } 
@@ -1237,23 +1239,26 @@ const settingsAudioDescriptionPresentation = { title: 'Presentation', icon: './i
  */
 const settingsAudioDescriptionVolume = { title: 'Volume', icon: './img/menu/volume_mute_icon.png', parent: settingsAudioDescription, final: true, options: [
     { optId: 'adVolumeMinButton', text: 'Minimum', 
-        default: function(){ return _AudioManager.checkADVolume(10); },
+        available: function() { return _AudioManager.checkADGainAvailable('low'); },
+        default: function(){ return _AudioManager.checkADGain('low'); },
         function:  function(){ 
-            _AudioManager.setVolume( 'AD', 10 );
+            _AudioManager.setADGain( 'low' );
             SettingsOptionCtrl.setChildColumnActiveOpt(settingsAudioDescriptionVolume.options[0].optId);
         } 
     },
     { optId: 'adVolumeMidButton', text: 'Medium', 
-        default: function(){ return _AudioManager.checkADVolume(50); },
+        available: function() { return _AudioManager.checkADGainAvailable('medium'); },
+        default: function(){ return _AudioManager.checkADGain('medium'); },
         function:  function(){
-            _AudioManager.setVolume( 'AD', 50 );
+            _AudioManager.setADGain( 'medium' );
             SettingsOptionCtrl.setChildColumnActiveOpt(settingsAudioDescriptionVolume.options[1].optId);
         } 
     },
     { optId: 'adVolumeMaxButton', text: 'Maximum', 
-        default: function(){ return _AudioManager.checkADVolume(100); },
+        available: function() { return _AudioManager.checkADGainAvailable('high'); },
+        default: function(){ return _AudioManager.checkADGain('high'); },
         function:  function(){ 
-            _AudioManager.setVolume( 'AD', 100 );
+            _AudioManager.setADGain( 'high' );
             SettingsOptionCtrl.setChildColumnActiveOpt(settingsAudioDescriptionVolume.options[2].optId);
         } 
     }]
@@ -1284,7 +1289,7 @@ const settingsAudioDescriptionVolume = { title: 'Volume', icon: './img/menu/volu
  * @property {function} options[].default      Function that returns a bool true if option is default and starts in yellow.
  * @property {function} options[].function     Function executed when option is clicked.
  */
-const settingsAudioDescriptionSpeed = { title: 'Speed', icon: './img/menu/volume_mute_icon.png', parent: settingsAudioDescription, final: true, options: [
+const settingsAudioDescriptionSpeed = { title: 'Speed', icon: './img/menu/indicator.png', parent: settingsAudioDescription, final: true, options: [
     { optId: 'adSpeed100Button', text: 'x1', 
         default: function(){ return _AudioManager.checkExtraADSpeed( 1 ); },
         function:  function(){ 

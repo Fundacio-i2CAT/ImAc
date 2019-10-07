@@ -452,6 +452,26 @@ body {
   min-height: 1px;
 }
 
+.container-80 {
+  width: 80%;
+  float: left;
+  position: relative;
+  min-height: 1px;
+}
+
+.container-20 {
+  width: 20%;
+  float: right;
+  position: relative;
+  min-height: 1px;
+}
+
+.container-20 img {
+  width: 50%;
+  min-width: 60px;
+  margin-left: 2rem;
+}
+
 /***************************************************
 * Footer styles
 ****************************************************/
@@ -485,7 +505,7 @@ body {
 }
 
 .Partners-container {
-  width: 10%;
+  width: 11.1%;
   height: 4vw;
   float: left;
   position: relative;

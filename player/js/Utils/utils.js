@@ -144,7 +144,7 @@ function createVRButton_1(renderer)
     navigator.getVRDisplays().then( function ( displays ) 
     {
         AplicationManager.setDisplays( displays );
-        displays.length > 0 ? showEnterVR( displays[ 0 ] ) : createDelayedMenu();
+        displays.length > 0 && !_isTV ? showEnterVR( displays[ 0 ] ) : createDelayedMenu();
     });
 
     AplicationManager.setVRButton1( button );
@@ -184,7 +184,7 @@ function createVRButton_2(renderer)
 
     navigator.getVRDisplays().then( function ( displays ) 
     {
-        if ( displays.length > 0 ) showEnterVR();
+        if ( displays.length > 0 && !_isTV ) showEnterVR();
     });
 
     AplicationManager.setVRButton2( button );
@@ -252,7 +252,7 @@ function saveConfig()
     _iconf.astmode = _AudioManager.getASTPresentation() == 'VoiceOfGod' ? 'god' : 'dynamic';
     _iconf.astvolume = _AudioManager.getASTVolume() == 100 ? 'max' : _AudioManager.getASTVolume() == 50 ? 'mid' : 'min';
     _iconf.admode = _AudioManager.getADPresentation() == 'VoiceOfGod' ? 'god' : _AudioManager.getADPresentation() == 'Dynamic' ? 'dynamic' : 'friend';
-    _iconf.advolume = _AudioManager.getADVolume() == 100 ? 'max' : _AudioManager.getADVolume() == 50 ? 'mid' : 'min';
+    _iconf.advolume = _AudioManager.getADGain() == 'high' ? 'max' : _AudioManager.getADGain() == 'medium' ? 'mid' : 'min';
     _iconf.adspeed = _AudioManager.getExtraADSpeed() == 1 ? 'x100' : _AudioManager.getExtraADSpeed() == 1.25 ? 'x125' : 'x150';
 
     document.cookie = "ImAcProfileConfig=" + encodeURIComponent( JSON.stringify( _iconf ) ) + "; max-age=2592000" + "; path=/"; //expires=" + expiresdate.toUTCString(); max-age = 1 mes
@@ -485,23 +485,23 @@ function changeSpeed(obj, speed)
 
 function doZoom(mode)
 {
-    if ( mode == 'in' )
+    if ( mode == 'in' && camera.fov * 0.5 >= 15 )
     {
         camera.fov = camera.fov * 0.5;
         camera.children.forEach( function( e ) 
         {
-            e.scale.set( e.scale.x * 0.5, e.scale.x * 0.5, 1)
+            e.scale.set( e.scale.x * 0.5, e.scale.y * 0.5, 1)
         }); 
 
         camera.updateProjectionMatrix();
     }
-    else if (camera.fov * 2 <= 60) 
+    else if ( mode == 'out' && camera.fov * 2 <= 60 ) 
     {
         camera.fov = camera.fov * 2;
         camera.children.forEach( function( e ) 
         {
             //e.visible = pos == 'left' ? true : false;
-            e.scale.set( e.scale.x * 2, e.scale.x * 2, 1)
+            e.scale.set( e.scale.x * 2, e.scale.y * 2, 1)
         }); 
         //camera.fovx += 10;
         camera.updateProjectionMatrix();

@@ -241,34 +241,37 @@ VideoController = function() {
 
     this.playAll = function()
     {
-        document.dispatchEvent(playEvent);
+        if (document.dispatchEvent(playEvent)){ //Custom code
 
-    	listOfVideoContents.forEach( function( elem ) { 
-            if (elem.vid.paused) {
-                elem.vid.play().then( _ => {  syncVideos() }); 
-            }
-        }); 
-        listOfAudioContents.forEach( function( elem ) { 
-            if (elem.paused) {
-                elem.play().then( _ => {  syncVideos() }); 
-            }
-        }); 
+        	listOfVideoContents.forEach( function( elem ) { 
+                if (elem.vid.paused) {
+                    elem.vid.play().then( _ => {  syncVideos() }); 
+                }
+            }); 
+            listOfAudioContents.forEach( function( elem ) { 
+                if (elem.paused) {
+                    elem.play().then( _ => {  syncVideos() }); 
+                }
+            }); 
+        }
     };
 
     this.pauseAll = function()
     {
-        document.dispatchEvent(pauseEvent);
+        if (document.dispatchEvent(pauseEvent)){ //Custom code
 
-    	listOfVideoContents.forEach( function( elem ) { elem.vid.pause(); } ); 
-        listOfAudioContents.forEach( function( elem ) { elem.pause(); } );
+        	listOfVideoContents.forEach( function( elem ) { elem.vid.pause(); } ); 
+            listOfAudioContents.forEach( function( elem ) { elem.pause(); } );
+        }
     };
 
     this.seekAll = function(time)
     {
-        document.dispatchEvent(seekEvent);
+        if (document.dispatchEvent(seekEvent)){ //Custom code
 
-        _Sync.vc( 'play', (listOfVideoContents[0].vid.currentTime + time) * 1000000000 )
-        changeAllCurrentTime( time );
+            _Sync.vc( 'play', (listOfVideoContents[0].vid.currentTime + time) * 1000000000 )
+            changeAllCurrentTime( time );
+        }
     };   
 
     this.speedAll = function(speed)
@@ -364,6 +367,12 @@ VideoController = function() {
         }
         else if ( !listOfVideoContents[0].vid.paused ) this.pauseAll();
     }
+
+    this.getMediaDuration = function()
+    {
+        return listOfVideoContents[0].vid.duration;
+    };
+
 }
 
 

@@ -5,6 +5,7 @@ ImAcController = function()
 	this.doPause = function() { MenuFunctionsManager.getPlayPauseFunc( false )() };
 	this.volumeUp = function() { MenuFunctionsManager.getChangeVolumeFunc( true )() };
 	this.volumeDown = function() { MenuFunctionsManager.getChangeVolumeFunc( false )() };
+	this.setVolume = function( volume ) { MenuFunctionsManager.getUpdateVolumeFunc( volume/10 )() };
 	this.goForward = function( time ) { MenuFunctionsManager.getSeekFunc( true, time )() };
 	this.goBack = function( time ) { MenuFunctionsManager.getSeekFunc( false, time )() };
 	this.changePlaybackRate = function( speed ) { MenuFunctionsManager.getSpeedFunc( speed )() };
@@ -20,6 +21,7 @@ ImAcController = function()
 	this.closeMenu = function() { MenuFunctionsManager.getcloseMenu()() };
 	this.zoomIn = function() { doZoom( 'in' ) };
 	this.zoomOut = function() { doZoom( 'out' ) };
+	this.showExtraAD = function() { MenuFunctionsManager.getActiveExtraADFunc()() };
 }
 
 function launchVoiceCommand( com )
@@ -44,5 +46,8 @@ function launchVoiceCommand( com )
 	// new functionalities
 	else if ( com == 'zoom_in' ) _ImAc.zoomIn();
 	else if ( com == 'zoom_out' ) _ImAc.zoomOut();
+	else if ( com == 'extended_AD_on' ) _ImAc.showExtraAD();
+	else if ( com == 'extended_AD_off' ) console.log('off') //_ImAc.showExtraAD();
+	else if ( com.includes("volume_x|") ) _ImAc.setVolume( com.split("volume_x|")[1] );
 
 }

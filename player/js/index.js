@@ -78,6 +78,7 @@ var _blockControls = false;
 let timerCloseMenu;
 
 let sliderSelection;
+var _isTV = false;
 
 /**
  * Initializes the web player.
@@ -108,7 +109,9 @@ function init_webplayer()
                 localStorage.removeItem('ImAc_init');
                 localStorage.ImAc_language ? MenuDictionary.setMainLanguage( localStorage.ImAc_language ) : MenuDictionary.setMainLanguage( 'en' );
 
-                mainContentURL = list_contents[ myhash[1] ].url;
+                _isTV = localStorage.ImAc_lineal == 'true' && list_contents[ myhash[1] ].urlTV ? true : false;
+
+                mainContentURL = ( _isTV && list_contents[ myhash[1] ].urlTV ) ? list_contents[ myhash[1] ].urlTV : list_contents[ myhash[1] ].url;
 
                 if ( localStorage.ImAc_voiceControl == 'on' ) connectVoiceControl( localStorage.ImAc_voiceControlId, "http://51.89.138.157:3000/" );
 
@@ -118,6 +121,7 @@ function init_webplayer()
                 if ( cookieconf && cookieconf != null )
                 {
                     _iconf = JSON.parse( cookieconf );
+
 
                     console.log( _iconf )
                     subController.setSTConfig( _iconf );

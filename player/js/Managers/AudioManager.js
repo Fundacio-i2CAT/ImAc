@@ -19,7 +19,7 @@ AudioManager = function() {
     var adContent; // URL
     var adContentArray; // URL
     var adVolume = 100; // Integer: Volume percentage
-    var adGain = 1;
+    var adGain = 'high'; // String (high, medium, low)
     var adEnabled = false; // boolean
     var adLang = 'en'; // string (en, de, ca, es)
     var adAvailableLang = []; // Array { name, value, default:bool }
@@ -30,7 +30,7 @@ AudioManager = function() {
     var _AST;  
     var astContent; // URL
     var astContentArray; // URL
-    var astVolume = 50; // Integer: Volume percentage
+    var astVolume = 100; // Integer: Volume percentage
     var astEnabled = false; // boolean
     var astLang = 'en'; // string (en, de, ca, es)
     var astAvailableLang = []; // Array { name, value, default:bool }
@@ -317,7 +317,24 @@ AudioManager = function() {
             astVolume = level;
             if ( _AST ) _AST.volume = astVolume/100;
         }
-    };  
+    }; 
+
+    this.setNewVolume = function(newVolume)
+    {
+        if ( newVolume < 0 ) newVolume = 0;
+        else if ( newVolume > 1 ) newVolume = 1;
+
+        if ( adEnabled )
+        {
+            _AD.volume = newVolume;
+            volume = _AD.volume;
+        }
+        else 
+        {
+            activeVideoElement.volume = newVolume;
+            volume = activeVideoElement.volume;
+        }
+    } 
 
     this.startBeep = function(time)
     {
@@ -369,6 +386,11 @@ AudioManager = function() {
         return adVolume;
     };
 
+    this.getADGain = function()
+    {
+        return adGain;
+    };
+
     this.getADConfig = function()
     {
         return {
@@ -383,6 +405,16 @@ AudioManager = function() {
     {
         return extraADSpeed;
     };
+
+    this.getADAvailableLang = function(lang)
+   {
+       if ( list_contents[demoId].ad[0][lang] ) return lang;
+       else if ( list_contents[demoId].acces[0].AD && list_contents[demoId].ad[0][list_contents[demoId].acces[0].AD[0]] ) {
+           _iconf.adlanguage = list_contents[demoId].acces[0].AD[0];
+           return list_contents[demoId].acces[0].AD[0];
+       }
+       else return;
+   }
 
 //************************************************************************************
 // Public AST Getters
@@ -443,7 +475,7 @@ AudioManager = function() {
         //adEnabled = conf.enabled;
         adLang = conf.adlanguage;
         adVolume = 100;
-        adGain = conf.advolume == 'max' ? 1 : conf.advolume == 'mid' ? 0.5 : 0.1;
+        adGain = conf.advolume == 'max' ? 'high' : conf.advolume == 'mid' ? 'medium' : 'low';
         adPresentation = conf.admode == 'god' ? 'VoiceOfGod' : conf.admode == 'friend' ? 'Friend' : 'Dynamic';
         extraADSpeed = conf.adspeed == 'x100' ? 1 : conf.adspeed == 'x125' ? 1.25 : 1.5;
     };
@@ -453,7 +485,10 @@ AudioManager = function() {
         adLang = lang;
         if ( content )
         {
-            adContent = content[adPresentation];
+            if ( !content[adPresentation] ) adPresentation = Object.keys( content );
+            if ( !content[adPresentation][adGain] ) adGain = Object.keys( content[adPresentation] );
+
+            adContent = content[adPresentation][adGain];
             
             if ( adEnabled ) addAudio( 'AD' );
         }
@@ -462,7 +497,7 @@ AudioManager = function() {
     this.setADPresentation = function(value)
     {
         adPresentation = value;
-        adContent = adContentArray[adLang][adPresentation];
+        adContent = adContentArray[adLang][adPresentation][adGain];
         if ( adEnabled ) addAudio( 'AD' );
     };
 
@@ -551,6 +586,13 @@ AudioManager = function() {
         extraADSpeed = speed;
     }
 
+    this.setADGain = function(gain)
+    {
+        adGain = gain;
+        adContent = adContentArray[adLang][adPresentation][adGain];
+        if ( adEnabled ) addAudio( 'AD' );
+    }
+
 //************************************************************************************
 // Public AD Checkers
 //************************************************************************************
@@ -580,7 +622,18 @@ AudioManager = function() {
         return extraADSpeed == speed;
     };
 
-    
+    this.checkADGain = function(gain)
+    {
+        return adGain == gain;
+    };
+
+    this.checkADGainAvailable = function(val){
+        if(val){
+            return list_contents[demoId].ad[0][adLang][adPresentation].hasOwnProperty(val)
+        } else {
+            return list_contents[demoId].ad[0][adLang].hasOwnProperty( adPresentation )
+        }
+    };  
 
 //************************************************************************************
 // Public AST Setters

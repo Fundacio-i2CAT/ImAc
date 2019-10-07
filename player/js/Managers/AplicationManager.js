@@ -104,7 +104,9 @@ function AplicationManager()
 
 		_moData.createOpenMenuMesh();
 
-        scene.add( _moData.getSphericalVideoMesh( 100, mainContentURL, 'contentsphere' ) )
+        //scene.add( _moData.getSphericalVideoMesh( 100, mainContentURL, 'contentsphere' ) )
+
+        _isTV ? camera.add( _moData.getDirectiveVideo( mainContentURL, 'contentsphere' ) ) : scene.add( _moData.getSphericalVideoMesh( 100, mainContentURL, 'contentsphere' ) );
 
         if ( 'getVRDisplays' in navigator ) {
 

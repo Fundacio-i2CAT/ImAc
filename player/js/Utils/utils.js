@@ -144,7 +144,7 @@ function createVRButton_1(renderer)
     navigator.getVRDisplays().then( function ( displays ) 
     {
         AplicationManager.setDisplays( displays );
-        displays.length > 0 ? showEnterVR( displays[ 0 ] ) : createDelayedMenu();
+        displays.length > 0 && !_isTV ? showEnterVR( displays[ 0 ] ) : createDelayedMenu();
     });
 
     AplicationManager.setVRButton1( button );
@@ -184,7 +184,7 @@ function createVRButton_2(renderer)
 
     navigator.getVRDisplays().then( function ( displays ) 
     {
-        if ( displays.length > 0 ) showEnterVR();
+        if ( displays.length > 0 && !_isTV ) showEnterVR();
     });
 
     AplicationManager.setVRButton2( button );

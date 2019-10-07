@@ -39,6 +39,16 @@ THREE.MediaObjectData = function () {
         return getVideoMesh( geometry, url, name, 0 );
     };
 
+    this.getDirectiveVideo = function(url, name) 
+    {
+        var geometry = new THREE.PlaneGeometry( 160, 90 );
+        var sphere = getVideoMesh( geometry, url, name, 0 );
+
+        sphere.position.z = -78;
+
+        return sphere;
+    };
+
     this.getSphericalColorMesh = function(size, color, name) 
     {
         var geometry = new THREE.SphereBufferGeometry( size, 32, 32, Math.PI/2 );

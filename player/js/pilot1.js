@@ -44,7 +44,7 @@ function runDemo()
     else if ( window.location.pathname.indexOf('voicetest/') > 0 )
     {
         // activar menu gran per defecte
-
+        _iconf.menutype= 'ls';
         var interval11 = setTimeout( function() {
             menuMgr.removeMenuFromParent();
             menuMgr.Init( 1 );

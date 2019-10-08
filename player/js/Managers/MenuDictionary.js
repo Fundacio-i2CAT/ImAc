@@ -27,7 +27,7 @@ MenuDictionary = function() {
     //                   ||                        ||                        ||                        ||                        ||
     //-------------------||------------------------||------------------------||------------------------||------------------------||
     //                   ||                        ||                        ||                        ||                        ||
-        access:          { ca: 'Accessibilitat'    , de: 'Barrierefreiheit'  , en: 'Accessibility'     , es: 'Accesibilidad'     },
+        access:          {ca:'Serv. Accessibilitat', de:'Barrierefreie Dienste', en: 'Access Services', es: 'Serv. Accesibilidad'},
     //                   ||                        ||                        ||                        ||                        ||
         anchored:        { ca: 'Anchored'          , de: 'Anchored'          , en: 'Anchored'          , es: 'Anchored'          },
     //                   ||                        ||                        ||                        ||                        ||
@@ -65,6 +65,8 @@ MenuDictionary = function() {
     //                   ||                        ||                        ||                        ||                        ||
         language:        { ca: 'Idioma'            , de: 'Sprache'           , en: 'Language'          , es: 'Idioma'            },
     //                   ||                        ||                        ||                        ||                        ||
+        languagemenu:    { ca: 'Idioma del menú'   , de: 'Menüsprache'       , en: 'Menu language'     , es: 'Idioma del menú'   },
+    //                   ||                        ||                        ||                        ||                        ||
         large:           { ca: 'Gran'              , de: 'Groß'              , en: 'Large'             , es: 'Grande'            },
     //                   ||                        ||                        ||                        ||                        ||
         left:            { ca: 'Esquerra'          , de: 'Links'             , en: 'Left'              , es: 'Izquierda'         },
@@ -78,6 +80,8 @@ MenuDictionary = function() {
         off:             { ca: 'Desactiva'         , de: 'Aus'               , en: 'Off'               , es: 'Desactiva'         },
     //                   ||                        ||                        ||                        ||                        ||
         on:              { ca: 'Activa'            , de: 'An'                , en: 'On'                , es: 'Activa'            },
+    //                   ||                        ||                        ||                        ||                        ||
+        openmenu:        { ca: 'Open Menu'         , de: 'Open Menu'         , en: 'Open Menu'         , es: 'Open Menu'         },
     //                   ||                        ||                        ||                        ||                        ||
         outline:         { ca: 'Contorn'           , de: 'Umrandung'         , en: 'Outline'           , es: 'Contorno'          },
     //                   ||                        ||                        ||                        ||                        ||

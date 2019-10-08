@@ -1,7 +1,7 @@
 
 // GLOBAL VARS
 
-var _PlayerVersion = 'v0.07.0';
+var _PlayerVersion = 'v0.09.0';
 
 var AplicationManager = new AplicationManager();
 var MenuFunctionsManager = new MenuFunctionsManager();
@@ -30,9 +30,16 @@ let mainMenuCtrl;
 let SettingsOptionCtrl;
 let multiOptionsPreviewCtrl;
 
-var menuParent;
-var menuHeight;
-var menuWidth;
+let menu;
+let settingsMenu;
+let menuParent;
+let menuHeight;
+let menuWidth;
+let menuPositionY;
+let mensuSettingsPostionX;
+
+let menuUpDown = 1;
+
 
 var loggerActivated = false;
 
@@ -49,7 +56,6 @@ var __etype = 0;
 
 var _fixedST = false;
 var _SLsubtitles = false;
-var _NonCont = false;
 var _iconf;
 var _userprofile = true;
 var _ws_vc;
@@ -66,6 +72,12 @@ var _isHMD = false;
 var autopositioning = false;
 var radarautopositioning = false;
 
+var _blockControls = false;
+
+let timerCloseMenu;
+
+let sliderSelection;
+var _isTV = false;
 
 /**
  * Initializes the web player.
@@ -91,10 +103,14 @@ function init_webplayer()
 
             if ( myhash && myhash[1] && myhash[1] < list_contents.length && list_contents[ myhash[1] ] && localStorage.ImAc_init == myhash[1] ) 
             {
+                demoId = myhash[1];
+                
                 localStorage.removeItem('ImAc_init');
                 localStorage.ImAc_language ? MenuDictionary.setMainLanguage( localStorage.ImAc_language ) : MenuDictionary.setMainLanguage( 'en' );
 
-                mainContentURL = list_contents[ myhash[1] ].url;
+                _isTV = localStorage.ImAc_lineal == 'true' && list_contents[ myhash[1] ].urlTV ? true : false;
+
+                mainContentURL = ( _isTV && list_contents[ myhash[1] ].urlTV ) ? list_contents[ myhash[1] ].urlTV : list_contents[ myhash[1] ].url;
 
                 if ( localStorage.ImAc_voiceControl == 'on' ) connectVoiceControl( localStorage.ImAc_voiceControlId, "http://51.89.138.157:3000/" );
 
@@ -105,6 +121,8 @@ function init_webplayer()
                 {
                     _iconf = JSON.parse( cookieconf );
 
+                    //_iconf.menutype= 'ls';
+
                     console.log( _iconf )
                     subController.setSTConfig( _iconf );
                     subController.setSLConfig( _iconf );
@@ -114,11 +132,9 @@ function init_webplayer()
                 }
                 ////////////////////////////////////////////////////////////////
 
-                demoId = myhash[1];
-
                 if ( !_iconf ) _iconf = [];
                 
-                _iconf.accesslanguage = (MenuDictionary.isMainLanguageAvailable(_iconf.accesslanguage)) ? _iconf.accesslanguage : MenuDictionary.getAvailableLanguage();
+                //_iconf.accesslanguage = (MenuDictionary.isMainLanguageAvailable(_iconf.accesslanguage)) ? _iconf.accesslanguage : MenuDictionary.getAvailableLanguage();
 
                 AplicationManager.init();
 

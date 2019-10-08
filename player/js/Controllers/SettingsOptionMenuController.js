@@ -88,6 +88,7 @@ function SettingsOptionMenuController() {
 
     this.setChildColumnActiveOpt = function(name){
         data.childColumnActiveOpt = name;
+        if ( scene.getObjectByName(name) ) data.default = scene.getObjectByName(name).children[0];
         view.UpdateView(data);
     }
 
@@ -115,6 +116,7 @@ function SettingsOptionMenuController() {
         data.parentColumnDropdown = AddDropdownOptions((data.activeMenuOpts)? data.activeMenuOpts : settingsDropdownOpt);
         data.backMenuButtonFunc = function(){ AddVisualFeedbackOnClick('back-button', function(){ SettingsOptionCtrl.updateDropdownOptions(data.parentDropdownData)} )};
         data.closeOptMenuButtonFunc = function(){ AddVisualFeedbackOnClick('close-button-opt', function(){ SettingsOptionCtrl.close() } )};
+        data.previewButtonFunc = function(){ AddVisualFeedbackOnClick('preview-button', function(){menuMgr.OpenPreview()} )};
     }
 
 /**
@@ -154,14 +156,14 @@ function SettingsOptionMenuController() {
         let options = menuOpts.options.filter(opt => !opt.available || opt.available());
 
         let dropdownInteractiveElements = [];
-        const h = optHeight*options.length;
+        const h = optHeight/2*options.length;
 
-        data.titleHeight = options.length * optHeight;
         data.hasParentDropdown = menuOpts.parent ? true : false;
         data.isFinalDrop = menuOpts.final;
         data.parentDropdownData = menuOpts.parent;
         data.title = MenuDictionary.translate( menuOpts.title );
         data.icon = menuOpts.icon;
+        data.isPreviewVisible = menuOpts.preview ? true : false;
 
         options.forEach(function(opt, index){
             let dropdownIE = new InteractiveElementModel();
@@ -173,11 +175,14 @@ function SettingsOptionMenuController() {
             dropdownIE.text = MenuDictionary.translate( opt.text );
             dropdownIE.path = opt.icon;
             dropdownIE.textSize = menuWidth/40;
-            dropdownIE.color = ((opt.default) ? opt.default() : false) ? 0xffff00 : 0xe6e6e6;
+            dropdownIE.color = 0xe6e6e6;
             dropdownIE.visible = true;
             dropdownIE.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(dropdownIE.width, dropdownIE.height), new THREE.MeshBasicMaterial({visible:  false}));
             dropdownIE.onexecute = opt.function; 
             dropdownIE.position = new THREE.Vector3(0, h - (index+1)*optHeight, 0.01);
+
+            if((opt.default) ? opt.default() : false) data.default = dropdownIE;
+
 
             dropdownInteractiveElements.push(dropdownIE.create());
         });
@@ -193,6 +198,10 @@ function SettingsOptionMenuController() {
     this.updateDropdownOptions = function(menuOpts){
         data.activeMenuOpts = menuOpts;
         data.parentColumnDropdown = AddDropdownOptions(menuOpts);
+        view.UpdateView(data);
+    }
+
+    this.UpdateView = function(){
         view.UpdateView(data);
     }
 

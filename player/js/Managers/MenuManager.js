@@ -11,7 +11,6 @@ function MenuManager() {
     let actualCtrl;
     let menuActivationElement;
     let optActiveIndex;
-    let menu;
 
 /**
  * { function_description }
@@ -28,20 +27,23 @@ function MenuManager() {
         menuHeight = menuWidth/4;
         
         menuParent = _isHMD ? scene : camera;
+        menu = vwStrucMMngr.TraditionalMenu('trad-main-menu');
+
 
         //Add the menu to the parent element.
         if (_isHMD) {
-            console.log("This function is used. But is it vital?");
-            traditionalmenu.scale.set( 0.8, 0.8, 0.8 );
+            //console.log("This function is used. But is it vital?");
+            menu.scale.set( 0.8, 0.8, 0.8 );
+            //traditionalmenu.scale.set( 0.8, 0.8, 0.8 );
         }
-        menuParent.add(vwStrucMMngr.TraditionalMenu('traditional-menu'));
-        menu = menuParent.getObjectByName('traditional-menu');
+        menuParent.add(menu);
 
+        settingsMenu = vwStrucMMngr.TraditionalOptionMenu('trad-option-menu')
         //Depending on the menu type the menu is attached to the menuParent or to the traditional menu
         if(menuMgr.getMenuType() == 2){
-            menu.add(vwStrucMMngr.TraditionalOptionMenu('trad-option-menu'));
+            menu.add(settingsMenu);
         } else {
-            menuParent.add(vwStrucMMngr.TraditionalOptionMenu('trad-option-menu'));
+            menuParent.add(settingsMenu);
         }
 
         mainMenuCtrl = new MainMenuController();
@@ -143,7 +145,7 @@ function MenuManager() {
             scene.getObjectByName( "pointer2" ).visible = false;
         } else if ( scene.getObjectByName( "pointer" ) && _isHMD ) {
             scene.getObjectByName( "pointer" ).visible = false;
-            scene.getObjectByName('pointer').scale.set(1*_pointerSize,1*_pointerSize,1*_pointerSize)
+            scene.getObjectByName('pointer').scale.set(1*_pointerSize,1*_pointerSize,1*_pointerSize);
         }
 
         //playpauseCtrl.playAllFunc();
@@ -166,9 +168,10 @@ function MenuManager() {
 /**
  * Creates a menu activation element.
  */
-    this.createMenuActivationElement = function() {
+    this.createMenuActivationElement = function(start) {
         var geometry = new THREE.SphereGeometry( 99, 32, 16, Math.PI/2, Math.PI * 2,  2.35,  0.4 );
-        geometry.scale( - 1, 1, 1 );
+        //var geometry = new THREE.SphereGeometry( 99, 32, 16, Math.PI/2, Math.PI * 2, start,  0.4 );
+        geometry.scale( -1, 1, 1 );
         var material = new THREE.MeshBasicMaterial( {color: 0xc91355, side: THREE.FrontSide, transparent: true, opacity:0} );
         menuActivationElement = new THREE.Mesh( geometry, material );
         menuActivationElement.name = 'openMenu';
@@ -189,7 +192,7 @@ function MenuManager() {
             },
             onGazeLong: function(){
 
-                menuMgr.initFirstMenuState(); // Initialize the first menu state when the time has expired.
+                menuMgr.initFirstMenuState(); // Initialize the first menu state when the time has expired.         
 
             }
         });
@@ -225,6 +228,9 @@ function MenuManager() {
         }
 
         menu.visible = true;
+
+       //timerCloseMenu = setTimeout( function(){ menuMgr.ResetViews() }, 5000);       
+
     }
 
 /**
@@ -244,7 +250,7 @@ function MenuManager() {
             isSubmenuOpen = true;
         }
         //If the video is already paused, do not apuse it again
-        if(!VideoController.isPausedById(demoId)){
+        if(!VideoController.isPausedById(0)){
             autoPause = true; //The auto pasue in preview state is active.
             VideoController.pauseAll(); //Auto pause the video during the preview.
         }
@@ -263,7 +269,9 @@ function MenuManager() {
                 VideoController.playAll();
             }
             //Start the menu in the first state.
-            menuMgr.initFirstMenuState();
+            if(menuMgr.getMenuType() == 2){
+                menuMgr.initFirstMenuState();
+            } 
             //Open the settings option menu if it was already open before opening the preview.
             if(isSubmenuOpen){
               menuMgr.Load(SettingsOptionCtrl);  
@@ -284,7 +292,7 @@ function MenuManager() {
  * Removes a menu from parent.
  */
     this.removeMenuFromParent = function() {
-        menuParent.remove(scene.getObjectByName('traditional-menu'));
+        menuParent.remove(scene.getObjectByName('trad-main-menu'));
         menuParent.remove(scene.getObjectByName('trad-option-menu'));
     }
 

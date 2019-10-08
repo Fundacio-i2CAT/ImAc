@@ -7,40 +7,68 @@
 
 MenuFunctionsManager = function() {
 
-    function getUpdateAccesLanguage(lang)
+    function getUpdateAccesLanguage(lang, accesService)
     {
         return function() 
         {
-            _iconf.accesslanguage = lang;
+            //_iconf.accesslanguage = lang;
             var ste2r = subController.getSubEasy() ? 1 : 0;
             var aste2r = _AudioManager.getSubEasy() ? 1 : 0;
 
-            if ( list_contents[ demoId ].subtitles && list_contents[ demoId ].subtitles[ ste2r ] && subController.checkisSubAvailable()) {
-                var sublang = list_contents[ demoId ].subtitles[ ste2r ][ lang ] ? lang : Object.keys( list_contents[ demoId ].subtitles[ ste2r ] )[ 0 ];
-                subController.setSubtitle( list_contents[ demoId ].subtitles[ ste2r ][ sublang ], sublang );
-            } else {
-                subController.disableSubtiles();
-            }
+            switch(accesService){
 
-            if ( list_contents[ demoId ].signer && list_contents[ demoId ].signer[ 0 ] && subController.checkisSignAvailable()) {
-                var siglang = list_contents[ demoId ].signer[ 0 ][ lang ] ? lang : Object.keys( list_contents[ demoId ].signer[ 0 ] )[ 0 ];
-                subController.setSignerContent( list_contents[ demoId ].signer[ 0 ][ siglang ], siglang );
-            } else {
-                subController.disableSigner();
-            }
+                case 'st':
+                    //_iconf.stlanguage = lang;
 
-            if ( list_contents[ demoId ].ad && list_contents[ demoId ].ad[ 0 ] && _AudioManager.checkisADAvailable()) {
-                var adlang = list_contents[ demoId ].ad[ 0 ][ lang ] ? lang : Object.keys( list_contents[ demoId ].ad[ 0 ] )[ 0 ];
-                _AudioManager.setADContent( list_contents[ demoId ].ad[ 0 ][ adlang ], adlang );
-            } else {
-                //_AudioManager.disableAD(); // TODO
-            }
-            
-            if ( list_contents[ demoId ].ast && list_contents[ demoId ].ast[ aste2r ] && _AudioManager.checkisASTAvailable()) {
-                var astlang = list_contents[ demoId ].ast[ aste2r ][ lang ] ? lang : Object.keys( list_contents[ demoId ].ast[ aste2r ] )[ 0 ];
-                _AudioManager.setASTContent( list_contents[ demoId ].ast[ aste2r ][ astlang ], astlang );
-            } else {
-                //_AudioManager.disableAST(); // TODO
+                    if ( list_contents[ demoId ].subtitles && list_contents[ demoId ].subtitles[ ste2r ] && subController.checkisSubAvailable( lang )) 
+                    {
+                        var cookielang = subController.getSTAvailableLang( _iconf.stlanguage, ste2r ); //subController.getSubLanguage();
+                        var sublang = cookielang ? cookielang : list_contents[demoId].subtitles[ste2r][lang] ? lang : Object.keys(list_contents[demoId].subtitles[ste2r])[0];
+
+                        //var sublang = list_contents[ demoId ].subtitles[ ste2r ][ lang ] ? lang : Object.keys( list_contents[ demoId ].subtitles[ ste2r ] )[ 0 ];
+                        subController.setSubtitle( list_contents[ demoId ].subtitles[ ste2r ][ sublang ], sublang );
+                    } else {
+                        subController.disableSubtiles();
+                    }
+                    break;
+
+                case 'sl':
+                    //_iconf.sllanguage = lang;
+                    if ( list_contents[ demoId ].signer && list_contents[ demoId ].signer[ 0 ] && subController.checkisSignAvailable( lang )) 
+                    {
+                        var siglang = list_contents[ demoId ].signer[ 0 ][ lang ] ? lang : Object.keys( list_contents[ demoId ].signer[ 0 ] )[ 0 ];
+                        console.warn(siglang)
+                        subController.setSignerContent( list_contents[ demoId ].signer[ 0 ][ siglang ], siglang );
+                    } 
+                    else 
+                    {
+                        subController.disableSigner();
+                    } 
+                    if ( list_contents[ demoId ].st4sl && list_contents[ demoId ].st4sl[ 0 ] && subController.checkisSignAvailable( lang )) {
+                        var siglang = list_contents[ demoId ].st4sl[ 0 ][ lang ] ? lang : Object.keys( list_contents[ demoId ].st4sl[ 0 ] )[ 0 ];
+                        subController.setSLSubtitle( list_contents[demoId].st4sl[0][sublang], sublang ); 
+                    }              
+                    break;
+
+                case 'ad':
+                    //_iconf.adlanguage = lang;
+                    if ( list_contents[ demoId ].ad && list_contents[ demoId ].ad[ 0 ] && _AudioManager.checkisADAvailable( lang )) {
+                        var adlang = list_contents[ demoId ].ad[ 0 ][ lang ] ? lang : Object.keys( list_contents[ demoId ].ad[ 0 ] )[ 0 ];
+                        _AudioManager.setADContent( list_contents[ demoId ].ad[ 0 ][ adlang ], adlang );
+                    } else {
+                        //_AudioManager.disableAD(); // TODO
+                    }                
+                    break;
+
+                case 'ast':
+                    //_iconf.astlanguage = lang;
+                    if ( list_contents[ demoId ].ast && list_contents[ demoId ].ast[ aste2r ] && _AudioManager.checkisASTAvailable( lang )) {
+                        var astlang = list_contents[ demoId ].ast[ aste2r ][ lang ] ? lang : Object.keys( list_contents[ demoId ].ast[ aste2r ] )[ 0 ];
+                        _AudioManager.setASTContent( list_contents[ demoId ].ast[ aste2r ][ astlang ], astlang );
+                    } else {
+                        //_AudioManager.disableAST(); // TODO
+                    }                
+                    break;
             }
         }
     }
@@ -115,6 +143,13 @@ MenuFunctionsManager = function() {
         }
     };
 
+    this.getUpdateVolumeFunc = function(volume)
+    {
+        return function() {
+            _AudioManager.setNewVolume( volume );
+        }
+    }
+
     function getSubOnOffFunc(isEnabled)
     {
         return function() {
@@ -144,9 +179,9 @@ MenuFunctionsManager = function() {
     }
 
 
-    this.changeAccesLanguage = function(lang)
+    this.changeAccesLanguage = function(lang, accesService)
     {
-        return getUpdateAccesLanguage( lang );
+        return getUpdateAccesLanguage( lang, accesService );
     }
 
     this.getChangeMenuTypeFunction = function(){
@@ -157,6 +192,11 @@ MenuFunctionsManager = function() {
         menuMgr.removeMenuFromParent();
         menuMgr.Init(newType);
         menuMgr.initFirstMenuState();   
+    }
+
+    this.getActiveExtraADFunc = function()
+    {
+        if ( _blockControls ) initExtraAdAudio();
     }
 
     this.checkMenuType = function(menuType)

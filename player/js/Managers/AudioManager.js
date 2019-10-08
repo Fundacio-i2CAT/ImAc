@@ -19,8 +19,9 @@ AudioManager = function() {
     var adContent; // URL
     var adContentArray; // URL
     var adVolume = 100; // Integer: Volume percentage
+    var adGain = 'high'; // String (high, medium, low)
     var adEnabled = false; // boolean
-    var adLang; // string (en, de, ca, es)
+    var adLang = 'en'; // string (en, de, ca, es)
     var adAvailableLang = []; // Array { name, value, default:bool }
     var adAvailablePresentation = [];
     var adPresentation = 'VoiceOfGod'; // string (VoiceOfGod (classic), Friend (static), Dynamic)
@@ -29,13 +30,15 @@ AudioManager = function() {
     var _AST;  
     var astContent; // URL
     var astContentArray; // URL
-    var astVolume = 50; // Integer: Volume percentage
+    var astVolume = 100; // Integer: Volume percentage
     var astEnabled = false; // boolean
-    var astLang; // string (en, de, ca, es)
+    var astLang = 'en'; // string (en, de, ca, es)
     var astAvailableLang = []; // Array { name, value, default:bool }
     var astEasy = false; // boolean
     var astAvailablePresentation = [];
     var astPresentation = 'VoiceOfGod'; // string (VoiceOfGod (classic), Dynamic)
+
+    var extraADSpeed = 1;
 
 //************************************************************************************
 // Private Functions
@@ -213,8 +216,22 @@ AudioManager = function() {
     {
         if ( adEnabled )
         {
-            var level = adVolume + (value*100)
-            _AudioManager.setVolume( 'AD', level);
+            /*var level = adVolume + (value*100)
+            _AudioManager.setVolume( 'AD', level);*/
+
+            var newVolume = _AD.volume + value;
+
+            if ( newVolume < 0 )
+            {
+                newVolume = 0;
+            }
+            else if ( newVolume > 1 )
+            {
+                newVolume = 1;
+            }
+            
+            _AD.volume = newVolume;
+            volume = _AD.volume;
         }
         else {
             var newVolume = activeVideoElement.volume + value;
@@ -245,7 +262,7 @@ AudioManager = function() {
 
     this.getVolume = function()
     {
-        if ( adEnabled ) return Math.round(adVolume/100);
+        if ( adEnabled ) return Math.round(_AD.volume * 100) / 100;
         else return Math.round(activeVideoElement.volume * 100) / 100
     };
 
@@ -300,7 +317,40 @@ AudioManager = function() {
             astVolume = level;
             if ( _AST ) _AST.volume = astVolume/100;
         }
-    };   
+    }; 
+
+    this.setNewVolume = function(newVolume)
+    {
+        if ( newVolume < 0 ) newVolume = 0;
+        else if ( newVolume > 1 ) newVolume = 1;
+
+        if ( adEnabled )
+        {
+            _AD.volume = newVolume;
+            volume = _AD.volume;
+        }
+        else 
+        {
+            activeVideoElement.volume = newVolume;
+            volume = activeVideoElement.volume;
+        }
+    } 
+
+    this.startBeep = function(time)
+    {
+        if ( adEnabled ) _AD.volume = _AD.volume /2;
+
+        setTimeout( () => {
+
+            var audio = new Audio('./resources/beep.mp3' );
+            audio.play();
+
+            audio.onended = function() {
+                if ( adEnabled ) _AD.volume = _AD.volume *2;
+            }
+
+        }, time);
+    } 
 
 //************************************************************************************
 // Public AD Getters
@@ -336,6 +386,11 @@ AudioManager = function() {
         return adVolume;
     };
 
+    this.getADGain = function()
+    {
+        return adGain;
+    };
+
     this.getADConfig = function()
     {
         return {
@@ -345,6 +400,21 @@ AudioManager = function() {
             mode: adPresentation
         };
     };
+
+    this.getExtraADSpeed = function()
+    {
+        return extraADSpeed;
+    };
+
+    this.getADAvailableLang = function(lang)
+   {
+       if ( list_contents[demoId].ad[0][lang] ) return lang;
+       else if ( list_contents[demoId].acces[0].AD && list_contents[demoId].ad[0][list_contents[demoId].acces[0].AD[0]] ) {
+           _iconf.adlanguage = list_contents[demoId].acces[0].AD[0];
+           return list_contents[demoId].acces[0].AD[0];
+       }
+       else return;
+   }
 
 //************************************************************************************
 // Public AST Getters
@@ -399,12 +469,15 @@ AudioManager = function() {
 // Public AD Setters
 //************************************************************************************
 
+    // Need modify conf.advolume to conf.adGain
     this.setADConfig = function(conf)
     {
         //adEnabled = conf.enabled;
-        adLang = conf.accesslanguage;
-        adVolume = conf.advolume == 'max' ? 100 : conf.advolume == 'mid' ? 50 : 10;
+        adLang = conf.adlanguage;
+        adVolume = 100;
+        adGain = conf.advolume == 'max' ? 'high' : conf.advolume == 'mid' ? 'medium' : 'low';
         adPresentation = conf.admode == 'god' ? 'VoiceOfGod' : conf.admode == 'friend' ? 'Friend' : 'Dynamic';
+        extraADSpeed = conf.adspeed == 'x100' ? 1 : conf.adspeed == 'x125' ? 1.25 : 1.5;
     };
 
     this.setADContent = function(content, lang)
@@ -412,7 +485,10 @@ AudioManager = function() {
         adLang = lang;
         if ( content )
         {
-            adContent = content[adPresentation];
+            if ( !content[adPresentation] ) adPresentation = Object.keys( content );
+            if ( !content[adPresentation][adGain] ) adGain = Object.keys( content[adPresentation] );
+
+            adContent = content[adPresentation][adGain];
             
             if ( adEnabled ) addAudio( 'AD' );
         }
@@ -421,7 +497,7 @@ AudioManager = function() {
     this.setADPresentation = function(value)
     {
         adPresentation = value;
-        adContent = adContentArray[adLang][adPresentation];
+        adContent = adContentArray[adLang][adPresentation][adGain];
         if ( adEnabled ) addAudio( 'AD' );
     };
 
@@ -505,6 +581,18 @@ AudioManager = function() {
         }
     };
 
+    this.setExtraADSpeed = function(speed)
+    {
+        extraADSpeed = speed;
+    }
+
+    this.setADGain = function(gain)
+    {
+        adGain = gain;
+        adContent = adContentArray[adLang][adPresentation][adGain];
+        if ( adEnabled ) addAudio( 'AD' );
+    }
+
 //************************************************************************************
 // Public AD Checkers
 //************************************************************************************
@@ -515,9 +603,9 @@ AudioManager = function() {
 
     this.checkADPresentationAvailable = function(val){
         if(val){
-            return list_contents[demoId].ad[0][_iconf.accesslanguage].hasOwnProperty(val)
+            return list_contents[demoId].ad[0][_iconf.adlanguage].hasOwnProperty(val)
         } else {
-            return list_contents[demoId].ad[0].hasOwnProperty(_iconf.accesslanguage)
+            return list_contents[demoId].ad[0].hasOwnProperty(_iconf.adlanguage)
         }
     };
 
@@ -526,10 +614,26 @@ AudioManager = function() {
     };   
 
     this.checkisADAvailable = function(lang){
-        return (list_contents[demoId].acces && list_contents[demoId].acces[0].AD && list_contents[demoId].acces[0].AD.includes((lang) ? lang : _iconf.accesslanguage) );
-    }
+        return (list_contents[demoId].acces && list_contents[demoId].acces[0].AD && list_contents[demoId].acces[0].AD.includes((lang) ? lang : _iconf.adlanguage) );
+    };
 
-    
+    this.checkExtraADSpeed = function(speed)
+    {
+        return extraADSpeed == speed;
+    };
+
+    this.checkADGain = function(gain)
+    {
+        return adGain == gain;
+    };
+
+    this.checkADGainAvailable = function(val){
+        if(val){
+            return list_contents[demoId].ad[0][adLang][adPresentation].hasOwnProperty(val)
+        } else {
+            return list_contents[demoId].ad[0][adLang].hasOwnProperty( adPresentation )
+        }
+    };  
 
 //************************************************************************************
 // Public AST Setters
@@ -538,7 +642,7 @@ AudioManager = function() {
     this.setASTConfig = function(conf)
     {
         //astEnabled = conf.enabled;
-        astLang = conf.accesslanguage;
+        astLang = conf.astlanguage;
         astVolume = conf.astvolume == 'max' ? 100 : conf.astvolume == 'mid' ? 50 : 10;
         astEasy = conf.aste2r == 'true' ? true : false;
         astPresentation = conf.astmode == 'god' ? 'VoiceOfGod' : 'Dynamic';
@@ -546,10 +650,11 @@ AudioManager = function() {
 
     this.setASTContent = function(url, lang)
     {
-        astContent = url[astPresentation] || url[Object.keys(url)[0]];
-        astLang = lang;
-        console.log(astContent)
-        if ( astEnabled ) addAudio( 'AST' );
+        if ( url ) {
+            astContent = url[astPresentation] || url[Object.keys(url)[0]];
+            astLang = lang;
+            if ( astEnabled ) addAudio( 'AST' );
+        }
     }; 
 
     this.setASTPresentation = function(value)
@@ -643,9 +748,9 @@ AudioManager = function() {
 
     this.checkASTPresentationAvailable = function(val){
         if(val){
-            return list_contents[demoId].ast[0][_iconf.accesslanguage].hasOwnProperty(val)
+            return list_contents[demoId].ast[0][_iconf.astlanguage].hasOwnProperty(val)
         } else {
-            return list_contents[demoId].ast[0].hasOwnProperty(_iconf.accesslanguage)
+            return list_contents[demoId].ast[0].hasOwnProperty(_iconf.astlanguage)
         }
     };
 
@@ -660,6 +765,6 @@ AudioManager = function() {
     }; 
 
     this.checkisASTAvailable = function(lang){
-        return (list_contents[demoId].acces && list_contents[demoId].acces[0].AST && list_contents[demoId].acces[0].AST.includes((lang) ? lang : _iconf.accesslanguage));
+        return (list_contents[demoId].acces && list_contents[demoId].acces[0].AST && list_contents[demoId].acces[0].AST.includes((lang) ? lang : _iconf.astlanguage));
     } 
 }

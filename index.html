@@ -97,6 +97,42 @@
 				
 				<p><span id="content_desc"> Enjoy immersive contents with access services by selecting the video you want to watch. To customise your experience, go into settings or select a video and then go to the player menu.</span></p>
 			</div>
+
+			<!-- Second Screen section -->
+			<div id="ss_container" class="SS-container" style="visibility: hidden;">
+				<div class="container-12 Settings-tittle">
+	          		<div class="Settings-option small">
+						<span id="span_s1">&nbsp;  Multi-Screen Panel</span>
+						<!--img class="Settings-close" src="./portal/img/settings/close.png" tabindex="0" alt="Close"-->
+					</div>
+	          	</div>
+				<div class="container-12" id="input_room_box">
+					<div class="SS-input-group center">
+						<input type="text" class="form-control dark" placeholder="Indicate Session ID"  id="sessionUUID">
+					</div>
+				</div>
+				<div class="container-6" id="button_room_box1">
+					<div class="SS-button-container center">
+						<button class="btn btn-SS" onclick="createSessionByID()"><span id="span_s2"> Create</span></button>
+					</div>
+				</div>
+				<div class="container-6" id="button_room_box2">
+					<div class="SS-button-container center">
+						<button class="btn btn-SS" onclick="joinSessionByID()"><span id="span_s3"> Join</span></button>
+					</div>
+	      		</div>
+	        </div>
+
+	        <!-- Second Screen section -->
+			<div id="roomIDdiv" class="SS-container2">
+	          	<div class="container-12">
+					<div class="SS-input-group output" id="roomIDdiv">
+						<span class="RoomID-container" id="span_s0">
+					</div>
+				</div>
+	        </div>
+
+			
 			<!-- Play button -->
 			<div id="play_poster_btn" class="Poster-play">
 				<div class="Poster-play-btn" onclick="playContent()">
@@ -219,7 +255,12 @@
 						</label>
 		          	</div>
 				</div>
-          	</div> 	
+          	</div> 
+          	<div class="container-12 Search-container">
+          		<div class="Search-info Search-button">
+          			<button class="gobutton" onclick="closeSettingsMenus()"> <span id="span_49">Go! </span> </button>
+          		</div>
+          	</div>	
         </div>
 
 		<!-- Background Settings -->
@@ -344,12 +385,12 @@
 		          	</div>
 				</div>
 				<div class="container-6">
-	          		<div class="container-12">
+	          		<!--div class="container-12">
 		          		<div id="lvl2option10" class="Settings-option selectable" onclick="createAccesLang()">
 			          		<img src="./portal/img/150ppp/language.png" tabindex="0" alt="">
 							<span id="span_19">&nbsp;   Access Language</span>
 						</div>
-		          	</div>
+		          	</div-->
 		          	<div class="container-12">
 		          		<div id="lvl2option11" class="Settings-option selectable" onclick="createIndicator()">
 			          		<img src="./portal/img/150ppp/indicator.png" tabindex="0" alt="">
@@ -360,6 +401,11 @@
 		          		<div id="lvl2option12" class="Settings-option selectable" onclick="createSafeArea()">
 			          		<img src="./portal/img/150ppp/safe_area.png" tabindex="0" alt="">
 							<span id="span_21">&nbsp;   Safe Area</span>
+						</div>
+		          	</div>
+		          	<div class="container-12">
+		          		<div class="Settings-option null">
+							<span>&nbsp;</span>
 						</div>
 		          	</div>
 		          	<div class="container-12">
@@ -420,8 +466,9 @@
 						</div>
 		          	</div>
 		          	<div class="container-12">
-		          		<div class="Settings-option null">
-							<span>&nbsp;</span>
+		          		<div id="lvl2option24" class="Settings-option selectable" onclick="createSTLang()">
+			          		<img src="./portal/img/150ppp/language.png" tabindex="0" alt="">
+							<span id="span_19_1">&nbsp;   Language</span>
 						</div>
 		          	</div>
 		          	<div class="container-12">
@@ -460,8 +507,9 @@
 						</div>
 		          	</div>
 		          	<div class="container-12">
-		          		<div class="Settings-option null">
-							<span>&nbsp;</span>
+		          		<div id="lvl2option32" class="Settings-option selectable" onclick="createSLLang()">
+			          		<img src="./portal/img/150ppp/language.png" tabindex="0" alt="">
+							<span id="span_19_2">&nbsp;   Language</span>
 						</div>
 		          	</div>
 		          	<div class="container-12">
@@ -516,8 +564,9 @@
 						</div>
 		          	</div>
 		          	<div class="container-12">
-		          		<div class="Settings-option null">
-							<span>&nbsp;</span>
+		          		<div id="lvl2option43" class="Settings-option selectable" onclick="createASTLang()">
+			          		<img src="./portal/img/150ppp/language.png" tabindex="0" alt="">
+							<span id="span_19_3">&nbsp;   Language</span>
 						</div>
 		          	</div>
 		          	<div class="container-12">
@@ -561,13 +610,15 @@
 						</div>
 		          	</div>
 		          	<div class="container-12">
-		          		<div class="Settings-option null">
-							<span>&nbsp;</span>
+		          		<div id="lvl2option52" class="Settings-option selectable" onclick="createADLang()">
+			          		<img src="./portal/img/150ppp/language.png" tabindex="0" alt="">
+							<span id="span_19_4">&nbsp;   Language</span>
 						</div>
 		          	</div>
 		          	<div class="container-12">
-		          		<div class="Settings-option null">
-							<span>&nbsp;</span>
+		          		<div id="lvl2option53" class="Settings-option selectable" onclick="createADSpeed()">
+			          		<img src="./portal/img/150ppp/indicator.png" tabindex="0" alt="">
+							<span id="span_40_1">&nbsp;   Extended AD Rate</span>
 						</div>
 		          	</div>
 		          	<div class="container-12">
@@ -592,6 +643,66 @@
 			<div class="FooterBar-container container">
 				<!-- Partners list -->
 				<div class="Footer-partners">
+					
+					<!-- i2CAT -->
+					<div class="container-4">
+						<p><span id="span_42_2">Developed by:</span>
+						<a href="https://www.i2cat.net/" target="_blank">
+							<img title="Fundació i2CAT" src="./portal/img/logos/logo_i2cat.png" alt="i2CAT">
+						</a>
+					</div>
+					<div class="container-8">
+						<div class="Footer-text container-12">
+							<div class="container-80">
+								<p><span id="span_48">This project has received funding from the European Union’s Horizon 2020 Research and Innovation Programme under grant agreement No 761974</span></p>
+							</div>
+							<!-- European Commission -->
+							<div class="container-20">
+								<a href="https://ec.europa.eu/commission/index_en" target="_blank">
+									<img title="European Commission" src="./portal/img/logos/EU-flag-150x150.png" alt="EU">
+								</a>
+							</div>	
+						</div>
+						
+						<!-- Social networks -->
+						<div class="Footer-options container-4">
+							<div class="Footer-social">
+								<!-- twitter -->
+				      			<a href="https://twitter.com/ImAcProject" target="_blank">
+				      				<img title="twitter" src="./portal/img/iconos_footer/twitter.png" alt="twitter">
+				      			</a>
+				      			<!-- youtube -->
+				      			<a href="https://www.youtube.com/channel/UCfxyfFgC97BCv_hmiGVfe1A" target="_blank">
+				      				<img title="youtube" src="./portal/img/iconos_footer/youtube.png" alt="youtube">
+				      			</a>
+				      		</div>
+				      	</div>
+			      		<!-- Help button -->
+						<!--div class="Footer-options container-4">
+							<div class="Footer-links">
+				      			<a href="./help.html">
+									<img src="img/iconos_footer/help.png" alt="help icon">
+									<span>Help</span>
+				      			</a>
+				      		</div>
+      					</div-->
+			      		<!-- ImAc project website link -->
+						<div class="Footer-options container-4">
+							<div class="Footer-links">
+				      			<a href="http://www.imac-project.eu/" target="_blank">
+				      				<img src="./portal/img/iconos_footer/web.png" alt="website icon">
+				      				<span>ImAc website</span>
+				      			</a>          
+				      		</div>
+			      		</div>
+					</div>
+					
+				
+				</div>
+				</br>
+
+				<!-- Partners list -->
+				<div class="container-12 Footer-partners">
 					<p><span id="span_42">Partners:</span></p>
 					<!-- i2CAT -->
 					<div class="Partners-container">
@@ -648,61 +759,11 @@
 						</a>
 					</div>
 					<!-- European Commission -->
-					<div class="Partners-container">
+					<!--div class="Partners-container">
 						<a href="https://ec.europa.eu/commission/index_en" target="_blank">
 							<img title="European Commission" src="./portal/img/logos/logo_com_europea.png" alt="EU">
 						</a>
-					</div>			
-				</div>
-				<!-- Footer section -->
-				<div class="Footer-section">
-					<div class="Footer-text container-6">
-						<p><span id="span_48">This project has received funding from the European Union’s Horizon 2020 Research and Innovation Programme under grant agreement No 761974</span></p>
-					</div>
-					<div class="container-6">
-						<!--div class="Footer-options container-4">
-							<div class="Footer-links">
-				      			<p>
-								    <a href="http://jigsaw.w3.org/css-validator/check/referer">
-								        <img style="border:0;width:88px;height:31px"
-								            src="http://jigsaw.w3.org/css-validator/images/vcss"
-								            alt="¡CSS Válido!" />
-								    </a>
-								</p>
-				      		</div>
-      					</div-->
-						<!-- Social networks -->
-						<div class="Footer-options container-4">
-							<div class="Footer-social">
-								<!-- twitter -->
-				      			<a href="https://twitter.com/ImAcProject" target="_blank">
-				      				<img title="twitter" src="./portal/img/iconos_footer/twitter.png" alt="twitter">
-				      			</a>
-				      			<!-- youtube -->
-				      			<a href="https://www.youtube.com/channel/UCfxyfFgC97BCv_hmiGVfe1A" target="_blank">
-				      				<img title="youtube" src="./portal/img/iconos_footer/youtube.png" alt="youtube">
-				      			</a>
-				      		</div>
-				      	</div>
-			      		<!-- Help button -->
-						<!--div class="Footer-options container-4">
-							<div class="Footer-links">
-				      			<a href="./help.html">
-									<img src="img/iconos_footer/help.png" alt="help icon">
-									<span>Help</span>
-				      			</a>
-				      		</div>
-      					</div-->
-			      		<!-- ImAc project website link -->
-						<div class="Footer-options container-4">
-							<div class="Footer-links">
-				      			<a href="http://www.imac-project.eu/" target="_blank">
-				      				<img src="./portal/img/iconos_footer/web.png" alt="website icon">
-				      				<span>ImAc website</span>
-				      			</a>          
-				      		</div>
-			      		</div>
-					</div>
+					</div-->			
 				</div>
 			</div>
 		</div>

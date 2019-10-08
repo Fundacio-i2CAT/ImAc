@@ -8,14 +8,14 @@
  *
  *  TRADITIONAL MENU:
  *  	- TraditionalMenu (public)
- *  	- TraditionalOptionMenu (public)
+ *  	- TraditionalOptionMenu (public)http://192.168.11.102:8080/ImAc/portal/img/gradient_up.png
  */
 
 function ViewStructureMenuManager() {
 
 /**************************************************************
  *
- *                     M E N U 		B A S E S
+ *                     M E N U         B A S E S
  *
  **************************************************************/
 
@@ -28,16 +28,17 @@ function ViewStructureMenuManager() {
 	 */
     function TraditionalMenuBase(name){
 
+        let menuBase =  new THREE.Group();
+        menuBase.name = name;
         let radius = 3*menuWidth/100;        
-        let menuTrad =  new THREE.Group();
-        menuTrad.name = name;
+
 
         let menuShape = _moData.roundedRect( new THREE.Shape(), menuWidth, menuHeight, radius );
         let material = new THREE.MeshBasicMaterial( { color: 0x111111});
         let geometry = new THREE.ShapeGeometry( menuShape );
         let mesh =  new THREE.Mesh( geometry, material);
 
-        mesh.name = 'trad-menu-base';
+        mesh.name = 'trad-menu-background';
 
         let menuTradLineDivisions =  new THREE.Group();
         menuTradLineDivisions.name = 'trad-menu-lines';
@@ -71,18 +72,10 @@ function ViewStructureMenuManager() {
         menuTradLineDivisions.add(lineV3);
         menuTradLineDivisions.add(lineBot);
 
-        mesh.add(menuTradLineDivisions);
+        menuBase.add(menuTradLineDivisions);
+        menuBase.add(mesh)
 
-        menuTrad.add(mesh);
-
-        //The position depends on the menu type.
-        if(menuMgr.getMenuType() == 2){
-            menuTrad.position.set( 0, -20, -67 );    
-        } else {
-            menuTrad.position.set( 0, 0, -67 );
-        }
-
-        return menuTrad;
+        return menuBase;
     }
 
 /**************************************************************
@@ -98,17 +91,16 @@ function ViewStructureMenuManager() {
 	 */
     this.TraditionalMenu = function(name){
         
+        var  mainmenu =  new THREE.Group();
+        mainmenu.name = name;
+
         let i5 = menuWidth/20;
         let i4 = menuWidth/25;
 
         let i6 = 6*menuWidth/100;
         let i10 = 10*menuWidth/100;
 
-        var traditionalmenu = TraditionalMenuBase(name);
-
-
-        var  mainmenu =  new THREE.Group();
-        mainmenu.name = 'main-menu-group';
+        var traditionalmenuBase = TraditionalMenuBase('trad-menu-base');
 
 /************************************\
 |           PLAYPAUSE                |
@@ -163,16 +155,49 @@ function ViewStructureMenuManager() {
         seekRBtn.onexecute = function() { console.log("This is the %s button", seekRBtn.name) };
 
         var closeBtn = new InteractiveElementModel();
-        closeBtn.width = menuWidth/30;
-        closeBtn.height = menuWidth/30;
+        closeBtn.width = menuWidth/25;
+        closeBtn.height = menuWidth/25;
         closeBtn.name = 'close-button';
         closeBtn.type =  'icon';
         closeBtn.path = './img/menu/close.png';
         closeBtn.color = 0xe6e6e6;
         closeBtn.visible = true;
         closeBtn.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(menuWidth/25, menuWidth/25), new THREE.MeshBasicMaterial({visible: false}));
-        closeBtn.position = new THREE.Vector3( menuWidth/2 - menuWidth/30, menuHeight/2 - menuWidth/30, 0.01 );
+        closeBtn.position = new THREE.Vector3( menuWidth/2 - menuWidth/25, menuHeight/2 - menuWidth/25, 0.01 );
         closeBtn.onexecute = function() { console.log("This is the %s button", closeBtn.name) };
+
+
+
+        let closeBtnGroup =  new THREE.Group();
+
+        closeBtnGroup.name = 'close-button-group';
+
+        let menuShapeCloseBtn = _moData.roundedRect( new THREE.Shape(), 2.5 * menuWidth/25, 2.5 * menuWidth/25, 3*menuWidth/100 );
+        let materialCloseBtn = new THREE.MeshBasicMaterial( { color: 0x111111});
+        let geometryCloseBtn = new THREE.ShapeGeometry( menuShapeCloseBtn );
+        let meshCloseBtn =  new THREE.Mesh( geometryCloseBtn, materialCloseBtn);
+
+        var closeBtnZoom = new InteractiveElementModel();
+        closeBtnZoom.width = 2 * menuWidth/25;
+        closeBtnZoom.height = 2 * menuWidth/25;
+        closeBtnZoom.name = 'close-button-zoom';
+        closeBtnZoom.type =  'icon';
+        closeBtnZoom.path = './img/menu/close.png';
+        closeBtnZoom.color = 0xe6e6e6;
+        closeBtnZoom.visible = true;
+        closeBtnZoom.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(menuWidth/25, menuWidth/25), new THREE.MeshBasicMaterial({visible: false}));
+        closeBtnZoom.position = new THREE.Vector3( 0, 0, 0.01 );
+        closeBtnZoom.onexecute = function() { console.log("This is the %s button", closeBtnZoom.name) };
+  
+        meshCloseBtn.add(closeBtnZoom.create());
+        meshCloseBtn.position.set(menuWidth/2 - menuWidth/25, menuHeight/2 - menuWidth/25, 0.02 );
+
+        closeBtnGroup.add(meshCloseBtn);
+        closeBtnGroup.visible = false;
+
+        mainmenu.add(closeBtnGroup);
+
+
 
         // Add all the created elements to the parent group.
         mainmenu.add(seekLBtn.create());
@@ -280,6 +305,17 @@ function ViewStructureMenuManager() {
         stDisBtn.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(i5*2, i5), new THREE.MeshBasicMaterial({visible: false}));
         stDisBtn.position = new THREE.Vector3( -3*menuWidth/8, -menuHeight/3, 0.01 );
         stDisBtn.onexecute = function() { console.log("This is the %s button", stDisBtn.name) };
+
+        var stTooltip = new InteractiveElementModel();
+        stTooltip.width = i6;
+        stTooltip.height = i6;
+        stTooltip.name = 'tooltip-st-button';
+        stTooltip.type =  'text';
+        stTooltip.text = MenuDictionary.translate( 'st' );
+        stTooltip.textSize = menuWidth/45;
+        stTooltip.color = 0xe6e6e6;
+        stTooltip.visible = false;
+        stTooltip.position = new THREE.Vector3( -7*menuWidth/16, -menuHeight/3, 0.01 );
        
         var slBtn = new InteractiveElementModel();
         slBtn.width = i5;
@@ -305,6 +341,17 @@ function ViewStructureMenuManager() {
         slDisBtn.position = new THREE.Vector3( -menuWidth/8, -menuHeight/3, 0.01 );
         slDisBtn.onexecute = function() { console.log("This is the %s button", slDisBtn.name) };
 
+        var slTooltip = new InteractiveElementModel();
+        slTooltip.width = i6;
+        slTooltip.height = i6;
+        slTooltip.name = 'tooltip-sl-button';
+        slTooltip.type =  'text';
+        slTooltip.text = MenuDictionary.translate( 'sl' );
+        slTooltip.textSize = menuWidth/45;
+        slTooltip.color = 0xe6e6e6;
+        slTooltip.visible = false;
+        slTooltip.position = new THREE.Vector3( -3*menuWidth/16, -menuHeight/3, 0.01 );
+
         var adBtn = new InteractiveElementModel();
         adBtn.width = i5;
         adBtn.height = i5;
@@ -328,6 +375,17 @@ function ViewStructureMenuManager() {
         adDisBtn.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(i5*2, i5), new THREE.MeshBasicMaterial({visible: false}));
         adDisBtn.position = new THREE.Vector3( menuWidth/8, -menuHeight/3, 0.01 );
         adDisBtn.onexecute = function() { console.log("This is the %s button", adDisBtn.name) };
+
+        var adTooltip = new InteractiveElementModel();
+        adTooltip.width = i6;
+        adTooltip.height = i6;
+        adTooltip.name = 'tooltip-ad-button';
+        adTooltip.type =  'text';
+        adTooltip.text = MenuDictionary.translate( 'ad' );
+        adTooltip.textSize = menuWidth/45;
+        adTooltip.color = 0xe6e6e6;
+        adTooltip.visible = false;
+        adTooltip.position = new THREE.Vector3( 1*menuWidth/16, -menuHeight/3, 0.01 );
 
         var astBtn = new InteractiveElementModel();
         astBtn.width = i5;
@@ -353,15 +411,31 @@ function ViewStructureMenuManager() {
         astDisBtn.position = new THREE.Vector3( 3*menuWidth/8, -menuHeight/3, 0.01 );
         astDisBtn.onexecute = function() { console.log("This is the %s button", astDisBtn.name) };
 
+        var astTooltip = new InteractiveElementModel();
+        astTooltip.width = i6;
+        astTooltip.height = i6;
+        astTooltip.name = 'tooltip-ast-button';
+        astTooltip.type =  'text';
+        astTooltip.text = MenuDictionary.translate( 'ast' );
+        astTooltip.textSize = menuWidth/45;
+        astTooltip.color = 0xe6e6e6;
+        astTooltip.visible = false;
+        astTooltip.position = new THREE.Vector3( 5*menuWidth/16, -menuHeight/3, 0.01 );
+
         // Add all the created elements to the parent group.
         mainmenu.add(stBtn.create());
         mainmenu.add(stDisBtn.create());
+        mainmenu.add(stTooltip.create()); 
         mainmenu.add(slBtn.create());
         mainmenu.add(slDisBtn.create());
+        mainmenu.add(slTooltip.create()); 
         mainmenu.add(adBtn.create());
         mainmenu.add(adDisBtn.create());
+        mainmenu.add(adTooltip.create()); 
         mainmenu.add(astBtn.create());
         mainmenu.add(astDisBtn.create());
+        mainmenu.add(astTooltip.create()); 
+
 
 
 /************************************\
@@ -393,28 +467,62 @@ function ViewStructureMenuManager() {
 
 //TODO: Add to controller and link to functions
         var tradMenuBtn = new InteractiveElementModel();
-        tradMenuBtn.width = menuWidth/30;
-        tradMenuBtn.height = menuWidth/30;
+        tradMenuBtn.width = menuWidth/25;
+        tradMenuBtn.height = menuWidth/25;
         tradMenuBtn.name = 'traditional-menu-button';
         tradMenuBtn.type =  'icon';
         tradMenuBtn.path = './img/menu/traditional.png';
         tradMenuBtn.color = 0xe6e6e6;
         tradMenuBtn.visible = true;
         tradMenuBtn.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(menuWidth/25, menuWidth/25), new THREE.MeshBasicMaterial({visible: false}));
-        tradMenuBtn.position = new THREE.Vector3( -menuWidth/2 + menuWidth/30, menuHeight/2 - menuWidth/30, 0.01 );
+        tradMenuBtn.position = new THREE.Vector3( -menuWidth/2 + menuWidth/25, menuHeight/2 - menuWidth/25, 0.01 );
         tradMenuBtn.onexecute = function() { console.log("This is the %s button", tradMenuBtn.name) };
 
         var enhancedMenuBtn = new InteractiveElementModel();
-        enhancedMenuBtn.width = menuWidth/30;
-        enhancedMenuBtn.height = menuWidth/30;
+        enhancedMenuBtn.width = menuWidth/25;
+        enhancedMenuBtn.height = menuWidth/25;
         enhancedMenuBtn.name = 'enhanced-menu-button';
         enhancedMenuBtn.type =  'icon';
         enhancedMenuBtn.path = './img/menu/enhanced.png';
         enhancedMenuBtn.color = 0xe6e6e6;
         enhancedMenuBtn.visible = true;
         enhancedMenuBtn.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(menuWidth/25, menuWidth/25), new THREE.MeshBasicMaterial({visible: false}));
-        enhancedMenuBtn.position = new THREE.Vector3( -menuWidth/2 + menuWidth/30, menuHeight/2 - menuWidth/30, 0.01 );
+        enhancedMenuBtn.position = new THREE.Vector3(-menuWidth/2 + menuWidth/25, menuHeight/2 - menuWidth/25, 0.01 );
         enhancedMenuBtn.onexecute = function() { console.log("This is the %s button", enhancedMenuBtn.name) };
+
+// TO BE CHANGED AFTER IFA
+
+        let enhancedMenuBtnGroup =  new THREE.Group();
+
+        enhancedMenuBtnGroup.name = 'enhanced-menu-button-group';
+
+        let menuShape = _moData.roundedRect( new THREE.Shape(), 2.5 * menuWidth/25, 2.5 * menuWidth/25, 3*menuWidth/100 );
+        let material = new THREE.MeshBasicMaterial( { color: 0x111111});
+        let geometry = new THREE.ShapeGeometry( menuShape );
+        let mesh =  new THREE.Mesh( geometry, material);
+
+        var enhancedMenuBtnZoom = new InteractiveElementModel();
+        enhancedMenuBtnZoom.width = 2 * menuWidth/25;
+        enhancedMenuBtnZoom.height = 2 * menuWidth/25;
+        enhancedMenuBtnZoom.name = 'enhanced-menu-button-zoom';
+        enhancedMenuBtnZoom.type =  'icon';
+        enhancedMenuBtnZoom.path = './img/menu/enhanced.png';
+        enhancedMenuBtnZoom.color = 0xe6e6e6;
+        enhancedMenuBtnZoom.visible = true;
+        enhancedMenuBtnZoom.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(menuWidth/25, menuWidth/25), new THREE.MeshBasicMaterial({visible: false}));
+        enhancedMenuBtnZoom.position = new THREE.Vector3( 0, 0, 0.01 );
+        enhancedMenuBtnZoom.onexecute = function() { console.log("This is the %s button", enhancedMenuBtnZoom.name) };
+  
+        mesh.add(enhancedMenuBtnZoom.create());
+        mesh.position.set(-menuWidth/2 + menuWidth/25, menuHeight/2 - menuWidth/25, 0.02 );
+
+        enhancedMenuBtnGroup.add(mesh);
+
+        enhancedMenuBtnGroup.visible = false;
+
+
+        mainmenu.add(enhancedMenuBtnGroup);
+
 
 
         // Add all the created elements to the parent group.
@@ -434,8 +542,15 @@ function ViewStructureMenuManager() {
         vpb.visible = true;
 
         var vpb_background =  new THREE.Mesh( new THREE.ShapeGeometry( vpb_shape_background ), new THREE.MeshBasicMaterial( { color:  0x666666, transparent: true, opacity: 0.8 }));
+        
         vpb_background.position.set( 0, -menuHeight/24, 0.01);
         vpb_background.name = "background-progress";
+
+        // Interaction area 
+        let coliderMesh = new THREE.Mesh( new THREE.PlaneGeometry(4*menuWidth/5, menuHeight/10), new THREE.MeshBasicMaterial({visible: false}));
+        coliderMesh.name = vpb_background.name;
+        coliderMesh.position.z = 0.01
+        vpb_background.add(coliderMesh);
 
         let totaltime = VideoController.getPlayoutTime(VideoController.getListOfVideoContents()[0].vid.duration) || list_contents[demoId].duration;
         
@@ -462,31 +577,51 @@ function ViewStructureMenuManager() {
         videoPlayoutTime.position = new THREE.Vector3( -9*menuWidth/20, -menuHeight/24, 0.01 );
 
         let vpbPlayLeftBorder = new THREE.Mesh( new THREE.CircleGeometry(menuWidth/200,32), new THREE.MeshBasicMaterial( { color: 0xc91355 } ) );
-        vpbPlayLeftBorder.position.set( -4*menuWidth/10 + menuWidth/200, -menuHeight/24, 0.02);
+        vpbPlayLeftBorder.position.set( -4*menuWidth/10 + menuWidth/200, -menuHeight/24, 0.03);
         vpb.add(vpbPlayLeftBorder);
 
-        var vpb_play =  new THREE.Mesh( new THREE.PlaneGeometry( 4*menuWidth/5, menuHeight/25 ), new THREE.MeshBasicMaterial( { color:  0xc91355, transparent: true, opacity: 1 }));
-        vpb_play.position.set( -4*menuWidth/10 + menuWidth/200, -menuHeight/24, 0.02 );
+        var vpb_play =  new THREE.Mesh( new THREE.ShapeGeometry( vpb_shape_background ), new THREE.MeshBasicMaterial( { color:  0xc91355, transparent: true, opacity: 1 }));
+        vpb_play.position.set( 0, -menuHeight/24, 0.03 );
         vpb_play.name = "play-progress";
 
-        var vpb_time_slider = new THREE.Mesh( new THREE.CircleGeometry(menuWidth/100,32), new THREE.MeshBasicMaterial( { color: 0xe6e6e6 } ) );
-        vpb_time_slider.position.set( -4*menuWidth/10, -menuHeight/24, 0.03 );
+        var vpb_seek =  new THREE.Mesh( new THREE.ShapeGeometry( vpb_shape_background ), new THREE.MeshBasicMaterial( { color:  0x939393, transparent: true, opacity: 1 }));
+        vpb_seek.position.set( 0, -menuHeight/24, 0.02 );
+        vpb_seek.visible = false;
+        vpb_seek.name = "seek-progress";
+
+        var vpb_time_slider = new THREE.Mesh( new THREE.CircleGeometry(6*menuWidth/500,32), new THREE.MeshBasicMaterial( { color: 0xc91355 } ) );
+        vpb_time_slider.visible = false;
+        vpb_time_slider.position.set( -4*menuWidth/10, -menuHeight/24, 0.04 );
         vpb_time_slider.name = "slider-progress";
 
         // Add all the created elements to the parent group.
         vpb.add(vpb_background);
         vpb.add(vpb_play);
-        vpb.add( vpb_time_slider );
+        vpb.add(vpb_time_slider);
+        vpb.add(vpb_seek);
 
         vpb.add(videoTotalTime.create());
         vpb.add(videoPlayoutTime.create());
 
         mainmenu.add(vpb);
+        mainmenu.add(traditionalmenuBase);
         
-        // Add all the parent submenus to the traditionalmenu base.
-        traditionalmenu.add(mainmenu);
+        //The position depends on the menu type.
+        if(menuMgr.getMenuType() == 2){
+            mainmenu.position.set( 0, -25, -67 );
 
-        return traditionalmenu;
+            //MENU ONLY DOWN (uncomment for up/down options)
+            /*if ( subController.getSubtitleEnabled() ){
+                mainmenu.position.set( 0, -1 * subController.getSubPosition().y * 25, -67 );
+            } else {
+                mainmenu.position.set( 0, -25, -67 );
+            }*/
+                
+        } else {
+            mainmenu.position.set( 0, 0, -67 );
+        }
+
+        return mainmenu;
     }
 
 /**
@@ -508,9 +643,13 @@ function ViewStructureMenuManager() {
 
         tradOptionMenu.name = name;
 
-         //The position depends on the menu type.
+        // The position depends on the menu type.
         if(menuMgr.getMenuType() == 2){
-            tradOptionMenu.position.set(9*menuWidth/32, menuHeight/2 + optHeight/2 + menuWidth/100, 0.01); // The +/100 in height is small margin
+            tradOptionMenu.position.set(9*menuWidth/32, 0, 0.01);
+
+            //MENU ALLWAYS RIGHT (uncomment for left/right movement)
+            //tradOptionMenu.position.set(-subController.getSignerPosition().x * 9*menuWidth/32, 0, 0.01); // The +/100 in height is small margin
+           
         } else {
             tradOptionMenu.position.set(0, 0, -67); 
         }
@@ -526,6 +665,17 @@ function ViewStructureMenuManager() {
         tradOptionMenuDropdown.name = 'parentcolumndropdown';
 
         let line = _moData.createLine( 0xc91355, new THREE.Vector3( -optWidth/2, -optHeight/2, 0.01 ), new THREE.Vector3( optWidth/2, -optHeight/2, 0.01 ) );
+
+        var checkMark = new InteractiveElementModel();
+        checkMark.width = menuWidth/20;
+        checkMark.height = menuWidth/20;
+        checkMark.name = 'checkmark';
+        checkMark.type =  'icon';
+        checkMark.path = './img/menu/checkmark.png';
+        checkMark.color = 0xe6e6e6;
+        checkMark.visible = false;
+        checkMark.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry( menuWidth/20, menuWidth/20), new THREE.MeshBasicMaterial({visible: false}));
+        checkMark.position = new THREE.Vector3( 0, 0, 0.01 );
 
         var backBtn = new InteractiveElementModel();
         backBtn.width = menuWidth/30;
@@ -552,6 +702,18 @@ function ViewStructureMenuManager() {
         closeBtn.position = new THREE.Vector3( optWidth/2 - menuWidth/35, 0, 0.01 );
         closeBtn.onexecute = function() { console.log("This is the %s button", closeBtn.name) };
 
+        var previewBtn = new InteractiveElementModel();
+        previewBtn.width = menuWidth/30;
+        previewBtn.height = menuWidth/30;
+        previewBtn.name = 'preview-button';
+        previewBtn.type =  'icon';
+        previewBtn.path = './img/menu/preview.png';
+        previewBtn.color = 0xe6e6e6;
+        previewBtn.visible = false;
+        previewBtn.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(menuWidth/30, menuWidth/30), new THREE.MeshBasicMaterial({visible: false}));
+        previewBtn.position = new THREE.Vector3( optWidth/2 - menuWidth/15, 0, 0.01 );
+        previewBtn.onexecute = function() { console.log("This is the %s button", previewBtn.name) };
+
         let optTitle = new InteractiveElementModel();
         optTitle.width = 18*menuWidth/200;
         optTitle.height = optHeight;
@@ -563,6 +725,7 @@ function ViewStructureMenuManager() {
         optTitle.textSize =  menuWidth/40;
         optTitle.color = 0xe6e6e6;
         optTitle.visible = true;
+        optTitle.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(optTitle.width, optHeight), new THREE.MeshBasicMaterial({visible:  false}));
         optTitle.position = new THREE.Vector3( 0, 0, 0.01 );
 
 
@@ -571,8 +734,10 @@ function ViewStructureMenuManager() {
         tradOptionMenuTitle.add(backBtn.create());
         tradOptionMenuTitle.add(closeBtn.create());
         tradOptionMenuTitle.add(optTitle.create());
+        tradOptionMenuTitle.add(previewBtn.create());
 
         // Add all the parent elements to the traditional option menu.
+        tradOptionMenu.add(checkMark.create());
         tradOptionMenu.add(tradOptionMenuTitle);
         tradOptionMenu.add(tradOptionMenuBackground);
         tradOptionMenu.add(tradOptionMenuDropdown);

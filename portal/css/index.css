@@ -132,7 +132,7 @@ body {
 
 .Poster-info {
   position: absolute;
-  top: 240px;
+  top: 130px; /*240px;*/
   padding-left: 9vw;
   z-index: 99;
   font-family: 'Roboto', Arial;
@@ -153,6 +153,92 @@ body {
   font-family: 'Open Sans', sans-serif;
   padding: 10px 0;
   width: 50%;
+}
+
+.SS-container {
+  right: 9vw;
+  top: 100px;
+  width: 30%;
+  position: absolute;
+  min-height: 200px;
+  z-index: 99;
+  background-color: rgba(0, 0, 0, .6);
+  border-radius: 1rem;
+  border: 2px solid rgba(204, 0, 102, 0);
+}
+
+.center {
+  margin: auto;
+  display: block;
+}
+
+.SS-input-group {
+  text-align: center;
+  display: table;
+  border-collapse: separate;
+  padding: 0 2rem 2rem 2rem;
+  width: 100%;
+}
+
+.SS-input-group.output {
+  padding: 2rem;
+  margin: auto;
+  display: block;
+}
+
+.SS-container2 {
+  display: none;
+  right: 9vw;
+  top: 100px;
+  width: 30%;
+  position: absolute;
+  min-height: 50px;
+  z-index: 99;
+  background-color: rgba(0, 0, 0, .6);
+  border-radius: 1rem;
+  border: 2px solid rgba(204, 0, 102, 0);
+}
+
+.RoomID-container {
+  font-size: 3rem;
+  font-weight: bold;
+  font-family: 'Open Sans', sans-serif;
+  color: #E6E6E6;
+}
+
+.SS-button-container {
+  text-align: center;
+  padding: 0 2rem 2rem 2rem;
+}
+
+.form-control.dark {
+  font-size: 18px;
+    line-height: 1.42857143;
+    font-family: 'Open Sans', sans-serif;
+    color: #E6E6E6;
+    background-color: #000;
+}
+
+.btn-SS {
+    color: #E6E6E6;
+    background-color:rgb(50, 50, 50);
+    border-color: rgba(204, 0, 102, 0);
+    width: 100%;
+    font-size: 18px;
+    line-height: 1.42857143;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.btn-SS:hover {
+  background-color: rgb(204, 0, 102);
+  color: #E6E6E6;
+  font-size: 18px;
+    line-height: 1.42857143;
+    font-family: 'Open Sans', sans-serif;
+} 
+
+.btn-SS:focus {
+  color: #E6E6E6;
 }
 
 .Content-access {
@@ -366,6 +452,26 @@ body {
   min-height: 1px;
 }
 
+.container-80 {
+  width: 80%;
+  float: left;
+  position: relative;
+  min-height: 1px;
+}
+
+.container-20 {
+  width: 20%;
+  float: right;
+  position: relative;
+  min-height: 1px;
+}
+
+.container-20 img {
+  width: 50%;
+  min-width: 60px;
+  margin-left: 2rem;
+}
+
 /***************************************************
 * Footer styles
 ****************************************************/
@@ -399,8 +505,17 @@ body {
 }
 
 .Partners-container {
-  width: 10%;
+  width: 11.1%;
   height: 4vw;
+  float: left;
+  position: relative;
+  min-height: 40px;
+  max-height: 70px;
+}
+
+.Partners-container.xl {
+  width: 30%;
+  height: 8vw;
   float: left;
   position: relative;
   min-height: 40px;
@@ -427,7 +542,8 @@ body {
   color: #949494;
   font-size: 1.4rem;
   font-family: 'Roboto', Arial;
-  padding-right: 6rem;
+  padding-left: 2rem;
+  text-align: right;
 }
 
 .Footer-options { 
@@ -506,7 +622,7 @@ body {
 
 /* The check */
 .check {
-  height: 50px;
+  height: 45px;
   display: block;
   position: relative;
   padding-left: 40px;
@@ -514,7 +630,7 @@ body {
   padding-right: 15px;
   cursor: pointer;
   color: #E6E6E6;
-  font-size: 21px;
+  font-size: 20px;
   font-weight: 400;
   font-family: 'Open Sans', sans-serif;
   -webkit-user-select: none;
@@ -524,7 +640,7 @@ body {
 }
 
 .check.services {
-  font-size: 2rem;
+  font-size: 1.8rem;
 }
 
 /* Hide the browser's default checkbox */
@@ -535,7 +651,7 @@ body {
 }
 
 .check img {
-  width: 30px;
+  width: 25px;
   padding-top: 3px;
 }
 
@@ -544,8 +660,8 @@ body {
   position: absolute;
   top: 3px;
   left: 0;
-  height: 30px;
-  width: 30px;
+  height: 25px;
+  width: 25px;
   /* background-color: #21202000; */
   border-color: rgb(204, 0, 102);
   border-style: solid;
@@ -574,8 +690,8 @@ body {
 .check .checkmark:after {
   left: 7px;
   top: 1px;
-  width: 9px;
-  height: 18px;
+  width: 6px;
+  height: 15px;
   border: solid ;
   border-color: #E6E6E6;
   border-width: 0 3px 3px 0;
@@ -624,6 +740,12 @@ body {
   color: #E6E6E6;
   padding: 1.2rem 1.2rem;
   cursor: pointer;
+}
+
+.Settings-option.small {
+  font-size: 2.5rem;
+  padding: 1rem 1rem;
+  cursor: default;
 }
 
 .Settings-option.selectable img {
@@ -743,7 +865,7 @@ body {
   }
 
   .Poster-info {
-    top: calc(36vw - 200px);
+    /*top: calc(36vw - 200px);*/
     height: 29vw;
     max-height: 290px;
   }
@@ -781,6 +903,10 @@ body {
   .Menu-settings.large, .Menu-settings.options2 {
     top: 45px;
     left: 4vw;
+  }
+
+  .FooterBar {
+    min-height: 340px;
   }
 }
 
@@ -853,7 +979,7 @@ body {
   }
 
   .Poster-info {
-    top: 115px;
+    top: 80px;
     height: 33vw;
   }
 
@@ -900,6 +1026,20 @@ body {
 
   .Content-access {
     margin-bottom: 6px;
+  }
+
+  .SS-container {
+    top: 70px;
+  }
+
+  .SS-container2 {
+    top: 70px;
+  }
+
+  .Settings-option.small {
+    font-size: 1.8rem;
+    padding: 1rem 1rem;
+    cursor: default;
   }
   
 }
@@ -1200,4 +1340,20 @@ input:checked + .slider:before {
 
 .slider.round:before {
   border-radius: 50%;
+}
+
+.gobutton {
+  background: rgb(204, 0, 102);
+    border-color: rgb(204, 0, 102);
+    border-radius: 5px;
+    padding: 5px 15px;
+    color: #E6E6E6;
+    display: inline-block;
+    font: normal bold 20px/1 "Roboto", sans-serif;
+    text-align: center;
+    text-shadow: 1px 1px #000000;
+}
+
+.Search-button {
+  text-align: center;
 }

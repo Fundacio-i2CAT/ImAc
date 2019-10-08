@@ -5,6 +5,7 @@ ImAcController = function()
 	this.doPause = function() { MenuFunctionsManager.getPlayPauseFunc( false )() };
 	this.volumeUp = function() { MenuFunctionsManager.getChangeVolumeFunc( true )() };
 	this.volumeDown = function() { MenuFunctionsManager.getChangeVolumeFunc( false )() };
+	this.setVolume = function( volume ) { MenuFunctionsManager.getUpdateVolumeFunc( volume/10 )() };
 	this.goForward = function( time ) { MenuFunctionsManager.getSeekFunc( true, time )() };
 	this.goBack = function( time ) { MenuFunctionsManager.getSeekFunc( false, time )() };
 	this.changePlaybackRate = function( speed ) { MenuFunctionsManager.getSpeedFunc( speed )() };
@@ -18,6 +19,9 @@ ImAcController = function()
 	this.disableAST = function() { MenuFunctionsManager.getOnOffFunc( 'audioSubtitlesOnButton' )() };
 	this.openMenu = function() { MenuFunctionsManager.getopenMenu()() };
 	this.closeMenu = function() { MenuFunctionsManager.getcloseMenu()() };
+	this.zoomIn = function() { doZoom( 'in' ) };
+	this.zoomOut = function() { doZoom( 'out' ) };
+	this.showExtraAD = function() { MenuFunctionsManager.getActiveExtraADFunc()() };
 }
 
 function launchVoiceCommand( com )
@@ -39,5 +43,11 @@ function launchVoiceCommand( com )
 	else if ( com == 'return' ) window.history.back();
 	else if ( com == 'VR_on' ) document.getElementById('button_1').onclick()();
 	else if ( com == 'VR_off' ) document.getElementById('button_2').onclick()();
+	// new functionalities
+	else if ( com == 'zoom_in' ) _ImAc.zoomIn();
+	else if ( com == 'zoom_out' ) _ImAc.zoomOut();
+	else if ( com == 'extended_AD_on' ) _ImAc.showExtraAD();
+	else if ( com == 'extended_AD_off' ) console.log('off') //_ImAc.showExtraAD();
+	else if ( com.includes("volume_x|") ) _ImAc.setVolume( com.split("volume_x|")[1] );
 
 }

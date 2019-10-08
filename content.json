@@ -22,11 +22,11 @@
     }],
     "language": "French",
     "duration": "8:28",
-    "url": "http://84.88.32.46/imac_content/pilot_1/OPERALICEU_01/stream.mpd",
+    "url": "https://imac.gpac-licensing.com/imac_content/pilot_1/OPERALICEU_01/stream.mpd",
     "audioChannels": 4,
     "subtitles": [{}]
   },
-  {
+{
     "name": "Liceu Opera Piece 2",
     "poster": "./portal/img/covers/opera2_cover.png",
     "thumbnail": "./portal/img/opera2.PNG",
@@ -44,20 +44,97 @@
     }],
     "language": "French",
     "duration": "8:15",
-    "url": "http://84.88.32.46/imac_content/pilot_1/OPERALICEU_02/stream.mpd",
+    "url": "https://imac.gpac-licensing.com/imac_content/pilot_1/OPERALICEU_02/stream.mpd",
     "audioChannels": 4,
     "subtitles": [
     {
-      "de": "http://84.88.32.46/imac_content/pilot_1/OPERALICEU_02/CCMA_OPERALICEU02_subtitles_DE.xml",
-      "ca": "http://84.88.32.46/imac_content/pilot_1/OPERALICEU_02/CCMA_OPERALICEU02_subtitles_CAT.xml"
+      "de": "https://imac.gpac-licensing.com/imac_content/pilot_1/OPERALICEU_02/CCMA_OPERALICEU02_subtitles_DE.xml",
+      "ca": "https://imac.gpac-licensing.com/imac_content/pilot_1/OPERALICEU_02/CCMA_OPERALICEU02_subtitles_CAT.xml"
     },
     {
-      "de": "http://84.88.32.46/imac_content/pilot_1/OPERALICEU_02/CCMA_OPERALICEU02_subtitles_DE.xml",
-      "ca": "http://84.88.32.46/imac_content/pilot_1/OPERALICEU_02/CCMA_OPERALICEU02_subtitles_CAT.xml"
+      "de": "https://imac.gpac-licensing.com/imac_content/pilot_1/OPERALICEU_02/CCMA_OPERALICEU02_subtitles_DE.xml",
+      "ca": "https://imac.gpac-licensing.com/imac_content/pilot_1/OPERALICEU_02/CCMA_OPERALICEU02_subtitles_CAT.xml"
     }],
     "signer": [{}]
   },
   {
+    "name": "360° Abendschau",
+    "poster": "./portal/img/covers/Abendschau_cover.jpg",
+    "thumbnail": "./portal/img/covers/Abendschau_thumb.jpg",
+    "description": "Making-of video of the RBB news show “Abendschau”, taking you into the news room and the streets of Berlin where current events are covered by the RBB news team.",
+    "descriptionArray": [
+    {
+      "de": "Das 360° Video der Abendschau entführt den Zuschauer in das Redaktionsgeschehen und ermöglicht mitten in der schwirrenden Hauptstadtregion zu sein oder direkt neben dem Regisseur zu sitzen.",
+      "ca": "Vídeo sobre el making-of del programa informatiu d’RBB “Abendschau”, que et transportarà als interiors dels platós de notícies i als carrers de Berlín, on l'equip de reporters cobreix els últims esdeveniments.",
+      "es": "Vídeo sobre el making-of del programa informativo de RBB “Abendschau”, que te transportará a los interiores de los platós de noticias y a las calles de Berlín, donde el equipo de reporteros cubre los últimos acontecimientos.",
+      "en": "The 360° video of the Abendschau takes the viewer into the editorial world and makes it possible to be in the middle of the buzzing capital or to sit directly next to the director."
+    }],
+    "acces": [
+    {
+      "ST": ["de"],
+      "SL": ["de"]
+    }],
+    "language": "Deutsch",
+    "duration": "1:46",
+    "url": "https://imac.gpac-licensing.com/imac_content/rbb/dash/stream.mpd",
+    "audioChannels": 2,
+    "subtitles": [
+    {
+      "de": "https://imac.gpac-licensing.com/imac_content/rbb/RBB_Abendschau_short_subtitles_angles.xml"
+    }],
+    "signer": [
+    {
+        "de": "https://imac.gpac-licensing.com/imac_content/rbb/SL/stream.mpd"
+    }],
+    "st4sl": [
+    {
+      "de": "https://imac.gpac-licensing.com/imac_content/rbb/RBB_Abendschau_short_DE_20190816-111322.xml"
+    }]
+  },
+  {
+    "name": "I,Philip",
+    "poster": "./portal/img/covers/IPhilip2.jpg",
+    "thumbnail": "./portal/img/covers/iPhilip_thumb.jpg",
+    "description": "23 years after Philip K. Dick’s death, in 2005, David Hanson, a young engineer in robotics, revealed his first android with human form, “Phil”.",
+    "descriptionArray": [
+    {
+      "de": "23 Jahre nach dem Tod von Philip K. Dick im Jahr 2005 präsentiert der Robotik-Designer David Hanson seinen ersten menschlichen Androiden, „Phil“.„I, Philip“ erzählt aus der subjektiven Perspektive von Phil, wie dieser Menschen begegnet, mit ihnen spricht und sich an eine Liebesgeschichte erinnert. Handelt es sich hierbei um eine Erinnerung aus dem Leben des echten Philip K. Dick?",
+      "ca": "23 anys després de la mort de Philip K. Dick, el 2005, David Hanson, un jove enginyer en robòtica, presenta el seu primer androide amb forma humana, “Phil”.",
+      "es": "23 años después de la muerte de Philip K. Dick, en 2005, David Hanson, un joven ingeniero en robótica, presenta su primer androide con forma humana, “Phil”.",
+      "en": "23 years after Philip K. Dick’s death, in 2005, David Hanson, a young engineer in robotics, revealed his first android with human form, “Phil”. ”I Philip” immerses you in the memories of what could be the last love affair of the writer. But aren’t these memories the fruit of the imagination of an android which learned, little by little, how to become a human?"
+    }],
+    "acces": [
+    {
+      "ST": ["en", "es", "de", "ca"],
+      "SL": ["de"]
+    }],
+    "language": "English",
+    "duration": "14:44",
+    "url": "https://imac.gpac-licensing.com/imac_content/pilot_1/RBB_Iphilip/stream.mpd",
+    "audioChannels": 2,
+    "subtitles": [
+    {
+      "de": "https://imac.gpac-licensing.com/imac_content/pilot_1/RBB_Iphilip/RBB_IPhilip_subtitles_DE.xml",
+      "ca": "https://imac.gpac-licensing.com/imac_content/pilot_1/RBB_Iphilip/RBB_IPhilip_subtitles_with_vertical_angles_CAT_Revised_V2.xml",
+      "es": "https://imac.gpac-licensing.com/imac_content/pilot_1/RBB_Iphilip/RBB_IPhilip_subtitles_ES.xml",
+      "en": "https://imac.gpac-licensing.com/imac_content/pilot_1/RBB_Iphilip/RBB_IPhilip_subtitles_EN.xml"
+    },
+    {
+      "de": "https://imac.gpac-licensing.com/imac_content/pilot_1/RBB_Iphilip/RBB_IPhilip_subtitles_DE.xml",
+      "ca": "https://imac.gpac-licensing.com/imac_content/pilot_1/RBB_Iphilip/RBB_IPhilip_subtitles_with_vertical_angles_CAT_Revised_V2.xml",
+      "es": "https://imac.gpac-licensing.com/imac_content/pilot_1/RBB_Iphilip/RBB_IPhilip_subtitles_ES.xml",
+      "en": "https://imac.gpac-licensing.com/imac_content/pilot_1/RBB_Iphilip/RBB_IPhilip_subtitles_EN.xml"
+    }],
+    "signer": [
+    {
+      "de": "https://imac.gpac-licensing.com/imac_content/pilot_1/RBB_Iphilip/RBB_I/stream.mpd"
+    }],
+    "st4sl": [
+    {
+      "de": "https://imac.gpac-licensing.com/imac_content/pilot_1/RBB_Iphilip/RBB_IPhilip_ST4SL_text.xml"
+    }]
+  },
+   {
     "name": "Desconcert “Leyre”",
     "poster": "./portal/img/covers/desconcert1_cover.png",
     "thumbnail": "./portal/img/desconcert1.png",
@@ -75,18 +152,18 @@
     }],
     "language": "Català",
     "duration": "4:32",
-    "url": "http://84.88.32.46/imac_content/pilot_1/desconcert_1/stream.mpd",
+    "url": "https://imac.gpac-licensing.com/imac_content/pilot_1/desconcert_1/stream.mpd",
     "audioChannels": 4,
     "subtitles": [
     {
-      "de": "http://84.88.32.46/imac_content/pilot_1/desconcert_1/CCMA_Desconcert_Halldor_Mar_Leyre_subtitles_DE.xml",
-      "ca": "http://84.88.32.46/imac_content/pilot_1/desconcert_1/CCMA_Desconcert_Halldor_Mar_Leyre_subtitles_CAT.xml",
-      "en": "http://84.88.32.46/imac_content/pilot_1/desconcert_1/CCMA_Desconcert_Halldor_Mar_Leyre_subtitles_EN.xml"
+      "de": "https://imac.gpac-licensing.com/imac_content/pilot_1/desconcert_1/CCMA_Desconcert_Halldor_Mar_Leyre_subtitles_DE.xml",
+      "ca": "https://imac.gpac-licensing.com/imac_content/pilot_1/desconcert_1/CCMA_Desconcert_Halldor_Mar_Leyre_subtitles_CAT.xml",
+      "en": "https://imac.gpac-licensing.com/imac_content/pilot_1/desconcert_1/CCMA_Desconcert_Halldor_Mar_Leyre_subtitles_EN.xml"
     },
     {
-      "de": "http://84.88.32.46/imac_content/pilot_1/desconcert_1/CCMA_Desconcert_Halldor_Mar_Leyre_subtitles_DE.xml",
-      "ca": "http://84.88.32.46/imac_content/pilot_1/desconcert_1/CCMA_Desconcert_Halldor_Mar_Leyre_subtitles_CAT.xml",
-      "en": "http://84.88.32.46/imac_content/pilot_1/desconcert_1/CCMA_Desconcert_Halldor_Mar_Leyre_subtitles_EN.xml"
+      "de": "https://imac.gpac-licensing.com/imac_content/pilot_1/desconcert_1/CCMA_Desconcert_Halldor_Mar_Leyre_subtitles_DE.xml",
+      "ca": "https://imac.gpac-licensing.com/imac_content/pilot_1/desconcert_1/CCMA_Desconcert_Halldor_Mar_Leyre_subtitles_CAT.xml",
+      "en": "https://imac.gpac-licensing.com/imac_content/pilot_1/desconcert_1/CCMA_Desconcert_Halldor_Mar_Leyre_subtitles_EN.xml"
     }],
     "signer": [{}],
     "ad": [{}],
@@ -110,33 +187,33 @@
     }],
     "language": "Català",
     "duration": "4:12",
-    "url": "http://84.88.32.46/imac_content/pilot_1/desconcert_2/stream.mpd",
+    "url": "https://imac.gpac-licensing.com/imac_content/pilot_1/desconcert_2/stream.mpd",
     "audioChannels": 4,
     "subtitles": [
     {
-      "de": "http://84.88.32.46/imac_content/pilot_1/desconcert_2/CCMA_Desconcert_Marion_Harrier_Havanna_subtitles_DE.xml",
-      "ca": "http://84.88.32.46/imac_content/pilot_1/desconcert_2/CCMA_Desconcert_Marion_Harrier_Havanna_subtitles_CAT.xml",
-      "en": "http://84.88.32.46/imac_content/pilot_1/desconcert_2/CCMA_Desconcert_Marion_Harrier_Havanna_subtitles_EN.xml"
+      "de": "https://imac.gpac-licensing.com/imac_content/pilot_1/desconcert_2/CCMA_Desconcert_Marion_Harrier_Havanna_subtitles_DE.xml",
+      "ca": "https://imac.gpac-licensing.com/imac_content/pilot_1/desconcert_2/CCMA_Desconcert_Marion_Harrier_Havanna_subtitles_CAT.xml",
+      "en": "https://imac.gpac-licensing.com/imac_content/pilot_1/desconcert_2/CCMA_Desconcert_Marion_Harrier_Havanna_subtitles_EN.xml"
     },
     {
-      "de": "http://84.88.32.46/imac_content/pilot_1/desconcert_2/CCMA_Desconcert_Marion_Harrier_Havanna_subtitles_DE.xml",
-      "ca": "http://84.88.32.46/imac_content/pilot_1/desconcert_2/CCMA_Desconcert_Marion_Harrier_Havanna_subtitles_CAT.xml",
-      "en": "http://84.88.32.46/imac_content/pilot_1/desconcert_2/CCMA_Desconcert_Marion_Harrier_Havanna_subtitles_EN.xml"
+      "de": "https://imac.gpac-licensing.com/imac_content/pilot_1/desconcert_2/CCMA_Desconcert_Marion_Harrier_Havanna_subtitles_DE.xml",
+      "ca": "https://imac.gpac-licensing.com/imac_content/pilot_1/desconcert_2/CCMA_Desconcert_Marion_Harrier_Havanna_subtitles_CAT.xml",
+      "en": "https://imac.gpac-licensing.com/imac_content/pilot_1/desconcert_2/CCMA_Desconcert_Marion_Harrier_Havanna_subtitles_EN.xml"
     }],
     "signer": [{}],
     "ad": [{}],
     "ast": [{}]
   },
   {
-    "name": "Holy Land E04",
-    "poster": "http://84.88.32.46/imac_content/pilot_1/HolyLand4/u57_c.png",
-    "thumbnail": "http://84.88.32.46/imac_content/pilot_1/HolyLand4/holy.png",
+    "name": "Holy Land Episode 4",
+    "poster": "https://imac.gpac-licensing.com/imac_content/pilot_1/HolyLand4/u57_c.png",
+    "thumbnail": "https://imac.gpac-licensing.com/imac_content/pilot_1/HolyLand4/holy.png",
     "description": "Episode 4: Witness the wall separating Israel and Palestine, then tour the modern cities of Tel Aviv and Jerusalem.",
     "descriptionArray": [
     {
-      "de": "Episode 4: Erleben Sie die Mauer, die Israel und Palästina trennt, und besuchen Sie dann die modernen Städte Tel Aviv und Jerusalem.",
+      "de": "Episode 4: Erleben Sie die Mauer, die Israel und Pal�stina trennt, und besuchen Sie dann die modernen St�dte Tel Aviv und Jerusalem.",
       "ca": "Episodi 4: Visita el mur que separa Israel i Palestina, i recorre les modernes ciutats de Tel Aviv i Jerusalem.",
-      "es": "Episodio 4: Visita el muro que separa a Israel y Palestina y recorre las modernas ciudades de Tel Aviv y Jerusalén.",
+      "es": "Episodio 4: Visita el muro que separa a Israel y Palestina y recorre las modernas ciudades de Tel Aviv y Jerusal�n.",
       "en": "Episode 4: Witness the wall separating Israel and Palestine, then tour the modern cities of Tel Aviv and Jerusalem."
     }],
     "acces": [
@@ -145,26 +222,26 @@
     }],
     "language": "English",
     "duration": "4:13",
-    "url": "http://84.88.32.46/imac_content/pilot_1/HolyLand4/stream.mpd",
+    "url": "https://imac.gpac-licensing.com/imac_content/pilot_1/HolyLand4/stream.mpd",
     "audioChannels": 4,
     "subtitles": [{}],
     "ad": [{
         "en": {
-      "VoiceOfGod": "http://84.88.32.46/imac_content/pilot_1/HolyLand4/Holy_Land-E04-EN-AD-Classic.aac"
+      "VoiceOfGod": "https://imac.gpac-licensing.com/imac_content/pilot_1/HolyLand4/Holy_Land-E04-EN-AD-Classic.aac"
   }
     }]
   },
   {
     "name": "Rapzember",
-    "poster": "./portal/img/covers/Rapzember2.jpg",
-    "thumbnail": "./portal/img/covers/Rapzember.jpg",
-    "description": "Lorem ipsum",
+    "poster": "./portal/img/covers/Rapzember_cover.jpg",
+    "thumbnail": "./portal/img/covers/Rapzember_thumb.jpg",
+    "description": "25 hours under the sign of Rap - that's Rapzember on Fritz.  The video shows an interview with the musician Young Hurn in the studio of the radio station.",
     "descriptionArray": [
     {
-      "de": " ",
+      "de": "25 Stunden im Zeichen des Rap - das ist der Rapzember auf Fritz.  Das Video zeigt ein Interview mit dem Musiker Young Hurn im Studio des Radiosenders.",
       "ca": " ",
       "es": " ",
-      "en": " "
+      "en": "25 hours under the sign of Rap - that's Rapzember on Fritz.  The video shows an interview with the musician Young Hurn in the studio of the radio station."
     }],
     "acces": [
     {
@@ -173,22 +250,44 @@
     }],
     "language": "Deutsch",
     "duration": "3:10",
-    "url": "http://84.88.32.46/imac_content/pilot_1/rapzember/stream.mpd",
+    "url": "https://imac.gpac-licensing.com/imac_content/pilot_1/rapzember/stream.mpd",
     "audioChannels": 2,
     "subtitles": [
     {
-      "de": "http://84.88.32.46/imac_content/pilot_1/rapzember/Rapzember.ebu-tt.positioning.xml",
-      "ca": "http://84.88.32.46/imac_content/pilot_1/rapzember/Rapzember_Cat.xml"
+      "de": "https://imac.gpac-licensing.com/imac_content/pilot_1/rapzember/Rapzember.ebu-tt.positioning.xml",
+      "ca": "https://imac.gpac-licensing.com/imac_content/pilot_1/rapzember/Rapzember_Cat.xml"
     },
     {
-      "de": "http://84.88.32.46/imac_content/pilot_1/rapzember/Rapzember.ebu-tt.positioning.xml",
-      "ca": "http://84.88.32.46/imac_content/pilot_1/rapzember/Rapzember_Cat.xml"
+      "de": "https://imac.gpac-licensing.com/imac_content/pilot_1/rapzember/Rapzember.ebu-tt.positioning.xml",
+      "ca": "https://imac.gpac-licensing.com/imac_content/pilot_1/rapzember/Rapzember_Cat.xml"
     }],
     "signer": [
     {
-      "de": "http://84.88.32.46/imac_content/pilot_1/rapzember/signer_rbb_new/stream.mpd"
+      "de": "https://imac.gpac-licensing.com/imac_content/pilot_1/rapzember/signer_rbb_new/stream.mpd"
     }],
     "ad": [{}],
     "ast": [{}]
+  },
+  {
+    "name": "RBB Crime Scene",
+    "poster": "",
+    "thumbnail": "https://imac.gpac-licensing.com/acm/instances/keyframes/RBB_CrimeScene_H264_4K_audio_stereo-low.mp4_10.jpg",
+    "description": "",
+    "descriptionArray": [
+    {
+      "de": "",
+      "ca": "",
+      "es": "",
+      "en": ""
+    }],
+    "acces": [
+    {
+      "ST": ["de","en"]
+    }],
+    "language": "Deutsch",
+    "duration": "29:15",
+    "url": "https://imac.gpac-licensing.com/817/manifest.mpd",
+    "audioChannels": 4,
+    "subtitles": [{}]
   }]
 }

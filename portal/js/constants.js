@@ -6,20 +6,25 @@ var _ImAc_default = {
     voicecontrol: 'off',
     userprofile: 'save',
     mainlanguage: 'en',
-    accesslanguage: 'en',
+    //accesslanguage: 'en',
     indicator: 'none',
     safearea: 'L',
     stsize: 'L',
     stbackground: 'box',
     stposition: 'down',
     ste2r: 'off',
+    stlanguage: 'en',
     slsize: 'M',
     slposition: 'right',
+    sllanguage: 'en',
     aste2r: 'off',
     astmode: 'dynamic',
     astvolume: 'mid',
+    astlanguage: 'en',
     admode: 'dynamic',
-    advolume: 'mid'
+    advolume: 'mid',
+    adlanguage: 'en',
+    adspeed: 'x100'
 }
 
 var _ImAcMeta = {
@@ -110,6 +115,34 @@ var _ImAcMeta = {
 		de: 'Sprache der barrierefreien Dienste.',
 		ca: "Selecciona l'idioma dels serveis d'accessibilitat."
 	},
+	stlanguage: {
+		text: 'Language of the Subtitles.',
+		en: 'Language of the Subtitles.',
+		es: 'Selecciona el idioma de los subtítulos.',
+		de: 'Sprache der barrierefreien Dienste.',
+		ca: "Selecciona l'idioma dels subtítols."
+	},
+	sllanguage: {
+		text: 'Language of Access Services.',
+		en: 'Language of Access Services.',
+		es: 'Selecciona el idioma de los servicios de accesibilidad.',
+		de: 'Sprache der barrierefreien Dienste.',
+		ca: "Selecciona l'idioma dels serveis d'accessibilitat."
+	},
+	astlanguage: {
+		text: 'Language of Access Services.',
+		en: 'Language of Access Services.',
+		es: 'Selecciona el idioma de los servicios de accesibilidad.',
+		de: 'Sprache der barrierefreien Dienste.',
+		ca: "Selecciona l'idioma dels serveis d'accessibilitat."
+	},
+	adlanguage: {
+		text: 'Language of Access Services.',
+		en: 'Language of Access Services.',
+		es: 'Selecciona el idioma de los servicios de accesibilidad.',
+		de: 'Sprache der barrierefreien Dienste.',
+		ca: "Selecciona l'idioma dels serveis d'accessibilitat."
+	},
 	indicator: {
 		radar: {
 			img: './portal/img/settings/lvl3/radar.png',
@@ -142,7 +175,7 @@ var _ImAcMeta = {
 			text: 'Choose the size of the preferred size of the safe area (i.e. comfortable Field of View) on which visual elements will be presented.',
 			en: 'Choose the size of the preferred size of the safe area (i.e. comfortable Field of View) on which visual elements will be presented.',
 			es: 'Selecciona el tamaño del área de visión que te sea más cómoda. Es donde se te presentarán los elementos visuales.',
-			de: 'Wählen Sie die Größe für den Darstellungsbereich der barrierefreien Dienst aus.',
+			de: 'Wählen Sie die Größe für den Darstellungsbereich der barrierefreien Dienste aus.',
 			ca: "Selecciona la mida de l'àrea de visió que et sigui més còmoda. És on se't presentaran els elements visuals."
 		},
 		M: {
@@ -150,7 +183,7 @@ var _ImAcMeta = {
 			text: 'Choose the size of the preferred size of the safe area (i.e. comfortable Field of View) on which visual elements will be presented.',
 			en: 'Choose the size of the preferred size of the safe area (i.e. comfortable Field of View) on which visual elements will be presented.',
 			es: 'Selecciona el tamaño del área de visión que te sea más cómoda. Es donde se te presentarán los elementos visuales.',
-			de: 'Wählen Sie die Größe für den Darstellungsbereich der barrierefreien Dienst aus.',
+			de: 'Wählen Sie die Größe für den Darstellungsbereich der barrierefreien Dienste aus.',
 			ca: "Selecciona la mida de l'àrea de visió que et sigui més còmoda. És on se't presentaran els elements visuals."
 		},
 		S: {
@@ -158,7 +191,7 @@ var _ImAcMeta = {
 			text: 'Choose the size of the preferred size of the safe area (i.e. comfortable Field of View) on which visual elements will be presented.',
 			en: 'Choose the size of the preferred size of the safe area (i.e. comfortable Field of View) on which visual elements will be presented.',
 			es: 'Selecciona el tamaño del área de visión que te sea más cómoda. Es donde se te presentarán los elementos visuales.',
-			de: 'Wählen Sie die Größe für den Darstellungsbereich der barrierefreien Dienst aus.',
+			de: 'Wählen Sie die Größe für den Darstellungsbereich der barrierefreien Dienste aus.',
 			ca: "Selecciona la mida de l'àrea de visió que et sigui més còmoda. És on se't presentaran els elements visuals."
 		}	
 	},
@@ -310,7 +343,7 @@ var _ImAcMeta = {
 			text: 'Spoken subtitles, straight from the action.',
 			en: 'Spoken subtitles, straight from the action.',
 			es: 'Los audiosubtítulos se oyen de la dirección de donde ocurre la acción.',
-			de: 'Voice over aus Richtung der Action.',
+			de: 'Voice over kommt aus der gleichen Richtung wie das Audio des Videos.',
 			ca: "Els audiosubtítols se senten de la direcció on passa l'acció."
 		},
 		god: {
@@ -354,7 +387,7 @@ var _ImAcMeta = {
 			text: "This tells you all about the action and where it's happening.",
 			en: "This tells you all about the action and where it's happening.",
 			es: 'Con este modo, te dirán qué ocurre y dónde se sitúa la acción en el vídeo.',
-			de: 'Hier erfahren Sie alles über die Action und wo sie stattfindet.',
+			de: 'Die Audio Deskription kommt aus der gleichen Richtung wie das Audio des Videos.',
 			ca: "Amb aquest mode, et diran què passa i on se situa l'acció en el vídeo."
 		},
 		friend: {
@@ -399,19 +432,26 @@ var _ImAcMeta = {
 			de: 'Ändern der Lautstärke der Audio Deskription.',
 			ca: "Ajusta el volum de l’audiodescripció."
 		}	
+	},
+	adspeed: {
+		text: 'Playback Rate of the extended AD.',
+		en: 'Playback Rate of the extended AD.',
+		es: 'Selecciona la velocidad de reproducción del extended AD.',
+		de: 'Playback Rate of the extended AD.',
+		ca: "Selecciona la velocitat de reproducció del extended AD."
 	}
 }
 
 var _ImAc_Buttons = {
 
-	traditional: 	{ ca: 'Tradicional', de: 'Traditional', en: 'Traditional', es: 'Tradicional' },
+	traditional: 	{ ca: 'Tradicional', de: 'Standard', en: 'Traditional', es: 'Tradicional' },
 	ls: 			{ ca: 'Accessible', de: 'Barrierefreies Menü', en: 'Enhanced Accessibility', es: 'Accesible' },
 	small: 			{ ca: 'Petit', de: 'Klein', en: 'Small', es: 'Pequeño' },
 	small2: 		{ ca: 'Petita', de: 'Klein', en: 'Small', es: 'Pequeña' },
-	medium: 		{ ca: 'Mitjà', de: 'mittel', en: 'Medium', es: 'Mediano' },
-	medium2: 		{ ca: 'Mitjana', de: 'mittel', en: 'Medium', es: 'Mediana' },
-	big:     		{ ca: 'Gran', de: 'groß', en: 'Big', es: 'Grande' },
-	large:     		{ ca: 'Gran', de: 'groß', en: 'Large', es: 'Grande' },
+	medium: 		{ ca: 'Mitjà', de: 'Mittel', en: 'Medium', es: 'Mediano' },
+	medium2: 		{ ca: 'Mitjana', de: 'Mittel', en: 'Medium', es: 'Mediana' },
+	big:     		{ ca: 'Gran', de: 'Groß', en: 'Big', es: 'Grande' },
+	large:     		{ ca: 'Gran', de: 'Groß', en: 'Large', es: 'Grande' },
 	on:     		{ ca: 'Sí', de: 'An', en: 'On', es: 'Sí' },
 	off:     		{ ca: 'No', de: 'Aus', en: 'Off', es: 'No' },
 	save:     		{ ca: 'Desar', de: 'Speichern', en: 'Save', es: 'Guardar' },
@@ -424,12 +464,12 @@ var _ImAc_Buttons = {
 	top:            { ca: 'A dalt', de: 'Oben', en: 'Top', es: 'Arriba' },
 	bottom:         { ca: 'A baix', de: 'Unten', en: 'Bottom', es: 'Abajo' },
 	left:           { ca: 'Esquerra', de: 'Links', en: 'Left', es: 'Izquierda' },
-	right:          { ca: 'Dreta', de: 'Richtig', en: 'Right', es: 'Derecha' },
-	classic:        { ca: 'Clàssic', de: 'Classic', en: 'Classic', es: 'Clásico' },
+	right:          { ca: 'Dreta', de: 'Rechts', en: 'Right', es: 'Derecha' },
+	classic:        { ca: 'Clàssic', de: 'Klassisch', en: 'Classic', es: 'Clásico' },
 	statics:        { ca: 'Estàtic', de: 'Statisch', en: 'Static', es: 'Estático' },
 	dynamic:        { ca: 'Dinàmic', de: 'Dynamisch', en: 'Dynamic', es: 'Dinámico' },
-	minimum:        { ca: 'Mínim', de: 'Minimum', en: 'Minimum', es: 'Mínimo' },
-	middle:         { ca: 'Mig', de: 'Mitte', en: 'Middle', es: 'Medio' },
-	maximum:        { ca: 'Màxim', de: 'höchste', en: 'Maximum', es: 'Máximo' }
+	minimum:        { ca: 'Mínim', de: ' Gering', en: 'Minimum', es: 'Mínimo' },
+	middle:         { ca: 'Mig', de: 'Mittel', en: 'Middle', es: 'Medio' },
+	maximum:        { ca: 'Màxim', de: 'Hoch', en: 'Maximum', es: 'Máximo' }
 
 }

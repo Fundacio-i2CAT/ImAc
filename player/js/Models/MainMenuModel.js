@@ -1,6 +1,6 @@
 
 function MainMenuModel() {
-	this.name = 'main-menu-group';
+	this.name = 'trad-main-menu';
 
 	//PlayPause
 	this.isPaused;
@@ -56,6 +56,7 @@ function MainMenuModel() {
 
 	//Video progress bar
 	this.playScaleX;
+	this.seekScaleX;
 	this.playPositionX;
 	this.sliderPositionX;
 	this.videoPlayOutTimeText;

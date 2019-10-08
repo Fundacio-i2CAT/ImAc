@@ -6,6 +6,7 @@ THREE.MediaObjectData = function () {
 
     var subtitleFont; 
     var ST_font = "500 40px Roboto, Arial";
+    var ST_font2 = "400 30px Roboto, Arial";
 
 //************************************************************************************
 // Public Setters
@@ -39,6 +40,16 @@ THREE.MediaObjectData = function () {
         return getVideoMesh( geometry, url, name, 0 );
     };
 
+    this.getDirectiveVideo = function(url, name) 
+    {
+        var geometry = new THREE.PlaneGeometry( 160, 90 );
+        var sphere = getVideoMesh( geometry, url, name, 0 );
+
+        sphere.position.z = -78;
+
+        return sphere;
+    };
+
     this.getSphericalColorMesh = function(size, color, name) 
     {
         var geometry = new THREE.SphereBufferGeometry( size, 32, 32, Math.PI/2 );
@@ -70,30 +81,38 @@ THREE.MediaObjectData = function () {
         return getVideoMesh( geometry, url, name, 0 );
     };
 
-    this.getSignVideoMesh = function(url, name, config) 
+    this.getSignVideoMesh = function(url, name, config, hasSLSubtitles) 
     {
         var group = new THREE.Group();
 
         config.size=20;
+
         var geometry = new THREE.PlaneGeometry( 20, 20 );
         var plane = getVideoMesh( geometry, url, name, 1 );
 
-        var material = new THREE.MeshBasicMaterial( { color: 0x000000,  transparent: true, opacity: 0.5 } );
-        var mesh = new THREE.Mesh( new THREE.PlaneGeometry( 38, 8.4 ), material );
+        //var material;// = new THREE.MeshBasicMaterial( { color: 0x000000,  transparent: true, opacity: 0.5 } );
+        //var mesh;// = new THREE.Mesh( new THREE.PlaneGeometry( 38, 8.4 ), material );
 
-        setArrowToMesh( mesh, 120/6, 1, 0xffffff, 0x000000, 0, true ) 
-        mesh.position.y = -10 -4.4/2;
-        mesh.scale.set( 0.98*70/130, 0.98*70/130, 1 )
-        mesh.children[0].visible = false;
-        mesh.children[1].visible = false;
-        mesh.visible = config.signIndicator == 'arrow' ? true : false;
-        mesh.name = 'backgroundSL';
+        if ( !hasSLSubtitles ) 
+        {
+            var material = new THREE.MeshBasicMaterial( { color: 0x000000,  transparent: true, opacity: 0.5 } );
+            var mesh = new THREE.Mesh( new THREE.PlaneGeometry( 38, 8.4 ), material );
 
-        plane.add( mesh );
+            setArrowToMesh( mesh, 120/6, 1, 0xffffff, 0x000000, 0, true ) 
+            mesh.position.y = -10 -4.4/2;
+            mesh.scale.set( 0.98*70/130, 0.98*70/130, 1 )
+
+            mesh.children[0].visible = false;
+            mesh.children[1].visible = false;
+            mesh.visible = config.signIndicator == 'arrow' ? true : false;
+            mesh.name = 'backgroundSL';
+
+            plane.add( mesh );
+        }
 
         plane.position.z = - config.z;
         plane.position.x = config.x;
-        plane.position.y = ( !_SLsubtitles && subController.checkSubtitleEnabled(true) ) ? config.y : config.y +3.4;
+        plane.position.y = config.y;
 
         group.add( plane );
 
@@ -103,36 +122,36 @@ THREE.MediaObjectData = function () {
     };
 
 
-    this.getSLSubtitleMesh = function(textList, config, slconfig)
+    this.getSLSubtitleMesh = function(textList, slopacity, slconfig)
     {
         var group = new THREE.Group();
 
+        //slconfig.size = 20;
+
         var material = new THREE.MeshBasicMaterial( { color: 0x000000,  transparent: true, opacity: 0 } );
-        var plane = new THREE.Mesh( new THREE.PlaneGeometry( slconfig.size, slconfig.size ), material );
+        var plane = new THREE.Mesh( new THREE.PlaneGeometry( 20, 20 ), material );
 
         var group2 = new THREE.Group();
 
-        var posY = ( 0.82*60/2-20/2 ) *-1;
+        var slsize = 0.46;
 
-        config.x=0;
-        config.y=0;
-        config.z=0;
-        config.size = 0.8*0.97;
+        var font = textList[0].text.length < 14 ? ST_font : ST_font2;
 
-        group2.add(  getEmojiSubMesh3( textList, config, ST_font ) );
+        group2.add( getEmojiSubMesh3( textList, slsize, slopacity, font ) );
 
-        group2.position.y = -slconfig.size/2 - 1.8;
+        group2.position.y = -10 - 1.9;
         plane.add( group2 );
 
         plane.position.z = - slconfig.z;
         plane.position.x = slconfig.x;
-        plane.position.y = slconfig.y +3.4;
+        plane.position.y = slconfig.y;
+
+        plane.name = 'st4slmesh';
+
+        plane.scale.set(slconfig.size/20, slconfig.size/20, 1);
 
         //return plane;
         group.add( plane );
-
-        //group.position.x = posX;
-        //group.position.y = posY-10+2*0.97*0.8;
 
         if ( _isHMD ) group.rotation.z = -camera.rotation.z;
         
@@ -235,7 +254,8 @@ THREE.MediaObjectData = function () {
         var mesh = getImageMesh( imgGeometry, img, name, 3 );
 
         mesh.position.x = _isHMD ? 0.8*( 1.48*subController.getSubArea()/2-14/2 ) : ( 1.48*subController.getSubArea()/2-14/2 );
-        mesh.position.y = _isHMD ? 0.09*( 0.82*subController.getSubArea()/2-14/2 ) * subController.getSubPosition().y : ( 0.82*subController.getSubArea()/2-14/2 ) * subController.getSubPosition().y;
+       // mesh.position.y = _isHMD ? 0.09*( 0.82*subController.getSubArea()/2-14/2 ) * subController.getSubPosition().y : ( 0.82*subController.getSubArea()/2-14/2 ) * subController.getSubPosition().y;
+        mesh.position.y = 0;
 
         mesh.position.z = -76.001;
 
@@ -250,7 +270,8 @@ THREE.MediaObjectData = function () {
         mesh.material.color.set( color ); 
 
         mesh.position.x = _isHMD ? 0.8*( 1.48*subController.getSubArea()/2-14/2 ) : ( 1.48*subController.getSubArea()/2-14/2 );
-        mesh.position.y = _isHMD ? 0.09*( 0.82*subController.getSubArea()/2-14/2 ) * subController.getSubPosition().y : ( 0.82*subController.getSubArea()/2-14/2 ) * subController.getSubPosition().y;
+        mesh.position.y = 0;
+        //mesh.position.y = _isHMD ? 0.09*( 0.82*subController.getSubArea()/2-14/2 ) * subController.getSubPosition().y : ( 0.82*subController.getSubArea()/2-14/2 ) * subController.getSubPosition().y;
 
         mesh.position.z = -76;
         mesh.rotation.z = Math.radians( 360 - pos );
@@ -396,7 +417,45 @@ THREE.MediaObjectData = function () {
         //ctx.quadraticCurveTo( x, y, x, y + radius );
 
       return ctx;
-    }
+    };
+
+    this.getExpSubtitleMesh = function(textList, config)
+    {
+        var group = new THREE.Group();
+        var group1 = new THREE.Group();
+        var group2 = new THREE.Group();
+        var group3 = new THREE.Group();
+
+        config.y = -20;
+        
+        var mesh = getEmojiSubMesh( textList, config, ST_font, true )
+        mesh.lookAt(new THREE.Vector3(0, 0, 0)); 
+
+        group1.add( mesh );
+
+
+        var mesh = getEmojiSubMesh( textList, config, ST_font, true )
+        mesh.lookAt(new THREE.Vector3(0, 0, 0)); 
+
+        group2.add( mesh );
+
+
+        var mesh = getEmojiSubMesh( textList, config, ST_font, true )
+        mesh.lookAt(new THREE.Vector3(0, 0, 0)); 
+
+        group3.add( mesh );
+        
+
+        group2.rotation.y = Math.radians( 120 );
+        group3.rotation.y = Math.radians( 240 );
+
+        group.add( group1 );
+        group.add( group2 );
+        group.add( group3 );
+        
+        return group;
+    };
+
 
 //************************************************************************************
 // Private Functions
@@ -611,10 +670,10 @@ THREE.MediaObjectData = function () {
         return mesh;
     }
 
-    function getEmojiSubMesh3(t, c, font)
+    function getEmojiSubMesh3(t, size, opacity, font)
     {
         //t[0].text = ':)'
-        var canvas = document.getElementById( "canvas" );
+        var canvas = document.getElementById( "canvas2" );
         var ctx = canvas.getContext( "2d" );
         var ch = 50; // canvas height x line
         var fh = 40; // font height
@@ -622,7 +681,7 @@ THREE.MediaObjectData = function () {
         var text = t[0].text;
         var il = 0;
 
-        if ( text == '01' ) {
+        /*if ( text == '01' ) {
             drawing = emoji_1; 
             il = 63;
         }
@@ -653,31 +712,34 @@ THREE.MediaObjectData = function () {
         else if ( text == '08' ) {
             drawing = emoji_8; 
             il = 63;
-        }
-
+        }*/
 
         ctx.font = font;
         var width = ctx.measureText( t[0].text ).width;
-        canvas.width = 285;
+        canvas.width = 260;
         canvas.height = ch;
 
         if( il > 0 ) {          
-            createCanvasTextLine( ctx, '', font, t[0].color, 0, 0, canvas.width, ch, c.opacity, ( canvas.width - width )/2, fh );
+            createCanvasTextLine( ctx, '', font, t[0].color, 0, 0, canvas.width, ch, opacity, ( canvas.width - width )/2, fh );
             ctx.drawImage(drawing, 110, 0, 63, 50);
         }
 
-        else if ( t[0] ) createCanvasTextLine( ctx, t[0].text, font, t[0].color, 0, 0, canvas.width, ch, c.opacity, ( canvas.width - width )/2, fh );
+        else if ( t[0] ) createCanvasTextLine( ctx, t[0].text, font, t[0].color, 0, 0, canvas.width, ch, opacity, ( canvas.width - width )/2, fh );
 
         var material = new THREE.MeshBasicMaterial( { map: new THREE.CanvasTexture( canvas ),  transparent: true } );
         var mesh = new THREE.Mesh( new THREE.PlaneGeometry( canvas.width/6, ch/6 ), material );
 
-        setArrowToMesh( mesh, canvas.width/6-18, 1, t[0].color, t[0].backgroundColor, 0 );
+        //setArrowToMesh( mesh, canvas.width/6-18, 1, t[0].color, t[0].backgroundColor, 0 );
+        setArrowToMesh( mesh, canvas.width/6-0, 1, t[0].color, t[0].backgroundColor, opacity, true);
 
-        mesh.scale.set( c.area*c.size, c.area*c.size, 1 );
+        mesh.children[0].visible = false;
+        mesh.children[1].visible = false;
+
+        mesh.scale.set( size, size, 1 );
         mesh.name = 'emojitext';
         mesh.renderOrder = 3;
-        mesh.position.z = -c.z;
-        mesh.position.y = c.y;
+        mesh.position.z = -0;
+        mesh.position.y = 0;
         mesh.visible = true;
 
         return mesh;
@@ -968,7 +1030,7 @@ THREE.MediaObjectData = function () {
 
     function getTextMesh(text, size, color, name, func, cw, ch)
     {
-        console.warn('This function need to be updated')
+        //console.warn('This function need to be updated')
         var textShape = new THREE.BufferGeometry();
         var textmaterial = new THREE.MeshBasicMaterial( { color: color} );
         var shapes = subtitleFont.generateShapes( text, size );

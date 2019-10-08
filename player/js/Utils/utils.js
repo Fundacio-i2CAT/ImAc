@@ -144,7 +144,7 @@ function createVRButton_1(renderer)
     navigator.getVRDisplays().then( function ( displays ) 
     {
         AplicationManager.setDisplays( displays );
-        displays.length > 0 ? showEnterVR( displays[ 0 ] ) : createDelayedMenu();
+        displays.length > 0 && !_isTV ? showEnterVR( displays[ 0 ] ) : createDelayedMenu();
     });
 
     AplicationManager.setVRButton1( button );
@@ -184,7 +184,7 @@ function createVRButton_2(renderer)
 
     navigator.getVRDisplays().then( function ( displays ) 
     {
-        if ( displays.length > 0 ) showEnterVR();
+        if ( displays.length > 0 && !_isTV ) showEnterVR();
     });
 
     AplicationManager.setVRButton2( button );
@@ -198,11 +198,11 @@ function createMenus()
     {
         case "ls":
             menuMgr.Init(1);
-            menuMgr.createMenuActivationElement();
+            menuMgr.createMenuActivationElement(0.35);
             break;
         default:
             menuMgr.Init(2);
-            menuMgr.createMenuActivationElement();
+            menuMgr.createMenuActivationElement(0.35);
             break;
     }
 }
@@ -235,7 +235,11 @@ function saveConfig()
     _iconf.voicecontrol = _ws_vc ? 'on' : 'off';
     _iconf.userprofile = 'save';
     _iconf.mainlanguage = localStorage.ImAc_language;
-    _iconf.accesslanguage = subController.getSubLanguage();
+    //_iconf.accesslanguage = subController.getSubLanguage();
+    _iconf.stlanguage = subController.getSubLanguage();
+    _iconf.sllanguage = subController.getSignerLanguage();
+    _iconf.astlanguage = _AudioManager.getASTLanguage();
+    _iconf.adlanguage = _AudioManager.getADLanguage();
     _iconf.indicator = subController.getSubIndicator();
     _iconf.safearea = subController.getSubArea() == 70 ? 'L' : subController.getSubArea() == 60 ? 'M' : 'S';
     _iconf.stsize = subController.getSubSize() == 1 ? 'L' : subController.getSubSize() == 0.8 ? 'M' : 'S';
@@ -248,9 +252,10 @@ function saveConfig()
     _iconf.astmode = _AudioManager.getASTPresentation() == 'VoiceOfGod' ? 'god' : 'dynamic';
     _iconf.astvolume = _AudioManager.getASTVolume() == 100 ? 'max' : _AudioManager.getASTVolume() == 50 ? 'mid' : 'min';
     _iconf.admode = _AudioManager.getADPresentation() == 'VoiceOfGod' ? 'god' : _AudioManager.getADPresentation() == 'Dynamic' ? 'dynamic' : 'friend';
-    _iconf.advolume = _AudioManager.getADVolume() == 100 ? 'max' : _AudioManager.getADVolume() == 50 ? 'mid' : 'min';
+    _iconf.advolume = _AudioManager.getADGain() == 'high' ? 'max' : _AudioManager.getADGain() == 'medium' ? 'mid' : 'min';
+    _iconf.adspeed = _AudioManager.getExtraADSpeed() == 1 ? 'x100' : _AudioManager.getExtraADSpeed() == 1.25 ? 'x125' : 'x150';
 
-    document.cookie = "ImAcProfileConfig=" + encodeURIComponent( JSON.stringify( _iconf ) ) + "; max-age=2592000;"; //expires=" + expiresdate.toUTCString(); max-age = 1 mes
+    document.cookie = "ImAcProfileConfig=" + encodeURIComponent( JSON.stringify( _iconf ) ) + "; max-age=2592000" + "; path=/"; //expires=" + expiresdate.toUTCString(); max-age = 1 mes
 }
 
 // Converts from degrees to radians.
@@ -428,3 +433,79 @@ function iniGeneralSettings(conf)
     _pointerSize = conf.pointersize == 'M' ? 1 : conf.pointersize == 'L' ? 2 : 0.6;// 2=Big, 1=Mid, 0.6=Small
     _userprofile = conf.userprofile == 'save' ? true : false;
 }
+
+
+// Funcion para activar una pista de audio adicional pausando el contenido principal
+var extraADenabled = false;
+
+function initExtraAdAudio()
+{
+    if ( !extraADenabled )
+    {
+        console.log('init Extra AD')
+
+        extraADenabled = true;
+
+        var url = _ManifestParser.getExtraAD();
+
+        // Pause all of the ImAc contents
+        _ImAc.doPause();
+
+        // Creates a new audio object and play it
+        var audio = new Audio( url );
+        audio.play();
+        audio.volume = 1;
+
+        // modify audio playback rate
+        audio.playbackRate = _AudioManager.getExtraADSpeed();
+
+        // Listener to know when the audio is ended
+        audio.onended = function() {
+            extraADenabled = false;
+            _blockControls = false;
+
+            _ImAc.goBack( VideoController.getMediaTime() - _ManifestParser.getExtraADTime() );
+            // Play all of the ImAc contents
+            _ImAc.doPlay();
+
+        }; 
+    }
+
+}
+
+function checkExtraADListByTime(time)
+{
+    _ManifestParser.checkExtraAD( Math.trunc(time*100)/100, _AudioManager.getADLanguage() );
+}
+
+function changeSpeed(obj, speed)
+{
+    obj.playbackRate = speed;
+}
+
+function doZoom(mode)
+{
+    if ( mode == 'in' && camera.fov * 0.5 >= 15 )
+    {
+        camera.fov = camera.fov * 0.5;
+        camera.children.forEach( function( e ) 
+        {
+            e.scale.set( e.scale.x * 0.5, e.scale.y * 0.5, 1)
+        }); 
+
+        camera.updateProjectionMatrix();
+    }
+    else if ( mode == 'out' && camera.fov * 2 <= 60 ) 
+    {
+        camera.fov = camera.fov * 2;
+        camera.children.forEach( function( e ) 
+        {
+            //e.visible = pos == 'left' ? true : false;
+            e.scale.set( e.scale.x * 2, e.scale.y * 2, 1)
+        }); 
+        //camera.fovx += 10;
+        camera.updateProjectionMatrix();
+    }
+}
+
+

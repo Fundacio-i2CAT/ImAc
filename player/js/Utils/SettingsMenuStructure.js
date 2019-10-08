@@ -96,7 +96,7 @@ const settingsDropdownOpt = {title: 'Settings', final: false, options: [
  * @property {function} options[].function     Function executed when option is clicked.
  */
 const generalSettings = { title: 'General', icon: './img/menu/settings_icon.png', parent: settingsDropdownOpt, final: false, options: [
-    { optId: 'settingsLanguages', icon: './img/menu/language.png', text: 'Language', 
+    { optId: 'settingsLanguages', icon: './img/menu/language.png', text: 'LanguageMenu', 
         function: function(){ 
             SettingsOptionCtrl.updateDropdownOptions(settingsUILanguages);
         } 
@@ -115,7 +115,12 @@ const generalSettings = { title: 'General', icon: './img/menu/settings_icon.png'
         function: function(){ 
             SettingsOptionCtrl.updateDropdownOptions(settingsUserProfile);
         } 
-    }]
+    }/*,
+    { optId: 'openMenuSystem', icon: '', text: 'OpenMenu', 
+        function: function(){ 
+            SettingsOptionCtrl.updateDropdownOptions(openMenuSystem);
+        } 
+    }*/]
 };
 
 /* *************************************** UI  L A N G U A G E S ***************************************
@@ -143,7 +148,7 @@ const generalSettings = { title: 'General', icon: './img/menu/settings_icon.png'
  * @property {function} options[].default      Function that returns a bool true if option is default and starts in yellow.
  * @property {function} options[].function     Function executed when option is clicked.
  */
-const settingsUILanguages = { title: 'Language', icon: './img/menu/language.png', parent: generalSettings, final: true, options: [
+const settingsUILanguages = { title: 'LanguageMenu', icon: './img/menu/language.png', parent: generalSettings, final: true, options: [
     { optId: 'settingsUILanguageEngButton', text: 'English',
         default: function(){ return MenuDictionary.checkMainLanguage('en') },
         function:  function(){ 
@@ -312,12 +317,13 @@ const settingsUserProfile = { title: 'UserProfile', icon: './img/menu/user_profi
  * @property {function} options[].function     Function executed when option is clicked.
  */
 const accessSettings = { title: 'Access', icon: './img/menu/accessibility_icon.png', parent: settingsDropdownOpt, final: false, options: [
-    { optId: 'settingsAccessLanguage', icon: './img/menu/language.png', text: 'Language', 
+    // EACH ACCESS SERVICE WILL HAVE ITS OWN LANGUAGE SELECTOR.
+    /*{ optId: 'settingsAccessLanguage', icon: './img/menu/language.png', text: 'Language', 
         available: function(){ return MenuDictionary.getAvailableLanguage()},
         function: function(){ 
             SettingsOptionCtrl.updateDropdownOptions(settingsAccesLanguages);
         } 
-    },
+    },*/
     { optId: 'settingsIndicator', icon: './img/menu/indicator.png', text: 'Indicator', 
         function: function(){ 
             SettingsOptionCtrl.updateDropdownOptions(settingsIndicator);
@@ -418,7 +424,8 @@ const settingsAccesLanguages = { title: 'Language', icon: './img/menu/language.p
  * @property {function} options[].default      Function that returns a bool true if option is default and starts in yellow.
  * @property {function} options[].function     Function executed when option is clicked.
  */
-const settingsIndicator = { title: 'Indicator', icon: './img/menu/indicator.png', parent: accessSettings, final: true, options: [
+const settingsIndicator = { title: 'Indicator', icon: './img/menu/indicator.png', parent: accessSettings, final: true, preview: true,
+options: [
     { optId: 'settingsIndicatorNone', text: 'None', 
         default: function(){ return subController.checkSubIndicator('none') },
         function: function(){ 
@@ -464,7 +471,8 @@ const settingsIndicator = { title: 'Indicator', icon: './img/menu/indicator.png'
  * @property {function} options[].default      Function that returns a bool true if option is default and starts in yellow.
  * @property {function} options[].function     Function executed when option is clicked.
  */
-const settingsSafeArea = { title: 'SafeArea', icon: './img/menu/safe_area.png', parent: accessSettings, final: true, options: [
+const settingsSafeArea = { title: 'SafeArea', icon: './img/menu/safe_area.png', parent: accessSettings, final: true, preview: true,
+ options: [
     { optId: 'settingsSafeAreaSmall', text: 'Small', 
         default: function(){ return subController.checkSubArea(50) },
         function:  function(){ 
@@ -481,6 +489,31 @@ const settingsSafeArea = { title: 'SafeArea', icon: './img/menu/safe_area.png', 
     }]
 };
 
+
+// NOT ACTIVE
+const openMenuSystem = { title: 'OpenMenu', icon: '', parent: generalSettings, final: true, options: [
+    { optId: 'openMenuUp', text: 'Up', 
+        default: function(){ return menuUpDown == 1 },
+        function:  function(){
+            //console.log("Open Menu Up");
+            scene.remove(scene.getObjectByName('openMenu'));
+            menuMgr.createMenuActivationElement(0.35);
+            menuUpDown = 1;
+            SettingsOptionCtrl.setChildColumnActiveOpt(openMenuSystem.options[0].optId);
+        } 
+    }, 
+    { optId: 'OpenMenuDown', text: 'Down', 
+        default: function(){ return menuUpDown == -1 },
+        function:  function(){ 
+            //console.log("Open Menu Down");
+            scene.remove(scene.getObjectByName('openMenu'));
+            menuMgr.createMenuActivationElement(2.35);
+            menuUpDown = -1;
+            SettingsOptionCtrl.setChildColumnActiveOpt(openMenuSystem.options[1].optId);
+
+        } 
+    }]
+};
 
 /* *************************************** S U B T I T L E S    (ST) ***************************************
  * ╔═════════════════════════════════════╗
@@ -508,6 +541,12 @@ const settingsSafeArea = { title: 'SafeArea', icon: './img/menu/safe_area.png', 
  * @property {function} options[].function     Function executed when option is clicked.
  */
 const settingsSubtitles = { title: 'Subtitles', icon: './img/acc_serv_icon/st_off.png', parent: settingsDropdownOpt, final: false, options: [
+    { optId: 'subtitlesLanguage', icon: './img/menu/language.png', text: 'Language', 
+        available: function(){ return MenuDictionary.getAvailableLanguage()},
+        function: function(){ 
+            SettingsOptionCtrl.updateDropdownOptions(settingsSubtitlesLanguage);
+        } 
+    },
     { optId: 'subtitlesSizes', icon: './img/menu/st_font_size.png', text: 'Size', 
         function:  function(){ 
             SettingsOptionCtrl.updateDropdownOptions(settingsSubtitlesSize);
@@ -524,8 +563,74 @@ const settingsSubtitles = { title: 'Subtitles', icon: './img/acc_serv_icon/st_of
         } 
     },
     { optId: 'subtitlesEasyRead', icon: './img/menu/easy_to_read.png', text: 'Easytoread', 
+        available: function() { return  subController.checkSubEasyAvailable(subController.getSubLanguage()) },
         function:  function(){ 
             SettingsOptionCtrl.updateDropdownOptions(settingsSubtitlesEasyToRead);
+        } 
+    }]
+};
+
+/* *************************************** S U B T I T L E S   L A N G U A G E S ***************************************
+ * ╔═════════════════════════════════════╗
+ * ║ (<)    Subtitles Languages       X  ║
+ * ╠═════════════════════════════════════╣
+ * ║ English                       Final ║
+ * ║─────────────────────────────────────║
+ * ║ Español                       Final ║
+ * ║─────────────────────────────────────║
+ * ║ Deutsch                       Final ║
+ * ║─────────────────────────────────────║
+ * ║ Català                        Final ║
+ * ╚═════════════════════════════════════╝
+ * Visual example of dropdown
+ *
+ * @typedef  {Object}   settingsSubtitlesLanguage      Level 2.
+ * @property {string}   title                  The title shown in the dropdown menu.
+ * @property {string}   icon                   Icon path.
+ * @property {Object}   parent                 Reference to previews dropdown menu for back navigation.
+ * @property {boolean}  final                  Is the dropdown in the last level.
+ * @property {array}    options                Array of the different dropdown options
+ * @property {string}   options[].optId        Id reference for the next dropdown level.
+ * @property {string}   options[].text         Title of the dropdown option.
+ * @property {function} options[].available    Function that returns a bool true if option os available, false if option has to be omitted.
+ * @property {function} options[].default      Function that returns a bool true if option is default and starts in yellow.
+ * @property {function} options[].function     Function executed when option is clicked.
+ */
+const settingsSubtitlesLanguage = { title: 'Language', icon: './img/menu/language.png', parent: settingsSubtitles, final: true, options: [
+    { optId: 'subtitlesLanguageEngButton', text: 'English', 
+        available: function() { return subController.checkisSubAvailable('en') }, 
+        default: function(){ return subController.checkSubLanguage('en') },
+        function: function(){ 
+            MenuFunctionsManager.changeAccesLanguage('en', 'st')(); 
+            SettingsOptionCtrl.setChildColumnActiveOpt(settingsSubtitlesLanguage.options[0].optId);
+            mainMenuCtrl.updateAccessOptionsView();
+        } 
+    }, 
+    { optId: 'subtitlesLanguageEspButton', text: 'Español', 
+        available: function() { return subController.checkisSubAvailable('es') },
+        default: function(){ return subController.checkSubLanguage('es') },
+        function: function(){ 
+            MenuFunctionsManager.changeAccesLanguage('es','st')(); 
+            SettingsOptionCtrl.setChildColumnActiveOpt(settingsSubtitlesLanguage.options[1].optId);
+            mainMenuCtrl.updateAccessOptionsView();
+        } 
+    }, 
+    { optId: 'subtitlesLanguageGerButton', text: 'Deutsch', 
+        available: function() { return subController.checkisSubAvailable('de') },
+        default: function(){ return subController.checkSubLanguage('de') },
+        function: function(){ 
+            MenuFunctionsManager.changeAccesLanguage('de', 'st')(); 
+            SettingsOptionCtrl.setChildColumnActiveOpt(settingsSubtitlesLanguage.options[2].optId);
+            mainMenuCtrl.updateAccessOptionsView();
+        } 
+    }, 
+    { optId: 'subtitlesLanguageCatButton', text: 'Català', 
+        available: function() { return subController.checkisSubAvailable('ca') },
+        default: function(){ return subController.checkSubLanguage('ca') },
+        function: function(){ 
+            MenuFunctionsManager.changeAccesLanguage('ca', 'st')(); 
+            SettingsOptionCtrl.setChildColumnActiveOpt(settingsSubtitlesLanguage.options[3].optId);
+            mainMenuCtrl.updateAccessOptionsView();
         } 
     }]
 };
@@ -547,34 +652,36 @@ const settingsSubtitles = { title: 'Subtitles', icon: './img/acc_serv_icon/st_of
  * @property {string}   icon                   Icon path.
  * @property {Object}   parent                 Reference to previews dropdown menu for back navigation.
  * @property {boolean}  final                  Is the dropdown in the last level.
+ * @property {boolean}  preview                Is the preview available for this option.
  * @property {array}    options                Array of the different dropdown options
  * @property {string}   options[].optId        Id reference for the next dropdown level.
  * @property {string}   options[].text         Title of the dropdown option.
  * @property {function} options[].default      Function that returns a bool true if option is default and starts in yellow.
  * @property {function} options[].function     Function executed when option is clicked.
  */
-const settingsSubtitlesSize = { title: 'Size', icon: './img/menu/st_font_size.png', parent: settingsSubtitles, final: true, options: [
-    { optId: 'subtitlesSmallSizeButton', text: 'Small', 
-        default: function(){ return subController.checkSubSize(0.6) },
-        function:  function(){ 
-            subController.setSubSize( 0.6 );
-            SettingsOptionCtrl.setChildColumnActiveOpt(settingsSubtitlesSize.options[0].optId);
-        } 
-    },
-    { optId: 'subtitlesMediumSizeButton', text: 'Medium', 
-        default: function(){ return subController.checkSubSize(0.8) },
-        function:  function(){ 
-            subController.setSubSize( 0.8 );
-            SettingsOptionCtrl.setChildColumnActiveOpt(settingsSubtitlesSize.options[1].optId);
-        } 
-    },
-    { optId: 'subtitlesLargeSizeButton', text: 'Large', 
-        default: function(){ return subController.checkSubSize(1) },
-        function:  function(){ 
-            subController.setSubSize( 1 );
-            SettingsOptionCtrl.setChildColumnActiveOpt(settingsSubtitlesSize.options[2].optId);
-        } 
-    }]
+const settingsSubtitlesSize = { title: 'Size', icon: './img/menu/st_font_size.png', parent: settingsSubtitles, final: true, preview: true,
+    options: [
+        { optId: 'subtitlesSmallSizeButton', text: 'Small', 
+            default: function(){ return subController.checkSubSize(0.6) },
+            function:  function(){ 
+                subController.setSubSize( 0.6 );
+                SettingsOptionCtrl.setChildColumnActiveOpt(settingsSubtitlesSize.options[0].optId);
+            } 
+        },
+        { optId: 'subtitlesMediumSizeButton', text: 'Medium', 
+            default: function(){ return subController.checkSubSize(0.8) },
+            function:  function(){ 
+                subController.setSubSize( 0.8 );
+                SettingsOptionCtrl.setChildColumnActiveOpt(settingsSubtitlesSize.options[1].optId);
+            } 
+        },
+        { optId: 'subtitlesLargeSizeButton', text: 'Large', 
+            default: function(){ return subController.checkSubSize(1) },
+            function:  function(){ 
+                subController.setSubSize( 1 );
+                SettingsOptionCtrl.setChildColumnActiveOpt(settingsSubtitlesSize.options[2].optId);
+            } 
+        }]
 };
 
 /* *************************************** S U B T I T L E S   B A C K G R O U N D ***************************************
@@ -592,27 +699,29 @@ const settingsSubtitlesSize = { title: 'Size', icon: './img/menu/st_font_size.pn
  * @property {string}   icon                   Icon path.
  * @property {Object}   parent                 Reference to previews dropdown menu for back navigation.
  * @property {boolean}  final                  Is the dropdown in the last level.
+ * @property {boolean}  preview                Is the preview available for this option.
  * @property {array}    options                Array of the different dropdown options
  * @property {string}   options[].optId        Id reference for the next dropdown level.
  * @property {string}   options[].text         Title of the dropdown option.
  * @property {function} options[].default      Function that returns a bool true if option is default and starts in yellow.
  * @property {function} options[].function     Function executed when option is clicked.
  */
-const settingsSubtitlesBackground = { title: 'Background', icon: './img/menu/st_background.png', parent: settingsSubtitles, final: true, options: [
-    { optId: 'subtitlesSemitrans', text: 'Semitrans', 
-        default: function(){ return subController.checkSubBackground(0.5) },
-        function:  function(){ 
-            subController.setSubBackground( 0.5 );
-            SettingsOptionCtrl.setChildColumnActiveOpt(settingsSubtitlesBackground.options[0].optId);
-        } 
-    },
-    { optId: 'subtitlesOutline', text: 'Outline', 
-        default: function(){ return subController.checkSubBackground(0) },
-        function:  function(){ 
-            subController.setSubBackground( 0 );
-            SettingsOptionCtrl.setChildColumnActiveOpt(settingsSubtitlesBackground.options[1].optId);
-        } 
-    }]
+const settingsSubtitlesBackground = { title: 'Background', icon: './img/menu/st_background.png', parent: settingsSubtitles, final: true, preview: true,
+    options: [
+        { optId: 'subtitlesSemitrans', text: 'Semitrans', 
+            default: function(){ return subController.checkSubBackground(0.5) },
+            function:  function(){ 
+                subController.setSubBackground( 0.5 );
+                SettingsOptionCtrl.setChildColumnActiveOpt(settingsSubtitlesBackground.options[0].optId);
+            } 
+        },
+        { optId: 'subtitlesOutline', text: 'Outline', 
+            default: function(){ return subController.checkSubBackground(0) },
+            function:  function(){ 
+                subController.setSubBackground( 0 );
+                SettingsOptionCtrl.setChildColumnActiveOpt(settingsSubtitlesBackground.options[1].optId);
+            } 
+        }]
 };
 
 
@@ -631,29 +740,67 @@ const settingsSubtitlesBackground = { title: 'Background', icon: './img/menu/st_
  * @property {string}   icon                   Icon path.
  * @property {Object}   parent                 Reference to previews dropdown menu for back navigation.
  * @property {boolean}  final                  Is the dropdown in the last level.
+ * @property {boolean}  preview                Is the preview available for this option.
  * @property {array}    options                Array of the different dropdown options
  * @property {string}   options[].optId        Id reference for the next dropdown level.
  * @property {string}   options[].text         Title of the dropdown option.
  * @property {function} options[].default      Function that returns a bool true if option is default and starts in yellow.
  * @property {function} options[].function     Function executed when option is clicked.
  */
-const settingsSubtitlesPosition = { title: 'Position', icon: './img/menu/st_position.png', parent: settingsSubtitles, final: true, options: [
-    { optId: 'subtitlesTopButton', text: 'Top', 
-        default: function(){ return subController.checkSubPosition(1)},
-        function:  function(){
-            subController.setSubPosition( 0, 1 );
-            if ( subController.getSubtitleEnabled() ) subController.setSignerPosition( subController.getSignerPosition().x, 1 );
-            SettingsOptionCtrl.setChildColumnActiveOpt(settingsSubtitlesPosition.options[0].optId);
-        } 
-    },
-    { optId: 'subtitlesBottomButton', text: 'Bottom', 
-        default: function(){ return subController.checkSubPosition(-1) },
-        function:  function(){ 
-            subController.setSubPosition( 0, -1 );
-            if ( subController.getSubtitleEnabled() ) subController.setSignerPosition( subController.getSignerPosition().x, -1 );
-            SettingsOptionCtrl.setChildColumnActiveOpt(settingsSubtitlesPosition.options[1].optId);
-        } 
-    }]
+const settingsSubtitlesPosition = { title: 'Position', icon: './img/menu/st_position.png', parent: settingsSubtitles, final: true, preview: true,
+    options: [
+        { optId: 'subtitlesTopButton', text: 'Top', 
+            default: function(){ return subController.checkSubPosition(1)},
+            function:  function(){
+                subController.setSubPosition( 0, 1 );
+                // experimental fixed position mode
+                subController.changeSTmode(0);
+                SettingsOptionCtrl.setChildColumnActiveOpt(settingsSubtitlesPosition.options[0].optId);
+                if ( subController.getSubtitleEnabled() ){
+                    subController.setSignerPosition( subController.getSignerPosition().x, 1 );
+                    
+                    //MENU ONLY DOWN (uncomment for up/down options)
+                    /*if(menuMgr.getMenuType() == 2){
+                        menu.getObjectByName('trad-main-menu').position.y = -25;
+                    }*/
+
+                } 
+            } 
+        },
+        { optId: 'subtitlesBottomButton', text: 'Bottom', 
+            default: function(){ return subController.checkSubPosition(-1) },
+            function:  function(){ 
+                subController.setSubPosition( 0, -1 );
+                // experimental fixed position mode
+                subController.changeSTmode(0);
+                SettingsOptionCtrl.setChildColumnActiveOpt(settingsSubtitlesPosition.options[1].optId);
+                if ( subController.getSubtitleEnabled() ) {
+                    subController.setSignerPosition( subController.getSignerPosition().x, -1 );
+                    
+                    //MENU ONLY DOWN (uncomment for up/down options)
+                    /*if(menuMgr.getMenuType() == 2){
+                        menu.getObjectByName('trad-main-menu').position.y = 25;
+                    }*/
+                    
+                }
+            } 
+        },
+        { optId: 'subtitlesSpeakerButton', text: 'Speaker', 
+            default: function(){ return subController.checkSubPosition(0)},
+            function:  function(){
+                // experimental speaker position mode
+                subController.changeSTmode(1);
+                SettingsOptionCtrl.setChildColumnActiveOpt(settingsSubtitlesPosition.options[2].optId);
+            } 
+        },
+        { optId: 'subtitlesScenex3Button', text: 'Scene', 
+            default: function(){ return subController.checkSubPosition(3)},
+            function:  function(){
+                // experimental speaker position mode
+                subController.changeSTmode(2);
+                SettingsOptionCtrl.setChildColumnActiveOpt(settingsSubtitlesPosition.options[3].optId);
+            } 
+        }]
 };
 
 /* *************************************** S U B T I T L E S   E A S Y - T O - R E A D  ***************************************
@@ -681,14 +828,14 @@ const settingsSubtitlesEasyToRead = { title: 'EasytoRead', icon: './img/menu/eas
     { optId: 'subtitlesEasyOn', text: 'On', 
         default: function(){ return subController.checkSubEasy(true) },
         function:  function(){ 
-            subController.setSubEasy( true, getE2RURL() );
+            subController.setSubEasy( true, list_contents[demoId].subtitles[1][subController.getSubLanguage()] );
             SettingsOptionCtrl.setChildColumnActiveOpt(settingsSubtitlesEasyToRead.options[0].optId)
         } 
     },
     { optId: 'subtitlesEasyOff', text: 'Off', 
         default: function(){ return subController.checkSubEasy(false) },
         function:  function(){ 
-            subController.setSubEasy( false, list_contents[demoId].subtitles[0][subController.getSubLanguage()] );
+            subController.setSubEasy( false, list_contents[demoId].subtitles[1][subController.getSubLanguage()] );
             SettingsOptionCtrl.setChildColumnActiveOpt(settingsSubtitlesEasyToRead.options[1].optId);
         } 
     }]
@@ -717,6 +864,12 @@ const settingsSubtitlesEasyToRead = { title: 'EasytoRead', icon: './img/menu/eas
  * @property {function} options[].function     Function executed when option is clicked.
  */
 const settingsSignLanguage = { title: 'Signlanguage', icon: './img/acc_serv_icon/sl_off.png', parent: settingsDropdownOpt, final: false, options: [
+    { optId: 'signerLanguage', icon: './img/menu/language.png', text: 'Language', 
+        available: function(){ return MenuDictionary.getAvailableLanguage()},
+        function: function(){ 
+            SettingsOptionCtrl.updateDropdownOptions(settingsSignerLanguage);
+        } 
+    },
     { optId: 'signerPosition', icon: './img/menu/sl_position.png', text: 'Position', 
         function:  function(){ 
             SettingsOptionCtrl.updateDropdownOptions(settingsSignLanguagePosition);
@@ -725,6 +878,77 @@ const settingsSignLanguage = { title: 'Signlanguage', icon: './img/acc_serv_icon
     { optId: 'signerSize', icon: './img/menu/sl_size.png', text: 'Size', 
         function:  function(){ 
             SettingsOptionCtrl.updateDropdownOptions(settingsSignLanguageSize);
+        } 
+    },
+    { optId: 'signerDynamic', icon: './img/menu/st_background.png', text: 'Dynamic', 
+        available: function(){ return subController.checkAvailableDynamic()},
+        function:  function(){ 
+            SettingsOptionCtrl.updateDropdownOptions(settingsSignLanguageDynamic);
+        } 
+    }]
+};
+
+/* *************************************** S I G N   L A N G U A G E   L A N G U A G E S ***************************************
+ * ╔═════════════════════════════════════╗
+ * ║ (<)        SL Languages          X  ║
+ * ╠═════════════════════════════════════╣
+ * ║ English                       Final ║
+ * ║─────────────────────────────────────║
+ * ║ Español                       Final ║
+ * ║─────────────────────────────────────║
+ * ║ Deutsch                       Final ║
+ * ║─────────────────────────────────────║
+ * ║ Català                        Final ║
+ * ╚═════════════════════════════════════╝
+ * Visual example of dropdown
+ *
+ * @typedef  {Object}   settingsSignerLanguage Level 2.
+ * @property {string}   title                  The title shown in the dropdown menu.
+ * @property {string}   icon                   Icon path.
+ * @property {Object}   parent                 Reference to previews dropdown menu for back navigation.
+ * @property {boolean}  final                  Is the dropdown in the last level.
+ * @property {array}    options                Array of the different dropdown options
+ * @property {string}   options[].optId        Id reference for the next dropdown level.
+ * @property {string}   options[].text         Title of the dropdown option.
+ * @property {function} options[].available    Function that returns a bool true if option os available, false if option has to be omitted.
+ * @property {function} options[].default      Function that returns a bool true if option is default and starts in yellow.
+ * @property {function} options[].function     Function executed when option is clicked.
+ */
+const settingsSignerLanguage = { title: 'Language', icon: './img/menu/language.png', parent: settingsSignLanguage, final: true, options: [
+    { optId: 'signerLanguageEngButton', text: 'English', 
+        available: function() { return subController.checkisSignAvailable('en') }, 
+        default: function(){ return subController.checkSignLanguage('en') },
+        function: function(){ 
+            MenuFunctionsManager.changeAccesLanguage('en', 'sl')(); 
+            SettingsOptionCtrl.setChildColumnActiveOpt(settingsSignerLanguage.options[0].optId);
+            mainMenuCtrl.updateAccessOptionsView();
+        } 
+    }, 
+    { optId: 'signerLanguageEspButton', text: 'Español', 
+        available: function() { return subController.checkisSignAvailable('es') },
+        default: function(){ return subController.checkSignLanguage('es') },
+        function: function(){ 
+            MenuFunctionsManager.changeAccesLanguage('es', 'sl')(); 
+            SettingsOptionCtrl.setChildColumnActiveOpt(settingsSignerLanguage.options[1].optId);
+            mainMenuCtrl.updateAccessOptionsView();
+        } 
+    }, 
+    { optId: 'signerLanguageGerButton', text: 'Deutsch', 
+        available: function() { return subController.checkisSignAvailable('de') },
+        default: function(){ return subController.checkSignLanguage('de') },
+        function: function(){ 
+            MenuFunctionsManager.changeAccesLanguage('de', 'sl')(); 
+            SettingsOptionCtrl.setChildColumnActiveOpt(settingsSignerLanguage.options[2].optId);
+            mainMenuCtrl.updateAccessOptionsView();
+        } 
+    }, 
+    { optId: 'signerLanguageCatButton', text: 'Català', 
+        available: function() { return subController.checkisSignAvailable('ca') },
+        default: function(){ return subController.checkSignLanguage('ca') },
+        function: function(){ 
+            MenuFunctionsManager.changeAccesLanguage('ca', 'sl')(); 
+            SettingsOptionCtrl.setChildColumnActiveOpt(settingsSignerLanguage.options[3].optId);
+            mainMenuCtrl.updateAccessOptionsView();
         } 
     }]
 };
@@ -744,27 +968,37 @@ const settingsSignLanguage = { title: 'Signlanguage', icon: './img/acc_serv_icon
  * @property {string}   icon                   Icon path.
  * @property {Object}   parent                 Reference to previews dropdown menu for back navigation.
  * @property {boolean}  final                  Is the dropdown in the last level.
+ * @property {boolean}  preview                Is the preview available for this option.
  * @property {array}    options                Array of the different dropdown options
  * @property {string}   options[].optId        Id reference for the next dropdown level.
  * @property {string}   options[].text         Title of the dropdown option.
  * @property {function} options[].default      Function that returns a bool true if option is default and starts in yellow.
  * @property {function} options[].function     Function executed when option is clicked.
  */
-const settingsSignLanguagePosition = { title: 'Position', icon: './img/menu/sl_position.png', parent: settingsSignLanguage, final: true, options: [
-    { optId: 'signerRightButton', text: 'Right', 
-        default: function(){ return subController.checkSignPosition(1) },
-        function:  function(){ 
-            subController.setSignerPosition( 1, subController.getSubPosition().y);
-            SettingsOptionCtrl.setChildColumnActiveOpt(settingsSignLanguagePosition.options[0].optId);
-        } 
-    },
-    { optId: 'signerLeftButton', text: 'Left', 
-        default: function(){ return subController.checkSignPosition(-1) },
-        function:  function(){ 
-            subController.setSignerPosition( -1, subController.getSubPosition().y);
-            SettingsOptionCtrl.setChildColumnActiveOpt(settingsSignLanguagePosition.options[1].optId);
-        } 
-    }]
+const settingsSignLanguagePosition = { title: 'Position', icon: './img/menu/sl_position.png', parent: settingsSignLanguage, final: true, preview: true,
+    options: [
+        { optId: 'signerRightButton', text: 'Right', 
+            default: function(){ return subController.checkSignPosition(1) },
+            function:  function(){ 
+                subController.setSignerPosition( 1, subController.getSubPosition().y);
+                SettingsOptionCtrl.setChildColumnActiveOpt(settingsSignLanguagePosition.options[0].optId);
+                
+                //MENU ALLWAYS RIGHT (uncomment for left/right movement)
+                //menu.getObjectByName('trad-option-menu').position.x = -9*menuWidth/32;
+
+            } 
+        },
+        { optId: 'signerLeftButton', text: 'Left', 
+            default: function(){ return subController.checkSignPosition(-1) },
+            function:  function(){ 
+                subController.setSignerPosition( -1, subController.getSubPosition().y);
+                SettingsOptionCtrl.setChildColumnActiveOpt(settingsSignLanguagePosition.options[1].optId);
+
+                //MENU ALLWAYS RIGHT (uncomment for left/right movement)
+                //menu.getObjectByName('trad-option-menu').position.x = 9*menuWidth/32;
+
+            } 
+        }]
 };
 
 /* *************************************** S I G N   L A N G U A G E   S I Z E ***************************************
@@ -784,34 +1018,78 @@ const settingsSignLanguagePosition = { title: 'Position', icon: './img/menu/sl_p
  * @property {string}   icon                   Icon path.
  * @property {Object}   parent                 Reference to previews dropdown menu for back navigation.
  * @property {boolean}  final                  Is the dropdown in the last level.
+ * @property {boolean}  preview                Is the preview available for this option.
  * @property {array}    options                Array of the different dropdown options
  * @property {string}   options[].optId        Id reference for the next dropdown level.
  * @property {string}   options[].text         Title of the dropdown option.
  * @property {function} options[].default      Function that returns a bool true if option is default and starts in yellow.
  * @property {function} options[].function     Function executed when option is clicked.
  */
-const settingsSignLanguageSize = { title: 'Size', icon: './img/menu/sl_size.png', parent: settingsSignLanguage, final: true, options: [
-    { optId: 'signerSmallSizeButton', text: 'Small', 
-        default: function(){ return subController.checkSignSize(16) },
-        function:  function(){ 
-            subController.setSignerSize(16);
-            SettingsOptionCtrl.setChildColumnActiveOpt(settingsSignLanguageSize.options[0].optId);
-        } 
-    }, 
-    { optId: 'signerMediumSizeButton', text: 'Medium', 
-        default: function(){ return subController.checkSignSize(18) },
-        function:  function(){ 
-            subController.setSignerSize(18);
-            SettingsOptionCtrl.setChildColumnActiveOpt(settingsSignLanguageSize.options[1].optId);
-        } 
-    },
-    { optId: 'signerLargeSizeButton', text: 'Large', 
-        default: function(){ return subController.checkSignSize(20) },
-        function:  function(){ 
-            subController.setSignerSize(20);
-            SettingsOptionCtrl.setChildColumnActiveOpt(settingsSignLanguageSize.options[2].optId);
-        } 
-    }]
+const settingsSignLanguageSize = { title: 'Size', icon: './img/menu/sl_size.png', parent: settingsSignLanguage, final: true, preview: true, 
+    options: [
+        { optId: 'signerSmallSizeButton', text: 'Small', 
+            default: function(){ return subController.checkSignSize(16) },
+            function:  function(){ 
+                subController.setSignerSize(16);
+                SettingsOptionCtrl.setChildColumnActiveOpt(settingsSignLanguageSize.options[0].optId);
+            } 
+        }, 
+        { optId: 'signerMediumSizeButton', text: 'Medium', 
+            default: function(){ return subController.checkSignSize(18) },
+            function:  function(){ 
+                subController.setSignerSize(18);
+                SettingsOptionCtrl.setChildColumnActiveOpt(settingsSignLanguageSize.options[1].optId);
+            } 
+        },
+        { optId: 'signerLargeSizeButton', text: 'Large', 
+            default: function(){ return subController.checkSignSize(20) },
+            function:  function(){ 
+                subController.setSignerSize(20);
+                SettingsOptionCtrl.setChildColumnActiveOpt(settingsSignLanguageSize.options[2].optId);
+            } 
+        }]
+};
+
+/* *************************************** S I G N   L A N G U A G E   D Y N A M I C ***************************************
+ * ╔═════════════════════════════════════╗
+ * ║ (<)          Dynamic             X  ║
+ * ╠═════════════════════════════════════╣
+ * ║ On                            Final ║
+ * ║─────────────────────────────────────║
+ * ║ Off                           Final ║
+ * ╚═════════════════════════════════════╝
+ * Visual example of dropdown
+ *
+ * @typedef  {Object}   settingsSignLanguagePosition  Level 2.
+ * @property {string}   title                  The title shown in the dropdown menu.
+ * @property {string}   icon                   Icon path.
+ * @property {Object}   parent                 Reference to previews dropdown menu for back navigation.
+ * @property {boolean}  final                  Is the dropdown in the last level.
+ * @property {boolean}  preview                Is the preview available for this option.
+ * @property {array}    options                Array of the different dropdown options
+ * @property {string}   options[].optId        Id reference for the next dropdown level.
+ * @property {string}   options[].text         Title of the dropdown option.
+ * @property {function} options[].default      Function that returns a bool true if option is default and starts in yellow.
+ * @property {function} options[].function     Function executed when option is clicked.
+ */
+const settingsSignLanguageDynamic = { title: 'Dynamic', icon: './img/menu/st_background.png', parent: settingsSignLanguage, final: true, preview: true,
+    options: [
+        { optId: 'signerDynamicOn', text: 'On', 
+            default: function(){ return subController.checksignAutoHide(true) },
+            function:  function(){ 
+                subController.setSignerAutoHide( true );
+                SettingsOptionCtrl.setChildColumnActiveOpt(settingsSignLanguageDynamic.options[0].optId);
+  
+            } 
+        },
+        { optId: 'signerDynamicOff', text: 'Off', 
+            default: function(){ return subController.checksignAutoHide(false) },
+            function:  function(){ 
+                subController.setSignerAutoHide( false );
+                SettingsOptionCtrl.setChildColumnActiveOpt(settingsSignLanguageDynamic.options[1].optId);
+
+            } 
+        }]
 };
 
 
@@ -838,6 +1116,12 @@ const settingsSignLanguageSize = { title: 'Size', icon: './img/menu/sl_size.png'
  * @property {function} options[].function     Function executed when option is clicked.
  */
 const settingsAudioDescription = { title: 'Audiodescription', icon: './img/acc_serv_icon/ad_off.png', parent: settingsDropdownOpt, final: false, options: [
+    { optId: 'audioDescriptionLanguage', icon: './img/menu/language.png', text: 'Language', 
+        available: function(){ return MenuDictionary.getAvailableLanguage()},
+        function: function(){ 
+            SettingsOptionCtrl.updateDropdownOptions(settingsAudioDescriptionLanguage);
+        } 
+    },    
     { optId: 'audioDescriptionPresentation', icon: './img/menu/ad_presentation_mode.png', text: 'Presentation', 
         available: function() { return _AudioManager.checkADPresentationAvailable(); },
         function:  function(){ 
@@ -845,8 +1129,81 @@ const settingsAudioDescription = { title: 'Audiodescription', icon: './img/acc_s
         } 
     },
     { optId: 'audioDescriptionVolume', icon: './img/menu/volume_mute_icon.png', text: 'Volume', 
+        available: function() { return _AudioManager.checkADGainAvailable(); },
         function:  function(){ 
             SettingsOptionCtrl.updateDropdownOptions(settingsAudioDescriptionVolume);
+        } 
+    },
+    { optId: 'audioDescriptionSpeed', icon: './img/menu/volume_mute_icon.png', text: 'Extended AD Rate',
+        available: function() { return _ManifestParser.hasExtraADLlist(); }, 
+        function:  function(){ 
+            SettingsOptionCtrl.updateDropdownOptions(settingsAudioDescriptionSpeed);
+        } 
+    }]
+};
+
+
+/* *************************************** A U D I O   D E S C R I P T I O N   L A N G U A G E S ***************************************
+ * ╔═════════════════════════════════════╗
+ * ║ (<)        AD Languages          X  ║
+ * ╠═════════════════════════════════════╣
+ * ║ English                       Final ║
+ * ║─────────────────────────────────────║
+ * ║ Español                       Final ║
+ * ║─────────────────────────────────────║
+ * ║ Deutsch                       Final ║
+ * ║─────────────────────────────────────║
+ * ║ Català                        Final ║
+ * ╚═════════════════════════════════════╝
+ * Visual example of dropdown
+ *
+ * @typedef  {Object}   settingsAudioDescriptionLanguage      Level 2.
+ * @property {string}   title                  The title shown in the dropdown menu.
+ * @property {string}   icon                   Icon path.
+ * @property {Object}   parent                 Reference to previews dropdown menu for back navigation.
+ * @property {boolean}  final                  Is the dropdown in the last level.
+ * @property {array}    options                Array of the different dropdown options
+ * @property {string}   options[].optId        Id reference for the next dropdown level.
+ * @property {string}   options[].text         Title of the dropdown option.
+ * @property {function} options[].available    Function that returns a bool true if option os available, false if option has to be omitted.
+ * @property {function} options[].default      Function that returns a bool true if option is default and starts in yellow.
+ * @property {function} options[].function     Function executed when option is clicked.
+ */
+const settingsAudioDescriptionLanguage = { title: 'Language', icon: './img/menu/language.png', parent: settingsAudioDescription, final: true, options: [
+    { optId: 'audioDescriptionLanguageEngButton', text: 'English', 
+        available: function() { return  _AudioManager.checkisADAvailable('en') }, 
+        default: function(){ return subController.checkSubLanguage('en') },
+        function: function(){ 
+            MenuFunctionsManager.changeAccesLanguage('en', 'ad')(); 
+            SettingsOptionCtrl.setChildColumnActiveOpt(settingsAudioDescriptionLanguage.options[0].optId);
+            mainMenuCtrl.updateAccessOptionsView();
+        } 
+    }, 
+    { optId: 'audioDescriptionLanguageEspButton', text: 'Español', 
+        available: function() { return  _AudioManager.checkisADAvailable('es') },
+        default: function(){ return subController.checkSubLanguage('es') },
+        function: function(){ 
+            MenuFunctionsManager.changeAccesLanguage('es', 'ad')(); 
+            SettingsOptionCtrl.setChildColumnActiveOpt(settingsAudioDescriptionLanguage.options[1].optId);
+            mainMenuCtrl.updateAccessOptionsView();
+        } 
+    }, 
+    { optId: 'audioDescriptionLanguageGerButton', text: 'Deutsch', 
+        available: function() { return  _AudioManager.checkisADAvailable('de') },
+        default: function(){ return subController.checkSubLanguage('de') },
+        function: function(){ 
+            MenuFunctionsManager.changeAccesLanguage('de', 'ad')(); 
+            SettingsOptionCtrl.setChildColumnActiveOpt(settingsAudioDescriptionLanguage.options[2].optId);
+            mainMenuCtrl.updateAccessOptionsView();
+        } 
+    }, 
+    { optId: 'audioDescriptionLanguageCatButton', text: 'Català', 
+        available: function() { return  _AudioManager.checkisADAvailable('ca') },
+        default: function(){ return subController.checkSubLanguage('ca') },
+        function: function(){ 
+            MenuFunctionsManager.changeAccesLanguage('ca', 'ad')(); 
+            SettingsOptionCtrl.setChildColumnActiveOpt(settingsAudioDescriptionLanguage.options[3].optId);
+            mainMenuCtrl.updateAccessOptionsView();
         } 
     }]
 };
@@ -930,24 +1287,76 @@ const settingsAudioDescriptionPresentation = { title: 'Presentation', icon: './i
  */
 const settingsAudioDescriptionVolume = { title: 'Volume', icon: './img/menu/volume_mute_icon.png', parent: settingsAudioDescription, final: true, options: [
     { optId: 'adVolumeMinButton', text: 'Minimum', 
-        default: function(){ return _AudioManager.checkADVolume(10); },
+        available: function() { return _AudioManager.checkADGainAvailable('low'); },
+        default: function(){ return _AudioManager.checkADGain('low'); },
         function:  function(){ 
-            _AudioManager.setVolume( 'AD', 10 );
+            _AudioManager.setADGain( 'low' );
             SettingsOptionCtrl.setChildColumnActiveOpt(settingsAudioDescriptionVolume.options[0].optId);
         } 
     },
     { optId: 'adVolumeMidButton', text: 'Medium', 
-        default: function(){ return _AudioManager.checkADVolume(50); },
+        available: function() { return _AudioManager.checkADGainAvailable('medium'); },
+        default: function(){ return _AudioManager.checkADGain('medium'); },
         function:  function(){
-            _AudioManager.setVolume( 'AD', 50 );
+            _AudioManager.setADGain( 'medium' );
             SettingsOptionCtrl.setChildColumnActiveOpt(settingsAudioDescriptionVolume.options[1].optId);
         } 
     },
     { optId: 'adVolumeMaxButton', text: 'Maximum', 
-        default: function(){ return _AudioManager.checkADVolume(100); },
+        available: function() { return _AudioManager.checkADGainAvailable('high'); },
+        default: function(){ return _AudioManager.checkADGain('high'); },
         function:  function(){ 
-            _AudioManager.setVolume( 'AD', 100 );
+            _AudioManager.setADGain( 'high' );
             SettingsOptionCtrl.setChildColumnActiveOpt(settingsAudioDescriptionVolume.options[2].optId);
+        } 
+    }]
+};
+
+
+/* *************************************** A U D I O   D E S C R I P T I O N   S P E E D ***************************************
+ * ╔═════════════════════════════════════╗
+ * ║ (<)      Extra AD speed          X  ║
+ * ╠═════════════════════════════════════╣
+ * ║ x1                            Final ║
+ * ║─────────────────────────────────────║
+ * ║ x1.25                         Final ║
+ * ║─────────────────────────────────────║
+ * ║ x1.5                          Final ║
+ * ╚═════════════════════════════════════╝
+ * Visual example of dropdown
+ *
+ * @typedef  {Object}   settingsAudioDescriptionSpeed  Level 2.
+ * @property {string}   title                  The title shown in the dropdown menu.
+ * @property {string}   icon                   Icon path.
+ * @property {Object}   parent                 Reference to previews dropdown menu for back navigation.
+ * @property {boolean}  final                  Is the dropdown in the last level.
+ * @property {array}    options                Array of the different dropdown options
+ * @property {string}   options[].optId        Id reference for the next dropdown level.
+ * @property {string}   options[].text         Title of the dropdown option.
+ * @property {function} options[].available    Function that returns a bool true if option os available, false if option has to be omitted.
+ * @property {function} options[].default      Function that returns a bool true if option is default and starts in yellow.
+ * @property {function} options[].function     Function executed when option is clicked.
+ */
+const settingsAudioDescriptionSpeed = { title: 'Speed', icon: './img/menu/indicator.png', parent: settingsAudioDescription, final: true, options: [
+    { optId: 'adSpeed100Button', text: 'x1', 
+        default: function(){ return _AudioManager.checkExtraADSpeed( 1 ); },
+        function:  function(){ 
+            _AudioManager.setExtraADSpeed( 1 );
+            SettingsOptionCtrl.setChildColumnActiveOpt(settingsAudioDescriptionSpeed.options[0].optId);
+        } 
+    },
+    { optId: 'adSpeed125Button', text: 'x1.25', 
+        default: function(){ return _AudioManager.checkExtraADSpeed( 1.25 ); },
+        function:  function(){
+            _AudioManager.setExtraADSpeed( 1.25 );
+            SettingsOptionCtrl.setChildColumnActiveOpt(settingsAudioDescriptionSpeed.options[1].optId);
+        } 
+    },
+    { optId: 'adSpeed150Button', text: 'x1.5', 
+        default: function(){ return _AudioManager.checkExtraADSpeed( 1.5 ); },
+        function:  function(){ 
+            _AudioManager.setExtraADSpeed( 1.5 );
+            SettingsOptionCtrl.setChildColumnActiveOpt(settingsAudioDescriptionSpeed.options[2].optId);
         } 
     }]
 };
@@ -979,6 +1388,12 @@ const settingsAudioDescriptionVolume = { title: 'Volume', icon: './img/menu/volu
  * @property {function} options[].function     Function executed when option is clicked.
  */
 const settingsAudioSubtitles = { title: 'Audiosubtitles', icon: './img/acc_serv_icon/ast_off.png', parent: settingsDropdownOpt, final: false, options: [
+    { optId: 'audioSubtitlesLanguage', icon: './img/menu/language.png', text: 'Language', 
+        available: function(){ return MenuDictionary.getAvailableLanguage()},
+        function: function(){ 
+            SettingsOptionCtrl.updateDropdownOptions(settingsAudioSubtitlesLanguages);
+        } 
+    },       
     { optId: 'audioSubtitlesEasy', icon: './img/menu/easy_to_read.png', text: 'easytoread', 
         //available: function() { return },
         function:  function(){ 
@@ -994,6 +1409,71 @@ const settingsAudioSubtitles = { title: 'Audiosubtitles', icon: './img/acc_serv_
     { optId: 'audioSubtitlesVolume', icon: './img/menu/volume_mute_icon.png', text: 'Volume', 
         function:  function(){ 
             SettingsOptionCtrl.updateDropdownOptions(settingsAudioSubtitlesVolume);
+        } 
+    }]
+};
+
+/* *************************************** A U D I O   S U B T I T L E S   L A N G U A G E S ***************************************
+ * ╔═════════════════════════════════════╗
+ * ║ (<)        AST Languages         X  ║
+ * ╠═════════════════════════════════════╣
+ * ║ English                       Final ║
+ * ║─────────────────────────────────────║
+ * ║ Español                       Final ║
+ * ║─────────────────────────────────────║
+ * ║ Deutsch                       Final ║
+ * ║─────────────────────────────────────║
+ * ║ Català                        Final ║
+ * ╚═════════════════════════════════════╝
+ * Visual example of dropdown
+ *
+ * @typedef  {Object}   settingsAudioSubtitlesLanguages  Level 2.
+ * @property {string}   title                  The title shown in the dropdown menu.
+ * @property {string}   icon                   Icon path.
+ * @property {Object}   parent                 Reference to previews dropdown menu for back navigation.
+ * @property {boolean}  final                  Is the dropdown in the last level.
+ * @property {array}    options                Array of the different dropdown options
+ * @property {string}   options[].optId        Id reference for the next dropdown level.
+ * @property {string}   options[].text         Title of the dropdown option.
+ * @property {function} options[].available    Function that returns a bool true if option os available, false if option has to be omitted.
+ * @property {function} options[].default      Function that returns a bool true if option is default and starts in yellow.
+ * @property {function} options[].function     Function executed when option is clicked.
+ */
+const settingsAudioSubtitlesLanguages = { title: 'Language', icon: './img/menu/language.png', parent: settingsAudioSubtitles, final: true, options: [
+    { optId: 'audioSubtitlesLanguageEngButton', text: 'English', 
+        available: function() { return _AudioManager.checkisASTAvailable('en') }, 
+        default: function(){ return subController.checkSubLanguage('en') },
+        function: function(){ 
+            MenuFunctionsManager.changeAccesLanguage('en', 'ast')(); 
+            SettingsOptionCtrl.setChildColumnActiveOpt(settingsAudioSubtitlesLanguages.options[0].optId);
+            mainMenuCtrl.updateAccessOptionsView();
+        } 
+    }, 
+    { optId: 'audioSubtitlesLanguageEspButton', text: 'Español', 
+        available: function() { return _AudioManager.checkisASTAvailable('es') },
+        default: function(){ return subController.checkSubLanguage('es') },
+        function: function(){ 
+            MenuFunctionsManager.changeAccesLanguage('es', 'ast')(); 
+            SettingsOptionCtrl.setChildColumnActiveOpt(settingsAudioSubtitlesLanguages.options[1].optId);
+            mainMenuCtrl.updateAccessOptionsView();
+        } 
+    }, 
+    { optId: 'audioSubtitlesLanguageGerButton', text: 'Deutsch', 
+        available: function() { return _AudioManager.checkisASTAvailable('de') },
+        default: function(){ return subController.checkSubLanguage('de') },
+        function: function(){ 
+            MenuFunctionsManager.changeAccesLanguage('de', 'ast')(); 
+            SettingsOptionCtrl.setChildColumnActiveOpt(settingsAudioSubtitlesLanguages.options[2].optId);
+            mainMenuCtrl.updateAccessOptionsView();
+        } 
+    }, 
+    { optId: 'audioSubtitlesLanguageCatButton', text: 'Català', 
+        available: function() { return _AudioManager.checkisASTAvailable('ca') },
+        default: function(){ return subController.checkSubLanguage('ca') },
+        function: function(){ 
+            MenuFunctionsManager.changeAccesLanguage('ca', 'ast')(); 
+            SettingsOptionCtrl.setChildColumnActiveOpt(settingsAudioSubtitlesLanguages.options[3].optId);
+            mainMenuCtrl.updateAccessOptionsView();
         } 
     }]
 };
@@ -1023,7 +1503,7 @@ const settingsAudioSubtitlesEasyToRead = { title: 'EasytoRead', icon: './img/men
     { optId: 'astEasyOn', text: 'On', 
         default: function(){ return _AudioManager.checkASTEasy(true); },
         function:  function(){ 
-            _AudioManager.setSubEasy(  true, getASTe2rURL() );
+            _AudioManager.setSubEasy(  true, list_contents[demoId].ast[1][_AudioManager.getASTLanguage()] );
             SettingsOptionCtrl.setChildColumnActiveOpt(settingsAudioSubtitlesEasyToRead.options[0].optId);
         } 
     },

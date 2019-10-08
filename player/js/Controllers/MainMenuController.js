@@ -58,6 +58,10 @@ function MainMenuController() {
 
     let PlayPauseMemory = false;
     let isSeeking;
+    let isSliding = false;
+    let lastSliderPos;
+    let initialSlidingPos;
+    let newSeekTime;
 
     /**
      * This function initializes and update all the datat and 
@@ -218,7 +222,20 @@ function MainMenuController() {
             AddVisualFeedbackOnClick(accessOptionsView, data.isSTenabled ? 'show-st-button' : 'disable-st-button', function(){
                 //Change the state of the subtiles from enabled to disabled and viceversa.
                 data.isSTenabled = !data.isSTenabled;
+
+                //MENU ONLY DOWN (uncomment for up/down options)
+                /*if(menuMgr.getMenuType() == 2){
+                    if ( data.isSTenabled ){
+                        menu.position.set( 0, -1 * subController.getSubPosition().y * 25, -67 );
+                    } else {
+                        menu.position.set( 0, -25, -67 );
+                    }
+                }*/
+
+
                 subController.switchSubtitles(data.isSTenabled);
+
+                SettingsOptionCtrl.UpdateView();
                 
                 accessOptionsView.UpdateAccessibilityOptionsIconStatusView(data);
                 // Add interactivity to visible elements and remove interactivity to none visible elements.
@@ -291,7 +308,7 @@ function MainMenuController() {
      * This function update the playout time and if the view is visible updates the view.
      */
     this.updatePlayOutTime = function(){
-        UpdatePlayPauseData();
+        if (!mainMenuCtrl.getSlidingStatus()) UpdatePlayPauseData();
         if (playPauseView) playPauseView.UpdateView(data);
     };
 
@@ -301,7 +318,7 @@ function MainMenuController() {
      */
     this.pauseAllFunc = function(){
         PlayPauseMemory = true;
-        VideoController.pauseAll();
+        _ImAc.doPause();
         UpdatePlayPauseData();
         playPauseView.UpdateView(data);
         menuMgr.AddInteractionIfVisible(viewStructure);
@@ -315,9 +332,10 @@ function MainMenuController() {
     this.playAllFunc = function(){
         if ( PlayPauseMemory ){
             PlayPauseMemory = false;
-            VideoController.playAll();
+            _ImAc.doPlay();
             UpdatePlayPauseData();
             playPauseView.UpdateView(data);
+            menuMgr.AddInteractionIfVisible(viewStructure);
         }
     };
 
@@ -326,7 +344,7 @@ function MainMenuController() {
      * The data model is updated together with the view and the interaction array.
      */
     function PlayPauseFunc(){
-        VideoController.isPausedById(0) ? VideoController.playAll() : VideoController.pauseAll();
+        VideoController.isPausedById(0) ? _ImAc.doPlay() : _ImAc.doPause();
         UpdatePlayPauseData();
         playPauseView.UpdateView(data);
         menuMgr.AddInteractionIfVisible(viewStructure);
@@ -418,7 +436,7 @@ function MainMenuController() {
 -----------------------------------------------------------------------*/
     /**
      * Sets the seeking process. 
-     * This function is used in order to blovk the user from seeing during a seeking process
+     * This function is used in order to block the user from seeing during a seeking process
      * until the current seeking process has ended
      * @param      {<Boolean>}  value   Is there a current seeking process beeing executed.
      */
@@ -448,19 +466,16 @@ function MainMenuController() {
      *
      * @param      {<Vector3>}  mouse3D  The mouse 3d
      */
-    this.onClickSeek = function(mouse3D){
+    this.onClickSeek = function(intersectedPoint){
         if(!mainMenuCtrl.getSeekingProcess()){
             mainMenuCtrl.setSeekingProcess(true);
-            
-            const h = (Math.tan(30*Math.PI/180)*67)*2;
-            const w = h*window.innerWidth/window.innerHeight;
-            let norm_vpb_w = (4*menuWidth/5) / (w/2);
-            let slider_position_norm = scene.getObjectByName('slider-progress').position.x / (w/2);
-            let time_diff = mouse3D.x - slider_position_norm;
+
+            let time_diff = intersectedPoint.x - scene.getObjectByName('slider-progress').position.x;
 
             if(Math.round(time_diff*100) != 0){
-                let new_seek_time = Math.round(VideoController.getListOfVideoContents()[0].vid.duration*time_diff/(norm_vpb_w));
+                let new_seek_time = Math.floor(VideoController.getListOfVideoContents()[0].vid.duration*time_diff/(4*menuWidth/5));
                 VideoController.seekAll(new_seek_time);
+
             } else console.log("You clicked over the slidder");
         } else console.log("Seeking process running");
     }
@@ -477,6 +492,15 @@ function MainMenuController() {
         }
         let widthCurrent = play_progress.geometry.boundingBox.max.x - play_progress.geometry.boundingBox.min.x;
         return (-widthCurrent + widthCurrent * data.playScaleX) / 2  + menuWidth/200;
+    }
+
+    function updateSeekProgressPosition(){
+        const seek_progress =  scene.getObjectByName("seek-progress");
+        if( ! seek_progress.geometry.boundingBox ) {
+            seek_progress.geometry.computeBoundingBox();
+        }
+        let widthCurrent = seek_progress.geometry.boundingBox.max.x - seek_progress.geometry.boundingBox.min.x;
+        return (-widthCurrent + widthCurrent * data.seekScaleX) / 2  + menuWidth/200;
     }
 
     /**
@@ -501,5 +525,93 @@ function MainMenuController() {
 
         if(newPorgressWidth) return newPorgressWidth;
         else return 0;
+    }
+
+    /**
+ * { function_description }
+ *
+ * @param      {<type>}  raycaster        The raycaster
+ * @param      {<type>}  sliderSelection  The slider selection
+ */
+    this.updatePositionOnMouseMove = function(raycaster, sliderSelection){
+        
+        if (sliderSelection) {
+            const x = sliderSelection.position.x;
+
+            isSliding = true;
+            // Check the position where the background menu is intersected
+            let elementArray = (scene.getObjectByName("trad-main-menu")) ? [scene.getObjectByName('trad-menu-background')] : [];
+            let intersects = raycaster.intersectObjects( elementArray , true );
+
+            const totalTime = VideoController.getListOfVideoContents()[0].vid.duration;   
+            let currentTime = VideoController.getListOfVideoContents()[0].vid.currentTime;
+            let newSliderPos;
+
+            if(intersects[0]){   
+                //The sliding boundries are from -(4*menuWidth/10) to +(4*menuWidth/10) which is the VPB width;           
+                if(sliderSelection.position.x > -(4*menuWidth/10) && sliderSelection.position.x < (4*menuWidth/10)){
+
+                    // Reposition the object based on the intersection point with the background menu
+                    newSliderPos  = intersects[0].object.worldToLocal(intersects[0].point).x;
+                    newSeekTime = timeDiffOnSlide(newSliderPos);
+
+                    //Update all values (playOuTime, slider position, etc) while sliding seek;
+                    if((newSeekTime + currentTime) < 0){
+                        data.videoPlayOutTimeText = VideoController.getPlayoutTime(0);
+                        data.playScaleX = 0.001;
+                    } else if((newSeekTime + currentTime) > totalTime){
+                        data.videoPlayOutTimeText = VideoController.getPlayoutTime(totalTime);
+                        data.playScaleX  = 1;
+                    } else {
+                        data.videoPlayOutTimeText = VideoController.getPlayoutTime(currentTime + newSeekTime);
+                        data.playScaleX  = (currentTime + newSeekTime)/totalTime;
+                    }
+                } else {
+                    if(Math.sign(sliderSelection.position.x) < 0){
+                        data.videoPlayOutTimeText = VideoController.getPlayoutTime(0);
+                        data.playScaleX = 0.001;
+                    } else {
+                        data.videoPlayOutTimeText = VideoController.getPlayoutTime(totalTime);
+                        data.playScaleX  = 1;
+                    }
+                    newSliderPos = Math.sign(sliderSelection.position.x) * (4*menuWidth/10);
+                    newSeekTime = timeDiffOnSlide(newSliderPos);
+                }
+                data.sliderPositionX = newSliderPos;
+                data.playPositionX = updatePlayProgressPosition();   
+
+            }
+            videoProgressBarView.UpdateView(data);
+        }
+    }
+
+    function timeDiffOnSlide(sliderSelection){
+        timeDiff = sliderSelection - initialSlidingPos;
+        if(Math.ceil(timeDiff*100) != 0){
+            return Math.floor(VideoController.getListOfVideoContents()[0].vid.duration*timeDiff/(4*menuWidth/5));
+        }
+    }
+
+    this.onSlideSeek = function(sliderSelection){
+        if(!isSliding){
+            VideoController.seekAll(newSeekTime);
+            mainMenuCtrl.playAllFunc();
+        }    
+    }
+
+    this.setSlidingStatus = function(status){
+        isSliding = status;
+    }
+
+    this.getSlidingStatus = function(){
+        return isSliding;
+    }
+
+    this.setInitialSlidingPosition = function(position){
+        initialSlidingPos = position;
+    }
+
+    this.getInitialSlidingPosition = function(){
+        return initialSlidingPos;
     }
 }

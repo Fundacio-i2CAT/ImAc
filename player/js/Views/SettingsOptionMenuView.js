@@ -4,6 +4,25 @@ function SettingsOptionMenuView() {
 	this.UpdateView = function(data) {
 		submenu = scene.getObjectByName(data.name);
 
+
+        if(menuMgr.getMenuType() == 2){
+            submenu.position.y = (menuHeight/2 + optHeight/2 + menuWidth/100 + data.parentColumnDropdown.length*(optHeight/2))
+            
+            //MENU ONLY DOWN (uncomment for up/down options)
+            // Locate menu depending on the state of the ST (enabled/disabled)
+            /*if ( subController.getSubtitleEnabled() ){
+                submenu.position.y = subController.getSubPosition().y * (menuHeight/2 + optHeight/2 + menuWidth/100 + data.parentColumnDropdown.length*(optHeight/2))
+            }
+            else{
+                submenu.position.y = menuHeight/2 + optHeight/2 + menuWidth/100 + data.parentColumnDropdown.length*(optHeight/2);
+            }*/
+
+        } else {
+            submenu.position.y = 0;
+            submenu.getObjectByName('preview-button').visible = data.isPreviewVisible;
+            submenu.getObjectByName('preview-button').children[0].onexecute = (data.isPreviewVisible) ? data.previewButtonFunc : null;
+        }
+
 		submenu.getObjectByName('back-button').visible = data.isFinalDrop || data.hasParentDropdown;
 		submenu.getObjectByName('back-button').children[0].onexecute = data.backMenuButtonFunc;
 
@@ -11,23 +30,33 @@ function SettingsOptionMenuView() {
         submenu.getObjectByName('close-button-opt').children[0].onexecute = data.closeOptMenuButtonFunc;
 
 		submenu.getObjectByName('tradoptionmenutitle').add(updateTitle(data));
-		
-		submenu.getObjectByName('tradoptionmenutitle').position.y = data.titleHeight;
-	 	submenu.getObjectByName('parentcolumndropdown').children = [];
+        submenu.getObjectByName('tradoptionmenutitle').position.y = optHeight/2 * data.parentColumnDropdown.length;
 
+        submenu.getObjectByName('parentcolumndropdown').children = [];
+
+        submenu.getObjectByName('checkmark').visible = data.isFinalDrop; 
+
+        if(data.default){
+            submenu.getObjectByName('checkmark').position.x = -1.5*menuWidth/8;
+            submenu.getObjectByName('checkmark').position.y = data.default.position.y;
+        }
+       
 //TODO: CHECK FOREACH
-		data.parentColumnDropdown.forEach(function(element){
-			element.position.x = menuWidth/8 + element.width - 2*menuWidth/8;
+		data.parentColumnDropdown.forEach(function(element, index){
+
+            //These distances need to be changed or compared in differente devices.
+			element.position.x = menuWidth/8 + element.width - 2.2*menuWidth/8;
+            if (data.isFinalDrop) element.position.x += 1.5*menuWidth/80;
             element.children[0].children[0].position.x = 7*menuWidth/50;
   			submenu.getObjectByName('parentcolumndropdown').add(element)
 		});
 
-		if(data.childColumnActiveOpt && submenu.getObjectByName(data.childColumnActiveOpt)){
-			data.parentColumnDropdown.forEach(function(element){
-				element.children[0].material.color.set( 0xe6e6e6 );
-			});
-			submenu.getObjectByName(data.childColumnActiveOpt).children[0].material.color.set( 0xffff00 );
-		}
+        if(data.childColumnActiveOpt && submenu.getObjectByName(data.childColumnActiveOpt)){
+            data.parentColumnDropdown.forEach(function(element){
+                element.children[0].material.color.set( 0xe6e6e6 );
+            });
+            submenu.getObjectByName(data.childColumnActiveOpt).children[0].material.color.set( 0xffff00 );
+        }
 
 //TODO: CREATE SEPARATE FUNCTION
 		let menuShape = _moData.roundedRect( new THREE.Shape(), optWidth, (data.parentColumnDropdown.length+1)*optHeight, 3*menuWidth/100 );
@@ -37,12 +66,6 @@ function SettingsOptionMenuView() {
         mesh.name = 'tradoptionmenubackground';
 
         submenu.remove(submenu.getObjectByName('tradoptionmenubackground')).add(mesh);
-		submenu.getObjectByName('tradoptionmenubackground').position.set(0, data.parentColumnDropdown.length*(optHeight/2), 0);
-
-        //Centering the position depending on the menu type.
-        if(menuMgr.getMenuType()%2 != 0){
-            submenu.position.y = -(data.parentColumnDropdown.length)* optHeight/2;
-        }
 	}
 
 	function updateTitle(data) {
@@ -52,7 +75,6 @@ function SettingsOptionMenuView() {
         optTitle.width = 18*menuWidth/200;
         optTitle.height = optHeight;
         optTitle.name = 'settings-opt-title';
-        optTitle.name = 'settings-opt-title';
         //optTitle.type =  'mix';
         optTitle.type =  'text';
         optTitle.text = MenuDictionary.translate( data.title );
@@ -61,7 +83,7 @@ function SettingsOptionMenuView() {
         optTitle.color = 0xe6e6e6;
         optTitle.visible = true;
         optTitle.position = new THREE.Vector3( 0, 0, 0.01 );
-
+        optTitle.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(optTitle.width,  optHeight), new THREE.MeshBasicMaterial({visible:  false}));
 
 		return optTitle.create();
 	}

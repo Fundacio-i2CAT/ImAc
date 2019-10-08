@@ -27,6 +27,9 @@ ManifestParser = function() {
 	
 	var _mpd;
 
+    var extraAD_list = [];
+    var last_time = -1;
+
 	this.init = function(mpd) 
 	{
 		_mpd = mpd;
@@ -64,8 +67,25 @@ ManifestParser = function() {
                 var representationArray = elem.Representation_asArray;
                 if ( !ad_list ) ad_list = {};
                 var ad_modeList = {};
-                representationArray.forEach( function( representation ) {        
-                 	ad_modeList[ representation.mode ] = _mpd.manifest.baseUri + representation.BaseURL;
+                representationArray.forEach( function( representation ) {  
+                    //if ( representation.mode ) ad_modeList[ representation.mode ] = _mpd.manifest.baseUri + representation.BaseURL;
+                    if ( representation.mode ) 
+                    {
+                        if ( !ad_modeList[ representation.mode ] ) ad_modeList[ representation.mode ] = {};
+                        //console.log(representation)
+                        ad_modeList[ representation.mode ][representation.gain] = _mpd.manifest.baseUri + representation.BaseURL;
+                    }
+                    else if ( representation.parent_group_id ) 
+                    {
+                        var extraAD = {};
+                        extraAD.init = representation.init;
+                        extraAD.parentId = representation.parent_group_id;
+                        extraAD.url = _mpd.manifest.baseUri + representation.BaseURL;
+                        extraAD.lang = MenuDictionary.translate( elem.lang );
+
+                        extraAD_list.push( extraAD );
+                    }
+                 	//ad_modeList[ representation.mode ] = _mpd.manifest.baseUri + representation.BaseURL;
                 });
                 ad_list[ MenuDictionary.translate( elem.lang ) ] = ad_modeList;
             }
@@ -94,7 +114,7 @@ ManifestParser = function() {
         if ( ast_list ) restartASTContent( ast_list, ast_list_e2r );
 
         var lang = MenuDictionary.getMainLanguage();
-        
+      
         setSTContent( lang );
         setSLContent( lang ); 
         setADContent( lang ); 
@@ -123,6 +143,48 @@ ManifestParser = function() {
 
         else subController.removeSignVideoByPeriod();    
     };
+
+    var extraURL;
+
+    this.checkExtraAD = function(time, lang)
+    {
+        extraAD_list.forEach( function( elem ) {
+            if ( elem.init != last_time && elem.init >= time-0.2 && elem.init <= time+0.2 && elem.lang == lang ) 
+            {
+                last_time = elem.init;
+                extraURL = elem.url;
+
+                // init beep! + delay 1 seg to start de beep + low volumen
+                _AudioManager.startBeep(1000);
+                
+                // disable all user interactions
+                _blockControls = true;
+
+                // start setTimeout of 6 seconds
+                setTimeout( () => {
+                    if ( !extraADenabled ) _blockControls = false;
+                    extraURL = undefined;
+                }, 6000);
+
+                
+            }
+        });
+    }
+
+    this.getExtraAD = function()
+    {
+        return extraURL;
+    };
+
+    this.getExtraADTime = function()
+    {
+        return last_time;
+    };
+
+    this.hasExtraADLlist = function()
+    {
+        return extraAD_list.length > 0;
+    }
 
 //************************************************************************************
 // Private Functions
@@ -156,20 +218,28 @@ ManifestParser = function() {
 
     function setSTContent(lang)
     {
-        var cookielang = subController.getSubLanguage();
-        var sublang = cookielang ? cookielang : list_contents[demoId].subtitles[0][lang] ? lang : Object.keys(list_contents[demoId].subtitles[0])[0];
-        subController.setSubtitle( list_contents[demoId].subtitles[0][sublang], sublang );
-        subController.setSubtitleLanguagesArray( list_contents[demoId].subtitles[0] );
+        if ( list_contents[demoId].subtitles && list_contents[demoId].subtitles[0] && Object.entries(list_contents[demoId].subtitles[0]).length > 0 ) 
+        {
+            var cookielang = subController.getSTAvailableLang( _iconf.stlanguage, 0 ); //subController.getSubLanguage();
+            var sublang = cookielang ? cookielang : list_contents[demoId].subtitles[0][lang] ? lang : Object.keys(list_contents[demoId].subtitles[0])[0];
+            subController.setSubtitle( list_contents[demoId].subtitles[0][sublang], sublang );
+            subController.setSubtitleLanguagesArray( list_contents[demoId].subtitles[0] );
+        }
     }
 
     function setSLContent(lang)
     {
         if ( list_contents[demoId].signer && list_contents[demoId].signer[0] ) 
         {
-            var cookielang = subController.getSignerLanguage();
+            var cookielang = subController.getSLAvailableLang( _iconf.sllanguage ); //subController.getSignerLanguage();
             var siglang = cookielang ? cookielang : list_contents[demoId].signer[0][lang] ? lang : Object.keys(list_contents[demoId].signer[0])[0];
             subController.setSignerContent( list_contents[demoId].signer[0][siglang], siglang );
             subController.setSignerLanguagesArray( list_contents[demoId].signer[0] );
+
+            if ( list_contents[ demoId ].st4sl && list_contents[ demoId ].st4sl[ 0 ] ) {
+                var sigSTlang = list_contents[ demoId ].st4sl[ 0 ][ lang ] ? lang : Object.keys( list_contents[ demoId ].st4sl[ 0 ] )[ 0 ];
+                subController.setSLSubtitle( list_contents[demoId].st4sl[0][sigSTlang], sigSTlang ); 
+            }
         }
     }
 
@@ -177,7 +247,7 @@ ManifestParser = function() {
     {
         if ( list_contents[demoId].ad && list_contents[demoId].ad[0] ) 
         {
-            var cookielang = _AudioManager.getADLanguage();
+            var cookielang = _AudioManager.getADAvailableLang( _iconf.adlanguage ); //_AudioManager.getADLanguage();
             var adlang = cookielang ? cookielang : list_contents[demoId].ad[0][lang] ? lang : Object.keys(list_contents[demoId].ad[0])[0];
             _AudioManager.setADContent( list_contents[demoId].ad[0][adlang], adlang );
             _AudioManager.setADLanguagesArray( list_contents[demoId].ad[0] );

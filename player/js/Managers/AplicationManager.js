@@ -2,7 +2,7 @@
 var camera;
 var scene;
 var controls;
-var rendertime = 0;
+
 
 function AplicationManager()
 {
@@ -15,28 +15,6 @@ function AplicationManager()
     var button_2;
 
     this.getRenderer = function() { return renderer };
-
-    function initWorld()
-    {
-    	camera = new THREE.PerspectiveCamera( 60.0, window.innerWidth / window.innerHeight, 1, 1000 );
-        camera.name = 'perspectivecamera';
-		scene = new THREE.Scene();
-        scene.add( camera );
-    }
-
-    function initRenderer()
-    {
-    	renderer = new THREE.WebGLRenderer({
-			antialias: true,
-			premultipliedAlpha: false,
-			alpha: true
-		});
-
-		renderer.domElement.id = 'WebGLRenderer';
-		renderer.sortObjects = true;
-		renderer.setPixelRatio( Math.floor( window.devicePixelRatio ) );
-		renderer.setSize( window.innerWidth, window.innerHeight );
-    }
 
     // Used when autopositioning is activated
     this.enableVR = function()
@@ -85,33 +63,10 @@ function AplicationManager()
 		}
 	}
 
-    function render()
-    {
-        /*var time =  performance.now();
-        console.log( time - rendertime )
-        rendertime = time;*/
+    function render(){
+        renderer.render( scene, camera );
 
-    	THREE.VRController.update()
-    	if ( controls ) controls.update();
-    	renderer.render( scene, camera );
-
-    	_AudioManager.updateRotationMatrix( camera.matrixWorld.elements );
-
-    	if( THREE.VRController.getTouchPadState() && _isHMD ) 
-    	{			
-			// afegir contador per a obrir el menu despres de fer 5 clicks
-            interController.checkInteraction( mouse3D, camera, 'onDocumentMouseDown' );
-		}
-        if ( _isHMD && subController.getSubtitleEnabled() )
-        {
-            subController.updateSTRotation();
-        }
-        if ( _isHMD && subController.getSignerEnabled() )
-        {
-            subController.updateSLRotation();
-        }
-
-		subController.updateRadar();
+        update();
 
         Reticulum.update();
     }
@@ -121,17 +76,37 @@ function AplicationManager()
         console.log('Init AplicationManager')
 			
 		var container = document.getElementById( 'container' );
-	
-        initWorld();
-		initRenderer();
 
+
+        // Init World
+        camera = new THREE.PerspectiveCamera( 60.0, window.innerWidth / window.innerHeight, 1, 1000 );
+        camera.name = 'perspectivecamera';
+        scene = new THREE.Scene();
+        scene.add( camera );
+
+        // Init Render
+        renderer = new THREE.WebGLRenderer({
+            antialias: true,
+            premultipliedAlpha: false,
+            alpha: true
+        });
+
+        renderer.domElement.id = 'WebGLRenderer';
+        renderer.sortObjects = true;
+        renderer.setPixelRatio( Math.floor( window.devicePixelRatio ) );
+        renderer.setSize( window.innerWidth, window.innerHeight );
+	
+
+        // CONTROLS
         controls = new THREE.DeviceOrientationAndTouchController( camera, renderer.domElement, renderer );
 
 		container.appendChild( renderer.domElement );
 
 		_moData.createOpenMenuMesh();
 
-        scene.add( _moData.getSphericalVideoMesh( 100, mainContentURL, 'contentsphere' ) )
+        //scene.add( _moData.getSphericalVideoMesh( 100, mainContentURL, 'contentsphere' ) )
+
+        _isTV ? camera.add( _moData.getDirectiveVideo( mainContentURL, 'contentsphere' ) ) : scene.add( _moData.getSphericalVideoMesh( 100, mainContentURL, 'contentsphere' ) );
 
         if ( 'getVRDisplays' in navigator ) {
 
@@ -150,8 +125,67 @@ function AplicationManager()
         }
         else alert("This browser don't support VR content");
 
-        initReticulum( camera );
         if ( localStorage.ImAc_server ) _Sync.init( localStorage.ImAc_server );
-        runDemo();
+        runDemo();  
+
+        initReticulum( camera );
+
+        document.addEventListener('mousemove', onDocumentMouseMove, false);
+        //document.addEventListener('mousedown', onDocumentMouseDown, false);
 	};
+
+
+    function update()
+    {
+        THREE.VRController.update();
+
+
+        //if ( controls ) controls.update();
+        
+        _AudioManager.updateRotationMatrix( camera.matrixWorld.elements );
+
+        if( THREE.VRController.getTouchPadState() && _isHMD ) 
+        {           
+            interController.checkInteraction( mouse3D, camera, 'onDocumentMouseDown' );
+
+            // function to open menu with a simple click
+            if ( menuMgr.getMenuType() == 2 && scene.getObjectByName( 'trad-main-menu' ).visible == false ) 
+            {
+                menuMgr.initFirstMenuState();
+            }
+            else if ( menuMgr.getMenuType() == 1 && scene.getObjectByName( 'trad-option-menu' ).visible == false && scene.getObjectByName( 'trad-main-menu' ).visible == false ) 
+            {
+                menuMgr.initFirstMenuState();
+            }     
+        }
+
+        if ( _isHMD && subController.getSubtitleEnabled() )
+        {
+            subController.updateSTRotation();
+        }
+        if ( _isHMD && subController.getSignerEnabled() )
+        {
+            subController.updateSLRotation();
+        }
+
+        subController.updateRadar();
+
+        if( !_isHMD && scene.getObjectByName('trad-option-menu') ) {
+            interController.checkInteractionSubMenuHover( mouse3D, camera);
+        }
+        
+        if( !_isHMD && scene.getObjectByName('trad-main-menu') ) {
+            interController.accessIconsHoverOver( mouse3D, camera );  
+            interController.vpbHoverOver( mouse3D, camera )
+        }
+        
+        controls.update();
+    }
+
+    function onDocumentMouseMove(event) {
+        event.preventDefault();
+
+        mouse3D.x = (event.clientX / window.innerWidth) * 2 - 1;
+        mouse3D.y = -(event.clientY / window.innerHeight) * 2 + 1;
+    }
 }

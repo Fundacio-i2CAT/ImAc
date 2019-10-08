@@ -31,6 +31,13 @@ VideoController = function() {
     var listOfAudioContents = [];
     var ft = true;
 
+    var playEvent = new Event('playevent');
+    var pauseEvent = new Event('pauseevent');
+    var seekEvent = new Event('seekevent');
+
+    //document.addEventListener('playevent', function (e) { console.error('playevent run') }, false);
+    //document.addEventListener('pauseevent', function (e) { console.error('pauseevent run') }, false);
+
 //************************************************************************************
 // Private Functions
 //************************************************************************************
@@ -128,23 +135,45 @@ VideoController = function() {
 
     function changeAllPlaybackRate(value)
     {
+        if ( value < 0.5 ) value = 0.5;
+
         listOfVideoContents.forEach( function( elem ) { elem.vid.playbackRate = value; } ); 
         listOfAudioContents.forEach( function( elem ) { elem.playbackRate  = value; } );
     }
 
     function syncAll(dif)
     {  
-        dif = parseInt( dif*100 )/100;       
-        if ( dif > -0.05 && dif < 0.05 ) {} 
+        dif = parseInt( dif*100 )/100;  
 
-        else if ( dif < -1 || dif > 1 ) 
+        //console.log(dif) 
+
+        if ( _isHMD ) 
         {
-            changeAllCurrentTime( -dif );
+            if ( dif > -0.2 && dif < 0.2 ) {} 
+
+            else if ( dif < -1 || dif > 1 ) 
+            {
+                changeAllCurrentTime( -dif );
+            } 
+            else
+            {
+                changeAllPlaybackRate( 1 - dif );
+                setTimeout( () => { changeAllPlaybackRate( 1 ) }, 900);
+            }
         } 
         else 
         {
-            changeAllPlaybackRate( 1 - dif );
-            setTimeout( () => { changeAllPlaybackRate( 1 ) }, 900);
+            if ( dif > -0.05 && dif < 0.05 ) {} 
+
+            else if ( dif < -1 || dif > 1 ) 
+            {
+                changeAllCurrentTime( -dif );
+            } 
+            else
+            {
+                changeAllPlaybackRate( 1 - dif );
+                setTimeout( () => { changeAllPlaybackRate( 1 ) }, 900);
+            }
         }
     }
 
@@ -212,28 +241,37 @@ VideoController = function() {
 
     this.playAll = function()
     {
-    	listOfVideoContents.forEach( function( elem ) { 
-            if (elem.vid.paused) {
-                elem.vid.play().then( _ => {  syncVideos() }); 
-            }
-        }); 
-        listOfAudioContents.forEach( function( elem ) { 
-            if (elem.paused) {
-                elem.play().then( _ => {  syncVideos() }); 
-            }
-        }); 
+        if (document.dispatchEvent(playEvent)){ //Custom code
+
+        	listOfVideoContents.forEach( function( elem ) { 
+                if (elem.vid.paused) {
+                    elem.vid.play().then( _ => {  syncVideos() }); 
+                }
+            }); 
+            listOfAudioContents.forEach( function( elem ) { 
+                if (elem.paused) {
+                    elem.play().then( _ => {  syncVideos() }); 
+                }
+            }); 
+        }
     };
 
     this.pauseAll = function()
     {
-    	listOfVideoContents.forEach( function( elem ) { elem.vid.pause(); } ); 
-        listOfAudioContents.forEach( function( elem ) { elem.pause(); } );
+        if (document.dispatchEvent(pauseEvent)){ //Custom code
+
+        	listOfVideoContents.forEach( function( elem ) { elem.vid.pause(); } ); 
+            listOfAudioContents.forEach( function( elem ) { elem.pause(); } );
+        }
     };
 
     this.seekAll = function(time)
     {
-        _Sync.vc( 'play', (listOfVideoContents[0].vid.currentTime + time) * 1000000000 )
-        changeAllCurrentTime( time );
+        if (document.dispatchEvent(seekEvent)){ //Custom code
+
+            _Sync.vc( 'play', (listOfVideoContents[0].vid.currentTime + time) * 1000000000 )
+            changeAllCurrentTime( time );
+        }
     };   
 
     this.speedAll = function(speed)
@@ -282,16 +320,23 @@ VideoController = function() {
             periodCount += 1;
         });
 
+        //if ( localStorage.ImAc_roomID != undefined && localStorage.ImAc_roomID != "undefined" ) setTimeout( () => {  _Sync.init( "195.81.194.222", localStorage.ImAc_roomID ); }, 2000);
+
         getAdaptationSets().then(( str ) => { 
+
+            if ( localStorage.ImAc_roomID != undefined && localStorage.ImAc_roomID != "undefined" ) setTimeout( () => {  _Sync.init( "195.81.194.222", localStorage.ImAc_roomID ); }, 2000);
 
             //subController.enableSubtitles();
             var firtsIteration = true;
             listOfVideoContents[0].vid.ontimeupdate = function() 
             {
                 if (listOfVideoContents[0].vid.currentTime >= listOfVideoContents[0].vid.duration - 0.5) window.location.reload();
+
                 subController.updateSubtitleByTime( listOfVideoContents[0].vid.currentTime );
-                if ( _NonCont ) subController.updateSLByTime( listOfVideoContents[0].vid.currentTime );
-                if( scene.getObjectByName('traditional-menu') && scene.getObjectByName('traditional-menu').visible )
+
+                if ( _AudioManager.getADEnabled() ) checkExtraADListByTime( listOfVideoContents[0].vid.currentTime );
+
+                if( scene.getObjectByName('trad-main-menu') && scene.getObjectByName('trad-main-menu').visible )
                 {
                     mainMenuCtrl.updatePlayProgressBar();  
                     mainMenuCtrl.updatePlayOutTime();   
@@ -321,6 +366,12 @@ VideoController = function() {
         }
         else if ( !listOfVideoContents[0].vid.paused ) this.pauseAll();
     }
+
+    this.getMediaDuration = function()
+    {
+        return listOfVideoContents[0].vid.duration;
+    };
+
 }
 
 

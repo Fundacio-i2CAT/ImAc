@@ -178,6 +178,13 @@ function AplicationManager()
             interController.accessIconsHoverOver( mouse3D, camera );  
             interController.vpbHoverOver( mouse3D, camera )
         }
+
+        //Close menu if no interactivity for 5s;
+        if(isMenuInteracted){
+            isMenuInteracted = false;           
+            timerCloseMenu = setTimeout( function(){ menuMgr.ResetViews() }, 5000);
+        }
+
         
         controls.update();
     }

@@ -78,6 +78,7 @@ let timerCloseMenu;
 
 let sliderSelection;
 var _isTV = false;
+let isMenuInteracted = false;
 
 /**
  * Initializes the web player.

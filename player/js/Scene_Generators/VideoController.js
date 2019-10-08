@@ -336,7 +336,6 @@ VideoController = function() {
 
                 if ( _AudioManager.getADEnabled() ) checkExtraADListByTime( listOfVideoContents[0].vid.currentTime );
 
-                if ( _NonCont ) subController.updateSLByTime( listOfVideoContents[0].vid.currentTime );
                 if( scene.getObjectByName('trad-main-menu') && scene.getObjectByName('trad-main-menu').visible )
                 {
                     mainMenuCtrl.updatePlayProgressBar();  

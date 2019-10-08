@@ -879,6 +879,12 @@ const settingsSignLanguage = { title: 'Signlanguage', icon: './img/acc_serv_icon
         function:  function(){ 
             SettingsOptionCtrl.updateDropdownOptions(settingsSignLanguageSize);
         } 
+    },
+    { optId: 'signerDynamic', icon: './img/menu/st_background.png', text: 'Dynamic', 
+        available: function(){ return subController.checkAvailableDynamic()},
+        function:  function(){ 
+            SettingsOptionCtrl.updateDropdownOptions(settingsSignLanguageDynamic);
+        } 
     }]
 };
 
@@ -1040,6 +1046,48 @@ const settingsSignLanguageSize = { title: 'Size', icon: './img/menu/sl_size.png'
             function:  function(){ 
                 subController.setSignerSize(20);
                 SettingsOptionCtrl.setChildColumnActiveOpt(settingsSignLanguageSize.options[2].optId);
+            } 
+        }]
+};
+
+/* *************************************** S I G N   L A N G U A G E   D Y N A M I C ***************************************
+ * ╔═════════════════════════════════════╗
+ * ║ (<)          Dynamic             X  ║
+ * ╠═════════════════════════════════════╣
+ * ║ On                            Final ║
+ * ║─────────────────────────────────────║
+ * ║ Off                           Final ║
+ * ╚═════════════════════════════════════╝
+ * Visual example of dropdown
+ *
+ * @typedef  {Object}   settingsSignLanguagePosition  Level 2.
+ * @property {string}   title                  The title shown in the dropdown menu.
+ * @property {string}   icon                   Icon path.
+ * @property {Object}   parent                 Reference to previews dropdown menu for back navigation.
+ * @property {boolean}  final                  Is the dropdown in the last level.
+ * @property {boolean}  preview                Is the preview available for this option.
+ * @property {array}    options                Array of the different dropdown options
+ * @property {string}   options[].optId        Id reference for the next dropdown level.
+ * @property {string}   options[].text         Title of the dropdown option.
+ * @property {function} options[].default      Function that returns a bool true if option is default and starts in yellow.
+ * @property {function} options[].function     Function executed when option is clicked.
+ */
+const settingsSignLanguageDynamic = { title: 'Dynamic', icon: './img/menu/st_background.png', parent: settingsSignLanguage, final: true, preview: true,
+    options: [
+        { optId: 'signerDynamicOn', text: 'On', 
+            default: function(){ return subController.checksignAutoHide(true) },
+            function:  function(){ 
+                subController.setSignerAutoHide( true );
+                SettingsOptionCtrl.setChildColumnActiveOpt(settingsSignLanguageDynamic.options[0].optId);
+  
+            } 
+        },
+        { optId: 'signerDynamicOff', text: 'Off', 
+            default: function(){ return subController.checksignAutoHide(false) },
+            function:  function(){ 
+                subController.setSignerAutoHide( false );
+                SettingsOptionCtrl.setChildColumnActiveOpt(settingsSignLanguageDynamic.options[1].optId);
+
             } 
         }]
 };

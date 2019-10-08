@@ -88,6 +88,8 @@ SubSignManager = function() {
 	var signAvailableLang = []; // Array { name, value, default:bool }
 	var signerSize = 20;
 
+	var signAutoHide = false;
+
 
 //************************************************************************************
 // Private Functions
@@ -230,12 +232,12 @@ SubSignManager = function() {
 
 	      		textListMemory = textList;     
 	    	} 
-	    	//if ( _NonCont ) subController.swichtSL(true);  
+	    	//if ( signAutoHide ) subController.swichtSL(true);  
 		    setSubtitleConfig(subConfig);
 	  	}
 	  	else 
 	  	{
-	  		//if ( _NonCont ) subController.swichtSL(false);
+	  		//if ( signAutoHide ) subController.swichtSL(false);
 	    	textListMemory = [];
 	    	removeSubtitle();
 	    	removeSpeakerRadar();
@@ -272,12 +274,14 @@ SubSignManager = function() {
 
 	      		SLtextListMemory = textList;     
 	    	} 
+	    	if ( signAutoHide ) subController.swichtSL(true); 
 	    	//subController.swichtSL(true); 
 
 		    setSubtitleSLConfig(subSLConfig);
 	  	}
 	  	else 
 	  	{
+	  		if ( signAutoHide ) subController.swichtSL(false);
 	  		//subController.swichtSL(false);
 
 	    	SLtextListMemory = [];
@@ -501,10 +505,10 @@ SubSignManager = function() {
 
     	radarMesh.onexecute = function() {
 
-			if ( !_isHMD ) radarAutoPositioning = true;
+			//if ( !_isHMD ) radarAutoPositioning = true;
     	}
 
-    	interController.addInteractiveRadar( radarMesh )
+    	//interController.addInteractiveRadar( radarMesh )
     	camera.add( radarMesh );
     	camera.add( radarMesh3 );
     }
@@ -788,6 +792,7 @@ SubSignManager = function() {
     	};
     };
 
+
 //************************************************************************************
 // Private Subtitle Setters
 //************************************************************************************
@@ -831,8 +836,8 @@ SubSignManager = function() {
 	        {
 	            imsc1doc = imsc.fromXML( r.responseText );
 
-		////////////////////////////////////////////////////////////////
-/*
+			////////////////////////////////////////////////////////////////
+			/*
 				var lineCount = 2;
 				var charWidth = 45;
 
@@ -843,7 +848,7 @@ SubSignManager = function() {
 				RS.blockSubsBySpeaker("\n",lineCount); // numero de linees
 				
 				imsc1doc = RS.toIMSC(fontSize=110);*/
-		/////////////////////////////////////////////////////////////////////
+			/////////////////////////////////////////////////////////////////////
 		
 	        }
 	        else if ( r.readyState === 4 ) 
@@ -1094,6 +1099,12 @@ SubSignManager = function() {
         }
     };
 
+
+    this.setSignerAutoHide = function(enabled)
+    {
+    	signAutoHide = enabled;
+    }
+
 //************************************************************************************
 // Public Subtitle Checkers
 //************************************************************************************
@@ -1191,6 +1202,16 @@ SubSignManager = function() {
 	this.checkisSignAvailable = function(lang){
 		if ( !lang && list_contents[demoId].acces[0].SL ) lang = list_contents[demoId].acces[0].SL[0];
 		return (list_contents[demoId].acces && list_contents[demoId].acces[0].SL && list_contents[demoId].acces[0].SL.includes((lang) ? lang : _iconf.sllanguage));
+	};
+
+	this.checksignAutoHide = function(x)
+	{
+		return x == signAutoHide;
+	};
+
+	this.checkAvailableDynamic = function()
+	{
+		return imsc1doc_SL ? true : false;
 	}
 
 //************************************************************************************

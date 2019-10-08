@@ -6,6 +6,7 @@ THREE.MediaObjectData = function () {
 
     var subtitleFont; 
     var ST_font = "500 40px Roboto, Arial";
+    var ST_font2 = "400 30px Roboto, Arial";
 
 //************************************************************************************
 // Public Setters
@@ -134,7 +135,9 @@ THREE.MediaObjectData = function () {
 
         var slsize = 0.46;
 
-        group2.add( getEmojiSubMesh3( textList, slsize, slopacity, ST_font ) );
+        var font = textList[0].text.length < 14 ? ST_font : ST_font2;
+
+        group2.add( getEmojiSubMesh3( textList, slsize, slopacity, font ) );
 
         group2.position.y = -10 - 1.9;
         plane.add( group2 );

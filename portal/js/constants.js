@@ -343,7 +343,7 @@ var _ImAcMeta = {
 			text: 'Spoken subtitles, straight from the action.',
 			en: 'Spoken subtitles, straight from the action.',
 			es: 'Los audiosubtítulos se oyen de la dirección de donde ocurre la acción.',
-			de: 'Voice over kommt aus der gleichen Richtung wie das Audio des Videos.',
+			de: 'Hören sie Voice Over aus der Richtung des Beschriebenen.',
 			ca: "Els audiosubtítols se senten de la direcció on passa l'acció."
 		},
 		god: {
@@ -387,7 +387,7 @@ var _ImAcMeta = {
 			text: "This tells you all about the action and where it's happening.",
 			en: "This tells you all about the action and where it's happening.",
 			es: 'Con este modo, te dirán qué ocurre y dónde se sitúa la acción en el vídeo.',
-			de: 'Die Audio Deskription kommt aus der gleichen Richtung wie das Audio des Videos.',
+			de: 'Hören sie Audiodeskription aus der Richtung des Beschriebenen.',
 			ca: "Amb aquest mode, et diran què passa i on se situa l'acció en el vídeo."
 		},
 		friend: {

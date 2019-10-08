@@ -56,7 +56,6 @@ var __etype = 0;
 
 var _fixedST = false;
 var _SLsubtitles = false;
-var _NonCont = false;
 var _iconf;
 var _userprofile = true;
 var _ws_vc;
@@ -122,6 +121,7 @@ function init_webplayer()
                 {
                     _iconf = JSON.parse( cookieconf );
 
+                    //_iconf.menutype= 'ls';
 
                     console.log( _iconf )
                     subController.setSTConfig( _iconf );

@@ -244,6 +244,10 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 				//INTERACTIVITY DETECT
                 interController.checkInteraction(mouse2D, scope.object, 'onDocumentMouseDown');
 
+                if(scene.getObjectByName('trad-main-menu') && scene.getObjectByName('trad-main-menu').visible) {
+			    	interController.checkInteractionVPB( mouse2D, scope.object);   
+		        }
+
 				appState = CONTROLLER_STATE.MANUAL_ROTATE_DEVICE;
 
 				scope.enabled = false;
@@ -416,6 +420,19 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 			}
 		}
 
+		/*if( scene.getObjectByName('trad-main-menu') && scene.getObjectByName('trad-main-menu').visible ){
+
+ 			mouse2D.x = _isHMD ? 0 : ( event.clientX / window.innerWidth ) * 2 - 1;
+        	mouse2D.y = _isHMD ? 0 : - ( event.clientY / window.innerHeight ) * 2 + 1;
+
+        	raycaster.setFromCamera(  mouse2D, scope.object );
+			/**
+			 * This function updates the position of the slider after 
+			 * been clicked and during the mousemmove event.
+			 //
+			mainMenuCtrl.updatePositionOnMouseMove(raycaster, sliderSelection);
+		}*/
+
 		/*switch( event.touches.length ) {
 			case 1:
 				currentX = event.touches[ 0 ].pageX;
@@ -433,6 +450,11 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 		else if ( menuMgr.getMenuType() == 2 && scene.getObjectByName( 'trad-main-menu' ).visible == false && !_mouseMoved ) menuMgr.initFirstMenuState();
 		else if ( menuMgr.getMenuType() == 1 && scene.getObjectByName( 'trad-option-menu' ).visible == false && scene.getObjectByName( 'trad-main-menu' ).visible == false && !_mouseMoved ) menuMgr.initFirstMenuState();
 		
+		/*if (sliderSelection) {
+			mainMenuCtrl.setSlidingStatus(false);
+			mainMenuCtrl.onSlideSeek();
+			sliderSelection = null;
+		}*/
 
 		_mouseMoved = false;
 

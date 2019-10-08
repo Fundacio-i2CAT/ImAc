@@ -12,16 +12,18 @@ function SettingsMenuView() {
         submenu.getObjectByName('enhanced-menu-button').visible = (menuMgr.getMenuType() == 2) ? true : false;
         submenu.getObjectByName('enhanced-menu-button').children[0].onexecute = data.menuTypeButtonFunc; 
 
-
-        if( menuMgr.getMenuType() == 1 ){
+        submenu.getObjectByName('preview-button').material.color.set( 0xe6e6e6 );
+        submenu.getObjectByName('preview-button').children[0].onexecute = data.previewButtonFunc;
+            
+        /*if( menuMgr.getMenuType() == 1 ){
             submenu.getObjectByName('preview-button').material.color.set( 0xe6e6e6 );
             submenu.getObjectByName('preview-button').children[0].onexecute = data.previewButtonFunc;
 
         } else{
             submenu.getObjectByName('preview-button').material.color.set( 0x3a3a3a );
-            submenu.getObjectByName('preview-button').children[0].onexecute = function() { console.log("This is the disable-sl-button button") };
+            submenu.getObjectByName('preview-button').children[0].onexecute = function() { console.log("This is the disable preview button") };
 
-        }   
+        } */  
     }
 
     this.pressButtonFeedback = function(data)

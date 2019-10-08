@@ -236,7 +236,6 @@ THREE.InteractionsController = function () {
 
 
     this.checkInteractionVPB = function(origin, direction){
-        
         if(_isHMD){
             raycaster.set( origin, direction );
         } else{
@@ -284,7 +283,7 @@ THREE.InteractionsController = function () {
                 }
                 else if ( intersects[inter].object.type == 'Mesh' && intersects[inter].object.name && intersects[inter].object.parent ){
     				intersectedShapeId = intersects[inter].object.name;
-    				console.error(intersectedShapeId);
+    				//console.error(intersectedShapeId);
     				break;
     			}
                 else console.error("Error in checkInteraction")

@@ -168,7 +168,10 @@ function AplicationManager()
             subController.updateSLRotation();
         }
 
-        subController.updateRadar();
+        if(camera.getObjectByName('radar') && camera.getObjectByName('radar').visible){
+            _rdr.updateRadarRotation();
+            _rdr.updateRadarPosition();
+        }
 
         if( !_isHMD && scene.getObjectByName('trad-option-menu') ) {
             interController.checkInteractionSubMenuHover( mouse3D, camera);

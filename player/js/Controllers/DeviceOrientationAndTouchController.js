@@ -721,7 +721,7 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 
                 p2.scale.set( pointscale*dist/10,pointscale*dist/10,pointscale*dist/10 )
             }
-ç
+            
 	        if(scene.getObjectByName('trad-option-menu')){
         		interController.checkInteractionSubMenuHover( _origin, direction);
 	        }

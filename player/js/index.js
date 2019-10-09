@@ -7,6 +7,7 @@ var AplicationManager = new AplicationManager();
 var MenuFunctionsManager = new MenuFunctionsManager();
 
 var _moData = new THREE.MediaObjectData();
+var _rdr = new THREE.Radar();
 
 var vwStrucMMngr = new ViewStructureMenuManager();
 var menuMgr = new MenuManager();

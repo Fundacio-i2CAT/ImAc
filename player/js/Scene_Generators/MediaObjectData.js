@@ -248,46 +248,6 @@ THREE.MediaObjectData = function () {
         return group;
     };
 
-    this.getRadarMesh = function(img, name)
-    {
-        var imgGeometry = new THREE.PlaneGeometry( 14, 14 );
-        var mesh = getImageMesh( imgGeometry, img, name, 3 );
-
-        mesh.position.x = _isHMD ? 0.8*( 1.48*subController.getSubArea()/2-14/2 ) : ( 1.48*subController.getSubArea()/2-14/2 );
-        
-        if(subController.getSignerEnabled()){
-            mesh.position.y = 0;
-        } else {
-            mesh.position.y = _isHMD ? 0.09*( 0.82*subController.getSubArea()/2-14/2 ) * subController.getSubPosition().y : ( 0.82*subController.getSubArea()/2-14/2 ) * subController.getSubPosition().y;
-        }
-
-        mesh.position.z = -76.001;
-
-        return mesh;
-    };
-
-    this.getSpeakerRadarMesh = function(color, pos)
-    {
-        var imgGeometry = new THREE.PlaneGeometry( 14, 14 );
-        var mesh = getImageMesh( imgGeometry, './img/indicador_7.png', 'radar2', 3 );
-
-        mesh.material.color.set( color ); 
-
-        mesh.position.x = _isHMD ? 0.8*( 1.48*subController.getSubArea()/2-14/2 ) : ( 1.48*subController.getSubArea()/2-14/2 );
-        
-        if(subController.getSignerEnabled()){
-            mesh.position.y = 0;
-        } else {
-            mesh.position.y = _isHMD ? 0.09*( 0.82*subController.getSubArea()/2-14/2 ) * subController.getSubPosition().y : ( 0.82*subController.getSubArea()/2-14/2 ) * subController.getSubPosition().y;
-        }
-
-        mesh.position.z = -76;
-        mesh.rotation.z = Math.radians( 360 - pos );
-        mesh.name = 'radarIndicartor';
-
-        return mesh;
-    };
-
     this.createPointer = function()
     {
         var pointer = getPointMesh( 0.02, 16, 0xffff00, 1 );

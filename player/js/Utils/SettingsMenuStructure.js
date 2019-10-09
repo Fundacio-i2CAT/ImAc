@@ -429,22 +429,20 @@ options: [
     { optId: 'settingsIndicatorNone', text: 'None', 
         default: function(){ return subController.checkSubIndicator('none') },
         function: function(){ 
-            subController.setSubIndicator( "none" );
-            SettingsOptionCtrl.setChildColumnActiveOpt(settingsIndicator.options[0].optId);
+            subController.setSubIndicator( "none", settingsIndicator.options[0].optId);
+            SettingsOptionCtrl.setChildColumnActiveOpt();
         } 
     }, 
     { optId: 'settingsIndicatorArrows', text: 'Arrow', 
         default: function(){ return subController.checkSubIndicator('arrow') },
         function: function(){ 
-            subController.setSubIndicator( "arrow" );
-            SettingsOptionCtrl.setChildColumnActiveOpt(settingsIndicator.options[1].optId);
+            subController.setSubIndicator( "arrow", settingsIndicator.options[1].optId );
         } 
     },
     { optId: 'settingsIndicatorRadar', text: 'Radar', 
         default: function(){ return subController.checkSubIndicator('radar') },
         function: function(){ 
-            subController.setSubIndicator( "radar" );
-            SettingsOptionCtrl.setChildColumnActiveOpt(settingsIndicator.options[2].optId);
+            subController.setSubIndicator( "radar", settingsIndicator.options[2].optId);
         } 
     }]
 };
@@ -491,7 +489,7 @@ const settingsSafeArea = { title: 'SafeArea', icon: './img/menu/safe_area.png', 
 
 
 // NOT ACTIVE
-const openMenuSystem = { title: 'OpenMenu', icon: '', parent: generalSettings, final: true, options: [
+/*const openMenuSystem = { title: 'OpenMenu', icon: '', parent: generalSettings, final: true, options: [
     { optId: 'openMenuUp', text: 'Up', 
         default: function(){ return menuUpDown == 1 },
         function:  function(){
@@ -513,7 +511,7 @@ const openMenuSystem = { title: 'OpenMenu', icon: '', parent: generalSettings, f
 
         } 
     }]
-};
+};*/
 
 /* *************************************** S U B T I T L E S    (ST) ***************************************
  * ╔═════════════════════════════════════╗

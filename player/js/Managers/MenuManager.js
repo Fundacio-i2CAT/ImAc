@@ -46,6 +46,10 @@ function MenuManager() {
             menuParent.add(settingsMenu);
         }
 
+        //Radar
+        let radar = _rdr.getRadarMeshGroup();
+        camera.add(radar);
+
         mainMenuCtrl = new MainMenuController();
         controllers.push(mainMenuCtrl);
 

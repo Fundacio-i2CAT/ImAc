@@ -91,7 +91,7 @@ function ViewStructureMenuManager() {
 	 */
     this.TraditionalMenu = function(name){
         
-        var  mainmenu =  new THREE.Group();
+        let  mainmenu =  new THREE.Group();
         mainmenu.name = name;
 
         let i5 = menuWidth/20;
@@ -100,12 +100,12 @@ function ViewStructureMenuManager() {
         let i6 = 6*menuWidth/100;
         let i10 = 10*menuWidth/100;
 
-        var traditionalmenuBase = TraditionalMenuBase('trad-menu-base');
+        let traditionalmenuBase = TraditionalMenuBase('trad-menu-base');
 
 /************************************\
 |           PLAYPAUSE                |
 \************************************/
-        var seekLBtn = new InteractiveElementModel();
+        let seekLBtn = new InteractiveElementModel();
         seekLBtn.width = i6;
         seekLBtn.height = i6;
         seekLBtn.rotation = Math.PI;
@@ -118,7 +118,7 @@ function ViewStructureMenuManager() {
         seekLBtn.position = new THREE.Vector3(-menuWidth/8, menuHeight/4, 0.01);
         seekLBtn.onexecute = function() { console.log("This is the %s button", seekLBtn.name) }
 
-        var playBtn = new InteractiveElementModel();
+        let playBtn = new InteractiveElementModel();
         playBtn.width = i10;
         playBtn.height = i10;
         playBtn.name = 'play-button';
@@ -130,7 +130,7 @@ function ViewStructureMenuManager() {
         playBtn.position = new THREE.Vector3(0, menuHeight/4, 0.01);
         playBtn.onexecute = function() { console.log("This is the %s button", playBtn.name) };
 
-        var pauseBtn = new InteractiveElementModel();
+        let pauseBtn = new InteractiveElementModel();
         pauseBtn.width = i10;
         pauseBtn.height = i10;
         pauseBtn.name = 'pause-button';
@@ -142,7 +142,7 @@ function ViewStructureMenuManager() {
         pauseBtn.position = new THREE.Vector3(0, menuHeight/4, 0.01);
         pauseBtn.onexecute = function() { console.log("This is the %s button", pauseBtn.name) };
 
-        var seekRBtn = new InteractiveElementModel();
+        let seekRBtn = new InteractiveElementModel();
         seekRBtn.width = i6;
         seekRBtn.height = i6;
         seekRBtn.name = 'forward-seek-button';
@@ -154,7 +154,7 @@ function ViewStructureMenuManager() {
         seekRBtn.position = new THREE.Vector3( menuWidth/8, menuHeight/4, 0.01 );
         seekRBtn.onexecute = function() { console.log("This is the %s button", seekRBtn.name) };
 
-        var closeBtn = new InteractiveElementModel();
+        let closeBtn = new InteractiveElementModel();
         closeBtn.width = menuWidth/25;
         closeBtn.height = menuWidth/25;
         closeBtn.name = 'close-button';
@@ -177,7 +177,7 @@ function ViewStructureMenuManager() {
         let geometryCloseBtn = new THREE.ShapeGeometry( menuShapeCloseBtn );
         let meshCloseBtn =  new THREE.Mesh( geometryCloseBtn, materialCloseBtn);
 
-        var closeBtnZoom = new InteractiveElementModel();
+        let closeBtnZoom = new InteractiveElementModel();
         closeBtnZoom.width = 2 * menuWidth/25;
         closeBtnZoom.height = 2 * menuWidth/25;
         closeBtnZoom.name = 'close-button-zoom';
@@ -212,7 +212,7 @@ function ViewStructureMenuManager() {
         //var  volumemenu =  new THREE.Group();
         //volumemenu.name = 'volume-menu-group';
 
-        var minVolBtn = new InteractiveElementModel();
+        let minVolBtn = new InteractiveElementModel();
         minVolBtn.width = menuWidth/40;
         minVolBtn.height = menuWidth/40;
         minVolBtn.name = 'minus-volume-button';
@@ -224,7 +224,7 @@ function ViewStructureMenuManager() {
         minVolBtn.position = new THREE.Vector3( -3*menuWidth/8,  menuHeight/4, 0.01 );
         minVolBtn.onexecute = function() { console.log("This is the %s button", minVolBtn.name) };
 
-        var plusVolBtn = new InteractiveElementModel();
+        let plusVolBtn = new InteractiveElementModel();
         plusVolBtn.width = menuWidth/40;
         plusVolBtn.height = menuWidth/40;
         plusVolBtn.name = 'plus-volume-button';
@@ -236,7 +236,7 @@ function ViewStructureMenuManager() {
         plusVolBtn.position = new THREE.Vector3( -menuWidth/4,  menuHeight/4, 0.01 );
         plusVolBtn.onexecute = function() { console.log("This is the %s button", plusVolBtn.name) };
 
-        var unmuteVolBtn = new InteractiveElementModel();
+        let unmuteVolBtn = new InteractiveElementModel();
         unmuteVolBtn.width = i6;
         unmuteVolBtn.height = i6;
         unmuteVolBtn.name = 'unmute-volume-button';
@@ -248,7 +248,7 @@ function ViewStructureMenuManager() {
         unmuteVolBtn.position = new THREE.Vector3( -5*menuWidth/16, menuHeight/4, 0.01 );
         unmuteVolBtn.onexecute = function() { console.log("This is the %s button", unmuteVolBtn.name) };
         
-        var muteVolBtn = new InteractiveElementModel();
+        let muteVolBtn = new InteractiveElementModel();
         muteVolBtn.width = i6;
         muteVolBtn.height = i6;
         muteVolBtn.name = 'mute-volume-button';
@@ -260,7 +260,7 @@ function ViewStructureMenuManager() {
         muteVolBtn.position = new THREE.Vector3( -5*menuWidth/16, menuHeight/4, 0.01 );
         muteVolBtn.onexecute = function() { console.log("This is the %s button", muteVolBtn.name) };
         
-        var volLvlTxt = new InteractiveElementModel();
+        let volLvlTxt = new InteractiveElementModel();
         volLvlTxt.width = 0;
         volLvlTxt.height = 0;
         volLvlTxt.name = 'volume-level-text';
@@ -282,7 +282,7 @@ function ViewStructureMenuManager() {
 |       ACCESSIBILITY OPTIONS        |
 \************************************/
 
-        var stBtn = new InteractiveElementModel();
+        let stBtn = new InteractiveElementModel();
         stBtn.width = i5;
         stBtn.height = i5;
         stBtn.name = 'show-st-button';
@@ -294,7 +294,7 @@ function ViewStructureMenuManager() {
         stBtn.position = new THREE.Vector3( -3*menuWidth/8, -menuHeight/3, 0.01 );
         stBtn.onexecute = function() { console.log("This is the %s button", stBtn.name) };
 
-        var stDisBtn = new InteractiveElementModel();
+        let stDisBtn = new InteractiveElementModel();
         stDisBtn.width = i5;
         stDisBtn.height = i5;
         stDisBtn.name = 'disable-st-button';
@@ -306,7 +306,7 @@ function ViewStructureMenuManager() {
         stDisBtn.position = new THREE.Vector3( -3*menuWidth/8, -menuHeight/3, 0.01 );
         stDisBtn.onexecute = function() { console.log("This is the %s button", stDisBtn.name) };
 
-        var stTooltip = new InteractiveElementModel();
+        let stTooltip = new InteractiveElementModel();
         stTooltip.width = i6;
         stTooltip.height = i6;
         stTooltip.name = 'tooltip-st-button';
@@ -317,7 +317,7 @@ function ViewStructureMenuManager() {
         stTooltip.visible = false;
         stTooltip.position = new THREE.Vector3( -7*menuWidth/16, -menuHeight/3, 0.01 );
        
-        var slBtn = new InteractiveElementModel();
+        let slBtn = new InteractiveElementModel();
         slBtn.width = i5;
         slBtn.height = i5;
         slBtn.name = 'show-sl-button';
@@ -329,7 +329,7 @@ function ViewStructureMenuManager() {
         slBtn.position = new THREE.Vector3( -menuWidth/8, -menuHeight/3, 0.01 );
         slBtn.onexecute = function() { console.log("This is the %s button", slBtn.name) };
 
-        var slDisBtn = new InteractiveElementModel();
+        let slDisBtn = new InteractiveElementModel();
         slDisBtn.width = i5;
         slDisBtn.height = i5;
         slDisBtn.name = 'disable-sl-button';
@@ -341,7 +341,7 @@ function ViewStructureMenuManager() {
         slDisBtn.position = new THREE.Vector3( -menuWidth/8, -menuHeight/3, 0.01 );
         slDisBtn.onexecute = function() { console.log("This is the %s button", slDisBtn.name) };
 
-        var slTooltip = new InteractiveElementModel();
+        let slTooltip = new InteractiveElementModel();
         slTooltip.width = i6;
         slTooltip.height = i6;
         slTooltip.name = 'tooltip-sl-button';
@@ -352,7 +352,7 @@ function ViewStructureMenuManager() {
         slTooltip.visible = false;
         slTooltip.position = new THREE.Vector3( -3*menuWidth/16, -menuHeight/3, 0.01 );
 
-        var adBtn = new InteractiveElementModel();
+        let adBtn = new InteractiveElementModel();
         adBtn.width = i5;
         adBtn.height = i5;
         adBtn.name = 'show-ad-button';
@@ -364,7 +364,7 @@ function ViewStructureMenuManager() {
         adBtn.position = new THREE.Vector3( menuWidth/8, -menuHeight/3, 0.01 );
         adBtn.onexecute = function() { console.log("This is the %s button", adBtn.name) };
 
-        var adDisBtn = new InteractiveElementModel();
+        let adDisBtn = new InteractiveElementModel();
         adDisBtn.width = i5;
         adDisBtn.height = i5;
         adDisBtn.name = 'disable-ad-button';
@@ -376,7 +376,7 @@ function ViewStructureMenuManager() {
         adDisBtn.position = new THREE.Vector3( menuWidth/8, -menuHeight/3, 0.01 );
         adDisBtn.onexecute = function() { console.log("This is the %s button", adDisBtn.name) };
 
-        var adTooltip = new InteractiveElementModel();
+        let adTooltip = new InteractiveElementModel();
         adTooltip.width = i6;
         adTooltip.height = i6;
         adTooltip.name = 'tooltip-ad-button';
@@ -387,7 +387,7 @@ function ViewStructureMenuManager() {
         adTooltip.visible = false;
         adTooltip.position = new THREE.Vector3( 1*menuWidth/16, -menuHeight/3, 0.01 );
 
-        var astBtn = new InteractiveElementModel();
+        let astBtn = new InteractiveElementModel();
         astBtn.width = i5;
         astBtn.height = i5;
         astBtn.name = 'show-ast-button';
@@ -399,7 +399,7 @@ function ViewStructureMenuManager() {
         astBtn.position = new THREE.Vector3( 3*menuWidth/8, -menuHeight/3, 0.01 );
         astBtn.onexecute = function() { console.log("This is the %s button", astBtn.name) };
 
-        var astDisBtn = new InteractiveElementModel();
+        let astDisBtn = new InteractiveElementModel();
         astDisBtn.width = i5;
         astDisBtn.height = i5;
         astDisBtn.name = 'disable-ast-button';
@@ -411,7 +411,7 @@ function ViewStructureMenuManager() {
         astDisBtn.position = new THREE.Vector3( 3*menuWidth/8, -menuHeight/3, 0.01 );
         astDisBtn.onexecute = function() { console.log("This is the %s button", astDisBtn.name) };
 
-        var astTooltip = new InteractiveElementModel();
+        let astTooltip = new InteractiveElementModel();
         astTooltip.width = i6;
         astTooltip.height = i6;
         astTooltip.name = 'tooltip-ast-button';
@@ -437,11 +437,10 @@ function ViewStructureMenuManager() {
         mainmenu.add(astTooltip.create()); 
 
 
-
 /************************************\
 |            SETTINGS                |
 \************************************/
-        var settingsBtn = new InteractiveElementModel();
+        let settingsBtn = new InteractiveElementModel();
         settingsBtn.width = i6;
         settingsBtn.height = i6;
         settingsBtn.name = 'settings-button';
@@ -453,7 +452,7 @@ function ViewStructureMenuManager() {
         settingsBtn.position = new THREE.Vector3( menuWidth/4, menuHeight/4, 0.01 );
         settingsBtn.onexecute = function() { console.log("This is the %s button", settingsBtn.name) };
 
-        var previewBtn = new InteractiveElementModel();
+        let previewBtn = new InteractiveElementModel();
         previewBtn.width = i6;
         previewBtn.height = i6;
         previewBtn.name = 'preview-button';
@@ -465,8 +464,7 @@ function ViewStructureMenuManager() {
         previewBtn.position = new THREE.Vector3( 3*menuWidth/8, menuHeight/4, 0.01 );
         previewBtn.onexecute = function() { console.log("This is the %s button", previewBtn.name) };
 
-//TODO: Add to controller and link to functions
-        var tradMenuBtn = new InteractiveElementModel();
+        let tradMenuBtn = new InteractiveElementModel();
         tradMenuBtn.width = menuWidth/25;
         tradMenuBtn.height = menuWidth/25;
         tradMenuBtn.name = 'traditional-menu-button';
@@ -478,7 +476,7 @@ function ViewStructureMenuManager() {
         tradMenuBtn.position = new THREE.Vector3( -menuWidth/2 + menuWidth/25, menuHeight/2 - menuWidth/25, 0.01 );
         tradMenuBtn.onexecute = function() { console.log("This is the %s button", tradMenuBtn.name) };
 
-        var enhancedMenuBtn = new InteractiveElementModel();
+        let enhancedMenuBtn = new InteractiveElementModel();
         enhancedMenuBtn.width = menuWidth/25;
         enhancedMenuBtn.height = menuWidth/25;
         enhancedMenuBtn.name = 'enhanced-menu-button';
@@ -491,7 +489,6 @@ function ViewStructureMenuManager() {
         enhancedMenuBtn.onexecute = function() { console.log("This is the %s button", enhancedMenuBtn.name) };
 
 // TO BE CHANGED AFTER IFA
-
         let enhancedMenuBtnGroup =  new THREE.Group();
 
         enhancedMenuBtnGroup.name = 'enhanced-menu-button-group';
@@ -501,7 +498,7 @@ function ViewStructureMenuManager() {
         let geometry = new THREE.ShapeGeometry( menuShape );
         let mesh =  new THREE.Mesh( geometry, material);
 
-        var enhancedMenuBtnZoom = new InteractiveElementModel();
+        let enhancedMenuBtnZoom = new InteractiveElementModel();
         enhancedMenuBtnZoom.width = 2 * menuWidth/25;
         enhancedMenuBtnZoom.height = 2 * menuWidth/25;
         enhancedMenuBtnZoom.name = 'enhanced-menu-button-zoom';
@@ -536,12 +533,12 @@ function ViewStructureMenuManager() {
 |     VIDEO PROGRESS BAR ELEMENT     |
 \************************************/
         // This is where the video progress bar is created for the traditional menu.
-        var vpb_shape_background = _moData.roundedRect( new THREE.Shape(), 4*menuWidth/5, menuHeight/25, menuWidth/200 );
-        var vpb =  new THREE.Group();
+        let vpb_shape_background = _moData.roundedRect( new THREE.Shape(), 4*menuWidth/5, menuHeight/25, menuWidth/200 );
+        let vpb =  new THREE.Group();
         vpb.name = "video-progress-bar";
         vpb.visible = true;
 
-        var vpb_background =  new THREE.Mesh( new THREE.ShapeGeometry( vpb_shape_background ), new THREE.MeshBasicMaterial( { color:  0x666666, transparent: true, opacity: 0.8 }));
+        let vpb_background =  new THREE.Mesh( new THREE.ShapeGeometry( vpb_shape_background ), new THREE.MeshBasicMaterial( { color:  0x666666, transparent: true, opacity: 0.8 }));
         
         vpb_background.position.set( 0, -menuHeight/24, 0.01);
         vpb_background.name = "background-progress";
@@ -554,7 +551,7 @@ function ViewStructureMenuManager() {
 
         let totaltime = VideoController.getPlayoutTime(VideoController.getListOfVideoContents()[0].vid.duration) || list_contents[demoId].duration;
         
-        var videoTotalTime = new InteractiveElementModel();
+        let videoTotalTime = new InteractiveElementModel();
         videoTotalTime.width = 0;
         videoTotalTime.height = 0;
         videoTotalTime.name = 'video-total-time';
@@ -565,7 +562,7 @@ function ViewStructureMenuManager() {
         videoTotalTime.visible = true;
         videoTotalTime.position = new THREE.Vector3( 9*menuWidth/20, -menuHeight/24, 0.01 );
 
-        var videoPlayoutTime = new InteractiveElementModel();
+        let videoPlayoutTime = new InteractiveElementModel();
         videoPlayoutTime.width = 0;
         videoPlayoutTime.height = 0;
         videoPlayoutTime.name = 'video-playout-time';
@@ -580,16 +577,16 @@ function ViewStructureMenuManager() {
         vpbPlayLeftBorder.position.set( -4*menuWidth/10 + menuWidth/200, -menuHeight/24, 0.03);
         vpb.add(vpbPlayLeftBorder);
 
-        var vpb_play =  new THREE.Mesh( new THREE.ShapeGeometry( vpb_shape_background ), new THREE.MeshBasicMaterial( { color:  0xc91355, transparent: true, opacity: 1 }));
+        let vpb_play =  new THREE.Mesh( new THREE.ShapeGeometry( vpb_shape_background ), new THREE.MeshBasicMaterial( { color:  0xc91355, transparent: true, opacity: 1 }));
         vpb_play.position.set( 0, -menuHeight/24, 0.03 );
         vpb_play.name = "play-progress";
 
-        var vpb_seek =  new THREE.Mesh( new THREE.ShapeGeometry( vpb_shape_background ), new THREE.MeshBasicMaterial( { color:  0x939393, transparent: true, opacity: 1 }));
+        let vpb_seek =  new THREE.Mesh( new THREE.ShapeGeometry( vpb_shape_background ), new THREE.MeshBasicMaterial( { color:  0x939393, transparent: true, opacity: 1 }));
         vpb_seek.position.set( 0, -menuHeight/24, 0.02 );
         vpb_seek.visible = false;
         vpb_seek.name = "seek-progress";
 
-        var vpb_time_slider = new THREE.Mesh( new THREE.CircleGeometry(6*menuWidth/500,32), new THREE.MeshBasicMaterial( { color: 0xc91355 } ) );
+        let vpb_time_slider = new THREE.Mesh( new THREE.CircleGeometry(6*menuWidth/500,32), new THREE.MeshBasicMaterial( { color: 0xc91355 } ) );
         vpb_time_slider.visible = false;
         vpb_time_slider.position.set( -4*menuWidth/10, -menuHeight/24, 0.04 );
         vpb_time_slider.name = "slider-progress";
@@ -666,7 +663,7 @@ function ViewStructureMenuManager() {
 
         let line = _moData.createLine( 0xc91355, new THREE.Vector3( -optWidth/2, -optHeight/2, 0.01 ), new THREE.Vector3( optWidth/2, -optHeight/2, 0.01 ) );
 
-        var checkMark = new InteractiveElementModel();
+        let checkMark = new InteractiveElementModel();
         checkMark.width = menuWidth/20;
         checkMark.height = menuWidth/20;
         checkMark.name = 'checkmark';
@@ -677,7 +674,7 @@ function ViewStructureMenuManager() {
         checkMark.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry( menuWidth/20, menuWidth/20), new THREE.MeshBasicMaterial({visible: false}));
         checkMark.position = new THREE.Vector3( 0, 0, 0.01 );
 
-        var backBtn = new InteractiveElementModel();
+        let backBtn = new InteractiveElementModel();
         backBtn.width = menuWidth/30;
         backBtn.height = menuWidth/30;
         backBtn.rotation = -Math.PI;
@@ -702,7 +699,7 @@ function ViewStructureMenuManager() {
         closeBtn.position = new THREE.Vector3( optWidth/2 - menuWidth/35, 0, 0.01 );
         closeBtn.onexecute = function() { console.log("This is the %s button", closeBtn.name) };
 
-        var previewBtn = new InteractiveElementModel();
+        let previewBtn = new InteractiveElementModel();
         previewBtn.width = menuWidth/30;
         previewBtn.height = menuWidth/30;
         previewBtn.name = 'preview-button';
@@ -753,19 +750,19 @@ function ViewStructureMenuManager() {
  */
     this.Preview = function(name)
     {
-        var preview = new THREE.Group();
+        let preview = new THREE.Group();
         preview.name = name;
 
-        var subtitleMesh =  new THREE.Group();
+        let subtitleMesh =  new THREE.Group();
         subtitleMesh.name = 'subtitlespreview';
 
-        var subtitlesAreaMesh = new THREE.Group();
+        let subtitlesAreaMesh = new THREE.Group();
         subtitlesAreaMesh.name = 'areaSTpreview';
 
-        var signerMesh = new THREE.Group();
+        let signerMesh = new THREE.Group();
         signerMesh.name = 'signerpreview';
 
-        var signerAreaMesh = new THREE.Group();
+        let signerAreaMesh = new THREE.Group();
         signerAreaMesh.name = 'areaSLpreview';
 
         preview.add(subtitleMesh);
@@ -773,10 +770,10 @@ function ViewStructureMenuManager() {
         preview.add(signerMesh);
         preview.add(signerAreaMesh);
 
-        var stMesh = scene.getObjectByName("subtitles");
+        let stMesh = scene.getObjectByName("subtitles");
         if(stMesh) stMesh.visible = false;
 
-        var slMesh = scene.getObjectByName("sign");
+        let slMesh = scene.getObjectByName("sign");
         if(slMesh) slMesh.visible = false;
 
 

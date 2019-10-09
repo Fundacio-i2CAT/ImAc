@@ -1172,7 +1172,7 @@ const settingsAudioDescription = { title: 'Audiodescription', icon: './img/acc_s
 const settingsAudioDescriptionLanguage = { title: 'Language', icon: './img/menu/language.png', parent: settingsAudioDescription, final: true, options: [
     { optId: 'audioDescriptionLanguageEngButton', text: 'English', 
         available: function() { return  _AudioManager.checkisADAvailable('en') }, 
-        default: function(){ return subController.checkSubLanguage('en') },
+        default: function(){ return _AudioManager.checkADLang('en') },
         function: function(){ 
             MenuFunctionsManager.changeAccesLanguage('en', 'ad')(); 
             SettingsOptionCtrl.setChildColumnActiveOpt(settingsAudioDescriptionLanguage.options[0].optId);
@@ -1181,7 +1181,7 @@ const settingsAudioDescriptionLanguage = { title: 'Language', icon: './img/menu/
     }, 
     { optId: 'audioDescriptionLanguageEspButton', text: 'Español', 
         available: function() { return  _AudioManager.checkisADAvailable('es') },
-        default: function(){ return subController.checkSubLanguage('es') },
+        default: function(){ return _AudioManager.checkADLang('es') },
         function: function(){ 
             MenuFunctionsManager.changeAccesLanguage('es', 'ad')(); 
             SettingsOptionCtrl.setChildColumnActiveOpt(settingsAudioDescriptionLanguage.options[1].optId);
@@ -1190,7 +1190,7 @@ const settingsAudioDescriptionLanguage = { title: 'Language', icon: './img/menu/
     }, 
     { optId: 'audioDescriptionLanguageGerButton', text: 'Deutsch', 
         available: function() { return  _AudioManager.checkisADAvailable('de') },
-        default: function(){ return subController.checkSubLanguage('de') },
+        default: function(){ return _AudioManager.checkADLang('de') },
         function: function(){ 
             MenuFunctionsManager.changeAccesLanguage('de', 'ad')(); 
             SettingsOptionCtrl.setChildColumnActiveOpt(settingsAudioDescriptionLanguage.options[2].optId);
@@ -1199,7 +1199,7 @@ const settingsAudioDescriptionLanguage = { title: 'Language', icon: './img/menu/
     }, 
     { optId: 'audioDescriptionLanguageCatButton', text: 'Català', 
         available: function() { return  _AudioManager.checkisADAvailable('ca') },
-        default: function(){ return subController.checkSubLanguage('ca') },
+        default: function(){ return _AudioManager.checkADLang('ca') },
         function: function(){ 
             MenuFunctionsManager.changeAccesLanguage('ca', 'ad')(); 
             SettingsOptionCtrl.setChildColumnActiveOpt(settingsAudioDescriptionLanguage.options[3].optId);
@@ -1442,7 +1442,7 @@ const settingsAudioSubtitles = { title: 'Audiosubtitles', icon: './img/acc_serv_
 const settingsAudioSubtitlesLanguages = { title: 'Language', icon: './img/menu/language.png', parent: settingsAudioSubtitles, final: true, options: [
     { optId: 'audioSubtitlesLanguageEngButton', text: 'English', 
         available: function() { return _AudioManager.checkisASTAvailable('en') }, 
-        default: function(){ return subController.checkSubLanguage('en') },
+        default: function(){ return _AudioManager.checkASTLang('en') },
         function: function(){ 
             MenuFunctionsManager.changeAccesLanguage('en', 'ast')(); 
             SettingsOptionCtrl.setChildColumnActiveOpt(settingsAudioSubtitlesLanguages.options[0].optId);
@@ -1451,7 +1451,7 @@ const settingsAudioSubtitlesLanguages = { title: 'Language', icon: './img/menu/l
     }, 
     { optId: 'audioSubtitlesLanguageEspButton', text: 'Español', 
         available: function() { return _AudioManager.checkisASTAvailable('es') },
-        default: function(){ return subController.checkSubLanguage('es') },
+        default: function(){ return _AudioManager.checkASTLang('es') },
         function: function(){ 
             MenuFunctionsManager.changeAccesLanguage('es', 'ast')(); 
             SettingsOptionCtrl.setChildColumnActiveOpt(settingsAudioSubtitlesLanguages.options[1].optId);
@@ -1460,7 +1460,7 @@ const settingsAudioSubtitlesLanguages = { title: 'Language', icon: './img/menu/l
     }, 
     { optId: 'audioSubtitlesLanguageGerButton', text: 'Deutsch', 
         available: function() { return _AudioManager.checkisASTAvailable('de') },
-        default: function(){ return subController.checkSubLanguage('de') },
+        default: function(){ return _AudioManager.checkASTLang('de') },
         function: function(){ 
             MenuFunctionsManager.changeAccesLanguage('de', 'ast')(); 
             SettingsOptionCtrl.setChildColumnActiveOpt(settingsAudioSubtitlesLanguages.options[2].optId);
@@ -1469,7 +1469,7 @@ const settingsAudioSubtitlesLanguages = { title: 'Language', icon: './img/menu/l
     }, 
     { optId: 'audioSubtitlesLanguageCatButton', text: 'Català', 
         available: function() { return _AudioManager.checkisASTAvailable('ca') },
-        default: function(){ return subController.checkSubLanguage('ca') },
+        default: function(){ return _AudioManager.checkASTLang('ca') },
         function: function(){ 
             MenuFunctionsManager.changeAccesLanguage('ca', 'ast')(); 
             SettingsOptionCtrl.setChildColumnActiveOpt(settingsAudioSubtitlesLanguages.options[3].optId);

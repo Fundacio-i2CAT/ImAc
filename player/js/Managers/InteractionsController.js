@@ -272,7 +272,7 @@ THREE.InteractionsController = function () {
   		    var intersectedShapeId;
 			for(var inter = 0; inter < intersects.length; inter++){
 
-                gtag('event', 'UserInteraction', {
+                if ( localStorage.ImAc_cookies ) gtag('event', 'UserInteraction', {
                     'event_category' : 'PlayerConfig',
                     'event_label' : intersects[inter].object.name
                 });
@@ -300,7 +300,7 @@ THREE.InteractionsController = function () {
             var intersectedShapeId;
             for(var inter = 0; inter < intersects.length; inter++){
 
-                gtag('event', 'VRInteraction', {
+                if ( localStorage.ImAc_cookies ) gtag('event', 'VRInteraction', {
                     'event_category' : 'PlayerConfig',
                     'event_label' : intersects[inter].object.name
                 });

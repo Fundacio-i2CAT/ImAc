@@ -9,6 +9,7 @@ var UUID;
 var _SyncServerIP = '195.81.194.222';
 
 var _AudioEnabled = false;
+var _ImAcCookies = false;
 
 
 //************************************************************************************
@@ -20,9 +21,15 @@ var _AudioEnabled = false;
      */	
     function init_webplayer() 
     {
-        UUID = localStorage.ImAc_UUID ? localStorage.ImAc_UUID : uuidv4();
-        gtag('set', {'user_id': UUID});
-        localStorage.ImAc_UUID = UUID;
+        _ImAcCookies = localStorage.ImAc_cookies ? localStorage.ImAc_cookies : confirm("Do you give us consent to register behavior metrics for research purposes?");
+
+        if ( _ImAcCookies ) 
+        {
+            UUID = localStorage.ImAc_UUID ? localStorage.ImAc_UUID : uuidv4();
+            gtag('set', {'user_id': UUID});
+            localStorage.ImAc_UUID = UUID;
+            localStorage.ImAc_cookies = _ImAcCookies;
+        }
 
         localStorage.removeItem('dashjs_video_settings');
         localStorage.removeItem('dashjs_video_bitrate');
@@ -75,7 +82,7 @@ var _AudioEnabled = false;
         }
         else 
         {
-            gtag('event', 'ContentId', {
+            if ( _ImAcCookies ) gtag('event', 'ContentId', {
                 'event_category' : 'LaunchPlayer',
                 'event_label' : id
             });
@@ -85,7 +92,7 @@ var _AudioEnabled = false;
             localStorage.ImAc_language = document.getElementById('langSelector').value;
             _ImAc_default.mainlanguage = document.getElementById('langSelector').value;
 
-            if ( _ImAc_default.userprofile == 'save' )
+            if ( _ImAc_default.userprofile == 'save' && _ImAcCookies )
                 document.cookie = "ImAcProfileConfig=" + encodeURIComponent( JSON.stringify( _ImAc_default ) ) + "; max-age=2592000" + "; path=/";
 
             window.location = window.location.href + 'player/#' + id;
@@ -554,7 +561,7 @@ var _AudioEnabled = false;
 
     function selectOption(id)
     {
-        gtag('event', 'SelectOption', {
+        if ( _ImAcCookies ) gtag('event', 'SelectOption', {
             'event_category' : 'PortalConfig',
             'event_label' : id
         });
@@ -2681,7 +2688,7 @@ var _AudioEnabled = false;
 
     function translateAll(lang)
     {
-        gtag('event', 'ChangeLanguage', {
+        if ( _ImAcCookies ) gtag('event', 'ChangeLanguage', {
             'event_category' : 'PortalConfig',
             'event_label' : lang
         });

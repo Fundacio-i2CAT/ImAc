@@ -889,6 +889,8 @@ SubSignManager = function() {
 			if ( !imsc1doc_SL ) scene.getObjectByName("backgroundSL").visible = false;
 			scene.getObjectByName("rightSL").visible = false;
 			scene.getObjectByName("leftSL").visible = false;
+		} else if (subtitleIndicator == 'none'){
+			removeRadar(); 
 		}
 		
 		if(subtitleEnabled || signEnabled){
@@ -1326,22 +1328,28 @@ SubSignManager = function() {
     
     function updateRadarPosition()
     {
-        if ( radarMesh && radarMesh3 ) 
-        {
+        if ( radarMesh && radarMesh3 ) {
 
 		   	radarMesh.position.x = _isHMD ? 0.8*( 1.48*subArea/2-14/2 ) : ( 1.48*subArea/2-14/2 );
-	    	//radarMesh.position.y = _isHMD ? 0.09*( 0.82*subArea/2-14/2 ) * subPosY : ( 0.82*subArea/2-14/2 ) * subPosY; 
-	    	radarMesh.position.y = 0
+		   	radarMesh3.position.x = _isHMD ? 0.8*( 1.48*subArea/2-14/2 ) : ( 1.48*subArea/2-14/2 );
 
-	    	radarMesh3.position.x = _isHMD ? 0.8*( 1.48*subArea/2-14/2 ) : ( 1.48*subArea/2-14/2 );
-	    	//radarMesh3.position.y = _isHMD ? 0.09*( 0.82*subArea/2-14/2 ) * subPosY : ( 0.82*subArea/2-14/2 ) * subPosY; 
-	    	radarMesh3.position.y = 0;
+	        if(subController.getSignerEnabled()){
+	            radarMesh3.position.y = 0;
+	            radarMesh.position.y = 0;
+	        } else {
+	           	radarMesh.position.y = _isHMD ? 0.09*( 0.82*subArea/2-14/2 ) * subPosY : ( 0.82*subArea/2-14/2 ) * subPosY; 
+	    		radarMesh3.position.y = _isHMD ? 0.09*( 0.82*subArea/2-14/2 ) * subPosY : ( 0.82*subArea/2-14/2 ) * subPosY; 
+	        }
 	    	
-	    	if ( speakerMesh ) 
-	        {
-		    	speakerMesh.position.x = _isHMD ? 0.8*( 1.48*subArea/2-14/2 ) : ( 1.48*subArea/2-14/2 );
-		    	//speakerMesh.position.y = _isHMD ? 0.09*( 0.82*subArea/2-14/2 ) * subPosY : ( 0.82*subArea/2-14/2 ) * subPosY;
-		    	speakerMesh.position.y = 0;
+	    	if ( speakerMesh ) {
+	        	speakerMesh.position.x = _isHMD ? 0.8*( 1.48*subArea/2-14/2 ) : ( 1.48*subArea/2-14/2 );
+
+	        	if(subController.getSignerEnabled()){
+		    		speakerMesh.position.y = 0;
+
+	        	} else {
+					speakerMesh.position.y = _isHMD ? 0.09*( 0.82*subArea/2-14/2 ) * subPosY : ( 0.82*subArea/2-14/2 ) * subPosY; 
+	        	}
 		    }
 	    }
     }

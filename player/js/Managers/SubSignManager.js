@@ -921,7 +921,7 @@ SubSignManager = function() {
 		createSubAreaHelper( size );
 
 		updateISD( VideoController.getMediaTime() );
-		updateRadarPosition();
+		//updateRadarPosition();
 	};
 
 	this.setSubtitleLanguagesArray = function(subList)

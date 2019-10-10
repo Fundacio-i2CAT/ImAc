@@ -301,8 +301,10 @@ THREE.InteractionsController = function () {
         var intersects = raycaster.intersectObjects( interactiveListObjects, true ); // false
         if ( intersects[0] && interactionState ){
             interactionState = false;
+            lastUpdate = Date.now();
             var intersectedShapeId;
             for(var inter = 0; inter < intersects.length; inter++){
+
 
                 if ( localStorage.ImAc_cookies ) gtag('event', 'VRInteraction', {
                     'event_category' : 'PlayerConfig',

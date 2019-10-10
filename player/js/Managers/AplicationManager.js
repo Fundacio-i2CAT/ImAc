@@ -168,7 +168,10 @@ function AplicationManager()
             subController.updateSLRotation();
         }
 
-        subController.updateRadar();
+        if(camera.getObjectByName('radar') && camera.getObjectByName('radar').visible){
+            _rdr.updateRadarRotation();
+            _rdr.updateRadarPosition();
+        }
 
         if( !_isHMD && scene.getObjectByName('trad-option-menu') ) {
             interController.checkInteractionSubMenuHover( mouse3D, camera);
@@ -178,6 +181,13 @@ function AplicationManager()
             interController.accessIconsHoverOver( mouse3D, camera );  
             interController.vpbHoverOver( mouse3D, camera )
         }
+
+        //Close menu if no interactivity for 5s;
+        if(isMenuInteracted){
+            isMenuInteracted = false;           
+            timerCloseMenu = setTimeout( function(){ menuMgr.ResetViews() }, 5000);
+        }
+
         
         controls.update();
     }

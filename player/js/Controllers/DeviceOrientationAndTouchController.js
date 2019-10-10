@@ -341,13 +341,7 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 					else menuMgr.ResetViews();
 				}
 				break;
-
-			/*/TEST	
-			case 81:
-				clearTimeout(timerCloseMenu);
-				timerCloseMenu = setTimeout( function(){ menuMgr.ResetViews() }, 5000);
-				break;*/
-
+				
 			default:
 				//console.log( event.keyCode )
 				break;
@@ -727,7 +721,7 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 
                 p2.scale.set( pointscale*dist/10,pointscale*dist/10,pointscale*dist/10 )
             }
-
+            
 	        if(scene.getObjectByName('trad-option-menu')){
         		interController.checkInteractionSubMenuHover( _origin, direction);
 	        }

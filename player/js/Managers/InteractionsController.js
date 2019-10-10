@@ -204,8 +204,9 @@ THREE.InteractionsController = function () {
                     if (scene.getObjectByName(intersects[0].object.name).children.length > 1){
                         scene.getObjectByName(intersects[0].object.name).children[1].material.color.set( 0xffff00 ); 
                         scene.getObjectByName(intersects[0].object.name).children[0].rotation.z = -Math.PI/8; //Rotate icon for animation
-                        // Some time this error appears 
-                        // Uncaught TypeError: Cannot read property 'children' of undefined line 121
+                        // Some time this error appears
+                         
+                        // Uncaught TypeError: Cannot read property 'children' of undefined (below lines)
                         optionHoverAnimation = setTimeout( function(){ 
                             scene.getObjectByName(intersects[0].object.name).children[0].rotation.z = 0; //Back to initial rotation.
                         }, 150); 
@@ -268,6 +269,9 @@ THREE.InteractionsController = function () {
         }
 
   	    if ( intersects[0] && interactionState && type != 'onDocumentMouseMove'){
+            isMenuInteracted = true;
+            if(timerCloseMenu) clearTimeout(timerCloseMenu);
+            
             interactionState = false;
   		    var intersectedShapeId;
 			for(var inter = 0; inter < intersects.length; inter++){

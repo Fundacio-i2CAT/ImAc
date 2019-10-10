@@ -121,7 +121,7 @@ SubSignManager = function() {
 		  	{
 		    	textListMemory = [];
 		    	removeSubtitle();
-		    	removeSpeakerRadar();
+		    	_rdr.hideRadarIndicator();
 		  	}
 		}
 		if ( imsc1doc_SL )
@@ -228,7 +228,9 @@ SubSignManager = function() {
 
 			    isExperimental ? createExpSubtitle( textList, subConfig ) : createSubtitle( textList, subConfig );
 
-	      		if ( subtitleIndicator == 'radar' ) createSpeakerRadar( textList[0].color, isdImac );
+	      		if ( subtitleIndicator == 'radar' ){
+	      			 _rdr.updateRadarIndicator(textList[0].color, isdImac);
+	      		}
 
 	      		textListMemory = textList;     
 	    	} 
@@ -240,7 +242,7 @@ SubSignManager = function() {
 	  		//if ( signAutoHide ) subController.swichtSL(false);
 	    	textListMemory = [];
 	    	removeSubtitle();
-	    	removeSpeakerRadar();
+	    	_rdr.hideRadarIndicator();
 	  	}
 
 	}
@@ -497,39 +499,6 @@ SubSignManager = function() {
         subController.setSignerSize(signerSize)
     }
 
-    function createRadar()
-    {
-    	if ( radarMesh ) removeRadar();
-    	radarMesh = _moData.getRadarMesh( './img/radar_7.png', 'radar' );
-    	radarMesh3 = _moData.getRadarMesh( './img/area_7.png', 'radar3' );
-
-    	radarMesh.onexecute = function() {
-
-			//if ( !_isHMD ) radarAutoPositioning = true;
-    	}
-
-    	//interController.addInteractiveRadar( radarMesh )
-    	camera.add( radarMesh );
-    	camera.add( radarMesh3 );
-    }
-
-    function createSpeakerRadar(color, pos)
-    {
-    	if ( !radarMesh ) createRadar();
-
-    	if ( pos != undefined && speakerMesh )
-        {
-            speakerMesh.rotation.z = Math.radians( 360-pos );
-            speakerMesh.material.color.set( color ); 
-        }
-        else if ( pos != undefined ) 
-        {
-            speakerMesh = _moData.getSpeakerRadarMesh( color, pos );
-            camera.add( speakerMesh );
-        }
-        else removeSpeakerRadar();
-    }
-
     function createSubAreaHelper(size)
     {
     	if ( areaMesh ) camera.remove( areaMesh );
@@ -579,22 +548,6 @@ SubSignManager = function() {
         }
         if ( subtitleSLMesh ) removeSLSubtitle()
 
-    }
-
-    function removeRadar()
-    {
-    	interController.removeInteractiveRadar( radarMesh )
-    	removeSpeakerRadar();
-    	camera.remove( radarMesh );
-    	camera.remove( radarMesh3 );
-    	radarMesh = undefined;
-    	radarMesh3 = undefined;
-    }
-
-    function removeSpeakerRadar()
-    {
-    	camera.remove( speakerMesh );
-    	speakerMesh = undefined;
     }
 
 //************************************************************************************
@@ -879,27 +832,49 @@ SubSignManager = function() {
 	    r.send();
 	};
 
-	this.setSubIndicator = function(ind)
-	{
-		subtitleIndicator = ind;
+	this.setSubIndicator = function(ind, childColumnOpt){
+		if(subtitleIndicator.localeCompare(ind) != 0){
+			subtitleIndicator = ind;
+            SettingsOptionCtrl.setChildColumnActiveOpt(childColumnOpt);
 
-		if ( signEnabled && subtitleIndicator == 'arrow' && !imsc1doc_SL) scene.getObjectByName('backgroundSL').visible = true;
-		else if ( signEnabled && subtitleIndicator == 'none' ) 
-		{
-			if ( !imsc1doc_SL ) scene.getObjectByName("backgroundSL").visible = false;
-			scene.getObjectByName("rightSL").visible = false;
-			scene.getObjectByName("leftSL").visible = false;
-		}
-		
-		if(subtitleEnabled || signEnabled){
-			textListMemory = [];
+			switch(ind){
+				case 'none':
+					if ( signEnabled) {
+						if ( !imsc1doc_SL ) scene.getObjectByName("backgroundSL").visible = false;
+						scene.getObjectByName("rightSL").visible = false;
+						scene.getObjectByName("leftSL").visible = false;
+					}
+					_rdr.hideRadar();
+					break;
 
-			if ( ind != 'radar' ) removeRadar(); 
-			else if ( ind == 'radar' ) createRadar(); 
+				case 'arrow':
+					_rdr.hideRadar();
+					if(subtitleEnabled){
+						scene.getObjectByName('backgroundSL').visible = false;
+					} else {
+						if ( signEnabled && !imsc1doc_SL){
+							scene.getObjectByName('backgroundSL').visible = true;
+						} 
+					}
+					
+					break;
 
-			updateISD( VideoController.getMediaTime() );
-		}
-		
+				case 'radar':
+					_rdr.showRadar();
+					if ( signEnabled) {
+						if ( !imsc1doc_SL ) scene.getObjectByName("backgroundSL").visible = false;
+						scene.getObjectByName("rightSL").visible = false;
+						scene.getObjectByName("leftSL").visible = false;
+					}
+					
+					break;
+			}
+
+			if(subtitleEnabled || signEnabled){
+				textListMemory = [];
+				updateISD( VideoController.getMediaTime() );
+			}
+		}	
 	};
 
 	this.setSubSize = function(size)
@@ -932,9 +907,6 @@ SubSignManager = function() {
 		subPosX = x;
 		subPosY = y;
 		textListMemory = [];
-
-		updateRadarPosition();
-
 		updateISD( VideoController.getMediaTime() );
 	};
 
@@ -1253,19 +1225,28 @@ SubSignManager = function() {
 	this.disableSubtiles = function()
 	{
 		removeSubtitle();
-		removeRadar();
+		_rdr.hideRadar();
 		subtitleEnabled = false;
 	};
 
-	this.switchSubtitles = function(enable)
-	{
-		if ( !enable ) 
-		{
+	this.switchSubtitles = function(enable){
+		if ( !enable ){
 			removeSubtitle();
-			removeRadar();
+			//_rdr.hideRadar();
+			if (subtitleIndicator.localeCompare('arrow') == 0 && signEnabled){
+				scene.getObjectByName('backgroundSL').visible = true;
+			}
+		} else{
+			if (subtitleIndicator.localeCompare('radar') == 0){
+				_rdr.showRadar();
+			}
+			if(signEnabled){
+				scene.getObjectByName('backgroundSL').visible = false;
+			}
+
 		}
-		else if ( signEnabled && scene.getObjectByName("rightSL") ) 
-		{
+
+		if (signEnabled && scene.getObjectByName("rightSL")){
 			scene.getObjectByName("rightSL").visible = false;
 			scene.getObjectByName("leftSL").visible = false;
 		}
@@ -1283,36 +1264,21 @@ SubSignManager = function() {
 		autoPositioning = false;
 	};
 
-	this.switchSigner = function(enable)
-	{
-		if ( signAvailableLang.length > 0 )
-		{
-			signEnabled = enable;
-			enable ? createSigner() : removeSignVideo();
-		}		
+	this.switchSigner = function(enable){
+		signEnabled = enable;
+		enable ? createSigner() : removeSignVideo();
+
+		if(enable){
+			if (subtitleIndicator.localeCompare('arrow') == 0){
+				scene.getObjectByName('backgroundSL').visible = !subtitleEnabled;
+			}
+		}	
 	};
 
 	this.disableSigner = function(){
 		removeSignVideo();
 		signEnabled = false;
 	}
-
-	this.updateRadar = function()
-    {
-        if ( radarMesh ) 
-        {
-        	//radarMesh.position.x = _isHMD ? 35 : 40
-        	//radarMesh.position.y = _isHMD ? -2 : -22
-
-            var target = new THREE.Vector3();
-            var camView = camera.getWorldDirection( target );
-            var offset = camView.z >= 0 ? 180 : -0;
-
-            var lon = Math.degrees( Math.atan( camView.x/camView.z ) ) + offset;
-
-            radarMesh.rotation.z = Math.radians( lon );
-        }
-    };
 
     this.setExperimental = function(exp)
     {
@@ -1324,28 +1290,6 @@ SubSignManager = function() {
     	removeSignVideo();
     }
     
-    function updateRadarPosition()
-    {
-        if ( radarMesh && radarMesh3 ) 
-        {
-
-		   	radarMesh.position.x = _isHMD ? 0.8*( 1.48*subArea/2-14/2 ) : ( 1.48*subArea/2-14/2 );
-	    	//radarMesh.position.y = _isHMD ? 0.09*( 0.82*subArea/2-14/2 ) * subPosY : ( 0.82*subArea/2-14/2 ) * subPosY; 
-	    	radarMesh.position.y = 0
-
-	    	radarMesh3.position.x = _isHMD ? 0.8*( 1.48*subArea/2-14/2 ) : ( 1.48*subArea/2-14/2 );
-	    	//radarMesh3.position.y = _isHMD ? 0.09*( 0.82*subArea/2-14/2 ) * subPosY : ( 0.82*subArea/2-14/2 ) * subPosY; 
-	    	radarMesh3.position.y = 0;
-	    	
-	    	if ( speakerMesh ) 
-	        {
-		    	speakerMesh.position.x = _isHMD ? 0.8*( 1.48*subArea/2-14/2 ) : ( 1.48*subArea/2-14/2 );
-		    	//speakerMesh.position.y = _isHMD ? 0.09*( 0.82*subArea/2-14/2 ) * subPosY : ( 0.82*subArea/2-14/2 ) * subPosY;
-		    	speakerMesh.position.y = 0;
-		    }
-	    }
-    }
-
     this.updateSTRotation = function()
     {
     	if ( subtitleMesh && !isExperimental && !_fixedST ) subtitleMesh.rotation.z = -camera.rotation.z;

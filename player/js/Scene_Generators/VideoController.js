@@ -320,11 +320,9 @@ VideoController = function() {
             periodCount += 1;
         });
 
-        //if ( localStorage.ImAc_roomID != undefined && localStorage.ImAc_roomID != "undefined" ) setTimeout( () => {  _Sync.init( "195.81.194.222", localStorage.ImAc_roomID ); }, 2000);
-
         getAdaptationSets().then(( str ) => { 
 
-            if ( localStorage.ImAc_roomID != undefined && localStorage.ImAc_roomID != "undefined" ) setTimeout( () => {  _Sync.init( "195.81.194.222", localStorage.ImAc_roomID ); }, 2000);
+            //if ( localStorage.ImAc_roomID != undefined && localStorage.ImAc_roomID != "undefined" ) setTimeout( () => {  _Sync.init( "195.81.194.222", localStorage.ImAc_roomID ); }, 2000);
 
             //subController.enableSubtitles();
             var firtsIteration = true;
@@ -343,10 +341,11 @@ VideoController = function() {
                 }
                 if ( Math.trunc(listOfVideoContents[0].vid.currentTime)%10 == 0 && firtsIteration ) 
                 {
-                    syncAllVideos();
+                    if ( localStorage.ImAc_roomID != undefined && localStorage.ImAc_roomID != "undefined" ) _Sync.init( "195.81.194.222", localStorage.ImAc_roomID );
+                    else syncAllVideos();
                     firtsIteration = false;
                 }
-                else if ( Math.trunc(listOfVideoContents[0].vid.currentTime)%10 != 0 ) firtsIteration = true;
+                //else if ( Math.trunc(listOfVideoContents[0].vid.currentTime)%10 != 0 ) firtsIteration = true;
             }; 
         });
     };

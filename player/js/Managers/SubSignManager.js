@@ -1236,11 +1236,11 @@ SubSignManager = function() {
 			if (subtitleIndicator.localeCompare('arrow') == 0 && signEnabled){
 				scene.getObjectByName('backgroundSL').visible = true;
 			}
-		} else{
+		} else {
 			if (subtitleIndicator.localeCompare('radar') == 0){
 				_rdr.showRadar();
 			}
-			if(signEnabled){
+			if(signEnabled && scene.getObjectByName('backgroundSL')){
 				scene.getObjectByName('backgroundSL').visible = false;
 			}
 

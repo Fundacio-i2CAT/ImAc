@@ -212,7 +212,8 @@ function MenuManager() {
  * @function initFirstMenuState (name)
 */
     this.initFirstMenuState = function() {
-        isMenuInteracted = true;
+        //isMenuInteracted = true;
+        lastUpdate = Date.now();
         menuActivationElement.visible = false;
         scene.getObjectByName( "openmenutext" ).visible = false;
 

@@ -269,8 +269,8 @@ THREE.InteractionsController = function () {
         }
 
   	    if ( intersects[0] && interactionState && type != 'onDocumentMouseMove'){
-            isMenuInteracted = true;
-            if(timerCloseMenu) clearTimeout(timerCloseMenu);
+
+            lastUpdate = Date.now();
             
             interactionState = false;
   		    var intersectedShapeId;

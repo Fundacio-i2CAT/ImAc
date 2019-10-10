@@ -81,6 +81,8 @@ let sliderSelection;
 var _isTV = false;
 let isMenuInteracted = false;
 
+var lastUpdate = Date.now();
+
 /**
  * Initializes the web player.
  */

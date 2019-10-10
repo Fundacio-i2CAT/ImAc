@@ -182,13 +182,12 @@ function AplicationManager()
             interController.vpbHoverOver( mouse3D, camera )
         }
 
-        //Close menu if no interactivity for 5s;
-        if(isMenuInteracted){
-            isMenuInteracted = false;           
-            timerCloseMenu = setTimeout( function(){ menuMgr.ResetViews() }, 5000);
-        }
-
-        
+        var now = Date.now();
+        var dt = now - lastUpdate;
+        //Close menu if no interactivity for 10s;
+        if ( dt > 10000 && !scene.getObjectByName( "openMenu" ).visible ) menuMgr.ResetViews();
+        //console.log(dt)
+       
         controls.update();
     }
 

@@ -207,9 +207,11 @@ THREE.InteractionsController = function () {
                         // Some time this error appears
                          
                         // Uncaught TypeError: Cannot read property 'children' of undefined (below lines)
-                        optionHoverAnimation = setTimeout( function(){ 
-                            scene.getObjectByName(intersects[0].object.name).children[0].rotation.z = 0; //Back to initial rotation.
-                        }, 150); 
+                        if(scene.getObjectByName(intersects[0].object.name)){
+                            optionHoverAnimation = setTimeout( function(){
+                                scene.getObjectByName(intersects[0].object.name).children[0].rotation.z = 0; //Back to initial rotation.                      
+                            }, 150); 
+                        }
                     }  
                     if (hoverSubMenuOpt && scene.getObjectByName(hoverSubMenuOpt)){
                         scene.getObjectByName(hoverSubMenuOpt).children[0].material.color.set( 0xe6e6e6 );

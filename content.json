@@ -17,8 +17,8 @@
     {
       "ST": ["en", "es", "de", "ca"],
       "SL": ["en", "es", "de", "ca"], 
-      "AD": ["en", "es", "de", "ca"],
-      "AST": ["en", "es", "de", "ca"]
+      "AD": ["en", "es"],
+      "AST": ["en", "es"]
     }],
     "language": "French",
     "duration": "8:28",

@@ -613,6 +613,10 @@ AudioManager = function() {
         return x == adVolume;
     };   
 
+    this.checkADLang = function(x){
+        return x == adLang;
+    };  
+
     this.checkisADAvailable = function(lang){
         return (list_contents[demoId].acces && list_contents[demoId].acces[0].AD && list_contents[demoId].acces[0].AD.includes((lang) ? lang : _iconf.adlanguage) );
     };
@@ -767,4 +771,8 @@ AudioManager = function() {
     this.checkisASTAvailable = function(lang){
         return (list_contents[demoId].acces && list_contents[demoId].acces[0].AST && list_contents[demoId].acces[0].AST.includes((lang) ? lang : _iconf.astlanguage));
     } 
+
+    this.checkASTLang = function(x){
+        return x == astLang;
+    }; 
 }

@@ -18,27 +18,22 @@ MenuFunctionsManager = function() {
             switch(accesService){
 
                 case 'st':
-                    //_iconf.stlanguage = lang;
 
                     if ( list_contents[ demoId ].subtitles && list_contents[ demoId ].subtitles[ ste2r ] && subController.checkisSubAvailable( lang )) 
                     {
-                        var cookielang = subController.getSTAvailableLang( _iconf.stlanguage, ste2r ); //subController.getSubLanguage();
-                        var sublang = cookielang ? cookielang : list_contents[demoId].subtitles[ste2r][lang] ? lang : Object.keys(list_contents[demoId].subtitles[ste2r])[0];
-
-                        //var sublang = list_contents[ demoId ].subtitles[ ste2r ][ lang ] ? lang : Object.keys( list_contents[ demoId ].subtitles[ ste2r ] )[ 0 ];
-                        subController.setSubtitle( list_contents[ demoId ].subtitles[ ste2r ][ sublang ], sublang );
+                        _iconf.stlanguage = lang;
+                        subController.setSubtitle( list_contents[ demoId ].subtitles[ ste2r ][ lang ], lang );
                     } else {
                         subController.disableSubtiles();
                     }
                     break;
 
                 case 'sl':
-                    //_iconf.sllanguage = lang;
+                    
                     if ( list_contents[ demoId ].signer && list_contents[ demoId ].signer[ 0 ] && subController.checkisSignAvailable( lang )) 
                     {
-                        var siglang = list_contents[ demoId ].signer[ 0 ][ lang ] ? lang : Object.keys( list_contents[ demoId ].signer[ 0 ] )[ 0 ];
-                        console.warn(siglang)
-                        subController.setSignerContent( list_contents[ demoId ].signer[ 0 ][ siglang ], siglang );
+                        _iconf.sllanguage = lang;
+                        subController.setSignerContent( list_contents[ demoId ].signer[ 0 ][ lang ], lang );
                     } 
                     else 
                     {
@@ -46,7 +41,7 @@ MenuFunctionsManager = function() {
                     } 
                     if ( list_contents[ demoId ].st4sl && list_contents[ demoId ].st4sl[ 0 ] && subController.checkisSignAvailable( lang )) {
                         var siglang = list_contents[ demoId ].st4sl[ 0 ][ lang ] ? lang : Object.keys( list_contents[ demoId ].st4sl[ 0 ] )[ 0 ];
-                        subController.setSLSubtitle( list_contents[demoId].st4sl[0][sublang], sublang ); 
+                        subController.setSLSubtitle( list_contents[demoId].st4sl[0][siglang], siglang ); 
                     }              
                     break;
 

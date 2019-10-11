@@ -232,11 +232,8 @@ function MainMenuController() {
                     }
                 }*/
 
-
                 subController.switchSubtitles(data.isSTenabled);
-
                 SettingsOptionCtrl.UpdateView();
-                
                 accessOptionsView.UpdateAccessibilityOptionsIconStatusView(data);
                 // Add interactivity to visible elements and remove interactivity to none visible elements.
                 menuMgr.AddInteractionIfVisible(viewStructure);

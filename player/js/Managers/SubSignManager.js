@@ -850,7 +850,7 @@ SubSignManager = function() {
 				case 'arrow':
 					_rdr.hideRadar();
 					if(subtitleEnabled){
-						scene.getObjectByName('backgroundSL').visible = false;
+						if(scene.getObjectByName('backgroundSL')) scene.getObjectByName('backgroundSL').visible = false;
 					} else {
 						if ( signEnabled && !imsc1doc_SL){
 							scene.getObjectByName('backgroundSL').visible = true;
@@ -1234,16 +1234,15 @@ SubSignManager = function() {
 			removeSubtitle();
 			//_rdr.hideRadar();
 			if (subtitleIndicator.localeCompare('arrow') == 0 && signEnabled){
-				scene.getObjectByName('backgroundSL').visible = true;
+				if(scene.getObjectByName('backgroundSL')) scene.getObjectByName('backgroundSL').visible = true;
 			}
 		} else {
 			if (subtitleIndicator.localeCompare('radar') == 0){
 				_rdr.showRadar();
 			}
-			if(signEnabled && scene.getObjectByName('backgroundSL')){
-				scene.getObjectByName('backgroundSL').visible = false;
+			if(signEnabled){
+				if(scene.getObjectByName('backgroundSL')) scene.getObjectByName('backgroundSL').visible = false;
 			}
-
 		}
 
 		if (signEnabled && scene.getObjectByName("rightSL")){
@@ -1270,7 +1269,7 @@ SubSignManager = function() {
 
 		if(enable){
 			if (subtitleIndicator.localeCompare('arrow') == 0){
-				scene.getObjectByName('backgroundSL').visible = !subtitleEnabled;
+				if(scene.getObjectByName('backgroundSL')) scene.getObjectByName('backgroundSL').visible = !subtitleEnabled;
 			}
 		}	
 	};

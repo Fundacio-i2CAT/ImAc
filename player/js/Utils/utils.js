@@ -508,4 +508,53 @@ function doZoom(mode)
     }
 }
 
+function controllerMovementDirection(mouse2D){
+    let step = Math.floor(1.48*subController.getSubArea()/20);
+    let diffX = 0;
+    let diffY = 0;
+
+    let x = mouse2D.x * 1.48 * subController.getSubArea();
+    let y = mouse2D.y * 0.82 * subController.getSubArea();
+
+    let times;
+
+    let newPos = {x: 0, y: 0};
+
+    //LEFT & RIGTH
+    if (x < controllerOldX) {
+        diffX = controllerOldX - x;
+        if(diffX > step){
+            times = Math.floor(Math.round(diffX/step));
+            controllerOldX = x;
+            newPos.x = -step * times;
+        }
+    } else if (x > controllerOldX) {
+         diffX = x - controllerOldX;
+         if(diffX > step){
+            times = Math.floor(Math.round(diffX/step));
+            controllerOldX = x;
+            newPos.x = step * times;
+        }
+    }
+
+    //DOWN & UP
+    if (y < controllerOldY) {
+        diffY = controllerOldY - y;
+        if(diffY > step){
+            times = Math.floor(Math.round(diffY/step));
+            controllerOldY = y;
+            newPos.y = -step * times;
+        }
+    } else if (y > controllerOldY) {
+         diffY = y - controllerOldY;
+         if(diffY > step){
+            times = Math.floor(Math.round(diffY/step));
+            controllerOldY = y;
+            newPos.y = step * times;
+        }
+    }
+
+    return newPos;
+}
+
 

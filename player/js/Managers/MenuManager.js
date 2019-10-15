@@ -57,6 +57,9 @@ function MenuManager() {
         controllers.push(SettingsOptionCtrl);
 
         menuMgr.ResetViews();
+
+        //Add the grid helper for moving elements;
+        camera.add(vwStrucMMngr.createGridHelper());
     }
 
     /**

@@ -55,12 +55,20 @@ THREE.Radar = function () {
         radarIndicator.position = new THREE.Vector3(0, 0, 0.01);
 
 
+        var geometry = new THREE.RingGeometry( 6.5, 7, 64 );
+        var material = new THREE.MeshBasicMaterial({ color: 0xffff00, side: THREE.DoubleSide });
+        var radarColorBorder = new THREE.Mesh( geometry, material );
+        radarColorBorder.position = new THREE.Vector3(0, 0, 1);
+        radarColorBorder.visible = false;
+        radarColorBorder.name = 'radar-color-boder';
+
+
+        radar.add(radarColorBorder);
         radar.add(radarOutline.create());
         radar.add(radarArea.create());
         radar.add(radarIndicator.create());
 
-        subController.getSubArea()
-        radar.position.set((_isHMD ? 0.8*( 1.48*subController.getSubArea()/2-14/2 ) : ( 1.48*subController.getSubArea()/2-14/2 )), 0, -76.001);
+        radar.position.set((_isHMD ? 0.8*( 1.48*subController.getSubArea()/2-14/2 ) : ( 1.48*subController.getSubArea()/2-14/2 )), 0, -70);
         radar.visible = false;
 
         return radar;
@@ -78,6 +86,36 @@ THREE.Radar = function () {
 	        }
 	    }
     }
+
+    /*this.moveRadar = function(raycaster, mouse2D){
+
+        if (radarSelection) {
+            // Check the position where the background menu is intersected
+            //let elementArray = (scene.getObjectByName('radar')) ? scene.getObjectByName('radar').children : [];
+            let elementArray = [scene.getObjectByName('circleTest')];
+            
+            let intersects = raycaster.intersectObjects( elementArray , true );
+
+
+
+            if(intersects[0]){  
+
+                //console.log(intersects[0].point);
+                //console.log(intersects[0].object.worldToLocal(intersects[0].point));
+                //radar.position.x = intersects[0].object.worldToLocal(intersects[0].point).x;
+                //radar.position.y = intersects[0].object.worldToLocal(intersects[0].point).y;
+                radar.position.x = mouse2D.x;
+                radar.position.y = mouse2D.y;
+
+                //The sliding boundries are from -(4*menuWidth/10) to +(4*menuWidth/10) which is the VPB width;           
+                /*if(sliderSelection.position.x > -(4*menuWidth/10) && sliderSelection.position.x < (4*menuWidth/10)){
+
+                } else {
+
+                }
+            }
+        }
+    }*/
 
 
 /**

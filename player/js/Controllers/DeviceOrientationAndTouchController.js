@@ -123,6 +123,18 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
         if( !_isHMD && scene.getObjectByName('trad-main-menu') && scene.getObjectByName('trad-main-menu').visible) {
 	    	interController.checkInteractionVPB( mouse2D, scope.object);   
         }
+
+        if(camera.getObjectByName('radar').visible) {
+
+        	let x = mouse2D.x * 1.48 * subController.getSubArea();
+            let y = mouse2D.y * 0.82 * subController.getSubArea();
+
+			controllerOldX = x;
+			controllerOldY = y;	
+
+
+        	interController.checkInteractionRadar( mouse2D, scope.object);
+        }
 		
 		//changing state 
 		appState = CONTROLLER_STATE.MANUAL_ROTATE;
@@ -141,19 +153,27 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 
 	this.onDocumentMouseMove = function ( event ) {
 		// While the user has selected the slider in order to week, no video rotation is posible.
-		if ( event.pageX != startX && event.pageX != startX  && !sliderSelection)
+		if ( event.pageX != startX && event.pageX != startX  && !sliderSelection  && !radarSelection)
 		{
 			_mouseMoved = true;
 			currentX = event.pageX;
 			currentY = event.pageY;
 		}
 
+
+		mouse2D.x = _isHMD ? 0 : ( event.clientX / window.innerWidth ) * 2 - 1;
+    	mouse2D.y = _isHMD ? 0 : - ( event.clientY / window.innerHeight ) * 2 + 1;
+
+    	raycaster.setFromCamera(  mouse2D, scope.object );
+
+		if(scene.getObjectByName('radar').visible && radarSelection){
+            interController.checkInteractionGrid(raycaster, mouse2D);
+
+            //console.log(mouse2D);
+            //console.log(event);
+    	}
+
  		if( scene.getObjectByName('trad-main-menu') && scene.getObjectByName('trad-main-menu').visible ){
-
- 			mouse2D.x = _isHMD ? 0 : ( event.clientX / window.innerWidth ) * 2 - 1;
-        	mouse2D.y = _isHMD ? 0 : - ( event.clientY / window.innerHeight ) * 2 + 1;
-
-        	raycaster.setFromCamera(  mouse2D, scope.object );
 			/**
 			 * This function updates the position of the slider after 
 			 * been clicked and during the mousemmove event.
@@ -167,8 +187,14 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 		if ( _blockControls ) initExtraAdAudio();
 
 		//if ( scene.getObjectByName( "openMenu" ).visible && !_mouseMoved ) menuMgr.initFirstMenuState();
-		else if ( menuMgr.getMenuType() == 2 && scene.getObjectByName( 'trad-main-menu' ).visible == false && !_mouseMoved ) menuMgr.initFirstMenuState();
-		else if ( menuMgr.getMenuType() == 1 && scene.getObjectByName( 'trad-option-menu' ).visible == false && scene.getObjectByName( 'trad-main-menu' ).visible == false && !_mouseMoved ) menuMgr.initFirstMenuState();
+		if(!radarSelection){
+
+			if ( menuMgr.getMenuType() == 2 && scene.getObjectByName( 'trad-main-menu' ).visible == false && !_mouseMoved ) menuMgr.initFirstMenuState();
+			if ( menuMgr.getMenuType() == 1 && scene.getObjectByName( 'trad-option-menu' ).visible == false && scene.getObjectByName( 'trad-main-menu' ).visible == false && !_mouseMoved ) menuMgr.initFirstMenuState();
+		
+		}
+		//else if ( menuMgr.getMenuType() == 2 && scene.getObjectByName( 'trad-main-menu' ).visible == false && !_mouseMoved ) menuMgr.initFirstMenuState();
+		//else if ( menuMgr.getMenuType() == 1 && scene.getObjectByName( 'trad-option-menu' ).visible == false && scene.getObjectByName( 'trad-main-menu' ).visible == false && !_mouseMoved ) menuMgr.initFirstMenuState();
 		// scene.getObjectByName( 'trad-option-menu' ).visible == false && scene.getObjectByName( 'trad-main-menu' ).visible == false
 		_mouseMoved = false;
 
@@ -176,6 +202,12 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 			mainMenuCtrl.setSlidingStatus(false);
 			mainMenuCtrl.onSlideSeek();
 			sliderSelection = null;
+		}
+
+		if(radarSelection){
+			radarSelection = null;
+			camera.getObjectByName('radar-color-boder').visible = false;
+
 		}
 
 		this.element.removeEventListener( 'mousemove', this.onDocumentMouseMove, false );

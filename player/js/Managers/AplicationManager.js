@@ -170,7 +170,8 @@ function AplicationManager()
 
         if(camera.getObjectByName('radar') && camera.getObjectByName('radar').visible){
             _rdr.updateRadarRotation();
-            _rdr.updateRadarPosition();
+            // Needs a variable for free movement;
+            //_rdr.updateRadarPosition();
         }
 
         if( !_isHMD && scene.getObjectByName('trad-option-menu') ) {

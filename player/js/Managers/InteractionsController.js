@@ -238,6 +238,49 @@ THREE.InteractionsController = function () {
     }
 
 
+////////////////////////////////////////////
+    this.checkInteractionGrid = function(raycaster, mouse2D){
+        var intersects = raycaster.intersectObjects([scene.getObjectByName('gridHelper')] , true );
+        if (intersects[0]){
+            //console.log(intersects[0])
+            //This method moves the elements be steps;
+            //console.log(intersects[0].point);
+            //let np = controllerMovementDirection(mouse2D);
+
+            let np = controllerMovementDirection(intersects[0].object.worldToLocal(intersects[0].point));
+
+            //camera.getObjectByName('radar').position.x += np.x;
+            //(camera.getObjectByName('radar').position.y += np.y;
+
+
+            let x = mouse2D.x * 1.48 * subController.getSubArea();
+            let y = mouse2D.y * 0.82 * subController.getSubArea();
+
+            camera.getObjectByName('radar').position.x = x; 
+            camera.getObjectByName('radar').position.y = y;
+
+        }
+    }
+////////////////////////////////////////////
+
+
+    this.checkInteractionRadar = function(origin, direction){
+        if(_isHMD){
+            raycaster.set( origin, direction );
+        } else{
+            raycaster.setFromCamera(  origin, direction );
+        }
+
+        let elementArray = (scene.getObjectByName("radar")) ? scene.getObjectByName('radar').children : [];
+        var intersects = raycaster.intersectObjects( elementArray , true );
+
+        if ( intersects[0]){
+            radarSelection = scene.getObjectByName("radar");
+            camera.getObjectByName('radar-color-boder').visible = true;
+        }
+    }
+
+
     this.checkInteractionVPB = function(origin, direction){
         if(_isHMD){
             raycaster.set( origin, direction );

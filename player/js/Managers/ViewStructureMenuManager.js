@@ -779,4 +779,61 @@ function ViewStructureMenuManager() {
 
         return preview;
     }
+
+    this.createGridHelper = function(opts){
+
+        /*var prop = 0.82/1.48;
+
+        console.log();
+
+      var config = opts || {
+        height: 1.48*subController.getSubArea()/2,
+        width: 0.82*subController.getSubArea()/2,
+        linesHeight: 2048/(0.82*subController.getSubArea()),
+        linesWidth: 2048/(1.48*subController.getSubArea()),
+        color: 0x00ff00
+      };
+
+      var material = new THREE.LineBasicMaterial({
+        color: config.color,
+        opacity: 0.8
+      });
+
+      var gridObject = new THREE.Object3D(),
+        gridGeo = new THREE.Geometry(),
+        stepw = 2 * config.width / config.linesWidth,
+        steph = 2 * config.height / config.linesHeight ;
+
+      //width
+      for (var i = -config.width; i <= config.width; i += stepw) {
+        gridGeo.vertices.push(new THREE.Vector3(-config.height, i, 0));
+        gridGeo.vertices.push(new THREE.Vector3(config.height, i, 0));
+
+      }
+      //height
+      for (var i = -config.height; i <= config.height; i += steph) {
+        gridGeo.vertices.push(new THREE.Vector3(i, -config.width, 0));
+        gridGeo.vertices.push(new THREE.Vector3(i, config.width, 0));
+      }
+
+      var line = new THREE.LineSegments(gridGeo, material);
+      gridObject.add(line);
+
+      gridObject.position.z = -70;
+
+        //gridObject.rotation.x = Math.PI/2;
+
+      return gridObject;*/
+
+
+        //console.log('STEP='+1.48*subController.getSubArea()/20)
+
+        var gridHelper = new THREE.GridHelper(1.48*subController.getSubArea(), 20, 0xffff00, 0x00ff00);
+        gridHelper.name = 'gridHelper';
+        gridHelper.position.z = -70;
+        gridHelper.rotation.x = Math.PI/2;
+        gridHelper.visible = true;
+
+        return gridHelper
+    }
 }

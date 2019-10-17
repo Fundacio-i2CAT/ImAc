@@ -110,7 +110,7 @@ THREE.MediaObjectData = function () {
             plane.add( mesh );
         }
 
-        plane.position.z = - config.z;
+        plane.position.z = -config.z;
         plane.position.x = config.x;
         plane.position.y = config.y;
 
@@ -142,7 +142,7 @@ THREE.MediaObjectData = function () {
         group2.position.y = -10 - 1.9;
         plane.add( group2 );
 
-        plane.position.z = - slconfig.z;
+        plane.position.z = -slconfig.z;
         plane.position.x = slconfig.x;
         plane.position.y = slconfig.y;
 

@@ -394,8 +394,8 @@ SubSignManager = function() {
 	function createSigner()
 	{
 	   	var posX = _isHMD ? 0.6* ( 1.48*signArea/2-20/2 ) *signPosX : ( 1.48*signArea/2-20/2 ) *signPosX;
-	    var posY = _isHMD ? 0.6* ( 0.82*signArea/2-20/2 ) *signPosY +3.4 : ( 0.82*signArea/2-20/2 ) *signPosY +3.4;
-	    var posZ = 70;
+	    var posY = _isHMD ? 0.6* ( 0.82*signArea/2-20/2 ) *signPosY + 1.4 : ( 0.82*signArea/2-20/2 ) *signPosY +1.4;
+	    var posZ = 75;
 
 		var conf = {
 			size: signerSize, // signArea/100
@@ -414,8 +414,8 @@ SubSignManager = function() {
 		if ( scene.getObjectByName("sign") )
 		{
 		   	var posX = _isHMD ? 0.6*( 1.48*signArea/2-20/2 )*signPosX : ( 1.48*signArea/2-20/2 )*signPosX;
-		    var posY = _isHMD ? 0.6*( 0.82*signArea/2-20/2 )*signPosY +3.4 : ( 0.82*signArea/2-20/2 )*signPosY +3.4;
-		    var posZ = 70;
+		    var posY = _isHMD ? 0.6*( 0.82*signArea/2-20/2 )*signPosY + 1.4 : ( 0.82*signArea/2-20/2 )*signPosY + 1.4;
+		    var posZ = 75;
 
 		    scene.getObjectByName("sign").position.x = posX;
 		    scene.getObjectByName("sign").position.y = posY;
@@ -459,8 +459,8 @@ SubSignManager = function() {
     function createSLSubtitle(textList)
     {
     	var posX = _isHMD ? 0.6*( 1.48*signArea/2-20/2 ) *signPosX : ( 1.48*signArea/2-20/2 ) *signPosX;
-	    var posY = _isHMD ? 0.6*( 0.82*signArea/2-20/2 ) *signPosY + 3.4: ( 0.82*signArea/2-20/2 ) *signPosY + 3.4;
-	    var posZ = 70;
+	    var posY = _isHMD ? 0.6*( 0.82*signArea/2-20/2 ) *signPosY + 1.4 : ( 0.82*signArea/2-20/2 ) *signPosY + 1.4;
+	    var posZ = 75;
 
 		var slconfig = {
 			size: signerSize, // signArea/100

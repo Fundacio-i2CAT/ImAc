@@ -19,6 +19,7 @@ THREE.Radar = function () {
 
         radar =  new THREE.Group();
         radar.name = 'radar';
+        radar.visible = false;
 
         let radarOutline = new InteractiveElementModel();
         radarOutline.width = 14;
@@ -54,14 +55,11 @@ THREE.Radar = function () {
         radarIndicator.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(14, 14), new THREE.MeshBasicMaterial({visible: false}));
         radarIndicator.position = new THREE.Vector3(0, 0, 0.01);
 
-
         radar.add(radarOutline.create());
         radar.add(radarArea.create());
         radar.add(radarIndicator.create());
 
-        subController.getSubArea()
-        radar.position.set((_isHMD ? 0.8*( 1.48*subController.getSubArea()/2-14/2 ) : ( 1.48*subController.getSubArea()/2-14/2 )), 0, -76.001);
-        radar.visible = false;
+        radar.position.set((_isHMD ? 0.8*( 1.48*subController.getSubArea()/2-14/2 ) : ( 1.48*subController.getSubArea()/2-14/2 )), 0, -75);
 
         return radar;
     } 
@@ -72,10 +70,13 @@ THREE.Radar = function () {
     this.updateRadarPosition = function(){
         if (radar){
 	        if(subController.getSignerEnabled()){
-	            radar.position.y = 0;
+                let offset = -subController.getSubPosition().y * subController.getSignerSize();
+	            radar.position.y = (_isHMD ? scene.getObjectByName('sign').position.y + offset : 0);
+                radar.position.x = (_isHMD ? 0.6*( 1.48*subController.getSignerArea()/2-20/2 ) : ( 1.48*subController.getSignerArea()/2-20/2 )) * subController.getSignerPosition().x;
 	        } else {
-	           	radar.position.y = _isHMD ? 0.09*( 0.82*subController.getSubArea()/2-14/2 ) * subController.getSubPosition().y : ( 0.82*subController.getSubArea()/2-14/2 ) * subController.getSubPosition().y; 
-	        }
+                radar.position.y = subController.getSubtitleConfig().y;
+                //radar.position.x = (_isHMD ? 0.8*( 1.48*subController.getSubArea()/2-14/2 ) : ( 1.48*subController.getSubArea()/2-14/2 ));
+            }
 	    }
     }
 
@@ -100,14 +101,12 @@ THREE.Radar = function () {
     	let radarArea = radar.getObjectByName('radar-area');
 
     	if(radarArea && radarArea.visible){
-
     		let target = new THREE.Vector3();
             let camView = camera.getWorldDirection( target );
             let offset = camView.z >= 0 ? 180 : -0;
             let lon = Math.degrees( Math.atan( camView.x/camView.z ) ) + offset;
 
             radarArea.rotation.z = Math.radians( lon );
-
     	}
     }
 

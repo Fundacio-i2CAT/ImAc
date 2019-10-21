@@ -106,8 +106,8 @@ function init_webplayer()
 
             loadEmojisIcons()
 
-            //if ( myhash && myhash[1] && myhash[1] < list_contents.length && list_contents[ myhash[1] ] && localStorage.ImAc_init == myhash[1] ) 
-            //{
+            if ( myhash && myhash[1] && myhash[1] < list_contents.length && list_contents[ myhash[1] ] && localStorage.ImAc_init == myhash[1] ) 
+            {
                 demoId = myhash[1];
                 
                 localStorage.removeItem('ImAc_init');
@@ -141,8 +141,8 @@ function init_webplayer()
 
                 AplicationManager.init();
 
-            //}
-            //else window.location = window.location.origin + window.location.pathname.slice(0, -7);
+            }
+            else window.location = window.location.origin + window.location.pathname.slice(0, -7);
         });
     });
 }

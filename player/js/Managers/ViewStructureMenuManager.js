@@ -828,12 +828,22 @@ function ViewStructureMenuManager() {
 
         //console.log('STEP='+1.48*subController.getSubArea()/20)
 
+        let grid =  new THREE.Group();
+        grid.name = 'grid';
+
+        var gridBackground =  new THREE.Mesh( new THREE.PlaneGeometry(1.48 * subController.getSubArea(), 0.82 * subController.getSubArea()), new THREE.MeshBasicMaterial({visible: false}));
+        gridBackground.name = 'grid-background';
+
         var gridHelper = new THREE.GridHelper(1.48*subController.getSubArea(), 20, 0xffff00, 0x00ff00);
         gridHelper.name = 'gridHelper';
-        gridHelper.position.z = -70;
         gridHelper.rotation.x = Math.PI/2;
-        gridHelper.visible = true;
 
-        return gridHelper
+        grid.add(gridBackground);
+        grid.add(gridHelper);
+
+        grid.position.z = -75;
+        grid.visible = false;
+
+        return grid
     }
 }

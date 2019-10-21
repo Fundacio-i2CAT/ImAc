@@ -240,25 +240,31 @@ THREE.InteractionsController = function () {
 
 ////////////////////////////////////////////
     this.checkInteractionGrid = function(raycaster, mouse2D){
-        var intersects = raycaster.intersectObjects([scene.getObjectByName('gridHelper')] , true );
+        var intersects = raycaster.intersectObjects([scene.getObjectByName('grid-background')] , true );
         if (intersects[0]){
             //console.log(intersects[0])
             //This method moves the elements be steps;
             //console.log(intersects[0].point);
             //let np = controllerMovementDirection(mouse2D);
+            //console.log(intersects[0].object.worldToLocal(intersects[0].point));
 
-            let np = controllerMovementDirection(intersects[0].object.worldToLocal(intersects[0].point));
+            //let np = controllerMovementDirection(intersects[0].object.worldToLocal(intersects[0].point));
 
             //camera.getObjectByName('radar').position.x += np.x;
             //(camera.getObjectByName('radar').position.y += np.y;
+            //
+            let v = new  THREE.Vector2(0,0);
+
+            v = intersects[0].object.worldToLocal(intersects[0].point);
 
 
             let x = mouse2D.x * 1.48 * subController.getSubArea();
             let y = mouse2D.y * 0.82 * subController.getSubArea();
 
-            camera.getObjectByName('radar').position.x = x; 
-            camera.getObjectByName('radar').position.y = y;
+            //console.log('x: '+x+', y: '+y);
 
+            camera.getObjectByName('radar').position.x = v.x; 
+            camera.getObjectByName('radar').position.y = v.y;
         }
     }
 ////////////////////////////////////////////
@@ -277,6 +283,7 @@ THREE.InteractionsController = function () {
         if ( intersects[0]){
             radarSelection = scene.getObjectByName("radar");
             camera.getObjectByName('radar-color-boder').visible = true;
+            camera.getObjectByName('grid').visible = true;
         }
     }
 

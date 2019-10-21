@@ -169,8 +169,6 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 		if(scene.getObjectByName('radar').visible && radarSelection){
             interController.checkInteractionGrid(raycaster, mouse2D);
 
-            //console.log(mouse2D);
-            //console.log(event);
     	}
 
  		if( scene.getObjectByName('trad-main-menu') && scene.getObjectByName('trad-main-menu').visible ){
@@ -207,6 +205,7 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 		if(radarSelection){
 			radarSelection = null;
 			camera.getObjectByName('radar-color-boder').visible = false;
+			camera.getObjectByName('grid').visible = false;
 
 		}
 

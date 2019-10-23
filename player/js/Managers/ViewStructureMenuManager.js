@@ -742,7 +742,7 @@ function ViewStructureMenuManager() {
         return tradOptionMenu;
     }
 
-    /**
+/**
  * Creates a multi options preview structure.
  *
  * @param      {string}  name    The name
@@ -780,69 +780,29 @@ function ViewStructureMenuManager() {
         return preview;
     }
 
+/**
+ * Creates a grid helper.
+ *
+ * @param      {<type>}  opts    The options
+ * @return     {THREE}   { description_of_the_return_value }
+ */
     this.createGridHelper = function(opts){
-
-        /*var prop = 0.82/1.48;
-
-        console.log();
-
-      var config = opts || {
-        height: 1.48*subController.getSubArea()/2,
-        width: 0.82*subController.getSubArea()/2,
-        linesHeight: 2048/(0.82*subController.getSubArea()),
-        linesWidth: 2048/(1.48*subController.getSubArea()),
-        color: 0x00ff00
-      };
-
-      var material = new THREE.LineBasicMaterial({
-        color: config.color,
-        opacity: 0.8
-      });
-
-      var gridObject = new THREE.Object3D(),
-        gridGeo = new THREE.Geometry(),
-        stepw = 2 * config.width / config.linesWidth,
-        steph = 2 * config.height / config.linesHeight ;
-
-      //width
-      for (var i = -config.width; i <= config.width; i += stepw) {
-        gridGeo.vertices.push(new THREE.Vector3(-config.height, i, 0));
-        gridGeo.vertices.push(new THREE.Vector3(config.height, i, 0));
-
-      }
-      //height
-      for (var i = -config.height; i <= config.height; i += steph) {
-        gridGeo.vertices.push(new THREE.Vector3(i, -config.width, 0));
-        gridGeo.vertices.push(new THREE.Vector3(i, config.width, 0));
-      }
-
-      var line = new THREE.LineSegments(gridGeo, material);
-      gridObject.add(line);
-
-      gridObject.position.z = -70;
-
-        //gridObject.rotation.x = Math.PI/2;
-
-      return gridObject;*/
-
-
-        //console.log('STEP='+1.48*subController.getSubArea()/20)
 
         let grid =  new THREE.Group();
         grid.name = 'grid';
+        grid.position.z = -75.001;
+        grid.visible = false;
 
-        var gridBackground =  new THREE.Mesh( new THREE.PlaneGeometry(1.48 * subController.getSubArea(), 0.82 * subController.getSubArea()), new THREE.MeshBasicMaterial({visible: false}));
+        var gridBackground =  new THREE.Mesh( new THREE.PlaneGeometry(1.8 * subController.getSubArea(), 1.1 * subController.getSubArea()), new THREE.MeshBasicMaterial({visible: false}));
         gridBackground.name = 'grid-background';
 
         var gridHelper = new THREE.GridHelper(1.48*subController.getSubArea(), 20, 0xffff00, 0x00ff00);
         gridHelper.name = 'gridHelper';
+        gridHelper.material.opacity = 0.5;
         gridHelper.rotation.x = Math.PI/2;
 
         grid.add(gridBackground);
         grid.add(gridHelper);
-
-        grid.position.z = -75;
-        grid.visible = false;
 
         return grid
     }

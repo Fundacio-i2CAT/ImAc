@@ -159,17 +159,17 @@ function AplicationManager()
             }     
         }
 
-        if ( _isHMD && subController.getSubtitleEnabled() )
-        {
+        if ( _isHMD && subController.getSubtitleEnabled() ){
             subController.updateSTRotation();
         }
-        if ( _isHMD && subController.getSignerEnabled() )
-        {
+
+        if ( _isHMD && subController.getSignerEnabled() ){
             subController.updateSLRotation();
         }
 
         if(camera.getObjectByName('radar') && camera.getObjectByName('radar').visible){
-            _rdr.updateRadarRotation();
+            _rdr.updateRadarAreaRotation();
+            if( _isHMD) _rdr.updateRadarMeshRotation()
             // Needs a variable for free movement;
             //_rdr.updateRadarPosition();
         }

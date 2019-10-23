@@ -55,21 +55,18 @@ THREE.Radar = function () {
         radarIndicator.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(14, 14), new THREE.MeshBasicMaterial({visible: false}));
         radarIndicator.position = new THREE.Vector3(0, 0, 0.01);
 
-
-        var geometry = new THREE.RingGeometry( 6.5, 7, 64 );
-        var material = new THREE.MeshBasicMaterial({ color: 0xffff00, side: THREE.DoubleSide });
-        var radarColorBorder = new THREE.Mesh( geometry, material );
-        radarColorBorder.position = new THREE.Vector3(0, 0, 1);
+        let radarColorBorder = new THREE.Mesh( new THREE.RingGeometry( 6.5, 7, 64 ), new THREE.MeshBasicMaterial({ color: 0xffff00, side: THREE.FrontSide }));
+        radarColorBorder.position.set(0, 0, 0.01);
         radarColorBorder.visible = false;
         radarColorBorder.name = 'radar-color-boder';
-
 
         radar.add(radarColorBorder);
         radar.add(radarOutline.create());
         radar.add(radarArea.create());
         radar.add(radarIndicator.create());
 
-        radar.position.set((_isHMD ? 0.8*( 1.48*subController.getSubArea()/2-14/2 ) : ( 1.48*subController.getSubArea()/2-14/2 )), 0, -75);
+        let x = (_isHMD ? 0.6*( 1.48*subController.getSignerArea()/2-20/2 ) : ( 1.48*subController.getSignerArea()/2-20/2 )) * subController.getSignerPosition().x;
+        radar.position.set(x, 0, -75);
 
         return radar;
     } 
@@ -90,35 +87,27 @@ THREE.Radar = function () {
 	    }
     }
 
-    /*this.moveRadar = function(raycaster, mouse2D){
+/**
+ * Function that moves the radar inside the FoV boundings.
+ *
+ * @param      {<type>}  pos     The position
+ */
+    this.moveRadar = function(pos){
+        if (elementSelection) {
 
-        if (radarSelection) {
-            // Check the position where the background menu is intersected
-            //let elementArray = (scene.getObjectByName('radar')) ? scene.getObjectByName('radar').children : [];
-            let elementArray = [scene.getObjectByName('circleTest')];
-            
-            let intersects = raycaster.intersectObjects( elementArray , true );
+            let w = 1.48*subController.getSignerArea()-14;
+            let h = 0.82*subController.getSignerArea()-14;
 
-
-
-            if(intersects[0]){  
-
-                //console.log(intersects[0].point);
-                //console.log(intersects[0].object.worldToLocal(intersects[0].point));
-                //radar.position.x = intersects[0].object.worldToLocal(intersects[0].point).x;
-                //radar.position.y = intersects[0].object.worldToLocal(intersects[0].point).y;
-                radar.position.x = mouse2D.x;
-                radar.position.y = mouse2D.y;
-
-                //The sliding boundries are from -(4*menuWidth/10) to +(4*menuWidth/10) which is the VPB width;           
-                /*if(sliderSelection.position.x > -(4*menuWidth/10) && sliderSelection.position.x < (4*menuWidth/10)){
-
-                } else {
-
-                }
+            if(pos.x > -w/2 && pos.x < w/2){
+                camera.getObjectByName('radar').position.x = pos.x; 
             }
+
+            if(pos.y > -h/2 && pos.y < h/2){
+                camera.getObjectByName('radar').position.y = pos.y;
+            } 
+            //localStorage.radar_position = camera.getObjectByName('radar').position;
         }
-    }*/
+    }
 
 
 /**
@@ -137,7 +126,7 @@ THREE.Radar = function () {
 /**
  * Updates the radar area rotation with the camera movement;
  */
-    this.updateRadarRotation = function(){
+    this.updateRadarAreaRotation = function(){
     	let radarArea = radar.getObjectByName('radar-area');
 
     	if(radarArea && radarArea.visible){
@@ -148,6 +137,11 @@ THREE.Radar = function () {
 
             radarArea.rotation.z = Math.radians( lon );
     	}
+    }
+
+    this.updateRadarMeshRotation = function()
+    {
+        if ( radar.visible ) radar.rotation.z = -camera.rotation.z;
     }
 
 /**

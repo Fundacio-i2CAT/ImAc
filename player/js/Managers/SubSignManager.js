@@ -878,7 +878,7 @@ SubSignManager = function() {
 						scene.getObjectByName("rightSL").visible = false;
 						scene.getObjectByName("leftSL").visible = false;
 					}
-					
+		        	_rdr.updateRadarPosition();
 					break;
 			}
 

@@ -528,12 +528,11 @@ function MainMenuController() {
  * { function_description }
  *
  * @param      {<type>}  raycaster        The raycaster
- * @param      {<type>}  sliderSelection  The slider selection
+ * @param      {<type>}  elementSelection  The slider selection
  */
-    this.updatePositionOnMouseMove = function(raycaster, sliderSelection){
-        
-        if (sliderSelection) {
-            const x = sliderSelection.position.x;
+    this.updatePositionOnMouseMove = function(raycaster, elementSelection){
+        if (elementSelection) {
+            const x = elementSelection.position.x;
 
             isSliding = true;
             // Check the position where the background menu is intersected
@@ -546,7 +545,7 @@ function MainMenuController() {
 
             if(intersects[0]){   
                 //The sliding boundries are from -(4*menuWidth/10) to +(4*menuWidth/10) which is the VPB width;           
-                if(sliderSelection.position.x > -(4*menuWidth/10) && sliderSelection.position.x < (4*menuWidth/10)){
+                if(elementSelection.position.x > -(4*menuWidth/10) && elementSelection.position.x < (4*menuWidth/10)){
 
                     // Reposition the object based on the intersection point with the background menu
                     newSliderPos  = intersects[0].object.worldToLocal(intersects[0].point).x;
@@ -564,14 +563,14 @@ function MainMenuController() {
                         data.playScaleX  = (currentTime + newSeekTime)/totalTime;
                     }
                 } else {
-                    if(Math.sign(sliderSelection.position.x) < 0){
+                    if(Math.sign(elementSelection.position.x) < 0){
                         data.videoPlayOutTimeText = VideoController.getPlayoutTime(0);
                         data.playScaleX = 0.001;
                     } else {
                         data.videoPlayOutTimeText = VideoController.getPlayoutTime(totalTime);
                         data.playScaleX  = 1;
                     }
-                    newSliderPos = Math.sign(sliderSelection.position.x) * (4*menuWidth/10);
+                    newSliderPos = Math.sign(elementSelection.position.x) * (4*menuWidth/10);
                     newSeekTime = timeDiffOnSlide(newSliderPos);
                 }
                 data.sliderPositionX = newSliderPos;
@@ -582,14 +581,14 @@ function MainMenuController() {
         }
     }
 
-    function timeDiffOnSlide(sliderSelection){
-        timeDiff = sliderSelection - initialSlidingPos;
+    function timeDiffOnSlide(elementSelection){
+        timeDiff = elementSelection - initialSlidingPos;
         if(Math.ceil(timeDiff*100) != 0){
             return Math.floor(VideoController.getListOfVideoContents()[0].vid.duration*timeDiff/(4*menuWidth/5));
         }
     }
 
-    this.onSlideSeek = function(sliderSelection){
+    this.onSlideSeek = function(elementSelection){
         if(!isSliding){
             VideoController.seekAll(newSeekTime);
             mainMenuCtrl.playAllFunc();

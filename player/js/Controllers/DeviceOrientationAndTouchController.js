@@ -124,15 +124,7 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 	    	interController.checkInteractionVPB( mouse2D, scope.object);   
         }
 
-        if(camera.getObjectByName('radar').visible) {
-
-        	let x = mouse2D.x * 1.48 * subController.getSubArea();
-            let y = mouse2D.y * 0.82 * subController.getSubArea();
-
-			controllerOldX = x;
-			controllerOldY = y;	
-
-
+        if(!_isHMD && camera.getObjectByName('radar').visible) {
         	interController.checkInteractionRadar( mouse2D, scope.object);
         }
 		
@@ -153,7 +145,7 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 
 	this.onDocumentMouseMove = function ( event ) {
 		// While the user has selected the slider in order to week, no video rotation is posible.
-		if ( event.pageX != startX && event.pageX != startX  && !sliderSelection  && !radarSelection)
+		if ( event.pageX != startX && event.pageX != startX  && !elementSelection)
 		{
 			_mouseMoved = true;
 			currentX = event.pageX;
@@ -166,18 +158,21 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 
     	raycaster.setFromCamera(  mouse2D, scope.object );
 
-		if(scene.getObjectByName('radar').visible && radarSelection){
-            interController.checkInteractionGrid(raycaster, mouse2D);
+    	if(elementSelection){
+	 		if(elementSelection.name.localeCompare('slider-progress') == 0){
+				/**
+				 * This function updates the position of the slider after 
+				 * been clicked and during the mousemmove event.
+				 */
+				mainMenuCtrl.updatePositionOnMouseMove(raycaster, elementSelection);
+			}else if(elementSelection.name.localeCompare('radar') == 0){
+	            interController.checkInteractionGrid(raycaster, mouse2D);
+	    	}
+
 
     	}
 
- 		if( scene.getObjectByName('trad-main-menu') && scene.getObjectByName('trad-main-menu').visible ){
-			/**
-			 * This function updates the position of the slider after 
-			 * been clicked and during the mousemmove event.
-			 */
-			mainMenuCtrl.updatePositionOnMouseMove(raycaster, sliderSelection);
-		}
+		
 	}.bind( this );
 
 	this.onDocumentMouseUp = function ( event ) {
@@ -185,7 +180,7 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 		if ( _blockControls ) initExtraAdAudio();
 
 		//if ( scene.getObjectByName( "openMenu" ).visible && !_mouseMoved ) menuMgr.initFirstMenuState();
-		if(!radarSelection){
+		if(!elementSelection){
 
 			if ( menuMgr.getMenuType() == 2 && scene.getObjectByName( 'trad-main-menu' ).visible == false && !_mouseMoved ) menuMgr.initFirstMenuState();
 			if ( menuMgr.getMenuType() == 1 && scene.getObjectByName( 'trad-option-menu' ).visible == false && scene.getObjectByName( 'trad-main-menu' ).visible == false && !_mouseMoved ) menuMgr.initFirstMenuState();
@@ -195,20 +190,19 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 		//else if ( menuMgr.getMenuType() == 1 && scene.getObjectByName( 'trad-option-menu' ).visible == false && scene.getObjectByName( 'trad-main-menu' ).visible == false && !_mouseMoved ) menuMgr.initFirstMenuState();
 		// scene.getObjectByName( 'trad-option-menu' ).visible == false && scene.getObjectByName( 'trad-main-menu' ).visible == false
 		_mouseMoved = false;
+		if(elementSelection){
+			if (elementSelection.name.localeCompare('slider-progress') == 0) {
+				mainMenuCtrl.setSlidingStatus(false);
+				mainMenuCtrl.onSlideSeek();
+			}
+			if(elementSelection.name.localeCompare('radar') == 0){
+				camera.getObjectByName('radar-color-boder').visible = false;
+				camera.getObjectByName('grid').visible = false;
 
-		if (sliderSelection) {
-			mainMenuCtrl.setSlidingStatus(false);
-			mainMenuCtrl.onSlideSeek();
-			sliderSelection = null;
+			}
+			elementSelection = null;
 		}
-
-		if(radarSelection){
-			radarSelection = null;
-			camera.getObjectByName('radar-color-boder').visible = false;
-			camera.getObjectByName('grid').visible = false;
-
-		}
-
+		
 		this.element.removeEventListener( 'mousemove', this.onDocumentMouseMove, false );
 		this.element.removeEventListener( 'mouseup', this.onDocumentMouseUp, false );
 
@@ -455,7 +449,7 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 			 * This function updates the position of the slider after 
 			 * been clicked and during the mousemmove event.
 			 //
-			mainMenuCtrl.updatePositionOnMouseMove(raycaster, sliderSelection);
+			mainMenuCtrl.updatePositionOnMouseMove(raycaster, elementSelection);
 		}*/
 
 		/*switch( event.touches.length ) {
@@ -475,10 +469,10 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 		else if ( menuMgr.getMenuType() == 2 && scene.getObjectByName( 'trad-main-menu' ).visible == false && !_mouseMoved ) menuMgr.initFirstMenuState();
 		else if ( menuMgr.getMenuType() == 1 && scene.getObjectByName( 'trad-option-menu' ).visible == false && scene.getObjectByName( 'trad-main-menu' ).visible == false && !_mouseMoved ) menuMgr.initFirstMenuState();
 		
-		/*if (sliderSelection) {
+		/*if (elementSelection) {
 			mainMenuCtrl.setSlidingStatus(false);
 			mainMenuCtrl.onSlideSeek();
-			sliderSelection = null;
+			elementSelection = null;
 		}*/
 
 		_mouseMoved = false;
@@ -600,6 +594,10 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 
 	    	interController.checkInteractionVPB( _origin, direction);
 
+	        if(camera.getObjectByName('radar').visible) {
+        		interController.checkInteractionRadar( _origin, direction);
+        	}
+
 		}
 	}
 
@@ -632,11 +630,16 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 			controller.addEventListener( 'primary press ended', function( event ){
 				//event.target.userData.mesh.material.color.setHex( meshColorOff )
 				//stopMenuInterval()
-				if (sliderSelection) {
-					mainMenuCtrl.setSlidingStatus(false);
-					mainMenuCtrl.onSlideSeek();
-					sliderSelection = null;
-				}
+				if (elementSelection){
+					if( elementSelection.name.localeCompare('slider-progress') == 0 ){
+						mainMenuCtrl.setSlidingStatus(false);
+						mainMenuCtrl.onSlideSeek();
+					} else if( elementSelection.name.localeCompare('radar') == 0 ){
+						camera.getObjectByName('radar-color-boder').visible = false;
+						camera.getObjectByName('grid').visible = false;
+					}
+					elementSelection = null;
+				} 
 			})
 			controller.addEventListener( 'button_0 press began', function( event ){
 				//event.target.userData.mesh.material.color.setHex( meshColorOn )
@@ -646,11 +649,16 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 			controller.addEventListener( 'button_0 press ended', function( event ){
 				//event.target.userData.mesh.material.color.setHex( meshColorOff )
 				//stopMenuInterval()
-				if (sliderSelection) {
-					mainMenuCtrl.setSlidingStatus(false);
-					mainMenuCtrl.onSlideSeek();
-					sliderSelection = null;
-				}
+				if (elementSelection){
+					if( elementSelection.name.localeCompare('slider-progress') == 0) {
+						mainMenuCtrl.setSlidingStatus(false);
+						mainMenuCtrl.onSlideSeek();
+					}else if(elementSelection.name.localeCompare('radar') == 0){
+						camera.getObjectByName('radar-color-boder').visible = false;
+						camera.getObjectByName('grid').visible = false;
+					}
+					elementSelection = null;
+				} 
 			})	
 			controller.addEventListener( 'thumbpad press began', function( event ){
 				//event.target.userData.mesh.material.color.setHex( meshColorOn )
@@ -660,11 +668,16 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 			controller.addEventListener( 'thumbpad press ended', function( event ){
 				//event.target.userData.mesh.material.color.setHex( meshColorOff )
 				//stopMenuInterval()
-				if (sliderSelection) {
-					mainMenuCtrl.setSlidingStatus(false);
-					mainMenuCtrl.onSlideSeek();
-					sliderSelection = null;
-				}
+				if (elementSelection){
+					if( elementSelection.name.localeCompare('slider-progress') == 0) {
+						mainMenuCtrl.setSlidingStatus(false);
+						mainMenuCtrl.onSlideSeek();
+					}else if(elementSelection.name.localeCompare('radar') == 0){
+						camera.getObjectByName('radar-color-boder').visible = false;
+						camera.getObjectByName('grid').visible = false;
+					}
+					elementSelection = null;
+				}  
 			})	
 			controller.addEventListener( 'disconnected', function( event ){
 				controller.parent.remove( controller )
@@ -762,10 +775,13 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 	            interController.vpbHoverOver( _origin, direction );
 	        }
 
-	        if(sliderSelection){
-				mainMenuCtrl.updatePositionOnMouseMove(raycaster, sliderSelection);
+	        if(elementSelection){
+		        if( elementSelection.name.localeCompare('slider-progress') == 0){
+					mainMenuCtrl.updatePositionOnMouseMove(raycaster, elementSelection);
+		        }else if( elementSelection.name.localeCompare('radar') == 0){
+		            interController.checkInteractionGrid(raycaster, mouse2D);
+		    	}
 	        }
-
 		}
 		else if(_isHMD)
 		{

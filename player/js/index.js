@@ -18,6 +18,9 @@ var _ManifestParser = new ManifestParser();
 
 var _AudioManager = new AudioManager();
 var subController = new SubSignManager();
+var _slMngr = new SLManager();
+var _stMngr = new STManager();
+
 var interController = new THREE.InteractionsController();
 var polyfill = new WebVRPolyfill();
 var statObj = new StatObject();
@@ -77,15 +80,12 @@ var _blockControls = false;
 
 let timerCloseMenu;
 
-let sliderSelection;
-let radarSelection;
+let elementSelection;
+
 var _isTV = false;
 let isMenuInteracted = false;
 
 var lastUpdate = Date.now();
-
-let controllerOldX = 0;
-let controllerOldY = 0;
 
 /**
  * Initializes the web player.

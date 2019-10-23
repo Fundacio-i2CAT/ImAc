@@ -780,6 +780,9 @@ function ViewStructureMenuManager() {
         return preview;
     }
 
+
+    //NEEDS TO BE MOVED TO OTHER LOCATION
+
 /**
  * Creates a grid helper.
  *
@@ -790,7 +793,8 @@ function ViewStructureMenuManager() {
 
         let grid =  new THREE.Group();
         grid.name = 'grid';
-        grid.position.z = -75.001;
+        //grid.position.z = -75.001;
+        grid.position.z = -0.001;
         grid.visible = false;
 
         var gridBackground =  new THREE.Mesh( new THREE.PlaneGeometry(1.8 * subController.getSubArea(), 1.1 * subController.getSubArea()), new THREE.MeshBasicMaterial({visible: false}));
@@ -805,5 +809,17 @@ function ViewStructureMenuManager() {
         grid.add(gridHelper);
 
         return grid
+    }
+
+
+    this.createCanvas = function(){
+
+        var canvas =  new THREE.Mesh( new THREE.PlaneGeometry(1.8 * subController.getSubArea(), 1.1 * subController.getSubArea()), new THREE.MeshBasicMaterial({visible: false}));
+        canvas.name = 'canvas';
+        canvas.position.z = -75.001;
+        //canvas.visible = false;
+
+        return canvas;
+
     }
 }

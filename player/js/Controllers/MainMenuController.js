@@ -252,6 +252,10 @@ function MainMenuController() {
                 accessOptionsView.UpdateAccessibilityOptionsIconStatusView(data);
                 // Add interactivity to visible elements and remove interactivity to none visible elements.
                 menuMgr.AddInteractionIfVisible(viewStructure);
+
+                //Update the Radar position
+                //Need if/else if position has been updated by user;
+                _rdr.updateRadarPosition();
             });
         };
 

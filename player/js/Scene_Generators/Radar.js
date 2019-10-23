@@ -66,7 +66,8 @@ THREE.Radar = function () {
         radar.add(radarIndicator.create());
 
         let x = (_isHMD ? 0.6*( 1.48*subController.getSignerArea()/2-20/2 ) : ( 1.48*subController.getSignerArea()/2-20/2 )) * subController.getSignerPosition().x;
-        radar.position.set(x, 0, -75);
+        //radar.position.set(x, 0, -75);
+        radar.position.set(x, 0, 0);
 
         return radar;
     } 
@@ -141,7 +142,7 @@ THREE.Radar = function () {
 
     this.updateRadarMeshRotation = function()
     {
-        if ( radar.visible ) radar.rotation.z = -camera.rotation.z;
+        if ( radar.visible ) camera.getObjectByName('canvas').rotation.z = -camera.rotation.z;
     }
 
 /**

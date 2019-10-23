@@ -46,9 +46,15 @@ function MenuManager() {
             menuParent.add(settingsMenu);
         }
 
+        //Canvas
+        let canvas = vwStrucMMngr.createCanvas()
+
+        //Grid Helper
+        let gridHelper = vwStrucMMngr.createGridHelper();
+
         //Radar
         let radar = _rdr.getRadarMeshGroup();
-        camera.add(radar);
+        
 
         mainMenuCtrl = new MainMenuController();
         controllers.push(mainMenuCtrl);
@@ -58,8 +64,10 @@ function MenuManager() {
 
         menuMgr.ResetViews();
 
-        //Add the grid helper for moving elements;
-        camera.add(vwStrucMMngr.createGridHelper());
+        canvas.add(gridHelper);
+        canvas.add(radar);
+
+        camera.add(canvas);
     }
 
     /**

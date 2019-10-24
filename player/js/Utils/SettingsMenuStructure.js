@@ -268,6 +268,8 @@ const settingsPointerSize = { title: 'PointerSize', icon: './img/menu/pointer_si
  * ╔═════════════════════════════════════╗
  * ║ (<)       User Profile           X  ║
  * ╠═════════════════════════════════════╣
+ * ║ Reset                         Final ║
+ * ╠═════════════════════════════════════╣
  * ║ Save                          Final ║
  * ╚═════════════════════════════════════╝
  * Visual example of dropdown
@@ -283,10 +285,20 @@ const settingsPointerSize = { title: 'PointerSize', icon: './img/menu/pointer_si
  * @property {function} options[].function     Function executed when option is clicked.
  */
 const settingsUserProfile = { title: 'UserProfile', icon: './img/menu/user_profile.png', parent: generalSettings, final: true, options: [
+    { optId: 'resetUserProfileButton', text: 'Reset', 
+        function:  function(){ 
+            // Needs reset function.
+            //At the moment this function will reser all 
+            //the elements moved to their original position.
+            //
+            //resetConfig():
+            SettingsOptionCtrl.setChildColumnActiveOpt(settingsUserProfile.options[0].optId);
+        } 
+    },
     { optId: 'saveUserProfileButton', text: 'Save', 
         function:  function(){ 
             saveConfig();
-            SettingsOptionCtrl.setChildColumnActiveOpt(settingsUserProfile.options[0].optId);
+            SettingsOptionCtrl.setChildColumnActiveOpt(settingsUserProfile.options[1].optId);
         } 
     }]
 };

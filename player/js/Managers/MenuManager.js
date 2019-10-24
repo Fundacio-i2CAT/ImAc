@@ -163,8 +163,7 @@ function MenuManager() {
             scene.getObjectByName('pointer').scale.set(1*_pointerSize,1*_pointerSize,1*_pointerSize);
         }
 
-        //playpauseCtrl.playAllFunc();
-        mainMenuCtrl.playAllFunc();
+        //mainMenuCtrl.playAllFunc();
 
         if(menu) {
             menu.visible = false;
@@ -223,7 +222,6 @@ function MenuManager() {
  * @function initFirstMenuState (name)
 */
     this.initFirstMenuState = function() {
-        //isMenuInteracted = true;
         lastUpdate = Date.now();
         menuActivationElement.visible = false;
         scene.getObjectByName( "openmenutext" ).visible = false;
@@ -245,9 +243,6 @@ function MenuManager() {
         }
 
         menu.visible = true;
-
-       //timerCloseMenu = setTimeout( function(){ menuMgr.ResetViews() }, 5000);       
-
     }
 
 /**

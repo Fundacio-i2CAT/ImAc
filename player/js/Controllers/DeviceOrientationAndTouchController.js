@@ -90,36 +90,19 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 
 		event.preventDefault();
 
-		/*if ( autopositioning == false ) 
-		{
-			if ( Date.now() - touchtime > 300 ) touchcount = 0;
-
-			if (touchcount == 0) {
-				
-				touchcount++;
-				touchtime = Date.now();
-			}
-			else if (touchcount < 1) {
-				touchcount++;
-			}
-			else {
-				touchcount = 0;
-				menuMgr.initFirstMenuState();
-			}
-		}*/
-
-		//tmpQuat.copy( scope.objectPather.quaternion );
+		
 		tmpQuat.copy( scope.object.quaternion );
 
 		startX = currentX = event.pageX;
 		startY = currentY = event.pageY;
 			
-		//var mouse3D = new THREE.Vector2();
         mouse2D.x = _isHMD ? 0 : ( event.clientX / window.innerWidth ) * 2 - 1;
         mouse2D.y = _isHMD ? 0 : - ( event.clientY / window.innerHeight ) * 2 + 1;
 		
 		//INTERACTIVITY DETECT
-		interController.checkInteraction(mouse2D, scope.object, 'onDocumentMouseDown');
+		//interController.checkInteraction(mouse2D, scope.object, 'onDocumentMouseDown', _mouseMoved);
+		//interController.checkInteraction(mouse2D, scope.object, _mouseMoved);
+
         if( !_isHMD && scene.getObjectByName('trad-main-menu') && scene.getObjectByName('trad-main-menu').visible) {
 	    	interController.checkInteractionVPB( mouse2D, scope.object);   
         }
@@ -152,7 +135,6 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 			currentY = event.pageY;
 		}
 
-
 		mouse2D.x = _isHMD ? 0 : ( event.clientX / window.innerWidth ) * 2 - 1;
     	mouse2D.y = _isHMD ? 0 : - ( event.clientY / window.innerHeight ) * 2 + 1;
 
@@ -179,16 +161,9 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 
 		if ( _blockControls ) initExtraAdAudio();
 
-		//if ( scene.getObjectByName( "openMenu" ).visible && !_mouseMoved ) menuMgr.initFirstMenuState();
-		if(!elementSelection){
+		//interController.checkInteraction(mouse2D, scope.object, 'onDocumentMouseUp', _mouseMoved);
+		interController.checkInteraction(mouse2D, scope.object, _mouseMoved);
 
-			if ( menuMgr.getMenuType() == 2 && scene.getObjectByName( 'trad-main-menu' ).visible == false && !_mouseMoved ) menuMgr.initFirstMenuState();
-			if ( menuMgr.getMenuType() == 1 && scene.getObjectByName( 'trad-option-menu' ).visible == false && scene.getObjectByName( 'trad-main-menu' ).visible == false && !_mouseMoved ) menuMgr.initFirstMenuState();
-		
-		}
-		//else if ( menuMgr.getMenuType() == 2 && scene.getObjectByName( 'trad-main-menu' ).visible == false && !_mouseMoved ) menuMgr.initFirstMenuState();
-		//else if ( menuMgr.getMenuType() == 1 && scene.getObjectByName( 'trad-option-menu' ).visible == false && scene.getObjectByName( 'trad-main-menu' ).visible == false && !_mouseMoved ) menuMgr.initFirstMenuState();
-		// scene.getObjectByName( 'trad-option-menu' ).visible == false && scene.getObjectByName( 'trad-main-menu' ).visible == false
 		_mouseMoved = false;
 		if(elementSelection){
 			if (elementSelection.name.localeCompare('slider-progress') == 0) {
@@ -358,14 +333,6 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 				doZoom( 'out' );
 
 				break;
-
-			case 77:  // m
-				if ( !autopositioning ) {
-					//xxx.swichtMenuState();
-					if ( scene.getObjectByName( "openMenu" ).visible ) menuMgr.initFirstMenuState();
-					else menuMgr.ResetViews();
-				}
-				break;
 				
 			default:
 				//console.log( event.keyCode )
@@ -465,10 +432,18 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 	this.onDocumentTouchEnd = function ( event ) 
 	{
 		//if ( scene.getObjectByName( "openMenu" ).visible && !_mouseMoved ) menuMgr.initFirstMenuState();
-		if ( _blockControls ) initExtraAdAudio();
-		else if ( menuMgr.getMenuType() == 2 && scene.getObjectByName( 'trad-main-menu' ).visible == false && !_mouseMoved ) menuMgr.initFirstMenuState();
-		else if ( menuMgr.getMenuType() == 1 && scene.getObjectByName( 'trad-option-menu' ).visible == false && scene.getObjectByName( 'trad-main-menu' ).visible == false && !_mouseMoved ) menuMgr.initFirstMenuState();
+		if ( _blockControls ){
+			initExtraAdAudio();
+		} 
+		/*else if ( menuMgr.getMenuType() == 2 && scene.getObjectByName( 'trad-main-menu' ).visible == false && !_mouseMoved ){
+			menuMgr.initFirstMenuState();			
+		} else if ( menuMgr.getMenuType() == 1 && scene.getObjectByName( 'trad-option-menu' ).visible == false && scene.getObjectByName( 'trad-main-menu' ).visible == false && !_mouseMoved ){
+			menuMgr.initFirstMenuState();
+		} */
 		
+
+
+
 		/*if (elementSelection) {
 			mainMenuCtrl.setSlidingStatus(false);
 			mainMenuCtrl.onSlideSeek();
@@ -576,21 +551,16 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 	function sendVRInteraction(quat)
 	{
 		if ( _blockControls ) initExtraAdAudio();
-		else if ( menuMgr.getMenuType() == 2 && scene.getObjectByName( 'trad-main-menu' ).visible == false ) 
-		{
+		else if ( menuMgr.getMenuType() == 2 && scene.getObjectByName( 'trad-main-menu' ).visible == false ) {
 			menuMgr.initFirstMenuState();
-		}
-		else if ( menuMgr.getMenuType() == 1 && scene.getObjectByName( 'trad-option-menu' ).visible == false && scene.getObjectByName( 'trad-main-menu' ).visible == false ) 
-		{
+		}else if ( menuMgr.getMenuType() == 1 && scene.getObjectByName( 'trad-option-menu' ).visible == false && scene.getObjectByName( 'trad-main-menu' ).visible == false ) {
 			menuMgr.initFirstMenuState();
-		}
-		else
-		{
+		}else {
 			var direction = new THREE.Vector3( 0, 0, -1 );
 
 			direction.applyQuaternion( quat ).normalize();
 
-			interController.checkVRInteraction( _origin, direction );
+			interController.checkInteraction( _origin, direction );
 
 	    	interController.checkInteractionVPB( _origin, direction);
 
@@ -623,13 +593,10 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 			controller.standingMatrix = renderer.vr.getStandingMatrix()
 
 			controller.addEventListener( 'primary press began', function( event ){
-				//event.target.userData.mesh.material.color.setHex( meshColorOn )
-				//startMenuInterval()
 				sendVRInteraction(event.target.quaternion)
 			})
 			controller.addEventListener( 'primary press ended', function( event ){
-				//event.target.userData.mesh.material.color.setHex( meshColorOff )
-				//stopMenuInterval()
+
 				if (elementSelection){
 					if( elementSelection.name.localeCompare('slider-progress') == 0 ){
 						mainMenuCtrl.setSlidingStatus(false);
@@ -642,13 +609,9 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 				} 
 			})
 			controller.addEventListener( 'button_0 press began', function( event ){
-				//event.target.userData.mesh.material.color.setHex( meshColorOn )
-				//startMenuInterval()
 				sendVRInteraction(event.target.quaternion)
 			})
 			controller.addEventListener( 'button_0 press ended', function( event ){
-				//event.target.userData.mesh.material.color.setHex( meshColorOff )
-				//stopMenuInterval()
 				if (elementSelection){
 					if( elementSelection.name.localeCompare('slider-progress') == 0) {
 						mainMenuCtrl.setSlidingStatus(false);
@@ -661,13 +624,9 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 				} 
 			})	
 			controller.addEventListener( 'thumbpad press began', function( event ){
-				//event.target.userData.mesh.material.color.setHex( meshColorOn )
-				//startMenuInterval()
 				sendVRInteraction(event.target.quaternion)
 			})
 			controller.addEventListener( 'thumbpad press ended', function( event ){
-				//event.target.userData.mesh.material.color.setHex( meshColorOff )
-				//stopMenuInterval()
 				if (elementSelection){
 					if( elementSelection.name.localeCompare('slider-progress') == 0) {
 						mainMenuCtrl.setSlidingStatus(false);
@@ -684,44 +643,6 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 			})
 		}
 	};
-
-	function startMenuInterval()
-	{
-		//if ( scene.getObjectByName( "openMenu" ).visible ) menuMgr.initFirstMenuState();
-		if ( menuMgr.getMenuType() == 2 && scene.getObjectByName( 'trad-main-menu' ).visible == false ) menuMgr.initFirstMenuState();
-		else if ( menuMgr.getMenuType() == 1 && scene.getObjectByName( 'trad-option-menu' ).visible == false && scene.getObjectByName( 'trad-main-menu' ).visible == false ) menuMgr.initFirstMenuState();
-		
-		/*if ( scene.getObjectByName( "openMenu" ).visible ) {
-			openmenuinterval = setInterval(function(){
-				openmenutimer++;
-				if ( openmenutimer == 3 ) menuMgr.initFirstMenuState();
-			}, 1000);
-		}
-		else {*/
-			/*if ( Date.now() - touchtime > 300 ) touchcount = 0;
-
-			if (touchcount == 0) {
-				
-				touchcount++;
-				touchtime = Date.now();
-			}
-			else if (touchcount < 1) {
-				touchcount++;
-			}
-			else {
-				touchcount = 0;
-				if ( scene.getObjectByName( "openMenu" ).visible ) menuMgr.initFirstMenuState();
-				else menuMgr.ResetViews();
-			}*/
-		//}
-	}
-
-	function stopMenuInterval()
-	{
-		clearInterval( openmenuinterval );
-		openmenutimer = 0;
-	}
-
 	
 
 	this.update = function() {

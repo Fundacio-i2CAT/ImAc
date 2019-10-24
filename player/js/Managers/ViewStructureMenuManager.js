@@ -204,7 +204,7 @@ function ViewStructureMenuManager() {
         mainmenu.add(playBtn.create());
         mainmenu.add(pauseBtn.create());
         mainmenu.add(seekRBtn.create());
-        mainmenu.add(closeBtn.create());
+//        mainmenu.add(closeBtn.create());
 
 /************************************\
 |               VOLUME               |
@@ -524,7 +524,7 @@ function ViewStructureMenuManager() {
 
         // Add all the created elements to the parent group.
         mainmenu.add(settingsBtn.create());
-        mainmenu.add(previewBtn.create());
+//      mainmenu.add(previewBtn.create());
         mainmenu.add(tradMenuBtn.create());
         mainmenu.add(enhancedMenuBtn.create());
 
@@ -729,9 +729,9 @@ function ViewStructureMenuManager() {
         // Add all the created elements to the parent group.
         tradOptionMenuTitle.add(line);
         tradOptionMenuTitle.add(backBtn.create());
-        tradOptionMenuTitle.add(closeBtn.create());
+//      tradOptionMenuTitle.add(closeBtn.create());
         tradOptionMenuTitle.add(optTitle.create());
-        tradOptionMenuTitle.add(previewBtn.create());
+//      tradOptionMenuTitle.add(previewBtn.create());
 
         // Add all the parent elements to the traditional option menu.
         tradOptionMenu.add(checkMark.create());
@@ -794,19 +794,21 @@ function ViewStructureMenuManager() {
         let grid =  new THREE.Group();
         grid.name = 'grid';
         //grid.position.z = -75.001;
-        grid.position.z = -0.001;
+        grid.position.z = 0.01;
         grid.visible = false;
 
-        var gridBackground =  new THREE.Mesh( new THREE.PlaneGeometry(1.8 * subController.getSubArea(), 1.1 * subController.getSubArea()), new THREE.MeshBasicMaterial({visible: false}));
+        const vFOV = THREE.Math.degToRad( camera.fov ); // convert vertical fov to radians
+        const height = Math.round(2 * Math.tan( vFOV / 2 ) * 75); // visible height
+        const width = Math.round(height * camera.aspect);           // visible width
+
+        const gridBackground =  new THREE.Mesh( new THREE.PlaneGeometry(width, height), new THREE.MeshBasicMaterial({visible: false}));
         gridBackground.name = 'grid-background';
 
-        var gridHelper = new THREE.GridHelper(1.48*subController.getSubArea(), 20, 0xffff00, 0x00ff00);
-        gridHelper.name = 'gridHelper';
-        gridHelper.material.opacity = 0.5;
-        gridHelper.rotation.x = Math.PI/2;
+        const fov = _moData.getPlaneImageMesh(1.48*subController.getSubArea(), 0.82*subController.getSubArea(), './img/rect5044.png', 'areamesh', 5);
+        fov.name = 'fov';
 
         grid.add(gridBackground);
-        grid.add(gridHelper);
+        grid.add(fov);
 
         return grid
     }
@@ -816,7 +818,7 @@ function ViewStructureMenuManager() {
 
         var canvas =  new THREE.Mesh( new THREE.PlaneGeometry(1.8 * subController.getSubArea(), 1.1 * subController.getSubArea()), new THREE.MeshBasicMaterial({visible: false}));
         canvas.name = 'canvas';
-        canvas.position.z = -75.001;
+        canvas.position.z = -75;
         //canvas.visible = false;
 
         return canvas;

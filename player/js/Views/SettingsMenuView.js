@@ -12,8 +12,8 @@ function SettingsMenuView() {
         submenu.getObjectByName('enhanced-menu-button').visible = (menuMgr.getMenuType() == 2) ? true : false;
         submenu.getObjectByName('enhanced-menu-button').children[0].onexecute = data.menuTypeButtonFunc; 
 
-        submenu.getObjectByName('preview-button').material.color.set( 0xe6e6e6 );
-        submenu.getObjectByName('preview-button').children[0].onexecute = data.previewButtonFunc;
+//        submenu.getObjectByName('preview-button').material.color.set( 0xe6e6e6 );
+//        submenu.getObjectByName('preview-button').children[0].onexecute = data.previewButtonFunc;
             
         /*if( menuMgr.getMenuType() == 1 ){
             submenu.getObjectByName('preview-button').material.color.set( 0xe6e6e6 );

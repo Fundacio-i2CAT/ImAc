@@ -15,8 +15,8 @@ const PlayPauseMenuView = function(){
 		submenu.getObjectByName('forward-seek-button').children[0].onexecute = data.seekForwardMenuButtonFunc;
 		submenu.getObjectByName('back-seek-button').children[0].onexecute = data.seekBackMenuButtonFunc;
 
-    submenu.getObjectByName('close-button').children[0].onexecute = data.closeMenuButtonFunc;
-    submenu.getObjectByName('close-button-zoom').children[0].onexecute = data.closeMenuButtonFunc;
+    //submenu.getObjectByName('close-button').children[0].onexecute = data.closeMenuButtonFunc;
+    //submenu.getObjectByName('close-button-zoom').children[0].onexecute = data.closeMenuButtonFunc;
 
 	}
 

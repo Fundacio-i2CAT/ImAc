@@ -254,7 +254,7 @@ function MainMenuController() {
                 menuMgr.AddInteractionIfVisible(viewStructure);
 
                 //Update the Radar position
-                //Need if/else if position has been updated by user;
+                //Needs if/else if position has been updated by user;
                 _rdr.updateRadarPosition();
             });
         };

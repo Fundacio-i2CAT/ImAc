@@ -19,15 +19,15 @@ function SettingsOptionMenuView() {
 
         } else {
             submenu.position.y = 0;
-            submenu.getObjectByName('preview-button').visible = data.isPreviewVisible;
-            submenu.getObjectByName('preview-button').children[0].onexecute = (data.isPreviewVisible) ? data.previewButtonFunc : null;
+//            submenu.getObjectByName('preview-button').visible = data.isPreviewVisible;
+//            submenu.getObjectByName('preview-button').children[0].onexecute = (data.isPreviewVisible) ? data.previewButtonFunc : null;
         }
 
 		submenu.getObjectByName('back-button').visible = data.isFinalDrop || data.hasParentDropdown;
 		submenu.getObjectByName('back-button').children[0].onexecute = data.backMenuButtonFunc;
 
-        submenu.getObjectByName('close-button-opt').visible = menuMgr.getMenuType() == 1 ? true : false;
-        submenu.getObjectByName('close-button-opt').children[0].onexecute = data.closeOptMenuButtonFunc;
+//      submenu.getObjectByName('close-button-opt').visible = menuMgr.getMenuType() == 1 ? true : false;
+//      submenu.getObjectByName('close-button-opt').children[0].onexecute = data.closeOptMenuButtonFunc;
 
 		submenu.getObjectByName('tradoptionmenutitle').add(updateTitle(data));
         submenu.getObjectByName('tradoptionmenutitle').position.y = optHeight/2 * data.parentColumnDropdown.length;
@@ -39,6 +39,8 @@ function SettingsOptionMenuView() {
         if(data.default){
             submenu.getObjectByName('checkmark').position.x = -1.5*menuWidth/8;
             submenu.getObjectByName('checkmark').position.y = data.default.position.y;
+        } else {
+            submenu.getObjectByName('checkmark').visible = false;
         }
        
 //TODO: CHECK FOREACH

@@ -291,7 +291,7 @@ const settingsUserProfile = { title: 'UserProfile', icon: './img/menu/user_profi
             //At the moment this function will reser all 
             //the elements moved to their original position.
             //
-            //resetConfig():
+            resetConfig();
             SettingsOptionCtrl.setChildColumnActiveOpt(settingsUserProfile.options[0].optId);
         } 
     },

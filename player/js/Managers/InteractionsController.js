@@ -243,28 +243,42 @@ THREE.InteractionsController = function () {
         if (intersects[0]){
             let v = new  THREE.Vector2(0,0);
             v = intersects[0].object.worldToLocal(intersects[0].point);
-            _rdr.moveRadar(v);
+            if(elementSelection.name.localeCompare('radar') == 0 ){
+                _rdr.move(v);
+            } else if(elementSelection.name.localeCompare('sign') == 0){
+                _slMngr.move(v);
+            }
         }
     }
 
-
-    this.checkInteractionRadar = function(origin, direction){
+    this.checkInteractionCanvasElements = function(origin, direction){
         if(_isHMD){
             raycaster.set( origin, direction );
         } else{
             raycaster.setFromCamera(  origin, direction );
         }
 
-        let elementArray = (scene.getObjectByName("radar")) ? scene.getObjectByName('radar').children : [];
-        var intersects = raycaster.intersectObjects( elementArray , true );
+        let radarArray = [];
+        let signArray = [];
+
+        if (scene.getObjectByName('radar').visible) radarArray = scene.getObjectByName('radar').children;
+        if (scene.getObjectByName('sign')) signArray = scene.getObjectByName('sign').children;
+
+        var intersects = raycaster.intersectObjects( radarArray.concat(signArray) , true );
 
         if ( intersects[0]){
-            elementSelection = scene.getObjectByName("radar");
-            camera.getObjectByName('radar-color-boder').visible = true;
+            if(intersects[0].object.parent.name.localeCompare('radar') == 0){
+                camera.getObjectByName('radar-color-boder').visible = true;
+            } else if(intersects[0].object.parent.name.localeCompare('sign') == 0){
+                camera.getObjectByName('sign-color-boder').visible = true;
+                camera.getObjectByName('st4slmesh-color-boder').visible = true;
+                
+            }
+            elementSelection = intersects[0].object.parent;
             camera.getObjectByName('grid').visible = true;
         }
     }
-
+   
 
     this.checkInteractionVPB = function(origin, direction){
         if(_isHMD){
@@ -320,11 +334,11 @@ THREE.InteractionsController = function () {
             }
 	    } else{ 
             //Closes the open multi option menu of the traditional menu when clicked outside any element.
-            if(!_mouseMoved){
+            if(!_mouseMoved && !elementSelection){
                 if(scene.getObjectByName('trad-option-menu') && menuMgr.getActualCtrl()){
                     SettingsOptionCtrl.close();
                 } else{
-                    if(scene.getObjectByName('trad-main-menu').visible && !elementSelection){
+                    if(scene.getObjectByName('trad-main-menu').visible){
                         menuMgr.ResetViews();
                     } else {
                         menuMgr.initFirstMenuState();

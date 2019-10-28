@@ -34,6 +34,7 @@ let mainMenuCtrl;
 let SettingsOptionCtrl;
 let multiOptionsPreviewCtrl;
 
+let canvas;
 let menu;
 let settingsMenu;
 let menuParent;

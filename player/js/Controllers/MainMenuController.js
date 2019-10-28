@@ -63,6 +63,8 @@ function MainMenuController() {
     let initialSlidingPos;
     let newSeekTime;
 
+    let index = 1;
+
     /**
      * This function initializes and update all the datat and 
      * views of the different groups that compose the main menu.
@@ -194,7 +196,20 @@ function MainMenuController() {
                 menuMgr.Load(SettingsOptionCtrl)
             });
         };
-        data.previewButtonFunc = function(){ AddVisualFeedbackOnClick(settingsView, 'preview-button', function(){menuMgr.OpenPreview()} )};
+        //data.previewButtonFunc = function(){ AddVisualFeedbackOnClick(settingsView, 'preview-button', function(){menuMgr.OpenPreview()} )};
+        data.zoomButtonFunc = function(){ AddVisualFeedbackOnClick(settingsView, 'zoom-button', function(){
+            data.zoomLevel = Math.pow(2,index)%5;
+            settingsView.changeZoomLevelText(data);
+            index +=1;
+            if(index>2) index = 0;
+
+            //let factor = 1 + (0.1 * (data.zoomLevel - 1));
+            let factor = data.zoomLevel;
+            camera.zoom = factor;
+
+            camera.getObjectByName('canvas').scale.set((1/factor), (1/factor), 1); 
+            camera.updateProjectionMatrix();
+        } )};
         data.menuTypeButtonFunc = function(){ AddVisualFeedbackOnClick(settingsView, menuMgr.getMenuType() == 2 ? 'enhanced-menu-button' :'traditional-menu-button', function(){ MenuFunctionsManager.getChangeMenuTypeFunction()} )};
     }
 

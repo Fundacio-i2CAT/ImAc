@@ -12,6 +12,8 @@ function SettingsMenuView() {
         submenu.getObjectByName('enhanced-menu-button').visible = (menuMgr.getMenuType() == 2) ? true : false;
         submenu.getObjectByName('enhanced-menu-button').children[0].onexecute = data.menuTypeButtonFunc; 
 
+        submenu.getObjectByName('zoom-button').children[0].onexecute = data.zoomButtonFunc;
+
 //        submenu.getObjectByName('preview-button').material.color.set( 0xe6e6e6 );
 //        submenu.getObjectByName('preview-button').children[0].onexecute = data.previewButtonFunc;
             
@@ -44,4 +46,21 @@ function SettingsMenuView() {
             interController.addInteractiveObject( sceneElement );
         }, 300);
     };
+
+    this.changeZoomLevelText = function(data){
+        var submenu = scene.getObjectByName(data.name);
+        var zoomLevel = new InteractiveElementModel();
+        zoomLevel.width = 0;
+        zoomLevel.height = 0;
+        zoomLevel.name = 'zoom-level-text';
+        zoomLevel.type = 'text';
+        zoomLevel.text = 'x'+data.zoomLevel;
+        zoomLevel.color = 0xffffff;
+        zoomLevel.textSize = menuWidth/35;
+        zoomLevel.position = submenu.getObjectByName('zoom-level-text').position;
+
+        submenu.remove(submenu.getObjectByName('zoom-level-text'));
+        submenu.add(zoomLevel.create());
+    }
+
 }

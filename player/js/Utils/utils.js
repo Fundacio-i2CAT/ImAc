@@ -258,6 +258,11 @@ function saveConfig()
     document.cookie = "ImAcProfileConfig=" + encodeURIComponent( JSON.stringify( _iconf ) ) + "; max-age=2592000" + "; path=/"; //expires=" + expiresdate.toUTCString(); max-age = 1 mes
 }
 
+
+function resetConfig(){
+    localStorage.removeItem("radarPosition");
+    localStorage.removeItem("signPosition");
+}
 // Converts from degrees to radians.
 Math.radians = function(degrees) {
     return degrees * (Math.PI / 180);

@@ -11,8 +11,6 @@ function MainMenuModel() {
 	this.forwardMenuButtonFunc;
 	this.isPlayOutTimeVisible;
 	this.closeMenuButtonFunc;
-	this.previewButtonFunc;
-	this.isPreviewVisible;
 	this.clickedButtonName;
 
 	//Volume
@@ -23,8 +21,6 @@ function MainMenuModel() {
 	this.backMenuButtonFunc;
 	this.forwardMenuButtonFunc;
 	this.closeMenuButtonFunc;
-	this.previewButtonFunc;
-	this.isPreviewVisible;
 	this.clickedButtonName;
 	this.volumeLevel;
 	this.isVolumeLevelVisible;
@@ -33,6 +29,8 @@ function MainMenuModel() {
 	this.openSettingsMenuButtonFunc;
 	this.menuTypeButtonFunc;
 	this.previewButtonFunc;
+	this.zoomButtonFunc;
+	this.zoomLevel;
 	this.isPreviewVisible;
 	this.clickedButtonName;
 

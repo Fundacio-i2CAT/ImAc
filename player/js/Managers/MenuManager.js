@@ -12,6 +12,8 @@ function MenuManager() {
     let menuActivationElement;
     let optActiveIndex;
 
+    let isMenuOpen;
+
 /**
  * { function_description }
  *
@@ -23,10 +25,10 @@ function MenuManager() {
         menuMgr.setMenuType(type);
 
         //The size depends on the menu type.
-        menuWidth = (menuType == 2) ? 70 : 130;
+        menuWidth = (menuType == 2) ? 80 : 130;
         menuHeight = menuWidth/4;
-        
-        menuParent = _isHMD ? scene : camera;
+
+        menuParent = _isHMD ? scene : canvas;
         menu = vwStrucMMngr.TraditionalMenu('trad-main-menu');
 
 
@@ -44,17 +46,7 @@ function MenuManager() {
             menu.add(settingsMenu);
         } else {
             menuParent.add(settingsMenu);
-        }
-
-        //Canvas
-        let canvas = vwStrucMMngr.createCanvas()
-
-        //Grid Helper
-        let gridHelper = vwStrucMMngr.createGridHelper();
-
-        //Radar
-        let radar = _rdr.getRadarMeshGroup();
-        
+        }  
 
         mainMenuCtrl = new MainMenuController();
         controllers.push(mainMenuCtrl);
@@ -63,11 +55,6 @@ function MenuManager() {
         controllers.push(SettingsOptionCtrl);
 
         menuMgr.ResetViews();
-
-        canvas.add(gridHelper);
-        canvas.add(radar);
-
-        camera.add(canvas);
     }
 
     /**
@@ -115,6 +102,19 @@ function MenuManager() {
         return menuType;
     }
 
+
+    this.setMenuState = function(state) {
+        isMenuOpen = state;
+    }
+
+    /**
+     * Gets the actual control.
+     *
+     * @return     {<type>}  The actual control.
+     */
+    this.getMenuState = function() {
+        return isMenuOpen;
+    }
 /**
  * { function_description }
  *
@@ -251,7 +251,7 @@ function MenuManager() {
  *
  * @function      OpenPreview (name)
  */
-    this.OpenPreview = function() {
+    /*this.OpenPreview = function() {
         let isSubmenuOpen = false; //Settings option menu state;
         let autoPause = false; //Has the video been paused due to opening the preview.
         let previewMesh = vwStrucMMngr.Preview('preview'); //Preview structre
@@ -297,7 +297,25 @@ function MenuManager() {
                 scene.getObjectByName("sign").visible = subController.getSignerEnabled();
             }
         },3000);
+    }*/
+
+    this.checkMenuStateVisibility = function() { 
+        let isSubmenuOpen = false; //Settings option menu state;
+         
+        if(actualCtrl && actualCtrl.getMenuName() === 'trad-option-menu') {
+            isSubmenuOpen = true;
+        }
+
+        if(menuMgr.getMenuType() == 2){
+            scene.getObjectByName('trad-option-menu').visible = isSubmenuOpen;
+            scene.getObjectByName('trad-main-menu').visible = (isSubmenuOpen) ? isSubmenuOpen : menuMgr.getMenuState();
+
+        } else{
+            scene.getObjectByName('trad-option-menu').visible = isSubmenuOpen;
+            scene.getObjectByName('trad-main-menu').visible = !isSubmenuOpen;
+        } 
     }
+
 
 
 /**

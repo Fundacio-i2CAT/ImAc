@@ -81,14 +81,16 @@ THREE.MediaObjectData = function () {
         return getVideoMesh( geometry, url, name, 0 );
     };
 
-    this.getSignVideoMesh = function(url, name, config, hasSLSubtitles) 
-    {
-        var group = new THREE.Group();
+    this.getSignVideoMesh = function(url, name, config, hasSLSubtitles) {
 
-        config.size=20;
+        let signer =  new THREE.Group();
+        signer.name = name;
+        signer.position.set(config.x, config.y, -config.z)
+
 
         var geometry = new THREE.PlaneGeometry( 20, 20 );
-        var plane = getVideoMesh( geometry, url, name, 1 );
+        var video = getVideoMesh( geometry, url, name, 1 );
+        video.name = 'sign-video';
 
         //var material;// = new THREE.MeshBasicMaterial( { color: 0x000000,  transparent: true, opacity: 0.5 } );
         //var mesh;// = new THREE.Mesh( new THREE.PlaneGeometry( 38, 8.4 ), material );
@@ -107,55 +109,72 @@ THREE.MediaObjectData = function () {
             mesh.visible = config.signIndicator == 'arrow' ? true : false;
             mesh.name = 'backgroundSL';
 
-            plane.add( mesh );
+            signer.add( mesh );
         }
 
-        plane.position.z = -config.z;
-        plane.position.x = config.x;
-        plane.position.y = config.y;
+        var signerColorBorderGeom = new THREE.PlaneGeometry( 20, 20, 32 );
+        var signerColorBorderMat = new THREE.MeshBasicMaterial( {color: 0xffff00, side: THREE.DoubleSide} );
+        var signColorBorder = new THREE.Mesh( signerColorBorderGeom, signerColorBorderMat );
+        signColorBorder.name = 'sign-color-boder';
+        signColorBorder.position.z = -0.01;
+        signColorBorder.visible = false;
+        signColorBorder.scale.multiplyScalar(1.05);
 
-        group.add( plane );
+        signer.add(signColorBorder);
 
-        if ( _isHMD ) group.rotation.z = -camera.rotation.z;
+        //if ( _isHMD ) plane.rotation.z = -camera.rotation.z;
+
+        signer.add(video)
  
-        return group;
+        return signer;
     };
 
 
-    this.getSLSubtitleMesh = function(textList, slopacity, slconfig)
-    {
-        var group = new THREE.Group();
-
-        //slconfig.size = 20;
-
+    this.getSLSubtitleMesh = function(textList, slopacity, slconfig){
         var material = new THREE.MeshBasicMaterial( { color: 0x000000,  transparent: true, opacity: 0 } );
         var plane = new THREE.Mesh( new THREE.PlaneGeometry( 20, 20 ), material );
 
-        var group2 = new THREE.Group();
+        var group = new THREE.Group();
 
         var slsize = 0.46;
 
         var font = textList[0].text.length < 14 ? ST_font : ST_font2;
 
-        group2.add( getEmojiSubMesh3( textList, slsize, slopacity, font ) );
+        group.add( getEmojiSubMesh3( textList, slsize, slopacity, font ) );
+        
+        plane.add( group );
 
-        group2.position.y = -10 - 1.9;
-        plane.add( group2 );
-
-        plane.position.z = -slconfig.z;
-        plane.position.x = slconfig.x;
-        plane.position.y = slconfig.y;
+        //plane.position.z = -slconfig.z;
+        //plane.position.x = slconfig.x;
+        //plane.position.y = slconfig.y;
 
         plane.name = 'st4slmesh';
 
-        plane.scale.set(slconfig.size/20, slconfig.size/20, 1);
 
-        //return plane;
-        group.add( plane );
 
-        if ( _isHMD ) group.rotation.z = -camera.rotation.z;
+        var signerColorBorderGeom = new THREE.PlaneGeometry( 20, 20*0.46, 32 );
+        var signerColorBorderMat = new THREE.MeshBasicMaterial( {color: 0xffff00, side: THREE.DoubleSide} );
+        var signColorBorder = new THREE.Mesh( signerColorBorderGeom, signerColorBorderMat );
+        signColorBorder.name = 'st4slmesh-color-boder';
+        signColorBorder.position.z = -0.01;
+        if(elementSelection){
+            signColorBorder.visible =  (elementSelection.name.localeCompare('sign') == 0) ? true : false;
+        } else signColorBorder.visible = false;
         
-        return group;
+
+        signColorBorder.position.y = -10 +(10*0.05);
+        signColorBorder.scale.multiplyScalar(1.05);
+
+        plane.add(signColorBorder);
+
+//        plane.scale.set(slconfig.size/20, slconfig.size/20, 1);
+
+        //if ( _isHMD ) plane.rotation.z = -camera.rotation.z;
+
+        group.position.y = -10 - 1.9;
+
+        
+        return plane;
     };
 
     this.getPreviewSubtitleMesh = function(textList, config)
@@ -164,21 +183,44 @@ THREE.MediaObjectData = function () {
 
         group.add( getPreviewSubMesh( textList, config, ST_font ) );
 
-        if ( _isHMD ) group.rotation.z = -camera.rotation.z;
+        //if ( _isHMD ) group.rotation.z = -camera.rotation.z;
         
         return group;
     };
 
     // subtitols always visible
-    this.getEmojiSubtitleMesh = function(textList, config)
-    {
-        var group = new THREE.Group();
+    this.getEmojiSubtitleMesh = function(t, c, fixed){
+        var cnv = document.getElementById( "canvas" );
+        var ctx = cnv.getContext( "2d" );
+        var ch = 50; // canvas height x line
+        var fh = 40; // font height
 
-        group.add( getEmojiSubMesh( textList, config, ST_font ) );
+        ctx.font = ST_font;
+        var width = ctx.measureText( t[0].text ).width;
+        var width2 = t[1] ? ctx.measureText( t[1].text ).width : 0;
+        cnv.width = ( width > width2 ) ? width + 20 : width2 + 20;
+        cnv.height = ch*t.length;
 
-        if ( _isHMD ) group.rotation.z = -camera.rotation.z;
-        
-        return group;
+        if ( t[0] ) createCanvasTextLine( ctx, t[0].text, ST_font, t[0].color, 0, 0, cnv.width, ch, c.opacity, ( cnv.width - width )/2, fh );
+        if ( t[1] ) createCanvasTextLine( ctx, t[1].text, ST_font, t[1].color, 0, ch, cnv.width, ch, c.opacity, ( cnv.width - width2 )/2, fh + ch );
+
+        var material = new THREE.MeshBasicMaterial( { map: new THREE.CanvasTexture( cnv ),  transparent: true } );
+        var mesh = new THREE.Mesh( new THREE.PlaneGeometry( cnv.width/6, ch*t.length/6 ), material );
+
+        if ( !fixed && c.subtitleIndicator == 'arrow' ) setArrowToMesh( mesh, cnv.width/6, t.length, t[0].color, t[0].backgroundColor, c.opacity );
+
+        mesh.scale.set( c.area*c.size, c.area*c.size, 1 );
+
+        mesh.name = 'emojitext';
+        mesh.renderOrder = 3;
+        mesh.position.z = -c.z;
+        mesh.position.y = c.y;
+        mesh.position.x = c.offset;
+        mesh.visible = true;
+
+        if ( fixed ) mesh.lookAt(0,0,0);
+
+        return mesh;
     };
 
     // subtitols fixed position
@@ -232,6 +274,7 @@ THREE.MediaObjectData = function () {
         config.z = config.z * Math.cos( Math.radians( config.lat ) );
 
         var stmesh = getEmojiSubMesh( textList, config, ST_font, true ) 
+        //var stmesh = _moData.getEmojiSubtitleMesh(textList, config, true);
 
         if ( needajust ) {
             stmesh.position.x = config.z * Math.cos( Math.radians( lon-90 +config.lon) ) * Math.cos( Math.radians( -lat -20) );
@@ -395,20 +438,24 @@ THREE.MediaObjectData = function () {
         var group3 = new THREE.Group();
 
         config.y = -20;
+        config.z = 75;
         
         var mesh = getEmojiSubMesh( textList, config, ST_font, true )
+        //var mesh = _moData.getEmojiSubtitleMesh(textList, config, true)
         mesh.lookAt(new THREE.Vector3(0, 0, 0)); 
 
         group1.add( mesh );
 
 
         var mesh = getEmojiSubMesh( textList, config, ST_font, true )
+        //var mesh = _moData.getEmojiSubtitleMesh(textList, config, true)
         mesh.lookAt(new THREE.Vector3(0, 0, 0)); 
 
         group2.add( mesh );
 
 
         var mesh = getEmojiSubMesh( textList, config, ST_font, true )
+        //var mesh = _moData.getEmojiSubtitleMesh(textList, config, true)
         mesh.lookAt(new THREE.Vector3(0, 0, 0)); 
 
         group3.add( mesh );
@@ -571,24 +618,24 @@ THREE.MediaObjectData = function () {
 
     function getPreviewSubMesh(t, c, font, fixed)
     {
-        var canvas = document.getElementById( "canvas" );
-        var ctx = canvas.getContext( "2d" );
+        var cnv = document.getElementById( "canvas" );
+        var ctx = cnv.getContext( "2d" );
         var ch = 50; // canvas height x line
         var fh = 40; // font height
 
         ctx.font = font;
         var width = ctx.measureText( t[0].text ).width;
         var width2 = t[1] ? ctx.measureText( t[1].text ).width : 0;
-        canvas.width = ( width > width2 ) ? width + 20 : width2 + 20;
-        canvas.height = ch*t.length;
+        cnv.width = ( width > width2 ) ? width + 20 : width2 + 20;
+        cnv.height = ch*t.length;
 
-        if ( t[0] ) createCanvasTextLine( ctx, t[0].text, font, t[0].color, 0, 0, canvas.width, ch, c.opacity, ( canvas.width - width )/2, fh );
-        if ( t[1] ) createCanvasTextLine( ctx, t[1].text, font, t[1].color, 0, ch, canvas.width, ch, c.opacity, ( canvas.width - width2 )/2, fh + ch );
+        if ( t[0] ) createCanvasTextLine( ctx, t[0].text, font, t[0].color, 0, 0, cnv.width, ch, c.opacity, ( cnv.width - width )/2, fh );
+        if ( t[1] ) createCanvasTextLine( ctx, t[1].text, font, t[1].color, 0, ch, cnv.width, ch, c.opacity, ( cnv.width - width2 )/2, fh + ch );
 
-        var material = new THREE.MeshBasicMaterial( { map: new THREE.CanvasTexture( canvas ),  transparent: true } );
-        var mesh = new THREE.Mesh( new THREE.PlaneGeometry( canvas.width/6, ch*t.length/6 ), material );
+        var material = new THREE.MeshBasicMaterial( { map: new THREE.CanvasTexture( cnv ),  transparent: true } );
+        var mesh = new THREE.Mesh( new THREE.PlaneGeometry( cnv.width/6, ch*t.length/6 ), material );
 
-        if ( !fixed && c.subtitleIndicator == 'arrow' ) setPreviewArrowToMesh( mesh, canvas.width/6, t.length, t[0].color, t[0].backgroundColor, c.opacity );
+        if ( !fixed && c.subtitleIndicator == 'arrow' ) setPreviewArrowToMesh( mesh, cnv.width/6, t.length, t[0].color, t[0].backgroundColor, c.opacity );
 
         mesh.scale.set( c.area*c.size, c.area*c.size, 1 );
 
@@ -605,24 +652,24 @@ THREE.MediaObjectData = function () {
 
     function getEmojiSubMesh(t, c, font, fixed)
     {
-        var canvas = document.getElementById( "canvas" );
-        var ctx = canvas.getContext( "2d" );
+        var cnv = document.getElementById( "canvas" );
+        var ctx = cnv.getContext( "2d" );
         var ch = 50; // canvas height x line
         var fh = 40; // font height
 
         ctx.font = font;
         var width = ctx.measureText( t[0].text ).width;
         var width2 = t[1] ? ctx.measureText( t[1].text ).width : 0;
-        canvas.width = ( width > width2 ) ? width + 20 : width2 + 20;
-        canvas.height = ch*t.length;
+        cnv.width = ( width > width2 ) ? width + 20 : width2 + 20;
+        cnv.height = ch*t.length;
 
-        if ( t[0] ) createCanvasTextLine( ctx, t[0].text, font, t[0].color, 0, 0, canvas.width, ch, c.opacity, ( canvas.width - width )/2, fh );
-        if ( t[1] ) createCanvasTextLine( ctx, t[1].text, font, t[1].color, 0, ch, canvas.width, ch, c.opacity, ( canvas.width - width2 )/2, fh + ch );
+        if ( t[0] ) createCanvasTextLine( ctx, t[0].text, font, t[0].color, 0, 0, cnv.width, ch, c.opacity, ( cnv.width - width )/2, fh );
+        if ( t[1] ) createCanvasTextLine( ctx, t[1].text, font, t[1].color, 0, ch, cnv.width, ch, c.opacity, ( cnv.width - width2 )/2, fh + ch );
 
-        var material = new THREE.MeshBasicMaterial( { map: new THREE.CanvasTexture( canvas ),  transparent: true } );
-        var mesh = new THREE.Mesh( new THREE.PlaneGeometry( canvas.width/6, ch*t.length/6 ), material );
+        var material = new THREE.MeshBasicMaterial( { map: new THREE.CanvasTexture( cnv ),  transparent: true } );
+        var mesh = new THREE.Mesh( new THREE.PlaneGeometry( cnv.width/6, ch*t.length/6 ), material );
 
-        if ( !fixed && c.subtitleIndicator == 'arrow' ) setArrowToMesh( mesh, canvas.width/6, t.length, t[0].color, t[0].backgroundColor, c.opacity );
+        if ( !fixed && c.subtitleIndicator == 'arrow' ) setArrowToMesh( mesh, cnv.width/6, t.length, t[0].color, t[0].backgroundColor, c.opacity );
 
         mesh.scale.set( c.area*c.size, c.area*c.size, 1 );
 
@@ -634,6 +681,7 @@ THREE.MediaObjectData = function () {
         mesh.visible = true;
 
         if ( fixed ) mesh.lookAt(0,0,0);
+        if ( _isHMD ) mesh.rotation.z = -camera.rotation.z;
 
         return mesh;
     }
@@ -641,8 +689,8 @@ THREE.MediaObjectData = function () {
     function getEmojiSubMesh3(t, size, opacity, font)
     {
         //t[0].text = ':)'
-        var canvas = document.getElementById( "canvas2" );
-        var ctx = canvas.getContext( "2d" );
+        var cnv = document.getElementById( "canvas2" );
+        var ctx = cnv.getContext( "2d" );
         var ch = 50; // canvas height x line
         var fh = 40; // font height
 
@@ -684,29 +732,29 @@ THREE.MediaObjectData = function () {
 
         ctx.font = font;
         var width = ctx.measureText( t[0].text ).width;
-        canvas.width = 260;
-        canvas.height = ch;
+        cnv.width = 260;
+        cnv.height = ch;
 
         if( il > 0 ) {          
-            createCanvasTextLine( ctx, '', font, t[0].color, 0, 0, canvas.width, ch, opacity, ( canvas.width - width )/2, fh );
+            createCanvasTextLine( ctx, '', font, t[0].color, 0, 0, cnv.width, ch, opacity, ( cnv.width - width )/2, fh );
             ctx.drawImage(drawing, 110, 0, 63, 50);
         }
 
-        else if ( t[0] ) createCanvasTextLine( ctx, t[0].text, font, t[0].color, 0, 0, canvas.width, ch, opacity, ( canvas.width - width )/2, fh );
+        else if ( t[0] ) createCanvasTextLine( ctx, t[0].text, font, t[0].color, 0, 0, cnv.width, ch, opacity, ( cnv.width - width )/2, fh );
 
-        var material = new THREE.MeshBasicMaterial( { map: new THREE.CanvasTexture( canvas ),  transparent: true } );
-        var mesh = new THREE.Mesh( new THREE.PlaneGeometry( canvas.width/6, ch/6 ), material );
+        var material = new THREE.MeshBasicMaterial( { map: new THREE.CanvasTexture( cnv ),  transparent: true } );
+        var mesh = new THREE.Mesh( new THREE.PlaneGeometry( cnv.width/6, ch/6 ), material );
 
         //setArrowToMesh( mesh, canvas.width/6-18, 1, t[0].color, t[0].backgroundColor, 0 );
-        setArrowToMesh( mesh, canvas.width/6-0, 1, t[0].color, t[0].backgroundColor, opacity, true);
+        setArrowToMesh( mesh, cnv.width/6-0, 1, t[0].color, t[0].backgroundColor, opacity, true);
 
         mesh.children[0].visible = false;
         mesh.children[1].visible = false;
 
         mesh.scale.set( size, size, 1 );
         mesh.name = 'emojitext';
-        mesh.renderOrder = 3;
-        mesh.position.z = -0;
+        //mesh.renderOrder = 3;
+        //mesh.position.z = -0;
         mesh.position.y = 0;
         mesh.visible = true;
 

@@ -130,6 +130,12 @@ function AplicationManager()
 
         initReticulum( camera );
 
+        //Init canvas and add the base elements (help grid and radar);
+        canvas = vwStrucMMngr.createCanvas();
+        canvas.add(vwStrucMMngr.createGridHelper());
+        canvas.add(_rdr.getRadarMeshGroup());
+        camera.add(canvas);  
+
         document.addEventListener('mousemove', onDocumentMouseMove, false);
         //document.addEventListener('mousedown', onDocumentMouseDown, false);
 	};
@@ -159,17 +165,20 @@ function AplicationManager()
             }     
         }
 
-        if ( _isHMD && subController.getSubtitleEnabled() ){
-            subController.updateSTRotation();
+        if ( _isHMD ) canvas.rotation.z = -camera.rotation.z;
+
+        /*if ( _isHMD && subController.getSubtitleEnabled() ){
+            //subController.updateSTRotation();
+            camera.getObjectByName('canvas').rotation.z = -camera.rotation.z;
         }
 
         if ( _isHMD && subController.getSignerEnabled() ){
             subController.updateSLRotation();
-        }
+        }*/
 
         if(camera.getObjectByName('radar') && camera.getObjectByName('radar').visible){
             _rdr.updateRadarAreaRotation();
-            if( _isHMD) _rdr.updateRadarMeshRotation()
+            //if( _isHMD) _rdr.updateRadarMeshRotation()
             // Needs a variable for free movement;
             //_rdr.updateRadarPosition();
         }

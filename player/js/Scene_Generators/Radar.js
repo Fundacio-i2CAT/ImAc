@@ -29,9 +29,7 @@ THREE.Radar = function () {
         radarOutline.path = './img/area_7.png';
         radarOutline.color = 0xe6e6e6;
         radarOutline.visible = true;
-        radarOutline.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(14, 14), new THREE.MeshBasicMaterial({visible: false}));
         radarOutline.position = new THREE.Vector3(0, 0, 0.01);
-        //radarOutline.onexecute = function() { console.log("This is the %s button", seekLBtn.name) }
 
         let radarArea = new InteractiveElementModel();
         radarArea.width = 14;
@@ -41,7 +39,6 @@ THREE.Radar = function () {
         radarArea.path = './img/radar_7.png';
         radarArea.color = 0xe6e6e6;
         radarArea.visible = true;
-        radarArea.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(14, 14), new THREE.MeshBasicMaterial({visible: false}));
         radarArea.position = new THREE.Vector3(0, 0, 0.01);
 
         let radarIndicator = new InteractiveElementModel();
@@ -52,7 +49,6 @@ THREE.Radar = function () {
         radarIndicator.path = './img/indicador_7.png';
         radarIndicator.color = 0xe6e6e6;
         radarIndicator.visible = false;
-        radarIndicator.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(14, 14), new THREE.MeshBasicMaterial({visible: false}));
         radarIndicator.position = new THREE.Vector3(0, 0, 0.01);
 
         let radarColorBorder = new THREE.Mesh( new THREE.RingGeometry( 6.5, 7, 64 ), new THREE.MeshBasicMaterial({ color: 0xffff00, side: THREE.FrontSide }));
@@ -65,9 +61,14 @@ THREE.Radar = function () {
         radar.add(radarArea.create());
         radar.add(radarIndicator.create());
 
-        let x = (_isHMD ? 0.6*( 1.48*subController.getSignerArea()/2-20/2 ) : ( 1.48*subController.getSignerArea()/2-20/2 )) * subController.getSignerPosition().x;
-        //radar.position.set(x, 0, -75);
-        radar.position.set(x, 0, 0);
+        
+        if(localStorage.getItem("radarPosition")){
+            let savedPosition = JSON.parse(localStorage.getItem("radarPosition"))
+            radar.position.set(savedPosition.x, savedPosition.y, savedPosition.z);
+        } else {
+            let x = (_isHMD ? 0.6*( 1.48*subController.getSignerArea()/2-20/2 ) : ( 1.48*subController.getSignerArea()/2-20/2 )) * subController.getSignerPosition().x;
+            radar.position.set(x, 0, 0);
+        }
 
         return radar;
     } 
@@ -76,14 +77,13 @@ THREE.Radar = function () {
  * Updates the position if the radar depending on the signer's visibility;
  */
     this.updateRadarPosition = function(){
-        if (radar){
+        if (radar && !localStorage.getItem("radarPosition")){
 	        if(subController.getSignerEnabled()){
                 let offset = -subController.getSubPosition().y * subController.getSignerSize();
 	            radar.position.y = (_isHMD ? scene.getObjectByName('sign').position.y + offset : 0);
-                radar.position.x = (_isHMD ? 0.6*( 1.48*subController.getSignerArea()/2-20/2 ) : ( 1.48*subController.getSignerArea()/2-20/2 )) * subController.getSignerPosition().x;
+                radar.position.x = (_isHMD ? 0.6*( 1.48*subController.getSignerArea()/2-subController.getSignerSize()/2 ) : ( 1.48*subController.getSignerArea()/2-subController.getSignerSize()/2 )) * subController.getSignerPosition().x;
 	        } else {
                 radar.position.y = subController.getSubtitleConfig().y;
-                //radar.position.x = (_isHMD ? 0.8*( 1.48*subController.getSubArea()/2-14/2 ) : ( 1.48*subController.getSubArea()/2-14/2 ));
             }
 	    }
     }
@@ -93,20 +93,21 @@ THREE.Radar = function () {
  *
  * @param      {<type>}  pos     The position
  */
-    this.moveRadar = function(pos){
+    this.move = function(pos){
         if (elementSelection) {
+            scene.getObjectByName('trad-main-menu').visible = false;
+            scene.getObjectByName('trad-option-menu').visible = false;
 
             let w = 1.48*subController.getSignerArea()-14;
             let h = 0.82*subController.getSignerArea()-14;
 
             if(pos.x > -w/2 && pos.x < w/2){
-                camera.getObjectByName('radar').position.x = pos.x; 
+                canvas.getObjectByName('radar').position.x = pos.x; 
             }
 
             if(pos.y > -h/2 && pos.y < h/2){
-                camera.getObjectByName('radar').position.y = pos.y;
+                canvas.getObjectByName('radar').position.y = pos.y;
             } 
-            //localStorage.radar_position = camera.getObjectByName('radar').position;
         }
     }
 

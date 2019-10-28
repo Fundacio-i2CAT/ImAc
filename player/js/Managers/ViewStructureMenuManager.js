@@ -452,7 +452,7 @@ function ViewStructureMenuManager() {
         settingsBtn.position = new THREE.Vector3( menuWidth/4, menuHeight/4, 0.01 );
         settingsBtn.onexecute = function() { console.log("This is the %s button", settingsBtn.name) };
 
-        let previewBtn = new InteractiveElementModel();
+        /*let previewBtn = new InteractiveElementModel();
         previewBtn.width = i6;
         previewBtn.height = i6;
         previewBtn.name = 'preview-button';
@@ -462,7 +462,31 @@ function ViewStructureMenuManager() {
         previewBtn.visible = true;
         previewBtn.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(i6, i6), new THREE.MeshBasicMaterial({visible: false}));
         previewBtn.position = new THREE.Vector3( 3*menuWidth/8, menuHeight/4, 0.01 );
-        previewBtn.onexecute = function() { console.log("This is the %s button", previewBtn.name) };
+        previewBtn.onexecute = function() { console.log("This is the %s button", previewBtn.name) };*/
+
+
+        let zoomBtn = new InteractiveElementModel();
+        zoomBtn.width = i5;
+        zoomBtn.height = i5;
+        zoomBtn.name = 'zoom-button';
+        zoomBtn.type =  'icon';
+        zoomBtn.path = './img/menu/zoom.png';
+        zoomBtn.color = 0xe6e6e6;
+        zoomBtn.visible = true;
+        zoomBtn.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(i6, i6), new THREE.MeshBasicMaterial({visible: false}));
+        zoomBtn.position = new THREE.Vector3( 3*menuWidth/8, menuHeight/4, 0.01 );
+        zoomBtn.onexecute = function() { console.log("This is the %s button", zoomBtn.name) };
+
+        let zoomLvlTxt = new InteractiveElementModel();
+        zoomLvlTxt.width = 0;
+        zoomLvlTxt.height = 0;
+        zoomLvlTxt.name = 'zoom-level-text';
+        zoomLvlTxt.type = 'text';
+        zoomLvlTxt.text = 'x1';
+        zoomLvlTxt.color = 0xe6e6e6;
+        zoomLvlTxt.textSize = menuWidth/35;
+        zoomLvlTxt.visible = true;
+        zoomLvlTxt.position = new THREE.Vector3( 27*menuWidth/64, menuHeight/4 + menuWidth/120, 0.01 );
 
         let tradMenuBtn = new InteractiveElementModel();
         tradMenuBtn.width = menuWidth/25;
@@ -524,6 +548,8 @@ function ViewStructureMenuManager() {
 
         // Add all the created elements to the parent group.
         mainmenu.add(settingsBtn.create());
+        mainmenu.add(zoomBtn.create());
+        mainmenu.add(zoomLvlTxt.create());
 //      mainmenu.add(previewBtn.create());
         mainmenu.add(tradMenuBtn.create());
         mainmenu.add(enhancedMenuBtn.create());
@@ -605,7 +631,8 @@ function ViewStructureMenuManager() {
         
         //The position depends on the menu type.
         if(menuMgr.getMenuType() == 2){
-            mainmenu.position.set( 0, -25, -67 );
+            //mainmenu.position.set( 0, -25, -67 );
+            mainmenu.position.set( 0, -25, 0.02 );
 
             //MENU ONLY DOWN (uncomment for up/down options)
             /*if ( subController.getSubtitleEnabled() ){
@@ -616,6 +643,7 @@ function ViewStructureMenuManager() {
                 
         } else {
             mainmenu.position.set( 0, 0, -67 );
+            mainmenu.position.set( 0, 0, 0.02 );
         }
 
         return mainmenu;
@@ -642,13 +670,14 @@ function ViewStructureMenuManager() {
 
         // The position depends on the menu type.
         if(menuMgr.getMenuType() == 2){
-            tradOptionMenu.position.set(9*menuWidth/32, 0, 0.01);
+            tradOptionMenu.position.set(9*menuWidth/32, 0, 0.02);
 
             //MENU ALLWAYS RIGHT (uncomment for left/right movement)
             //tradOptionMenu.position.set(-subController.getSignerPosition().x * 9*menuWidth/32, 0, 0.01); // The +/100 in height is small margin
            
         } else {
-            tradOptionMenu.position.set(0, 0, -67); 
+            tradOptionMenu.position.set(0, 0, 0.02); 
+            //tradOptionMenu.position.set(0, 0, -67); 
         }
 
         tradOptionMenuBackground.name = 'tradoptionmenubackground';
@@ -798,13 +827,13 @@ function ViewStructureMenuManager() {
         grid.visible = false;
 
         const vFOV = THREE.Math.degToRad( camera.fov ); // convert vertical fov to radians
-        const height = Math.round(2 * Math.tan( vFOV / 2 ) * 75); // visible height
+        const height = Math.round(2 * Math.tan( vFOV / 2 ) * 70); // visible height
         const width = Math.round(height * camera.aspect);           // visible width
 
         const gridBackground =  new THREE.Mesh( new THREE.PlaneGeometry(width, height), new THREE.MeshBasicMaterial({visible: false}));
         gridBackground.name = 'grid-background';
 
-        const fov = _moData.getPlaneImageMesh(1.48*subController.getSubArea(), 0.82*subController.getSubArea(), './img/rect5044.png', 'areamesh', 5);
+        const fov = _moData.getPlaneImageMesh(1.48*subController.getSubArea() *((_isHMD) ? 0.6 : 1) , 0.82*subController.getSubArea()*((_isHMD) ? 0.6 : 1), './img/rect5044.png', 'areamesh', 5);
         fov.name = 'fov';
 
         grid.add(gridBackground);
@@ -818,7 +847,7 @@ function ViewStructureMenuManager() {
 
         var canvas =  new THREE.Mesh( new THREE.PlaneGeometry(1.8 * subController.getSubArea(), 1.1 * subController.getSubArea()), new THREE.MeshBasicMaterial({visible: false}));
         canvas.name = 'canvas';
-        canvas.position.z = -75;
+        canvas.position.z = -70;
         //canvas.visible = false;
 
         return canvas;

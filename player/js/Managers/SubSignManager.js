@@ -196,7 +196,8 @@ SubSignManager = function() {
 		var latitud = subPosY == 1 ? 30 * subArea/100 : -30 * subArea/100; 
   		var posY = _isHMD && !isExperimental ? 80 * Math.sin( Math.radians( latitud ) ) : 135 * Math.sin( Math.radians( latitud ) );
   		var subAjust = _isHMD ? 1 : 0.97;
-  		var posZ = 75;
+  		//var posZ = 70;
+  		var posZ = (_fixedST || isExperimental) ? 70 : 0;
   		var esaySizeAjust = subEasy ? 1.25 : 1;
 
   		subConfig = {
@@ -404,9 +405,10 @@ SubSignManager = function() {
 
 	function createSigner()
 	{
-	   	var posX = _isHMD ? 0.6* ( 1.48*signArea/2-20/2 ) *signPosX : ( 1.48*signArea/2-20/2 ) *signPosX;
-	    var posY = _isHMD ? 0.6* ( 0.82*signArea/2-20/2 ) *signPosY + 1.4 : ( 0.82*signArea/2-20/2 ) *signPosY +1.4;
-	    var posZ = 75;
+	   	var posX = _isHMD ? 0.6 * ( 1.48*signArea/2 - subController.getSignerSize()/2 ) *signPosX : ( 1.48*signArea/2 - subController.getSignerSize()/2 ) *signPosX;
+	    var posY = _isHMD ? 0.6 * ( 0.82*signArea/2 - subController.getSignerSize()/2) *signPosY : ( 0.82*signArea/2 - subController.getSignerSize()/2 ) *signPosY;
+//	    var posZ = 70;
+	    var posZ = 0;
 
 		var conf = {
 			size: signerSize, // signArea/100
@@ -424,9 +426,10 @@ SubSignManager = function() {
 	{
 		if ( scene.getObjectByName("sign") )
 		{
-		   	var posX = _isHMD ? 0.6*( 1.48*signArea/2-20/2 )*signPosX : ( 1.48*signArea/2-20/2 )*signPosX;
-		    var posY = _isHMD ? 0.6*( 0.82*signArea/2-20/2 )*signPosY + 1.4 : ( 0.82*signArea/2-20/2 )*signPosY + 1.4;
-		    var posZ = 75;
+		   	var posX = _isHMD ? 0.6*( 1.48*signArea/2-subController.getSignerSize()/2 )*signPosX : ( 1.48*signArea/2-subController.getSignerSize()/2 )*signPosX;
+		    var posY = _isHMD ? 0.6*( 0.82*signArea/2-subController.getSignerSize()/2 )*signPosY : ( 0.82*signArea/2-subController.getSignerSize()/2 )*signPosY;
+//		    var posZ = 70;
+			var posZ = 0;
 
 		    scene.getObjectByName("sign").position.x = posX;
 		    scene.getObjectByName("sign").position.y = posY;
@@ -439,9 +442,8 @@ SubSignManager = function() {
 		}
 	}
 
-    function createSubtitle(textList, config)
-    {
-        subtitleMesh = !_fixedST ? _moData.getEmojiSubtitleMesh( textList, config ) : _moData.getExpEmojiSubtitleMesh( textList, config );
+    function createSubtitle(textList, config){
+        subtitleMesh = !_fixedST ? _moData.getEmojiSubtitleMesh( textList, config, _fixedST ) : _moData.getExpEmojiSubtitleMesh( textList, config);
         subtitleMesh.name = "subtitles";
 
         // check zoom
@@ -454,8 +456,7 @@ SubSignManager = function() {
 	        	subtitleMesh.scale.set( subtitleMesh.scale.x * 0.5, subtitleMesh.scale.y * 0.5, 1)
 	        }
         }
-
-        _fixedST ? scene.add( subtitleMesh ) : camera.add( subtitleMesh );
+        _fixedST ? scene.add( subtitleMesh ) : canvas.add( subtitleMesh );
     }
 
     function createExpSubtitle(textList, config)
@@ -469,9 +470,10 @@ SubSignManager = function() {
     // Subtitles fixed under SL video
     function createSLSubtitle(textList)
     {
-    	var posX = _isHMD ? 0.6*( 1.48*signArea/2-20/2 ) *signPosX : ( 1.48*signArea/2-20/2 ) *signPosX;
-	    var posY = _isHMD ? 0.6*( 0.82*signArea/2-20/2 ) *signPosY + 1.4 : ( 0.82*signArea/2-20/2 ) *signPosY + 1.4;
-	    var posZ = 75;
+    	var posX = _isHMD ? 0.6*( 1.48*signArea/2-subController.getSignerSize()/2 ) *signPosX : ( 1.48*signArea/2-subController.getSignerSize()/2 ) *signPosX;
+	    var posY = _isHMD ? 0.6*( 0.82*signArea/2-subController.getSignerSize()/2 ) *signPosY : ( 0.82*signArea/2-subController.getSignerSize()/2 ) *signPosY;
+//	    var posZ = 70;
+		var posZ = 0;
 
 		var slconfig = {
 			size: signerSize, // signArea/100
@@ -494,7 +496,7 @@ SubSignManager = function() {
 	        }
         }
 
-        camera.add( subtitleSLMesh );
+        canvas.getObjectByName('sign').add( subtitleSLMesh );
     }
 
     function createSignVideo(url, name, config)
@@ -506,23 +508,23 @@ SubSignManager = function() {
         signerMesh = _moData.getSignVideoMesh( url, name, config, hasSLSubtitles );
         signerMesh.visible = false;
         var SLTimeout = setTimeout( function() { signerMesh.visible = true },700);
-        camera.add( signerMesh );
+		canvas.add( signerMesh );
         subController.setSignerSize(signerSize)
     }
 
-    function createSubAreaHelper(size)
-    {
-    	if ( areaMesh ) camera.remove( areaMesh );
+    function createSubAreaHelper(size){
+    	if ( areaMesh ) canvas.remove( areaMesh );
 
 		var mesh = _moData.getPlaneImageMesh( 1.48*size, 0.82*size, './img/rect5044.png', 'areamesh', 5 );
-		mesh.position.z = -70;
+//		mesh.position.z = -70;
+		mesh.position.z = 0;
 		mesh.autoRemove = function() {
 			var timer = setTimeout(function() {
-	        	camera.remove( mesh );
+	        	canvas.remove( mesh );
 	        }, 1000);
 		}
 		areaMesh = mesh;
-        camera.add( mesh );
+        canvas.add( mesh );
 
         mesh.autoRemove();
     }
@@ -535,7 +537,7 @@ SubSignManager = function() {
     {
     	textListMemory = [];
 
-        (isExperimental || _fixedST) ? scene.remove( subtitleMesh ) : camera.remove( subtitleMesh );
+        (isExperimental || _fixedST) ? scene.remove( subtitleMesh ) : canvas.remove( subtitleMesh );
 
         subtitleMesh = undefined;
     }
@@ -543,9 +545,7 @@ SubSignManager = function() {
     function removeSLSubtitle()
     {
     	SLtextListMemory = [];
-
-        camera.remove( subtitleSLMesh );
-
+		canvas.getObjectByName('sign').remove( subtitleSLMesh );
         subtitleSLMesh = undefined;
     }
 
@@ -554,7 +554,7 @@ SubSignManager = function() {
         if ( signerMesh ) 
         {
             VideoController.removeContentById( signerMesh.name );
-            camera.remove( signerMesh );
+            canvas.remove( signerMesh );
             signerMesh = undefined;
         }
         if ( subtitleSLMesh ) removeSLSubtitle()
@@ -834,7 +834,6 @@ SubSignManager = function() {
 	        if ( r.readyState === 4 && r.status === 200 ) 
 	        {
 	            imsc1doc_SL = imsc.fromXML( r.responseText );
-	            console.log(imsc1doc_SL)	
 	        }
 	        else if ( r.readyState === 4 ) 
 	        {
@@ -1010,7 +1009,7 @@ SubSignManager = function() {
 			scene.getObjectByName("sign").scale.set(signerSize/20, signerSize/20, 1);
 		}
 		if ( subtitleSLMesh ) removeSLSubtitle();
-		//updateSignerPosition();
+		updateSignerPosition();
 	};	
 
 	this.setSignerArea = function(size)
@@ -1301,7 +1300,7 @@ SubSignManager = function() {
     	removeSignVideo();
     }
     
-    this.updateSTRotation = function()
+    /*this.updateSTRotation = function()
     {
     	if ( subtitleMesh && !isExperimental && !_fixedST ) subtitleMesh.rotation.z = -camera.rotation.z;
     }
@@ -1310,7 +1309,7 @@ SubSignManager = function() {
     {
     	if ( signerMesh ) signerMesh.rotation.z = -camera.rotation.z;
     	if ( signerMesh && subtitleSLMesh ) subtitleSLMesh.rotation.z = -camera.rotation.z;
-    }
+    }*/
 
 
 ///////////////////////////////////////////////////////////////////////////////////

@@ -405,9 +405,14 @@ SubSignManager = function() {
 
 	function createSigner()
 	{
-	   	var posX = _isHMD ? 0.6 * ( 1.48*signArea/2 - subController.getSignerSize()/2 ) *signPosX : ( 1.48*signArea/2 - subController.getSignerSize()/2 ) *signPosX;
-	    var posY = _isHMD ? 0.6 * ( 0.82*signArea/2 - subController.getSignerSize()/2) *signPosY : ( 0.82*signArea/2 - subController.getSignerSize()/2 ) *signPosY;
-//	    var posZ = 70;
+		if(localStorage.getItem("signPosition")){
+            let savedPosition = JSON.parse(localStorage.getItem("signPosition"))
+            var posX = savedPosition.x;
+            var posY = savedPosition.y;
+        } else {
+	   		var posX = _isHMD ? 0.6 * ( 1.48*signArea/2 - subController.getSignerSize()/2 ) *signPosX : ( 1.48*signArea/2 - subController.getSignerSize()/2 ) *signPosX;
+	    	var posY = _isHMD ? 0.6 * ( 0.82*signArea/2 - subController.getSignerSize()/2) *signPosY : ( 0.82*signArea/2 - subController.getSignerSize()/2 ) *signPosY;
+        }
 	    var posZ = 0;
 
 		var conf = {
@@ -426,9 +431,39 @@ SubSignManager = function() {
 	{
 		if ( scene.getObjectByName("sign") )
 		{
-		   	var posX = _isHMD ? 0.6*( 1.48*signArea/2-subController.getSignerSize()/2 )*signPosX : ( 1.48*signArea/2-subController.getSignerSize()/2 )*signPosX;
-		    var posY = _isHMD ? 0.6*( 0.82*signArea/2-subController.getSignerSize()/2 )*signPosY : ( 0.82*signArea/2-subController.getSignerSize()/2 )*signPosY;
-//		    var posZ = 70;
+			if(localStorage.getItem("signPosition")){
+	            let savedPosition = JSON.parse(localStorage.getItem("signPosition"))
+	            var posX = savedPosition.x
+	            var posY = savedPosition.y;
+	        } else {
+		   		var posX = _isHMD ? 0.6 * ( 1.48*signArea/2 - subController.getSignerSize()/2 ) *signPosX : ( 1.48*signArea/2 - subController.getSignerSize()/2 ) *signPosX;
+		    	var posY = _isHMD ? 0.6 * ( 0.82*signArea/2 - subController.getSignerSize()/2) *signPosY : ( 0.82*signArea/2 - subController.getSignerSize()/2 ) *signPosY;
+	        }
+			var posZ = 0;
+
+		    scene.getObjectByName("sign").position.x = posX;
+		    scene.getObjectByName("sign").position.y = posY;
+
+		    if ( subtitleSLMesh )
+		    {
+		    	SLtextListMemory = [];
+	    		removeSLSubtitle();
+		    }
+		}
+	}
+
+	this.updateSignerPosition2 = function()
+	{
+		if ( scene.getObjectByName("sign") )
+		{
+			if(localStorage.getItem("signPosition")){
+	            let savedPosition = JSON.parse(localStorage.getItem("signPosition"))
+	            var posX = savedPosition.x
+	            var posY = savedPosition.y;
+	        } else {
+		   		var posX = _isHMD ? 0.6 * ( 1.48*signArea/2 - subController.getSignerSize()/2 ) *signPosX : ( 1.48*signArea/2 - subController.getSignerSize()/2 ) *signPosX;
+		    	var posY = _isHMD ? 0.6 * ( 0.82*signArea/2 - subController.getSignerSize()/2) *signPosY : ( 0.82*signArea/2 - subController.getSignerSize()/2 ) *signPosY;
+	        }
 			var posZ = 0;
 
 		    scene.getObjectByName("sign").position.x = posX;
@@ -485,6 +520,9 @@ SubSignManager = function() {
 
     	subtitleSLMesh = _moData.getSLSubtitleMesh( textList, subBackground, slconfig );
 
+        console.log('CREATE  createSLSubtitle')
+
+
     	// check zoom
         if ( camera.fov < 60 )
         {
@@ -516,6 +554,12 @@ SubSignManager = function() {
     	if ( areaMesh ) canvas.remove( areaMesh );
 
 		var mesh = _moData.getPlaneImageMesh( 1.48*size, 0.82*size, './img/rect5044.png', 'areamesh', 5 );
+
+		canvas.getObjectByName('grid').remove(canvas.getObjectByName('fov'));
+		const fov = _moData.getPlaneImageMesh(1.48*subController.getSubArea() *((_isHMD) ? 0.6 : 1) , 0.82*subController.getSubArea()*((_isHMD) ? 0.6 : 1), './img/rect5044.png', 'areamesh', 5);
+        fov.name = 'fov';
+        canvas.getObjectByName('grid').add(fov);
+
 //		mesh.position.z = -70;
 		mesh.position.z = 0;
 		mesh.autoRemove = function() {
@@ -877,6 +921,8 @@ SubSignManager = function() {
 						scene.getObjectByName("rightSL").visible = false;
 						scene.getObjectByName("leftSL").visible = false;
 					}
+					console.log(scene.getObjectByName("rightSL").visible)
+					console.log(scene.getObjectByName("leftSL").visible)
 		        	_rdr.updateRadarPosition();
 					break;
 			}
@@ -997,7 +1043,11 @@ SubSignManager = function() {
 	this.setSignerPosition = function(x, y)
 	{
 		signPosX = x;
-		signPosY = y;
+		if(subtitleEnabled){
+			signPosY = y;
+		} else{
+			signPosY = -1;
+		} 		
 		updateSignerPosition();
 	};	
 

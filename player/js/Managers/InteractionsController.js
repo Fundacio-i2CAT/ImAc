@@ -260,22 +260,25 @@ THREE.InteractionsController = function () {
 
         let radarArray = [];
         let signArray = [];
+        let menuArray = [];
 
         if (scene.getObjectByName('radar').visible) radarArray = scene.getObjectByName('radar').children;
         if (scene.getObjectByName('sign')) signArray = scene.getObjectByName('sign').children;
+        if (scene.getObjectByName('trad-main-menu')) menuArray = scene.getObjectByName('trad-main-menu').children;
 
-        var intersects = raycaster.intersectObjects( radarArray.concat(signArray) , true );
+        var intersects = raycaster.intersectObjects( radarArray.concat(signArray).concat(menuArray) , true );
 
         if ( intersects[0]){
             if(intersects[0].object.parent.name.localeCompare('radar') == 0){
                 camera.getObjectByName('radar-color-boder').visible = true;
+                elementSelection = intersects[0].object.parent;
+                camera.getObjectByName('grid').visible = true;
             } else if(intersects[0].object.parent.name.localeCompare('sign') == 0){
                 camera.getObjectByName('sign-color-boder').visible = true;
-                camera.getObjectByName('st4slmesh-color-boder').visible = true;
-                
-            }
-            elementSelection = intersects[0].object.parent;
-            camera.getObjectByName('grid').visible = true;
+                if(camera.getObjectByName('st4slmesh-color-boder')) camera.getObjectByName('st4slmesh-color-boder').visible = true;
+                elementSelection = intersects[0].object.parent;
+                camera.getObjectByName('grid').visible = true; 
+            } 
         }
     }
    

@@ -642,7 +642,7 @@ function ViewStructureMenuManager() {
             }*/
                 
         } else {
-            mainmenu.position.set( 0, 0, -67 );
+            //mainmenu.position.set( 0, 0, -67 );
             mainmenu.position.set( 0, 0, 0.02 );
         }
 
@@ -830,7 +830,7 @@ function ViewStructureMenuManager() {
         const height = Math.round(2 * Math.tan( vFOV / 2 ) * 70); // visible height
         const width = Math.round(height * camera.aspect);           // visible width
 
-        const gridBackground =  new THREE.Mesh( new THREE.PlaneGeometry(width, height), new THREE.MeshBasicMaterial({visible: false}));
+        const gridBackground =  new THREE.Mesh( new THREE.PlaneGeometry(width*2, height*2), new THREE.MeshBasicMaterial({visible: false}));
         gridBackground.name = 'grid-background';
 
         const fov = _moData.getPlaneImageMesh(1.48*subController.getSubArea() *((_isHMD) ? 0.6 : 1) , 0.82*subController.getSubArea()*((_isHMD) ? 0.6 : 1), './img/rect5044.png', 'areamesh', 5);

@@ -140,6 +140,13 @@ function MenuManager() {
             optActiveIndex = controller.getMenuIndex();
         }
         actualCtrl = controller;
+
+        if( scene.getObjectByName( "pointer2" ) && _isHMD ){
+            scene.getObjectByName( "pointer2" ).visible = true;
+        }else if( scene.getObjectByName( "pointer" ) && _isHMD ) {
+            scene.getObjectByName( "pointer" ).visible = true;
+            scene.getObjectByName('pointer').scale.set(1*_pointerSize,1*_pointerSize,1*_pointerSize)
+        }
     }
 
 /**
@@ -240,6 +247,7 @@ function MenuManager() {
 
         if (_isHMD) {
             resetMenuPosition( menu )
+            if(menuMgr.getMenuType() == 1) resetMenuPosition( settingsMenu )
         }
 
         menu.visible = true;
@@ -347,10 +355,7 @@ function MenuManager() {
  * @param      {<type>}  object  The object
  */
     function resetMenuPosition(object) {
-        object.position.x = 0;
-        object.position.z = 0;
         object.rotation.y = camera.rotation.y;
-
         object.position.x = Math.sin(-camera.rotation.y)*67;
         object.position.z = -Math.cos(camera.rotation.y)*67;
     }

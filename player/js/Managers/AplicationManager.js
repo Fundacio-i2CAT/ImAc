@@ -195,7 +195,7 @@ function AplicationManager()
         var now = Date.now();
         var dt = now - lastUpdate;
         //Close menu if no interactivity for 10s;
-        if ( dt > 10000 && !scene.getObjectByName( "openMenu" ).visible ) menuMgr.ResetViews();
+        if ( dt > 10000 && (scene.getObjectByName( "openMenu" ) && !scene.getObjectByName( "openMenu" ).visible) ) menuMgr.ResetViews();
         //console.log(dt)
        
         controls.update();

@@ -262,6 +262,9 @@ function saveConfig()
 function resetConfig(){
     localStorage.removeItem("radarPosition");
     localStorage.removeItem("signPosition");
+
+    subController.updateSignerPosition2();
+    _rdr.updateRadarPosition();
 }
 // Converts from degrees to radians.
 Math.radians = function(degrees) {

@@ -204,10 +204,11 @@ function MainMenuController() {
             if(index>2) index = 0;
 
             //let factor = 1 + (0.1 * (data.zoomLevel - 1));
-            let factor = data.zoomLevel;
-            camera.zoom = factor;
+            let zoomFactor = data.zoomLevel;
+            camera.zoom = zoomFactor;
 
-            camera.getObjectByName('canvas').scale.set((1/factor), (1/factor), 1); 
+            canvas.scale.set((1/zoomFactor), (1/zoomFactor), 1); 
+            if(_fixedST) scene.getObjectByName('subtitles').scale.set((1/zoomFactor), (1/zoomFactor), 1); 
             camera.updateProjectionMatrix();
         } )};
         data.menuTypeButtonFunc = function(){ AddVisualFeedbackOnClick(settingsView, menuMgr.getMenuType() == 2 ? 'enhanced-menu-button' :'traditional-menu-button', function(){ MenuFunctionsManager.getChangeMenuTypeFunction()} )};

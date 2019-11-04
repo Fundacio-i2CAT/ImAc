@@ -156,7 +156,6 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 		if(Math.abs(event.pageX - startX) < 2 && Math.abs(event.pageY -startY) < 2) _mouseMoved  = false;
 		if ( _blockControls ) initExtraAdAudio();
 
-		//_mouseMoved = false;
 		if(elementSelection){
 			if (elementSelection.name.localeCompare('slider-progress') == 0) {
 				mainMenuCtrl.setSlidingStatus(false);
@@ -168,7 +167,7 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 			}
 			if(elementSelection.name.localeCompare('sign') == 0){
 				canvas.getObjectByName('sign-color-boder').visible = false;
-                camera.getObjectByName('st4slmesh-color-boder').visible = false;
+                if(camera.getObjectByName('st4slmesh-color-boder')) camera.getObjectByName('st4slmesh-color-boder').visible = false;
 	            localStorage.setItem("signPosition", JSON.stringify(elementSelection.position));
 			}
 			menuMgr.checkMenuStateVisibility();
@@ -176,8 +175,6 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 			elementSelection = null;
 		} else {
 			interController.checkInteraction(mouse2D, scope.object, _mouseMoved);
-			//interController.checkInteraction(mouse2D, scope.object, 'onDocumentMouseUp', _mouseMoved);
-			//interController.checkInteraction(mouse2D, scope.object, _mouseMoved);
 		}
 		
 		this.element.removeEventListener( 'mousemove', this.onDocumentMouseMove, false );
@@ -242,9 +239,7 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 				//var mouse3D = new THREE.Vector2();
 				mouse2D.x = _isHMD ? 0 : ( event.touches[0].pageX / window.innerWidth ) * 2 - 1;
                 mouse2D.y = _isHMD ? 0 : - ( event.touches[0].pageY / window.innerHeight ) * 2 + 1;
-				
-				//INTERACTIVITY DETECT
-                interController.checkInteraction(mouse2D, scope.object, 'onDocumentMouseDown');
+
 
                 if(scene.getObjectByName('trad-main-menu') && scene.getObjectByName('trad-main-menu').visible) {
 			    	interController.checkInteractionVPB( mouse2D, scope.object);   
@@ -256,6 +251,7 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 
 				//tmpQuat.copy( scope.objectPather.quaternion );
 				tmpQuat.copy( scope.object.quaternion );
+
 
 				startX = currentX = event.touches[ 0 ].pageX;
 				startY = currentY = event.touches[ 0 ].pageY;
@@ -334,6 +330,13 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 
 				doZoom( 'out' );
 
+				break;
+
+			case 77:  // m
+				if ( !autopositioning ) {
+					if (scene.getObjectByName( "openMenu" ) && scene.getObjectByName( "openMenu" ).visible ) menuMgr.initFirstMenuState();
+					else menuMgr.ResetViews();
+				}
 				break;
 				
 			default:
@@ -437,13 +440,13 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 		if ( _blockControls ){
 			initExtraAdAudio();
 		} 
-		/*else if ( menuMgr.getMenuType() == 2 && scene.getObjectByName( 'trad-main-menu' ).visible == false && !_mouseMoved ){
+		else if ( menuMgr.getMenuType() == 2 && scene.getObjectByName( 'trad-main-menu' ).visible == false && !_mouseMoved ){
 			menuMgr.initFirstMenuState();			
 		} else if ( menuMgr.getMenuType() == 1 && scene.getObjectByName( 'trad-option-menu' ).visible == false && scene.getObjectByName( 'trad-main-menu' ).visible == false && !_mouseMoved ){
 			menuMgr.initFirstMenuState();
-		} */
+		}
 		
-
+		_mouseMoved = false;
 
 
 		/*if (elementSelection) {
@@ -452,7 +455,11 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 			elementSelection = null;
 		}*/
 
-		_mouseMoved = false;
+		//if(Math.abs(event.touches[ 0 ].pageX - startX) < 10 || Math.abs(event.touches[ 0 ].pageY - startY) < 10) _mouseMoved  = false;
+
+		//INTERACTIVITY DETECT
+        //interController.checkInteraction(mouse2D, scope.object, false);
+        interController.checkInteraction(mouse2D, scope.object, _mouseMoved);
 
 		//startAllAudios();		
 		tpCache = new Array();
@@ -552,23 +559,25 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 
 	function sendVRInteraction(quat)
 	{
-		if ( _blockControls ) initExtraAdAudio();
-		else if ( menuMgr.getMenuType() == 2 && scene.getObjectByName( 'trad-main-menu' ).visible == false ) {
+		if ( _blockControls ){
+			initExtraAdAudio();
+		/*else if ( menuMgr.getMenuType() == 2 && scene.getObjectByName( 'trad-main-menu' ).visible == false ) {
 			menuMgr.initFirstMenuState();
 		}else if ( menuMgr.getMenuType() == 1 && scene.getObjectByName( 'trad-option-menu' ).visible == false && scene.getObjectByName( 'trad-main-menu' ).visible == false ) {
-			menuMgr.initFirstMenuState();
+			menuMgr.initFirstMenuState();*/
 		}else {
+			menuMgr.setMenuState(scene.getObjectByName('trad-main-menu').visible);
 			var direction = new THREE.Vector3( 0, 0, -1 );
 
 			direction.applyQuaternion( quat ).normalize();
-
-			interController.checkInteraction( _origin, direction );
 
 	    	interController.checkInteractionVPB( _origin, direction);
 
         	if(canvas.getObjectByName('radar').visible || canvas.getObjectByName('sign')){
         		interController.checkInteractionCanvasElements( _origin, direction);
         	}
+
+			interController.checkInteraction( _origin, direction, false);
 		}
 	}
 
@@ -581,8 +590,6 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 	{
 		if ( !gamepadConnected ) 
 		{
-			console.log(event);
-
 			gamepadConnected = true;
 			_moData.createPointer2(); 
 
@@ -607,7 +614,7 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 						localStorage.setItem("radraPosition", JSON.stringify(elementSelection.position));
 					} else if(elementSelection.name.localeCompare('sign') == 0){
 						canvas.getObjectByName('sign-color-boder').visible = false;
-		                camera.getObjectByName('st4slmesh-color-boder').visible = false;
+		                if(camera.getObjectByName('st4slmesh-color-boder')) camera.getObjectByName('st4slmesh-color-boder').visible = false;
 			            localStorage.setItem("signPosition", JSON.stringify(elementSelection.position));
 					}
 					canvas.getObjectByName('grid').visible = false;
@@ -628,7 +635,7 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 						localStorage.setItem("radraPosition", JSON.stringify(elementSelection.position));
 					} else if(elementSelection.name.localeCompare('sign') == 0){
 						canvas.getObjectByName('sign-color-boder').visible = false;
-						camera.getObjectByName('st4slmesh-color-boder').visible = false;
+						if(camera.getObjectByName('st4slmesh-color-boder')) camera.getObjectByName('st4slmesh-color-boder').visible = false;
 			            localStorage.setItem("signPosition", JSON.stringify(elementSelection.position));
 					}
 					canvas.getObjectByName('grid').visible = false;
@@ -649,7 +656,7 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 						localStorage.setItem("radraPosition", JSON.stringify(elementSelection.position));
 					} else if(elementSelection.name.localeCompare('sign') == 0){
 						canvas.getObjectByName('sign-color-boder').visible = false;
-						camera.getObjectByName('st4slmesh-color-boder').visible = false;
+						if(camera.getObjectByName('st4slmesh-color-boder')) camera.getObjectByName('st4slmesh-color-boder').visible = false;
 			            localStorage.setItem("signPosition", JSON.stringify(elementSelection.position));
 					}
 					canvas.getObjectByName('grid').visible = false;
@@ -726,8 +733,8 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 		else if(_isHMD)
 		{
 			var mouse3D = new THREE.Vector3( 0, 0, 0 );
-			
-			interController.checkInteraction( mouse3D, scope.object, 'onDocumentMouseMove' );
+
+			//interController.checkInteraction( mouse3D, scope.object, true );
 		}
 
 		_AudioManager.updateRotationMatrix( camera.matrixWorld.elements );

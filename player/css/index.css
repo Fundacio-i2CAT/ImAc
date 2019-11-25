@@ -3,6 +3,10 @@ html {
   font-family: "Roboto", "Roboto-MediumItalic";
 }
 
+canvas {
+    display: block; /* fix necessary to remove space at bottom of canvas */
+}
+
 #container {
   position: relative;
 	background-color: black;

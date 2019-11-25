@@ -239,7 +239,8 @@ THREE.InteractionsController = function () {
 
 
     this.checkInteractionGrid = function(raycaster, mouse2D){
-        var intersects = raycaster.intersectObjects([scene.getObjectByName('grid-background')] , true );
+        var intersects = raycaster.intersectObjects([canvas.getObjectByName('cnv-background')] , true );
+
         if (intersects[0]){
             let v = new  THREE.Vector2(0,0);
             v = intersects[0].object.worldToLocal(intersects[0].point);
@@ -247,6 +248,8 @@ THREE.InteractionsController = function () {
                 _rdr.move(v);
             } else if(elementSelection.name.localeCompare('sign') == 0){
                 _slMngr.move(v);
+            } else if(elementSelection.name.localeCompare('subtitles') == 0){
+                _stMngr.move(v);
             }
         }
     }
@@ -260,24 +263,29 @@ THREE.InteractionsController = function () {
 
         let radarArray = [];
         let signArray = [];
+        let subtitlesArray = [];
         let menuArray = [];
 
         if (scene.getObjectByName('radar').visible) radarArray = scene.getObjectByName('radar').children;
         if (scene.getObjectByName('sign')) signArray = scene.getObjectByName('sign').children;
+        if (scene.getObjectByName('subtitles')) subtitlesArray = scene.getObjectByName('subtitles').children;
         if (scene.getObjectByName('trad-main-menu')) menuArray = scene.getObjectByName('trad-main-menu').children;
 
-        var intersects = raycaster.intersectObjects( radarArray.concat(signArray).concat(menuArray) , true );
+        let intersects = raycaster.intersectObjects( radarArray.concat(signArray).concat(subtitlesArray).concat(menuArray) , true );
 
         if ( intersects[0]){
             if(intersects[0].object.parent.name.localeCompare('radar') == 0){
-                camera.getObjectByName('radar-color-boder').visible = true;
+                camera.getObjectByName('rdr-colorFrame').visible = true;
                 elementSelection = intersects[0].object.parent;
-                camera.getObjectByName('grid').visible = true;
+                //canvas.getObjectByName('cnv-fov').visible = true;
             } else if(intersects[0].object.parent.name.localeCompare('sign') == 0){
-                camera.getObjectByName('sign-color-boder').visible = true;
-                if(camera.getObjectByName('st4slmesh-color-boder')) camera.getObjectByName('st4slmesh-color-boder').visible = true;
+                camera.getObjectByName('sl-colorFrame').visible = true;
                 elementSelection = intersects[0].object.parent;
-                camera.getObjectByName('grid').visible = true; 
+                //canvas.getObjectByName('cnv-fov').visible = true; 
+            } else if(intersects[0].object.parent.name.localeCompare('subtitles') == 0){
+                //camera.getObjectByName('sl-colorFrame').visible = true;
+                elementSelection = intersects[0].object.parent;
+                //canvas.getObjectByName('cnv-fov').visible = true; 
             } 
         }
     }
@@ -350,30 +358,6 @@ THREE.InteractionsController = function () {
             }
         }
 	};
-
-    /*this.checkVRInteraction = function(origin, direction){
-        raycaster.set( origin, direction );
-        var intersects = raycaster.intersectObjects( interactiveListObjects, true ); // false
-        if ( intersects[0] && interactionState ){
-            interactionState = false;
-            lastUpdate = Date.now();
-            var intersectedShapeId;
-            for(var inter = 0; inter < intersects.length; inter++){
-
-
-                if ( localStorage.ImAc_cookies ) gtag('event', 'VRInteraction', {
-                    'event_category' : 'PlayerConfig',
-                    'event_label' : intersects[inter].object.name
-                });
-
-                if ( intersects[inter].object.type == 'Mesh' && intersects[inter].object.onexecute ){
-                    intersects[inter].object.onexecute();
-                    break;
-                }
-            }
-            freeInteractionState(300);
-        }
-    };*/
 
     function onMouseOver(name){
         onMouseOut();

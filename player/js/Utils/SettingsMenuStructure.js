@@ -45,13 +45,13 @@ const settingsDropdownOpt = {title: 'Settings', final: false, options: [
         } 
     },
     { optId: 'settingsST', icon: './img/acc_serv_icon/st_off.png', text: 'Subtitles', 
-        available: function() { return subController.checkisSubAvailable() },
+        available: function() { return _stMngr.checkisSubAvailable() },
         function: function(){
             SettingsOptionCtrl.updateDropdownOptions(settingsSubtitles);
         } 
     },
     { optId: 'settingsSL', icon: './img/acc_serv_icon/sl_off.png', text: 'Signlanguage', 
-        available: function() { return subController.checkisSignAvailable() },
+        available: function() { return _slMngr.checkisSignAvailable() },
         function: function(){ 
             SettingsOptionCtrl.updateDropdownOptions(settingsSignLanguage);
         } 
@@ -377,7 +377,7 @@ const accessSettings = { title: 'Access', icon: './img/menu/accessibility_icon.p
 const settingsAccesLanguages = { title: 'Language', icon: './img/menu/language.png', parent: accessSettings, final: true, options: [
     { optId: 'settingsAccesLanguageEngButton', text: 'English', 
         available: function() { return MenuDictionary.isMainLanguageAvailable('en') }, 
-        default: function(){ return subController.checkSubLanguage('en') },
+        default: function(){ return ('en'.localeCompare(_iconf.stlanguage) == 0) },
         function: function(){ 
             MenuFunctionsManager.changeAccesLanguage('en')(); 
             SettingsOptionCtrl.setChildColumnActiveOpt(settingsAccesLanguages.options[0].optId);
@@ -386,7 +386,7 @@ const settingsAccesLanguages = { title: 'Language', icon: './img/menu/language.p
     }, 
     { optId: 'settingsAccesLanguageEspButton', text: 'Español', 
         available: function() { return MenuDictionary.isMainLanguageAvailable('es') },
-        default: function(){ return subController.checkSubLanguage('es') },
+        default: function(){ return ('es'.localeCompare(_iconf.stlanguage) == 0)  },
         function: function(){ 
             MenuFunctionsManager.changeAccesLanguage('es')(); 
             SettingsOptionCtrl.setChildColumnActiveOpt(settingsAccesLanguages.options[1].optId);
@@ -395,7 +395,7 @@ const settingsAccesLanguages = { title: 'Language', icon: './img/menu/language.p
     }, 
     { optId: 'settingsAccesLanguageGerButton', text: 'Deutsch', 
         available: function() { return MenuDictionary.isMainLanguageAvailable('de') },
-        default: function(){ return subController.checkSubLanguage('de') },
+        default: function(){ return ('de'.localeCompare(_iconf.stlanguage) == 0)  },
         function: function(){ 
             MenuFunctionsManager.changeAccesLanguage('de')(); 
             SettingsOptionCtrl.setChildColumnActiveOpt(settingsAccesLanguages.options[2].optId);
@@ -404,7 +404,7 @@ const settingsAccesLanguages = { title: 'Language', icon: './img/menu/language.p
     }, 
     { optId: 'settingsAccesLanguageCatButton', text: 'Català', 
         available: function() { return MenuDictionary.isMainLanguageAvailable('ca') },
-        default: function(){ return subController.checkSubLanguage('ca') },
+        default: function(){ return ('ca'.localeCompare(_iconf.stlanguage) == 0)  },
         function: function(){ 
             MenuFunctionsManager.changeAccesLanguage('ca')(); 
             SettingsOptionCtrl.setChildColumnActiveOpt(settingsAccesLanguages.options[3].optId);
@@ -439,22 +439,22 @@ const settingsAccesLanguages = { title: 'Language', icon: './img/menu/language.p
 const settingsIndicator = { title: 'Indicator', icon: './img/menu/indicator.png', parent: accessSettings, final: true, preview: true,
 options: [
     { optId: 'settingsIndicatorNone', text: 'None', 
-        default: function(){ return subController.checkSubIndicator('none') },
+        default: function(){ return (stConfig.indicator.localeCompare('none') == 0)},
         function: function(){ 
-            subController.setSubIndicator( "none", settingsIndicator.options[0].optId);
+            _stMngr.setIndicator( "none", settingsIndicator.options[0].optId);
             SettingsOptionCtrl.setChildColumnActiveOpt();
         } 
     }, 
     { optId: 'settingsIndicatorArrows', text: 'Arrow', 
-        default: function(){ return subController.checkSubIndicator('arrow') },
+        default: function(){ return (stConfig.indicator.localeCompare('arrow') == 0) },
         function: function(){ 
-            subController.setSubIndicator( "arrow", settingsIndicator.options[1].optId );
+            _stMngr.setIndicator( "arrow", settingsIndicator.options[1].optId );
         } 
     },
     { optId: 'settingsIndicatorRadar', text: 'Radar', 
-        default: function(){ return subController.checkSubIndicator('radar') },
+        default: function(){ return (stConfig.indicator.localeCompare('radar') == 0) },
         function: function(){ 
-            subController.setSubIndicator( "radar", settingsIndicator.options[2].optId);
+            _stMngr.setIndicator( "radar", settingsIndicator.options[2].optId);
         } 
     }]
 };
@@ -484,46 +484,21 @@ options: [
 const settingsSafeArea = { title: 'SafeArea', icon: './img/menu/safe_area.png', parent: accessSettings, final: true, preview: true,
  options: [
     { optId: 'settingsSafeAreaSmall', text: 'Small', 
-        default: function(){ return subController.checkSubArea(50) },
+        default: function(){ return (50 == stConfig.area) },
         function:  function(){ 
-            subController.setSubArea( 50 );
+            _stMngr.setArea( 50 );
             SettingsOptionCtrl.setChildColumnActiveOpt(settingsSafeArea.options[0].optId);
         } 
     }, 
     { optId: 'settingsSafeAreaLarge', text: 'Large', 
-        default: function(){ return subController.checkSubArea(70) },
+        default: function(){ return (70 == stConfig.area) },
         function:  function(){ 
-            subController.setSubArea( 70 );
+            _stMngr.setArea( 70 );
             SettingsOptionCtrl.setChildColumnActiveOpt(settingsSafeArea.options[1].optId);
         } 
     }]
 };
 
-
-// NOT ACTIVE
-/*const openMenuSystem = { title: 'OpenMenu', icon: '', parent: generalSettings, final: true, options: [
-    { optId: 'openMenuUp', text: 'Up', 
-        default: function(){ return menuUpDown == 1 },
-        function:  function(){
-            //console.log("Open Menu Up");
-            scene.remove(scene.getObjectByName('openMenu'));
-            menuMgr.createMenuActivationElement(0.35);
-            menuUpDown = 1;
-            SettingsOptionCtrl.setChildColumnActiveOpt(openMenuSystem.options[0].optId);
-        } 
-    }, 
-    { optId: 'OpenMenuDown', text: 'Down', 
-        default: function(){ return menuUpDown == -1 },
-        function:  function(){ 
-            //console.log("Open Menu Down");
-            scene.remove(scene.getObjectByName('openMenu'));
-            menuMgr.createMenuActivationElement(2.35);
-            menuUpDown = -1;
-            SettingsOptionCtrl.setChildColumnActiveOpt(openMenuSystem.options[1].optId);
-
-        } 
-    }]
-};*/
 
 /* *************************************** S U B T I T L E S    (ST) ***************************************
  * ╔═════════════════════════════════════╗
@@ -573,7 +548,7 @@ const settingsSubtitles = { title: 'Subtitles', icon: './img/acc_serv_icon/st_of
         } 
     },
     { optId: 'subtitlesEasyRead', icon: './img/menu/easy_to_read.png', text: 'Easytoread', 
-        available: function() { return  subController.checkSubEasyAvailable(subController.getSubLanguage()) },
+        available: function() { return  _stMngr.checkSubEasyAvailable(stConfig.language) },
         function:  function(){ 
             SettingsOptionCtrl.updateDropdownOptions(settingsSubtitlesEasyToRead);
         } 
@@ -608,8 +583,8 @@ const settingsSubtitles = { title: 'Subtitles', icon: './img/acc_serv_icon/st_of
  */
 const settingsSubtitlesLanguage = { title: 'Language', icon: './img/menu/language.png', parent: settingsSubtitles, final: true, options: [
     { optId: 'subtitlesLanguageEngButton', text: 'English', 
-        available: function() { return subController.checkisSubAvailable('en') }, 
-        default: function(){ return subController.checkSubLanguage('en') },
+        available: function() { return _stMngr.checkisSubAvailable('en') }, 
+        default: function(){ return ('en'.localeCompare(_iconf.stlanguage) == 0) },
         function: function(){ 
             MenuFunctionsManager.changeAccesLanguage('en', 'st')(); 
             SettingsOptionCtrl.setChildColumnActiveOpt(settingsSubtitlesLanguage.options[0].optId);
@@ -617,8 +592,8 @@ const settingsSubtitlesLanguage = { title: 'Language', icon: './img/menu/languag
         } 
     }, 
     { optId: 'subtitlesLanguageEspButton', text: 'Español', 
-        available: function() { return subController.checkisSubAvailable('es') },
-        default: function(){ return subController.checkSubLanguage('es') },
+        available: function() { return _stMngr.checkisSubAvailable('es') },
+        default: function(){ return ('es'.localeCompare(_iconf.stlanguage) == 0) },
         function: function(){ 
             MenuFunctionsManager.changeAccesLanguage('es','st')(); 
             SettingsOptionCtrl.setChildColumnActiveOpt(settingsSubtitlesLanguage.options[1].optId);
@@ -626,8 +601,8 @@ const settingsSubtitlesLanguage = { title: 'Language', icon: './img/menu/languag
         } 
     }, 
     { optId: 'subtitlesLanguageGerButton', text: 'Deutsch', 
-        available: function() { return subController.checkisSubAvailable('de') },
-        default: function(){ return subController.checkSubLanguage('de') },
+        available: function() { return _stMngr.checkisSubAvailable('de') },
+        default: function(){ return ('de'.localeCompare(_iconf.stlanguage) == 0) },
         function: function(){ 
             MenuFunctionsManager.changeAccesLanguage('de', 'st')(); 
             SettingsOptionCtrl.setChildColumnActiveOpt(settingsSubtitlesLanguage.options[2].optId);
@@ -635,8 +610,8 @@ const settingsSubtitlesLanguage = { title: 'Language', icon: './img/menu/languag
         } 
     }, 
     { optId: 'subtitlesLanguageCatButton', text: 'Català', 
-        available: function() { return subController.checkisSubAvailable('ca') },
-        default: function(){ return subController.checkSubLanguage('ca') },
+        available: function() { return _stMngr.checkisSubAvailable('ca') },
+        default: function(){ return ('ca'.localeCompare(_iconf.stlanguage) == 0) },
         function: function(){ 
             MenuFunctionsManager.changeAccesLanguage('ca', 'st')(); 
             SettingsOptionCtrl.setChildColumnActiveOpt(settingsSubtitlesLanguage.options[3].optId);
@@ -672,23 +647,23 @@ const settingsSubtitlesLanguage = { title: 'Language', icon: './img/menu/languag
 const settingsSubtitlesSize = { title: 'Size', icon: './img/menu/st_font_size.png', parent: settingsSubtitles, final: true, preview: true,
     options: [
         { optId: 'subtitlesSmallSizeButton', text: 'Small', 
-            default: function(){ return subController.checkSubSize(0.6) },
+            default: function(){ return (0.6 == stConfig.size) },
             function:  function(){ 
-                subController.setSubSize( 0.6 );
+                _stMngr.setSize( 0.6 );
                 SettingsOptionCtrl.setChildColumnActiveOpt(settingsSubtitlesSize.options[0].optId);
             } 
         },
         { optId: 'subtitlesMediumSizeButton', text: 'Medium', 
-            default: function(){ return subController.checkSubSize(0.8) },
+            default: function(){ return (0.8 == stConfig.size) },
             function:  function(){ 
-                subController.setSubSize( 0.8 );
+                _stMngr.setSize( 0.8 );
                 SettingsOptionCtrl.setChildColumnActiveOpt(settingsSubtitlesSize.options[1].optId);
             } 
         },
         { optId: 'subtitlesLargeSizeButton', text: 'Large', 
-            default: function(){ return subController.checkSubSize(1) },
+            default: function(){ return (1 == stConfig.size) },
             function:  function(){ 
-                subController.setSubSize( 1 );
+                _stMngr.setSize( 1 );
                 SettingsOptionCtrl.setChildColumnActiveOpt(settingsSubtitlesSize.options[2].optId);
             } 
         }]
@@ -719,16 +694,16 @@ const settingsSubtitlesSize = { title: 'Size', icon: './img/menu/st_font_size.pn
 const settingsSubtitlesBackground = { title: 'Background', icon: './img/menu/st_background.png', parent: settingsSubtitles, final: true, preview: true,
     options: [
         { optId: 'subtitlesSemitrans', text: 'Semitrans', 
-            default: function(){ return subController.checkSubBackground(0.5) },
+            default: function(){ return (0.5 == stConfig.background) },
             function:  function(){ 
-                subController.setSubBackground( 0.5 );
+                _stMngr.setBackground( 0.5 );
                 SettingsOptionCtrl.setChildColumnActiveOpt(settingsSubtitlesBackground.options[0].optId);
             } 
         },
         { optId: 'subtitlesOutline', text: 'Outline', 
-            default: function(){ return subController.checkSubBackground(0) },
+            default: function(){ return (0 == stConfig.background) },
             function:  function(){ 
-                subController.setSubBackground( 0 );
+                _stMngr.setBackground( 0 );
                 SettingsOptionCtrl.setChildColumnActiveOpt(settingsSubtitlesBackground.options[1].optId);
             } 
         }]
@@ -742,6 +717,10 @@ const settingsSubtitlesBackground = { title: 'Background', icon: './img/menu/st_
  * ║ Top                           Final ║
  * ║─────────────────────────────────────║
  * ║ Bottom                        Final ║
+ * ║─────────────────────────────────────║
+ * ║ Speaker                       Final ║
+ * ║─────────────────────────────────────║
+ * ║ Scene                         Final ║
  * ╚═════════════════════════════════════╝
  * Visual example of dropdown
  *
@@ -760,54 +739,38 @@ const settingsSubtitlesBackground = { title: 'Background', icon: './img/menu/st_
 const settingsSubtitlesPosition = { title: 'Position', icon: './img/menu/st_position.png', parent: settingsSubtitles, final: true, preview: true,
     options: [
         { optId: 'subtitlesTopButton', text: 'Top', 
-            default: function(){ return subController.checkSubPosition(1)},
+            default: function(){ return _stMngr.checkSubPosition(1)},
             function:  function(){
-                subController.setSubPosition( 0, 1 );
-                // experimental fixed position mode
-                subController.changeSTmode(0);
+                _stMngr.setCanvasPos( 0, 1 );
+                _stMngr.changeSTmode(0);
                 SettingsOptionCtrl.setChildColumnActiveOpt(settingsSubtitlesPosition.options[0].optId);
-                if ( subController.getSubtitleEnabled() ){
-                    subController.setSignerPosition( subController.getSignerPosition().x, 1 );
-                    
-                    //MENU ONLY DOWN (uncomment for up/down options)
-                    /*if(menuMgr.getMenuType() == 2){
-                        menu.getObjectByName('trad-main-menu').position.y = -25;
-                    }*/
-
+                if( stConfig.isEnabled ){
+                    _slMngr.setSignerPosition( _slMngr.getSignerPosition().x, 1 );
                 } 
             } 
         },
         { optId: 'subtitlesBottomButton', text: 'Bottom', 
-            default: function(){ return subController.checkSubPosition(-1) },
+            default: function(){ return _stMngr.checkSubPosition(-1) },
             function:  function(){ 
-                subController.setSubPosition( 0, -1 );
-                // experimental fixed position mode
-                subController.changeSTmode(0);
+                _stMngr.setCanvasPos( 0, -1 );
+                _stMngr.changeSTmode(0);
                 SettingsOptionCtrl.setChildColumnActiveOpt(settingsSubtitlesPosition.options[1].optId);
-                if ( subController.getSubtitleEnabled() ) {
-                    subController.setSignerPosition( subController.getSignerPosition().x, -1 );
-                    
-                    //MENU ONLY DOWN (uncomment for up/down options)
-                    /*if(menuMgr.getMenuType() == 2){
-                        menu.getObjectByName('trad-main-menu').position.y = 25;
-                    }*/
-                    
+                if( stConfig.isEnabled ) {
+                    _slMngr.setSignerPosition( _slMngr.getSignerPosition().x, -1 ); 
                 }
             } 
         },
         { optId: 'subtitlesSpeakerButton', text: 'Speaker', 
-            default: function(){ return subController.checkSubPosition(0)},
+            default: function(){ return _stMngr.checkSubPosition(0)},
             function:  function(){
-                // experimental speaker position mode
-                subController.changeSTmode(1);
+                _stMngr.changeSTmode(1);
                 SettingsOptionCtrl.setChildColumnActiveOpt(settingsSubtitlesPosition.options[2].optId);
             } 
         },
         { optId: 'subtitlesScenex3Button', text: 'Scene', 
-            default: function(){ return subController.checkSubPosition(3)},
+            default: function(){ return _stMngr.checkSubPosition(3)},
             function:  function(){
-                // experimental speaker position mode
-                subController.changeSTmode(2);
+                _stMngr.changeSTmode(2);
                 SettingsOptionCtrl.setChildColumnActiveOpt(settingsSubtitlesPosition.options[3].optId);
             } 
         }]
@@ -836,16 +799,16 @@ const settingsSubtitlesPosition = { title: 'Position', icon: './img/menu/st_posi
  */
 const settingsSubtitlesEasyToRead = { title: 'EasytoRead', icon: './img/menu/easy_to_read.png', parent: settingsSubtitles, final: true, options: [
     { optId: 'subtitlesEasyOn', text: 'On', 
-        default: function(){ return subController.checkSubEasy(true) },
+        default: function(){ return stConfig.easy2read },
         function:  function(){ 
-            subController.setSubEasy( true, list_contents[demoId].subtitles[1][subController.getSubLanguage()] );
+            _stMngr.setEasy2Read( true, list_contents[demoId].subtitles[1][stConfig.language] );
             SettingsOptionCtrl.setChildColumnActiveOpt(settingsSubtitlesEasyToRead.options[0].optId)
         } 
     },
     { optId: 'subtitlesEasyOff', text: 'Off', 
-        default: function(){ return subController.checkSubEasy(false) },
+        default: function(){ return !stConfig.easy2read },
         function:  function(){ 
-            subController.setSubEasy( false, list_contents[demoId].subtitles[1][subController.getSubLanguage()] );
+            _stMngr.setEasy2Read( false, list_contents[demoId].subtitles[1][stConfig.language] );
             SettingsOptionCtrl.setChildColumnActiveOpt(settingsSubtitlesEasyToRead.options[1].optId);
         } 
     }]
@@ -891,7 +854,7 @@ const settingsSignLanguage = { title: 'Signlanguage', icon: './img/acc_serv_icon
         } 
     },
     { optId: 'signerDynamic', icon: './img/menu/st_background.png', text: 'Dynamic', 
-        available: function(){ return subController.checkAvailableDynamic()},
+        available: function(){ return _slMngr.checkAvailableDynamic()},
         function:  function(){ 
             SettingsOptionCtrl.updateDropdownOptions(settingsSignLanguageDynamic);
         } 
@@ -926,8 +889,8 @@ const settingsSignLanguage = { title: 'Signlanguage', icon: './img/acc_serv_icon
  */
 const settingsSignerLanguage = { title: 'Language', icon: './img/menu/language.png', parent: settingsSignLanguage, final: true, options: [
     { optId: 'signerLanguageEngButton', text: 'English', 
-        available: function() { return subController.checkisSignAvailable('en') }, 
-        default: function(){ return subController.checkSignLanguage('en') },
+        available: function() { return _slMngr.checkisSignAvailable('en') }, 
+        default: function(){ return ('en'.localeCompare(_iconf.sllanguage) == 0)},
         function: function(){ 
             MenuFunctionsManager.changeAccesLanguage('en', 'sl')(); 
             SettingsOptionCtrl.setChildColumnActiveOpt(settingsSignerLanguage.options[0].optId);
@@ -935,8 +898,8 @@ const settingsSignerLanguage = { title: 'Language', icon: './img/menu/language.p
         } 
     }, 
     { optId: 'signerLanguageEspButton', text: 'Español', 
-        available: function() { return subController.checkisSignAvailable('es') },
-        default: function(){ return subController.checkSignLanguage('es') },
+        available: function() { return _slMngr.checkisSignAvailable('es') },
+        default: function(){ return('es'.localeCompare(_iconf.sllanguage) == 0) },
         function: function(){ 
             MenuFunctionsManager.changeAccesLanguage('es', 'sl')(); 
             SettingsOptionCtrl.setChildColumnActiveOpt(settingsSignerLanguage.options[1].optId);
@@ -944,8 +907,8 @@ const settingsSignerLanguage = { title: 'Language', icon: './img/menu/language.p
         } 
     }, 
     { optId: 'signerLanguageGerButton', text: 'Deutsch', 
-        available: function() { return subController.checkisSignAvailable('de') },
-        default: function(){ return subController.checkSignLanguage('de') },
+        available: function() { return _slMngr.checkisSignAvailable('de') },
+        default: function(){ return ('de'.localeCompare(_iconf.sllanguage) == 0) },
         function: function(){ 
             MenuFunctionsManager.changeAccesLanguage('de', 'sl')(); 
             SettingsOptionCtrl.setChildColumnActiveOpt(settingsSignerLanguage.options[2].optId);
@@ -953,8 +916,8 @@ const settingsSignerLanguage = { title: 'Language', icon: './img/menu/language.p
         } 
     }, 
     { optId: 'signerLanguageCatButton', text: 'Català', 
-        available: function() { return subController.checkisSignAvailable('ca') },
-        default: function(){ return subController.checkSignLanguage('ca') },
+        available: function() { return _slMngr.checkisSignAvailable('ca') },
+        default: function(){ return ('ca'.localeCompare(_iconf.sllanguage) == 0) },
         function: function(){ 
             MenuFunctionsManager.changeAccesLanguage('ca', 'sl')(); 
             SettingsOptionCtrl.setChildColumnActiveOpt(settingsSignerLanguage.options[3].optId);
@@ -988,9 +951,9 @@ const settingsSignerLanguage = { title: 'Language', icon: './img/menu/language.p
 const settingsSignLanguagePosition = { title: 'Position', icon: './img/menu/sl_position.png', parent: settingsSignLanguage, final: true, preview: true,
     options: [
         { optId: 'signerRightButton', text: 'Right', 
-            default: function(){ return subController.checkSignPosition(1) },
+            default: function(){ return _slMngr.checkSignPosition(1) },
             function:  function(){ 
-                subController.setSignerPosition( 1, subController.getSubPosition().y);
+                _slMngr.setSignerPosition( 1, stConfig.canvasPos.y);
                 SettingsOptionCtrl.setChildColumnActiveOpt(settingsSignLanguagePosition.options[0].optId);
                 
                 //MENU ALLWAYS RIGHT (uncomment for left/right movement)
@@ -999,9 +962,9 @@ const settingsSignLanguagePosition = { title: 'Position', icon: './img/menu/sl_p
             } 
         },
         { optId: 'signerLeftButton', text: 'Left', 
-            default: function(){ return subController.checkSignPosition(-1) },
+            default: function(){ return _slMngr.checkSignPosition(-1) },
             function:  function(){ 
-                subController.setSignerPosition( -1, subController.getSubPosition().y);
+                _slMngr.setSignerPosition( -1, stConfig.canvasPos.y);
                 SettingsOptionCtrl.setChildColumnActiveOpt(settingsSignLanguagePosition.options[1].optId);
 
                 //MENU ALLWAYS RIGHT (uncomment for left/right movement)
@@ -1038,23 +1001,23 @@ const settingsSignLanguagePosition = { title: 'Position', icon: './img/menu/sl_p
 const settingsSignLanguageSize = { title: 'Size', icon: './img/menu/sl_size.png', parent: settingsSignLanguage, final: true, preview: true, 
     options: [
         { optId: 'signerSmallSizeButton', text: 'Small', 
-            default: function(){ return subController.checkSignSize(16) },
+            default: function(){ return _slMngr.checkSignSize(16) },
             function:  function(){ 
-                subController.setSignerSize(16);
+                _slMngr.setSignerSize(16);
                 SettingsOptionCtrl.setChildColumnActiveOpt(settingsSignLanguageSize.options[0].optId);
             } 
         }, 
         { optId: 'signerMediumSizeButton', text: 'Medium', 
-            default: function(){ return subController.checkSignSize(18) },
+            default: function(){ return _slMngr.checkSignSize(18) },
             function:  function(){ 
-                subController.setSignerSize(18);
+                _slMngr.setSignerSize(18);
                 SettingsOptionCtrl.setChildColumnActiveOpt(settingsSignLanguageSize.options[1].optId);
             } 
         },
         { optId: 'signerLargeSizeButton', text: 'Large', 
-            default: function(){ return subController.checkSignSize(20) },
+            default: function(){ return _slMngr.checkSignSize(20) },
             function:  function(){ 
-                subController.setSignerSize(20);
+                _slMngr.setSignerSize(20);
                 SettingsOptionCtrl.setChildColumnActiveOpt(settingsSignLanguageSize.options[2].optId);
             } 
         }]
@@ -1085,17 +1048,17 @@ const settingsSignLanguageSize = { title: 'Size', icon: './img/menu/sl_size.png'
 const settingsSignLanguageDynamic = { title: 'Dynamic', icon: './img/menu/st_background.png', parent: settingsSignLanguage, final: true, preview: true,
     options: [
         { optId: 'signerDynamicOn', text: 'On', 
-            default: function(){ return subController.checksignAutoHide(true) },
+            default: function(){ return _slMngr.checksignAutoHide(true) },
             function:  function(){ 
-                subController.setSignerAutoHide( true );
+                slConfig.autoHide = true;
                 SettingsOptionCtrl.setChildColumnActiveOpt(settingsSignLanguageDynamic.options[0].optId);
   
             } 
         },
         { optId: 'signerDynamicOff', text: 'Off', 
-            default: function(){ return subController.checksignAutoHide(false) },
+            default: function(){ return _slMngr.checksignAutoHide(false) },
             function:  function(){ 
-                subController.setSignerAutoHide( false );
+                slConfig.autoHide = false;
                 SettingsOptionCtrl.setChildColumnActiveOpt(settingsSignLanguageDynamic.options[1].optId);
 
             } 

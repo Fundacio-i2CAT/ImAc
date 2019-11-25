@@ -79,7 +79,7 @@ function AplicationManager()
 
 
         // Init World
-        camera = new THREE.PerspectiveCamera( 60.0, window.innerWidth / window.innerHeight, 1, 1000 );
+        camera = new THREE.PerspectiveCamera( 60.0, window.innerWidth / window.innerHeight, 1, 1000);
         camera.name = 'perspectivecamera';
         scene = new THREE.Scene();
         scene.add( camera );
@@ -106,7 +106,7 @@ function AplicationManager()
 
         //scene.add( _moData.getSphericalVideoMesh( 100, mainContentURL, 'contentsphere' ) )
 
-        _isTV ? camera.add( _moData.getDirectiveVideo( mainContentURL, 'contentsphere' ) ) : scene.add( _moData.getSphericalVideoMesh( 100, mainContentURL, 'contentsphere' ) );
+        _isTV ? camera.add( _moData.getDirectiveVideo( mainContentURL, 'contentsphere' ) ) : scene.add( _moData.getSphericalVideoMesh( 1000, mainContentURL, 'contentsphere' ) );
 
         if ( 'getVRDisplays' in navigator ) {
 
@@ -130,11 +130,7 @@ function AplicationManager()
 
         initReticulum( camera );
 
-        //Init canvas and add the base elements (help grid and radar);
-        canvas = vwStrucMMngr.createCanvas();
-        canvas.add(vwStrucMMngr.createGridHelper());
-        canvas.add(_rdr.getRadarMeshGroup());
-        camera.add(canvas);  
+        canvasMgr.Init();
 
         document.addEventListener('mousemove', onDocumentMouseMove, false);
         //document.addEventListener('mousedown', onDocumentMouseDown, false);
@@ -167,20 +163,8 @@ function AplicationManager()
 
         if ( _isHMD ) canvas.rotation.z = -camera.rotation.z;
 
-        /*if ( _isHMD && subController.getSubtitleEnabled() ){
-            //subController.updateSTRotation();
-            camera.getObjectByName('canvas').rotation.z = -camera.rotation.z;
-        }
-
-        if ( _isHMD && subController.getSignerEnabled() ){
-            subController.updateSLRotation();
-        }*/
-
         if(camera.getObjectByName('radar') && camera.getObjectByName('radar').visible){
             _rdr.updateRadarAreaRotation();
-            //if( _isHMD) _rdr.updateRadarMeshRotation()
-            // Needs a variable for free movement;
-            //_rdr.updateRadarPosition();
         }
 
         if( !_isHMD && scene.getObjectByName('trad-option-menu') ) {

@@ -14,7 +14,8 @@
 
 	This library needs to use the global vars:
 		* list_contents
-        * subController
+        * _slMngr
+        * _stMngr
         * _AudioManager
 	
 	FUNCTIONALITIES:
@@ -141,7 +142,7 @@ ManifestParser = function() {
             setSLContent( lang );
         }
 
-        else subController.removeSignVideoByPeriod();    
+        else _stMngr.removeSignVideo();    
     };
 
     var extraURL;
@@ -220,10 +221,10 @@ ManifestParser = function() {
     {
         if ( list_contents[demoId].subtitles && list_contents[demoId].subtitles[0] && Object.entries(list_contents[demoId].subtitles[0]).length > 0 ) 
         {
-            var cookielang = subController.getSTAvailableLang( _iconf.stlanguage, 0 ); //subController.getSubLanguage();
+            var cookielang = _stMngr.getSTAvailableLang( _iconf.stlanguage, 0 ); //_stMngr.getSubLanguage();
             var sublang = cookielang ? cookielang : list_contents[demoId].subtitles[0][lang] ? lang : Object.keys(list_contents[demoId].subtitles[0])[0];
-            subController.setSubtitle( list_contents[demoId].subtitles[0][sublang], sublang );
-            subController.setSubtitleLanguagesArray( list_contents[demoId].subtitles[0] );
+            _stMngr.setSubtitle( list_contents[demoId].subtitles[0][sublang], sublang );
+            _stMngr.setLanguagesArray( list_contents[demoId].subtitles[0] );
         }
     }
 
@@ -231,14 +232,14 @@ ManifestParser = function() {
     {
         if ( list_contents[demoId].signer && list_contents[demoId].signer[0] ) 
         {
-            var cookielang = subController.getSLAvailableLang( _iconf.sllanguage ); //subController.getSignerLanguage();
+            var cookielang = _slMngr.getSLAvailableLang( _iconf.sllanguage ); //_slMngr.getSignerLanguage();
             var siglang = cookielang ? cookielang : list_contents[demoId].signer[0][lang] ? lang : Object.keys(list_contents[demoId].signer[0])[0];
-            subController.setSignerContent( list_contents[demoId].signer[0][siglang], siglang );
-            subController.setSignerLanguagesArray( list_contents[demoId].signer[0] );
+            _slMngr.setSignerContent( list_contents[demoId].signer[0][siglang], siglang );
+            _slMngr.setSignerLanguagesArray( list_contents[demoId].signer[0] );
 
             if ( list_contents[ demoId ].st4sl && list_contents[ demoId ].st4sl[ 0 ] ) {
                 var sigSTlang = list_contents[ demoId ].st4sl[ 0 ][ lang ] ? lang : Object.keys( list_contents[ demoId ].st4sl[ 0 ] )[ 0 ];
-                subController.setSLSubtitle( list_contents[demoId].st4sl[0][sigSTlang], sigSTlang ); 
+                _slMngr.setSLSubtitle( list_contents[demoId].st4sl[0][sigSTlang], sigSTlang ); 
             }
         }
     }

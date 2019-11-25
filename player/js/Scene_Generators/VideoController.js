@@ -14,7 +14,6 @@
     This library needs to use the global vars:
         * _ManifestParser
         * _Sync
-        * subController
         * mainMenuCtrl
         * scene
     
@@ -322,15 +321,12 @@ VideoController = function() {
 
         getAdaptationSets().then(( str ) => { 
 
-            //if ( localStorage.ImAc_roomID != undefined && localStorage.ImAc_roomID != "undefined" ) setTimeout( () => {  _Sync.init( "195.81.194.222", localStorage.ImAc_roomID ); }, 2000);
-
-            //subController.enableSubtitles();
             var firtsIteration = true;
             listOfVideoContents[0].vid.ontimeupdate = function() 
             {
                 if (listOfVideoContents[0].vid.currentTime >= listOfVideoContents[0].vid.duration - 0.5) window.location.reload();
 
-                subController.updateSubtitleByTime( listOfVideoContents[0].vid.currentTime );
+                _stMngr.updateSubtitleByTime( listOfVideoContents[0].vid.currentTime );
 
                 if ( _AudioManager.getADEnabled() ) checkExtraADListByTime( listOfVideoContents[0].vid.currentTime );
 

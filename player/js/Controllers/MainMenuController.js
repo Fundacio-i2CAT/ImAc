@@ -203,12 +203,11 @@ function MainMenuController() {
             index +=1;
             if(index>2) index = 0;
 
-            //let factor = 1 + (0.1 * (data.zoomLevel - 1));
             let zoomFactor = data.zoomLevel;
             camera.zoom = zoomFactor;
 
             canvas.scale.set((1/zoomFactor), (1/zoomFactor), 1); 
-            if(_fixedST) scene.getObjectByName('subtitles').scale.set((1/zoomFactor), (1/zoomFactor), 1); 
+            if(stConfig.fixedSpeaker) scene.getObjectByName('subtitles').scale.set((1/zoomFactor), (1/zoomFactor), 1); 
             camera.updateProjectionMatrix();
         } )};
         data.menuTypeButtonFunc = function(){ AddVisualFeedbackOnClick(settingsView, menuMgr.getMenuType() == 2 ? 'enhanced-menu-button' :'traditional-menu-button', function(){ MenuFunctionsManager.getChangeMenuTypeFunction()} )};
@@ -222,14 +221,14 @@ function MainMenuController() {
     function UpdateAccessOptionsData(){
         //Save the state of all the accessibility services.
         //In case the services is unavailable the button will be disabled and shown in grey.
-        data.isSTenabled = subController.getSubtitleEnabled();
-        data.isSLenabled = subController.getSignerEnabled();
+        data.isSTenabled = stConfig.isEnabled;
+        data.isSLenabled = slConfig.isEnabled;
         data.isADenabled = _AudioManager.getADEnabled();
         data.isASTenabled = _AudioManager.getASTEnabled();
 
         //Save the state of availability of all the accessibility services.
-        data.isSTavailable = subController.checkisSubAvailable();
-        data.isSLavailable = subController.checkisSignAvailable();
+        data.isSTavailable = _stMngr.checkisSubAvailable();
+        data.isSLavailable = _slMngr.checkisSignAvailable();
         data.isADavailable = _AudioManager.checkisADAvailable();
         data.isASTavailable = _AudioManager.checkisASTAvailable();
 
@@ -238,23 +237,14 @@ function MainMenuController() {
             AddVisualFeedbackOnClick(accessOptionsView, data.isSTenabled ? 'show-st-button' : 'disable-st-button', function(){
                 //Change the state of the subtiles from enabled to disabled and viceversa.
                 data.isSTenabled = !data.isSTenabled;
-
-                //MENU ONLY DOWN (uncomment for up/down options)
-                /*if(menuMgr.getMenuType() == 2){
-                    if ( data.isSTenabled ){
-                        menu.position.set( 0, -1 * subController.getSubPosition().y * 25, -67 );
-                    } else {
-                        menu.position.set( 0, -25, -67 );
-                    }
-                }*/
-
-                subController.switchSubtitles(data.isSTenabled);
+                
+                _stMngr.switchSubtitles(data.isSTenabled);
                 SettingsOptionCtrl.UpdateView();
                 accessOptionsView.UpdateAccessibilityOptionsIconStatusView(data);
                 // Add interactivity to visible elements and remove interactivity to none visible elements.
                 menuMgr.AddInteractionIfVisible(viewStructure);
                 //If subtitles are disabled signer goes back to bottom position.
-                subController.setSignerPosition( subController.getSignerPosition().x, data.isSTenabled ? subController.getSubPosition().y : -1 );
+                _slMngr.setSignerPosition( slConfig.canvasPos.x, data.isSTenabled ? stConfig.canvasPos.y : -1 );
             });
         };
 
@@ -263,7 +253,7 @@ function MainMenuController() {
             AddVisualFeedbackOnClick(accessOptionsView, data.isSLenabled ? 'show-sl-button' : 'disable-sl-button',function(){
                 //Change the state of the signer from enabled to disabled and viceversa.
                 data.isSLenabled = !data.isSLenabled;
-                subController.switchSigner(data.isSLenabled);
+                _slMngr.switchSigner(data.isSLenabled);
                 
                 accessOptionsView.UpdateAccessibilityOptionsIconStatusView(data);
                 // Add interactivity to visible elements and remove interactivity to none visible elements.
@@ -432,13 +422,13 @@ function MainMenuController() {
      */
     this.updateAccessOptionsView = function(){
 
-        data.isSTenabled = subController.getSubtitleEnabled();
-        data.isSLenabled = subController.getSignerEnabled();
+        data.isSTenabled = stConfig.isEnabled;
+        data.isSLenabled = slConfig.isEnabled;
         data.isADenabled = _AudioManager.getADEnabled();
         data.isASTenabled = _AudioManager.getASTEnabled();
 
-        data.isSTavailable = subController.checkisSubAvailable();
-        data.isSLavailable = subController.checkisSignAvailable();
+        data.isSTavailable = _stMngr.checkisSubAvailable();
+        data.isSLavailable = _slMngr.checkisSignAvailable();
         data.isADavailable = _AudioManager.checkisADAvailable();
         data.isASTavailable = _AudioManager.checkisASTAvailable();
 

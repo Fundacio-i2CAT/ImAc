@@ -236,18 +236,22 @@ function saveConfig()
     _iconf.userprofile = 'save';
     _iconf.mainlanguage = localStorage.ImAc_language;
     //_iconf.accesslanguage = subController.getSubLanguage();
-    _iconf.stlanguage = subController.getSubLanguage();
-    _iconf.sllanguage = subController.getSignerLanguage();
+    _iconf.stlanguage = stConfig.language;
+    _iconf.stsize = stConfig.size;
+    _iconf.stbackground = stConfig.background;
+    _iconf.safearea = stConfig.area;
+    _iconf.stposition = stConfig.canvasPos;
+    _iconf.ste2r = stConfig.easy2read;
+    _iconf.indicator = stConfig.indicator;
+
+    _iconf.sllanguage = slConfig.language;
+    _iconf.slsize = slConfig.size;
+    _iconf.slposition = _slMngr.getSignerPosition().x == 1 ? 'right' : 'left';
+
+
     _iconf.astlanguage = _AudioManager.getASTLanguage();
     _iconf.adlanguage = _AudioManager.getADLanguage();
-    _iconf.indicator = subController.getSubIndicator();
-    _iconf.safearea = subController.getSubArea() == 70 ? 'L' : subController.getSubArea() == 60 ? 'M' : 'S';
-    _iconf.stsize = subController.getSubSize() == 1 ? 'L' : subController.getSubSize() == 0.8 ? 'M' : 'S';
-    _iconf.stbackground = subController.getSubBackground() == 0.5 ? 'box' : 'outline';
-    _iconf.stposition = subController.getSubPosition().y == -1 ? 'down' : 'up';
-    _iconf.ste2r = subController.getSubEasy() ? 'on' : 'off';
-    _iconf.slsize = subController.getSignerSize() == 20 ? 'L' : subController.getSignerSize() == 18 ? 'M' : 'S';
-    _iconf.slposition = subController.getSignerPosition().x == 1 ? 'right' : 'left';
+
     _iconf.aste2r = _AudioManager.getSubEasy() ? 'on': 'off';
     _iconf.astmode = _AudioManager.getASTPresentation() == 'VoiceOfGod' ? 'god' : 'dynamic';
     _iconf.astvolume = _AudioManager.getASTVolume() == 100 ? 'max' : _AudioManager.getASTVolume() == 50 ? 'mid' : 'min';
@@ -514,4 +518,22 @@ function doZoom(mode)
         //camera.fovx += 10;
         camera.updateProjectionMatrix();
     }
+}
+
+function adaptRGBA(rgb){
+    return ( rgb && rgb.length === 4 ) ? "rgb(" + rgb[0] + "," + rgb[1] + "," + rgb[2] + ")" : '';
+}
+
+function getViewDifPosition(sp, fov){
+    var target = new THREE.Vector3();
+    var camView = camera.getWorldDirection( target );
+      var offset = camView.z >= 0 ? 180 : -0;
+
+    var lon = Math.degrees( Math.atan( camView.x/camView.z ) ) + offset;
+
+    lon = lon > 0 ? 360 - lon : - lon;
+
+    if ( ( lon - sp + 360 )%360 > fov && ( lon - sp + 360 )%360 <= 180 ) return -1; 
+    else if ( ( lon - sp + 360 )%360 > 180 && ( lon - sp + 360 )%360 <= 360 - fov ) return 1;
+    else return 0;
 }

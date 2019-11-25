@@ -167,7 +167,6 @@ function ViewStructureMenuManager() {
         closeBtn.onexecute = function() { console.log("This is the %s button", closeBtn.name) };
 
 
-
         let closeBtnGroup =  new THREE.Group();
 
         closeBtnGroup.name = 'close-button-group';
@@ -197,20 +196,15 @@ function ViewStructureMenuManager() {
 
         mainmenu.add(closeBtnGroup);
 
-
-
         // Add all the created elements to the parent group.
         mainmenu.add(seekLBtn.create());
         mainmenu.add(playBtn.create());
         mainmenu.add(pauseBtn.create());
         mainmenu.add(seekRBtn.create());
-//        mainmenu.add(closeBtn.create());
 
 /************************************\
 |               VOLUME               |
 \************************************/
-        //var  volumemenu =  new THREE.Group();
-        //volumemenu.name = 'volume-menu-group';
 
         let minVolBtn = new InteractiveElementModel();
         minVolBtn.width = menuWidth/40;
@@ -452,19 +446,6 @@ function ViewStructureMenuManager() {
         settingsBtn.position = new THREE.Vector3( menuWidth/4, menuHeight/4, 0.01 );
         settingsBtn.onexecute = function() { console.log("This is the %s button", settingsBtn.name) };
 
-        /*let previewBtn = new InteractiveElementModel();
-        previewBtn.width = i6;
-        previewBtn.height = i6;
-        previewBtn.name = 'preview-button';
-        previewBtn.type =  'icon';
-        previewBtn.path = './img/menu/preview.png';
-        previewBtn.color = 0xe6e6e6;
-        previewBtn.visible = true;
-        previewBtn.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(i6, i6), new THREE.MeshBasicMaterial({visible: false}));
-        previewBtn.position = new THREE.Vector3( 3*menuWidth/8, menuHeight/4, 0.01 );
-        previewBtn.onexecute = function() { console.log("This is the %s button", previewBtn.name) };*/
-
-
         let zoomBtn = new InteractiveElementModel();
         zoomBtn.width = i5;
         zoomBtn.height = i5;
@@ -538,19 +519,14 @@ function ViewStructureMenuManager() {
         mesh.position.set(-menuWidth/2 + menuWidth/25, menuHeight/2 - menuWidth/25, 0.02 );
 
         enhancedMenuBtnGroup.add(mesh);
-
         enhancedMenuBtnGroup.visible = false;
 
-
         mainmenu.add(enhancedMenuBtnGroup);
-
-
 
         // Add all the created elements to the parent group.
         mainmenu.add(settingsBtn.create());
         mainmenu.add(zoomBtn.create());
         mainmenu.add(zoomLvlTxt.create());
-//      mainmenu.add(previewBtn.create());
         mainmenu.add(tradMenuBtn.create());
         mainmenu.add(enhancedMenuBtn.create());
 
@@ -632,17 +608,8 @@ function ViewStructureMenuManager() {
         //The position depends on the menu type.
         if(menuMgr.getMenuType() == 2){
             //mainmenu.position.set( 0, -25, -67 );
-            mainmenu.position.set( 0, -25, 0.02 );
-
-            //MENU ONLY DOWN (uncomment for up/down options)
-            /*if ( subController.getSubtitleEnabled() ){
-                mainmenu.position.set( 0, -1 * subController.getSubPosition().y * 25, -67 );
-            } else {
-                mainmenu.position.set( 0, -25, -67 );
-            }*/
-                
+            mainmenu.position.set( 0, -25, 0.02 );     
         } else {
-            //mainmenu.position.set( 0, 0, -67 );
             mainmenu.position.set( 0, 0, 0.02 );
         }
 
@@ -671,13 +638,8 @@ function ViewStructureMenuManager() {
         // The position depends on the menu type.
         if(menuMgr.getMenuType() == 2){
             tradOptionMenu.position.set(9*menuWidth/32, 0, 0.02);
-
-            //MENU ALLWAYS RIGHT (uncomment for left/right movement)
-            //tradOptionMenu.position.set(-subController.getSignerPosition().x * 9*menuWidth/32, 0, 0.01); // The +/100 in height is small margin
-           
         } else {
             tradOptionMenu.position.set(0, 0, 0.02); 
-            //tradOptionMenu.position.set(0, 0, -67); 
         }
 
         tradOptionMenuBackground.name = 'tradoptionmenubackground';
@@ -687,7 +649,7 @@ function ViewStructureMenuManager() {
         tradOptionMenuTitle.name = 'tradoptionmenutitle';
 
         // Dropdown for the traditional option sub menu.
-        let  tradOptionMenuDropdown =  new THREE.Group();
+        let tradOptionMenuDropdown =  new THREE.Group();
         tradOptionMenuDropdown.name = 'parentcolumndropdown';
 
         let line = _moData.createLine( 0xc91355, new THREE.Vector3( -optWidth/2, -optHeight/2, 0.01 ), new THREE.Vector3( optWidth/2, -optHeight/2, 0.01 ) );
@@ -728,23 +690,10 @@ function ViewStructureMenuManager() {
         closeBtn.position = new THREE.Vector3( optWidth/2 - menuWidth/35, 0, 0.01 );
         closeBtn.onexecute = function() { console.log("This is the %s button", closeBtn.name) };
 
-        let previewBtn = new InteractiveElementModel();
-        previewBtn.width = menuWidth/30;
-        previewBtn.height = menuWidth/30;
-        previewBtn.name = 'preview-button';
-        previewBtn.type =  'icon';
-        previewBtn.path = './img/menu/preview.png';
-        previewBtn.color = 0xe6e6e6;
-        previewBtn.visible = false;
-        previewBtn.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(menuWidth/30, menuWidth/30), new THREE.MeshBasicMaterial({visible: false}));
-        previewBtn.position = new THREE.Vector3( optWidth/2 - menuWidth/15, 0, 0.01 );
-        previewBtn.onexecute = function() { console.log("This is the %s button", previewBtn.name) };
-
         let optTitle = new InteractiveElementModel();
         optTitle.width = 18*menuWidth/200;
         optTitle.height = optHeight;
         optTitle.name = 'settings-opt-title';
-        //optTitle.type =  'mix';
         optTitle.type =  'text';
         optTitle.text = 'Title';
         optTitle.path = '';
@@ -754,13 +703,10 @@ function ViewStructureMenuManager() {
         optTitle.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(optTitle.width, optHeight), new THREE.MeshBasicMaterial({visible:  false}));
         optTitle.position = new THREE.Vector3( 0, 0, 0.01 );
 
-
         // Add all the created elements to the parent group.
         tradOptionMenuTitle.add(line);
         tradOptionMenuTitle.add(backBtn.create());
-//      tradOptionMenuTitle.add(closeBtn.create());
         tradOptionMenuTitle.add(optTitle.create());
-//      tradOptionMenuTitle.add(previewBtn.create());
 
         // Add all the parent elements to the traditional option menu.
         tradOptionMenu.add(checkMark.create());
@@ -769,88 +715,5 @@ function ViewStructureMenuManager() {
         tradOptionMenu.add(tradOptionMenuDropdown);
 
         return tradOptionMenu;
-    }
-
-/**
- * Creates a multi options preview structure.
- *
- * @param      {string}  name    The name
- * @return     {THREE}   { description_of_the_return_value }
- */
-    this.Preview = function(name)
-    {
-        let preview = new THREE.Group();
-        preview.name = name;
-
-        let subtitleMesh =  new THREE.Group();
-        subtitleMesh.name = 'subtitlespreview';
-
-        let subtitlesAreaMesh = new THREE.Group();
-        subtitlesAreaMesh.name = 'areaSTpreview';
-
-        let signerMesh = new THREE.Group();
-        signerMesh.name = 'signerpreview';
-
-        let signerAreaMesh = new THREE.Group();
-        signerAreaMesh.name = 'areaSLpreview';
-
-        preview.add(subtitleMesh);
-        preview.add(subtitlesAreaMesh);
-        preview.add(signerMesh);
-        preview.add(signerAreaMesh);
-
-        let stMesh = scene.getObjectByName("subtitles");
-        if(stMesh) stMesh.visible = false;
-
-        let slMesh = scene.getObjectByName("sign");
-        if(slMesh) slMesh.visible = false;
-
-
-        return preview;
-    }
-
-
-    //NEEDS TO BE MOVED TO OTHER LOCATION
-
-/**
- * Creates a grid helper.
- *
- * @param      {<type>}  opts    The options
- * @return     {THREE}   { description_of_the_return_value }
- */
-    this.createGridHelper = function(opts){
-
-        let grid =  new THREE.Group();
-        grid.name = 'grid';
-        //grid.position.z = -75.001;
-        grid.position.z = 0.01;
-        grid.visible = false;
-
-        const vFOV = THREE.Math.degToRad( camera.fov ); // convert vertical fov to radians
-        const height = Math.round(2 * Math.tan( vFOV / 2 ) * 70); // visible height
-        const width = Math.round(height * camera.aspect);           // visible width
-
-        const gridBackground =  new THREE.Mesh( new THREE.PlaneGeometry(width*2, height*2), new THREE.MeshBasicMaterial({visible: false}));
-        gridBackground.name = 'grid-background';
-
-        const fov = _moData.getPlaneImageMesh(1.48*subController.getSubArea() *((_isHMD) ? 0.6 : 1) , 0.82*subController.getSubArea()*((_isHMD) ? 0.6 : 1), './img/rect5044.png', 'areamesh', 5);
-        fov.name = 'fov';
-
-        grid.add(gridBackground);
-        grid.add(fov);
-
-        return grid
-    }
-
-
-    this.createCanvas = function(){
-
-        var canvas =  new THREE.Mesh( new THREE.PlaneGeometry(1.8 * subController.getSubArea(), 1.1 * subController.getSubArea()), new THREE.MeshBasicMaterial({visible: false}));
-        canvas.name = 'canvas';
-        canvas.position.z = -70;
-        //canvas.visible = false;
-
-        return canvas;
-
     }
 }

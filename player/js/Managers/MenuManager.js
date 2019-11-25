@@ -31,12 +31,8 @@ function MenuManager() {
         menuParent = _isHMD ? scene : canvas;
         menu = vwStrucMMngr.TraditionalMenu('trad-main-menu');
 
-
-        //Add the menu to the parent element.
         if (_isHMD) {
-            //console.log("This function is used. But is it vital?");
             menu.scale.set( 0.8, 0.8, 0.8 );
-            //traditionalmenu.scale.set( 0.8, 0.8, 0.8 );
         }
         menuParent.add(menu);
 
@@ -56,6 +52,8 @@ function MenuManager() {
 
         menuMgr.ResetViews();
     }
+
+    
 
     /**
      * Sets the option active index.
@@ -252,60 +250,6 @@ function MenuManager() {
 
         menu.visible = true;
     }
-
-/**
- * Opens a preview during 2000ms. This function pauses the video so the user does not loose any content time.
- * The preview consists of a pre visualitzation of the enabled access service users settings.
- *
- * @function      OpenPreview (name)
- */
-    /*this.OpenPreview = function() {
-        let isSubmenuOpen = false; //Settings option menu state;
-        let autoPause = false; //Has the video been paused due to opening the preview.
-        let previewMesh = vwStrucMMngr.Preview('preview'); //Preview structre
-        previewCtrl = new PreviewController(); //Preview controller from the model (MVC);
-
-        //Save the settings options menu state (open/close) in isSubmenuOpen variable;
-        if(actualCtrl && actualCtrl.getMenuName() === 'trad-option-menu') {
-            isSubmenuOpen = true;
-        }
-        //If the video is already paused, do not apuse it again
-        if(!VideoController.isPausedById(0)){
-            autoPause = true; //The auto pasue in preview state is active.
-            VideoController.pauseAll(); //Auto pause the video during the preview.
-        }
-        //Add the preview element to the camera so the preview is allways centered in the user FoV.
-        camera.add(previewMesh);
-        //Remove all the menu elements from the camera/scene;
-        menuMgr.ResetViews();
-        //Start the preview visualitzation.
-        previewCtrl.Init();
-        //Return to the previous menu state in 2000ms.
-        setTimeout(function() {
-            //Close the preview.
-            previewCtrl.Exit();
-            //Only play if the auto pause is active. If the video was paused in first state do not play it.
-            if(autoPause){
-                VideoController.playAll();
-            }
-            //Start the menu in the first state.
-            if(menuMgr.getMenuType() == 2){
-                menuMgr.initFirstMenuState();
-            } 
-            //Open the settings option menu if it was already open before opening the preview.
-            if(isSubmenuOpen){
-              menuMgr.Load(SettingsOptionCtrl);  
-            } 
-            //Show subtitles if they where enabled.
-            if(scene.getObjectByName("subtitles")){
-                scene.getObjectByName("subtitles").visible = subController.getSubtitleEnabled();
-            }
-            //Show signer if it was enabled.
-            if(scene.getObjectByName("sign")) {
-                scene.getObjectByName("sign").visible = subController.getSignerEnabled();
-            }
-        },3000);
-    }*/
 
     this.checkMenuStateVisibility = function() { 
         let isSubmenuOpen = false; //Settings option menu state;

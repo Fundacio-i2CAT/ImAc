@@ -39,19 +39,26 @@ var _ImAcCookies = false;
 
         checkCookies();
         
-        $.getJSON('./content.json', function(json)
-        {
-            list_contents = json.contents;
+        //Remote
+        $.getJSON("https://imac.gpac-licensing.com/imac_content/content.json")
+        //Local            
+        //$.getJSON('./content.json')
+            .done(function( json ) {
+                list_contents = json.contents;
 
-            if ( localStorage.ImAc_voiceControl == 'on' ) connectVoiceControl( localStorage.ImAc_voiceControlId, "http://51.89.138.157:3000/" );
+                if ( localStorage.ImAc_voiceControl == 'on' ) connectVoiceControl( localStorage.ImAc_voiceControlId, "http://51.89.138.157:3000/" );
 
-            for (var i = 0; i < list_contents.length; i++) 
-            {
-                createListGroup( i, list_contents[i].thumbnail, list_contents[i].name, list_contents[i].duration );
-            }
+                for (var i = 0; i < list_contents.length; i++) 
+                {
+                    createListGroup( i, list_contents[i].thumbnail, list_contents[i].name, list_contents[i].duration );
+                }
 
-            translateAll( _ImAc_default.mainlanguage )
-            translateContentDesc( _ImAc_default.mainlanguage )
+                translateAll( _ImAc_default.mainlanguage )
+                translateContentDesc( _ImAc_default.mainlanguage )
+          })
+          .fail(function( jqxhr, textStatus, error ) {
+            var err = textStatus + ", " + error;
+            console.log( "Request Failed: " + err );
         });
     }
 

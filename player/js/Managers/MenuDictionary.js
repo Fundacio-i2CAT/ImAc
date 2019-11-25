@@ -181,7 +181,7 @@ MenuDictionary = function() {
     };
 
     this.isMainLanguageAvailable = function(lang){
-        return (subController.checkisSubAvailable(lang) || subController.checkisSignAvailable(lang) || 
+        return (_stMngr.checkisSubAvailable(lang) || _slMngr.checkisSignAvailable(lang) || 
                  _AudioManager.checkisADAvailable(lang) || _AudioManager.checkisASTAvailable(lang));
     };
 

@@ -2,46 +2,40 @@
  * @author isaac.fraile@i2cat.net
  */
 
- // used libs: subController, MenuManager, interController, MenuController, AplicationManager
+ // used libs: _slMngr, _stMngr, MenuManager, interController, MenuController, AplicationManager
  // used globals: subtitlesLanguage....., camera, autopositioning, menuList
 
 MenuFunctionsManager = function() {
 
-    function getUpdateAccesLanguage(lang, accesService)
-    {
-        return function() 
-        {
+    function getUpdateAccesLanguage(lang, accesService){
+        return function(){
             //_iconf.accesslanguage = lang;
-            var ste2r = subController.getSubEasy() ? 1 : 0;
-            var aste2r = _AudioManager.getSubEasy() ? 1 : 0;
 
             switch(accesService){
 
                 case 'st':
 
-                    if ( list_contents[ demoId ].subtitles && list_contents[ demoId ].subtitles[ ste2r ] && subController.checkisSubAvailable( lang )) 
-                    {
+                    let ste2r = stConfig.easy2Read ? 1 : 0;
+                    if ( list_contents[ demoId ].subtitles && list_contents[ demoId ].subtitles[ ste2r ] && _stMngr.checkisSubAvailable( lang )) {
                         _iconf.stlanguage = lang;
-                        subController.setSubtitle( list_contents[ demoId ].subtitles[ ste2r ][ lang ], lang );
-                    } else {
-                        subController.disableSubtiles();
+                        _stMngr.setSubtitle( list_contents[ demoId ].subtitles[ ste2r ][ lang ], lang );
+                    }else {
+                        _stMngr.disableSubtiles();
                     }
                     break;
 
                 case 'sl':
                     
-                    if ( list_contents[ demoId ].signer && list_contents[ demoId ].signer[ 0 ] && subController.checkisSignAvailable( lang )) 
-                    {
+                    if ( list_contents[ demoId ].signer && list_contents[ demoId ].signer[ 0 ] && _slMngr.checkisSignAvailable( lang )) {
                         _iconf.sllanguage = lang;
-                        subController.setSignerContent( list_contents[ demoId ].signer[ 0 ][ lang ], lang );
+                        _slMngr.setSignerContent( list_contents[ demoId ].signer[ 0 ][ lang ], lang );
+                    }else {
+                        _slMngr.disableSigner();
                     } 
-                    else 
-                    {
-                        subController.disableSigner();
-                    } 
-                    if ( list_contents[ demoId ].st4sl && list_contents[ demoId ].st4sl[ 0 ] && subController.checkisSignAvailable( lang )) {
+
+                    if ( list_contents[ demoId ].st4sl && list_contents[ demoId ].st4sl[ 0 ] && _slMngr.checkisSignAvailable( lang )) {
                         var siglang = list_contents[ demoId ].st4sl[ 0 ][ lang ] ? lang : Object.keys( list_contents[ demoId ].st4sl[ 0 ] )[ 0 ];
-                        subController.setSLSubtitle( list_contents[demoId].st4sl[0][siglang], siglang ); 
+                        _slMngr.setSLSubtitle( list_contents[demoId].st4sl[0][siglang], siglang ); 
                     }              
                     break;
 
@@ -57,10 +51,12 @@ MenuFunctionsManager = function() {
 
                 case 'ast':
                     //_iconf.astlanguage = lang;
+                    let aste2r = _AudioManager.getSubEasy() ? 1 : 0;
+
                     if ( list_contents[ demoId ].ast && list_contents[ demoId ].ast[ aste2r ] && _AudioManager.checkisASTAvailable( lang )) {
                         var astlang = list_contents[ demoId ].ast[ aste2r ][ lang ] ? lang : Object.keys( list_contents[ demoId ].ast[ aste2r ] )[ 0 ];
                         _AudioManager.setASTContent( list_contents[ demoId ].ast[ aste2r ][ astlang ], astlang );
-                    } else {
+                    }else {
                         //_AudioManager.disableAST(); // TODO
                     }                
                     break;
@@ -148,14 +144,14 @@ MenuFunctionsManager = function() {
     function getSubOnOffFunc(isEnabled)
     {
         return function() {
-            subController.switchSubtitles(isEnabled);
+            _stMngr.switchSubtitles(isEnabled);
         }
     }
 
     function getSignerOnOffFunc(isEnabled)
     {
         return function() {
-            subController.switchSigner( isEnabled );
+            _slMngr.switchSigner( isEnabled );
         }
     }
 

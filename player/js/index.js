@@ -11,6 +11,7 @@ var _rdr = new THREE.Radar();
 
 var vwStrucMMngr = new ViewStructureMenuManager();
 var menuMgr = new MenuManager();
+var canvasMgr = new CanvasManager();
 
 var MenuDictionary = new MenuDictionary();
 
@@ -40,11 +41,6 @@ let settingsMenu;
 let menuParent;
 let menuHeight;
 let menuWidth;
-let menuPositionY;
-let mensuSettingsPostionX;
-
-let menuUpDown = 1;
-
 
 var loggerActivated = false;
 
@@ -59,7 +55,6 @@ var list_contents;
 
 var __etype = 0;
 
-var _fixedST = false;
 var _SLsubtitles = false;
 var _iconf;
 var _userprofile = true;
@@ -88,6 +83,14 @@ let isMenuInteracted = false;
 
 var lastUpdate = Date.now();
 
+var imsc1doc;
+var imsc1doc_SL;
+
+let stConfig;
+let slConfig;
+let adConfig;
+let astConfig;
+
 /**
  * Initializes the web player.
  */
@@ -105,49 +108,58 @@ function init_webplayer()
 
     _moData.setFont('./css/fonts/TiresiasScreenfont_Regular.json').then(() => { 
 
-        $.getJSON('../content.json', function(json)
-        {
-            list_contents = json.contents;
+        //Remote
+        $.getJSON("https://imac.gpac-licensing.com/imac_content/content.json")
+        //Local            
+        //$.getJSON('./content.json')
+            .done(function( json ) {
+                list_contents = json.contents;
 
-            loadEmojisIcons()
+                loadEmojisIcons()
 
-            if ( myhash && myhash[1] && myhash[1] < list_contents.length && list_contents[ myhash[1] ] && localStorage.ImAc_init == myhash[1] ) 
-            {
-                demoId = myhash[1];
-                
-                localStorage.removeItem('ImAc_init');
-                localStorage.ImAc_language ? MenuDictionary.setMainLanguage( localStorage.ImAc_language ) : MenuDictionary.setMainLanguage( 'en' );
-
-                _isTV = localStorage.ImAc_lineal == 'true' && list_contents[ myhash[1] ].urlTV ? true : false;
-
-                mainContentURL = ( _isTV && list_contents[ myhash[1] ].urlTV ) ? list_contents[ myhash[1] ].urlTV : list_contents[ myhash[1] ].url;
-
-                if ( localStorage.ImAc_voiceControl == 'on' ) connectVoiceControl( localStorage.ImAc_voiceControlId, "http://51.89.138.157:3000/" );
-
-                ///////////////////////////////////////////////////////////////
-                var cookieconf = readCookie("ImAcProfileConfig");
-
-                if ( cookieconf && cookieconf != null )
+                if ( myhash && myhash[1] && myhash[1] < list_contents.length && list_contents[ myhash[1] ] && localStorage.ImAc_init == myhash[1] ) 
                 {
-                    _iconf = JSON.parse( cookieconf );
+                    demoId = myhash[1];
+                    
+                    localStorage.removeItem('ImAc_init');
+                    localStorage.ImAc_language ? MenuDictionary.setMainLanguage( localStorage.ImAc_language ) : MenuDictionary.setMainLanguage( 'en' );
 
-                    //_iconf.menutype= 'ls';
+                    //_isTV = localStorage.ImAc_lineal == 'true' && list_contents[ myhash[1] ].urlTV ? true : false;
+                    _isTV = (list_contents[ myhash[1] ].urlTV) ? true : false;
 
-                    console.log( _iconf )
-                    subController.setSTConfig( _iconf );
-                    subController.setSLConfig( _iconf );
-                    _AudioManager.setADConfig( _iconf );
-                    _AudioManager.setASTConfig( _iconf );
-                    iniGeneralSettings( _iconf );
+                    console.log(_isTV)
+
+                    mainContentURL = ( _isTV && list_contents[ myhash[1] ].urlTV ) ? list_contents[ myhash[1] ].urlTV : list_contents[ myhash[1] ].url;
+
+                    if ( localStorage.ImAc_voiceControl == 'on' ) connectVoiceControl( localStorage.ImAc_voiceControlId, "http://51.89.138.157:3000/" );
+
+                    ///////////////////////////////////////////////////////////////
+                    var cookieconf = readCookie("ImAcProfileConfig");
+
+                    if ( cookieconf && cookieconf != null )
+                    {
+                        _iconf = JSON.parse( cookieconf );
+                        
+                        stConfig = _stMngr.initConfig( _iconf );
+                        slConfig = _slMngr.initConfig( _iconf );
+                        adConfig =  _AudioManager.setADConfig( _iconf );
+                        astConfig =  _AudioManager.setASTConfig( _iconf );
+
+                        console.log( _iconf )
+                        iniGeneralSettings( _iconf );
+                    }
+                    ////////////////////////////////////////////////////////////////
+
+                    if ( !_iconf ) _iconf = [];
+
+                    AplicationManager.init();
+
                 }
-                ////////////////////////////////////////////////////////////////
-
-                if ( !_iconf ) _iconf = [];
-
-                AplicationManager.init();
-
-            }
-            else window.location = window.location.origin + window.location.pathname.slice(0, -7);
+                else window.location = window.location.origin + window.location.pathname.slice(0, -7);
+          })
+          .fail(function( jqxhr, textStatus, error ) {
+            var err = textStatus + ", " + error;
+            console.log( "Request Failed: " + err );
         });
     });
 }

@@ -15,7 +15,7 @@ THREE.Radar = function () {
  *
  * @return     {Group}  The radar mesh group.
  */
-	this.getRadarMeshGroup = function(){
+	this.createRadarMeshGroup = function(){
 
         radar =  new THREE.Group();
         radar.name = 'radar';
@@ -24,7 +24,7 @@ THREE.Radar = function () {
         let radarOutline = new InteractiveElementModel();
         radarOutline.width = 14;
         radarOutline.height = 14;
-        radarOutline.name = 'radar-outline';
+        radarOutline.name = 'rdr-outline';
         radarOutline.type =  'icon';
         radarOutline.path = './img/area_7.png';
         radarOutline.color = 0xe6e6e6;
@@ -34,7 +34,7 @@ THREE.Radar = function () {
         let radarArea = new InteractiveElementModel();
         radarArea.width = 14;
         radarArea.height = 14;
-        radarArea.name = 'radar-area';
+        radarArea.name = 'rdr-area';
         radarArea.type =  'icon';
         radarArea.path = './img/radar_7.png';
         radarArea.color = 0xe6e6e6;
@@ -44,7 +44,7 @@ THREE.Radar = function () {
         let radarIndicator = new InteractiveElementModel();
         radarIndicator.width = 14;
         radarIndicator.height = 14;
-        radarIndicator.name = 'radar-indicator';
+        radarIndicator.name = 'rdr-indicator';
         radarIndicator.type =  'icon';
         radarIndicator.path = './img/indicador_7.png';
         radarIndicator.color = 0xe6e6e6;
@@ -54,7 +54,7 @@ THREE.Radar = function () {
         let radarColorBorder = new THREE.Mesh( new THREE.RingGeometry( 6.5, 7, 64 ), new THREE.MeshBasicMaterial({ color: 0xffff00, side: THREE.FrontSide }));
         radarColorBorder.position.set(0, 0, 0.01);
         radarColorBorder.visible = false;
-        radarColorBorder.name = 'radar-color-boder';
+        radarColorBorder.name = 'rdr-colorFrame';
 
         radar.add(radarColorBorder);
         radar.add(radarOutline.create());
@@ -66,7 +66,8 @@ THREE.Radar = function () {
             let savedPosition = JSON.parse(localStorage.getItem("radarPosition"))
             radar.position.set(savedPosition.x, savedPosition.y, savedPosition.z);
         } else {
-            let x = (_isHMD ? 0.6*( 1.48*subController.getSignerArea()/2-20/2 ) : ( 1.48*subController.getSignerArea()/2-20/2 )) * subController.getSignerPosition().x;
+            let slArea = _slMngr.getSignerArea();
+            let x = (_isHMD ? 0.6*( 1.48*slArea/2 - 20/2) : ( 1.48*slArea/2 - 20/2 )) * _slMngr.getSignerPosition().x;
             radar.position.set(x, 0, 0);
         }
 
@@ -78,12 +79,15 @@ THREE.Radar = function () {
  */
     this.updateRadarPosition = function(){
         if (radar && !localStorage.getItem("radarPosition")){
-	        if(subController.getSignerEnabled()){
-                let offset = -subController.getSubPosition().y * subController.getSignerSize();
+	        if(_slMngr.getSignerEnabled()){
+                let slSize = _slMngr.getSignerSize();
+                let offset = -_stMngr.getSubPosition().y * slSize;
+                let slArea = _slMngr.getSignerArea();
+
 	            radar.position.y = (_isHMD ? scene.getObjectByName('sign').position.y + offset : 0);
-                radar.position.x = (_isHMD ? 0.6*( 1.48*subController.getSignerArea()/2-subController.getSignerSize()/2 ) : ( 1.48*subController.getSignerArea()/2-subController.getSignerSize()/2 )) * subController.getSignerPosition().x;
+                radar.position.x = (_isHMD ? 0.6*( 1.48*slArea/2 - slSize/2 ) : ( 1.48*slArea/2 - slSize/2 )) * _slMngr.getSignerPosition().x;
 	        } else {
-                radar.position.y = subController.getSubtitleConfig().y;
+                radar.position.y = _stMngr.getSubtitleConfig().y;
             }
 	    }
     }
@@ -98,8 +102,12 @@ THREE.Radar = function () {
             scene.getObjectByName('trad-main-menu').visible = false;
             scene.getObjectByName('trad-option-menu').visible = false;
 
-            let w = 1.48*subController.getSignerArea()-14;
-            let h = 0.82*subController.getSignerArea()-14;
+            /*let w = 1.48*_slMngr.getSignerArea()-14;
+            let h = 0.82*_slMngr.getSignerArea()-14;*/
+
+            const vFOV = THREE.Math.degToRad( camera.fov ); // convert vertical fov to radians
+            const h = 2 * Math.tan( vFOV / 2 ) * 70; // visible height
+            const w = h * camera.aspect;
 
             if(pos.x > -w/2 && pos.x < w/2){
                 canvas.getObjectByName('radar').position.x = pos.x; 
@@ -121,15 +129,15 @@ THREE.Radar = function () {
  */
     this.updateRadarIndicator = function(color, pos){
         _rdr.showRadarIndicator();
-        radar.getObjectByName('radar-indicator').material.color.set( color );
-        radar.getObjectByName('radar-indicator').rotation.z = Math.radians( 360 - pos ); 
+        radar.getObjectByName('rdr-indicator').material.color.set( color );
+        radar.getObjectByName('rdr-indicator').rotation.z = Math.radians( 360 - pos ); 
     }
 
 /**
  * Updates the radar area rotation with the camera movement;
  */
     this.updateRadarAreaRotation = function(){
-    	let radarArea = radar.getObjectByName('radar-area');
+    	let radarArea = radar.getObjectByName('rdr-area');
 
     	if(radarArea && radarArea.visible){
     		let target = new THREE.Vector3();
@@ -164,13 +172,13 @@ THREE.Radar = function () {
  * Shows the radar indicator.
  */
 	this.showRadarIndicator = function(){
-    	if(radar.getObjectByName('radar-indicator')) radar.getObjectByName('radar-indicator').visible = true;
+    	if(radar.getObjectByName('rdr-indicator')) radar.getObjectByName('rdr-indicator').visible = true;
     }
 
 /**
  * Hides the radar indicator.
  */
     this.hideRadarIndicator = function(){
-    	if(radar.getObjectByName('radar-indicator')) radar.getObjectByName('radar-indicator').visible = false;
+    	if(radar.getObjectByName('rdr-indicator')) radar.getObjectByName('rdr-indicator').visible = false;
     }
 }

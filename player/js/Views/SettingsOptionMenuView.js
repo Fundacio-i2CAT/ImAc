@@ -3,31 +3,14 @@ function SettingsOptionMenuView() {
 
 	this.UpdateView = function(data) {
 		submenu = scene.getObjectByName(data.name);
-
-
         if(menuMgr.getMenuType() == 2){
             submenu.position.y = (menuHeight/2 + optHeight/2 + menuWidth/100 + data.parentColumnDropdown.length*(optHeight/2))
-            
-            //MENU ONLY DOWN (uncomment for up/down options)
-            // Locate menu depending on the state of the ST (enabled/disabled)
-            /*if ( subController.getSubtitleEnabled() ){
-                submenu.position.y = subController.getSubPosition().y * (menuHeight/2 + optHeight/2 + menuWidth/100 + data.parentColumnDropdown.length*(optHeight/2))
-            }
-            else{
-                submenu.position.y = menuHeight/2 + optHeight/2 + menuWidth/100 + data.parentColumnDropdown.length*(optHeight/2);
-            }*/
-
         } else {
             submenu.position.y = 0;
-//            submenu.getObjectByName('preview-button').visible = data.isPreviewVisible;
-//            submenu.getObjectByName('preview-button').children[0].onexecute = (data.isPreviewVisible) ? data.previewButtonFunc : null;
         }
 
 		submenu.getObjectByName('back-button').visible = data.isFinalDrop || data.hasParentDropdown;
 		submenu.getObjectByName('back-button').children[0].onexecute = data.backMenuButtonFunc;
-
-//      submenu.getObjectByName('close-button-opt').visible = menuMgr.getMenuType() == 1 ? true : false;
-//      submenu.getObjectByName('close-button-opt').children[0].onexecute = data.closeOptMenuButtonFunc;
 
 		submenu.getObjectByName('tradoptionmenutitle').add(updateTitle(data));
         submenu.getObjectByName('tradoptionmenutitle').position.y = optHeight/2 * data.parentColumnDropdown.length;
@@ -77,7 +60,6 @@ function SettingsOptionMenuView() {
         optTitle.width = 18*menuWidth/200;
         optTitle.height = optHeight;
         optTitle.name = 'settings-opt-title';
-        //optTitle.type =  'mix';
         optTitle.type =  'text';
         optTitle.text = MenuDictionary.translate( data.title );
         optTitle.path = data.icon;

@@ -60,71 +60,57 @@ THREE.MediaObjectData = function () {
         return sphere;
     };
 
-    this.getCubeVideo32Mesh = function(size, url, name) 
-    {
-        var geometry = getCubeGeometry32( size );
-
-        return getVideoMesh( geometry, url, name, 0 );
-    };
-
-    this.getCubeVideo65Mesh = function(size, url, name) 
-    {
-        var geometry = getCubeGeometry65( size );
-
-        return getVideoMesh( geometry, url, name, 0 );
-    };
-
-    this.getCubeVideo116Mesh = function(size, url, name) 
-    {
-        var geometry = getCubeGeometry116( size );
-
-        return getVideoMesh( geometry, url, name, 0 );
-    };
-
-    this.getSignVideoMesh = function(url, name, config, hasSLSubtitles) {
+    this.getSignVideoMesh = function(name, hasSLSubtitles) {
 
         let signer =  new THREE.Group();
         signer.name = name;
-        signer.position.set(config.x, config.y, -config.z)
+
+        if(localStorage.getItem("signPosition")){
+            let savedPosition = JSON.parse(localStorage.getItem("signPosition"))
+            signer.position.set( savedPosition.x, savedPosition.y, 0)
+        } else {
+            let x = _isHMD ? 0.6 * ( 1.48*slConfig.area/2 - slConfig.size/2 ) *slConfig.canvasPos.x : ( 1.48*slConfig.area/2 - slConfig.size/2 ) *slConfig.canvasPos.x;
+            let y = _isHMD ? 0.6 * ( 0.82*slConfig.area/2 - slConfig.size/2) *slConfig.canvasPos.y : ( 0.82*slConfig.area/2 - slConfig.size/2 ) *slConfig.canvasPos.y;
+            signer.position.set( x, y, 0)
+        }
 
 
-        var geometry = new THREE.PlaneGeometry( 20, 20 );
-        var video = getVideoMesh( geometry, url, name, 1 );
-        video.name = 'sign-video';
+        const geometry = new THREE.PlaneGeometry( 20, 20 );
+        let video = getVideoMesh( geometry, slConfig.url, name, 1 );
+        video.name = 'sl-video';
 
-        //var material;// = new THREE.MeshBasicMaterial( { color: 0x000000,  transparent: true, opacity: 0.5 } );
-        //var mesh;// = new THREE.Mesh( new THREE.PlaneGeometry( 38, 8.4 ), material );
+        if ( !hasSLSubtitles ){
+            const arrows = getSubtitlesArrowMesh(120/6, 1, 0xffffff, 0x000000, 0);
+            const material = new THREE.MeshBasicMaterial( { color: 0x000000,  transparent: true, opacity: 0.5 } );
+            let mesh = new THREE.Mesh( new THREE.PlaneGeometry( 38, 8.4 ), material );
 
-        if ( !hasSLSubtitles ) 
-        {
-            var material = new THREE.MeshBasicMaterial( { color: 0x000000,  transparent: true, opacity: 0.5 } );
-            var mesh = new THREE.Mesh( new THREE.PlaneGeometry( 38, 8.4 ), material );
-
-            setArrowToMesh( mesh, 120/6, 1, 0xffffff, 0x000000, 0, true ) 
+            mesh.add(arrows);
             mesh.position.y = -10 -4.4/2;
             mesh.scale.set( 0.98*70/130, 0.98*70/130, 1 )
-
-            mesh.children[0].visible = false;
-            mesh.children[1].visible = false;
-            mesh.visible = config.signIndicator == 'arrow' ? true : false;
+            mesh.visible = stConfig.indicator == 'arrow' ? true : false;
             mesh.name = 'backgroundSL';
 
             signer.add( mesh );
-        }
 
+        }
         var signerColorBorderGeom = new THREE.PlaneGeometry( 20, 20, 32 );
         var signerColorBorderMat = new THREE.MeshBasicMaterial( {color: 0xffff00, side: THREE.DoubleSide} );
         var signColorBorder = new THREE.Mesh( signerColorBorderGeom, signerColorBorderMat );
-        signColorBorder.name = 'sign-color-boder';
+    
         signColorBorder.position.z = -0.01;
-        signColorBorder.visible = false;
         signColorBorder.scale.multiplyScalar(1.05);
 
-        signer.add(signColorBorder);
+        //This option is creating a border but it has an issue in windows, only 1px border is possible.
+        /*const signColorBorder = new THREE.LineSegments( 
+            new THREE.EdgesGeometry( geometry ), 
+            new THREE.LineBasicMaterial( { color: 0xffff00, linewidth: 4 } ) 
+        );*/
 
-        //if ( _isHMD ) plane.rotation.z = -camera.rotation.z;
+        signColorBorder.name = 'sl-colorFrame';
+        signColorBorder.visible = false;
 
-        signer.add(video)
+        signer.add( signColorBorder );
+        signer.add(video);
  
         return signer;
     };
@@ -132,103 +118,31 @@ THREE.MediaObjectData = function () {
 
     this.getSLSubtitleMesh = function(textList, slopacity, slconfig){
         var material = new THREE.MeshBasicMaterial( { color: 0x000000,  transparent: true, opacity: 0 } );
-        var plane = new THREE.Mesh( new THREE.PlaneGeometry( 20, 20 ), material );
-
-        var group = new THREE.Group();
-
+        //var plane = new THREE.Mesh( new THREE.PlaneGeometry( 20, 20 ), material );
+        //var group = new THREE.Group();
         var slsize = 0.46;
-
         var font = textList[0].text.length < 14 ? ST_font : ST_font2;
 
-        group.add( getEmojiSubMesh3( textList, slsize, slopacity, font ) );
+        let subtitles4SLMesh = _moData.getSubtitleMesh(textList, slconfig, font, slopacity, true, 'sl-subtitles');
+       
+        //plane.add( group );
+        //plane.name = 'st4slmesh';
+
+        scene.getObjectByName('sl-colorFrame').scale.y = 1.23;
+        scene.getObjectByName('sl-colorFrame').position.y = - 10*0.46/2;
+
+        subtitles4SLMesh.position.y = -10 - 1.9;
         
-        plane.add( group );
-
-        //plane.position.z = -slconfig.z;
-        //plane.position.x = slconfig.x;
-        //plane.position.y = slconfig.y;
-
-        plane.name = 'st4slmesh';
-
-
-
-        var signerColorBorderGeom = new THREE.PlaneGeometry( 20, 20*0.46, 32 );
-        var signerColorBorderMat = new THREE.MeshBasicMaterial( {color: 0xffff00, side: THREE.DoubleSide} );
-        var signColorBorder = new THREE.Mesh( signerColorBorderGeom, signerColorBorderMat );
-        signColorBorder.name = 'st4slmesh-color-boder';
-        signColorBorder.position.z = -0.01;
-        if(elementSelection){
-            signColorBorder.visible =  (elementSelection.name.localeCompare('sign') == 0) ? true : false;
-        } else signColorBorder.visible = false;
-        
-
-        signColorBorder.position.y = -10 +(10*0.05);
-        signColorBorder.scale.multiplyScalar(1.05);
-
-        plane.add(signColorBorder);
-
-//        plane.scale.set(slconfig.size/20, slconfig.size/20, 1);
-
-        //if ( _isHMD ) plane.rotation.z = -camera.rotation.z;
-
-        group.position.y = -10 - 1.9;
-
-        
-        return plane;
+        return subtitles4SLMesh;
     };
 
-    this.getPreviewSubtitleMesh = function(textList, config)
-    {
-        var group = new THREE.Group();
-
-        group.add( getPreviewSubMesh( textList, config, ST_font ) );
-
-        //if ( _isHMD ) group.rotation.z = -camera.rotation.z;
-        
-        return group;
-    };
-
-    // subtitols always visible
-    this.getEmojiSubtitleMesh = function(t, c, fixed){
-        var cnv = document.getElementById( "canvas" );
-        var ctx = cnv.getContext( "2d" );
-        var ch = 50; // canvas height x line
-        var fh = 40; // font height
-
-        ctx.font = ST_font;
-        var width = ctx.measureText( t[0].text ).width;
-        var width2 = t[1] ? ctx.measureText( t[1].text ).width : 0;
-        cnv.width = ( width > width2 ) ? width + 20 : width2 + 20;
-        cnv.height = ch*t.length;
-
-        if ( t[0] ) createCanvasTextLine( ctx, t[0].text, ST_font, t[0].color, 0, 0, cnv.width, ch, c.opacity, ( cnv.width - width )/2, fh );
-        if ( t[1] ) createCanvasTextLine( ctx, t[1].text, ST_font, t[1].color, 0, ch, cnv.width, ch, c.opacity, ( cnv.width - width2 )/2, fh + ch );
-
-        var material = new THREE.MeshBasicMaterial( { map: new THREE.CanvasTexture( cnv ),  transparent: true } );
-        var mesh = new THREE.Mesh( new THREE.PlaneGeometry( cnv.width/6, ch*t.length/6 ), material );
-
-        if ( !fixed && c.subtitleIndicator == 'arrow' ) setArrowToMesh( mesh, cnv.width/6, t.length, t[0].color, t[0].backgroundColor, c.opacity );
-
-        mesh.scale.set( c.area*c.size, c.area*c.size, 1 );
-
-        mesh.name = 'emojitext';
-        mesh.renderOrder = 3;
-        mesh.position.z = -c.z;
-        mesh.position.y = c.y;
-        mesh.position.x = c.offset;
-        mesh.visible = true;
-
-        if ( fixed ) mesh.lookAt(0,0,0);
-
-        return mesh;
-    };
 
     // subtitols fixed position
-    this.getExpEmojiSubtitleMesh = function(textList, config)
+    this.getExpEmojiSubtitleMesh = function(textList)
     {
         var group = new THREE.Group();
 
-        var difPosition = config.lon ? getViewDifPositionTest( -config.lon, camera.fov ) : 0;
+        var difPosition = stConfig.scenePos.lon ? getViewDifPositionTest( -stConfig.scenePos.lon, camera.fov ) : 0;
 
 
         if ( difPosition == 0 ) position = 'center';
@@ -248,11 +162,11 @@ THREE.MediaObjectData = function () {
         {
             var isRight = position == 'right' ? true : false;   
             var mesh = new THREE.Mesh( new THREE.PlaneGeometry( 0.001, 0.001 ), new THREE.MeshBasicMaterial( { color: 0xffffff } ) );
-            setFixedArrow( mesh, 0, config, textList, config.opacity, isRight );
+            setFixedArrow( mesh, 0, textList, isRight );
 
-            mesh.position.x = config.z * Math.cos( Math.radians( lon-90 +config.lon) ) * Math.cos( Math.radians( -lat -20) );
-            mesh.position.y = config.z * Math.sin( Math.radians( -lat -20) );
-            mesh.position.z = config.z * Math.sin( Math.radians( lon-90 +config.lon) ) * Math.cos( Math.radians( -lat -20) );
+            mesh.position.x = 70 * Math.cos( Math.radians( lon-90 +stConfig.scenePos.lon) ) * Math.cos( Math.radians( -lat -20) );
+            mesh.position.y = 70 * Math.sin( Math.radians( -lat -20) );
+            mesh.position.z = 70 * Math.sin( Math.radians( lon-90 +stConfig.scenePos.lon) ) * Math.cos( Math.radians( -lat -20) );
 
             mesh.lookAt(0,0,0)
 
@@ -260,35 +174,37 @@ THREE.MediaObjectData = function () {
         }
 
         var needajust = false;
-        if ( config.lon ) {}
+        if ( stConfig.scenePos.lon ) {}
         else {
-            config.lon = -lon;
-            config.lat = -lat;
+            stConfig.scenePos.lon = -lon;
+            stConfig.scenePos.lat = -lat;
             needajust = true;
         }
         //console.warn( position )
 
         ////////////////////////////////////////////////////////////////////////////////////
-        config.x = 0;
-        config.y = config.z * Math.sin( Math.radians( config.lat ) );
-        config.z = config.z * Math.cos( Math.radians( config.lat ) );
+        stConfig.canvasPos.x = 0;
+        stConfig.canvasPos.y = 70 * Math.sin( Math.radians( stConfig.scenePos.lat ) );
+        //config.z = config.z * Math.cos( Math.radians( stConfig.scenePos.lat ) );
 
-        var stmesh = getEmojiSubMesh( textList, config, ST_font, true ) 
-        //var stmesh = _moData.getEmojiSubtitleMesh(textList, config, true);
+        var stmesh = _moData.getSubtitleMesh(textList, ST_font, false, 'subtitles');
 
-        if ( needajust ) {
-            stmesh.position.x = config.z * Math.cos( Math.radians( lon-90 +config.lon) ) * Math.cos( Math.radians( -lat -20) );
-            stmesh.position.y = config.z * Math.sin( Math.radians( -lat -20) );
-            stmesh.position.z = config.z * Math.sin( Math.radians( lon-90 +config.lon) ) * Math.cos( Math.radians( -lat -20) );
+        /*if ( needajust ) {
+            
 
             stmesh.lookAt(0,0,0)
-        }
-
-        group.add( stmesh );
+        }*/
+        stmesh.position.x = 70 * Math.cos( Math.radians( lon-90 +stConfig.scenePos.lon) ) * Math.cos( Math.radians( -lat -20) );
+        stmesh.position.y = 70 * Math.sin( Math.radians( -lat -20) );
+        stmesh.position.z = 70 * Math.sin( Math.radians( lon-90 +stConfig.scenePos.lon) ) * Math.cos( Math.radians( -lat -20) );
         
-        group.rotation.y = Math.radians( config.lon );
+       // group.add( stmesh );
+        
+        //group.rotation.y = Math.radians( stConfig.scenePos.lon );
+        //stmesh.rotation.y = Math.radians( stConfig.scenePos.lon );
+        stmesh.lookAt(0,0,0);
 
-        return group;
+        return stmesh;
     };
 
     this.createPointer = function()
@@ -404,7 +320,7 @@ THREE.MediaObjectData = function () {
     };
 
     this.roundedRect = function( ctx, width, height, radius ){
-        //STARTING POINT IS 0,0
+        //Starting point is (x=0, y=0);
         ctx.moveTo(-width/2, 0);
         ctx.lineTo( -width/2, height/2 - radius );  
         ctx.quadraticCurveTo( -width/2, height/2, -width/2 + radius, height/2);
@@ -414,60 +330,96 @@ THREE.MediaObjectData = function () {
         ctx.quadraticCurveTo( width/2, -height/2, width/2 - radius, -height/2 );
         ctx.lineTo( -width/2 + radius, -height/2 );
         ctx.quadraticCurveTo( -width/2,-height/2, -width/2,-height/2 + radius );
-
-        //OPTION RELATIVE TO STARTING POINT
-        //ctx.moveTo( x, y + radius );
-        //ctx.lineTo( x, y + height - radius );
-        //ctx.quadraticCurveTo( x, y + height, x + radius, y + height );
-        //ctx.lineTo( x + width - radius, y + height );
-        //ctx.quadraticCurveTo( x + width, y + height, x + width, y + height - radius );
-      
-        //ctx.lineTo( x + width, y + radius );
-        //ctx.quadraticCurveTo( x + width, y, x + width - radius, y );
-        //ctx.lineTo( x + radius, y );
-        //ctx.quadraticCurveTo( x, y, x, y + radius );
-
       return ctx;
     };
 
-    this.getExpSubtitleMesh = function(textList, config)
-    {
+
+    this.getSubtitleMesh = function (t, font, isSL, name){
+
+        const margin = 5;
+        const opacity = stConfig.background;
+        let scaleFactor;
+
         var group = new THREE.Group();
-        var group1 = new THREE.Group();
-        var group2 = new THREE.Group();
-        var group3 = new THREE.Group();
+        group.name = name;
 
-        config.y = -20;
-        config.z = 75;
+        if(isSL){
+            var cnv = document.getElementById( "canvas2" );
+        } else {
+            var cnv = document.getElementById( "canvas" );
+        }
+        var ctx = cnv.getContext( "2d" );
+        var ch = 50; // canvas height x line
+        var fh = 40; // font height 
+
+        ctx.font = font;
+        var width = ctx.measureText( t[0].text ).width;
+        if(!isSL){
+            var width2 = t[1] ? ctx.measureText( t[1].text ).width : 0;
+            cnv.width = ( width > width2 ) ? width + 20 : width2 + 20;
+            cnv.height = ch*t.length;
+        } else{ 
+            cnv.width = 260;
+            cnv.height = ch;
+        }
+
+        if ( t[0] ) createCanvasTextLine( ctx, t[0].text, ST_font, t[0].color, 0, 0, cnv.width, ch, opacity, ( cnv.width - width )/2, fh );
+        if ( t[1] ) createCanvasTextLine( ctx, t[1].text, ST_font, t[1].color, 0, ch, cnv.width, ch, opacity, ( cnv.width - width2 )/2, fh + ch );
+
+        var material = new THREE.MeshBasicMaterial( { map: new THREE.CanvasTexture( cnv ),  transparent: true } );
+        var textMesh = new THREE.Mesh( new THREE.PlaneGeometry( cnv.width/6, ch*t.length/6 ), material );
+
+        //Depending on the line number the center of the text mesh will change;
+        let stLineFactorCorrection = (t[1]) ? (textMesh.geometry.parameters.height/4) : (textMesh.geometry.parameters.height/2);
         
-        var mesh = getEmojiSubMesh( textList, config, ST_font, true )
-        //var mesh = _moData.getEmojiSubtitleMesh(textList, config, true)
-        mesh.lookAt(new THREE.Vector3(0, 0, 0)); 
+        let arrows = getSubtitlesArrowMesh(cnv.width/6, t.length, t[0].color, t[0].backgroundColor, opacity);
 
-        group1.add( mesh );
+        if(isSL){
+            scaleFactor = 0.46;
+            textMesh.scale.set( scaleFactor, scaleFactor, 1 );
+            textMesh.position.y = 0;
+        } else {
+            const vFOV = THREE.Math.degToRad( camera.fov ); // convert vertical fov to radians
+            const height = 2 * Math.tan( vFOV / 2 ) * 70; // visible height
+            const width = height * camera.aspect;
 
+            let latitud = stConfig.canvasPos.y * (30 * stConfig.area/100);
+            let posY = _isHMD && !stConfig.fixedSpeaker ? 80 * Math.sin( Math.radians( latitud ) ) : 135 * Math.sin( Math.radians( latitud ) );
 
-        var mesh = getEmojiSubMesh( textList, config, ST_font, true )
-        //var mesh = _moData.getEmojiSubtitleMesh(textList, config, true)
-        mesh.lookAt(new THREE.Vector3(0, 0, 0)); 
+            let  y = (stConfig.fixedSpeaker) ? posY : (stConfig.canvasPos.y * (height/2 - margin));
 
-        group2.add( mesh );
+            let esaySizeAjust = stConfig.easy2Read ? 1.25 : 1;
+            scaleFactor = (stConfig.area/130) * (stConfig.size * esaySizeAjust);
+            textMesh.scale.set( scaleFactor, scaleFactor, 1 );
+            if(!stConfig.fixedSpeaker || !stConfig.fixedScene){
+                textMesh.position.y = y - stConfig.canvasPos.y*stLineFactorCorrection*scaleFactor;
+                textMesh.position.x = 0;
+            } else if(stConfig.fixedScene){
+                textMesh.position.y = -20;
+                textMesh.position.z = -75;
+                textMesh.lookAt(new THREE.Vector3(0, 0, 0));
+            }
 
+        }
+        textMesh.name = 'emojitext';
+        textMesh.visible = true;
 
-        var mesh = getEmojiSubMesh( textList, config, ST_font, true )
-        //var mesh = _moData.getEmojiSubtitleMesh(textList, config, true)
-        mesh.lookAt(new THREE.Vector3(0, 0, 0)); 
+        arrows.position.y = textMesh.position.y;
 
-        group3.add( mesh );
-        
+        group.add(textMesh);
+        group.add(arrows);
 
-        group2.rotation.y = Math.radians( 120 );
-        group3.rotation.y = Math.radians( 240 );
+        return group;
+    };
 
-        group.add( group1 );
-        group.add( group2 );
-        group.add( group3 );
-        
+    this.getSceneFixedSubtitles = function(textList, streps){
+        let group = new THREE.Group();
+        for (let i = 0; i < streps ; i++) {
+            let mesh = _moData.getSubtitleMesh( textList, ST_font, false, 'fixed-st-'+i);
+            mesh.rotation.y = Math.radians( i*(360/streps) );
+            group.add( mesh );
+        }
+        group.name = 'subtitles';
         return group;
     };
 
@@ -492,7 +444,7 @@ THREE.MediaObjectData = function () {
         return mesh;
     }
 
-    function getImageMesh(geometry, url, name, order) 
+    function getImageMesh(geometry, url, name) 
     {
         var loader = new THREE.TextureLoader();
         var texture = loader.load( url );
@@ -503,7 +455,6 @@ THREE.MediaObjectData = function () {
         var mesh = new THREE.Mesh( geometry, material );
 
         mesh.name = name;
-        mesh.renderOrder = order || 0;
 
         return mesh;
     }
@@ -538,75 +489,48 @@ THREE.MediaObjectData = function () {
         ctx.fillText( text, w, h );
     }
 
-    function setFixedArrow(mesh, cw, c, t, o, right)
+    function setFixedArrow(mesh, cw, t, right)
     {
-        // right arrow
         if ( right ){
             var geometry = new THREE.PlaneGeometry( 6.5, 6.5 );
             var arrow = getImageMesh( geometry, './img/arrow_final.png', 'right', 3 );
             arrow.material.color.set( t[0].color );
-            arrow.add( getBackgroundMesh ( 9.4, 8.4, t[0].backgroundColor, o ) );
-
-            arrow.name = 'right';
+            arrow.add( getBackgroundMesh ( 9.4, 8.4, t[0].backgroundColor, stConfig.background ) );
             mesh.add( arrow );
-        }
-
-        // left arrow
-        else {
+        } else { 
             var geometry = new THREE.PlaneGeometry( 6.5, 6.5 );
             var arrow = getImageMesh( geometry, './img/arrow_final.png', 'left', 3 );
             arrow.material.color.set( t[0].color );
             arrow.rotation.z = Math.PI;
-            arrow.add( getBackgroundMesh ( 9.4, 8.4, t[0].backgroundColor, o ) );
-
-            arrow.name = 'left';
+            arrow.add( getBackgroundMesh ( 9.4, 8.4, t[0].backgroundColor, stConfig.background ) );
             mesh.add( arrow );
         }
     }
 
-    function setArrowToMesh(mesh, cw, size, color, backgroundColor, o, isSL)
-    {
-        // right arrow
-        var geometry = new THREE.PlaneGeometry( 6.5, 6.5 );
-        var arrow = getImageMesh( geometry, './img/arrow_final.png', 'right', 3 );
+    function getSubtitlesArrowMesh(cw, size, color, backgroundColor, o){
+        let arrowGroup = new THREE.Group();
+        const geometry = new THREE.PlaneGeometry( 6.5, 6.5 );
+
+        var arrow = getImageMesh( geometry, './img/arrow_final.png', 'right');
         arrow.material.color.set( color );
         arrow.add( getBackgroundMesh ( 9.4, 8.3*size, backgroundColor, o ) );
         arrow.position.x = cw/2 + 4.7;
-        arrow.name = isSL ? 'rightSL' : 'right';
-        mesh.add( arrow );
+        arrow.visible = false;
+        arrowGroup.add( arrow );
 
-        // left arrow
-        var geometry = new THREE.PlaneGeometry( 6.5, 6.5 );
-        var arrow = getImageMesh( geometry, './img/arrow_final.png', 'left', 3 );
+        var arrow = getImageMesh( geometry, './img/arrow_final.png', 'left');
         arrow.material.color.set( color );
         arrow.rotation.z = Math.PI;
         arrow.add( getBackgroundMesh ( 9.4, 8.3*size, backgroundColor, o ) );
         arrow.position.x = -cw/2 - 4.7;
-        arrow.name = isSL ? 'leftSL' : 'left';
-        mesh.add( arrow );
+        arrow.visible = false;
+        arrowGroup.add( arrow );
+
+        arrowGroup.name = 'arrows';
+
+        return arrowGroup;
     }
 
-    function setPreviewArrowToMesh(mesh, cw, size, color, backgroundColor, o, isSL)
-    {
-        // right arrow
-        var geometry = new THREE.PlaneGeometry( 6.5, 6.5 );
-        var arrow = getImageMesh( geometry, './img/arrow_final.png', 'right', 3 );
-        arrow.material.color.set( color );
-        arrow.add( getBackgroundMesh ( 9.4, 8.3*size, backgroundColor, o ) );
-        arrow.position.x = cw/2 + 4.7;
-        arrow.name = 'preright';
-        mesh.add( arrow );
-
-        // left arrow
-        var geometry = new THREE.PlaneGeometry( 6.5, 6.5 );
-        var arrow = getImageMesh( geometry, './img/arrow_final.png', 'left', 3 );
-        arrow.material.color.set( color );
-        arrow.rotation.z = Math.PI;
-        arrow.add( getBackgroundMesh ( 9.4, 8.3*size, backgroundColor, o ) );
-        arrow.position.x = -cw/2 - 4.7;
-        arrow.name = 'preleft';
-        mesh.add( arrow );
-    }
 
     function createCanvasTextLine(ctx, text, font, color, x, y, w, h, o, fw, fh )
     {
@@ -616,150 +540,6 @@ THREE.MediaObjectData = function () {
         if ( o == 0 ) createCanvasStrokeText( ctx, text, fw, fh );
     }
 
-    function getPreviewSubMesh(t, c, font, fixed)
-    {
-        var cnv = document.getElementById( "canvas" );
-        var ctx = cnv.getContext( "2d" );
-        var ch = 50; // canvas height x line
-        var fh = 40; // font height
-
-        ctx.font = font;
-        var width = ctx.measureText( t[0].text ).width;
-        var width2 = t[1] ? ctx.measureText( t[1].text ).width : 0;
-        cnv.width = ( width > width2 ) ? width + 20 : width2 + 20;
-        cnv.height = ch*t.length;
-
-        if ( t[0] ) createCanvasTextLine( ctx, t[0].text, font, t[0].color, 0, 0, cnv.width, ch, c.opacity, ( cnv.width - width )/2, fh );
-        if ( t[1] ) createCanvasTextLine( ctx, t[1].text, font, t[1].color, 0, ch, cnv.width, ch, c.opacity, ( cnv.width - width2 )/2, fh + ch );
-
-        var material = new THREE.MeshBasicMaterial( { map: new THREE.CanvasTexture( cnv ),  transparent: true } );
-        var mesh = new THREE.Mesh( new THREE.PlaneGeometry( cnv.width/6, ch*t.length/6 ), material );
-
-        if ( !fixed && c.subtitleIndicator == 'arrow' ) setPreviewArrowToMesh( mesh, cnv.width/6, t.length, t[0].color, t[0].backgroundColor, c.opacity );
-
-        mesh.scale.set( c.area*c.size, c.area*c.size, 1 );
-
-        mesh.renderOrder = 3;
-        mesh.position.z = -c.z;
-        mesh.position.y = c.y;
-        mesh.position.x = c.offset;
-        mesh.visible = true;
-
-        if ( fixed ) mesh.lookAt(0,0,0);
-
-        return mesh;
-    }
-
-    function getEmojiSubMesh(t, c, font, fixed)
-    {
-        var cnv = document.getElementById( "canvas" );
-        var ctx = cnv.getContext( "2d" );
-        var ch = 50; // canvas height x line
-        var fh = 40; // font height
-
-        ctx.font = font;
-        var width = ctx.measureText( t[0].text ).width;
-        var width2 = t[1] ? ctx.measureText( t[1].text ).width : 0;
-        cnv.width = ( width > width2 ) ? width + 20 : width2 + 20;
-        cnv.height = ch*t.length;
-
-        if ( t[0] ) createCanvasTextLine( ctx, t[0].text, font, t[0].color, 0, 0, cnv.width, ch, c.opacity, ( cnv.width - width )/2, fh );
-        if ( t[1] ) createCanvasTextLine( ctx, t[1].text, font, t[1].color, 0, ch, cnv.width, ch, c.opacity, ( cnv.width - width2 )/2, fh + ch );
-
-        var material = new THREE.MeshBasicMaterial( { map: new THREE.CanvasTexture( cnv ),  transparent: true } );
-        var mesh = new THREE.Mesh( new THREE.PlaneGeometry( cnv.width/6, ch*t.length/6 ), material );
-
-        if ( !fixed && c.subtitleIndicator == 'arrow' ) setArrowToMesh( mesh, cnv.width/6, t.length, t[0].color, t[0].backgroundColor, c.opacity );
-
-        mesh.scale.set( c.area*c.size, c.area*c.size, 1 );
-
-        mesh.name = 'emojitext';
-        mesh.renderOrder = 3;
-        mesh.position.z = -c.z;
-        mesh.position.y = c.y;
-        mesh.position.x = c.offset;
-        mesh.visible = true;
-
-        if ( fixed ) mesh.lookAt(0,0,0);
-        if ( _isHMD ) mesh.rotation.z = -camera.rotation.z;
-
-        return mesh;
-    }
-
-    function getEmojiSubMesh3(t, size, opacity, font)
-    {
-        //t[0].text = ':)'
-        var cnv = document.getElementById( "canvas2" );
-        var ctx = cnv.getContext( "2d" );
-        var ch = 50; // canvas height x line
-        var fh = 40; // font height
-
-        var text = t[0].text;
-        var il = 0;
-
-        /*if ( text == '01' ) {
-            drawing = emoji_1; 
-            il = 63;
-        }
-        else if ( text == '02' ) {
-            drawing = emoji_2; 
-            il = 63;
-        }
-        else if ( text == '03' ) {
-            drawing = emoji_3; 
-            il = 63;
-        }
-        else if ( text == '04' ) {
-            drawing = emoji_4; 
-            il = 63;
-        }
-        else if ( text == '05' ) {
-            drawing = emoji_5; 
-            il = 63;
-        }
-        else if ( text == '06' ) {
-            drawing = emoji_6; 
-            il = 63;
-        }
-        else if ( text == '07' ) {
-            drawing = emoji_7; 
-            il = 63;
-        }
-        else if ( text == '08' ) {
-            drawing = emoji_8; 
-            il = 63;
-        }*/
-
-        ctx.font = font;
-        var width = ctx.measureText( t[0].text ).width;
-        cnv.width = 260;
-        cnv.height = ch;
-
-        if( il > 0 ) {          
-            createCanvasTextLine( ctx, '', font, t[0].color, 0, 0, cnv.width, ch, opacity, ( cnv.width - width )/2, fh );
-            ctx.drawImage(drawing, 110, 0, 63, 50);
-        }
-
-        else if ( t[0] ) createCanvasTextLine( ctx, t[0].text, font, t[0].color, 0, 0, cnv.width, ch, opacity, ( cnv.width - width )/2, fh );
-
-        var material = new THREE.MeshBasicMaterial( { map: new THREE.CanvasTexture( cnv ),  transparent: true } );
-        var mesh = new THREE.Mesh( new THREE.PlaneGeometry( cnv.width/6, ch/6 ), material );
-
-        //setArrowToMesh( mesh, canvas.width/6-18, 1, t[0].color, t[0].backgroundColor, 0 );
-        setArrowToMesh( mesh, cnv.width/6-0, 1, t[0].color, t[0].backgroundColor, opacity, true);
-
-        mesh.children[0].visible = false;
-        mesh.children[1].visible = false;
-
-        mesh.scale.set( size, size, 1 );
-        mesh.name = 'emojitext';
-        //mesh.renderOrder = 3;
-        //mesh.position.z = -0;
-        mesh.position.y = 0;
-        mesh.visible = true;
-
-        return mesh;
-    }
 
     function getPointMesh(w, h, c, o)
     {
@@ -769,279 +549,6 @@ THREE.MediaObjectData = function () {
         );
 
         return pointer;
-    }
-
-    function getCubeGeometryByVertexUVs(size, f, l, r, t, b, bo)
-    {
-        var geometry = new THREE.BoxGeometry( -size, size, size );
-        
-        geometry.faceVertexUvs[0] = []; // cleans the geometry UVs
-        // front
-        geometry.faceVertexUvs[0][0] = [ f[0], f[1], f[3] ];
-        geometry.faceVertexUvs[0][1] = [ f[1], f[2], f[3] ];
-        // back
-        geometry.faceVertexUvs[0][2] = [ b[0], b[1], b[3] ];
-        geometry.faceVertexUvs[0][3] = [ b[1], b[2], b[3] ];
-        // top
-        geometry.faceVertexUvs[0][4] = [ t[0], t[1], t[3] ];
-        geometry.faceVertexUvs[0][5] = [ t[1], t[2], t[3] ];
-        // bottom
-        geometry.faceVertexUvs[0][6] = [ bo[0], bo[1], bo[3] ];
-        geometry.faceVertexUvs[0][7] = [ bo[1], bo[2], bo[3] ];
-        // left
-        geometry.faceVertexUvs[0][8] = [ l[0], l[1], l[3] ];
-        geometry.faceVertexUvs[0][9] = [ l[1], l[2], l[3] ];
-        // right
-        geometry.faceVertexUvs[0][10] = [ r[0], r[1], r[3] ];
-        geometry.faceVertexUvs[0][11] = [ r[1], r[2], r[3] ];
-
-        return geometry;
-    }
-
-    function getCubeGeometry32(size)
-    {
-        var threshold = 0.0002;
-        var one_third = .3333;
-        var two_third = .6666;
-
-        var _00 = new THREE.Vector2(0,0);
-        var _01a = new THREE.Vector2(0, .5 - threshold);
-        var _01b = new THREE.Vector2(0, .5 + threshold);
-        var _02 = new THREE.Vector2(0, 1);
-
-        var _10 = new THREE.Vector2(one_third, 0);
-        var _11a = new THREE.Vector2(one_third, .5 - threshold);
-        var _11b = new THREE.Vector2(one_third, .5 + threshold);
-        var _12 = new THREE.Vector2(one_third, 1);
-
-        var _20 = new THREE.Vector2(two_third, 0);
-        var _21a = new THREE.Vector2(two_third, .5 - threshold);
-        var _21b = new THREE.Vector2(two_third, .5 + threshold);
-        var _22 = new THREE.Vector2(two_third, 1);
-
-        var _30 = new THREE.Vector2(1,0);
-        var _31a = new THREE.Vector2(1, .5 - threshold);
-        var _31b = new THREE.Vector2(1, .5 + threshold);
-        var _32 = new THREE.Vector2(1, 1);
-
-        /// map the faces
-        var face_top = [ _31a, _21a, _20, _30 ];
-        var face_back = [ _21a, _11a, _10, _20 ];
-        var face_bottom = [ _11a, _01a, _00, _10 ];
-        var face_front = [ _12, _11b, _21b, _22 ];
-        var face_left = [ _22, _21b, _31b, _32 ];
-        var face_right = [ _02, _01b, _11b, _12 ];
-
-        return getCubeGeometryByVertexUVs( size, face_front, face_left, face_right, face_top, face_back, face_bottom );
-    }
-
-    function getCubeGeometry32(size)
-    {
-        /// Used to modify the cube UVs adding a threshold between the conflictive edges.
-        /// 3x2 Texture UV vertices map:
-        /// 
-        ///       ^
-        ///       |
-        ///      0,1    +--------+--------+--------+
-        ///       |     |02      |12      |22      |32
-        ///       |     |        |        |        |
-        ///       |     |        |        |        |
-        ///       |     |01b     |11b     |21b     |31b
-        ///      0,0.5  +--------+--------+--------+
-        ///       |     |01a     |11a     |21a     |31a
-        ///       |     |        |        |        |
-        ///       |     |        |        |        |
-        ///       |     |        |        |        |
-        ///       |     +--------+--------+--------+
-        ///       |      00       10       20       30 
-        ///       |
-        ///      0,0-------------|--------|-------1,0------->
-        ///                      - one_third
-        ///                               - two_third
-
-        // cubemap UV points
-        // The "threshold" value removes the pixel(s) between the two rows of the texture.
-        // Defines the 01, 11, 21 and 31 vector points.
-
-        var threshold = 0.00002;
-        var one_third = .3333;
-        var two_third = .6666;
-
-        var _00 = new THREE.Vector2(0,0);
-        var _01a = new THREE.Vector2(0, .5 - threshold);
-        var _01b = new THREE.Vector2(0, .5 + threshold);
-        var _02 = new THREE.Vector2(0, 1);
-
-        var _10 = new THREE.Vector2(one_third, 0);
-        var _11a = new THREE.Vector2(one_third, .5 - threshold);
-        var _11b = new THREE.Vector2(one_third, .5 + threshold);
-        var _12 = new THREE.Vector2(one_third, 1);
-
-        var _20 = new THREE.Vector2(two_third, 0);
-        var _21a = new THREE.Vector2(two_third, .5 - threshold);
-        var _21b = new THREE.Vector2(two_third, .5 + threshold);
-        var _22 = new THREE.Vector2(two_third, 1);
-
-        var _30 = new THREE.Vector2(1,0);
-        var _31a = new THREE.Vector2(1, .5 - threshold);
-        var _31b = new THREE.Vector2(1, .5 + threshold);
-        var _32 = new THREE.Vector2(1, 1);
-
-        /// map the faces
-        var face_front = [ _12, _11b, _21b, _22 ];
-        var face_back = [ _21a, _11a, _10, _20 ];
-        var face_top = [ _21a, _20,_30, _31a ];
-        var face_bottom = [  _10, _11a, _01a, _00 ];
-        var face_right = [ _22, _21b, _31b, _32 ];
-        var face_left = [ _02, _01b, _11b, _12 ];
-
-        return getCubeGeometryByVertexUVs( size, face_front, face_left, face_right, face_top, face_back, face_bottom );
-    }
-
-    function getCubeGeometry65(size)
-    {
-        /* 6x5 Texture UV vertices map:
-         //////////////////////////////////////////////////////////////////////
-         // 
-         //     ^
-         //     |
-         //    0,1     +-----+-----+-----+-----+-----+-----+
-         //     |      |05    15    25    35      55a|55b  |65   top
-         //     |      |                             |54b  |64b
-         //    0,0.8   +     +     +     +     +     +-----+
-         //     |      |                             |54a  |64a  back
-         //     |      |                             |53b  |63b
-         //    0,0.6   +     +     +     +     +     +-----+
-         //     |      |                             |53a  |63a  bottom
-         //     |      |                             |52b  |62b
-         //    0,0.4   +     +     +     +     +     +-----+
-         //     |      |                             |52a  |62a  right
-         //     |      |                             |51b  |61b
-         //    0,0.2   +     +     +     +     +     +-----+
-         //     |      |                             |51a  |61a  left
-         //     |      |                          50a|50b  |60
-         //     |      +-----+-----+-----+-----+-----+-----+
-         //     |       00    10    20    30    40    50    60
-         //     |
-         //    0,0-----|-----|-----|-----|-----|-----|-----1,0--->
-         //                                        0.8333
-         // 
-         //////////////////////////////////////////////////////////////////////
-        */ 
-        // cubemap UV points
-        // The "threshold" value removes the pixel(s) between the two rows of the texture.
-        var threshold = 0.0002;
-
-        var _00 = new THREE.Vector2( 0, 0 );
-        var _05 = new THREE.Vector2( 0, 1 );
-
-        var _50a = new THREE.Vector2( 5/6 - threshold, 0 );
-        var _50b = new THREE.Vector2( 5/6 + threshold, 0 );       
-        var _51a = new THREE.Vector2( 5/6 + threshold, 0.2 - threshold );
-        var _51b = new THREE.Vector2( 5/6 + threshold, 0.2 + threshold );
-        var _52a = new THREE.Vector2( 5/6 + threshold, 0.4 - threshold );
-        var _52b = new THREE.Vector2( 5/6 + threshold, 0.4 + threshold );
-        var _53a = new THREE.Vector2( 5/6 + threshold, 0.6 - threshold );
-        var _53b = new THREE.Vector2( 5/6 + threshold, 0.6 + threshold );
-        var _54a = new THREE.Vector2( 5/6 + threshold, 0.8 - threshold );
-        var _54b = new THREE.Vector2( 5/6 + threshold, 0.8 + threshold );
-        var _55a = new THREE.Vector2( 5/6 - threshold, 1 );
-        var _55b = new THREE.Vector2( 5/6 + threshold, 1 );
-
-        var _60 = new THREE.Vector2( 1, 0 );
-        var _61a = new THREE.Vector2( 1, 0.2 - threshold );
-        var _61b = new THREE.Vector2( 1, 0.2 + threshold );
-        var _62a = new THREE.Vector2( 1, 0.4 - threshold );
-        var _62b = new THREE.Vector2( 1, 0.4 + threshold );
-        var _63a = new THREE.Vector2( 1, 0.6 - threshold );
-        var _63b = new THREE.Vector2( 1, 0.6 + threshold );
-        var _64a = new THREE.Vector2( 1, 0.8 - threshold );
-        var _64b = new THREE.Vector2( 1, 0.8 + threshold );
-        var _65 = new THREE.Vector2( 1, 1 );
-
-        /// map the faces
-        var face_front = [ _05, _00, _50a, _55a ];
-        var face_right  = [ _54a, _53b, _63b, _64a ];
-        var face_left  = [ _55b, _54b, _64b, _65 ];    
-        var face_top  = [ _52b, _62b, _63a, _53a ];
-        var face_back  = [ _52a, _51b, _61b, _62b ];
-        var face_bottom  = [ _61a, _51a, _50b, _60 ]; 
-
-        return getCubeGeometryByVertexUVs( size, face_front, face_left, face_right, face_top, face_back, face_bottom );
-    }
-
-    function getCubeGeometry116(size)
-    {
-        /* 11x6 Texture UV vertices map:
-         /// 
-         ///       ^
-         ///       |
-         ///      0,1    +-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+
-         ///       |     |06    16    26    36    46    56   |66b   76    86   |96b   106  |116 
-         ///       |     |                                   |                 |           |
-         ///      0,0.833+     +     +     +     +     +     +     +     +     +     +     +
-         ///       |     |                                   |                 |           |
-         ///       |     |                                   |                 |94b        |114b
-         ///      0,0.667+     +     +     +     +     +     +     +     +     +-----+-----+
-         ///       |     |                                   |                 |94a        |114a
-         ///       |     |                                   |63b              |93b        |
-         ///      0,0.5  +     +     +     +     +     +     +-----+-----+-----+     +     +
-         ///       |     |                                   |63a              |93a        |
-         ///       |     |                                   |                 |92b        |112b
-         ///      0,0.333+     +     +     +     +     +     +     +     +     +-----+-----+
-         ///       |     |                                   |                 |92a        |112a
-         ///       |     |                                   |                 |           |
-         ///      0,0.167+     +     +     +     +     +     +     +     +     +     +     +
-         ///       |     |                                   |                 |           |
-         ///       |     |                                60a|60b           90a|90b        |110
-         ///       |     +-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+
-         ///       |      00    10    20    30    40    50    60    70    80    90    100   110
-         ///       |
-         ///      0,0----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----|-----1,0--->
-         ///                                                  0.5454            0.8181
-         ///
-        */ 
-        // cubemap UV points
-        // The "threshold" value removes the pixel(s) between the two rows of the texture.
-        var threshold = 0.0002;
-
-        var _00 = new THREE.Vector2( 0, 0 );
-        var _06 = new THREE.Vector2( 0, 1 );
-
-        var _60a = new THREE.Vector2( 6/11 - threshold, 0 );
-        var _60b = new THREE.Vector2( 6/11 + threshold, 0 );
-        var _63a = new THREE.Vector2( 6/11 + threshold, 0.5 - threshold *2 );
-        var _63b = new THREE.Vector2( 6/11 + threshold, 0.5 + threshold *2 );
-        var _66a = new THREE.Vector2( 6/11 - threshold, 1 );
-        var _66b = new THREE.Vector2( 6/11 + threshold, 1 );
-
-        var _90a = new THREE.Vector2( 9/11 - threshold, 0 );
-        var _90b = new THREE.Vector2( 9/11 + threshold, 0 );
-        var _92a = new THREE.Vector2( 9/11 + threshold, 2/6 - threshold );
-        var _92b = new THREE.Vector2( 9/11 + threshold, 2/6 + threshold );
-        var _93a = new THREE.Vector2( 9/11 - threshold, 0.5 - threshold *2 );
-        var _93b = new THREE.Vector2( 9/11 - threshold, 0.5 + threshold *2 );
-        var _94a = new THREE.Vector2( 9/11 + threshold, 4/6 - threshold );
-        var _94b = new THREE.Vector2( 9/11 + threshold, 4/6 + threshold );
-        var _96a = new THREE.Vector2( 9/11 - threshold, 1 );
-        var _96b = new THREE.Vector2( 9/11 + threshold, 1 );
-
-        var _110 = new THREE.Vector2( 1, 0 );
-        var _112a = new THREE.Vector2( 1, 2/6 - threshold );
-        var _112b = new THREE.Vector2( 1, 2/6 + threshold );
-        var _114a = new THREE.Vector2( 1, 4/6 - threshold );
-        var _114b = new THREE.Vector2( 1, 4/6 + threshold );
-        var _116 = new THREE.Vector2( 1, 1 );
-
-        /// map the faces
-        var face_front = [ _06, _00, _60a, _66a ];
-        var face_left = [ _66b, _63b, _93b, _96a ];
-        var face_right = [ _63a, _60b, _90a, _93a ];
-        var face_top = [ _94b, _114b, _116, _96b ];
-        var face_back = [ _94a, _92b, _112b, _114a ];
-        var face_bottom = [ _112a, _92a, _90b, _110 ];
-
-        return getCubeGeometryByVertexUVs( size, face_front, face_left, face_right, face_top, face_back, face_bottom );
     }
 
     function getTextMesh(text, size, color, name, func, cw, ch)

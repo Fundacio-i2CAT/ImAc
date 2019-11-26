@@ -201,7 +201,7 @@ THREE.InteractionsController = function () {
 
                     //Change color on selection;
                     scene.getObjectByName(intersects[0].object.name).children[0].material.color.set( 0xffff00 );
-                    if (scene.getObjectByName(intersects[0].object.name).children.length > 1){
+                    if (scene.getObjectByName(intersects[0].object.name).children.length > 2){
                         scene.getObjectByName(intersects[0].object.name).children[1].material.color.set( 0xffff00 ); 
                         scene.getObjectByName(intersects[0].object.name).children[0].rotation.z = -Math.PI/8; //Rotate icon for animation
                         // Some time this error appears

@@ -1,7 +1,8 @@
 
 SLManager = function() {
 
-    var signerMesh;
+    let signerMesh;
+    let subtitleSLMesh;
 
 /**
  * Initializes the configuration.
@@ -112,10 +113,8 @@ SLManager = function() {
 
 
 
-    function updateSignerPosition()
-    {
-        if ( scene.getObjectByName("sign") )
-        {
+    function updateSignerPosition(){
+        if ( scene.getObjectByName("sign") ){
             if(localStorage.getItem("signPosition")){
                 let savedPosition = JSON.parse(localStorage.getItem("signPosition"))
                 var posX = savedPosition.x
@@ -129,8 +128,7 @@ SLManager = function() {
             scene.getObjectByName("sign").position.x = posX;
             scene.getObjectByName("sign").position.y = posY;
 
-            if ( subtitleSLMesh )
-            {
+            if ( subtitleSLMesh ){
                 SLtextListMemory = [];
                 //removeSLSubtitle();
             }

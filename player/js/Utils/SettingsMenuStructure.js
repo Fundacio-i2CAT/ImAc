@@ -745,7 +745,7 @@ const settingsSubtitlesPosition = { title: 'Position', icon: './img/menu/st_posi
                 _stMngr.changeSTmode(0);
                 SettingsOptionCtrl.setChildColumnActiveOpt(settingsSubtitlesPosition.options[0].optId);
                 if( stConfig.isEnabled ){
-                    _slMngr.setSignerPosition( _slMngr.getSignerPosition().x, 1 );
+                    _slMngr.setSignerPosition( slConfig.canvasPos.x, 1 );
                 } 
             } 
         },
@@ -756,7 +756,7 @@ const settingsSubtitlesPosition = { title: 'Position', icon: './img/menu/st_posi
                 _stMngr.changeSTmode(0);
                 SettingsOptionCtrl.setChildColumnActiveOpt(settingsSubtitlesPosition.options[1].optId);
                 if( stConfig.isEnabled ) {
-                    _slMngr.setSignerPosition( _slMngr.getSignerPosition().x, -1 ); 
+                    _slMngr.setSignerPosition( slConfig.canvasPos.x, -1 ); 
                 }
             } 
         },

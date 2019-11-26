@@ -26,14 +26,11 @@ function SettingsOptionMenuView() {
             submenu.getObjectByName('checkmark').visible = false;
         }
        
-//TODO: CHECK FOREACH
+        //TODO: CHECK FOREACH
 		data.parentColumnDropdown.forEach(function(element, index){
-
-            //These distances need to be changed or compared in differente devices.
-			element.position.x = menuWidth/8 + element.width - 2.2*menuWidth/8;
-            if (data.isFinalDrop) element.position.x += 1.5*menuWidth/80;
-            element.children[0].children[0].position.x = 7*menuWidth/50;
-  			submenu.getObjectByName('parentcolumndropdown').add(element)
+			element.position.x = element.width - 1.2*menuWidth/8;
+            element.children[element.children.length-1].position.x = -element.position.x;
+  			submenu.getObjectByName('parentcolumndropdown').add(element);
 		});
 
         if(data.childColumnActiveOpt && submenu.getObjectByName(data.childColumnActiveOpt)){

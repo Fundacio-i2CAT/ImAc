@@ -29,13 +29,13 @@ InteractiveElementModel.prototype.create = function()
 
 		case "icon":
 		default:
-			return createImageIE(this);
+			return addColiderMesh(this, createImageIE(this));
 
 		case "text":
-			return createTextIE(this);
+			return addColiderMesh(this, createTextIE(this));
 
 		case "mix":
-			return createMixIE(this);
+			return addColiderMesh(this, createMixIE(this));
 	}
 }
 
@@ -54,9 +54,10 @@ function createTextIE (element){
 	shape.fromGeometry( geometry );
 	shape.center();
 
-	const mesh = new THREE.Mesh(shape, material);
+	let mesh = new THREE.Mesh(shape, material)
+	mesh.name = element.name + '-text';
 
-  	return addColiderMesh(element, mesh);
+  	return mesh;
 }
 
 /**
@@ -74,11 +75,13 @@ function createImageIE(element){
 
 	const material = new THREE.MeshBasicMaterial( { color: element.color, map: texture, transparent: true, side: THREE.FrontSide} );
 	let mesh = new THREE.Mesh( geometry, material );
+	mesh.name = element.name + '-image';
 
 	if(element.rotation) {
 		mesh.rotation.z = element.rotation;
 	}
-	return addColiderMesh(element, mesh);
+
+	return mesh;
 }
 
 /**
@@ -101,14 +104,12 @@ function createMixIE(element){
 		element.width = element.textSize*2;
 		element.height = element.textSize*2;
 		let image = createImageIE(element);
-		image.position.x = -w - element.width*1.25;
 		mix.width = w + image.geometry.parameters.width;
+		image.position.x = -mix.width;
 		mix.add(image);
-		mix.position.x = element.width/2;
 	}
-
 	mix.add(text);
-
+	
 	return mix;
 }
 

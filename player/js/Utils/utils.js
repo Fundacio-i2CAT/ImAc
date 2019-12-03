@@ -264,10 +264,11 @@ function saveConfig()
 
 
 function resetConfig(){
-    localStorage.removeItem("radarPosition");
-    localStorage.removeItem("signPosition");
+    localStorage.removeItem("rdrPosition");
+    localStorage.removeItem("slPosition");
+    localStorage.removeItem("stPosition");
 
-    subController.updateSignerPosition2();
+    _slMngr.updateSignerPosition2(); //Needs to be changed
     _rdr.updateRadarPosition();
 }
 // Converts from degrees to radians.

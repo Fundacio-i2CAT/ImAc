@@ -246,7 +246,7 @@ THREE.InteractionsController = function () {
             v = intersects[0].object.worldToLocal(intersects[0].point);
             if(elementSelection.name.localeCompare('radar') == 0 ){
                 _rdr.move(v);
-            } else if(elementSelection.name.localeCompare('sign') == 0){
+            } else if(elementSelection.name.localeCompare('signer') == 0){
                 _slMngr.move(v);
             } else if(elementSelection.name.localeCompare('subtitles') == 0){
                 _stMngr.move(v);
@@ -267,9 +267,9 @@ THREE.InteractionsController = function () {
         let menuArray = [];
 
         if (scene.getObjectByName('radar').visible) radarArray = scene.getObjectByName('radar').children;
-        if (scene.getObjectByName('sign')) signArray = scene.getObjectByName('sign').children;
+        if (scene.getObjectByName('signer')) signArray = scene.getObjectByName('signer').children;
         if (scene.getObjectByName('subtitles')) subtitlesArray = scene.getObjectByName('subtitles').children;
-        if (scene.getObjectByName('trad-main-menu')) menuArray = scene.getObjectByName('trad-main-menu').children;
+        if (scene.getObjectByName('trad-main-menu').visible) menuArray = scene.getObjectByName('trad-main-menu').children;
 
         let intersects = raycaster.intersectObjects( radarArray.concat(signArray).concat(subtitlesArray).concat(menuArray) , true );
 
@@ -277,15 +277,18 @@ THREE.InteractionsController = function () {
             if(intersects[0].object.parent.name.localeCompare('radar') == 0){
                 camera.getObjectByName('rdr-colorFrame').visible = true;
                 elementSelection = intersects[0].object.parent;
-                //canvas.getObjectByName('cnv-fov').visible = true;
-            } else if(intersects[0].object.parent.name.localeCompare('sign') == 0){
+            } else if(intersects[0].object.parent.name.localeCompare('signer') == 0){
                 camera.getObjectByName('sl-colorFrame').visible = true;
                 elementSelection = intersects[0].object.parent;
-                //canvas.getObjectByName('cnv-fov').visible = true; 
             } else if(intersects[0].object.parent.name.localeCompare('subtitles') == 0){
-                //camera.getObjectByName('sl-colorFrame').visible = true;
+                //camera.getObjectByName('st-colorFrame').visible = true;
+                if(VideoController.isPausedById(demoId)){
+                    actionPausedVideo = false;
+                } else{
+                    actionPausedVideo = true;
+                    mainMenuCtrl.pauseAllFunc();
+                }
                 elementSelection = intersects[0].object.parent;
-                //canvas.getObjectByName('cnv-fov').visible = true; 
             } 
         }
     }
@@ -306,7 +309,12 @@ THREE.InteractionsController = function () {
                 elementSelection = scene.getObjectByName('slider-progress');
                 mainMenuCtrl.setInitialSlidingPosition(elementSelection.position.x);
                 if(elementSelection){
-                    mainMenuCtrl.pauseAllFunc();
+                    if(VideoController.isPausedById(demoId)){
+                        actionPausedVideo = false;
+                    } else{
+                        actionPausedVideo = true;
+                        mainMenuCtrl.pauseAllFunc();                    
+                    }
                 }
             } else {
                 mainMenuCtrl.onClickSeek(intersects[0].object.worldToLocal(intersects[0].point));

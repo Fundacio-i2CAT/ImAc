@@ -87,9 +87,11 @@ function SettingsOptionMenuController() {
     }
 
     this.setChildColumnActiveOpt = function(name){
-        data.childColumnActiveOpt = name;
-        if ( scene.getObjectByName(name) ) data.default = scene.getObjectByName(name).children[0];
-        view.UpdateView(data);
+        if( scene.getObjectByName(name) ){
+            data.childColumnActiveOpt = name;
+            data.default = scene.getObjectByName(name);
+            view.UpdateView(data);
+        }
     }
 
 /**

@@ -62,12 +62,12 @@ THREE.Radar = function () {
         radar.add(radarIndicator.create());
 
         
-        if(localStorage.getItem("radarPosition")){
-            let savedPosition = JSON.parse(localStorage.getItem("radarPosition"))
+        if(localStorage.getItem("rdrPosition")){
+            let savedPosition = JSON.parse(localStorage.getItem("rdrPosition"))
             radar.position.set(savedPosition.x, savedPosition.y, savedPosition.z);
         } else {
-            let slArea = _slMngr.getSignerArea();
-            let x = (_isHMD ? 0.6*( 1.48*slArea/2 - 20/2) : ( 1.48*slArea/2 - 20/2 )) * _slMngr.getSignerPosition().x;
+            let slArea = slConfig.area;
+            let x = (_isHMD ? 0.6*( 1.48*slArea/2 - 20/2) : ( 1.48*slArea/2 - 20/2 )) * slConfig.canvasPos.x;
             radar.position.set(x, 0, 0);
         }
 
@@ -78,16 +78,16 @@ THREE.Radar = function () {
  * Updates the position if the radar depending on the signer's visibility;
  */
     this.updateRadarPosition = function(){
-        if (radar && !localStorage.getItem("radarPosition")){
-	        if(_slMngr.getSignerEnabled()){
-                let slSize = _slMngr.getSignerSize();
-                let offset = -_stMngr.getSubPosition().y * slSize;
-                let slArea = _slMngr.getSignerArea();
+        if (radar && !localStorage.getItem("rdrPosition")){
+	        if(slConfig.isEnabled){
+                let slSize = slConfig.size;
+                let offset = -stConfig.canvasPos.y * slSize;
+                let slArea = slConfig.area;
 
-	            radar.position.y = (_isHMD ? scene.getObjectByName('sign').position.y + offset : 0);
-                radar.position.x = (_isHMD ? 0.6*( 1.48*slArea/2 - slSize/2 ) : ( 1.48*slArea/2 - slSize/2 )) * _slMngr.getSignerPosition().x;
+	            radar.position.y = (_isHMD ? scene.getObjectByName('signer').position.y + offset : 0);
+                radar.position.x = (_isHMD ? 0.6*( 1.48*slArea/2 - slSize/2 ) : ( 1.48*slArea/2 - slSize/2 )) * slConfig.canvasPos.x;
 	        } else {
-                radar.position.y = _stMngr.getSubtitleConfig().y;
+                radar.position.y = stConfig.canvasPos.y;
             }
 	    }
     }
@@ -109,11 +109,11 @@ THREE.Radar = function () {
             const h = 2 * Math.tan( vFOV / 2 ) * 70; // visible height
             const w = h * camera.aspect;
 
-            if(pos.x > -w/2 && pos.x < w/2){
+            if(pos.x > -(w-14)/2 && pos.x < (w-14)/2){
                 canvas.getObjectByName('radar').position.x = pos.x; 
             }
 
-            if(pos.y > -h/2 && pos.y < h/2){
+            if(pos.y > -(h-14)/2 && pos.y < (h-14)/2){
                 canvas.getObjectByName('radar').position.y = pos.y;
             } 
         }

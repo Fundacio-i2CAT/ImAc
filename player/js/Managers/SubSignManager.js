@@ -46,6 +46,8 @@ SubSignManager = function() {
 
 	let arrows;
 
+	let isdContentTextMemory; //TEST
+
 
 //************************************************************************************
 // Private Functions
@@ -54,25 +56,22 @@ SubSignManager = function() {
 	this.updateISD = function(offset){
 		if ( imsc1doc ){
 			var isd = imsc.generateISD( imsc1doc, offset );
-
 			if ( isd.contents.length > 0 ){
-
-
 		    	if ( stConfig.isEnabled ){
-		    		
 			  		_stMngr.setScenePos(-isd.imacY, isd.imac); //latitude, longitude
 		    		print3DText( isd.contents[0], isd.imac, -isd.imacY );
 		    	} 
 
 		    	if ( stConfig.indicator == 'arrow' ) {
-
 		    		//Depending on which access service is active the arrow group changes.
 			    	if( stConfig.isEnabled ){
-			    		this.setArrows(subtitleMesh.getObjectByName("arrows"));
-			    	} else if(_slMngr.getSignerEnabled() && !stConfig.isEnabled){
-			    		this.setArrows(signerMesh.getObjectByName("arrows"));
+			    		let stMesh = _stMngr.getSubtitles();
+			    		if(stMesh) subController.setArrows(stMesh.getObjectByName("arrows"));
+			    	} else if(slConfig.isEnabled && !stConfig.isEnabled){
+			    		let slMesh = _slMngr.getSigner();
+			    		if(slMesh) subController.setArrows(slMesh.getObjectByName("arrows"));
 			    	} else{
-			    		this.setArrows(undefined)
+			    		subController.setArrows(undefined)
 			    	}
 		    		arrowInteraction();
 		    	}
@@ -89,10 +88,10 @@ SubSignManager = function() {
 		      			 _rdr.updateRadarIndicator(color, isd.imac);
 		    		}
 	      		}
-
 		    	checkSpeakerPosition( isd.imac );
 		  	} else if ( textListMemory.length > 0 ){
-		    	textListMemory = [];
+		    	//textListMemory = [];
+		    	subController.setTextListMemory( [] );
 		    	_stMngr.removeSubtitle();
 		    	_rdr.hideRadarIndicator();
 		  	}
@@ -102,7 +101,7 @@ SubSignManager = function() {
 			var isd = imsc.generateISD( imsc1doc_SL, offset );
 
 			if ( isd.contents.length > 0 ){
-		    	if ( _slMngr.getSignerEnabled() ) print3DSLText( isd.contents[0], isd.imac, -isd.imacY );
+		    	if ( slConfig.isEnabled ) print3DSLText( isd.contents[0], isd.imac, -isd.imacY );
 		  	} else if ( SLtextListMemory.length > 0 ){
 		    	SLtextListMemory = [];
 		    	//removeSLSubtitle();
@@ -122,8 +121,7 @@ SubSignManager = function() {
 
 	function arrowInteraction(){
 
-		let arw = this.getArrows();
-
+		let arw = subController.getArrows();
 		// cada 300 milis aprox
     	if(arw){
 			arw.getObjectByName("right").material.opacity = arw.getObjectByName("right").material.opacity == 1 ? 0.4 : 1;
@@ -132,45 +130,38 @@ SubSignManager = function() {
 	}
 
 
-	function print3DText(isdContent, isdImac, isdImacY) 
-	{
-	  	if ( isdContent.contents.length > 0 )
-	  	{
-	    	var isdContentText = isdContent.contents[0].contents[0].contents[0].contents;
-	    	var textList = [];
-
-	    	for ( var i = 0, l = isdContentText.length; i < l; ++i )
-	    	{
-	      		if ( isdContentText[i].kind == 'span' && isdContentText[i].contents )
-	      		{
-	        		var isdTextObject = {
-	          			text: isdContentText[i].contents[0].text, //'MMMMMWWWWWMMMMMWWWWWMMMMMWWWWWMMMMM',
-	          			color: adaptRGBA( isdContentText[i].contents[0].styleAttrs['http://www.w3.org/ns/ttml#styling color'] ),
-	          			backgroundColor: adaptRGBA( isdContentText[i].contents[0].styleAttrs['http://www.w3.org/ns/ttml#styling backgroundColor'] )
-	        		};
-
-	        		textList.push( isdTextObject );
-	      		}
+	function print3DText(isdContent, isdImac, isdImacY) {
+	  	if ( isdContent.contents.length > 0 ){
+	  		var isdContentText = isdContent.contents[0].contents[0].contents[0].contents;
+	    	if(JSON.stringify(isdContentText) !== JSON.stringify(isdContentTextMemory) ){
+	    		subController.setisdContentTextMemory(isdContentText);
+		    	var textList = [];
+		    	for ( var i = 0, l = isdContentText.length; i < l; ++i ){
+		      		if ( isdContentText[i].kind == 'span' && isdContentText[i].contents ){
+		        		var isdTextObject = {
+		          			text: isdContentText[i].contents[0].text, //'MMMMMWWWWWMMMMMWWWWWMMMMMWWWWWMMMMM',
+		          			color: adaptRGBA( isdContentText[i].contents[0].styleAttrs['http://www.w3.org/ns/ttml#styling color'] ),
+		          			backgroundColor: adaptRGBA( isdContentText[i].contents[0].styleAttrs['http://www.w3.org/ns/ttml#styling backgroundColor'] )
+		        		};
+		        		textList.push( isdTextObject );
+		      		}
+		    	}
+	    		if ( textList.length > 0){
+	    			if(textListMemory.length > 0 && textList[0].text.localeCompare(textListMemory[0].text) != 0 || textList.length != textListMemory.length){
+					    _stMngr.createSubtitle( textList );
+			      		subController.setTextListMemory(textList);
+	    			}
+	    		}
 	    	}
-
-	    	if ( textList.length > 0 && ( textListMemory.length == 0 || textListMemory.length > 0 && textList[0].text != textListMemory[0].text || textList.length != textListMemory.length ) ) {
-	      		_stMngr.removeSubtitle();
-			    _stMngr.createSubtitle( textList, stConfig );
-			    
-	      		textListMemory = textList;     
-	    	} 
-	  	} else {
-	    	textListMemory = [];
+    	 } else{
+	    	subController.setTextListMemory( [] );
 	    	_stMngr.removeSubtitle();
 	    	_rdr.hideRadarIndicator();
 	  	}
-
 	}
 
-	function print3DSLText(isdContent, isdImac, isdImacY) 
-	{
-	  	if ( isdContent.contents.length > 0 )
-	  	{
+	function print3DSLText(isdContent, isdImac, isdImacY) {
+	  	if ( isdContent.contents.length > 0 ){
 	    	var isdContentText = isdContent.contents[0].contents[0].contents[0].contents;
 	    	var textList = [];
 
@@ -185,26 +176,26 @@ SubSignManager = function() {
 	        		textList.push( isdTextObject );
 	      		}
 	    	}
+	    	//if ( textList.length > 0 && ( SLtextListMemory.length == 0 || SLtextListMemory.length > 0 && textList[0].text != SLtextListMemory[0].text || textList.length != SLtextListMemory.length ) ) {
+	    	if ( textList.length > 0){
+    			if(SLtextListMemory.length > 0 && textList[0].text.localeCompare(SLtextListMemory[0].text) != 0 || textList.length != SLtextListMemory.length){
+					_slMngr.removeSLSubtitle();
+		    		_slMngr.createSLSubtitle( textList );
 
-	    	if ( textList.length > 0 && ( SLtextListMemory.length == 0 || SLtextListMemory.length > 0 && textList[0].text != SLtextListMemory[0].text || textList.length != SLtextListMemory.length ) ) {
-	      		_slMngr.removeSLSubtitle();
-
-			    _slMngr.createSLSubtitle( textList );
-
-	      		SLtextListMemory = textList;     
-	    	} 
-	    	if ( _slMngr.getSignerAutoHide() ) _slMngr.swichtSL(true); 
-		    _slMngr.setSubtitleSLConfig(subSLConfig);
+      				SLtextListMemory = textList;
+    			}
+    		}
+	    	if ( slConfig.autoHide ) _slMngr.swichtSL(true); 
+		    //_slMngr.setSubtitleSLConfig(subSLConfig);
 	  	} else {
-	  		if( _slMngr.getSignerAutoHide() ) _slMngr.swichtSL(false);
+	  		if( slConfig.autoHide ) _slMngr.swichtSL(false);
 	  	}
 
 	}
 
-	function checkSpeakerPosition(isdImac)
-	{
-		var difPosition = getViewDifPosition( isdImac, camera.fov );
-	  	var position;
+	function checkSpeakerPosition(isdImac){
+		let difPosition = getViewDifPosition( isdImac, camera.fov );
+	  	let position;
 
 	  	if ( isdImac == undefined || difPosition == 0 ){
 	  		position = 'center';
@@ -212,7 +203,17 @@ SubSignManager = function() {
 	    	position = difPosition < 0 ? 'left' : 'right';
 	  	}
 
-	  	_stMngr.checkSubtitleIdicator( position );
-	    _slMngr.checkSignIdicator( position );	
+	  	if(stConfig.isEnabled) _stMngr.checkSubtitleIdicator( position );
+	    if(slConfig.isEnabled) _slMngr.checkSignIdicator( position );	
 	}
+
+
+	this.setTextListMemory = function(value){
+		textListMemory = value;
+	}
+
+	this.setisdContentTextMemory = function(value){
+		isdContentTextMemory = value;
+	}
+	
 }

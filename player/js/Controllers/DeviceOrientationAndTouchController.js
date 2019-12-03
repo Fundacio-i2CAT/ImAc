@@ -144,7 +144,7 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 	 		if(elementSelection.name.localeCompare('slider-progress') == 0){
 				//This function updates the position of the slider after been clicked and during the mousemmove event.
 				mainMenuCtrl.updatePositionOnMouseMove(raycaster, elementSelection);
-			} else if(elementSelection.name.localeCompare('radar') == 0 || elementSelection.name.localeCompare('sign') == 0 ||  elementSelection.name.localeCompare('subtitles') == 0){
+			} else if(elementSelection.name.localeCompare('radar') == 0 || elementSelection.name.localeCompare('signer') == 0 ||  elementSelection.name.localeCompare('subtitles') == 0){
 	            interController.checkInteractionGrid(raycaster, mouse2D);
 	    	}
     	}
@@ -157,17 +157,26 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 		if ( _blockControls ) initExtraAdAudio();
 
 		if(elementSelection){
-			if (elementSelection.name.localeCompare('slider-progress') == 0) {
-				mainMenuCtrl.setSlidingStatus(false);
-				mainMenuCtrl.onSlideSeek();
-			}
-			if(elementSelection.name.localeCompare('radar') == 0){
-				canvas.getObjectByName('rdr-colorFrame').visible = false;
-	            localStorage.setItem("radarPosition", JSON.stringify(elementSelection.position));
-			}
-			if(elementSelection.name.localeCompare('sign') == 0){
-				canvas.getObjectByName('sl-colorFrame').visible = false;
-	            localStorage.setItem("signPosition", JSON.stringify(elementSelection.position));
+			//CODE DUPLICATES LOWER
+			switch(elementSelection.name){
+				case 'slider-progress':
+					mainMenuCtrl.setSlidingStatus(false);
+					mainMenuCtrl.onSlideSeek();
+					break;
+				case'radar':
+					canvas.getObjectByName('rdr-colorFrame').visible = false;
+	            	localStorage.setItem("rdrPosition", JSON.stringify(elementSelection.position));
+					break;
+				case'signer':
+					canvas.getObjectByName('sl-colorFrame').visible = false;
+            		localStorage.setItem("slPosition", JSON.stringify(elementSelection.position));
+					break;
+				case'subtitles':
+					localStorage.setItem("stPosition", JSON.stringify(elementSelection.position));
+		            //This will remove the checkmark so all optins of st position are available.
+            		stConfig.canvasPos = new THREE.Vector2(elementSelection.position.x, elementSelection.position.y);
+					if(actionPausedVideo) mainMenuCtrl.playAllFunc();
+					break;
 			}
 			menuMgr.checkMenuStateVisibility();
 			//canvas.getObjectByName('cnv-fov').visible = false;
@@ -557,7 +566,7 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 
 	    	interController.checkInteractionVPB( _origin, direction);
 
-        	if(canvas.getObjectByName('radar').visible || canvas.getObjectByName('sign') || canvas.getObjectByName('subtitles')){
+        	if(canvas.getObjectByName('radar').visible || canvas.getObjectByName('signer') || canvas.getObjectByName('subtitles')){
         		interController.checkInteractionCanvasElements( _origin, direction);
         	}
 
@@ -595,10 +604,10 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 						mainMenuCtrl.onSlideSeek();
 					} else if( elementSelection.name.localeCompare('radar') == 0 ){
 						camera.getObjectByName('rdr-colorFrame').visible = false;
-						localStorage.setItem("radarPosition", JSON.stringify(elementSelection.position));
-					} else if(elementSelection.name.localeCompare('sign') == 0){
+						localStorage.setItem("rdrPosition", JSON.stringify(elementSelection.position));
+					} else if(elementSelection.name.localeCompare('signer') == 0){
 						canvas.getObjectByName('sl-colorFrame').visible = false;
-			            localStorage.setItem("signPosition", JSON.stringify(elementSelection.position));
+			            localStorage.setItem("slPosition", JSON.stringify(elementSelection.position));
 					}
 					//canvas.getObjectByName('cnv-fov').visible = false;
 					menuMgr.checkMenuStateVisibility();
@@ -615,10 +624,10 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 						mainMenuCtrl.onSlideSeek();
 					} else if(elementSelection.name.localeCompare('radar') == 0){
 						canvas.getObjectByName('rdr-colorFrame').visible = false;
-						localStorage.setItem("radarPosition", JSON.stringify(elementSelection.position));
-					} else if(elementSelection.name.localeCompare('sign') == 0){
+						localStorage.setItem("rdrPosition", JSON.stringify(elementSelection.position));
+					} else if(elementSelection.name.localeCompare('signer') == 0){
 						canvas.getObjectByName('sl-colorFrame').visible = false;
-			            localStorage.setItem("signPosition", JSON.stringify(elementSelection.position));
+			            localStorage.setItem("slPosition", JSON.stringify(elementSelection.position));
 					}
 					//canvas.getObjectByName('cnv-fov').visible = false;
 					menuMgr.checkMenuStateVisibility();
@@ -635,10 +644,10 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 						mainMenuCtrl.onSlideSeek();
 					}else if(elementSelection.name.localeCompare('radar') == 0){
 						canvas.getObjectByName('rdr-colorFrame').visible = false;
-						localStorage.setItem("radarPosition", JSON.stringify(elementSelection.position));
-					} else if(elementSelection.name.localeCompare('sign') == 0){
+						localStorage.setItem("rdrPosition", JSON.stringify(elementSelection.position));
+					} else if(elementSelection.name.localeCompare('signer') == 0){
 						canvas.getObjectByName('sl-colorFrame').visible = false;
-			            localStorage.setItem("signPosition", JSON.stringify(elementSelection.position));
+			            localStorage.setItem("slPosition", JSON.stringify(elementSelection.position));
 					}
 					//canvas.getObjectByName('cnv-fov').visible = false;
 					menuMgr.checkMenuStateVisibility();
@@ -706,7 +715,7 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 	        if(elementSelection){
 		        if( elementSelection.name.localeCompare('slider-progress') == 0){
 					mainMenuCtrl.updatePositionOnMouseMove(raycaster, elementSelection);
-		        } else if( elementSelection.name.localeCompare('radar') == 0 || elementSelection.name.localeCompare('sign') == 0){
+		        } else if( elementSelection.name.localeCompare('radar') == 0 || elementSelection.name.localeCompare('signer') == 0){
 		            interController.checkInteractionGrid(raycaster, mouse2D);
 		    	}
 	        }

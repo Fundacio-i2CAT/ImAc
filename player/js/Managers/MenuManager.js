@@ -168,8 +168,6 @@ function MenuManager() {
             scene.getObjectByName('pointer').scale.set(1*_pointerSize,1*_pointerSize,1*_pointerSize);
         }
 
-        //mainMenuCtrl.playAllFunc();
-
         if(menu) {
             menu.visible = false;
             // If the Enhaced menu is selected on initial settings, 

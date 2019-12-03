@@ -91,6 +91,8 @@ let slConfig;
 let adConfig;
 let astConfig;
 
+let actionPausedVideo = false;
+
 /**
  * Initializes the web player.
  */
@@ -124,10 +126,8 @@ function init_webplayer()
                     localStorage.removeItem('ImAc_init');
                     localStorage.ImAc_language ? MenuDictionary.setMainLanguage( localStorage.ImAc_language ) : MenuDictionary.setMainLanguage( 'en' );
 
-                    //_isTV = localStorage.ImAc_lineal == 'true' && list_contents[ myhash[1] ].urlTV ? true : false;
-                    _isTV = (list_contents[ myhash[1] ].urlTV) ? true : false;
-
-                    console.log(_isTV)
+                    _isTV = localStorage.ImAc_lineal == 'true' && list_contents[ myhash[1] ].urlTV ? true : false;
+                    //_isTV = (list_contents[ myhash[1] ].urlTV) ? true : false;
 
                     mainContentURL = ( _isTV && list_contents[ myhash[1] ].urlTV ) ? list_contents[ myhash[1] ].urlTV : list_contents[ myhash[1] ].url;
 

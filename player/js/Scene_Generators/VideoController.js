@@ -322,8 +322,7 @@ VideoController = function() {
         getAdaptationSets().then(( str ) => { 
 
             var firtsIteration = true;
-            listOfVideoContents[0].vid.ontimeupdate = function() 
-            {
+            listOfVideoContents[0].vid.ontimeupdate = function(){
                 if (listOfVideoContents[0].vid.currentTime >= listOfVideoContents[0].vid.duration - 0.5) window.location.reload();
 
                 _stMngr.updateSubtitleByTime( listOfVideoContents[0].vid.currentTime );

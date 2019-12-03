@@ -14,18 +14,16 @@ MenuFunctionsManager = function() {
             switch(accesService){
 
                 case 'st':
-
-                    let ste2r = stConfig.easy2Read ? 1 : 0;
+                    let ste2r = stConfig.easy2read ? 1 : 0;
                     if ( list_contents[ demoId ].subtitles && list_contents[ demoId ].subtitles[ ste2r ] && _stMngr.checkisSubAvailable( lang )) {
                         _iconf.stlanguage = lang;
-                        _stMngr.setSubtitle( list_contents[ demoId ].subtitles[ ste2r ][ lang ], lang );
+                        _stMngr.setSubtitle( list_contents[ demoId ].subtitles[ ste2r ][ lang ], lang, 'st');
                     }else {
                         _stMngr.disableSubtiles();
                     }
                     break;
 
                 case 'sl':
-                    
                     if ( list_contents[ demoId ].signer && list_contents[ demoId ].signer[ 0 ] && _slMngr.checkisSignAvailable( lang )) {
                         _iconf.sllanguage = lang;
                         _slMngr.setSignerContent( list_contents[ demoId ].signer[ 0 ][ lang ], lang );
@@ -35,7 +33,7 @@ MenuFunctionsManager = function() {
 
                     if ( list_contents[ demoId ].st4sl && list_contents[ demoId ].st4sl[ 0 ] && _slMngr.checkisSignAvailable( lang )) {
                         var siglang = list_contents[ demoId ].st4sl[ 0 ][ lang ] ? lang : Object.keys( list_contents[ demoId ].st4sl[ 0 ] )[ 0 ];
-                        _slMngr.setSLSubtitle( list_contents[demoId].st4sl[0][siglang], siglang ); 
+                        _slMngr.setSubtitle( list_contents[demoId].st4sl[0][siglang], siglang, 'sl' ); 
                     }              
                     break;
 

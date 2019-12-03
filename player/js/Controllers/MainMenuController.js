@@ -601,7 +601,7 @@ function MainMenuController() {
     this.onSlideSeek = function(elementSelection){
         if(!isSliding){
             VideoController.seekAll(newSeekTime);
-            mainMenuCtrl.playAllFunc();
+            if(actionPausedVideo) mainMenuCtrl.playAllFunc();
         }    
     }
 

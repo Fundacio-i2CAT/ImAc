@@ -1,7 +1,7 @@
 
 STManager = function() {
 
-    let subtitleMesh;
+    let subtitles;
 
     const indicators = {
         NONE: 'none',
@@ -13,7 +13,9 @@ STManager = function() {
     this.initConfig = function(conf){
 
         let config = {
-            isMoved: false,
+            initialY: 0,
+            width: 0,
+            height: 0,
             fixedSpeaker: false,
             fixedScene: false,
             isEnabled: false,
@@ -47,20 +49,26 @@ STManager = function() {
     }
 
     this.createSubtitle = function(textList){
-        if ( !stConfig.fixedSpeaker ){
-            subtitleMesh = _moData.getSubtitleMesh(textList, "500 40px Roboto, Arial", false, 'subtitles');
-            canvasMgr.addElement(subtitleMesh);
+        let stMesh;
+        _stMngr.removeSubtitle();
+        if ( !stConfig.fixedSpeaker && !stConfig.fixedScene ){
+            stMesh = _moData.getSubtitleMesh(textList, "500 40px Roboto, Arial", false, 'subtitles');
+            canvasMgr.addElement(stMesh);
+            subtitles = canvas.getObjectByName('subtitles');
         } else{
-            subtitleMesh = !stConfig.fixedScene ? _moData.getExpEmojiSubtitleMesh(textList) : _moData.getSceneFixedSubtitles(textList, 3);
-            console.log(subtitleMesh)
-            scene.add( subtitleMesh )
+            stMesh = !stConfig.fixedScene ? _moData.getExpEmojiSubtitleMesh(textList) : _moData.getSceneFixedSubtitles(textList, 3);
+            scene.add( stMesh );
+            subtitles = scene.getObjectByName('subtitles');
         }
     }
 
     this.removeSubtitle = function(){
-        textListMemory = [];
-        (stConfig.fixedScene || stConfig.fixedSpeaker) ? scene.remove( subtitleMesh ) : canvasMgr.removeElement( subtitleMesh );
-        subtitleMesh = undefined;
+        if(subtitles){
+            subController.setTextListMemory( [] );
+            subController.setisdContentTextMemory( [] );
+            (stConfig.fixedScene || stConfig.fixedSpeaker) ? scene.remove( subtitles ) : canvasMgr.removeElement( subtitles );
+            subtitles = undefined;
+        }
     }
 
 /**
@@ -74,19 +82,17 @@ STManager = function() {
             scene.getObjectByName('trad-option-menu').visible = false;
 
             const vFOV = THREE.Math.degToRad( camera.fov ); // convert vertical fov to radians
-            const h = 2 * Math.tan( vFOV / 2 ) * 70; // visible height
+            const h = 2 * Math.tan( vFOV / 2 ) * 70 ; // visible height
             const w = h * camera.aspect;
 
-            //let w = 1.48*_slMngr.getSignerArea()-14;
-            //let h = 0.82*_slMngr.getSignerArea()-14;
-
-            if(pos.x > -w/2 && pos.x < w/2){
-                canvas.getObjectByName('subtitles').position.x = pos.x; 
+            if(subtitles){
+                if(pos.x > -(w - stConfig.width)/2 && pos.x < (w - stConfig.width)/2){
+                    canvas.getObjectByName('subtitles').position.x = pos.x; 
+                }
+                if(pos.y > -(h - stConfig.height)/2 && pos.y < (h - stConfig.height)/2){
+                    canvas.getObjectByName('subtitles').position.y = pos.y;
+                } 
             }
-
-            if(pos.y > -h/2 && pos.y < h/2){
-                canvas.getObjectByName('subtitles').position.y = pos.y;
-            } 
         }
     }
 
@@ -95,35 +101,31 @@ STManager = function() {
 // Public Subtitle Setters
 //************************************************************************************
 
-    this.setSubtitle = function(xml, value){
-        stConfig.language = value;
-        var r = new XMLHttpRequest();
-
-        r.open( "GET", xml );
-        r.onreadystatechange = function () {
-            if ( r.readyState === 4 && r.status === 200 ) {
-                imsc1doc = imsc.fromXML( r.responseText );
-        
-            } else if ( r.readyState === 4 ) {
-                console.error('Status = ' + r.status + ' xml = ' + xml);
-            }
-        };
-        r.send();
-    };
-
-    this.setSLSubtitle = function(xml, lang){
+/**
+ * Sets the subtitle.
+ *
+ * @param      {string}  xml            The path of the xml where the subtitles info is
+ * @param      {<type>}  lang           The language of the subtitles
+ * @param      {<type>}  accessService  The access service between st or sl
+ */
+    this.setSubtitle = function(xml, lang, accessService){
         stConfig.language = lang;
         var r = new XMLHttpRequest();
-
         r.open( "GET", xml );
-        r.onreadystatechange = function () 
-        {
-            if ( r.readyState === 4 && r.status === 200 ) 
-            {
-                imsc1doc_SL = imsc.fromXML( r.responseText );
-            }
-            else if ( r.readyState === 4 ) 
-            {
+
+        r.onreadystatechange = function (){
+            if ( r.readyState === 4 && r.status === 200 ){
+                switch(accessService){
+                    case 'st':
+                        imsc1doc = imsc.fromXML( r.responseText );
+                        break;
+
+                    case 'sl':
+                        imsc1doc_SL = imsc.fromXML( r.responseText );
+                        break;
+                }
+                subController.updateISD( VideoController.getMediaTime() );
+            } else if ( r.readyState === 4 ){
                 console.error('Status = ' + r.status + ' xml = ' + xml);
             }
         };
@@ -134,33 +136,33 @@ STManager = function() {
         if(stConfig.indicator.localeCompare(value) != 0){
             stConfig.indicator = value;
             SettingsOptionCtrl.setChildColumnActiveOpt(childColumnOpt);
+            let signerMesh = _slMngr.getSigner();
 
-            switch(stConfig.indicator){
-                case 'none':
-                    if ( slConfig.isEnabled ) {
-                        if ( !imsc1doc_SL ) scene.getObjectByName("backgroundSL").visible = false;
+            switch( stConfig.indicator ){
+                case indicators.NONE:
+                    if( slConfig.isEnabled ) {
+                        if( !imsc1doc_SL ) scene.getObjectByName("backgroundSL").visible = false;
                         signerMesh.getObjectByName("right").visible = false;
                         signerMesh.getObjectByName("left").visible = false;
                     }
                     _rdr.hideRadar();
                     break;
 
-                case 'arrow':
+                case indicators.ARROW:
                     _rdr.hideRadar();
-                    if(stConfig.isEnabled){
-                        if(scene.getObjectByName('backgroundSL')) scene.getObjectByName('backgroundSL').visible = false;
-                    } else {
-                        if ( slConfig.isEnabled && !imsc1doc_SL){
+                    if( stConfig.isEnabled ){
+                        if( scene.getObjectByName('backgroundSL') ) scene.getObjectByName('backgroundSL').visible = false;
+                    }else {
+                        if( slConfig.isEnabled && !imsc1doc_SL ){
                             scene.getObjectByName('backgroundSL').visible = true;
-                        } 
+                        }
                     }
-                    
                     break;
 
-                case 'radar':
+                case indicators.RADAR:
                     _rdr.showRadar();
-                    if (slConfig.isEnabled) {
-                        if ( !imsc1doc_SL ) scene.getObjectByName("backgroundSL").visible = false;
+                    if( slConfig.isEnabled ) {
+                        if( !imsc1doc_SL ) scene.getObjectByName("backgroundSL").visible = false;
                             signerMesh.getObjectByName("right").visible = false;
                             signerMesh.getObjectByName("left").visible = false;
                     }
@@ -177,30 +179,55 @@ STManager = function() {
 
     this.setSize = function(value){
         stConfig.size = value;
-        textListMemory = [];
-
-        subController.updateISD( VideoController.getMediaTime() );
+        if(subtitles){
+            let esaySizeAjust = stConfig.easy2read ? 1.25 : 1;
+            scaleFactor = (stConfig.area/130) * stConfig.size * esaySizeAjust;
+            subtitles.scale.set( scaleFactor, scaleFactor, 1 );
+        } 
     };
 
     this.setBackground = function(value){
         stConfig.background = value;
-        textListMemory = [];
 
+        //FIND METHOD FOR DYNAMIC UPDATE (WITHOUT REMOVE/CREATE)
+        subController.setTextListMemory( [] );
+        subController.setisdContentTextMemory( [] );
         subController.updateISD( VideoController.getMediaTime() );
     };
 
     this.setEasy2Read = function(value, xml){
         stConfig.easy2read = value;
-        this.setSubtitle( xml, stConfig.language );
-        textListMemory = [];
-
-        subController.updateISD( VideoController.getMediaTime() );
+        subController.setTextListMemory( [] );
+        _stMngr.setSubtitle( xml, stConfig.language, 'st');
     };
-
-    this.setCanvasPos = function(x, y){
-        stConfig.canvasPos = new THREE.Vector2(x, y);
-        textListMemory = [];
-        subController.updateISD( VideoController.getMediaTime() );
+/**
+ * Sets the position of the subtitles.
+ *
+ * @param      {<type>}  pos      The new value
+ * @param      {<type>}  scFixed  The screen fixed
+ * @param      {<type>}  spFixed  The speaker fixed
+ */
+    this.setPosition = function(pos, scFixed, spFixed){
+        stConfig.canvasPos.y = pos.y;
+        if(subtitles){
+            //Remove saved position in cookies so st can be placed in top/bottom/scene position
+            if(localStorage.getItem("stPosition")){
+                localStorage.removeItem("stPosition");
+            }
+            //Check if not fixed options and initialY is initialized;
+            //If initialY is not initialized ST will have to be created
+            if(!stConfig.fixedSpeaker && !stConfig.fixedScene && pos.y != 0 && stConfig.initialY != 0){
+                subtitles.position.x = 0;
+                subtitles.position.y =  Math.abs(stConfig.initialY)*pos.y;
+                stConfig.fixedSpeaker = spFixed;
+                stConfig.fixedScene = scFixed;
+            } else{
+                _stMngr.removeSubtitle(); 
+                stConfig.fixedSpeaker = spFixed;
+                stConfig.fixedScene = scFixed;  
+                subController.updateISD( VideoController.getMediaTime() );
+            }
+        }
     };
 
 
@@ -218,53 +245,35 @@ STManager = function() {
         let y = rad * cosLat * sinLon;
         let z = rad * sinLat;
 
-        console.log('x: '+x+', y: '+y+', z: '+z);  
+        //console.log('x: '+x+', y: '+y+', z: '+z);  
     }
-
-    this.setArea = function(value){
-        stConfig.area = value;
-        textListMemory = [];
-
-        slConfig.area = value;
-        _slMngr.updateSignerPosition();
-        _stMngr.createSubAreaHelper( value );
-        subController.updateISD( VideoController.getMediaTime() );
-    };
 
     this.setLanguagesArray = function(subList){
         stConfig.availableLang = [];
 
-        if ( subList['en'] ) 
-        {
-            stConfig.availableLang.push( 
-            { 
+        if ( subList['en'] ) {
+            stConfig.availableLang.push({ 
                 name: 'subtitlesEngButton', 
                 value: 'en', 
                 default: ( 'en' == stConfig.language ) 
-            } );
+            });
         }
-        if ( subList['de'] ) 
-        {
-            stConfig.availableLang.push( 
-            { 
+        if ( subList['de'] ) {
+            stConfig.availableLang.push({ 
                 name: 'subtitlesGerButton', 
                 value: 'de', 
                 default: ( 'de' == stConfig.language ) 
-            } );
+            });
         }
-        if ( subList['es'] ) 
-        {
-            stConfig.availableLang.push( 
-            { 
+        if ( subList['es'] ){
+            stConfig.availableLang.push({ 
                 name: 'subtitlesEspButton', 
                 value: 'es', 
                 default: ( 'es' == stConfig.language ) 
             } );
         }
-        if ( subList['ca'] ) 
-        {
-            stConfig.availableLang.push( 
-            { 
+        if ( subList['ca'] ){
+            stConfig.availableLang.push({ 
                 name: 'subtitlesCatButton', 
                 value: 'ca', 
                 default: ( 'ca' == stConfig.language ) 
@@ -272,17 +281,14 @@ STManager = function() {
         }
     };
 
+
+    this.getSubtitles = function(){
+        return subtitles;
+    }
+
 //************************************************************************************
 // Public Subtitle Checkers
 //************************************************************************************
-
-    this.checkSubPosition = function(value){
-        if ( stConfig.fixedSpeaker ) {
-            if ( !stConfig.fixedScene ) return value == 0 ? true : false;
-            else return value == 3 ? true : false;
-        }
-        else return value == stConfig.canvasPos.y;
-    };
 
     this.checkisSubAvailable = function(lang){
         if ( !lang && list_contents[demoId].acces[0].ST ) lang = list_contents[demoId].acces[0].ST[0];
@@ -336,29 +342,6 @@ STManager = function() {
         stConfig.isEnabled = enable;
     }
 
-    this.changeSTmode = function(mode){
-        _stMngr.removeSubtitle();
-
-        if ( mode == 0 ) 
-        {
-            stConfig.fixedSpeaker = false;
-            stConfig.fixedScene = false;
-        }
-        else if ( mode == 1 )
-        {
-            stConfig.fixedSpeaker = true;
-            stConfig.fixedScene = false;
-        }
-        else {
-            stConfig.fixedSpeaker = true;
-            stConfig.fixedScene = true;
-        }
-
-        textListMemory = [];
-
-        subController.updateISD( VideoController.getMediaTime() );
-    }
-
     this.getSTAvailableLang = function(lang, e2r=0){
         if ( list_contents[demoId].subtitles[e2r][lang] ) {
            return lang;
@@ -387,7 +370,7 @@ STManager = function() {
 
     this.checkSubtitleIdicator = function(position){
         if ( stConfig.indicator != indicators.NONE ) {
-            stConfig.indicator != indicators.MOVE ? changeSubtitleIndicator( position ) : textListMemory = [];
+            stConfig.indicator != indicators.MOVE ? changeSubtitleIndicator( position ) : subController.setTextListMemory( [] );
         }      
     }
 

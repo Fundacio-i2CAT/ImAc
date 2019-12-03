@@ -65,8 +65,8 @@ THREE.MediaObjectData = function () {
         let signer =  new THREE.Group();
         signer.name = name;
 
-        if(localStorage.getItem("signPosition")){
-            let savedPosition = JSON.parse(localStorage.getItem("signPosition"))
+        if(localStorage.getItem("slPosition")){
+            let savedPosition = JSON.parse(localStorage.getItem("slPosition"))
             signer.position.set( savedPosition.x, savedPosition.y, 0)
         } else {
             let x = _isHMD ? 0.6 * ( 1.48*slConfig.area/2 - slConfig.size/2 ) *slConfig.canvasPos.x : ( 1.48*slConfig.area/2 - slConfig.size/2 ) *slConfig.canvasPos.x;
@@ -116,14 +116,14 @@ THREE.MediaObjectData = function () {
     };
 
 
-    this.getSLSubtitleMesh = function(textList, slopacity, slconfig){
+    this.getSLSubtitleMesh = function(textList){
         var material = new THREE.MeshBasicMaterial( { color: 0x000000,  transparent: true, opacity: 0 } );
         //var plane = new THREE.Mesh( new THREE.PlaneGeometry( 20, 20 ), material );
         //var group = new THREE.Group();
         var slsize = 0.46;
         var font = textList[0].text.length < 14 ? ST_font : ST_font2;
 
-        let subtitles4SLMesh = _moData.getSubtitleMesh(textList, slconfig, font, slopacity, true, 'sl-subtitles');
+        let subtitles4SLMesh = _moData.getSubtitleMesh(textList, font, true, 'sl-subtitles');
        
         //plane.add( group );
         //plane.name = 'st4slmesh';
@@ -340,8 +340,8 @@ THREE.MediaObjectData = function () {
         const opacity = stConfig.background;
         let scaleFactor;
 
-        var group = new THREE.Group();
-        group.name = name;
+        var stGroup = new THREE.Group();
+        stGroup.name = name;
 
         if(isSL){
             var cnv = document.getElementById( "canvas2" );
@@ -351,7 +351,7 @@ THREE.MediaObjectData = function () {
         var ctx = cnv.getContext( "2d" );
         var ch = 50; // canvas height x line
         var fh = 40; // font height 
-
+        
         ctx.font = font;
         var width = ctx.measureText( t[0].text ).width;
         if(!isSL){
@@ -368,16 +368,21 @@ THREE.MediaObjectData = function () {
 
         var material = new THREE.MeshBasicMaterial( { map: new THREE.CanvasTexture( cnv ),  transparent: true } );
         var textMesh = new THREE.Mesh( new THREE.PlaneGeometry( cnv.width/6, ch*t.length/6 ), material );
+        textMesh.name = 'emojitext';
+        textMesh.visible = true;
 
         //Depending on the line number the center of the text mesh will change;
         let stLineFactorCorrection = (t[1]) ? (textMesh.geometry.parameters.height/4) : (textMesh.geometry.parameters.height/2);
+        stConfig.height = stLineFactorCorrection * 2; 
         
         let arrows = getSubtitlesArrowMesh(cnv.width/6, t.length, t[0].color, t[0].backgroundColor, opacity);
+        stConfig.width = (textMesh.geometry.parameters.width)/2 + arrows.children[0].geometry.parameters.width*2;
 
         if(isSL){
             scaleFactor = 0.46;
             textMesh.scale.set( scaleFactor, scaleFactor, 1 );
-            textMesh.position.y = 0;
+            arrows.scale.set( scaleFactor, scaleFactor, 1 );
+            stGroup.position.y = 0;
         } else {
             const vFOV = THREE.Math.degToRad( camera.fov ); // convert vertical fov to radians
             const height = 2 * Math.tan( vFOV / 2 ) * 70; // visible height
@@ -388,35 +393,37 @@ THREE.MediaObjectData = function () {
 
             let  y = (stConfig.fixedSpeaker) ? posY : (stConfig.canvasPos.y * (height/2 - margin));
 
-            let esaySizeAjust = stConfig.easy2Read ? 1.25 : 1;
-            scaleFactor = (stConfig.area/130) * (stConfig.size * esaySizeAjust);
-            textMesh.scale.set( scaleFactor, scaleFactor, 1 );
-            if(!stConfig.fixedSpeaker || !stConfig.fixedScene){
-                textMesh.position.y = y - stConfig.canvasPos.y*stLineFactorCorrection*scaleFactor;
-                textMesh.position.x = 0;
+            let esaySizeAjust = stConfig.easy2read ? 1.25 : 1;
+            scaleFactor = (stConfig.area/130) * stConfig.size * esaySizeAjust;
+            stGroup.scale.set( scaleFactor, scaleFactor, 1 );
+
+            if(!stConfig.fixedSpeaker && !stConfig.fixedScene){
+                if(localStorage.getItem("stPosition")){
+                    let savedPosition = JSON.parse(localStorage.getItem("stPosition"))
+                    stGroup.position.y = savedPosition.y;
+                    stGroup.position.x = savedPosition.x;
+                }else{
+                    stGroup.position.y = y - stConfig.canvasPos.y*stLineFactorCorrection*scaleFactor;
+                    stConfig.initialY = stGroup.position.y;
+                    stGroup.position.x = 0;
+                }
             } else if(stConfig.fixedScene){
                 textMesh.position.y = -20;
                 textMesh.position.z = -75;
-                textMesh.lookAt(new THREE.Vector3(0, 0, 0));
             }
-
         }
-        textMesh.name = 'emojitext';
-        textMesh.visible = true;
 
-        arrows.position.y = textMesh.position.y;
+        stGroup.add(textMesh);
+        stGroup.add(arrows);
 
-        group.add(textMesh);
-        group.add(arrows);
-
-        return group;
+        return stGroup;
     };
 
-    this.getSceneFixedSubtitles = function(textList, streps){
+    this.getSceneFixedSubtitles = function(textList, stReps){
         let group = new THREE.Group();
-        for (let i = 0; i < streps ; i++) {
+        for (let i = 0; i < stReps ; i++) {
             let mesh = _moData.getSubtitleMesh( textList, ST_font, false, 'fixed-st-'+i);
-            mesh.rotation.y = Math.radians( i*(360/streps) );
+            mesh.rotation.y = Math.radians( i*(360/stReps) );
             group.add( mesh );
         }
         group.name = 'subtitles';

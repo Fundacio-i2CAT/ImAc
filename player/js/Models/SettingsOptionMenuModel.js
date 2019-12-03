@@ -15,4 +15,6 @@ function SettingsOptionMenuModel() {
 	this.parentDropdownData;
 	this.activeMenuOpts;
 	this.isPreviewVisible;
+	this.childColumnActiveOpt;
+	this.default;
 }

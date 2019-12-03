@@ -1,7 +1,7 @@
 
 SLManager = function() {
 
-    let signerMesh;
+    let signer;
     let subtitleSLMesh;
 
 /**
@@ -33,30 +33,27 @@ SLManager = function() {
  * Creates a signer.
  */
     this.createSigner = function() {
-        
+        let slMesh;
         removeSigner();
 
         var hasSLSubtitles = imsc1doc_SL ? true : false;
-        signerMesh = _moData.getSignVideoMesh('sign', hasSLSubtitles );
-        signerMesh.visible = false;
+        slMesh = _moData.getSignVideoMesh('signer', hasSLSubtitles );
+        slMesh.visible = false;
 
-        var SLTimeout = setTimeout( function() { signerMesh.visible = true },700);
-        canvasMgr.addElement(signerMesh);
+        var SLTimeout = setTimeout( function() { slMesh.visible = true },700);
+        canvasMgr.addElement(slMesh);
 
-        //subController.setSignerSize(signerSize)
+        signer = canvas.getObjectByName('signer');
 
         if ( !VideoController.isPausedById( 0 ) ) VideoController.playAll();
     }
 
     function removeSigner(){
-        if( signerMesh ){
-            VideoController.removeContentById( signerMesh.name );
-            canvasMgr.removeElement(signerMesh)
-            signerMesh = undefined;
+        if( signer ){
+            VideoController.removeContentById( signer.name );
+            canvasMgr.removeElement(signer)
         }
     }
-
-
 
 
 //************************************************************************************
@@ -73,60 +70,51 @@ SLManager = function() {
             scene.getObjectByName('trad-main-menu').visible = false;
             scene.getObjectByName('trad-option-menu').visible = false;
 
-            /*let j = slConfig.area -slConfig.size;
-            let w = 1.48 * j;
-            let h = 0.82 * j;*/
-
             const vFOV = THREE.Math.degToRad( camera.fov ); // convert vertical fov to radians
             const h = 2 * Math.tan( vFOV / 2 ) * 70; // visible height
             const w = h * camera.aspect;
 
-            if(pos.x > -w/2 && pos.x < w/2){
-                canvas.getObjectByName('sign').position.x = pos.x; 
+            if(pos.x > -(w- slConfig.size)/2 && pos.x < (w- slConfig.size)/2){
+                canvas.getObjectByName('signer').position.x = pos.x; 
             }
 
-            if(pos.y > -h/2 && pos.y < h/2){
-                canvas.getObjectByName('sign').position.y = pos.y;
+            if(pos.y > -(h - slConfig.size)/2 && pos.y < (h - slConfig.size)/2){
+                canvas.getObjectByName('signer').position.y = pos.y;
             } 
         }
     }
 
-    function changeSignPosition(pos) 
-    {
-        if ( signerMesh && ( ( pos == 'left' && signerMesh.position.x > 0 ) || ( pos == 'right' && signerMesh.position.x < 0 ) ) )
-        {
-            signerMesh.position.x = signerMesh.position.x * -1;
+    function changeSignPosition(pos) {
+        if ( signer && ( ( pos == 'left' && signer.position.x > 0 ) || ( pos == 'right' && signer.position.x < 0 ) ) ){
+            signer.position.x = signer.position.x * -1;
         }
     }
     
     this.checkSignIdicator = function(position){
-        if ( stConfig.indicator != 'none' ) 
-        {
-              if ( position == 'center' && stConfig.indicator == 'move' ) 
-              {
-                  position = slConfig.canvasPos.x == -1 ? 'left' : 'right';
-              }
-            //subtitleIndicator != 'move' ? changeSignIndicator( position ) : changeSignPosition( position );
-            stConfig.indicator != 'move' ? changeSubtitleIndicator( position ) : changeSignPosition( position );
+        if ( stConfig.indicator != 'none' ){
+            if ( position == 'center' && stConfig.indicator == 'move' ){
+                position = slConfig.canvasPos.x == -1 ? 'left' : 'right';
+            }
+            //stConfig.indicator != 'move' ? changeSubtitleIndicator( position ) : changeSignPosition( position );
+            stConfig.indicator != 'move' ? _stMngr.checkSubtitleIdicator( position ) : changeSignPosition( position );
         }
     }
 
 
-
     function updateSignerPosition(){
-        if ( scene.getObjectByName("sign") ){
-            if(localStorage.getItem("signPosition")){
-                let savedPosition = JSON.parse(localStorage.getItem("signPosition"))
+        if ( scene.getObjectByName('signer') ){
+            if(localStorage.getItem("slPosition")){
+                let savedPosition = JSON.parse(localStorage.getItem("slPosition"))
                 var posX = savedPosition.x
                 var posY = savedPosition.y;
             } else {
-                   var posX = _isHMD ? 0.6 * ( 1.48*slConfig.area/2 - slConfig.size/2 ) *slConfig.canvasPos.x : ( 1.48*slConfig.area/2 - slConfig.size/2 ) *slConfig.canvasPos.x;
+                var posX = _isHMD ? 0.6 * ( 1.48*slConfig.area/2 - slConfig.size/2 ) *slConfig.canvasPos.x : ( 1.48*slConfig.area/2 - slConfig.size/2 ) *slConfig.canvasPos.x;
                 var posY = _isHMD ? 0.6 * ( 0.82*slConfig.area/2 - slConfig.size/2) *slConfig.canvasPos.y : ( 0.82*slConfig.area/2 - slConfig.size/2 ) *slConfig.canvasPos.y;
             }
             var posZ = 0;
 
-            scene.getObjectByName("sign").position.x = posX;
-            scene.getObjectByName("sign").position.y = posY;
+            scene.getObjectByName('signer').position.x = posX;
+            scene.getObjectByName('signer').position.y = posY;
 
             if ( subtitleSLMesh ){
                 SLtextListMemory = [];
@@ -136,9 +124,9 @@ SLManager = function() {
     }
 
     this.updateSignerPosition2 = function(){
-        if ( scene.getObjectByName("sign")){
-            if(localStorage.getItem("signPosition")){
-                const savedPosition = JSON.parse(localStorage.getItem("signPosition"))
+        if ( scene.getObjectByName('signer')){
+            if(localStorage.getItem("slPosition")){
+                const savedPosition = JSON.parse(localStorage.getItem("slPosition"))
                 const posX = savedPosition.x
                 const posY = savedPosition.y;
             } else {
@@ -147,13 +135,12 @@ SLManager = function() {
             }
             var posZ = 0;
 
-            scene.getObjectByName("sign").position.x = posX;
-            scene.getObjectByName("sign").position.y = posY;
+            scene.getObjectByName('signer').position.x = posX;
+            scene.getObjectByName('signer').position.y = posY;
 
             setPos(posX, posY);
 
-            if ( subtitleSLMesh )
-            {
+            if ( subtitleSLMesh ){
                 SLtextListMemory = [];
                 //removeSLSubtitle();
             }
@@ -161,25 +148,24 @@ SLManager = function() {
     }
 
     // Subtitles fixed under SL video
-    function createSLSubtitle(textList)
-    {
+    this.createSLSubtitle = function(textList){
         var posX = _isHMD ? 0.6*( 1.48*slConfig.area/2-slConfig.size/2 ) *slConfig.canvasPos.x : ( 1.48*slConfig.area/2-slConfig.size/2 ) *slConfig.canvasPos.x;
         var posY = _isHMD ? 0.6*( 0.82*slConfig.area/2-slConfig.size/2 ) *slConfig.canvasPos.y : ( 0.82*slConfig.area/2-slConfig.size/2 ) *slConfig.canvasPos.y;
 //        var posZ = 70;
         var posZ = 0;
 
-        subtitleSLMesh = _moData.getSLSubtitleMesh( textList, subBackground, slconfig );
+        subtitleSLMesh = _moData.getSLSubtitleMesh( textList);
 
-        canvas.getObjectByName('sign').add( subtitleSLMesh );
+        canvas.getObjectByName('signer').add( subtitleSLMesh );
     }
 
 //************************************************************************************
 // Media Object Destructors
 //************************************************************************************
 
-    function removeSLSubtitle(){
+    this.removeSLSubtitle = function(){
         SLtextListMemory = [];
-        canvas.getObjectByName('sign').remove( subtitleSLMesh );
+        canvas.getObjectByName('signer').remove( subtitleSLMesh );
         subtitleSLMesh = undefined;
     }
 
@@ -187,8 +173,7 @@ SLManager = function() {
 // Public Signer Setters
 //************************************************************************************
 
-    this.setSignerPosition = function(x, y)
-    {
+    this.setSignerPosition = function(x, y){
         slConfig.canvasPos.x = x;
         if(stConfig.isEnabled){
             slConfig.canvasPos.y = y;
@@ -198,28 +183,18 @@ SLManager = function() {
         updateSignerPosition();
     };    
 
-    this.setSignerSize = function(size)
-    {
+    this.setSignerSize = function(size){
         slConfig.size = size;
-        if ( scene.getObjectByName("sign")){
-            scene.getObjectByName("sign").scale.set(slConfig.size/20, slConfig.size/20, 1);
+        if ( scene.getObjectByName('signer')){
+            scene.getObjectByName('signer').scale.set(slConfig.size/20, slConfig.size/20, 1);
         }
         updateSignerPosition();
     };    
 
-    /*this.setSignerArea = function(size)
-    {
-        signArea = size;
-        updateSignerPosition();
-        createSubAreaHelper( size );
-    };
-
-    this.setSignerIndicator = function(ind)
-    {
+/*  this.setSignerIndicator = function(ind){
         subtitleIndicator = ind;
         if ( subtitleIndicator == 'arrow' && scene.getObjectByName("backgroundSL") ) scene.getObjectByName("backgroundSL").visible = true;
-        else if ( scene.getObjectByName("backgroundSL") ) 
-        {
+        else if ( scene.getObjectByName("backgroundSL") ) {
             scene.getObjectByName("backgroundSL").visible = false;
             scene.getObjectByName("rightSL").visible = false;
             scene.getObjectByName("leftSL").visible = false;
@@ -270,9 +245,13 @@ SLManager = function() {
         }
     };
 
-    this.setSubtitleSLConfig = function(newConfig)
-    {
+    this.setSubtitleSLConfig = function(newConfig){
         subSLConfig = newConfig;
+    }
+
+
+    this.getSigner = function(){
+        return signer;
     }
 
 //************************************************************************************
@@ -295,7 +274,7 @@ SLManager = function() {
 
     this.switchSigner = function(enable){
         slConfig.isEnabled = enable;
-        enable ? this.createSigner() : removeSigner();
+        enable ? _slMngr.createSigner() : removeSigner();
 
         if(enable){
             if (stConfig.indicator.localeCompare('arrow') == 0){
@@ -311,13 +290,12 @@ SLManager = function() {
 
 
     this.swichtSL = function(enable){
-        if ( signerMesh ){
-            signerMesh.visible = enable;
+        if ( signer ){
+            signer.visible = enable;
         }
     }
 
-    function getNonContSLMeta(time)
-    {
+    function getNonContSLMeta(time){
         var SLstate = false;
         SLTImes.forEach( function( elem ) {
             if ( elem.time >= time ) return SLstate;
@@ -326,8 +304,7 @@ SLManager = function() {
         return SLstate;
     }
 
-   this.getSLAvailableLang = function(lang)
-   {
+   this.getSLAvailableLang = function(lang){
        if ( list_contents[demoId].signer[0][lang] ) return lang;
        else if ( list_contents[demoId].acces[0].SL && list_contents[demoId].signer[0][list_contents[demoId].acces[0].SL[0]] ) {
            _iconf.sllanguage = list_contents[demoId].acces[0].SL[0];

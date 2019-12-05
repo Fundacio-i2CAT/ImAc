@@ -102,18 +102,13 @@ THREE.Radar = function () {
             scene.getObjectByName('trad-main-menu').visible = false;
             scene.getObjectByName('trad-option-menu').visible = false;
 
-            /*let w = 1.48*_slMngr.getSignerArea()-14;
-            let h = 0.82*_slMngr.getSignerArea()-14;*/
-
-            const vFOV = THREE.Math.degToRad( camera.fov ); // convert vertical fov to radians
-            const h = 2 * Math.tan( vFOV / 2 ) * 70; // visible height
-            const w = h * camera.aspect;
-
+            let w = vHeight * camera.aspect;
+            
             if(pos.x > -(w-14)/2 && pos.x < (w-14)/2){
                 canvas.getObjectByName('radar').position.x = pos.x; 
             }
 
-            if(pos.y > -(h-14)/2 && pos.y < (h-14)/2){
+            if(pos.y > -(vHeight-14)/2 && pos.y < (vHeight-14)/2){
                 canvas.getObjectByName('radar').position.y = pos.y;
             } 
         }
@@ -149,8 +144,7 @@ THREE.Radar = function () {
     	}
     }
 
-    this.updateRadarMeshRotation = function()
-    {
+    this.updateRadarMeshRotation = function(){
         if ( radar.visible ) camera.getObjectByName('canvas').rotation.z = -camera.rotation.z;
     }
 

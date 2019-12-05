@@ -5,8 +5,8 @@
 THREE.MediaObjectData = function () {
 
     var subtitleFont; 
-    var ST_font = "500 40px Roboto, Arial";
-    var ST_font2 = "400 30px Roboto, Arial";
+    var ST_font =  "500 40px Roboto, Arial";
+
 
 //************************************************************************************
 // Public Setters
@@ -60,7 +60,7 @@ THREE.MediaObjectData = function () {
         return sphere;
     };
 
-    this.getSignVideoMesh = function(name, hasSLSubtitles) {
+    this.getSignVideoMesh = function(name) {
 
         let signer =  new THREE.Group();
         signer.name = name;
@@ -78,15 +78,19 @@ THREE.MediaObjectData = function () {
         const geometry = new THREE.PlaneGeometry( 20, 20 );
         let video = getVideoMesh( geometry, slConfig.url, name, 1 );
         video.name = 'sl-video';
-
-        if ( !hasSLSubtitles ){
-            const arrows = getSubtitlesArrowMesh(120/6, 1, 0xffffff, 0x000000, 0);
-            const material = new THREE.MeshBasicMaterial( { color: 0x000000,  transparent: true, opacity: 0.5 } );
-            let mesh = new THREE.Mesh( new THREE.PlaneGeometry( 38, 8.4 ), material );
-
+        
+        if ( !imsc1doc_SL ){
+            const arrows = getSubtitlesArrowMesh(6.5/2, 1, subController.getSpeakerColor(), 0x000000, 0);
+            const material = new THREE.MeshBasicMaterial( { color: 0x000000,  transparent: true, opacity: stConfig.background } );
+            let mesh = new THREE.Mesh( new THREE.PlaneGeometry( geometry.parameters.width, geometry.parameters.width/4 ), material );
             mesh.add(arrows);
-            mesh.position.y = -10 -4.4/2;
-            mesh.scale.set( 0.98*70/130, 0.98*70/130, 1 )
+
+            /*let scaleFactor = (slConfig.size/geometry.parameters.width);
+            mesh.scale.set(scaleFactor, scaleFactor, 1);
+            mesh.position.y = -(slConfig.size + geometry.parameters.width/4*scaleFactor)/2;*/
+
+
+            mesh.position.y = -(geometry.parameters.width + geometry.parameters.width/4)/2;
             mesh.visible = stConfig.indicator == 'arrow' ? true : false;
             mesh.name = 'backgroundSL';
 
@@ -118,21 +122,8 @@ THREE.MediaObjectData = function () {
 
     this.getSLSubtitleMesh = function(textList){
         var material = new THREE.MeshBasicMaterial( { color: 0x000000,  transparent: true, opacity: 0 } );
-        //var plane = new THREE.Mesh( new THREE.PlaneGeometry( 20, 20 ), material );
-        //var group = new THREE.Group();
-        var slsize = 0.46;
-        var font = textList[0].text.length < 14 ? ST_font : ST_font2;
-
+        var font = textList[0].text.length < 14 ? ST_font : "400 30px Roboto, Arial";
         let subtitles4SLMesh = _moData.getSubtitleMesh(textList, font, true, 'sl-subtitles');
-       
-        //plane.add( group );
-        //plane.name = 'st4slmesh';
-
-        scene.getObjectByName('sl-colorFrame').scale.y = 1.23;
-        scene.getObjectByName('sl-colorFrame').position.y = - 10*0.46/2;
-
-        subtitles4SLMesh.position.y = -10 - 1.9;
-        
         return subtitles4SLMesh;
     };
 
@@ -314,11 +305,6 @@ THREE.MediaObjectData = function () {
         return getImageMesh( geometry, url, name, order );
     };
 
-    this.getBackgroundMesh = function(w, h, c, o)
-    {
-        return getBackgroundMesh( w, h, c, o );
-    };
-
     this.roundedRect = function( ctx, width, height, radius ){
         //Starting point is (x=0, y=0);
         ctx.moveTo(-width/2, 0);
@@ -338,7 +324,7 @@ THREE.MediaObjectData = function () {
 
         const margin = 5;
         const opacity = stConfig.background;
-        let scaleFactor;
+        let scaleFactor = 1;;
 
         var stGroup = new THREE.Group();
         stGroup.name = name;
@@ -362,6 +348,7 @@ THREE.MediaObjectData = function () {
             cnv.width = 260;
             cnv.height = ch;
         }
+        stConfig.width = cnv.width/6;
 
         if ( t[0] ) createCanvasTextLine( ctx, t[0].text, ST_font, t[0].color, 0, 0, cnv.width, ch, opacity, ( cnv.width - width )/2, fh );
         if ( t[1] ) createCanvasTextLine( ctx, t[1].text, ST_font, t[1].color, 0, ch, cnv.width, ch, opacity, ( cnv.width - width2 )/2, fh + ch );
@@ -375,28 +362,22 @@ THREE.MediaObjectData = function () {
         let stLineFactorCorrection = (t[1]) ? (textMesh.geometry.parameters.height/4) : (textMesh.geometry.parameters.height/2);
         stConfig.height = stLineFactorCorrection * 2; 
         
-        let arrows = getSubtitlesArrowMesh(cnv.width/6, t.length, t[0].color, t[0].backgroundColor, opacity);
-        stConfig.width = (textMesh.geometry.parameters.width)/2 + arrows.children[0].geometry.parameters.width*2;
+        let arrows = getSubtitlesArrowMesh(6.5, t.length, t[0].color, t[0].backgroundColor, opacity);
 
         if(isSL){
-            scaleFactor = 0.46;
-            textMesh.scale.set( scaleFactor, scaleFactor, 1 );
-            arrows.scale.set( scaleFactor, scaleFactor, 1 );
-            stGroup.position.y = 0;
-        } else {
-            const vFOV = THREE.Math.degToRad( camera.fov ); // convert vertical fov to radians
-            const height = 2 * Math.tan( vFOV / 2 ) * 70; // visible height
-            const width = height * camera.aspect;
+            scaleFactor = (slConfig.size/textMesh.geometry.parameters.width);
+            stGroup.position.y = -(slConfig.size + textMesh.geometry.parameters.height*scaleFactor)/2;    
 
+            scene.getObjectByName('sl-colorFrame').scale.y = (slConfig.size + textMesh.geometry.parameters.height/2)/slConfig.size;
+            scene.getObjectByName('sl-colorFrame').position.y = -textMesh.geometry.parameters.height/4;
+
+        } else {
             let latitud = stConfig.canvasPos.y * (30 * stConfig.area/100);
             let posY = _isHMD && !stConfig.fixedSpeaker ? 80 * Math.sin( Math.radians( latitud ) ) : 135 * Math.sin( Math.radians( latitud ) );
-
-            let  y = (stConfig.fixedSpeaker) ? posY : (stConfig.canvasPos.y * (height/2 - margin));
-
+            let  y = (stConfig.fixedSpeaker) ? posY : (stConfig.canvasPos.y * (vHeight/2 - margin));
             let esaySizeAjust = stConfig.easy2read ? 1.25 : 1;
-            scaleFactor = (stConfig.area/130) * stConfig.size * esaySizeAjust;
-            stGroup.scale.set( scaleFactor, scaleFactor, 1 );
 
+            scaleFactor = (stConfig.area/130) * stConfig.size * esaySizeAjust;
             if(!stConfig.fixedSpeaker && !stConfig.fixedScene){
                 if(localStorage.getItem("stPosition")){
                     let savedPosition = JSON.parse(localStorage.getItem("stPosition"))
@@ -415,6 +396,7 @@ THREE.MediaObjectData = function () {
 
         stGroup.add(textMesh);
         stGroup.add(arrows);
+        stGroup.scale.set( scaleFactor, scaleFactor, 1 )
 
         return stGroup;
     };
@@ -466,13 +448,19 @@ THREE.MediaObjectData = function () {
         return mesh;
     }
 
-    function getBackgroundMesh(w, h, c, o)
-    {
+/**
+ * Gets the background mesh.
+ *
+ * @param      {Number}  w       The width
+ * @param      {Number}  h       The height
+ * @param      {<type>}  c       The color
+ * @param      {Number}  o       The opacity
+ * @return     {THREE}   The background mesh.
+ */
+    function getBackgroundMesh(w, h, c, o){
         var material = new THREE.MeshBasicMaterial( { color: c, transparent: true, opacity: o } );
         var geometry = new THREE.PlaneGeometry( w, h ); 
         var mesh = new THREE.Mesh( geometry, material );
-        mesh.position.z = -0.01;
-
         return mesh;
     }
 
@@ -502,54 +490,91 @@ THREE.MediaObjectData = function () {
             var geometry = new THREE.PlaneGeometry( 6.5, 6.5 );
             var arrow = getImageMesh( geometry, './img/arrow_final.png', 'right', 3 );
             arrow.material.color.set( t[0].color );
-            arrow.add( getBackgroundMesh ( 9.4, 8.4, t[0].backgroundColor, stConfig.background ) );
+            arrow.add( getBackgroundMesh ( geometry.parameters.width * 1.5, 8.4, t[0].backgroundColor, stConfig.background ) );
             mesh.add( arrow );
         } else { 
             var geometry = new THREE.PlaneGeometry( 6.5, 6.5 );
             var arrow = getImageMesh( geometry, './img/arrow_final.png', 'left', 3 );
             arrow.material.color.set( t[0].color );
             arrow.rotation.z = Math.PI;
-            arrow.add( getBackgroundMesh ( 9.4, 8.4, t[0].backgroundColor, stConfig.background ) );
+            arrow.add( getBackgroundMesh ( geometry.parameters.width * 1.5, 8.4, t[0].backgroundColor, stConfig.background ) );
             mesh.add( arrow );
         }
     }
 
-    function getSubtitlesArrowMesh(cw, size, color, backgroundColor, o){
+/**
+ * Gets the subtitles arrow mesh.
+ *
+ * @param      {number}  lineFactor       The number of lines factor
+ * @param      {<type>}  color            The color
+ * @param      {<type>}  backgroundColor  The background color
+ * @param      {<type>}  o                { parameter_description }
+ * @return     {THREE}   The subtitles arrow mesh.
+ */
+    function getSubtitlesArrowMesh(size, lineFactor, color, backgroundColor, o){
+        const arwGeom = new THREE.PlaneGeometry( size, size );    
         let arrowGroup = new THREE.Group();
-        const geometry = new THREE.PlaneGeometry( 6.5, 6.5 );
-
-        var arrow = getImageMesh( geometry, './img/arrow_final.png', 'right');
-        arrow.material.color.set( color );
-        arrow.add( getBackgroundMesh ( 9.4, 8.3*size, backgroundColor, o ) );
-        arrow.position.x = cw/2 + 4.7;
-        arrow.visible = false;
-        arrowGroup.add( arrow );
-
-        var arrow = getImageMesh( geometry, './img/arrow_final.png', 'left');
-        arrow.material.color.set( color );
-        arrow.rotation.z = Math.PI;
-        arrow.add( getBackgroundMesh ( 9.4, 8.3*size, backgroundColor, o ) );
-        arrow.position.x = -cw/2 - 4.7;
-        arrow.visible = false;
-        arrowGroup.add( arrow );
-
         arrowGroup.name = 'arrows';
+
+        let arrowR = new THREE.Group();
+        arrowR.name = 'right';
+        let arrowImgR = getImageMesh( arwGeom, './img/arrow_final.png', 'right-img');
+        arrowImgR.material.color.set( color );
+        arrowImgR.position.z = 0.01;
+        let arrowBckgR = getBackgroundMesh ( arwGeom.parameters.width * 1.5, 8.3*lineFactor, backgroundColor, o );
+        arrowR.add(arrowImgR);
+        arrowR.add(arrowBckgR);
+        arrowR.visible = false;
+
+        let arrowL = new THREE.Group();
+        arrowL.name = 'left';
+        let arrowImgL = getImageMesh( arwGeom, './img/arrow_final.png', 'left-img');
+        arrowImgL.material.color.set( color );
+        arrowImgL.position.z = 0.01;
+        arrowImgL.rotation.z = Math.PI;
+        let arrowBckgL = getBackgroundMesh ( arwGeom.parameters.width * 1.5, 8.3*lineFactor, backgroundColor, o );
+        arrowL.add(arrowImgL);
+        arrowL.add(arrowBckgL);
+        arrowL.visible = false;
+
+        arrowGroup.add( arrowL );
+        arrowGroup.add( arrowR );
 
         return arrowGroup;
     }
 
-
-    function createCanvasTextLine(ctx, text, font, color, x, y, w, h, o, fw, fh )
-    {
+/**
+ * Creates a canvas text line.
+ *
+ * @param      {<type>}  ctx     The context
+ * @param      {<type>}  text    The text
+ * @param      {<type>}  font    The font
+ * @param      {<type>}  color   The color
+ * @param      {<type>}  x       { parameter_description }
+ * @param      {<type>}  y       { parameter_description }
+ * @param      {<type>}  w       { parameter_description }
+ * @param      {<type>}  h       { parameter_description }
+ * @param      {number}  o       { parameter_description }
+ * @param      {<type>}  fw      The firmware
+ * @param      {<type>}  fh      { parameter_description }
+ */
+    function createCanvasTextLine(ctx, text, font, color, x, y, w, h, o, fw, fh ){
         ctx.font = font;
         if ( o != 0 ) createCanvasFillRect( ctx, x, y, w, h, o );
         createCanvasText( ctx, text, font, color, fw, fh );
         if ( o == 0 ) createCanvasStrokeText( ctx, text, fw, fh );
     }
 
-
-    function getPointMesh(w, h, c, o)
-    {
+/**
+ * Gets the point mesh.
+ *
+ * @param      {<type>}  w       { parameter_description }
+ * @param      {<type>}  h       { parameter_description }
+ * @param      {<type>}  c       { parameter_description }
+ * @param      {<type>}  o       { parameter_description }
+ * @return     {THREE}   The point mesh.
+ */
+    function getPointMesh(w, h, c, o){
         var pointer = new THREE.Mesh(
             new THREE.SphereBufferGeometry( w, h, 8 ),
             new THREE.MeshBasicMaterial( { color: c, transparent: true, opacity: o } )

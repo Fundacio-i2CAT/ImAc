@@ -1025,7 +1025,7 @@ const settingsSignerLanguage = { title: 'Language', icon: './img/menu/language.p
 const settingsSignLanguagePosition = { title: 'Position', icon: './img/menu/sl_position.png', parent: settingsSignLanguage, final: true, preview: true,
     options: [
         { optId: 'signerRightButton', text: 'Right', 
-            default: function(){ return _slMngr.checkSignPosition(1) },
+            default: function(){ return (slConfig.canvasPos.x == 1 && !localStorage.getItem("slPosition"))},
             function:  function(){ 
                 if(!settingsSignLanguagePosition.options[0].default()){
                     _slMngr.setSignerPosition( 1, stConfig.canvasPos.y);
@@ -1034,7 +1034,7 @@ const settingsSignLanguagePosition = { title: 'Position', icon: './img/menu/sl_p
             }
         },
         { optId: 'signerLeftButton', text: 'Left', 
-            default: function(){ return _slMngr.checkSignPosition(-1) },
+            default: function(){ return (slConfig.canvasPos.x == -1 && !localStorage.getItem("slPosition")) },
             function:  function(){ 
                 if(!settingsSignLanguagePosition.options[1].default()){
                     _slMngr.setSignerPosition( -1, stConfig.canvasPos.y);
@@ -1071,7 +1071,7 @@ const settingsSignLanguagePosition = { title: 'Position', icon: './img/menu/sl_p
 const settingsSignLanguageSize = { title: 'Size', icon: './img/menu/sl_size.png', parent: settingsSignLanguage, final: true, preview: true, 
     options: [
         { optId: 'signerSmallSizeButton', text: 'Small', 
-            default: function(){ return _slMngr.checkSignSize(16) },
+            default: function(){ return (slConfig.size == 16) },
             function:  function(){ 
                 if(!settingsSignLanguageSize.options[0].default()){
                     _slMngr.setSignerSize(16);
@@ -1080,7 +1080,7 @@ const settingsSignLanguageSize = { title: 'Size', icon: './img/menu/sl_size.png'
             } 
         }, 
         { optId: 'signerMediumSizeButton', text: 'Medium', 
-            default: function(){ return _slMngr.checkSignSize(18) },
+            default: function(){ return (slConfig.size == 18) },
             function:  function(){ 
                 if(!settingsSignLanguageSize.options[1].default()){
                     _slMngr.setSignerSize(18);
@@ -1089,7 +1089,7 @@ const settingsSignLanguageSize = { title: 'Size', icon: './img/menu/sl_size.png'
             } 
         },
         { optId: 'signerLargeSizeButton', text: 'Large', 
-            default: function(){ return _slMngr.checkSignSize(20) },
+            default: function(){ return (slConfig.size == 20) },
             function:  function(){ 
                 if(!settingsSignLanguageSize.options[2].default()){
                     _slMngr.setSignerSize(20);
@@ -1124,7 +1124,7 @@ const settingsSignLanguageSize = { title: 'Size', icon: './img/menu/sl_size.png'
 const settingsSignLanguageDynamic = { title: 'Dynamic', icon: './img/menu/st_background.png', parent: settingsSignLanguage, final: true, preview: true,
     options: [
         { optId: 'signerDynamicOn', text: 'On', 
-            default: function(){ return _slMngr.checksignAutoHide(true) },
+            default: function(){ return slConfig.autoHide },
             function:  function(){ 
                 if(!settingsSignLanguageDynamic.options[0].default()){
                     slConfig.autoHide = true;
@@ -1133,7 +1133,7 @@ const settingsSignLanguageDynamic = { title: 'Dynamic', icon: './img/menu/st_bac
             } 
         },
         { optId: 'signerDynamicOff', text: 'Off', 
-            default: function(){ return _slMngr.checksignAutoHide(false) },
+            default: function(){ return !slConfig.autoHide },
             function:  function(){
                 if(!settingsSignLanguageDynamic.options[1].default()){
                     slConfig.autoHide = false;

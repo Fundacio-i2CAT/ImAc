@@ -36,8 +36,7 @@ SLManager = function() {
         let slMesh;
         removeSigner();
 
-        var hasSLSubtitles = imsc1doc_SL ? true : false;
-        slMesh = _moData.getSignVideoMesh('signer', hasSLSubtitles );
+        slMesh = _moData.getSignVideoMesh('signer');
         slMesh.visible = false;
 
         var SLTimeout = setTimeout( function() { slMesh.visible = true },700);
@@ -69,18 +68,18 @@ SLManager = function() {
         if (elementSelection) {
             scene.getObjectByName('trad-main-menu').visible = false;
             scene.getObjectByName('trad-option-menu').visible = false;
+            
+            if(signer){
+                let w = vHeight * camera.aspect;
+                if(pos.x > -(w- slConfig.size)/2 && pos.x < (w- slConfig.size)/2){
+                    canvas.getObjectByName('signer').position.x = pos.x; 
+                }
 
-            const vFOV = THREE.Math.degToRad( camera.fov ); // convert vertical fov to radians
-            const h = 2 * Math.tan( vFOV / 2 ) * 70; // visible height
-            const w = h * camera.aspect;
-
-            if(pos.x > -(w- slConfig.size)/2 && pos.x < (w- slConfig.size)/2){
-                canvas.getObjectByName('signer').position.x = pos.x; 
+                if(pos.y > -(vHeight - slConfig.size)/2 && pos.y < (vHeight - slConfig.size)/2){
+                    canvas.getObjectByName('signer').position.y = pos.y;
+                } 
             }
 
-            if(pos.y > -(h - slConfig.size)/2 && pos.y < (h - slConfig.size)/2){
-                canvas.getObjectByName('signer').position.y = pos.y;
-            } 
         }
     }
 
@@ -101,30 +100,25 @@ SLManager = function() {
     }
 
 
-    function updateSignerPosition(){
-        if ( scene.getObjectByName('signer') ){
-            if(localStorage.getItem("slPosition")){
-                let savedPosition = JSON.parse(localStorage.getItem("slPosition"))
-                var posX = savedPosition.x
-                var posY = savedPosition.y;
-            } else {
-                var posX = _isHMD ? 0.6 * ( 1.48*slConfig.area/2 - slConfig.size/2 ) *slConfig.canvasPos.x : ( 1.48*slConfig.area/2 - slConfig.size/2 ) *slConfig.canvasPos.x;
-                var posY = _isHMD ? 0.6 * ( 0.82*slConfig.area/2 - slConfig.size/2) *slConfig.canvasPos.y : ( 0.82*slConfig.area/2 - slConfig.size/2 ) *slConfig.canvasPos.y;
-            }
-            var posZ = 0;
-
-            scene.getObjectByName('signer').position.x = posX;
-            scene.getObjectByName('signer').position.y = posY;
-
-            if ( subtitleSLMesh ){
+    function updateST4SLPosition(){
+        if( signer ){
+            if( subtitleSLMesh ){
                 SLtextListMemory = [];
-                //removeSLSubtitle();
+                let slSubtitlesMesh = scene.getObjectByName('sl-subtitles').children[0];
+                let scaleFactor = (slConfig.size/slSubtitlesMesh.geometry.parameters.width);
+                scene.getObjectByName('sl-subtitles').scale.set(scaleFactor, scaleFactor, 1);
+                scene.getObjectByName('sl-subtitles').position.y = -(slConfig.size + slSubtitlesMesh.geometry.parameters.height*scaleFactor)/2;
+            }
+            if ( !imsc1doc_SL ){
+                let scaleFactor = (slConfig.size/scene.getObjectByName('backgroundSL').geometry.parameters.width);
+                scene.getObjectByName('backgroundSL').scale.set(scaleFactor, scaleFactor, 1);
+                scene.getObjectByName('backgroundSL').position.y = -(slConfig.size + scene.getObjectByName('backgroundSL').geometry.parameters.height*scaleFactor)/2;
             }
         }
     }
 
     this.updateSignerPosition2 = function(){
-        if ( scene.getObjectByName('signer')){
+        if ( signer){
             if(localStorage.getItem("slPosition")){
                 const savedPosition = JSON.parse(localStorage.getItem("slPosition"))
                 const posX = savedPosition.x
@@ -142,6 +136,7 @@ SLManager = function() {
 
             if ( subtitleSLMesh ){
                 SLtextListMemory = [];
+
                 //removeSLSubtitle();
             }
         }
@@ -149,13 +144,7 @@ SLManager = function() {
 
     // Subtitles fixed under SL video
     this.createSLSubtitle = function(textList){
-        var posX = _isHMD ? 0.6*( 1.48*slConfig.area/2-slConfig.size/2 ) *slConfig.canvasPos.x : ( 1.48*slConfig.area/2-slConfig.size/2 ) *slConfig.canvasPos.x;
-        var posY = _isHMD ? 0.6*( 0.82*slConfig.area/2-slConfig.size/2 ) *slConfig.canvasPos.y : ( 0.82*slConfig.area/2-slConfig.size/2 ) *slConfig.canvasPos.y;
-//        var posZ = 70;
-        var posZ = 0;
-
         subtitleSLMesh = _moData.getSLSubtitleMesh( textList);
-
         canvas.getObjectByName('signer').add( subtitleSLMesh );
     }
 
@@ -180,28 +169,16 @@ SLManager = function() {
         } else{
             slConfig.canvasPos.y = -1;
         }         
-        updateSignerPosition();
+        updateST4SLPosition();
     };    
 
     this.setSignerSize = function(size){
         slConfig.size = size;
         if ( scene.getObjectByName('signer')){
-            scene.getObjectByName('signer').scale.set(slConfig.size/20, slConfig.size/20, 1);
+            scene.getObjectByName('sl-video').scale.set(slConfig.size/20, slConfig.size/20, 1);
         }
-        updateSignerPosition();
+        updateST4SLPosition();
     };    
-
-/*  this.setSignerIndicator = function(ind){
-        subtitleIndicator = ind;
-        if ( subtitleIndicator == 'arrow' && scene.getObjectByName("backgroundSL") ) scene.getObjectByName("backgroundSL").visible = true;
-        else if ( scene.getObjectByName("backgroundSL") ) {
-            scene.getObjectByName("backgroundSL").visible = false;
-            scene.getObjectByName("rightSL").visible = false;
-            scene.getObjectByName("leftSL").visible = false;
-        }
-        updateSignerPosition();
-    };*/
-
 
     this.setSignerContent = function(url, lang) {
         slConfig.url = url;

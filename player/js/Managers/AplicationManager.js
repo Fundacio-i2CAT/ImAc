@@ -84,6 +84,9 @@ function AplicationManager()
         scene = new THREE.Scene();
         scene.add( camera );
 
+        vFOV = THREE.Math.degToRad( camera.fov ); // convert vertical fov to radians
+        vHeight = 2 * Math.tan( vFOV / 2 ) * canvasDistance; // visible height
+
         // Init Render
         renderer = new THREE.WebGLRenderer({
             antialias: true,

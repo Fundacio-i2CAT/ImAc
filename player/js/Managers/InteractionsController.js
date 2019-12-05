@@ -282,7 +282,7 @@ THREE.InteractionsController = function () {
                 elementSelection = intersects[0].object.parent;
             } else if(intersects[0].object.parent.name.localeCompare('subtitles') == 0){
                 //camera.getObjectByName('st-colorFrame').visible = true;
-                if(VideoController.isPausedById(demoId)){
+                if(VideoController.isPausedById(0)){
                     actionPausedVideo = false;
                 } else{
                     actionPausedVideo = true;

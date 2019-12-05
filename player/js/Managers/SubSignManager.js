@@ -47,6 +47,7 @@ SubSignManager = function() {
 	let arrows;
 
 	let isdContentTextMemory; //TEST
+	let speakerColor = "rgb(255,255,255)";
 
 
 //************************************************************************************
@@ -57,36 +58,25 @@ SubSignManager = function() {
 		if ( imsc1doc ){
 			var isd = imsc.generateISD( imsc1doc, offset );
 			if ( isd.contents.length > 0 ){
+				if ( isd.contents[0].contents.length > 0 ){		
+	    			let isdContentText = isd.contents[0].contents[0].contents[0].contents[0].contents;		    	
+					for ( var i = 0, l = isdContentText.length; i < l; ++i ){
+			      		if ( isdContentText[i].kind == 'span' && isdContentText[i].contents ){
+				    		subController.setSpeakerColor(adaptRGBA( isdContentText[i].contents[0].styleAttrs['http://www.w3.org/ns/ttml#styling color']));
+			      		}
+			    	}
+			    }
+				
 		    	if ( stConfig.isEnabled ){
 			  		_stMngr.setScenePos(-isd.imacY, isd.imac); //latitude, longitude
 		    		print3DText( isd.contents[0], isd.imac, -isd.imacY );
 		    	} 
 
 		    	if ( stConfig.indicator == 'arrow' ) {
-		    		//Depending on which access service is active the arrow group changes.
-			    	if( stConfig.isEnabled ){
-			    		let stMesh = _stMngr.getSubtitles();
-			    		if(stMesh) subController.setArrows(stMesh.getObjectByName("arrows"));
-			    	} else if(slConfig.isEnabled && !stConfig.isEnabled){
-			    		let slMesh = _slMngr.getSigner();
-			    		if(slMesh) subController.setArrows(slMesh.getObjectByName("arrows"));
-			    	} else{
-			    		subController.setArrows(undefined)
-			    	}
 		    		arrowInteraction();
 		    	}
-
 		    	if ( stConfig.indicator == 'radar' ){
-		    		if ( isd.contents[0].contents.length > 0 ){
-		    			let isdContentText = isd.contents[0].contents[0].contents[0].contents[0].contents;
-				    	let color;
-						for ( var i = 0, l = isdContentText.length; i < l; ++i ){
-				      		if ( isdContentText[i].kind == 'span' && isdContentText[i].contents ){
-					    		color = adaptRGBA( isdContentText[i].contents[0].styleAttrs['http://www.w3.org/ns/ttml#styling color'] );
-				      		}
-				    	}
-		      			 _rdr.updateRadarIndicator(color, isd.imac);
-		    		}
+	      			_rdr.updateRadarIndicator(subController.getSpeakerColor(), isd.imac);
 	      		}
 		    	checkSpeakerPosition( isd.imac );
 		  	} else if ( textListMemory.length > 0 ){
@@ -118,14 +108,48 @@ SubSignManager = function() {
 		return arrows;
 	}
 
+	this.setSpeakerColor = function(value){
+		speakerColor = value;
+	}
+
+	this.getSpeakerColor = function(){
+		return speakerColor;
+	}
 
 	function arrowInteraction(){
+		let slMesh = _slMngr.getSigner();
+		let stMesh = _stMngr.getSubtitles();
+
+		//Depending on which access service is active the arrow group changes.
+		if(slConfig.isEnabled && slMesh){
+			if(stConfig.isEnabled && stMesh){
+				slMesh.getObjectByName("arrows").visible = false;
+				subController.setArrows(stMesh.getObjectByName("arrows"));
+			} else{
+				slMesh.getObjectByName("arrows").visible = true;
+				subController.setArrows(slMesh.getObjectByName("arrows"));
+
+			}
+		} else if(stConfig.isEnabled && stMesh){
+			subController.setArrows(stMesh.getObjectByName("arrows"))
+		} else {
+			subController.setArrows(undefined)
+		}
 
 		let arw = subController.getArrows();
 		// cada 300 milis aprox
     	if(arw){
-			arw.getObjectByName("right").material.opacity = arw.getObjectByName("right").material.opacity == 1 ? 0.4 : 1;
-			arw.getObjectByName("left").material.opacity = arw.getObjectByName("left").material.opacity == 1 ? 0.4 : 1;
+    		let slVideoScale = _slMngr.getSigner().getObjectByName('sl-video').scale.x;
+    		let positionFactor = (!imsc1doc_SL && !stConfig.isEnabled) ? -1 : 1;
+    		let arwSize = (!imsc1doc_SL && !stConfig.isEnabled) ? 6.5/2 : 6.5;
+    		let width = (!imsc1doc_SL && !stConfig.isEnabled) ? (slConfig.size / slVideoScale) : stConfig.width;
+
+    		arw.getObjectByName("right-img").material.color.set( subController.getSpeakerColor());
+    		arw.getObjectByName("right").position.x = width/2 +positionFactor * arwSize * 0.75;
+			arw.getObjectByName("right-img").material.opacity = arw.getObjectByName("right-img").material.opacity == 1 ? 0.4 : 1;
+			arw.getObjectByName("left-img").material.color.set( subController.getSpeakerColor());
+			arw.getObjectByName("left").position.x = -width/2 -positionFactor * arwSize * 0.75;
+			arw.getObjectByName("left-img").material.opacity = arw.getObjectByName("left-img").material.opacity == 1 ? 0.4 : 1;
     	}
 	}
 
@@ -144,6 +168,7 @@ SubSignManager = function() {
 		          			backgroundColor: adaptRGBA( isdContentText[i].contents[0].styleAttrs['http://www.w3.org/ns/ttml#styling backgroundColor'] )
 		        		};
 		        		textList.push( isdTextObject );
+		        		subController.setSpeakerColor(isdTextObject.color);
 		      		}
 		    	}
 	    		if ( textList.length > 0){
@@ -172,7 +197,7 @@ SubSignManager = function() {
 	          			color: adaptRGBA( isdContentText[i].contents[0].styleAttrs['http://www.w3.org/ns/ttml#styling color'] ),
 	          			backgroundColor: adaptRGBA( isdContentText[i].contents[0].styleAttrs['http://www.w3.org/ns/ttml#styling backgroundColor'] )
 	        		};
-
+	        		subController.setSpeakerColor(isdTextObject.color);
 	        		textList.push( isdTextObject );
 	      		}
 	    	}
@@ -202,7 +227,6 @@ SubSignManager = function() {
 	  	} else {
 	    	position = difPosition < 0 ? 'left' : 'right';
 	  	}
-
 	  	if(stConfig.isEnabled) _stMngr.checkSubtitleIdicator( position );
 	    if(slConfig.isEnabled) _slMngr.checkSignIdicator( position );	
 	}

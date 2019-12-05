@@ -1,7 +1,7 @@
 
 STManager = function() {
-
     let subtitles;
+
 
     const indicators = {
         NONE: 'none',
@@ -78,18 +78,22 @@ STManager = function() {
  */
     this.move = function(pos){
         if (elementSelection) {
+            let safeFactor = 0.1; //10%
             scene.getObjectByName('trad-main-menu').visible = false;
             scene.getObjectByName('trad-option-menu').visible = false;
 
-            const vFOV = THREE.Math.degToRad( camera.fov ); // convert vertical fov to radians
-            const h = 2 * Math.tan( vFOV / 2 ) * 70 ; // visible height
-            const w = h * camera.aspect;
-
             if(subtitles){
-                if(pos.x > -(w - stConfig.width)/2 && pos.x < (w - stConfig.width)/2){
+                let w = vHeight * camera.aspect - ((1+safeFactor) * elementSelection.getObjectByName('emojitext').geometry.parameters.width/2);
+            
+                if(stConfig.indicator.localeCompare(indicators.ARROW) == 0){
+                    w = w - elementSelection.getObjectByName('arrows').children[0].children[1].geometry.parameters.width;
+                }
+
+                if(pos.x > -w/2 && pos.x < w/2){
                     canvas.getObjectByName('subtitles').position.x = pos.x; 
                 }
-                if(pos.y > -(h - stConfig.height)/2 && pos.y < (h - stConfig.height)/2){
+
+                if(pos.y > -(vHeight - stConfig.height)/2 && pos.y < (vHeight - stConfig.height)/2){
                     canvas.getObjectByName('subtitles').position.y = pos.y;
                 } 
             }
@@ -142,8 +146,7 @@ STManager = function() {
                 case indicators.NONE:
                     if( slConfig.isEnabled ) {
                         if( !imsc1doc_SL ) scene.getObjectByName("backgroundSL").visible = false;
-                        signerMesh.getObjectByName("right").visible = false;
-                        signerMesh.getObjectByName("left").visible = false;
+                        signerMesh.getObjectByName("arrows").visible = false;
                     }
                     _rdr.hideRadar();
                     break;
@@ -163,8 +166,7 @@ STManager = function() {
                     _rdr.showRadar();
                     if( slConfig.isEnabled ) {
                         if( !imsc1doc_SL ) scene.getObjectByName("backgroundSL").visible = false;
-                            signerMesh.getObjectByName("right").visible = false;
-                            signerMesh.getObjectByName("left").visible = false;
+                            signerMesh.getObjectByName("arrows").visible = false;
                     }
                     _rdr.updateRadarPosition();
                     break;
@@ -200,6 +202,7 @@ STManager = function() {
         subController.setTextListMemory( [] );
         _stMngr.setSubtitle( xml, stConfig.language, 'st');
     };
+    
 /**
  * Sets the position of the subtitles.
  *
@@ -321,7 +324,6 @@ STManager = function() {
     this.switchSubtitles = function(enable){
         if ( !enable ){
             _stMngr.removeSubtitle();
-            //_rdr.hideRadar();
             if (stConfig.indicator.localeCompare(indicators.ARROW) == 0 && slConfig.isEnabled){
                 if(scene.getObjectByName('backgroundSL')) scene.getObjectByName('backgroundSL').visible = true;
             }
@@ -332,11 +334,6 @@ STManager = function() {
             if(slConfig.isEnabled){
                 if(scene.getObjectByName('backgroundSL')) scene.getObjectByName('backgroundSL').visible = false;
             }
-        }
-
-        if (slConfig.isEnabled && scene.getObjectByName("rightSL")){
-            scene.getObjectByName("rightSL").visible = false;
-            scene.getObjectByName("leftSL").visible = false;
         }
 
         stConfig.isEnabled = enable;
@@ -352,9 +349,6 @@ STManager = function() {
         }
         else return;
     }
-
-
-
 
 //************************************************************************************
 // Media Object Position Controller 
@@ -373,31 +367,4 @@ STManager = function() {
             stConfig.indicator != indicators.MOVE ? changeSubtitleIndicator( position ) : subController.setTextListMemory( [] );
         }      
     }
-
-    
-
-
-    function createSubAreaHelper(size){
-        if ( areaMesh ) canvas.remove( areaMesh );
-
-        var mesh = _moData.getPlaneImageMesh( 1.48*size, 0.82*size, './img/rect5044.png', 'areamesh', 5 );
-
-        /*canvas.remove(canvas.getObjectByName('cnv-fov'));
-        const fov = _moData.getPlaneImageMesh(1.48*subController.getSubArea() *((_isHMD) ? 0.6 : 1) , 0.82*subController.getSubArea()*((_isHMD) ? 0.6 : 1), './img/rect5044.png', 'areamesh', 5);
-        fov.name = 'cnv-fov';
-        canvas.add(fov);*/
-
-//        mesh.position.z = -70;
-        mesh.position.z = 0;
-        mesh.autoRemove = function() {
-            var timer = setTimeout(function() {
-                canvas.remove( mesh );
-            }, 1000);
-        }
-        areaMesh = mesh;
-        canvas.add( mesh );
-
-        mesh.autoRemove();
-    }
-
 };

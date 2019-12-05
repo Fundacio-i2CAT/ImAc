@@ -92,6 +92,9 @@ let adConfig;
 let astConfig;
 
 let actionPausedVideo = false;
+const canvasDistance = 70;
+let vFOV; // convert vertical fov to radians
+let vHeight; // visible height
 
 /**
  * Initializes the web player.

@@ -1,8 +1,6 @@
 
 function CanvasManager() {
 
-	let canvasZ = -70;
-
     this.Init = function() {
     	//Init canvas and add the base elements (help grid and radar);
         canvas = createCanvas(100,100);
@@ -14,14 +12,11 @@ function CanvasManager() {
     function createCanvas(w, h){
     	let cnv =  new THREE.Group();
     	cnv.name = 'canvas';
-        cnv.position.z = canvasZ;
+        cnv.position.z = -70;
 
-        const vFOV = THREE.Math.degToRad( camera.fov ); // convert vertical fov to radians
-		const height = 2 * Math.tan( vFOV / 2 ) * -canvasZ; // visible height
-		const width = height * camera.aspect;
+		let width = vHeight * camera.aspect;
 
-
-        const cnvBackground =  new THREE.Mesh( new THREE.PlaneGeometry(width, height), new THREE.MeshBasicMaterial({visible: false}));
+        const cnvBackground =  new THREE.Mesh( new THREE.PlaneGeometry(width, vHeight), new THREE.MeshBasicMaterial({visible: false}));
         cnvBackground.name = 'cnv-background';
 
         /*const cnvFov = _moData.getPlaneImageMesh(1.48*subController.getSubArea() *((_isHMD) ? 0.6 : 1) , 0.82*subController.getSubArea()*((_isHMD) ? 0.6 : 1), './img/rect5044.png', 'areamesh', 5);

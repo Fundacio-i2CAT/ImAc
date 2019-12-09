@@ -14,6 +14,7 @@ SLManager = function() {
 
         let config = {
             url: '',
+            st4sltext: '',
             isMoved: false,
             isEnabled: false,
             canvasPos: new THREE.Vector2(1, -1),
@@ -43,6 +44,7 @@ SLManager = function() {
         canvasMgr.addElement(slMesh);
 
         signer = canvas.getObjectByName('signer');
+        if( imsc1doc_SL && slConfig.st4sltext) _slMngr.createSLSubtitle( slConfig.st4sltext );
 
         if ( !VideoController.isPausedById( 0 ) ) VideoController.playAll();
     }
@@ -103,7 +105,7 @@ SLManager = function() {
     function updateST4SLPosition(){
         if( signer ){
             if( subtitleSLMesh ){
-                SLtextListMemory = [];
+                subController.setSLtextListMemory( [] );
                 let slSubtitlesMesh = scene.getObjectByName('sl-subtitles').children[0];
                 let scaleFactor = (slConfig.size/slSubtitlesMesh.geometry.parameters.width);
                 scene.getObjectByName('sl-subtitles').scale.set(scaleFactor, scaleFactor, 1);
@@ -135,7 +137,7 @@ SLManager = function() {
             setPos(posX, posY);
 
             if ( subtitleSLMesh ){
-                SLtextListMemory = [];
+                subController.setSLtextListMemory( [] );
 
                 //removeSLSubtitle();
             }
@@ -144,6 +146,7 @@ SLManager = function() {
 
     // Subtitles fixed under SL video
     this.createSLSubtitle = function(textList){
+        slConfig.st4sltext = textList;
         subtitleSLMesh = _moData.getSLSubtitleMesh( textList);
         canvas.getObjectByName('signer').add( subtitleSLMesh );
     }
@@ -153,7 +156,7 @@ SLManager = function() {
 //************************************************************************************
 
     this.removeSLSubtitle = function(){
-        SLtextListMemory = [];
+        subController.setSLtextListMemory( [] );
         canvas.getObjectByName('signer').remove( subtitleSLMesh );
         subtitleSLMesh = undefined;
     }

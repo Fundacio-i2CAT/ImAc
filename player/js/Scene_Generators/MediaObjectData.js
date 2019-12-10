@@ -341,7 +341,7 @@ THREE.MediaObjectData = function () {
             cnv.width = 260;
             cnv.height = ch;
         }
-        stConfig.width = cnv.width/6;
+        //stConfig.width = cnv.width/6;
 
         if ( t[0] ) createCanvasTextLine( ctx, t[0].text, ST_font, t[0].color, 0, 0, cnv.width, ch, opacity, ( cnv.width - width )/2, fh );
         if ( t[1] ) createCanvasTextLine( ctx, t[1].text, ST_font, t[1].color, 0, ch, cnv.width, ch, opacity, ( cnv.width - width2 )/2, fh + ch );
@@ -505,6 +505,13 @@ THREE.MediaObjectData = function () {
  * @return     {THREE}   The subtitles arrow mesh.
  */
     function getSubtitlesArrowMesh(size, lineFactor, color, backgroundColor, o){
+
+             //let positionFactor = (!imsc1doc_SL && !stConfig.isEnabled) ? -1 : 1;
+            //let arwSize = (!imsc1doc_SL && !stConfig.isEnabled) ? 6.5/2 : 6.5;
+            //let width = (!imsc1doc_SL && !stConfig.isEnabled) ? (slConfig.size / slVideoScale) : stConfig.width;
+
+
+
         const arwGeom = new THREE.PlaneGeometry( size, size );    
         let arrowGroup = new THREE.Group();
         arrowGroup.name = 'arrows';
@@ -518,6 +525,7 @@ THREE.MediaObjectData = function () {
         arrowR.add(arrowImgR);
         arrowR.add(arrowBckgR);
         arrowR.visible = false;
+        arrowR.position.x = 0//width/2 +positionFactor * arwSize * 0.75;
 
         let arrowL = new THREE.Group();
         arrowL.name = 'left';
@@ -529,6 +537,7 @@ THREE.MediaObjectData = function () {
         arrowL.add(arrowImgL);
         arrowL.add(arrowBckgL);
         arrowL.visible = false;
+        arrowL.position.x = 0//-width/2 -positionFactor * arwSize * 0.75;
 
         arrowGroup.add( arrowL );
         arrowGroup.add( arrowR );

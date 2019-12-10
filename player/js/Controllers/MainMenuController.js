@@ -190,10 +190,10 @@ function MainMenuController() {
                         scene.getObjectByName( "pointer2" ).visible = true;
                     }else if( scene.getObjectByName( "pointer" ) && _isHMD ) {
                         scene.getObjectByName( "pointer" ).visible = true;
-                        scene.getObjectByName('pointer').scale.set(1*_pointerSize,1*_pointerSize,1*_pointerSize)
+                        scene.getObjectByName('pointer').scale.set(1*_pointerSize,1*_pointerSize,1*_pointerSize);
                     }
                 }
-                menuMgr.Load(SettingsOptionCtrl)
+                menuMgr.Load(SettingsOptionCtrl);
             });
         };
         //data.previewButtonFunc = function(){ AddVisualFeedbackOnClick(settingsView, 'preview-button', function(){menuMgr.OpenPreview()} )};

@@ -53,6 +53,7 @@ STManager = function() {
         _stMngr.removeSubtitle();
         if ( !stConfig.fixedSpeaker && !stConfig.fixedScene ){
             stMesh = _moData.getSubtitleMesh(textList, "500 40px Roboto, Arial", false, 'subtitles');
+            stConfig.width = stMesh.children[0].geometry.parameters.width;
             canvasMgr.addElement(stMesh);
             subtitles = canvas.getObjectByName('subtitles');
         } else{

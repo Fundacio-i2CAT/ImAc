@@ -69,32 +69,30 @@ SubSignManager = function() {
 				
 		    	if ( stConfig.isEnabled ){
 			  		_stMngr.setScenePos(-isd.imacY, isd.imac); //latitude, longitude
-		    		print3DText( isd.contents[0], isd.imac, -isd.imacY );
+		    		print3DText( isd.contents[0] );
 		    	} 
 
-		    	if ( stConfig.indicator == 'arrow' ) {
-		    		arrowInteraction();
-		    	}
 		    	if ( stConfig.indicator == 'radar' ){
 	      			_rdr.updateRadarIndicator(subController.getSpeakerColor(), isd.imac);
 	      		}
+	      		
+  		    	if ( stConfig.indicator == 'arrow' ) {
+					arrowInteraction();
+		    	}
 		    	checkSpeakerPosition( isd.imac );
 		  	} else if ( textListMemory.length > 0 ){
-		    	//textListMemory = [];
 		    	subController.setTextListMemory( [] );
 		    	_stMngr.removeSubtitle();
 		    	_rdr.hideRadarIndicator();
 		  	}
 		}
-		
 		if ( imsc1doc_SL ){
 			var isd = imsc.generateISD( imsc1doc_SL, offset );
-
 			if ( isd.contents.length > 0 ){
-		    	if ( slConfig.isEnabled ) print3DSLText( isd.contents[0], isd.imac, -isd.imacY );
+		    	if ( slConfig.isEnabled ) print3DSLText( isd.contents[0]);
 		  	} else if ( SLtextListMemory.length > 0 ){
-		    	SLtextListMemory = [];
-		    	//removeSLSubtitle();
+		    	subController.setSLtextListMemory( [] );
+		    	//_slMngr.removeSLSubtitle();
 		  	}
 		}
 	}
@@ -119,19 +117,28 @@ SubSignManager = function() {
 	function arrowInteraction(){
 		let slMesh = _slMngr.getSigner();
 		let stMesh = _stMngr.getSubtitles();
+		let slVideoScale;
+		let width;
 
 		//Depending on which access service is active the arrow group changes.
 		if(slConfig.isEnabled && slMesh){
-			if(stConfig.isEnabled && stMesh){
+			slVideoScale = slMesh.getObjectByName('sl-video').scale.x;
+			if(stConfig.isEnabled){
 				slMesh.getObjectByName("arrows").visible = false;
-				subController.setArrows(stMesh.getObjectByName("arrows"));
+				if(stMesh){
+					subController.setArrows(stMesh.getObjectByName("arrows"));
+					width = stConfig.width;
+				} 
 			} else{
 				slMesh.getObjectByName("arrows").visible = true;
 				subController.setArrows(slMesh.getObjectByName("arrows"));
-
+				width = (!imsc1doc_SL) ? (slConfig.size / slVideoScale) : slMesh.getObjectByName("emojitext").geometry.parameters.width;
 			}
-		} else if(stConfig.isEnabled && stMesh){
-			subController.setArrows(stMesh.getObjectByName("arrows"))
+		} else if( stConfig.isEnabled ){
+			if(stMesh){
+				subController.setArrows(stMesh.getObjectByName("arrows"));
+				width = stConfig.width;
+			} 
 		} else {
 			subController.setArrows(undefined)
 		}
@@ -139,10 +146,8 @@ SubSignManager = function() {
 		let arw = subController.getArrows();
 		// cada 300 milis aprox
     	if(arw){
-    		let slVideoScale = _slMngr.getSigner().getObjectByName('sl-video').scale.x;
     		let positionFactor = (!imsc1doc_SL && !stConfig.isEnabled) ? -1 : 1;
     		let arwSize = (!imsc1doc_SL && !stConfig.isEnabled) ? 6.5/2 : 6.5;
-    		let width = (!imsc1doc_SL && !stConfig.isEnabled) ? (slConfig.size / slVideoScale) : stConfig.width;
 
     		arw.getObjectByName("right-img").material.color.set( subController.getSpeakerColor());
     		arw.getObjectByName("right").position.x = width/2 +positionFactor * arwSize * 0.75;
@@ -154,7 +159,7 @@ SubSignManager = function() {
 	}
 
 
-	function print3DText(isdContent, isdImac, isdImacY) {
+	function print3DText(isdContent) {
 	  	if ( isdContent.contents.length > 0 ){
 	  		var isdContentText = isdContent.contents[0].contents[0].contents[0].contents;
 	    	if(JSON.stringify(isdContentText) !== JSON.stringify(isdContentTextMemory) ){
@@ -168,11 +173,11 @@ SubSignManager = function() {
 		          			backgroundColor: adaptRGBA( isdContentText[i].contents[0].styleAttrs['http://www.w3.org/ns/ttml#styling backgroundColor'] )
 		        		};
 		        		textList.push( isdTextObject );
-		        		subController.setSpeakerColor(isdTextObject.color);
 		      		}
 		    	}
 	    		if ( textList.length > 0){
 	    			if(textListMemory.length > 0 && textList[0].text.localeCompare(textListMemory[0].text) != 0 || textList.length != textListMemory.length){
+					    subController.setSpeakerColor(textList[0].color);
 					    _stMngr.createSubtitle( textList );
 			      		subController.setTextListMemory(textList);
 	    			}
@@ -185,7 +190,7 @@ SubSignManager = function() {
 	  	}
 	}
 
-	function print3DSLText(isdContent, isdImac, isdImacY) {
+	function print3DSLText(isdContent) {
 	  	if ( isdContent.contents.length > 0 ){
 	    	var isdContentText = isdContent.contents[0].contents[0].contents[0].contents;
 	    	var textList = [];
@@ -197,17 +202,16 @@ SubSignManager = function() {
 	          			color: adaptRGBA( isdContentText[i].contents[0].styleAttrs['http://www.w3.org/ns/ttml#styling color'] ),
 	          			backgroundColor: adaptRGBA( isdContentText[i].contents[0].styleAttrs['http://www.w3.org/ns/ttml#styling backgroundColor'] )
 	        		};
-	        		subController.setSpeakerColor(isdTextObject.color);
 	        		textList.push( isdTextObject );
 	      		}
 	    	}
 	    	//if ( textList.length > 0 && ( SLtextListMemory.length == 0 || SLtextListMemory.length > 0 && textList[0].text != SLtextListMemory[0].text || textList.length != SLtextListMemory.length ) ) {
 	    	if ( textList.length > 0){
     			if(SLtextListMemory.length > 0 && textList[0].text.localeCompare(SLtextListMemory[0].text) != 0 || textList.length != SLtextListMemory.length){
-					_slMngr.removeSLSubtitle();
+		    		_slMngr.removeSLSubtitle();
+		    		subController.setSpeakerColor(textList[0].color);
 		    		_slMngr.createSLSubtitle( textList );
-
-      				SLtextListMemory = textList;
+      				subController.setSLtextListMemory( textList );
     			}
     		}
 	    	if ( slConfig.autoHide ) _slMngr.swichtSL(true); 
@@ -234,6 +238,10 @@ SubSignManager = function() {
 
 	this.setTextListMemory = function(value){
 		textListMemory = value;
+	}
+
+	this.setSLtextListMemory = function(value){
+		SLtextListMemory = value;
 	}
 
 	this.setisdContentTextMemory = function(value){

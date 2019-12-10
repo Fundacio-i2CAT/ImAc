@@ -77,9 +77,18 @@ VideoController = function() {
     	var player = dashjs.MediaPlayer().create();
         player.initialize( vid, url, autoplay );
 
+
         if ( navigator.userAgent.toLowerCase().indexOf("android") > -1 ) setBitrateLimitationsFor( player );
 
-        player.getDebug().setLogToBrowserConsole( false );
+        //player.getDebug().setLogToBrowserConsole( false );
+        player.updateSettings({
+            'debug': {
+                'logLevel': dashjs.Debug.LOG_LEVEL_WARNING
+                }
+            }
+        );
+
+        player.attachTTMLRenderingDiv( vid );
         
         var objVideo = { id: id, vid: vid, dash: player };
         listOfVideoContents.push( objVideo );
@@ -118,7 +127,7 @@ VideoController = function() {
                 if ( ft ) 
                 {
                     ft = false;
-                    _ManifestParser.init( listOfVideoContents[0].dash.geti2catMPD() );
+                    _ManifestParser.init( listOfVideoContents[0].dash.getDashAdapter().geti2catMPD() );
                 }
 
                 resolve( 'ok' );

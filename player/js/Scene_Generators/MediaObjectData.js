@@ -155,47 +155,40 @@ THREE.MediaObjectData = function () {
             var mesh = new THREE.Mesh( new THREE.PlaneGeometry( 0.001, 0.001 ), new THREE.MeshBasicMaterial( { color: 0xffffff } ) );
             setFixedArrow( mesh, 0, textList, isRight );
 
-            mesh.position.x = 70 * Math.cos( Math.radians( lon-90 +stConfig.scenePos.lon) ) * Math.cos( Math.radians( -lat -20) );
-            mesh.position.y = 70 * Math.sin( Math.radians( -lat -20) );
-            mesh.position.z = 70 * Math.sin( Math.radians( lon-90 +stConfig.scenePos.lon) ) * Math.cos( Math.radians( -lat -20) );
+            mesh.position.x = 80 * Math.cos( Math.radians( lon-90 +stConfig.scenePos.lon) ) * Math.cos( Math.radians( -lat -20) );
+            mesh.position.y = 80 * Math.sin( Math.radians( -lat -20) );
+            mesh.position.z = 80 * Math.sin( Math.radians( lon-90 +stConfig.scenePos.lon) ) * Math.cos( Math.radians( -lat -20) );
 
             mesh.lookAt(0,0,0)
+
+            mesh.visible = false;
 
             group.add( mesh )
         }
 
-        var needajust = false;
-        if ( stConfig.scenePos.lon ) {}
-        else {
-            stConfig.scenePos.lon = -lon;
-            stConfig.scenePos.lat = -lat;
-            needajust = true;
-        }
-        //console.warn( position )
+        var stmesh = _moData.getSubtitleMesh(textList, ST_font, false, 'expsubtitle');
 
-        ////////////////////////////////////////////////////////////////////////////////////
-        stConfig.canvasPos.x = 0;
-        stConfig.canvasPos.y = 70 * Math.sin( Math.radians( stConfig.scenePos.lat ) );
-        //config.z = config.z * Math.cos( Math.radians( stConfig.scenePos.lat ) );
+        var  lon = stConfig.scenePos.lon ? stConfig.scenePos.lon : 0;
+        var  lat = stConfig.scenePos.lat ? stConfig.scenePos.lat : 0;
 
-        var stmesh = _moData.getSubtitleMesh(textList, ST_font, false, 'subtitles');
+        stmesh.position.x = 0;
+        stmesh.position.y = 85 * Math.sin( Math.radians( lat ) );
+        stmesh.position.z = -85 * Math.cos( Math.radians( lat ) );
 
-        /*if ( needajust ) {
-            
-
-            stmesh.lookAt(0,0,0)
-        }*/
-        stmesh.position.x = 70 * Math.cos( Math.radians( lon-90 +stConfig.scenePos.lon) ) * Math.cos( Math.radians( -lat -20) );
-        stmesh.position.y = 70 * Math.sin( Math.radians( -lat -20) );
-        stmesh.position.z = 70 * Math.sin( Math.radians( lon-90 +stConfig.scenePos.lon) ) * Math.cos( Math.radians( -lat -20) );
+        stmesh.lookAt(0,0,0)
+        stmesh.scale.set( 1.2, 1.2, 1 );
         
-       // group.add( stmesh );
+        group.add( stmesh );
         
-        //group.rotation.y = Math.radians( stConfig.scenePos.lon );
-        //stmesh.rotation.y = Math.radians( stConfig.scenePos.lon );
-        stmesh.lookAt(0,0,0);
+        group.rotation.y = Math.radians( -lon );
 
-        return stmesh;
+        group.name = 'subtitles';
+
+        let esaySizeAjust = stConfig.easy2read ? 1.25 : 1;
+            scaleFactor = (stConfig.area/130) * stConfig.size * esaySizeAjust;
+            group.scale.set( scaleFactor, scaleFactor, 1 );
+
+        return group;
     };
 
     this.createPointer = function()

@@ -225,4 +225,54 @@ MenuDictionary = function() {
         if ( language ) _mainLanguage = language;
     };
 
+
+//************************************************************************************
+// Public Ending Getters
+//************************************************************************************
+
+
+    this.getOption1Text = function()
+    {
+        var option1 = { 
+            ca: "T'ha agradat el vídeo?", 
+            de: 'Hat Ihnen das Video gefallen?', 
+            en: 'Did you like the video?', 
+            es: 'Te ha gustado el video?' };
+        
+        return option1[ _mainLanguage ];
+    }
+
+    this.getOption1Button = function()
+    {
+        var option1 = { 
+            ca: "Més vídeos", 
+            de: 'Mehr Videos', 
+            en: 'More videos', 
+            es: 'Mas videos' };
+        
+        return option1[ _mainLanguage ];
+    }
+
+    this.getOption2Text = function()
+    {
+        var option2 = { 
+            ca: "Necessitem els vostres comentaris per millorar els nostres serveis.", 
+            de: 'Um unsere Dienste weiter zu verbessern brauchen wir ihr Feedback.', 
+            en: 'We need your feedback to improve our services.', 
+            es: 'Necesitamos sus comentarios para mejorar nuestros servicios.' };
+        
+        return option2[ _mainLanguage ];
+    }
+
+    this.getOption2Button = function()
+    {
+        var option2 = { 
+            ca: "Qüestionari", 
+            de: 'Fragebogen', 
+            en: 'Questionnaire', 
+            es: 'Cuestionario' };
+        
+        return option2[ _mainLanguage ];
+    }
+
 }

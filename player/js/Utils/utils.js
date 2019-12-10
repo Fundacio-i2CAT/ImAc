@@ -192,6 +192,91 @@ function createVRButton_2(renderer)
     return button;
 }
 
+function createVRButton_3()
+{
+    function showEnterVR() 
+    {
+        button.style.display = '';
+        button.style.width = '250px';
+        button.style.left = 'calc(50% - 125px)';
+        button.style.top = 2*window.innerHeight/6 + 55 + 'px';
+        button.style.bottom = '';
+        button.textContent = MenuDictionary.getOption1Button();
+        button.id ='button_3';
+
+        button.onclick = function() {
+
+            window.location.reload();
+        };
+    }
+
+     
+
+    var button = document.createElement( 'button' );
+
+    stylizeElement( button );
+    showEnterVR();
+
+    return button;
+}
+
+function createVRButton_4(renderer)
+{
+    function showEnterVR() 
+    {
+        button.style.display = '';
+        button.style.width = '250px';
+        button.style.left = 'calc(50% - 125px)';
+        button.style.top = 2*window.innerHeight/6 + 205 +'px';
+        button.style.bottom = '';
+        button.textContent = MenuDictionary.getOption2Button();
+        button.id ='button_4';
+        button.onclick = function () {
+
+            window.location.href = 'https://www.i2cat.net/#home';
+        };
+    }
+
+    var button = document.createElement( 'button' );
+
+    stylizeElement( button );
+    showEnterVR();
+
+    return button;
+}
+
+
+function stylizeTextElement( element ) 
+{
+    element.style.display = '';
+
+    element.style.position = 'absolute';
+    element.style.padding = '12px 6px';
+    element.style.color = '#e6e6e6';
+    element.style.font = 'bold 24px sans-serif';
+    element.style.textAlign = 'center';
+    element.style.outline = 'none';
+    element.style.zIndex = '999';
+    //element.textContent = 'Did you like the video?';
+
+    element.style.width = '100%';
+}
+
+function stylizeBackElement( element ) 
+{
+    element.style.display = '';
+
+    element.style.position = 'absolute';
+    element.style.top = '0';
+    element.style.background = '#000';
+    element.style.opacity = '0.8';
+    element.style.outline = 'none';
+    element.style.zIndex = '998';
+
+    element.style.width = '100%';
+    element.style.height = window.innerHeight + 'px';
+}
+
 function createMenus()
 {
     switch ( _iconf.menutype )
@@ -537,4 +622,29 @@ function getViewDifPosition(sp, fov){
     if ( ( lon - sp + 360 )%360 > fov && ( lon - sp + 360 )%360 <= 180 ) return -1; 
     else if ( ( lon - sp + 360 )%360 > 180 && ( lon - sp + 360 )%360 <= 360 - fov ) return 1;
     else return 0;
+}
+
+function showEndingOptions()
+{
+    VideoController.pauseAll();
+    //window.location.reload();
+
+    var back = document.createElement( 'div' );
+    stylizeBackElement( back )
+    document.body.appendChild( back );
+
+    var vrtext1 = document.createElement( 'div' );
+    stylizeTextElement( vrtext1 )
+    vrtext1.style.top = 2*window.innerHeight/6 + 'px';
+    vrtext1.textContent = MenuDictionary.getOption1Text();
+    document.body.appendChild( vrtext1 );
+
+    var vrtext2 = document.createElement( 'div' );
+    stylizeTextElement( vrtext2 )
+    vrtext2.style.top = 2*window.innerHeight/6 + 150 +'px';
+    vrtext2.textContent = MenuDictionary.getOption2Text();
+    document.body.appendChild( vrtext2 );
+
+    document.body.appendChild( createVRButton_3() );
+    document.body.appendChild( createVRButton_4() );
 }

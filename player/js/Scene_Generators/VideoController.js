@@ -316,6 +316,7 @@ VideoController = function() {
     };
 
     var periodCount = 0;
+    var ending = false;
 
     /**
      * Initialize the library
@@ -331,8 +332,14 @@ VideoController = function() {
         getAdaptationSets().then(( str ) => { 
 
             var firtsIteration = true;
-            listOfVideoContents[0].vid.ontimeupdate = function(){
-                if (listOfVideoContents[0].vid.currentTime >= listOfVideoContents[0].vid.duration - 0.5) window.location.reload();
+            listOfVideoContents[0].vid.ontimeupdate = function()
+            {
+                // Video ending controller function
+                if (listOfVideoContents[0].vid.currentTime >= listOfVideoContents[0].vid.duration - 0.5 && !ending ) 
+                {
+                    ending = true;
+                    showEndingOptions();
+                }
 
                 _stMngr.updateSubtitleByTime( listOfVideoContents[0].vid.currentTime );
 

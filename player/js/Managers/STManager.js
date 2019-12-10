@@ -57,7 +57,7 @@ STManager = function() {
             canvasMgr.addElement(stMesh);
             subtitles = canvas.getObjectByName('subtitles');
         } else{
-            stMesh = !stConfig.fixedScene ? _moData.getExpEmojiSubtitleMesh(textList) : _moData.getSceneFixedSubtitles(textList, 3);
+            stMesh = !stConfig.fixedScene ? _moData.getSpeakerSubtitleMesh(textList) : _moData.getSceneFixedSubtitles(textList, 3);
             scene.add( stMesh );
             subtitles = scene.getObjectByName('subtitles');
         }

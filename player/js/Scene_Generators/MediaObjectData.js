@@ -129,12 +129,11 @@ THREE.MediaObjectData = function () {
 
 
     // subtitols fixed position
-    this.getExpEmojiSubtitleMesh = function(textList)
+    this.getSpeakerSubtitleMesh = function(textList)
     {
         var group = new THREE.Group();
 
-        var difPosition = stConfig.scenePos.lon ? getViewDifPositionTest( -stConfig.scenePos.lon, camera.fov ) : 0;
-
+        var difPosition = stConfig.scenePos.lon ? getViewDifPositionTest( stConfig.scenePos.lon, camera.fov ) : 0;
 
         if ( difPosition == 0 ) position = 'center';
         else position = difPosition < 0 ? 'left' : 'right';
@@ -155,41 +154,42 @@ THREE.MediaObjectData = function () {
             var mesh = new THREE.Mesh( new THREE.PlaneGeometry( 0.001, 0.001 ), new THREE.MeshBasicMaterial( { color: 0xffffff } ) );
             setFixedArrow( mesh, 0, textList, isRight );
 
-            mesh.position.x = 80 * Math.cos( Math.radians( lon-90 +stConfig.scenePos.lon) ) * Math.cos( Math.radians( -lat -20) );
+            mesh.position.x = 80 * Math.cos( Math.radians( lon-90 -stConfig.scenePos.lon) ) * Math.cos( Math.radians( -lat -20) );
             mesh.position.y = 80 * Math.sin( Math.radians( -lat -20) );
-            mesh.position.z = 80 * Math.sin( Math.radians( lon-90 +stConfig.scenePos.lon) ) * Math.cos( Math.radians( -lat -20) );
+            mesh.position.z = 80 * Math.sin( Math.radians( lon-90 -stConfig.scenePos.lon) ) * Math.cos( Math.radians( -lat -20) );
 
             mesh.lookAt(0,0,0)
-
-            mesh.visible = false;
 
             group.add( mesh )
         }
 
-        var stmesh = _moData.getSubtitleMesh(textList, ST_font, false, 'expsubtitle');
+        var needajust = false;
+        if ( stConfig.scenePos.lon ) {}
+        else {
+            stConfig.scenePos.lon = lon;
+            stConfig.scenePos.lat = -lat;
+            needajust = true;
+        }
 
-        var  lon = stConfig.scenePos.lon ? stConfig.scenePos.lon : 0;
-        var  lat = stConfig.scenePos.lat ? stConfig.scenePos.lat : 0;
+        var stmesh = getSpeakerSubMesh( textList, ST_font, true ) 
 
-        stmesh.position.x = 0;
-        stmesh.position.y = 85 * Math.sin( Math.radians( lat ) );
-        stmesh.position.z = -85 * Math.cos( Math.radians( lat ) );
+        if ( needajust ) 
+        {
+            stmesh.position.x = 80 * Math.cos( Math.radians( stConfig.scenePos.lat ) ) * Math.cos( Math.radians( lon-90 -stConfig.scenePos.lon) ) * Math.cos( Math.radians( -lat -20) );
+            stmesh.position.y = 80 * Math.cos( Math.radians( stConfig.scenePos.lat ) ) * Math.sin( Math.radians( -lat -20) );
+            stmesh.position.z = 80 * Math.cos( Math.radians( stConfig.scenePos.lat ) ) * Math.sin( Math.radians( lon-90 -stConfig.scenePos.lon) ) * Math.cos( Math.radians( -lat -20) );
 
-        stmesh.lookAt(0,0,0)
-        stmesh.scale.set( 1.2, 1.2, 1 );
-        
-        group.add( stmesh );
-        
-        group.rotation.y = Math.radians( -lon );
+            stmesh.lookAt(0,0,0)
+        }
 
+        group.add( stmesh );      
+        group.rotation.y = Math.radians( -stConfig.scenePos.lon );
         group.name = 'subtitles';
-
-        let esaySizeAjust = stConfig.easy2read ? 1.25 : 1;
-            scaleFactor = (stConfig.area/130) * stConfig.size * esaySizeAjust;
-            group.scale.set( scaleFactor, scaleFactor, 1 );
 
         return group;
     };
+
+    
 
     this.createPointer = function()
     {
@@ -312,6 +312,41 @@ THREE.MediaObjectData = function () {
       return ctx;
     };
 
+
+    function getSpeakerSubMesh(t, font, fixed)
+    {
+        var canvas = document.getElementById( "canvas" );
+        var ctx = canvas.getContext( "2d" );
+        var ch = 50; // canvas height x line
+        var fh = 40; // font height
+
+        ctx.font = font;
+        var width = ctx.measureText( t[0].text ).width;
+        var width2 = t[1] ? ctx.measureText( t[1].text ).width : 0;
+        canvas.width = ( width > width2 ) ? width + 20 : width2 + 20;
+        canvas.height = ch*t.length;
+
+        if ( t[0] ) createCanvasTextLine( ctx, t[0].text, font, t[0].color, 0, 0, canvas.width, ch, stConfig.background, ( canvas.width - width )/2, fh );
+        if ( t[1] ) createCanvasTextLine( ctx, t[1].text, font, t[1].color, 0, ch, canvas.width, ch, stConfig.background, ( canvas.width - width2 )/2, fh + ch );
+
+        var material = new THREE.MeshBasicMaterial( { map: new THREE.CanvasTexture( canvas ),  transparent: true } );
+        var mesh = new THREE.Mesh( new THREE.PlaneGeometry( canvas.width/6, ch*t.length/6 ), material );
+
+        let esaySizeAjust = stConfig.easy2read ? 1.25 : 1;
+            scaleFactor = (stConfig.area/130) * stConfig.size * esaySizeAjust;
+            mesh.scale.set( scaleFactor, scaleFactor, 1 );
+
+        mesh.name = 'emojitext';
+        mesh.renderOrder = 3;
+        mesh.position.z = -80 * Math.cos( Math.radians( stConfig.scenePos.lat ) );
+        mesh.position.y = 80 * Math.sin( Math.radians( stConfig.scenePos.lat ) );
+        mesh.position.x = 0;
+        mesh.visible = true;
+
+        mesh.lookAt(0,0,0);
+
+        return mesh;
+    }
 
     this.getSubtitleMesh = function (t, font, isSL, name){
 
@@ -483,14 +518,18 @@ THREE.MediaObjectData = function () {
             var geometry = new THREE.PlaneGeometry( 6.5, 6.5 );
             var arrow = getImageMesh( geometry, './img/arrow_final.png', 'right', 3 );
             arrow.material.color.set( t[0].color );
-            arrow.add( getBackgroundMesh ( geometry.parameters.width * 1.5, 8.4, t[0].backgroundColor, stConfig.background ) );
+            let arrowback = getBackgroundMesh ( geometry.parameters.width * 1.5, 8.4, t[0].backgroundColor, stConfig.background );
+            arrowback.position.z = -0.01;
+            arrow.add( arrowback );
             mesh.add( arrow );
         } else { 
             var geometry = new THREE.PlaneGeometry( 6.5, 6.5 );
             var arrow = getImageMesh( geometry, './img/arrow_final.png', 'left', 3 );
             arrow.material.color.set( t[0].color );
             arrow.rotation.z = Math.PI;
-            arrow.add( getBackgroundMesh ( geometry.parameters.width * 1.5, 8.4, t[0].backgroundColor, stConfig.background ) );
+            let arrowback = getBackgroundMesh ( geometry.parameters.width * 1.5, 8.4, t[0].backgroundColor, stConfig.background );
+            arrowback.position.z = -0.01;
+            arrow.add( arrowback );
             mesh.add( arrow );
         }
     }

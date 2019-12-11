@@ -24,10 +24,11 @@ var StatElements = function ()
 {
 	var videoElement = VideoController.getListOfVideoContents()[0];
 	var player = videoElement.dash;
-	var metrics = player.getMetricsFor('video');
+	//var metrics = player.getMetricsFor('video');
     var averageThroughput = player.getAverageThroughput('video');
-    var dashMetrics = player.getDashMetrics();
-    var currentBufferLevel = dashMetrics.getCurrentBufferLevel(metrics) ? dashMetrics.getCurrentBufferLevel(metrics) : 0;
+    //var dashMetrics = player.getDashMetrics();
+    //var currentBufferLevel = dashMetrics.getCurrentBufferLevel(metrics) ? dashMetrics.getCurrentBufferLevel(metrics) : 0;
+    var currentBufferLevel = player.getBufferLength('video');
     var quality = player.getQualityFor('video');
 
 	this.messageType = "INFO";

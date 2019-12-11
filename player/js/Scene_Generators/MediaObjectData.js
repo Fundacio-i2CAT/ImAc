@@ -78,31 +78,15 @@ THREE.MediaObjectData = function () {
         const geometry = new THREE.PlaneGeometry( 20, 20 );
         let video = getVideoMesh( geometry, slConfig.url, name, 1 );
         video.name = 'sl-video';
-        
-        if ( !imsc1doc_SL ){
-            const arrows = getSubtitlesArrowMesh(6.5/2, 1, subController.getSpeakerColor(), 0x000000, 0);
-            const material = new THREE.MeshBasicMaterial( { color: 0x000000,  transparent: true, opacity: stConfig.background } );
-            let mesh = new THREE.Mesh( new THREE.PlaneGeometry( geometry.parameters.width, geometry.parameters.width/4 ), material );
-            mesh.add(arrows);
-
-            /*let scaleFactor = (slConfig.size/geometry.parameters.width);
-            mesh.scale.set(scaleFactor, scaleFactor, 1);
-            mesh.position.y = -(slConfig.size + geometry.parameters.width/4*scaleFactor)/2;*/
 
 
-            mesh.position.y = -(geometry.parameters.width + geometry.parameters.width/4)/2;
-            mesh.visible = stConfig.indicator == 'arrow' ? true : false;
-            mesh.name = 'backgroundSL';
-
-            signer.add( mesh );
-
-        }
         var signerColorBorderGeom = new THREE.PlaneGeometry( 20, 20, 32 );
         var signerColorBorderMat = new THREE.MeshBasicMaterial( {color: 0xffff00, side: THREE.DoubleSide} );
         var signColorBorder = new THREE.Mesh( signerColorBorderGeom, signerColorBorderMat );
     
         signColorBorder.position.z = -0.01;
-        signColorBorder.scale.multiplyScalar(1.05);
+        signColorBorder.scale.multiplyScalar(1.05);       
+            
 
         //This option is creating a border but it has an issue in windows, only 1px border is possible.
         /*const signColorBorder = new THREE.LineSegments( 
@@ -112,6 +96,25 @@ THREE.MediaObjectData = function () {
 
         signColorBorder.name = 'sl-colorFrame';
         signColorBorder.visible = false;
+
+        
+        if ( !imsc1doc_SL ){
+            const arrows = getSubtitlesArrowMesh(6.5/2, 1, subController.getSpeakerColor(), 0x000000, 0);
+            const material = new THREE.MeshBasicMaterial( { color: 0x000000,  transparent: true, opacity: stConfig.background } );
+            let mesh = new THREE.Mesh( new THREE.PlaneGeometry( geometry.parameters.width, geometry.parameters.width/4 ), material );
+            mesh.add(arrows);
+
+            mesh.position.y = -(geometry.parameters.width + geometry.parameters.width/4)/2;
+            mesh.visible = stConfig.indicator == 'arrow' ? true : false;
+            mesh.name = 'backgroundSL';
+            signer.add( mesh );
+            console.log(geometry.parameters.width/4)
+
+            signColorBorder.scale.y = (slConfig.size+geometry.parameters.width/4)/slConfig.size * 1.05;
+            console.log(signColorBorder.scale.y);
+            signColorBorder.position.y = -(geometry.parameters.width/4)/2;
+        }
+        
 
         signer.add( signColorBorder );
         signer.add(video);
@@ -324,7 +327,7 @@ THREE.MediaObjectData = function () {
 
         const margin = 5;
         const opacity = stConfig.background;
-        let scaleFactor = 1;;
+        let scaleFactor = 1;
 
         var stGroup = new THREE.Group();
         stGroup.name = name;
@@ -367,9 +370,8 @@ THREE.MediaObjectData = function () {
         if(isSL){
             scaleFactor = (slConfig.size/textMesh.geometry.parameters.width);
             stGroup.position.y = -(slConfig.size + textMesh.geometry.parameters.height*scaleFactor)/2;    
-
-            scene.getObjectByName('sl-colorFrame').scale.y = (slConfig.size + textMesh.geometry.parameters.height/2)/slConfig.size;
-            scene.getObjectByName('sl-colorFrame').position.y = -textMesh.geometry.parameters.height/4;
+            scene.getObjectByName('sl-colorFrame').scale.y = (slConfig.size + textMesh.geometry.parameters.height/2)/slConfig.size * 1.05;
+            scene.getObjectByName('sl-colorFrame').position.y = -(textMesh.geometry.parameters.height/2)/2;
 
         } else {
             let latitud = stConfig.canvasPos.y * (30 * stConfig.area/100);
@@ -512,13 +514,6 @@ THREE.MediaObjectData = function () {
  * @return     {THREE}   The subtitles arrow mesh.
  */
     function getSubtitlesArrowMesh(size, lineFactor, color, backgroundColor, o){
-
-             //let positionFactor = (!imsc1doc_SL && !stConfig.isEnabled) ? -1 : 1;
-            //let arwSize = (!imsc1doc_SL && !stConfig.isEnabled) ? 6.5/2 : 6.5;
-            //let width = (!imsc1doc_SL && !stConfig.isEnabled) ? (slConfig.size / slVideoScale) : stConfig.width;
-
-
-
         const arwGeom = new THREE.PlaneGeometry( size, size );    
         let arrowGroup = new THREE.Group();
         arrowGroup.name = 'arrows';
@@ -532,7 +527,6 @@ THREE.MediaObjectData = function () {
         arrowR.add(arrowImgR);
         arrowR.add(arrowBckgR);
         arrowR.visible = false;
-        arrowR.position.x = 0//width/2 +positionFactor * arwSize * 0.75;
 
         let arrowL = new THREE.Group();
         arrowL.name = 'left';
@@ -544,7 +538,6 @@ THREE.MediaObjectData = function () {
         arrowL.add(arrowImgL);
         arrowL.add(arrowBckgL);
         arrowL.visible = false;
-        arrowL.position.x = 0//-width/2 -positionFactor * arwSize * 0.75;
 
         arrowGroup.add( arrowL );
         arrowGroup.add( arrowR );

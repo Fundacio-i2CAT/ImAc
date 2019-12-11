@@ -108,10 +108,8 @@ THREE.MediaObjectData = function () {
             mesh.visible = stConfig.indicator == 'arrow' ? true : false;
             mesh.name = 'backgroundSL';
             signer.add( mesh );
-            console.log(geometry.parameters.width/4)
 
             signColorBorder.scale.y = (slConfig.size+geometry.parameters.width/4)/slConfig.size * 1.05;
-            console.log(signColorBorder.scale.y);
             signColorBorder.position.y = -(geometry.parameters.width/4)/2;
         }
         

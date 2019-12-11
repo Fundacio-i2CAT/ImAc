@@ -97,7 +97,7 @@ THREE.InteractionsController = function () {
             raycaster.setFromCamera(  origin, direction );
         }
 
-        let elementArray = [ scene.getObjectByName('enhanced-menu-button'), //scene.getObjectByName('close-button'),
+        let elementArray = [ scene.getObjectByName('enhanced-menu-button'),
                             scene.getObjectByName('show-st-button'), scene.getObjectByName('disable-st-button'),
                             scene.getObjectByName('show-sl-button'), scene.getObjectByName('disable-sl-button'),
                             scene.getObjectByName('show-ad-button'), scene.getObjectByName('disable-ad-button'), 
@@ -244,12 +244,17 @@ THREE.InteractionsController = function () {
         if (intersects[0]){
             let v = new  THREE.Vector2(0,0);
             v = intersects[0].object.worldToLocal(intersects[0].point);
-            if(elementSelection.name.localeCompare('radar') == 0 ){
-                _rdr.move(v);
-            } else if(elementSelection.name.localeCompare('signer') == 0){
-                _slMngr.move(v);
-            } else if(elementSelection.name.localeCompare('subtitles') == 0){
-                _stMngr.move(v);
+
+            switch(elementSelection.name){
+                case 'radar':
+                     _rdr.move(v);
+                    break;
+                case 'signer':
+                    _slMngr.move(v);
+                    break;
+                case 'subtitles':
+                    _stMngr.move(v);
+                    break;
             }
         }
     }

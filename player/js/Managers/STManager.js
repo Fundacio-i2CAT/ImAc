@@ -140,7 +140,6 @@ STManager = function() {
     this.setIndicator = function(value, childColumnOpt){
         if(stConfig.indicator.localeCompare(value) != 0){
             stConfig.indicator = value;
-            SettingsOptionCtrl.setChildColumnActiveOpt(childColumnOpt);
             let signerMesh = _slMngr.getSigner();
 
             switch( stConfig.indicator ){

@@ -607,7 +607,6 @@ function ViewStructureMenuManager() {
         
         //The position depends on the menu type.
         if(menuMgr.getMenuType() == 2){
-            //mainmenu.position.set( 0, -25, -67 );
             mainmenu.position.set( 0, -25, 0.02 );     
         } else {
             mainmenu.position.set( 0, 0, 0.02 );

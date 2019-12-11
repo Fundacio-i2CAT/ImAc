@@ -317,8 +317,8 @@ const settingsIndicator = { title: 'Indicator', icon: './img/menu/indicator.png'
             default: function(){ return (stConfig.indicator.localeCompare('none') == 0)},
             function: function(){ 
                 if(!settingsIndicator.options[0].default()){
-                    _stMngr.setIndicator( "none", settingsIndicator.options[0].optId);
-                    SettingsOptionCtrl.setChildColumnActiveOpt();
+                    _stMngr.setIndicator("none");
+                    SettingsOptionCtrl.setChildColumnActiveOpt(settingsIndicator.options[0].optId);
                 }
             } 
         }, 
@@ -326,7 +326,8 @@ const settingsIndicator = { title: 'Indicator', icon: './img/menu/indicator.png'
             default: function(){ return (stConfig.indicator.localeCompare('arrow') == 0) },
             function: function(){ 
                 if(!settingsIndicator.options[1].default()){
-                    _stMngr.setIndicator( "arrow", settingsIndicator.options[1].optId );
+                    _stMngr.setIndicator("arrow");
+                    SettingsOptionCtrl.setChildColumnActiveOpt(settingsIndicator.options[1].optId);
                 }
             } 
         },
@@ -334,7 +335,8 @@ const settingsIndicator = { title: 'Indicator', icon: './img/menu/indicator.png'
             default: function(){ return (stConfig.indicator.localeCompare('radar') == 0) },
             function: function(){ 
                 if(!settingsIndicator.options[2].default()){
-                    _stMngr.setIndicator( "radar", settingsIndicator.options[2].optId);
+                    _stMngr.setIndicator("radar");
+                    SettingsOptionCtrl.setChildColumnActiveOpt(settingsIndicator.options[2].optId);
                 }
             } 
         }]

@@ -74,19 +74,16 @@ THREE.MediaObjectData = function () {
             signer.position.set( x, y, 0)
         }
 
-
-        const geometry = new THREE.PlaneGeometry( 20, 20 );
+        const geometry = new THREE.PlaneGeometry( slConfig.size, slConfig.size );
         let video = getVideoMesh( geometry, slConfig.url, name, 1 );
         video.name = 'sl-video';
 
 
-        var signerColorBorderGeom = new THREE.PlaneGeometry( 20, 20, 32 );
-        var signerColorBorderMat = new THREE.MeshBasicMaterial( {color: 0xffff00, side: THREE.DoubleSide} );
-        var signColorBorder = new THREE.Mesh( signerColorBorderGeom, signerColorBorderMat );
+        let signerColorBorderGeom = new THREE.PlaneGeometry( slConfig.size, slConfig.size, 32 );
+        let signerColorBorderMat = new THREE.MeshBasicMaterial( {color: 0xffff00, side: THREE.DoubleSide} );
+        let signColorBorder = new THREE.Mesh( signerColorBorderGeom, signerColorBorderMat );
     
         signColorBorder.position.z = -0.01;
-        signColorBorder.scale.multiplyScalar(1.05);       
-            
 
         //This option is creating a border but it has an issue in windows, only 1px border is possible.
         /*const signColorBorder = new THREE.LineSegments( 
@@ -97,24 +94,18 @@ THREE.MediaObjectData = function () {
         signColorBorder.name = 'sl-colorFrame';
         signColorBorder.visible = false;
 
-        
-        if ( !imsc1doc_SL ){
-            const arrows = getSubtitlesArrowMesh(6.5/2, 1, subController.getSpeakerColor(), 0x000000, 0);
-            const material = new THREE.MeshBasicMaterial( { color: 0x000000,  transparent: true, opacity: stConfig.background } );
-            let mesh = new THREE.Mesh( new THREE.PlaneGeometry( geometry.parameters.width, geometry.parameters.width/4 ), material );
-            mesh.add(arrows);
-
-            mesh.position.y = -(geometry.parameters.width + geometry.parameters.width/4)/2;
-            mesh.visible = stConfig.indicator == 'arrow' ? true : false;
-            mesh.name = 'backgroundSL';
-            signer.add( mesh );
-
-            signColorBorder.scale.y = (slConfig.size+geometry.parameters.width/4)/slConfig.size * 1.05;
-            signColorBorder.position.y = -(geometry.parameters.width/4)/2;
+        if( !imsc1doc_SL ){
+            let textList = [{
+                  text: "",
+                  color: "rgb(255,255,255)",
+                  backgroundColor: "rgb(0,0,0)"
+            }];
+            let st4sl = _moData.getSLSubtitleMesh(textList);
+            st4sl.visible = (stConfig.indicator == 'arrow' && !stConfig.isEnabled) ? true : false;
+            signer.add( st4sl );
         }
-        
 
-        signer.add( signColorBorder );
+        signer.add(signColorBorder );
         signer.add(video);
  
         return signer;
@@ -122,8 +113,8 @@ THREE.MediaObjectData = function () {
 
 
     this.getSLSubtitleMesh = function(textList){
-        var material = new THREE.MeshBasicMaterial( { color: 0x000000,  transparent: true, opacity: 0 } );
-        var font = textList[0].text.length < 14 ? ST_font : "400 30px Roboto, Arial";
+        const material = new THREE.MeshBasicMaterial( { color: 0x000000,  transparent: true, opacity: 0 } );
+        const font = textList[0].text.length < 14 ? ST_font : "400 30px Roboto, Arial";
         let subtitles4SLMesh = _moData.getSubtitleMesh(textList, font, true, 'sl-subtitles');
         return subtitles4SLMesh;
     };
@@ -350,27 +341,28 @@ THREE.MediaObjectData = function () {
     }
 
     this.getSubtitleMesh = function (t, font, isSL, name){
-
         const margin = 5;
         const opacity = stConfig.background;
         let scaleFactor = 1;
+        let cnv;
 
-        var stGroup = new THREE.Group();
+        let stGroup = new THREE.Group();
         stGroup.name = name;
 
         if(isSL){
-            var cnv = document.getElementById( "canvas2" );
+            cnv = document.getElementById( "canvas2" );
         } else {
-            var cnv = document.getElementById( "canvas" );
+            cnv = document.getElementById( "canvas" );
         }
-        var ctx = cnv.getContext( "2d" );
-        var ch = 50; // canvas height x line
-        var fh = 40; // font height 
+        let ctx = cnv.getContext( "2d" );
+        let ch = 50; // canvas height x line
+        let fh = 40; // font height 
         
         ctx.font = font;
-        var width = ctx.measureText( t[0].text ).width;
+        let width = ctx.measureText( t[0].text ).width;
+        let width2;
         if(!isSL){
-            var width2 = t[1] ? ctx.measureText( t[1].text ).width : 0;
+            width2 = t[1] ? ctx.measureText( t[1].text ).width : 0;
             cnv.width = ( width > width2 ) ? width + 20 : width2 + 20;
             cnv.height = ch*t.length;
         } else{ 
@@ -382,8 +374,8 @@ THREE.MediaObjectData = function () {
         if ( t[0] ) createCanvasTextLine( ctx, t[0].text, ST_font, t[0].color, 0, 0, cnv.width, ch, opacity, ( cnv.width - width )/2, fh );
         if ( t[1] ) createCanvasTextLine( ctx, t[1].text, ST_font, t[1].color, 0, ch, cnv.width, ch, opacity, ( cnv.width - width2 )/2, fh + ch );
 
-        var material = new THREE.MeshBasicMaterial( { map: new THREE.CanvasTexture( cnv ),  transparent: true } );
-        var textMesh = new THREE.Mesh( new THREE.PlaneGeometry( cnv.width/6, ch*t.length/6 ), material );
+        let material = new THREE.MeshBasicMaterial( { map: new THREE.CanvasTexture( cnv ),  transparent: true } );
+        let textMesh = new THREE.Mesh( new THREE.PlaneGeometry( cnv.width/6, ch*t.length/6 ), material );
         textMesh.name = 'emojitext';
         textMesh.visible = true;
 
@@ -391,14 +383,11 @@ THREE.MediaObjectData = function () {
         let stLineFactorCorrection = (t[1]) ? (textMesh.geometry.parameters.height/4) : (textMesh.geometry.parameters.height/2);
         stConfig.height = stLineFactorCorrection * 2; 
         
-        let arrows = getSubtitlesArrowMesh(6.5, t.length, t[0].color, t[0].backgroundColor, opacity);
+        let arrows = getSubtitlesArrowMesh(6.5, t.length, t[0].color, t[0].backgroundColor, (!imsc1doc_SL && !stConfig.isEnabled) ? 0 : opacity);
 
         if(isSL){
             scaleFactor = (slConfig.size/textMesh.geometry.parameters.width);
             stGroup.position.y = -(slConfig.size + textMesh.geometry.parameters.height*scaleFactor)/2;    
-            scene.getObjectByName('sl-colorFrame').scale.y = (slConfig.size + textMesh.geometry.parameters.height/2)/slConfig.size * 1.05;
-            scene.getObjectByName('sl-colorFrame').position.y = -(textMesh.geometry.parameters.height/2)/2;
-
         } else {
             let latitud = stConfig.canvasPos.y * (30 * stConfig.area/100);
             let posY = _isHMD && !stConfig.fixedSpeaker ? 80 * Math.sin( Math.radians( latitud ) ) : 135 * Math.sin( Math.radians( latitud ) );
@@ -424,7 +413,7 @@ THREE.MediaObjectData = function () {
 
         stGroup.add(textMesh);
         stGroup.add(arrows);
-        stGroup.scale.set( scaleFactor, scaleFactor, 1 )
+        stGroup.scale.set(scaleFactor, scaleFactor, 1);
 
         return stGroup;
     };

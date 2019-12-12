@@ -266,3 +266,4 @@ tests/
 player/imac_content/
 
 content.json
+.eslintrc

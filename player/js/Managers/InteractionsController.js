@@ -285,6 +285,7 @@ THREE.InteractionsController = function () {
             } else if(intersects[0].object.parent.name.localeCompare('signer') == 0){
                 camera.getObjectByName('sl-colorFrame').visible = true;
                 elementSelection = intersects[0].object.parent;
+                _slMngr.scaleColorBorder(camera.getObjectByName('sl-colorFrame'))
             } else if(intersects[0].object.parent.name.localeCompare('subtitles') == 0){
                 //camera.getObjectByName('st-colorFrame').visible = true;
                 if(VideoController.isPausedById(0)){

@@ -8,7 +8,7 @@ STManager = function() {
         ARROW: 'arrow',
         RADAR: 'radar',
         MOVE: 'move'
-    }
+    };
 
     this.initConfig = function(conf){
 
@@ -28,7 +28,7 @@ STManager = function() {
             easy2read: false,
             background: 0.75,
             availableLang: []
-        }
+        };
 
         /*let config = {
             fixedSpeaker: (conf.fixedSpeaker) ? conf.fixedSpeaker : false,
@@ -46,7 +46,7 @@ STManager = function() {
         }*/
 
         return config;
-    }
+    };
 
     this.createSubtitle = function(textList){
         let stMesh;
@@ -61,16 +61,15 @@ STManager = function() {
             scene.add( stMesh );
             subtitles = scene.getObjectByName('subtitles');
         }
-    }
+    };
 
     this.removeSubtitle = function(){
         if(subtitles){
             subController.setTextListMemory( [] );
-            subController.setisdContentTextMemory( [] );
             (stConfig.fixedScene || stConfig.fixedSpeaker) ? scene.remove( subtitles ) : canvasMgr.removeElement( subtitles );
             subtitles = undefined;
         }
-    }
+    };
 
 /**
  * Function that moves the subtitles.
@@ -85,21 +84,20 @@ STManager = function() {
 
             if(subtitles){
                 let w = vHeight * camera.aspect - ((1+safeFactor) * elementSelection.getObjectByName('emojitext').geometry.parameters.width/2);
-            
                 if(stConfig.indicator.localeCompare(indicators.ARROW) == 0){
                     w = w - elementSelection.getObjectByName('arrows').children[0].children[1].geometry.parameters.width;
                 }
 
                 if(pos.x > -w/2 && pos.x < w/2){
-                    canvas.getObjectByName('subtitles').position.x = pos.x; 
+                    canvas.getObjectByName('subtitles').position.x = pos.x;
                 }
 
                 if(pos.y > -(vHeight - stConfig.height)/2 && pos.y < (vHeight - stConfig.height)/2){
                     canvas.getObjectByName('subtitles').position.y = pos.y;
-                } 
+                }
             }
         }
-    }
+    };
 
 
 //************************************************************************************
@@ -115,12 +113,12 @@ STManager = function() {
  */
     this.setSubtitle = function(xml, lang, accessService){
         stConfig.language = lang;
-        var r = new XMLHttpRequest();
+        let r = new XMLHttpRequest();
         r.open( "GET", xml );
 
         r.onreadystatechange = function (){
             if ( r.readyState === 4 && r.status === 200 ){
-                switch(accessService){
+                switch (accessService){
                     case 'st':
                         imsc1doc = imsc.fromXML( r.responseText );
                         break;
@@ -141,32 +139,39 @@ STManager = function() {
         if(stConfig.indicator.localeCompare(value) != 0){
             stConfig.indicator = value;
             let signerMesh = _slMngr.getSigner();
+            let arw = subController.getArrows();
 
-            switch( stConfig.indicator ){
+            switch (stConfig.indicator){
                 case indicators.NONE:
-                    if( slConfig.isEnabled ) {
-                        if( !imsc1doc_SL ) scene.getObjectByName("backgroundSL").visible = false;
-                        signerMesh.getObjectByName("arrows").visible = false;
+                    if (slConfig.isEnabled && !imsc1doc_SL){
+                        signerMesh.getObjectByName('sl-subtitles').visible = false;
+                    }
+                    if (arw){
+                        arw.visible = false;
                     }
                     _rdr.hideRadar();
                     break;
 
                 case indicators.ARROW:
                     _rdr.hideRadar();
-                    if( stConfig.isEnabled ){
-                        if( scene.getObjectByName('backgroundSL') ) scene.getObjectByName('backgroundSL').visible = false;
-                    }else {
-                        if( slConfig.isEnabled && !imsc1doc_SL ){
-                            scene.getObjectByName('backgroundSL').visible = true;
+                    if (stConfig.isEnabled){
+                        if (signerMesh){
+                            signerMesh.getObjectByName('sl-subtitles').visible = false;
+                        }
+                    } else {
+                        if (slConfig.isEnabled && !imsc1doc_SL){
+                            signerMesh.getObjectByName('sl-subtitles').visible = true;
                         }
                     }
                     break;
 
                 case indicators.RADAR:
                     _rdr.showRadar();
-                    if( slConfig.isEnabled ) {
-                        if( !imsc1doc_SL ) scene.getObjectByName("backgroundSL").visible = false;
-                            signerMesh.getObjectByName("arrows").visible = false;
+                    if( slConfig.isEnabled && !imsc1doc_SL){
+                        signerMesh.getObjectByName('sl-subtitles').visible = false;
+                    }
+                    if(arw){
+                        arw.visible = false;
                     }
                     _rdr.updateRadarPosition();
                     break;
@@ -176,7 +181,7 @@ STManager = function() {
                 textListMemory = [];
                 subController.updateISD( VideoController.getMediaTime() );
             }
-        }    
+        }
     };
 
     this.setSize = function(value){
@@ -185,7 +190,7 @@ STManager = function() {
             let esaySizeAjust = stConfig.easy2read ? 1.25 : 1;
             scaleFactor = (stConfig.area/130) * stConfig.size * esaySizeAjust;
             subtitles.scale.set( scaleFactor, scaleFactor, 1 );
-        } 
+        }
     };
 
     this.setBackground = function(value){
@@ -193,7 +198,6 @@ STManager = function() {
 
         //FIND METHOD FOR DYNAMIC UPDATE (WITHOUT REMOVE/CREATE)
         subController.setTextListMemory( [] );
-        subController.setisdContentTextMemory( [] );
         subController.updateISD( VideoController.getMediaTime() );
     };
 
@@ -202,7 +206,7 @@ STManager = function() {
         subController.setTextListMemory( [] );
         _stMngr.setSubtitle( xml, stConfig.language, 'st');
     };
-    
+
 /**
  * Sets the position of the subtitles.
  *
@@ -225,9 +229,9 @@ STManager = function() {
                 stConfig.fixedSpeaker = spFixed;
                 stConfig.fixedScene = scFixed;
             } else{
-                _stMngr.removeSubtitle(); 
+                _stMngr.removeSubtitle();
                 stConfig.fixedSpeaker = spFixed;
-                stConfig.fixedScene = scFixed;  
+                stConfig.fixedScene = scFixed;
                 subController.updateISD( VideoController.getMediaTime() );
             }
         }
@@ -239,47 +243,47 @@ STManager = function() {
         stConfig.scenePos.lat = lat;
         stConfig.scenePos.lon = lon;
 
-        var cosLat = Math.cos(lat * Math.PI / 180.0);
-        var sinLat = Math.sin(lat * Math.PI / 180.0);
-        var cosLon = Math.cos(lon * Math.PI / 180.0);
-        var sinLon = Math.sin(lon * Math.PI / 180.0);
-        var rad = 70.0;
+        let cosLat = Math.cos(lat * Math.PI / 180.0);
+        let sinLat = Math.sin(lat * Math.PI / 180.0);
+        let cosLon = Math.cos(lon * Math.PI / 180.0);
+        let sinLon = Math.sin(lon * Math.PI / 180.0);
+        let rad = 70.0;
         let x = rad * cosLat * cosLon;
         let y = rad * cosLat * sinLon;
         let z = rad * sinLat;
 
-        //console.log('x: '+x+', y: '+y+', z: '+z);  
-    }
+        //console.log('x: '+x+', y: '+y+', z: '+z);
+    };
 
     this.setLanguagesArray = function(subList){
         stConfig.availableLang = [];
 
-        if ( subList['en'] ) {
-            stConfig.availableLang.push({ 
-                name: 'subtitlesEngButton', 
-                value: 'en', 
-                default: ( 'en' == stConfig.language ) 
+        if (subList.en) {
+            stConfig.availableLang.push({
+                name: 'subtitlesEngButton',
+                value: 'en',
+                default: (slConfig.language.localeCompare('en') === 0)
             });
         }
-        if ( subList['de'] ) {
-            stConfig.availableLang.push({ 
-                name: 'subtitlesGerButton', 
-                value: 'de', 
-                default: ( 'de' == stConfig.language ) 
+        if (subList.de) {
+            stConfig.availableLang.push({
+                name: 'subtitlesGerButton',
+                value: 'de',
+                default: (slConfig.language.localeCompare('de') === 0)
             });
         }
-        if ( subList['es'] ){
-            stConfig.availableLang.push({ 
-                name: 'subtitlesEspButton', 
-                value: 'es', 
-                default: ( 'es' == stConfig.language ) 
+        if (subList.es){
+            stConfig.availableLang.push({
+                name: 'subtitlesEspButton',
+                value: 'es',
+                default: (slConfig.language.localeCompare('es') === 0)
             } );
         }
-        if ( subList['ca'] ){
-            stConfig.availableLang.push({ 
-                name: 'subtitlesCatButton', 
-                value: 'ca', 
-                default: ( 'ca' == stConfig.language ) 
+        if (subList.ca){
+            stConfig.availableLang.push({
+                name: 'subtitlesCatButton',
+                value: 'ca',
+                default: (slConfig.language.localeCompare('ca') === 0)
             } );
         }
     };
@@ -287,20 +291,22 @@ STManager = function() {
 
     this.getSubtitles = function(){
         return subtitles;
-    }
+    };
 
 //************************************************************************************
 // Public Subtitle Checkers
 //************************************************************************************
 
     this.checkisSubAvailable = function(lang){
-        if ( !lang && list_contents[demoId].acces[0].ST ) lang = list_contents[demoId].acces[0].ST[0];
+        if (!lang && list_contents[demoId].acces[0].ST){
+            lang = list_contents[demoId].acces[0].ST[0];
+        }
         return (list_contents[demoId].acces && list_contents[demoId].acces[0].ST && list_contents[demoId].acces[0].ST.includes((lang) ? lang : _iconf.stlanguage));
     };
 
     this.checkSubEasyAvailable = function(lang){
         return (list_contents[demoId].subtitles && list_contents[demoId].subtitles[1] && list_contents[demoId].subtitles[1][lang]);
-    };  
+    };
 
 
 //************************************************************************************
@@ -308,8 +314,10 @@ STManager = function() {
 //************************************************************************************
 
     this.updateSubtitleByTime = function(time){
-        if ( imsc1doc ) subController.updateISD( time );
-    };  
+        if (imsc1doc) {
+            subController.updateISD(time);
+        }
+    };
 
     this.enableSubtitles = function(){
         stConfig.isEnabled = true;
@@ -322,33 +330,36 @@ STManager = function() {
     };
 
     this.switchSubtitles = function(enable){
-        if ( !enable ){
+        let signerMesh = _slMngr.getSigner();
+        if (!enable){
             _stMngr.removeSubtitle();
-            if (stConfig.indicator.localeCompare(indicators.ARROW) == 0 && slConfig.isEnabled){
-                if(scene.getObjectByName('backgroundSL')) scene.getObjectByName('backgroundSL').visible = true;
+            if (stConfig.indicator.localeCompare(indicators.ARROW) === 0 && slConfig.isEnabled){
+                if(!imsc1doc_SL) {
+                    signerMesh.getObjectByName('sl-subtitles').visible = true;
+                }
             }
         } else {
-            if (stConfig.indicator.localeCompare(indicators.RADAR) == 0){
+            if (stConfig.indicator.localeCompare(indicators.RADAR) === 0){
                 _rdr.showRadar();
             }
-            if(slConfig.isEnabled){
-                if(scene.getObjectByName('backgroundSL')) scene.getObjectByName('backgroundSL').visible = false;
+            if (slConfig.isEnabled){
+                if (!imsc1doc_SL){
+                    signerMesh.getObjectByName('sl-subtitles').visible = false;
+                }
             }
         }
 
         stConfig.isEnabled = enable;
-    }
+    };
 
     this.getSTAvailableLang = function(lang, e2r=0){
-        if ( list_contents[demoId].subtitles[e2r][lang] ) {
+        if (list_contents[demoId].subtitles[e2r][lang]) {
            return lang;
-        }
-        else if ( list_contents[demoId].acces[0].ST && list_contents[demoId].subtitles[e2r][list_contents[demoId].acces[0].ST[0]] ) {
+        } else if (list_contents[demoId].acces[0].ST && list_contents[demoId].subtitles[e2r][list_contents[demoId].acces[0].ST[0]]) {
            _iconf.stlanguage = list_contents[demoId].acces[0].ST[0];
            return list_contents[demoId].acces[0].ST[0];
-        }
-        else return;
-    }
+        } else return;
+    };
 
 //************************************************************************************
 // Media Object Position Controller 
@@ -365,6 +376,6 @@ STManager = function() {
     this.checkSubtitleIdicator = function(position){
         if ( stConfig.indicator != indicators.NONE ) {
             stConfig.indicator != indicators.MOVE ? changeSubtitleIndicator( position ) : subController.setTextListMemory( [] );
-        }      
-    }
+        }
+    };
 };

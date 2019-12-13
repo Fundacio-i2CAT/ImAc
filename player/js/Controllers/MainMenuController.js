@@ -117,7 +117,7 @@ function MainMenuController() {
         //Works if the viewStructure is loaded.
         menuMgr.setOptActiveIndex(0); //SettingsController
 
-        if(viewStructure){
+        if (viewStructure) {
             viewStructure.visible = false;
             viewStructure.children.forEach(function(intrElement){
                 interController.removeInteractiveObject(intrElement.name);
@@ -131,7 +131,7 @@ function MainMenuController() {
      * @return     {<MainMenuModel>}  The data model.
      */
     function GetData(){
-        if (data == null){
+        if (data == null) {
             data = new MainMenuModel();
         }
         return data;
@@ -244,7 +244,7 @@ function MainMenuController() {
                 // Add interactivity to visible elements and remove interactivity to none visible elements.
                 menuMgr.AddInteractionIfVisible(viewStructure);
                 //If subtitles are disabled signer goes back to bottom position.
-                _slMngr.setSignerPosition( slConfig.canvasPos.x, data.isSTenabled ? stConfig.canvasPos.y : -1 );
+                _slMngr.setSignerPosition(slConfig.canvasPos.x, data.isSTenabled ? stConfig.canvasPos.y : -1);
             });
         };
 
@@ -615,9 +615,5 @@ function MainMenuController() {
 
     this.setInitialSlidingPosition = function(position){
         initialSlidingPos = position;
-    }
-
-    this.getInitialSlidingPosition = function(){
-        return initialSlidingPos;
     }
 }

@@ -3,6 +3,7 @@ SLManager = function() {
 
     let signer;
     let subtitleSLMesh;
+    const slMaxSize = 20;
 
 /**
  * Initializes the configuration.
@@ -29,7 +30,6 @@ SLManager = function() {
         return config;
     };
 
-
 /**
  * Creates a signer.
  */
@@ -44,18 +44,21 @@ SLManager = function() {
         canvasMgr.addElement(slMesh);
 
         signer = canvas.getObjectByName('signer');
-        if( imsc1doc_SL && slConfig.st4sltext){
-            _slMngr.createSLSubtitle( slConfig.st4sltext );
+        if (imsc1doc_SL && slConfig.st4sltext) {
+            _slMngr.createSLSubtitle(slConfig.st4sltext);
         }
 
-        if ( !VideoController.isPausedById( 0 ) ){
+        if (!VideoController.isPausedById(0)) {
             VideoController.playAll();
         }
     };
 
+/**
+ * Removes a signer.
+ */
     function removeSigner(){
-        if( signer ){
-            VideoController.removeContentById( signer.name );
+        if (signer) {
+            VideoController.removeContentById(signer.name);
             canvasMgr.removeElement(signer);
         }
     }
@@ -75,38 +78,49 @@ SLManager = function() {
             scene.getObjectByName('trad-main-menu').visible = false;
             scene.getObjectByName('trad-option-menu').visible = false;
 
-            if(signer){
+            if (signer) {
                 let w = vHeight * camera.aspect;
-                if(pos.x > -(w- slConfig.size)/2 && pos.x < (w- slConfig.size)/2){
+                if (pos.x > -(w- slConfig.size)/2 && pos.x < (w- slConfig.size)/2) {
                     canvas.getObjectByName('signer').position.x = pos.x;
                 }
 
-                if(pos.y > -(vHeight - slConfig.size)/2 && pos.y < (vHeight - slConfig.size)/2){
+                if (pos.y > -(vHeight - slConfig.size)/2 && pos.y < (vHeight - slConfig.size)/2) {
                     canvas.getObjectByName('signer').position.y = pos.y;
                 }
             }
         }
     };
 
+/**
+ * { function_description }
+ *
+ * @param      {string}  pos     The position
+ */
     function changeSignPosition(pos) {
-        if ( signer && ( ( pos == 'left' && signer.position.x > 0 ) || ( pos == 'right' && signer.position.x < 0 ) ) ){
+        if (signer && ((pos == 'left' && signer.position.x > 0) || (pos == 'right' && signer.position.x < 0))) {
             signer.position.x = signer.position.x * -1;
         }
     }
 
+/**
+ * { function_description }
+ *
+ * @param      {string}  position  The position
+ */
     this.checkSignIdicator = function(position){
-        if ( stConfig.indicator != 'none' ){
-            if ( position == 'center' && stConfig.indicator == 'move' ){
+        if (stConfig.indicator != 'none') {
+            if (position == 'center' && stConfig.indicator == 'move'){
                 position = slConfig.canvasPos.x == -1 ? 'left' : 'right';
             }
-            //stConfig.indicator != 'move' ? changeSubtitleIndicator( position ) : changeSignPosition( position );
             stConfig.indicator != 'move' ? _stMngr.checkSubtitleIdicator( position ) : changeSignPosition( position );
         }
     };
 
-
+/**
+ * { function_description }
+ */
     function updateST4SLPosition(){
-        if( signer ){
+        if (signer) {
             let st4slMesh = signer.getObjectByName('sl-subtitles');
             let scaleFactor = (slConfig.size/st4slMesh.children[0].geometry.parameters.width);
             st4slMesh.scale.set(scaleFactor, scaleFactor, 1);
@@ -114,17 +128,20 @@ SLManager = function() {
         }
     }
 
+/**
+ * { function_description }
+ */
     this.updateSignerPosition2 = function(){
-        if (signer){
+        if (signer) {
             let posX;
             let posY;
-            if(localStorage.getItem("slPosition")){
+            if (localStorage.getItem("slPosition")) {
                 let savedPosition = JSON.parse(localStorage.getItem("slPosition"));
                 posX = savedPosition.x;
                 posY = savedPosition.y;
             } else {
-                posX = _isHMD ? 0.6 * ( 1.48*slConfig.area/2 - slConfig.size/2 ) *slConfig.canvasPos.x : ( 1.48*slConfig.area/2 - slConfig.size/2 ) *slConfig.canvasPos.x;
-                posY = _isHMD ? 0.6 * ( 0.82*slConfig.area/2 - slConfig.size/2) *slConfig.canvasPos.y : ( 0.82*slConfig.area/2 - slConfig.size/2 ) *slConfig.canvasPos.y;
+                posX = _isHMD ? 0.6 * (1.48*slConfig.area/2 - slConfig.size/2) *slConfig.canvasPos.x : (1.48*slConfig.area/2 - slConfig.size/2) *slConfig.canvasPos.x;
+                posY = _isHMD ? 0.6 * (0.82*slConfig.area/2 - slConfig.size/2) *slConfig.canvasPos.y : (0.82*slConfig.area/2 - slConfig.size/2) *slConfig.canvasPos.y;
             }
             let posZ = 0;
 
@@ -133,29 +150,35 @@ SLManager = function() {
 
             setPos(posX, posY);
 
-            if ( subtitleSLMesh ){
-                subController.setSLtextListMemory( [] );
-
+            if (subtitleSLMesh) {
+                subController.setSLtextListMemory([]);
                 //removeSLSubtitle();
             }
         }
     };
 
-    // Subtitles fixed under SL video
+/**
+ * Creates a sl subtitle.
+ *
+ * @param      {<type>}  textList  The text list
+ */
     this.createSLSubtitle = function(textList){
         _slMngr.removeSLSubtitle();
         slConfig.st4sltext = textList;
         subtitleSLMesh = _moData.getSLSubtitleMesh(textList);
-        canvas.getObjectByName('signer').add( subtitleSLMesh );
+        canvas.getObjectByName('signer').add(subtitleSLMesh);
     };
 
 //************************************************************************************
 // Media Object Destructors
 //************************************************************************************
 
+/**
+ * Removes a sl subtitle.
+ */
     this.removeSLSubtitle = function(){
-        subController.setSLtextListMemory( [] );
-        canvas.getObjectByName('signer').remove( subtitleSLMesh );
+        subController.setSLtextListMemory([]);
+        canvas.getObjectByName('signer').remove(subtitleSLMesh);
         subtitleSLMesh = undefined;
     };
 
@@ -163,77 +186,113 @@ SLManager = function() {
 // Public Signer Setters
 //************************************************************************************
 
-
+/**
+ * Sets the signer automatic hide.
+ *
+ * @param      {<type>}  value   The value
+ */
     this.setSignerAutoHide = function(value){
         slConfig.autoHide = value;
     };
 
+/**
+ * Sets the signer position.
+ *
+ * @param      {<type>}  x       The new value
+ * @param      {<type>}  y       The new value
+ */
     this.setSignerPosition = function(x, y){
         slConfig.canvasPos.x = x;
-        if(stConfig.isEnabled){
+        if (stConfig.isEnabled) {
             slConfig.canvasPos.y = y;
-        } else{
+        } else {
             slConfig.canvasPos.y = -1;
         }
         updateST4SLPosition();
     };
 
+/**
+ * Sets the signer size.
+ *
+ * @param      {number}  size    The size
+ */
     this.setSignerSize = function(size){
         slConfig.size = size;
-        if ( scene.getObjectByName('signer')){
-            scene.getObjectByName('sl-video').scale.set(slConfig.size/20, slConfig.size/20, 1);
+        if (scene.getObjectByName('signer')) {
+            scene.getObjectByName('sl-video').scale.set(slConfig.size/slMaxSize, slConfig.size/slMaxSize, 1);
         }
         updateST4SLPosition();
     };
 
+/**
+ * Sets the signer content.
+ *
+ * @param      {<type>}  url     The new value
+ * @param      {<type>}  lang    The language
+ */
     this.setSignerContent = function(url, lang) {
         slConfig.url = url;
         slConfig.language = lang;
-        if ( slConfig.isEnabled ){
+        if (slConfig.isEnabled) {
             this.createSigner();
         }
     };
 
+/**
+ * Sets the signer languages array.
+ *
+ * @param      {<type>}  subList  The sub list
+ */
     this.setSignerLanguagesArray = function(subList){
         slConfig.availableLang = [];
 
-        if( subList.en ) {
+        if (subList.en) {
             slConfig.availableLang.push({
                 name: 'signerEngButton',
                 value: 'en',
-                default: ( slConfig.language.localeCompare('en') == 0 )
+                default: (slConfig.language.localeCompare('en') === 0)
             });
         }
 
-        if( subList.de ) {
+        if (subList.de) {
             slConfig.availableLang.push({
                 name: 'signerGerButton',
                 value: 'de',
-                default: ( slConfig.language.localeCompare('de') == 0 )
+                default: (slConfig.language.localeCompare('de') === 0)
             });
         }
 
-        if ( subList.es ) {
+        if (subList.es) {
             slConfig.availableLang.push({
                 name: 'signerEspButton',
                 value: 'es',
-                default: ( slConfig.language.localeCompare('es') == 0 )
+                default: (slConfig.language.localeCompare('es') === 0)
             });
         }
 
-        if ( subList.ca ) {
+        if (subList.ca) {
             slConfig.availableLang.push({
                 name: 'signerCatButton',
                 value: 'ca',
-                default: ( slConfig.language.localeCompare('ca') == 0 )
+                default: (slConfig.language.localeCompare('ca') === 0)
             });
         }
     };
 
+/**
+ * Sets the subtitle sl configuration.
+ *
+ * @param      {<type>}  newConfig  The new configuration
+ */
     this.setSubtitleSLConfig = function(newConfig){
         subSLConfig = newConfig;
     };
 
+/**
+ * Gets the signer.
+ *
+ * @return     {<type>}  The signer.
+ */
 
     this.getSigner = function(){
         return signer;
@@ -243,13 +302,24 @@ SLManager = function() {
 // Public Signer Checkers
 //************************************************************************************
 
+/**
+ * { function_description }
+ *
+ * @param      {<type>}  lang    The language
+ * @return     {<type>}  { description_of_the_return_value }
+ */
     this.checkisSignAvailable = function(lang){
-        if ( !lang && list_contents[demoId].acces[0].SL ){
+        if (!lang && list_contents[demoId].acces[0].SL) {
             lang = list_contents[demoId].acces[0].SL[0];
         }
         return (list_contents[demoId].acces && list_contents[demoId].acces[0].SL && list_contents[demoId].acces[0].SL.includes((lang) ? lang : _iconf.sllanguage));
     };
 
+/**
+ * { function_description }
+ *
+ * @return     {boolean}  { description_of_the_return_value }
+ */
     this.checkAvailableDynamic = function(){
         return imsc1doc_SL ? true : false;
     };
@@ -258,55 +328,76 @@ SLManager = function() {
 // Public functions
 //************************************************************************************
 
+/**
+ * { function_description }
+ *
+ * @param      {<type>}  enable  The enable
+ */
     this.switchSigner = function(enable){
         slConfig.isEnabled = enable;
         enable ? _slMngr.createSigner() : removeSigner();
 
-        if(enable){
-            if (stConfig.indicator.localeCompare('arrow') == 0){
-                if(scene.getObjectByName('backgroundSL')){
+        if (enable) {
+            if (stConfig.indicator.localeCompare('arrow') === 0) {
+                if (scene.getObjectByName('backgroundSL')) {
                     scene.getObjectByName('backgroundSL').visible = !stConfig.isEnabled;
                 }
             }
         }
     };
 
+/**
+ * Disables the signer.
+ */
     this.disableSigner = function(){
         removeSigner();
         slConfig.isEnabled = false;
     };
 
-
+/**
+ * { function_description }
+ *
+ * @param      {<type>}  enable  The enable
+ */
     this.swichtSL = function(enable){
-        if( signer ){
+        if (signer) {
             signer.visible = enable;
         }
     };
 
+/**
+ * Gets the sl available language.
+ *
+ * @param      {<type>}  lang    The language
+ * @return     {<type>}  The sl available language.
+ */
    this.getSLAvailableLang = function(lang){
-       if( list_contents[demoId].signer[0][lang] ){
+       if (list_contents[demoId].signer[0][lang]) {
            return lang;
-       } else if( list_contents[demoId].acces[0].SL && list_contents[demoId].signer[0][list_contents[demoId].acces[0].SL[0]] ) {
+       } else if (list_contents[demoId].acces[0].SL && list_contents[demoId].signer[0][list_contents[demoId].acces[0].SL[0]]) {
            _iconf.sllanguage = list_contents[demoId].acces[0].SL[0];
            return list_contents[demoId].acces[0].SL[0];
-       } else{
+       } else {
            return;
        }
-       
    };
 
-
+/**
+ * { function_description }
+ *
+ * @param      {<type>}  element  The element
+ */
    this.scaleColorBorder = function(element){
        let slSTscale = signer.getObjectByName('sl-subtitles').scale.x;
        let slSTHeight = signer.getObjectByName('sl-subtitles').children[0].geometry.parameters.height*slSTscale;
        let newScale = 1;
-       if (signer.getObjectByName('sl-subtitles').visible){
+       if (signer.getObjectByName('sl-subtitles').visible) {
            newScale = ((slConfig.size+slSTHeight)/slConfig.size);
            element.position.y = -((slSTHeight)/2);
        } else {
            element.position.y = 0;
        }
-       element.scale.y = newScale * (slConfig.size+1)/20;
-       element.scale.x = (slConfig.size+1)/20;
+       element.scale.y = newScale * (slConfig.size+1)/slMaxSize;
+       element.scale.x = (slConfig.size+1)/slMaxSize;
    };
 };

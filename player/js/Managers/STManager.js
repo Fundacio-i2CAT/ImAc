@@ -155,7 +155,7 @@ STManager = function() {
                 case indicators.ARROW:
                     _rdr.hideRadar();
                     if (stConfig.isEnabled){
-                        if (signerMesh){
+                        if (slConfig.isEnabled && !imsc1doc_SL){
                             signerMesh.getObjectByName('sl-subtitles').visible = false;
                         }
                     } else {
@@ -179,7 +179,7 @@ STManager = function() {
 
             if(stConfig.isEnabled || slConfig.isEnabled){
                 textListMemory = [];
-                subController.updateISD( VideoController.getMediaTime() );
+                //subController.updateISD( VideoController.getMediaTime() );
             }
         }
     };

@@ -62,14 +62,14 @@ VideoController = function() {
 
     function setBitrateLimitationsFor(player)
     {
-    	if ( window.screen.width * window.devicePixelRatio <= 1920 ) 
+    	/*if ( window.screen.width * window.devicePixelRatio <= 1920 ) 
         {
             player.setMaxAllowedBitrateFor( 'video', 13000 );
         }
         else if ( window.screen.width * window.devicePixelRatio <= 2300 ) 
         {
             player.setMaxAllowedBitrateFor( 'video', 15000 );
-        }
+        }*/
     }
 
     function createDashVO(id, vid, url, autoplay)

@@ -176,6 +176,8 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 		            //This will remove the checkmark so all optins of st position are available.
             		stConfig.canvasPos = new THREE.Vector2(elementSelection.position.x, elementSelection.position.y);
 					if(actionPausedVideo) mainMenuCtrl.playAllFunc();
+
+					_slMngr.updateSignerPosition();
 					break;
 			}
 			menuMgr.checkMenuStateVisibility();

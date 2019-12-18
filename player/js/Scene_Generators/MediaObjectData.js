@@ -379,6 +379,7 @@ THREE.MediaObjectData = function () {
         let textMesh = new THREE.Mesh( new THREE.PlaneGeometry( cnv.width/6, ch*t.length/6 ), material );
         textMesh.name = 'emojitext';
         textMesh.visible = true;
+        stConfig.width = textMesh.geometry.parameters.width;
 
         //Depending on the line number the center of the text mesh will change;
         let stLineFactorCorrection = (t[1]) ? (textMesh.geometry.parameters.height/4) : (textMesh.geometry.parameters.height/2);
@@ -404,7 +405,9 @@ THREE.MediaObjectData = function () {
                 } else {
                     stGroup.position.y = stConfig.canvasPos.y * (vHeight*(1-safeFactor) - textMesh.geometry.parameters.height/2)/2;   
                     stConfig.initialY = stGroup.position.y;
-                    stGroup.position.x = 0;
+
+                    let offset = _stMngr.checkOverlap();
+                    stGroup.position.x = 0 + offset;
                 }
             } else if(stConfig.fixedScene){
                 textMesh.position.y = -20;

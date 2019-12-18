@@ -1033,6 +1033,9 @@ const settingsSignLanguagePosition = { title: 'Position', icon: './img/menu/sl_p
                     localStorage.removeItem("slPosition");
                     _slMngr.setSignerPosition( 1, stConfig.canvasPos.y);
                     SettingsOptionCtrl.setChildColumnActiveOpt(settingsSignLanguagePosition.options[0].optId);
+                    if(stConfig.isEnabled){
+                        _stMngr.setPosition(stConfig.canvasPos, stConfig.fixedScene, stConfig.fixedSpeaker);
+                    }
                 }
             }
         },
@@ -1043,6 +1046,9 @@ const settingsSignLanguagePosition = { title: 'Position', icon: './img/menu/sl_p
                     localStorage.removeItem("slPosition");
                     _slMngr.setSignerPosition( -1, stConfig.canvasPos.y);
                     SettingsOptionCtrl.setChildColumnActiveOpt(settingsSignLanguagePosition.options[1].optId);
+                    if(stConfig.isEnabled){
+                        _stMngr.setPosition(stConfig.canvasPos, stConfig.fixedScene, stConfig.fixedSpeaker);
+                    }
                 }
             } 
         }]

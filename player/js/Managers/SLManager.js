@@ -142,11 +142,15 @@ SLManager = function() {
             } else {
                 let safeFactor = 0.1; //10%            
                 x = _isHMD ? 0.6 * (1.48*slConfig.area/2 - slConfig.size/2) : (1.48*slConfig.area/2 - slConfig.size/2);
-                y =  _isHMD ? (vHeight*(1-safeFactor)-slConfig.size)/2 : (vHeight*(1-safeFactor)-slConfig.size)/2;
+                y = _isHMD ? (vHeight*(1-safeFactor)-slConfig.size)/2 : (vHeight*(1-safeFactor)-slConfig.size)/2;
             }
 
             signer.position.x = slConfig.canvasPos.x * x;
-            signer.position.y = stConfig.canvasPos.y * y;
+            if (localStorage.getItem("stPosition")) {
+                signer.position.y = -1 * y;
+            } else {
+                signer.position.y = stConfig.canvasPos.y * y;
+            }
         }
     };
 

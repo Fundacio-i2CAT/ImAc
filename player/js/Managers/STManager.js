@@ -1,14 +1,14 @@
 
 STManager = function() {
-    let subtitles;
-
-
+    
     const indicators = {
         NONE: 'none',
         ARROW: 'arrow',
         RADAR: 'radar',
         MOVE: 'move'
     };
+
+    let subtitles;
 
     this.initConfig = function(conf){
 
@@ -53,7 +53,6 @@ STManager = function() {
         _stMngr.removeSubtitle();
         if ( !stConfig.fixedSpeaker && !stConfig.fixedScene ){
             stMesh = _moData.getSubtitleMesh(textList, "500 40px Roboto, Arial", false, 'subtitles');
-            stConfig.width = stMesh.children[0].geometry.parameters.width;
             canvasMgr.addElement(stMesh);
             subtitles = canvas.getObjectByName('subtitles');
         } else{
@@ -225,7 +224,9 @@ STManager = function() {
             //Check if not fixed options and initialY is initialized;
             //If initialY is not initialized ST will have to be created
             if(!stConfig.fixedSpeaker && !stConfig.fixedScene && pos.y != 0 && stConfig.initialY != 0){
-                subtitles.position.x = 0;
+                let offset = _stMngr.checkOverlap();
+                subtitles.position.x = 0 + offset;
+                
                 subtitles.position.y =  Math.abs(stConfig.initialY)*pos.y;
                 stConfig.fixedSpeaker = spFixed;
                 stConfig.fixedScene = scFixed;
@@ -378,5 +379,24 @@ STManager = function() {
         if ( stConfig.indicator != indicators.NONE ) {
             stConfig.indicator != indicators.MOVE ? changeSubtitleIndicator( position ) : subController.setTextListMemory( [] );
         }
+    };
+
+
+    this.checkOverlap = function(){
+        let safeFactor = 0.2;
+        let signer = _slMngr.getSigner();
+        let offset = 0;
+
+        if(signer && !localStorage.getItem("slPosition")){
+            let totalDif = 0;
+            let stDif = stConfig.width/4;
+            let slDif = signer.position.x + (-slConfig.canvasPos.x)*slConfig.size/2 * (1+safeFactor);
+
+            totalDif = -slConfig.canvasPos.x * slDif + stDif
+            if(totalDif>0){
+                offset = -slConfig.canvasPos.x * (totalDif + 5);
+            } 
+        }
+        return offset;
     };
 };

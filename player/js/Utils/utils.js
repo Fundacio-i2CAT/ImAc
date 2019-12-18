@@ -353,7 +353,7 @@ function resetConfig(){
     localStorage.removeItem("slPosition");
     localStorage.removeItem("stPosition");
 
-    _slMngr.updateSignerPosition2(); //Needs to be changed
+    _slMngr.updateSignerPosition(); //Needs to be changed
     _rdr.updateRadarPosition();
 }
 // Converts from degrees to radians.

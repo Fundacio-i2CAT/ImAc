@@ -131,7 +131,7 @@ SLManager = function() {
 /**
  * { function_description }
  */
-    this.updateSignerPosition2 = function(){
+    this.updateSignerPosition = function(){
         if (signer) {
             let posX;
             let posY;
@@ -140,15 +140,17 @@ SLManager = function() {
                 posX = savedPosition.x;
                 posY = savedPosition.y;
             } else {
+                let safeFactor = 0.1; //10%            
                 posX = _isHMD ? 0.6 * (1.48*slConfig.area/2 - slConfig.size/2) *slConfig.canvasPos.x : (1.48*slConfig.area/2 - slConfig.size/2) *slConfig.canvasPos.x;
-                posY = _isHMD ? 0.6 * (0.82*slConfig.area/2 - slConfig.size/2) *slConfig.canvasPos.y : (0.82*slConfig.area/2 - slConfig.size/2) *slConfig.canvasPos.y;
+                posY = slConfig.canvasPos.y * (vHeight*(1-safeFactor)-slConfig.size)/2;
+                //posY = _isHMD ? 0.6 * (0.82*slConfig.area/2 - slConfig.size/2) *slConfig.canvasPos.y : (0.82*slConfig.area/2 - slConfig.size/2) *slConfig.canvasPos.y;
             }
             let posZ = 0;
 
             signer.position.x = posX;
             signer.position.y = posY;
 
-            setPos(posX, posY);
+            _slMngr.setSignerPosition(posX, posY);
 
             if (subtitleSLMesh) {
                 subController.setSLtextListMemory([]);

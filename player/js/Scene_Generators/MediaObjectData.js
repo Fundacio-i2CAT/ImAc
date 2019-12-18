@@ -61,7 +61,6 @@ THREE.MediaObjectData = function () {
     };
 
     this.getSignVideoMesh = function(name) {
-
         let signer =  new THREE.Group();
         signer.name = name;
 
@@ -69,9 +68,11 @@ THREE.MediaObjectData = function () {
             let savedPosition = JSON.parse(localStorage.getItem("slPosition"))
             signer.position.set( savedPosition.x, savedPosition.y, 0)
         } else {
+            let safeFactor = 0.1; //10%
             let x = _isHMD ? 0.6 * ( 1.48*slConfig.area/2 - slConfig.size/2 ) *slConfig.canvasPos.x : ( 1.48*slConfig.area/2 - slConfig.size/2 ) *slConfig.canvasPos.x;
-            let y = _isHMD ? 0.6 * ( 0.82*slConfig.area/2 - slConfig.size/2) *slConfig.canvasPos.y : ( 0.82*slConfig.area/2 - slConfig.size/2 ) *slConfig.canvasPos.y;
-            signer.position.set( x, y, 0)
+            let y = slConfig.canvasPos.y * (vHeight*(1-safeFactor)-slConfig.size)/2;
+            //let y = _isHMD ? 0.6 * ( 0.82*slConfig.area/2 - slConfig.size/2) *slConfig.canvasPos.y : ( 0.82*slConfig.area/2 - slConfig.size/2 ) *slConfig.canvasPos.y;
+            signer.position.set(x, y, 0);
         }
 
         const geometry = new THREE.PlaneGeometry( slConfig.size, slConfig.size );
@@ -114,7 +115,7 @@ THREE.MediaObjectData = function () {
 
     this.getSLSubtitleMesh = function(textList){
         const material = new THREE.MeshBasicMaterial( { color: 0x000000,  transparent: true, opacity: 0 } );
-        const font = textList[0].text.length < 14 ? ST_font : "400 30px Roboto, Arial";
+        const font = textList[0].text.length < 13 ? "500 40px Roboto, Arial" : "500 36px Roboto, Arial";
         let subtitles4SLMesh = _moData.getSubtitleMesh(textList, font, true, 'sl-subtitles');
         return subtitles4SLMesh;
     };
@@ -341,7 +342,7 @@ THREE.MediaObjectData = function () {
     }
 
     this.getSubtitleMesh = function (t, font, isSL, name){
-        const margin = 5;
+        const safeFactor = 0.1; //10%
         const opacity = stConfig.background;
         let scaleFactor = 1;
         let cnv;
@@ -371,8 +372,8 @@ THREE.MediaObjectData = function () {
         }
         //stConfig.width = cnv.width/6;
 
-        if ( t[0] ) createCanvasTextLine( ctx, t[0].text, ST_font, t[0].color, 0, 0, cnv.width, ch, opacity, ( cnv.width - width )/2, fh );
-        if ( t[1] ) createCanvasTextLine( ctx, t[1].text, ST_font, t[1].color, 0, ch, cnv.width, ch, opacity, ( cnv.width - width2 )/2, fh + ch );
+        if ( t[0] ) createCanvasTextLine( ctx, t[0].text, font, t[0].color, 0, 0, cnv.width, ch, opacity, ( cnv.width - width )/2, fh );
+        if ( t[1] ) createCanvasTextLine( ctx, t[1].text, font, t[1].color, 0, ch, cnv.width, ch, opacity, ( cnv.width - width2 )/2, fh + ch );
 
         let material = new THREE.MeshBasicMaterial( { map: new THREE.CanvasTexture( cnv ),  transparent: true } );
         let textMesh = new THREE.Mesh( new THREE.PlaneGeometry( cnv.width/6, ch*t.length/6 ), material );
@@ -391,17 +392,18 @@ THREE.MediaObjectData = function () {
         } else {
             let latitud = stConfig.canvasPos.y * (30 * stConfig.area/100);
             let posY = _isHMD && !stConfig.fixedSpeaker ? 80 * Math.sin( Math.radians( latitud ) ) : 135 * Math.sin( Math.radians( latitud ) );
-            let  y = (stConfig.fixedSpeaker) ? posY : (stConfig.canvasPos.y * (vHeight/2 - margin));
+            let  y = (stConfig.fixedSpeaker) ? posY : (stConfig.canvasPos.y * (vHeight/2));
             let esaySizeAjust = stConfig.easy2read ? 1.25 : 1;
 
             scaleFactor = (stConfig.area/130) * stConfig.size * esaySizeAjust;
             if(!stConfig.fixedSpeaker && !stConfig.fixedScene){
-                if(localStorage.getItem("stPosition")){
+                if(localStorage.getItem("stPosition")) {
                     let savedPosition = JSON.parse(localStorage.getItem("stPosition"))
                     stGroup.position.y = savedPosition.y;
                     stGroup.position.x = savedPosition.x;
-                }else{
-                    stGroup.position.y = y - stConfig.canvasPos.y*stLineFactorCorrection*scaleFactor;
+                } else {
+                    //stGroup.position.y = stConfig.canvasPos.y * ((vHeight/2) - stConfig.height);//(y - stConfig.canvasPos.y*scaleFactor) * (1-safeFactor);
+                    stGroup.position.y = stConfig.canvasPos.y * (vHeight*(1-safeFactor) - textMesh.geometry.parameters.height/2)/2;   
                     stConfig.initialY = stGroup.position.y;
                     stGroup.position.x = 0;
                 }
@@ -445,7 +447,7 @@ THREE.MediaObjectData = function () {
         var mesh = new THREE.Mesh( geometry, material );
 
         mesh.name = name;
-        mesh.renderOrder = order || 0;
+        //mesh.renderOrder = order || 0;
 
         return mesh;
     }

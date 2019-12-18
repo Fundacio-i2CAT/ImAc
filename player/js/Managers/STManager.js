@@ -84,6 +84,7 @@ STManager = function() {
 
             if(subtitles){
                 let w = vHeight * camera.aspect - ((1+safeFactor) * elementSelection.getObjectByName('emojitext').geometry.parameters.width/2);
+                let h = (vHeight - stConfig.height) * (1-safeFactor);
                 if(stConfig.indicator.localeCompare(indicators.ARROW) == 0){
                     w = w - elementSelection.getObjectByName('arrows').children[0].children[1].geometry.parameters.width;
                 }
@@ -92,7 +93,7 @@ STManager = function() {
                     canvas.getObjectByName('subtitles').position.x = pos.x;
                 }
 
-                if(pos.y > -(vHeight - stConfig.height)/2 && pos.y < (vHeight - stConfig.height)/2){
+                if(pos.y > -h/2 && pos.y < h/2){
                     canvas.getObjectByName('subtitles').position.y = pos.y;
                 }
             }

@@ -1030,6 +1030,7 @@ const settingsSignLanguagePosition = { title: 'Position', icon: './img/menu/sl_p
             default: function(){ return (slConfig.canvasPos.x == 1 && !localStorage.getItem("slPosition"))},
             function:  function(){ 
                 if(!settingsSignLanguagePosition.options[0].default()){
+                    localStorage.removeItem("slPosition");
                     _slMngr.setSignerPosition( 1, stConfig.canvasPos.y);
                     SettingsOptionCtrl.setChildColumnActiveOpt(settingsSignLanguagePosition.options[0].optId);
                 }
@@ -1039,6 +1040,7 @@ const settingsSignLanguagePosition = { title: 'Position', icon: './img/menu/sl_p
             default: function(){ return (slConfig.canvasPos.x == -1 && !localStorage.getItem("slPosition")) },
             function:  function(){ 
                 if(!settingsSignLanguagePosition.options[1].default()){
+                    localStorage.removeItem("slPosition");
                     _slMngr.setSignerPosition( -1, stConfig.canvasPos.y);
                     SettingsOptionCtrl.setChildColumnActiveOpt(settingsSignLanguagePosition.options[1].optId);
                 }

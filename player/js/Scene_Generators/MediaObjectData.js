@@ -402,7 +402,6 @@ THREE.MediaObjectData = function () {
                     stGroup.position.y = savedPosition.y;
                     stGroup.position.x = savedPosition.x;
                 } else {
-                    //stGroup.position.y = stConfig.canvasPos.y * ((vHeight/2) - stConfig.height);//(y - stConfig.canvasPos.y*scaleFactor) * (1-safeFactor);
                     stGroup.position.y = stConfig.canvasPos.y * (vHeight*(1-safeFactor) - textMesh.geometry.parameters.height/2)/2;   
                     stConfig.initialY = stGroup.position.y;
                     stGroup.position.x = 0;

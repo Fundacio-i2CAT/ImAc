@@ -133,29 +133,20 @@ SLManager = function() {
  */
     this.updateSignerPosition = function(){
         if (signer) {
-            let posX;
-            let posY;
+            let x;
+            let y;
             if (localStorage.getItem("slPosition")) {
                 let savedPosition = JSON.parse(localStorage.getItem("slPosition"));
-                posX = savedPosition.x;
-                posY = savedPosition.y;
+                x = savedPosition.x;
+                y = savedPosition.y;
             } else {
                 let safeFactor = 0.1; //10%            
-                posX = _isHMD ? 0.6 * (1.48*slConfig.area/2 - slConfig.size/2) *slConfig.canvasPos.x : (1.48*slConfig.area/2 - slConfig.size/2) *slConfig.canvasPos.x;
-                posY = slConfig.canvasPos.y * (vHeight*(1-safeFactor)-slConfig.size)/2;
-                //posY = _isHMD ? 0.6 * (0.82*slConfig.area/2 - slConfig.size/2) *slConfig.canvasPos.y : (0.82*slConfig.area/2 - slConfig.size/2) *slConfig.canvasPos.y;
+                x = _isHMD ? 0.6 * (1.48*slConfig.area/2 - slConfig.size/2) : (1.48*slConfig.area/2 - slConfig.size/2);
+                y =  _isHMD ? (vHeight*(1-safeFactor)-slConfig.size)/2 : (vHeight*(1-safeFactor)-slConfig.size)/2;
             }
-            let posZ = 0;
 
-            signer.position.x = posX;
-            signer.position.y = posY;
-
-            _slMngr.setSignerPosition(posX, posY);
-
-            if (subtitleSLMesh) {
-                subController.setSLtextListMemory([]);
-                //removeSLSubtitle();
-            }
+            signer.position.x = slConfig.canvasPos.x * x;
+            signer.position.y = stConfig.canvasPos.y * y;
         }
     };
 
@@ -211,6 +202,7 @@ SLManager = function() {
             slConfig.canvasPos.y = -1;
         }
         updateST4SLPosition();
+        _slMngr.updateSignerPosition();
     };
 
 /**

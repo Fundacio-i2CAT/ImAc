@@ -70,8 +70,7 @@ THREE.MediaObjectData = function () {
         } else {
             let safeFactor = 0.1; //10%
             let x = _isHMD ? 0.6 * ( 1.48*slConfig.area/2 - slConfig.size/2 ) *slConfig.canvasPos.x : ( 1.48*slConfig.area/2 - slConfig.size/2 ) *slConfig.canvasPos.x;
-            let y = slConfig.canvasPos.y * (vHeight*(1-safeFactor)-slConfig.size)/2;
-            //let y = _isHMD ? 0.6 * ( 0.82*slConfig.area/2 - slConfig.size/2) *slConfig.canvasPos.y : ( 0.82*slConfig.area/2 - slConfig.size/2 ) *slConfig.canvasPos.y;
+            let y = slConfig.canvasPos.y * (vHeight*(1-safeFactor) - slConfig.size)/2;
             signer.position.set(x, y, 0);
         }
 
@@ -326,8 +325,8 @@ THREE.MediaObjectData = function () {
         var mesh = new THREE.Mesh( new THREE.PlaneGeometry( canvas.width/6, ch*t.length/6 ), material );
 
         let esaySizeAjust = stConfig.easy2read ? 1.25 : 1;
-            scaleFactor = (stConfig.area/130) * stConfig.size * esaySizeAjust;
-            mesh.scale.set( scaleFactor, scaleFactor, 1 );
+        scaleFactor = (stConfig.area/130) * stConfig.size * esaySizeAjust;
+        mesh.scale.set( scaleFactor, scaleFactor, 1 );
 
         mesh.name = 'emojitext';
         mesh.renderOrder = 3;
@@ -399,11 +398,11 @@ THREE.MediaObjectData = function () {
             scaleFactor = (stConfig.area/130) * stConfig.size * esaySizeAjust;
             if(!stConfig.fixedSpeaker && !stConfig.fixedScene){
                 if(localStorage.getItem("stPosition")) {
-                    let savedPosition = JSON.parse(localStorage.getItem("stPosition"))
+                    let savedPosition = JSON.parse(localStorage.getItem("stPosition"));
                     stGroup.position.y = savedPosition.y;
                     stGroup.position.x = savedPosition.x;
                 } else {
-                    stGroup.position.y = stConfig.canvasPos.y * (vHeight*(1-safeFactor) - textMesh.geometry.parameters.height/2)/2;   
+                    stGroup.position.y = stConfig.canvasPos.y * (vHeight*(1-safeFactor) - scaleFactor*(ch*t.length/6))/2;
                     stConfig.initialY = stGroup.position.y;
 
                     let offset = _stMngr.checkOverlap();

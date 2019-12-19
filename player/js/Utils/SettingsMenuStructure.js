@@ -975,7 +975,6 @@ const settingsSignerLanguage = { title: 'Language', icon: './img/menu/language.p
                     SettingsOptionCtrl.setChildColumnActiveOpt(settingsSignerLanguage.options[1].optId);
                     mainMenuCtrl.updateAccessOptionsView();
                 }
-
             } 
         }, 
         { optId: 'signerLanguageGerButton', text: 'Deutsch', 

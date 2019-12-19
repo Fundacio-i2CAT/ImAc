@@ -353,6 +353,7 @@ function resetConfig(){
     localStorage.removeItem("slPosition");
     localStorage.removeItem("stPosition");
 
+    _stMngr.setPosition(new THREE.Vector2(0, -1), false, false);
     _slMngr.updateSignerPosition(); //Needs to be changed
     _rdr.updateRadarPosition();
 }

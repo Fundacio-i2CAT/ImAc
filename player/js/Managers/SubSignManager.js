@@ -180,7 +180,7 @@ SubSignManager = function() {
 	  		_stMngr.checkSubtitleIdicator(position);
 	  	}
 	    if(slConfig.isEnabled){
-	    	_slMngr.checkSignIdicator(position);		
+	    	_slMngr.checkSignIdicator(position);
 	    }
 	}
 	

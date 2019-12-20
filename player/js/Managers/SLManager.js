@@ -23,7 +23,7 @@ SLManager = function() {
             language: 'en',
             area: 60,
             size: 20,
-            autoHide: true,
+            autoHide: false,
             availableLang: []
         };
 

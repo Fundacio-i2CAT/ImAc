@@ -353,9 +353,10 @@ function resetConfig(){
     localStorage.removeItem("slPosition");
     localStorage.removeItem("stPosition");
 
-    _stMngr.setPosition(new THREE.Vector2(0, -1), false, false);
     _slMngr.updateSignerPosition(); //Needs to be changed
     _rdr.updateRadarPosition();
+    _stMngr.setPosition(new THREE.Vector2(0, -1), false, false);
+
 }
 // Converts from degrees to radians.
 Math.radians = function(degrees) {

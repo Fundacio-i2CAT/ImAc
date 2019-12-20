@@ -405,7 +405,7 @@ THREE.MediaObjectData = function () {
                     stGroup.position.y = stConfig.canvasPos.y * (vHeight*(1-safeFactor) - scaleFactor*(ch*t.length/6))/2;
                     stConfig.initialY = stGroup.position.y;
 
-                    let offset = _stMngr.checkOverlap();
+                    let offset = _stMngr.checkOverlap(scaleFactor);
                     stGroup.position.x = 0 + offset;
                 }
             } else if(stConfig.fixedScene){

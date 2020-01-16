@@ -102,6 +102,8 @@ MenuDictionary = function() {
         safearea:        { ca: 'Area Segura'       , de: 'Darstellungsbereich', en: 'Safe Area'        , es: 'Area Segura'       },
     //                   ||                        ||                        ||                        ||                        ||
         save:            { ca: 'Guardar'           , de: 'Speichern'         , en: 'Save'              , es: 'Guardar'           },
+    //                   ||                        ||                        ||                        ||                        ||
+        scene:           { ca: 'Escena'            , de: 'UT alle 120°'      , en: 'Scene'             , es: 'Escena'            },
     //                   ||                        ||                        ||                        ||                        || 
         semitrans:       { ca: 'Semi-Trans'        , de: 'Kasten'            , en: 'Semi-Trans'        , es: 'Semi-Trans'        },
     //                   ||                        ||                        ||                        ||                        ||
@@ -112,6 +114,8 @@ MenuDictionary = function() {
         size:            { ca: 'Mida'              , de: 'Größe'             , en: 'Size'              , es: 'Tamaño'            },
     //                   ||                        ||                        ||                        ||                        ||
         small:           { ca: 'Petita'            , de: 'Klein'             , en: 'Small'             , es: 'Pequeño'           },
+    //                   ||                        ||                        ||                        ||                        ||
+        speaker:         { ca: 'Orador'           , de: 'UT am Sprecher'    , en: 'Speaker'           , es: 'Orador'           },
     //                   ||                        ||                        ||                        ||                        ||
         static:          { ca: 'Estàtic'            , de: 'Statisch'         , en: 'Static'            , es: 'Estático'          },
     //                   ||                        ||                        ||                        ||                        ||

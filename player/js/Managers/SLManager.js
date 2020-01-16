@@ -22,7 +22,7 @@ SLManager = function() {
             scenePos: { lat: 0, lon: 0 },
             language: 'en',
             area: 60,
-            size: 20,
+            size: 18, //Default medium size;
             autoHide: false,
             availableLang: []
         };

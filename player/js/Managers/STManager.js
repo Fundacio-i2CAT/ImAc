@@ -24,7 +24,7 @@ STManager = function() {
             language: 'en',
             indicator:  indicators.NONE,
             area: 70,
-            size: 1,
+            size: 0.8, //Default medium size;
             easy2read: false,
             background: 0.75,
             availableLang: []

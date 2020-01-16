@@ -188,19 +188,23 @@ SubSignManager = function() {
 	function arrowInteraction(){
 		let slMesh = _slMngr.getSigner();
 		let stMesh = _stMngr.getSubtitles();
-		let width;
+		let width = stConfig.width;
 
 		//Depending on which access service is active the arrow group changes.
 		if (slConfig.isEnabled && slMesh) {
 			if (stConfig.isEnabled){
-				slMesh.getObjectByName('sl-subtitles').visible = false;
-				slMesh.getObjectByName('arrows').visible = false;
+				if(!imsc1doc_SL){
+					slMesh.getObjectByName('sl-subtitles').visible = false;	
+				} 
 				if (stMesh) {
 					subController.setArrows(stMesh.getObjectByName('arrows'));
-					width = stConfig.width;
+					width = stMesh.getObjectByName('emojitext').geometry.parameters.width;
 				} 
+				slMesh.getObjectByName('arrows').visible = false;
 			} else {
-				slMesh.getObjectByName('sl-subtitles').visible = true;
+				if(!imsc1doc_SL){
+					slMesh.getObjectByName('sl-subtitles').visible = true;	
+				} 
 				slMesh.getObjectByName('arrows').visible = true;
 				subController.setArrows(slMesh.getObjectByName('arrows'));
 				width = slMesh.getObjectByName('emojitext').geometry.parameters.width;
@@ -208,7 +212,7 @@ SubSignManager = function() {
 		} else if (stConfig.isEnabled) {
 			if (stMesh) {
 				subController.setArrows(stMesh.getObjectByName('arrows'));
-				width = stConfig.width;
+				width = stMesh.getObjectByName('emojitext').geometry.parameters.width;
 			} 
 		} else {
 			subController.setArrows(undefined);

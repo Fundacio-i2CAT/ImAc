@@ -91,7 +91,9 @@
 	  function gtag(){dataLayer.push(arguments);}
 	  gtag('js', new Date());
 
-	  gtag('config', 'UA-117913371-1');
+	  gtag('config', 'UA-117913371-1', {
+	  	cookie_expires: 604800 // 7 days
+	  });
 	</script>
 
 </head>

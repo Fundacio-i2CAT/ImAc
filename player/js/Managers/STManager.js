@@ -224,8 +224,7 @@ STManager = function() {
             //Check if not fixed options and initialY is initialized;
             //If initialY is not initialized ST will have to be created
             if(!stConfig.fixedSpeaker && !stConfig.fixedScene && pos.y != 0 && stConfig.initialY != 0){
-                let offset = _stMngr.checkOverlap(subtitles.scale.x);
-                subtitles.position.x = 0 + offset;
+                subtitles.position.x = _stMngr.checkOverlap(subtitles.scale.x);
                 
                 subtitles.position.y =  Math.abs(stConfig.initialY)*pos.y;
                 stConfig.fixedSpeaker = spFixed;

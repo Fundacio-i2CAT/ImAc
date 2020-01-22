@@ -3,7 +3,6 @@ SLManager = function() {
 
     let signer;
     let subtitleSLMesh;
-    const slMaxSize = 20;
 
 /**
  * Initializes the configuration.
@@ -22,7 +21,8 @@ SLManager = function() {
             scenePos: { lat: 0, lon: 0 },
             language: 'en',
             area: 60,
-            size: 18, //Default medium size;
+            size: 18, //Default medium size
+            maxSize: 20,
             autoHide: false,
             availableLang: []
         };
@@ -40,12 +40,14 @@ SLManager = function() {
         slMesh = _moData.getSignVideoMesh('signer');
         slMesh.visible = false;
 
-        let SLTimeout = setTimeout( function() { slMesh.visible = true; },700);
+        let SLTimeout = setTimeout( function() { slMesh.visible = true; }, 700);
         canvasMgr.addElement(slMesh);
 
         signer = canvas.getObjectByName('signer');
-        if (imsc1doc_SL && slConfig.st4sltext) {
-            _slMngr.createSLSubtitle(slConfig.st4sltext);
+        if (imsc1doc_SL) {
+            if (slConfig.st4sltext){
+                _slMngr.createSLSubtitle(slConfig.st4sltext);  
+            } 
         }
 
         if (!VideoController.isPausedById(0)) {
@@ -79,12 +81,13 @@ SLManager = function() {
             scene.getObjectByName('trad-option-menu').visible = false;
 
             if (signer) {
+                let st4slHeight = subtitleSLMesh.children[0].geometry.parameters.height;
                 let w = vHeight * camera.aspect;
-                if (pos.x > -(w- slConfig.size)/2 && pos.x < (w- slConfig.size)/2) {
+                if (pos.x > -(w - slConfig.size)/2 && pos.x < (w- slConfig.size)/2) {
                     canvas.getObjectByName('signer').position.x = pos.x;
                 }
 
-                if (pos.y > -(vHeight - slConfig.size)/2 && pos.y < (vHeight - slConfig.size)/2) {
+                if (pos.y > -(vHeight - (slConfig.size + st4slHeight))/2 && pos.y < (vHeight - slConfig.size)/2) {
                     canvas.getObjectByName('signer').position.y = pos.y;
                 }
             }
@@ -140,9 +143,13 @@ SLManager = function() {
                 x = savedPosition.x;
                 y = savedPosition.y;
             } else {
+                let st4slMesh = signer.getObjectByName('sl-subtitles').children[0].geometry.parameters.height;
                 let safeFactor = 0.1; //10%            
                 x = _isHMD ? 0.6 * (1.48*slConfig.area/2 - slConfig.size/2) : (1.48*slConfig.area/2 - slConfig.size/2);
                 y = _isHMD ? (vHeight*(1-safeFactor)-slConfig.size)/2 : (vHeight*(1-safeFactor)-slConfig.size)/2;
+                if(imsc1doc_SL && stConfig.canvasPos.y < 0){
+                    y -= st4slMesh * signer.getObjectByName('sl-subtitles').scale.x;
+                }
             }
 
             signer.position.x = slConfig.canvasPos.x * x;
@@ -160,10 +167,18 @@ SLManager = function() {
  * @param      {<type>}  textList  The text list
  */
     this.createSLSubtitle = function(textList){
-        _slMngr.removeSLSubtitle();
+        if( imsc1doc_SL ){
+            _slMngr.removeSLSubtitle(); 
+
+        } 
         slConfig.st4sltext = textList;
         subtitleSLMesh = _moData.getSLSubtitleMesh(textList);
         canvas.getObjectByName('signer').add(subtitleSLMesh);
+        updateST4SLPosition();
+
+       if(!localStorage.getItem("slPosition")){
+           _slMngr.updateSignerPosition();
+       } 
     };
 
 //************************************************************************************
@@ -215,11 +230,15 @@ SLManager = function() {
  * @param      {number}  size    The size
  */
     this.setSignerSize = function(size){
-        slConfig.size = size;
+        let scaleFactor = size/slConfig.maxSize;
         if (scene.getObjectByName('signer')) {
-            scene.getObjectByName('sl-video').scale.set(slConfig.size/slMaxSize, slConfig.size/slMaxSize, 1);
+            scene.getObjectByName('sl-video').scale.set(scaleFactor, scaleFactor, 1);
+            slConfig.size = size;
+            if(scene.getObjectByName('sl-subtitles')){
+                updateST4SLPosition();
+            }
         }
-        updateST4SLPosition();
+        _slMngr.updateSignerPosition();
     };
 
 /**
@@ -395,7 +414,7 @@ SLManager = function() {
        } else {
            element.position.y = 0;
        }
-       element.scale.y = newScale * (slConfig.size+1)/slMaxSize;
-       element.scale.x = (slConfig.size+1)/slMaxSize;
+       element.scale.y = newScale * (slConfig.size+1)/slConfig.maxSize;
+       element.scale.x = (slConfig.size+1)/slConfig.maxSize;
    };
 };

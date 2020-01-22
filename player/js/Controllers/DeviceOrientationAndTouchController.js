@@ -177,7 +177,9 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
             		stConfig.canvasPos = new THREE.Vector2(elementSelection.position.x, elementSelection.position.y);
 					if(actionPausedVideo) mainMenuCtrl.playAllFunc();
 
-					_slMngr.updateSignerPosition();
+					if (!localStorage.getItem("slPosition")) { 
+						_slMngr.updateSignerPosition();
+					}
 					break;
 			}
 			menuMgr.checkMenuStateVisibility();

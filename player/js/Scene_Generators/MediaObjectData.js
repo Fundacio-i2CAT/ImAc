@@ -74,12 +74,15 @@ THREE.MediaObjectData = function () {
             signer.position.set(x, y, 0);
         }
 
-        const geometry = new THREE.PlaneGeometry( slConfig.size, slConfig.size );
+        const scaleFactor = slConfig.size/slConfig.maxSize;
+        const geometry = new THREE.PlaneGeometry( slConfig.maxSize, slConfig.maxSize );
         let video = getVideoMesh( geometry, slConfig.url, name, 1 );
         video.name = 'sl-video';
+        video.scale.set(scaleFactor, scaleFactor, 1);
 
 
-        let signerColorBorderGeom = new THREE.PlaneGeometry( slConfig.size, slConfig.size, 32 );
+
+        let signerColorBorderGeom = new THREE.PlaneGeometry( slConfig.maxSize, slConfig.maxSize, 32 );
         let signerColorBorderMat = new THREE.MeshBasicMaterial( {color: 0xffff00, side: THREE.DoubleSide} );
         let signColorBorder = new THREE.Mesh( signerColorBorderGeom, signerColorBorderMat );
     
@@ -93,8 +96,7 @@ THREE.MediaObjectData = function () {
 
         signColorBorder.name = 'sl-colorFrame';
         signColorBorder.visible = false;
-
-        if( !imsc1doc_SL ){
+        if( !imsc1doc_SL ){        
             let textList = [{
                   text: "",
                   color: "rgb(255,255,255)",
@@ -386,9 +388,10 @@ THREE.MediaObjectData = function () {
         
         let arrows = getSubtitlesArrowMesh(6.5, t.length, t[0].color, t[0].backgroundColor, (!imsc1doc_SL && !stConfig.isEnabled) ? 0 : opacity);
 
-        if(isSL){
+        if(isSL && !imsc1doc_SL){
             scaleFactor = (slConfig.size/textMesh.geometry.parameters.width);
-            stGroup.position.y = -(slConfig.size + textMesh.geometry.parameters.height*scaleFactor)/2;    
+            stGroup.position.y = -(slConfig.size + textMesh.geometry.parameters.height*scaleFactor)/2;
+            stGroup.position.x = 0;
         } else {
             let latitud = stConfig.canvasPos.y * (30 * stConfig.area/100);
             let posY = _isHMD && !stConfig.fixedSpeaker ? 80 * Math.sin( Math.radians( latitud ) ) : 135 * Math.sin( Math.radians( latitud ) );

@@ -72,14 +72,18 @@ THREE.MediaObjectData = function () {
             let x = _isHMD ? 0.6 * ( 1.48*slConfig.area/2 - slConfig.size/2 ) *slConfig.canvasPos.x : ( 1.48*slConfig.area/2 - slConfig.size/2 ) *slConfig.canvasPos.x;
             let y = slConfig.canvasPos.y * (vHeight*(1-safeFactor) - slConfig.size)/2;
             signer.position.set(x, y, 0);
+            slConfig.initPos = new THREE.Vector2(x, y);
         }
 
-        const geometry = new THREE.PlaneGeometry( slConfig.size, slConfig.size );
+        const scaleFactor = slConfig.size/slConfig.maxSize;
+        const geometry = new THREE.PlaneGeometry( slConfig.maxSize, slConfig.maxSize );
         let video = getVideoMesh( geometry, slConfig.url, name, 1 );
         video.name = 'sl-video';
+        video.scale.set(scaleFactor, scaleFactor, 1);
 
 
-        let signerColorBorderGeom = new THREE.PlaneGeometry( slConfig.size, slConfig.size, 32 );
+
+        let signerColorBorderGeom = new THREE.PlaneGeometry( slConfig.maxSize, slConfig.maxSize, 32 );
         let signerColorBorderMat = new THREE.MeshBasicMaterial( {color: 0xffff00, side: THREE.DoubleSide} );
         let signColorBorder = new THREE.Mesh( signerColorBorderGeom, signerColorBorderMat );
     
@@ -93,8 +97,7 @@ THREE.MediaObjectData = function () {
 
         signColorBorder.name = 'sl-colorFrame';
         signColorBorder.visible = false;
-
-        if( !imsc1doc_SL ){
+        if( !imsc1doc_SL ){        
             let textList = [{
                   text: "",
                   color: "rgb(255,255,255)",
@@ -386,9 +389,10 @@ THREE.MediaObjectData = function () {
         
         let arrows = getSubtitlesArrowMesh(6.5, t.length, t[0].color, t[0].backgroundColor, (!imsc1doc_SL && !stConfig.isEnabled) ? 0 : opacity);
 
-        if(isSL){
+        if(isSL && !imsc1doc_SL){
             scaleFactor = (slConfig.size/textMesh.geometry.parameters.width);
-            stGroup.position.y = -(slConfig.size + textMesh.geometry.parameters.height*scaleFactor)/2;    
+            stGroup.position.y = -(slConfig.size + textMesh.geometry.parameters.height*scaleFactor)/2;
+            stGroup.position.x = 0;
         } else {
             let latitud = stConfig.canvasPos.y * (30 * stConfig.area/100);
             let posY = _isHMD && !stConfig.fixedSpeaker ? 80 * Math.sin( Math.radians( latitud ) ) : 135 * Math.sin( Math.radians( latitud ) );
@@ -403,10 +407,8 @@ THREE.MediaObjectData = function () {
                     stGroup.position.x = savedPosition.x;
                 } else {
                     stGroup.position.y = stConfig.canvasPos.y * (vHeight*(1-safeFactor) - scaleFactor*(ch*t.length/6))/2;
-                    stConfig.initialY = stGroup.position.y;
-
-                    let offset = _stMngr.checkOverlap(scaleFactor);
-                    stGroup.position.x = 0 + offset;
+                    stGroup.position.x = 0 + _stMngr.checkOverlap(scaleFactor);
+                    stConfig.initPos = new THREE.Vector2(0, stGroup.position.y);
                 }
             } else if(stConfig.fixedScene){
                 textMesh.position.y = -20;

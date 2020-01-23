@@ -13,12 +13,12 @@ STManager = function() {
     this.initConfig = function(conf){
 
         let config = {
-            initialY: 0,
             width: 0,
             height: 0,
             fixedSpeaker: false,
             fixedScene: false,
             isEnabled: false,
+            initPos: new THREE.Vector2(0, 0),
             canvasPos: new THREE.Vector2(0, -1),
             scenePos: { lat: 0, lon: 0 },
             language: 'en',
@@ -176,11 +176,7 @@ STManager = function() {
                     _rdr.updateRadarPosition();
                     break;
             }
-
-            if(stConfig.isEnabled || slConfig.isEnabled){
-                textListMemory = [];
-                //subController.updateISD( VideoController.getMediaTime() );
-            }
+            if (slConfig.isEnabled) _slMngr.updateSignerPosition();
         }
     };
 
@@ -190,6 +186,7 @@ STManager = function() {
             let esaySizeAjust = stConfig.easy2read ? 1.25 : 1;
             scaleFactor = (stConfig.area/130) * stConfig.size * esaySizeAjust;
             subtitles.scale.set( scaleFactor, scaleFactor, 1 );
+            subtitles.position.y = slConfig.canvasPos.y * (vHeight*(1-0.1) - stConfig.size)/2;
         }
     };
 
@@ -221,13 +218,12 @@ STManager = function() {
             if(localStorage.getItem("stPosition")){
                 localStorage.removeItem("stPosition");
             }
-            //Check if not fixed options and initialY is initialized;
-            //If initialY is not initialized ST will have to be created
-            if(!stConfig.fixedSpeaker && !stConfig.fixedScene && pos.y != 0 && stConfig.initialY != 0){
-                let offset = _stMngr.checkOverlap(subtitles.scale.x);
-                subtitles.position.x = 0 + offset;
+            //Check if not fixed options and stConfig.initPos.y is initialized;
+            //If stConfig.initPos.y is not initialized ST will have to be created
+            if(!stConfig.fixedSpeaker && !stConfig.fixedScene && pos.y != 0 && stConfig.initPos.y != 0){
+                subtitles.position.x = _stMngr.checkOverlap(subtitles.scale.x);
                 
-                subtitles.position.y =  Math.abs(stConfig.initialY)*pos.y;
+                subtitles.position.y =  Math.abs(stConfig.initPos.y)*pos.y;
                 stConfig.fixedSpeaker = spFixed;
                 stConfig.fixedScene = scFixed;
             } else{

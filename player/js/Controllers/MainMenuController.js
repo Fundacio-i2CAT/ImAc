@@ -245,7 +245,7 @@ function MainMenuController() {
                 menuMgr.AddInteractionIfVisible(viewStructure);
                 //If subtitles are disabled signer goes back to bottom position.
                 if (!localStorage.getItem("slPosition")) {
-                    _slMngr.setSignerPosition(slConfig.canvasPos.x, data.isSTenabled ? stConfig.canvasPos.y : -1);
+                    _slMngr.setPosition(slConfig.canvasPos.x, data.isSTenabled ? stConfig.canvasPos.y : -1);
                 }
                 
             });

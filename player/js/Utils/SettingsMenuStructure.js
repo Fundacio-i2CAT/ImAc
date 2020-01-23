@@ -798,8 +798,8 @@ const settingsSubtitlesPosition = { title: 'Position', icon: './img/menu/st_posi
                 if(!settingsSubtitlesPosition.options[0].default()){
                     _stMngr.setPosition(new THREE.Vector2(0, 1), false, false);
                     SettingsOptionCtrl.setChildColumnActiveOpt(settingsSubtitlesPosition.options[0].optId);
-                    if( stConfig.isEnabled ){
-                        _slMngr.setSignerPosition( slConfig.canvasPos.x, 1 );
+                    if( stConfig.isEnabled && !localStorage.getItem("slPosition")){
+                        _slMngr.setPosition( slConfig.canvasPos.x, 1 );
                     } 
                 }
             } 
@@ -810,8 +810,8 @@ const settingsSubtitlesPosition = { title: 'Position', icon: './img/menu/st_posi
                 if(!settingsSubtitlesPosition.options[1].default()){
                     _stMngr.setPosition(new THREE.Vector2(0, -1), false, false);
                     SettingsOptionCtrl.setChildColumnActiveOpt(settingsSubtitlesPosition.options[1].optId);
-                    if( stConfig.isEnabled ) {
-                        _slMngr.setSignerPosition( slConfig.canvasPos.x, -1 ); 
+                    if( stConfig.isEnabled && !localStorage.getItem("slPosition")) {
+                        _slMngr.setPosition( slConfig.canvasPos.x, -1 ); 
                     }
                 }
             } 
@@ -1030,9 +1030,9 @@ const settingsSignLanguagePosition = { title: 'Position', icon: './img/menu/sl_p
             function:  function(){ 
                 if(!settingsSignLanguagePosition.options[0].default()){
                     localStorage.removeItem("slPosition");
-                    _slMngr.setSignerPosition( 1, stConfig.canvasPos.y);
+                    _slMngr.setPosition( 1, stConfig.canvasPos.y);
                     SettingsOptionCtrl.setChildColumnActiveOpt(settingsSignLanguagePosition.options[0].optId);
-                    if(stConfig.isEnabled){
+                    if(stConfig.isEnabled && !localStorage.getItem("stPosition")){
                         _stMngr.setPosition(stConfig.canvasPos, stConfig.fixedScene, stConfig.fixedSpeaker);
                     }
                 }
@@ -1043,9 +1043,9 @@ const settingsSignLanguagePosition = { title: 'Position', icon: './img/menu/sl_p
             function:  function(){ 
                 if(!settingsSignLanguagePosition.options[1].default()){
                     localStorage.removeItem("slPosition");
-                    _slMngr.setSignerPosition( -1, stConfig.canvasPos.y);
+                    _slMngr.setPosition( -1, stConfig.canvasPos.y);
                     SettingsOptionCtrl.setChildColumnActiveOpt(settingsSignLanguagePosition.options[1].optId);
-                    if(stConfig.isEnabled){
+                    if(stConfig.isEnabled && !localStorage.getItem("stPosition")){
                         _stMngr.setPosition(stConfig.canvasPos, stConfig.fixedScene, stConfig.fixedSpeaker);
                     }
                 }

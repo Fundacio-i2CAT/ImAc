@@ -72,6 +72,7 @@ THREE.MediaObjectData = function () {
             let x = _isHMD ? 0.6 * ( 1.48*slConfig.area/2 - slConfig.size/2 ) *slConfig.canvasPos.x : ( 1.48*slConfig.area/2 - slConfig.size/2 ) *slConfig.canvasPos.x;
             let y = slConfig.canvasPos.y * (vHeight*(1-safeFactor) - slConfig.size)/2;
             signer.position.set(x, y, 0);
+            slConfig.initPos = new THREE.Vector2(x, y);
         }
 
         const scaleFactor = slConfig.size/slConfig.maxSize;
@@ -406,10 +407,8 @@ THREE.MediaObjectData = function () {
                     stGroup.position.x = savedPosition.x;
                 } else {
                     stGroup.position.y = stConfig.canvasPos.y * (vHeight*(1-safeFactor) - scaleFactor*(ch*t.length/6))/2;
-                    stConfig.initialY = stGroup.position.y;
-
-                    let offset = _stMngr.checkOverlap(scaleFactor);
-                    stGroup.position.x = 0 + offset;
+                    stGroup.position.x = 0 + _stMngr.checkOverlap(scaleFactor);
+                    stConfig.initPos = new THREE.Vector2(0, stGroup.position.y);
                 }
             } else if(stConfig.fixedScene){
                 textMesh.position.y = -20;

@@ -17,6 +17,7 @@ SLManager = function() {
             st4sltext: '',
             isMoved: false,
             isEnabled: false,
+            initPos: new THREE.Vector2(0, 0),
             canvasPos: new THREE.Vector2(1, -1),
             scenePos: { lat: 0, lon: 0 },
             language: 'en',
@@ -81,7 +82,7 @@ SLManager = function() {
             scene.getObjectByName('trad-option-menu').visible = false;
 
             if (signer) {
-                let st4slHeight = subtitleSLMesh.children[0].geometry.parameters.height;
+                let st4slHeight = (subtitleSLMesh) ? subtitleSLMesh.children[0].geometry.parameters.height : 0;
                 let w = vHeight * camera.aspect;
                 if (pos.x > -(w - slConfig.size)/2 && pos.x < (w- slConfig.size)/2) {
                     canvas.getObjectByName('signer').position.x = pos.x;
@@ -144,20 +145,19 @@ SLManager = function() {
                 y = savedPosition.y;
             } else {
                 let st4slMesh = signer.getObjectByName('sl-subtitles').children[0].geometry.parameters.height;
-                let safeFactor = 0.1; //10%            
-                x = _isHMD ? 0.6 * (1.48*slConfig.area/2 - slConfig.size/2) : (1.48*slConfig.area/2 - slConfig.size/2);
-                y = _isHMD ? (vHeight*(1-safeFactor)-slConfig.size)/2 : (vHeight*(1-safeFactor)-slConfig.size)/2;
-                if(imsc1doc_SL && stConfig.canvasPos.y < 0){
-                    y -= st4slMesh * signer.getObjectByName('sl-subtitles').scale.x;
+                let safeFactor = 0.1; //10%       
+
+                if (stConfig.initPos.y < 0 && signer.getObjectByName('sl-subtitles').visible){
+                    y = slConfig.initPos.y + st4slMesh * signer.getObjectByName('sl-subtitles').scale.x;
+                } else {
+                    y = (vHeight*(1-safeFactor) - slConfig.size)/2;
                 }
+
+                x = slConfig.initPos.x;
             }
 
             signer.position.x = slConfig.canvasPos.x * x;
-            if (localStorage.getItem("stPosition")) {
-                signer.position.y = -1 * y;
-            } else {
-                signer.position.y = stConfig.canvasPos.y * y;
-            }
+            signer.position.y = slConfig.canvasPos.y * Math.abs(y);
         }
     };
 
@@ -213,7 +213,7 @@ SLManager = function() {
  * @param      {<type>}  x       The new value
  * @param      {<type>}  y       The new value
  */
-    this.setSignerPosition = function(x, y){
+    this.setPosition = function(x, y){
         slConfig.canvasPos.x = x;
         if (stConfig.isEnabled) {
             slConfig.canvasPos.y = y;

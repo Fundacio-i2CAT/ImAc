@@ -353,11 +353,21 @@ function resetConfig(){
     localStorage.removeItem("slPosition");
     localStorage.removeItem("stPosition");
 
-    //_slMngr.updateSignerPosition(); //Needs to be changed
-    _rdr.updateRadarPosition();
-    _stMngr.setPosition(new THREE.Vector2(0, -1), false, false);
-    _slMngr.setPosition(slConfig.canvasPos.x, -1);
+    let signer = _slMngr.getSigner();
+    let subtitles = _stMngr.getSubtitles();
 
+    _rdr.updateRadarPosition();
+    if(signer){
+        slConfig.canvasPos = new THREE.Vector2(1, -1);
+        signer.position.set(slConfig.initPos.x, slConfig.initPos.y, signer.position.z);  
+        _slMngr.updatePositionY();
+    } 
+
+    if(subtitles){
+        stConfig.canvasPos = new THREE.Vector2(0, -1);
+        subtitles.position.set(stConfig.initPos.x, stConfig.initPos.y, subtitles.position.z);  
+    } 
+    //_stMngr.setPosition(new THREE.Vector2(0, -1), false, false);
 }
 // Converts from degrees to radians.
 Math.radians = function(degrees) {

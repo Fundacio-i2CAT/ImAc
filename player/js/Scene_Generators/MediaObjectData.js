@@ -61,27 +61,32 @@ THREE.MediaObjectData = function () {
     };
 
     this.getSignVideoMesh = function(name) {
+        const scaleFactor = slConfig.size/slConfig.maxSize;
+        //const scaleFactor = (slConfig.size/textMesh.geometry.parameters.width);
+        
         let signer =  new THREE.Group();
         signer.name = name;
+
+        let safeFactor = 0.1; //10%
+        let x = _isHMD ? 0.6 * ( 1.48*slConfig.area/2 - slConfig.size/2 ) *slConfig.canvasPos.x : ( 1.48*slConfig.area/2 - slConfig.size/2 ) *slConfig.canvasPos.x;
+        let y = slConfig.canvasPos.y * (vHeight*(1-safeFactor) - slConfig.size)/2;
+
+        if(!slConfig.initPos){
+            slConfig.initPos = new THREE.Vector2(x, y);
+        }
 
         if(localStorage.getItem("slPosition")){
             let savedPosition = JSON.parse(localStorage.getItem("slPosition"))
             signer.position.set( savedPosition.x, savedPosition.y, 0)
         } else {
-            let safeFactor = 0.1; //10%
-            let x = _isHMD ? 0.6 * ( 1.48*slConfig.area/2 - slConfig.size/2 ) *slConfig.canvasPos.x : ( 1.48*slConfig.area/2 - slConfig.size/2 ) *slConfig.canvasPos.x;
-            let y = slConfig.canvasPos.y * (vHeight*(1-safeFactor) - slConfig.size)/2;
             signer.position.set(x, y, 0);
-            slConfig.initPos = new THREE.Vector2(x, y);
+            //This will save the very 1st position.
         }
 
-        const scaleFactor = slConfig.size/slConfig.maxSize;
         const geometry = new THREE.PlaneGeometry( slConfig.maxSize, slConfig.maxSize );
         let video = getVideoMesh( geometry, slConfig.url, name, 1 );
         video.name = 'sl-video';
         video.scale.set(scaleFactor, scaleFactor, 1);
-
-
 
         let signerColorBorderGeom = new THREE.PlaneGeometry( slConfig.maxSize, slConfig.maxSize, 32 );
         let signerColorBorderMat = new THREE.MeshBasicMaterial( {color: 0xffff00, side: THREE.DoubleSide} );
@@ -401,14 +406,20 @@ THREE.MediaObjectData = function () {
 
             scaleFactor = (stConfig.area/130) * stConfig.size * esaySizeAjust;
             if(!stConfig.fixedSpeaker && !stConfig.fixedScene){
+                let initY = stConfig.canvasPos.y * (vHeight*(1-safeFactor) - scaleFactor*(ch*t.length/6))/2;
+                //This will save the very 1st position.
+                if(!stConfig.initPos){
+                    stConfig.initPos = new THREE.Vector2(0, initY);
+                }
+
                 if(localStorage.getItem("stPosition")) {
                     let savedPosition = JSON.parse(localStorage.getItem("stPosition"));
                     stGroup.position.y = savedPosition.y;
                     stGroup.position.x = savedPosition.x;
                 } else {
-                    stGroup.position.y = stConfig.canvasPos.y * (vHeight*(1-safeFactor) - scaleFactor*(ch*t.length/6))/2;
+                    stGroup.position.y = initY;
                     stGroup.position.x = 0 + _stMngr.checkOverlap(scaleFactor);
-                    stConfig.initPos = new THREE.Vector2(0, stGroup.position.y);
+                    
                 }
             } else if(stConfig.fixedScene){
                 textMesh.position.y = -20;

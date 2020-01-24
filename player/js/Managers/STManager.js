@@ -18,7 +18,7 @@ STManager = function() {
             fixedSpeaker: false,
             fixedScene: false,
             isEnabled: false,
-            initPos: new THREE.Vector2(0, 0),
+            initPos: null,
             canvasPos: new THREE.Vector2(0, -1),
             scenePos: { lat: 0, lon: 0 },
             language: 'en',
@@ -176,7 +176,15 @@ STManager = function() {
                     _rdr.updateRadarPosition();
                     break;
             }
-            if (slConfig.isEnabled) _slMngr.updateSignerPosition();
+            _slMngr.updatePositionY();
+
+            if (slConfig.isEnabled){
+                if(stConfig.isEnabled){
+                    if (subtitles) {
+                        subtitles.position.x = _stMngr.checkOverlap(subtitles.scale.x);
+                    }
+                }
+            } 
         }
     };
 
@@ -223,7 +231,7 @@ STManager = function() {
             if(!stConfig.fixedSpeaker && !stConfig.fixedScene && pos.y != 0 && stConfig.initPos.y != 0){
                 subtitles.position.x = _stMngr.checkOverlap(subtitles.scale.x);
                 
-                subtitles.position.y =  Math.abs(stConfig.initPos.y)*pos.y;
+                subtitles.position.y =  Math.abs(stConfig.initPos.y)*pos.y; 
                 stConfig.fixedSpeaker = spFixed;
                 stConfig.fixedScene = scFixed;
             } else{

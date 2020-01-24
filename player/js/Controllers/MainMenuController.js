@@ -244,8 +244,9 @@ function MainMenuController() {
                 // Add interactivity to visible elements and remove interactivity to none visible elements.
                 menuMgr.AddInteractionIfVisible(viewStructure);
                 //If subtitles are disabled signer goes back to bottom position.
-                if (!localStorage.getItem("slPosition")) {
-                    _slMngr.setPosition(slConfig.canvasPos.x, data.isSTenabled ? stConfig.canvasPos.y : -1);
+                if (!localStorage.getItem("slPosition") && _slMngr.getSigner()) {
+                    //_slMngr.setPosition(slConfig.canvasPos.x, data.isSTenabled ? stConfig.canvasPos.y : -1);
+                    _slMngr.setPosition(slConfig.canvasPos.x*Math.abs(slConfig.initPos.x), Math.abs(slConfig.initPos.y) * (data.isSTenabled ? stConfig.canvasPos.y : -1));
                 }
                 
             });

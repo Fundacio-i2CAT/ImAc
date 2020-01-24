@@ -799,7 +799,7 @@ const settingsSubtitlesPosition = { title: 'Position', icon: './img/menu/st_posi
                     _stMngr.setPosition(new THREE.Vector2(0, 1), false, false);
                     SettingsOptionCtrl.setChildColumnActiveOpt(settingsSubtitlesPosition.options[0].optId);
                     if( stConfig.isEnabled && !localStorage.getItem("slPosition")){
-                        _slMngr.setPosition( slConfig.canvasPos.x, 1 );
+                        _slMngr.setPosition( _slMngr.getSigner().position.x, -1 *_slMngr.getSigner().position.y );
                     } 
                 }
             } 
@@ -811,7 +811,7 @@ const settingsSubtitlesPosition = { title: 'Position', icon: './img/menu/st_posi
                     _stMngr.setPosition(new THREE.Vector2(0, -1), false, false);
                     SettingsOptionCtrl.setChildColumnActiveOpt(settingsSubtitlesPosition.options[1].optId);
                     if( stConfig.isEnabled && !localStorage.getItem("slPosition")) {
-                        _slMngr.setPosition( slConfig.canvasPos.x, -1 ); 
+                        _slMngr.setPosition( _slMngr.getSigner().position.x, -1 *_slMngr.getSigner().position.y ); 
                     }
                 }
             } 
@@ -1030,7 +1030,7 @@ const settingsSignLanguagePosition = { title: 'Position', icon: './img/menu/sl_p
             function:  function(){ 
                 if(!settingsSignLanguagePosition.options[0].default()){
                     localStorage.removeItem("slPosition");
-                    _slMngr.setPosition( 1, stConfig.canvasPos.y);
+                    _slMngr.setPosition( slConfig.initPos.x, stConfig.canvasPos.y*Math.abs(slConfig.initPos.y) );
                     SettingsOptionCtrl.setChildColumnActiveOpt(settingsSignLanguagePosition.options[0].optId);
                     if(stConfig.isEnabled && !localStorage.getItem("stPosition")){
                         _stMngr.setPosition(stConfig.canvasPos, stConfig.fixedScene, stConfig.fixedSpeaker);
@@ -1043,7 +1043,7 @@ const settingsSignLanguagePosition = { title: 'Position', icon: './img/menu/sl_p
             function:  function(){ 
                 if(!settingsSignLanguagePosition.options[1].default()){
                     localStorage.removeItem("slPosition");
-                    _slMngr.setPosition( -1, stConfig.canvasPos.y);
+                    _slMngr.setPosition( -1 * slConfig.initPos.x, stConfig.canvasPos.y*Math.abs(slConfig.initPos.y) );
                     SettingsOptionCtrl.setChildColumnActiveOpt(settingsSignLanguagePosition.options[1].optId);
                     if(stConfig.isEnabled && !localStorage.getItem("stPosition")){
                         _stMngr.setPosition(stConfig.canvasPos, stConfig.fixedScene, stConfig.fixedSpeaker);

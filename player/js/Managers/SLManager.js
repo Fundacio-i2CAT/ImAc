@@ -17,7 +17,7 @@ SLManager = function() {
             st4sltext: '',
             isMoved: false,
             isEnabled: false,
-            initPos: new THREE.Vector2(0, 0),
+            initPos: null,
             canvasPos: new THREE.Vector2(1, -1),
             scenePos: { lat: 0, lon: 0 },
             language: 'en',
@@ -132,34 +132,26 @@ SLManager = function() {
         }
     }
 
-/**
- * { function_description }
- */
-    this.updateSignerPosition = function(){
-        if (signer) {
-            let x;
+    this.updatePositionY = function(){
+        console.log('updatePositionY')
+        if (signer && !localStorage.getItem("slPosition")) {
             let y;
-            if (localStorage.getItem("slPosition")) {
-                let savedPosition = JSON.parse(localStorage.getItem("slPosition"));
-                x = savedPosition.x;
-                y = savedPosition.y;
-            } else {
-                let st4slMesh = signer.getObjectByName('sl-subtitles').children[0].geometry.parameters.height;
-                let safeFactor = 0.1; //10%       
-
-                if (stConfig.initPos.y < 0 && signer.getObjectByName('sl-subtitles').visible){
+            let safeFactor = 0.1; //10%       
+            if(imsc1doc_SL || (stConfig.indicator.localeCompare('arrow') === 0 && !stConfig.isEnabled)){ 
+                if (slConfig.canvasPos.y < 0 && slConfig.isEnabled){
+                    let st4slMesh = signer.getObjectByName('sl-subtitles').children[0].geometry.parameters.height;
                     y = slConfig.initPos.y + st4slMesh * signer.getObjectByName('sl-subtitles').scale.x;
                 } else {
                     y = (vHeight*(1-safeFactor) - slConfig.size)/2;
                 }
-
-                x = slConfig.initPos.x;
             }
-
-            signer.position.x = slConfig.canvasPos.x * x;
+             else{
+                //y = slConfig.initPos.y;
+                y = (vHeight*(1-safeFactor) - slConfig.size)/2;
+            }
             signer.position.y = slConfig.canvasPos.y * Math.abs(y);
         }
-    };
+    }
 
 /**
  * Creates a sl subtitle.
@@ -175,10 +167,7 @@ SLManager = function() {
         subtitleSLMesh = _moData.getSLSubtitleMesh(textList);
         canvas.getObjectByName('signer').add(subtitleSLMesh);
         updateST4SLPosition();
-
-       if(!localStorage.getItem("slPosition")){
-           _slMngr.updateSignerPosition();
-       } 
+       _slMngr.updatePositionY();
     };
 
 //************************************************************************************
@@ -214,14 +203,19 @@ SLManager = function() {
  * @param      {<type>}  y       The new value
  */
     this.setPosition = function(x, y){
-        slConfig.canvasPos.x = x;
+        if(signer){
+            signer.position.x = x;
+            signer.position.y = y;
+        }
+
+        slConfig.canvasPos.x = Math.sign(x);
         if (stConfig.isEnabled) {
-            slConfig.canvasPos.y = y;
+            slConfig.canvasPos.y = Math.sign(y);
         } else {
             slConfig.canvasPos.y = -1;
         }
-        updateST4SLPosition();
-        _slMngr.updateSignerPosition();
+        //updateST4SLPosition();
+        _slMngr.updatePositionY();
     };
 
 /**
@@ -237,8 +231,8 @@ SLManager = function() {
             if(scene.getObjectByName('sl-subtitles')){
                 updateST4SLPosition();
             }
+            signer.position.y = slConfig.canvasPos.y * (vHeight*(1-0.1) - slConfig.size)/2;
         }
-        _slMngr.updateSignerPosition();
     };
 
 /**

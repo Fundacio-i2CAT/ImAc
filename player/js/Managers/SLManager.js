@@ -133,7 +133,6 @@ SLManager = function() {
     }
 
     this.updatePositionY = function(){
-        console.log('updatePositionY')
         if (signer && !localStorage.getItem("slPosition")) {
             let y;
             let safeFactor = 0.1; //10%       

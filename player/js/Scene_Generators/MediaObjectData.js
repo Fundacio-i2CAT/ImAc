@@ -394,7 +394,7 @@ THREE.MediaObjectData = function () {
         
         let arrows = getSubtitlesArrowMesh(6.5, t.length, t[0].color, t[0].backgroundColor, (!imsc1doc_SL && !stConfig.isEnabled) ? 0 : opacity);
 
-        if(isSL && !imsc1doc_SL){
+        if (isSL){//&& !imsc1doc_SL){
             scaleFactor = (slConfig.size/textMesh.geometry.parameters.width);
             stGroup.position.y = -(slConfig.size + textMesh.geometry.parameters.height*scaleFactor)/2;
             stGroup.position.x = 0;

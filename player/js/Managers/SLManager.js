@@ -98,25 +98,11 @@ SLManager = function() {
 /**
  * { function_description }
  *
- * @param      {string}  pos     The position
- */
-    function changeSignPosition(pos) {
-        if (signer && ((pos == 'left' && signer.position.x > 0) || (pos == 'right' && signer.position.x < 0))) {
-            signer.position.x = signer.position.x * -1;
-        }
-    }
-
-/**
- * { function_description }
- *
  * @param      {string}  position  The position
  */
     this.checkSignIdicator = function(position){
         if (stConfig.indicator != 'none') {
-            if (position == 'center' && stConfig.indicator == 'move'){
-                position = slConfig.canvasPos.x == -1 ? 'left' : 'right';
-            }
-            stConfig.indicator != 'move' ? _stMngr.checkSubtitleIdicator( position ) : changeSignPosition( position );
+            _stMngr.checkSubtitleIdicator( position );
         }
     };
 
@@ -132,11 +118,14 @@ SLManager = function() {
         }
     }
 
+/**
+ * { function_description }
+ */
     this.updatePositionY = function(){
         if (signer && !localStorage.getItem("slPosition")) {
             let y;
             let safeFactor = 0.1; //10%       
-            if(imsc1doc_SL || (stConfig.indicator.localeCompare('arrow') === 0 && !stConfig.isEnabled)){ 
+            if (imsc1doc_SL || (stConfig.indicator.localeCompare('arrow') === 0 && !stConfig.isEnabled)){ 
                 if (slConfig.canvasPos.y < 0 && slConfig.isEnabled){
                     let st4slMesh = signer.getObjectByName('sl-subtitles').children[0].geometry.parameters.height;
                     y = slConfig.initPos.y + st4slMesh * signer.getObjectByName('sl-subtitles').scale.x;
@@ -145,7 +134,6 @@ SLManager = function() {
                 }
             }
              else{
-                //y = slConfig.initPos.y;
                 y = (vHeight*(1-safeFactor) - slConfig.size)/2;
             }
             signer.position.y = slConfig.canvasPos.y * Math.abs(y);
@@ -213,7 +201,6 @@ SLManager = function() {
         } else {
             slConfig.canvasPos.y = -1;
         }
-        //updateST4SLPosition();
         _slMngr.updatePositionY();
     };
 

@@ -4,8 +4,7 @@ STManager = function() {
     const indicators = {
         NONE: 'none',
         ARROW: 'arrow',
-        RADAR: 'radar',
-        MOVE: 'move'
+        RADAR: 'radar'
     };
 
     let subtitles;
@@ -371,17 +370,13 @@ STManager = function() {
 // Media Object Position Controller 
 //************************************************************************************
 
-    function changeSubtitleIndicator(pos){
-        let arw = subController.getArrows();
-        if(arw){
-            arw.getObjectByName("right").visible = (pos == 'right') ? true : false;
-            arw.getObjectByName("left").visible = (pos == 'left')? true : false;
-        }
-    }
-
     this.checkSubtitleIdicator = function(position){
-        if ( stConfig.indicator != indicators.NONE ) {
-            stConfig.indicator != indicators.MOVE ? changeSubtitleIndicator( position ) : subController.setTextListMemory( [] );
+        if (stConfig.indicator != indicators.NONE) {
+            let arw = subController.getArrows();
+            if(arw){
+                arw.getObjectByName("right").visible = (position == 'right') ? true : false;
+                arw.getObjectByName("left").visible = (position == 'left')? true : false;
+            }
         }
     };
 

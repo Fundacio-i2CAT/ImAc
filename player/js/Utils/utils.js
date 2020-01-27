@@ -117,7 +117,7 @@ function createVRButton_1(renderer)
 
         button.onclick = function() {
 
-            enterfullscreen();
+            //enterfullscreen();
 
             AplicationManager.disableVRButtons();
             VideoController.playAll();
@@ -143,7 +143,7 @@ function createVRButton_1(renderer)
 
     navigator.getVRDisplays().then( function ( displays ) 
     {
-        AplicationManager.setDisplays( displays );
+        //AplicationManager.setDisplays( displays );
         displays.length > 0 && !_isTV ? showEnterVR( displays[ 0 ] ) : createDelayedMenu();
     });
 

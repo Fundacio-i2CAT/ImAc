@@ -16,16 +16,6 @@ function AplicationManager()
 
     this.getRenderer = function() { return renderer };
 
-    // Used when autopositioning is activated
-    this.enableVR = function()
-    {
-    	renderer.vr.setDevice( _display[ 0 ] );
-    };
-
-    this.disableVR = function()
-    {
-    	renderer.vr.setDevice( null );
-    };
 
     this.disableVRButtons = function()
     {
@@ -43,7 +33,7 @@ function AplicationManager()
     	button_2 = button;
     };
 
-    this.getDisplays = function()
+    /*this.getDisplays = function()
     {
     	return _display;
     };
@@ -51,7 +41,7 @@ function AplicationManager()
     this.setDisplays = function(displays)
     {
     	_display = displays;
-    };
+    };*/
 
 	function activateLogger()
 	{
@@ -120,7 +110,7 @@ function AplicationManager()
 
         	navigator.getVRDisplays().then( function ( displays ) 
         	{
-				_display = displays;
+				//_display = displays;
 				renderer.vr.enabled = true;
 				activateLogger();
 				renderer.animate( render );

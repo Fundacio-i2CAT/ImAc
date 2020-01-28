@@ -19,7 +19,7 @@ MenuFunctionsManager = function() {
                         _iconf.stlanguage = lang;
                         _stMngr.setSubtitle( list_contents[ demoId ].subtitles[ ste2r ][ lang ], lang, 'st');
                     }else {
-                        _stMngr.disableSubtiles();
+                        _stMngr.switchSubtitles(false);
                     }
                     break;
 
@@ -28,7 +28,7 @@ MenuFunctionsManager = function() {
                         _iconf.sllanguage = lang;
                         _slMngr.setSignerContent( list_contents[ demoId ].signer[ 0 ][ lang ], lang );
                     }else {
-                        _slMngr.disableSigner();
+                        _slMngr.switchSigner(false);
                     } 
 
                     if ( list_contents[ demoId ].st4sl && list_contents[ demoId ].st4sl[ 0 ] && _slMngr.checkisSignAvailable( lang )) {

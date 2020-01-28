@@ -25,9 +25,6 @@
 		* interController
 	
 	FUNCTIONALITIES:
-		* enableSubtitles / disableSubtiles
-		* updateSubtitleByTime = function( time )    --> Update the subtiltes using a 'time' in secongs such as currentTime
-		* switchSubtitles = function( enable )       --> Enable or disable the subtitles using the boolean 'enable'
 		* switchSigner = function( enable )          --> Enable or disable the signer using the boolean 'enable'
 		* updateRadar = function()                   --> Update the radar orientation using the camera orientation
 
@@ -64,7 +61,7 @@ SubSignManager = function() {
 		    	}
 		    	checkSpeakerPosition( isd.imac );
 		  	} else if (textListMemory.length > 0) {
-		    	_stMngr.removeSubtitle();
+		    	_stMngr.remove();
 		    	_rdr.hideRadarIndicator();
 		  	}
 		}
@@ -75,12 +72,12 @@ SubSignManager = function() {
 		    	if (slConfig.isEnabled) {
     			  	if (isd.contents[0].contents.length > 0) { 
     			  		if (slConfig.autoHide) {
-    			  			_slMngr.swichtSL(true);	
+    			  			_slMngr.getSigner().visible = true;	
     			  		}
     			  		print3DText( isd.contents[0], 'sl' );
     			  	} else {
     			  		if (slConfig.autoHide) {
-    			  			_slMngr.swichtSL(false);
+    			  			_slMngr.getSigner().visible = false;
     			  		}
     			  	}
 		    	} 
@@ -143,7 +140,7 @@ SubSignManager = function() {
     			subController.setSpeakerColor(textList[0].color);
     			if (accessService.localeCompare('st') === 0) {
     				if (textListMemory.length > 0 && textList[0].text.localeCompare(textListMemory[0].text) != 0 || textList.length != textListMemory.length) {
-					    _stMngr.createSubtitle(textList);
+					    _stMngr.create(textList);
 			      		subController.setTextListMemory(textList);
 	    			}
 	    		}
@@ -157,7 +154,7 @@ SubSignManager = function() {
     		}
     	}else {
 	    	if(accessService.localeCompare('st') === 0) {
-	    		_stMngr.removeSubtitle();
+	    		_stMngr.remove();
 	    	}
 	    	if(accessService.localeCompare('sl') === 0) {
 	    		_slMngr.removeSLSubtitle();
@@ -180,7 +177,9 @@ SubSignManager = function() {
 	  		_stMngr.checkSubtitleIdicator(position);
 	  	}
 	    if(slConfig.isEnabled){
-	    	_slMngr.checkSignIdicator(position);
+	        if (stConfig.indicator != 'none') {
+		        _stMngr.checkSubtitleIdicator( position );
+		    }
 	    }
 	}
 	

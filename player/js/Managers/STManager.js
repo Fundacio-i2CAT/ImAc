@@ -1,14 +1,60 @@
-
+/**
+ * { function_description }
+ *
+ * @class      STManager (name)
+ * @return     {<type>}  { description_of_the_return_value }
+ * 
+ * - MAIN FUNCTION:
+ *         · initConfig             -->
+ *         · create                 -->
+ *         · remove                 -->
+ *         · move                   --> 
+ *         
+ * - PUBLIC FUNCTION:
+ *         · switchSubtitles        -->  Enable or disable the subtitles.
+ *         · removeOverlap          -->
+ *         
+ * - PRIVATE FUNCTION:
+ * 
+ * - PUBLIC GETTERS:
+ *         · getSubtitles           -->
+ *         · getSTAvailableLang     -->
+ *         
+ * - PUBLIC SETTERS: 
+ *         · setSubtitle            -->
+ *         · setIndicator           -->
+ *         · setSize                -->
+ *         · setBackground          -->
+ *         · setEasy2Read           -->
+ *         · setPosition            -->
+ *         · setScenePos            -->
+ *         · setLanguagesArray      -->
+ *         
+ * - PUBLIC CHECKERS:
+ *         · checkisSubAvailable    --> 
+ *         · checkSubEasyAvailable  --> 
+ *         · checkSubtitleIdicator  -->      
+ *         
+ */
 STManager = function() {
-    
+
+    let subtitles;    
     const indicators = {
         NONE: 'none',
         ARROW: 'arrow',
         RADAR: 'radar'
     };
 
-    let subtitles;
+/*****************************************************************************************************************************
+*                                           M A I N     F U N C T I O N S  
+******************************************************************************************************************************/    
 
+/**
+ * Initializes the configuration.
+ *
+ * @param      {<type>}  conf    The conf
+ * @return     {<type>}  { description_of_the_return_value }
+ */
     this.initConfig = function(conf){
 
         let config = {
@@ -47,9 +93,14 @@ STManager = function() {
         return config;
     };
 
-    this.createSubtitle = function(textList){
+/**
+ * { function_description }
+ *
+ * @param      {<type>}  textList  The text list
+ */
+    this.create = function(textList){
         let stMesh;
-        _stMngr.removeSubtitle();
+        _stMngr.remove();
         if ( !stConfig.fixedSpeaker && !stConfig.fixedScene ){
             stMesh = _moData.getSubtitleMesh(textList, "500 40px Roboto, Arial", false, 'subtitles');
             canvasMgr.addElement(stMesh);
@@ -61,7 +112,10 @@ STManager = function() {
         }
     };
 
-    this.removeSubtitle = function(){
+/**
+ * Removes the object.
+ */
+    this.remove = function(){
         if(subtitles){
             subController.setTextListMemory( [] );
             (stConfig.fixedScene || stConfig.fixedSpeaker) ? scene.remove( subtitles ) : canvasMgr.removeElement( subtitles );
@@ -97,10 +151,100 @@ STManager = function() {
         }
     };
 
+/*****************************************************************************************************************************
+*                                           P U B L I C    F U N C T I O N S  
+******************************************************************************************************************************/
 
-//************************************************************************************
-// Public Subtitle Setters
-//************************************************************************************
+/**
+ * { function_description }
+ *
+ * @param      {<type>}  enable  The enable
+ */
+    this.switchSubtitles = function(enable){
+        let signerMesh = _slMngr.getSigner();
+        if (!enable){
+            _stMngr.remove();
+            //_rdr.hideRadar();
+            if (stConfig.indicator.localeCompare(indicators.ARROW) === 0 && slConfig.isEnabled){
+                if(!imsc1doc_SL) {
+                    signerMesh.getObjectByName('sl-subtitles').visible = true;
+                }
+            }
+        } else {
+            if (stConfig.indicator.localeCompare(indicators.RADAR) === 0){
+                _rdr.showRadar();
+            }
+            if (slConfig.isEnabled){
+                if (!imsc1doc_SL){
+                    signerMesh.getObjectByName('sl-subtitles').visible = false;
+                }
+            }
+        }
+
+        stConfig.isEnabled = enable;
+    };
+
+/**
+ * Removes an overlap.
+ *
+ * @param      {number}  scaleFactor  The scale factor
+ * @return     {number}  { description_of_the_return_value }
+ */
+    this.removeOverlap = function(scaleFactor){
+        let signer = _slMngr.getSigner();
+        let offset = 0;
+
+        if(signer && !localStorage.getItem("slPosition")){
+            let totalDif = 0;
+            let arw = subController.getArrows();
+            let stDif = (arw) ? scaleFactor*(stConfig.width/2 + arw.children[0].children[1].geometry.parameters.width) : scaleFactor*stConfig.width/2;
+            let slDif = signer.position.x + (-slConfig.canvasPos.x)*slConfig.size/2 * (1+safeFactor);
+
+            totalDif = -slConfig.canvasPos.x * slDif + stDif;
+            if(totalDif>0 || Math.abs(totalDif) < 5){
+                offset = -slConfig.canvasPos.x * totalDif
+            }
+        }
+        return offset;
+    };
+
+/*****************************************************************************************************************************
+*                                           P R I V A T E    F U N C T I O N S  
+*****************************************************************************************************************************/
+
+
+/*****************************************************************************************************************************
+*                                          P U B L I C    G E T T E R S 
+*****************************************************************************************************************************/
+
+/**
+ * Gets the subtitles.
+ *
+ * @return     {<type>}  The subtitles.
+ */
+    this.getSubtitles = function(){
+        return subtitles;
+    };
+
+/**
+ * Gets the st available language.
+ *
+ * @param      {<type>}  lang     The language
+ * @param      {number}  [e2r=0]  The e 2 r
+ * @return     {<type>}  The st available language.
+ */
+    this.getSTAvailableLang = function(lang, e2r=0){
+        if (list_contents[demoId].subtitles[e2r][lang]) {
+           return lang;
+        } else if (list_contents[demoId].acces[0].ST && list_contents[demoId].subtitles[e2r][list_contents[demoId].acces[0].ST[0]]) {
+           _iconf.stlanguage = list_contents[demoId].acces[0].ST[0];
+           return list_contents[demoId].acces[0].ST[0];
+        } else return;
+    };
+
+/*****************************************************************************************************************************
+*                                          P U B L I C    S E T T E R S 
+*****************************************************************************************************************************/
 
 /**
  * Sets the subtitle.
@@ -133,6 +277,12 @@ STManager = function() {
         r.send();
     };
 
+/**
+ * Sets the indicator.
+ *
+ * @param      {string}  value           The value
+ * @param      {<type>}  childColumnOpt  The child column option
+ */
     this.setIndicator = function(value, childColumnOpt){
         if(stConfig.indicator.localeCompare(value) != 0){
             stConfig.indicator = value;
@@ -179,13 +329,18 @@ STManager = function() {
             if (slConfig.isEnabled){
                 if(stConfig.isEnabled){
                     if (subtitles) {
-                        subtitles.position.x = _stMngr.checkOverlap(subtitles.scale.x);
+                        subtitles.position.x = _stMngr.removeOverlap(subtitles.scale.x);
                     }
                 }
             } 
         }
     };
 
+/**
+ * Sets the size.
+ *
+ * @param      {number}  value   The value
+ */
     this.setSize = function(value){
         stConfig.size = value;
         if(subtitles){
@@ -196,6 +351,11 @@ STManager = function() {
         }
     };
 
+/**
+ * Sets the background.
+ *
+ * @param      {<type>}  value   The value
+ */
     this.setBackground = function(value){
         stConfig.background = value;
 
@@ -204,6 +364,12 @@ STManager = function() {
         subController.updateISD( VideoController.getMediaTime() );
     };
 
+/**
+ * Sets the easy 2 read.
+ *
+ * @param      {<type>}  value   The value
+ * @param      {<type>}  xml     The new value
+ */
     this.setEasy2Read = function(value, xml){
         stConfig.easy2read = value;
         subController.setTextListMemory( [] );
@@ -227,13 +393,13 @@ STManager = function() {
             //Check if not fixed options and stConfig.initPos.y is initialized;
             //If stConfig.initPos.y is not initialized ST will have to be created
             if(!stConfig.fixedSpeaker && !stConfig.fixedScene && pos.y != 0 && stConfig.initPos.y != 0){
-                subtitles.position.x = _stMngr.checkOverlap(subtitles.scale.x);
+                subtitles.position.x = _stMngr.removeOverlap(subtitles.scale.x);
                 
                 subtitles.position.y =  Math.abs(stConfig.initPos.y)*pos.y; 
                 stConfig.fixedSpeaker = spFixed;
                 stConfig.fixedScene = scFixed;
             } else{
-                _stMngr.removeSubtitle();
+                _stMngr.remove();
                 stConfig.fixedSpeaker = spFixed;
                 stConfig.fixedScene = scFixed;
                 subController.updateISD( VideoController.getMediaTime() );
@@ -242,6 +408,12 @@ STManager = function() {
     };
 
 
+/**
+ * Sets the scene position.
+ *
+ * @param      {number}  lat     The new value
+ * @param      {number}  lon     The new value
+ */
 //THIS NEEDS TO BE CHECKED
     this.setScenePos = function(lat, lon){
         stConfig.scenePos.lat = lat;
@@ -259,6 +431,11 @@ STManager = function() {
         //console.log('x: '+x+', y: '+y+', z: '+z);
     };
 
+/**
+ * Sets the languages array.
+ *
+ * @param      {<type>}  subList  The sub list
+ */
     this.setLanguagesArray = function(subList){
         stConfig.availableLang = [];
 
@@ -292,15 +469,16 @@ STManager = function() {
         }
     };
 
+/*****************************************************************************************************************************
+*                                          P U B L I C    C H E C K E R S 
+*****************************************************************************************************************************/
 
-    this.getSubtitles = function(){
-        return subtitles;
-    };
-
-//************************************************************************************
-// Public Subtitle Checkers
-//************************************************************************************
-
+/**
+ * { function_description }
+ *
+ * @param      {<type>}  lang    The language
+ * @return     {<type>}  { description_of_the_return_value }
+ */
     this.checkisSubAvailable = function(lang){
         if (!lang && list_contents[demoId].acces[0].ST){
             lang = list_contents[demoId].acces[0].ST[0];
@@ -308,67 +486,21 @@ STManager = function() {
         return (list_contents[demoId].acces && list_contents[demoId].acces[0].ST && list_contents[demoId].acces[0].ST.includes((lang) ? lang : _iconf.stlanguage));
     };
 
+/**
+ * { function_description }
+ *
+ * @param      {<type>}  lang    The language
+ * @return     {<type>}  { description_of_the_return_value }
+ */
     this.checkSubEasyAvailable = function(lang){
         return (list_contents[demoId].subtitles && list_contents[demoId].subtitles[1] && list_contents[demoId].subtitles[1][lang]);
     };
 
-
-//************************************************************************************
-// Public functions
-//************************************************************************************
-
-    this.updateSubtitleByTime = function(time){
-        if (imsc1doc) {
-            subController.updateISD(time);
-        }
-    };
-
-    this.enableSubtitles = function(){
-        stConfig.isEnabled = true;
-    };
-
-    this.disableSubtiles = function(){
-        _stMngr.removeSubtitle();
-        _rdr.hideRadar();
-        stConfig.isEnabled = false;
-    };
-
-    this.switchSubtitles = function(enable){
-        let signerMesh = _slMngr.getSigner();
-        if (!enable){
-            _stMngr.removeSubtitle();
-            if (stConfig.indicator.localeCompare(indicators.ARROW) === 0 && slConfig.isEnabled){
-                if(!imsc1doc_SL) {
-                    signerMesh.getObjectByName('sl-subtitles').visible = true;
-                }
-            }
-        } else {
-            if (stConfig.indicator.localeCompare(indicators.RADAR) === 0){
-                _rdr.showRadar();
-            }
-            if (slConfig.isEnabled){
-                if (!imsc1doc_SL){
-                    signerMesh.getObjectByName('sl-subtitles').visible = false;
-                }
-            }
-        }
-
-        stConfig.isEnabled = enable;
-    };
-
-    this.getSTAvailableLang = function(lang, e2r=0){
-        if (list_contents[demoId].subtitles[e2r][lang]) {
-           return lang;
-        } else if (list_contents[demoId].acces[0].ST && list_contents[demoId].subtitles[e2r][list_contents[demoId].acces[0].ST[0]]) {
-           _iconf.stlanguage = list_contents[demoId].acces[0].ST[0];
-           return list_contents[demoId].acces[0].ST[0];
-        } else return;
-    };
-
-//************************************************************************************
-// Media Object Position Controller 
-//************************************************************************************
-
+/**
+ * { function_description }
+ *
+ * @param      {string}  position  The position
+ */
     this.checkSubtitleIdicator = function(position){
         if (stConfig.indicator != indicators.NONE) {
             let arw = subController.getArrows();
@@ -379,22 +511,4 @@ STManager = function() {
         }
     };
 
-
-    this.checkOverlap = function(scaleFactor){
-        let signer = _slMngr.getSigner();
-        let offset = 0;
-
-        if(signer && !localStorage.getItem("slPosition")){
-            let totalDif = 0;
-            let arw = subController.getArrows();
-            let stDif = (arw) ? scaleFactor*(stConfig.width/2 + arw.children[0].children[1].geometry.parameters.width) : scaleFactor*stConfig.width/2;
-            let slDif = signer.position.x + (-slConfig.canvasPos.x)*slConfig.size/2 * (1+safeFactor);
-
-            totalDif = -slConfig.canvasPos.x * slDif + stDif;
-            if(totalDif>0 || Math.abs(totalDif) < 5){
-                offset = -slConfig.canvasPos.x * totalDif
-            }
-        }
-        return offset;
-    };
 };

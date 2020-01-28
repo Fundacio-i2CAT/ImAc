@@ -305,11 +305,11 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 				break;
 
 			case 49:  // 1
-				_stMngr.getSubtitleEnabled() ? _stMngr.disableSubtiles() : _stMngr.enableSubtitles();
+				stConfig.isEnabled ? _stMngr.switchSubtitles( false ) : _stMngr.switchSubtitles( true );
 				break;
 
 			case 50:  // 2
-				_slMngr.getSignerEnabled() ? _slMngr.switchSigner( false ) : _slMngr.switchSigner( true );
+				slConfig.isEnabled ? _slMngr.switchSigner( false ) : _slMngr.switchSigner( true );
 				break;
 
 			case 51:  // 3

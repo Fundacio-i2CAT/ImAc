@@ -64,6 +64,7 @@ THREE.MediaObjectData = function () {
         const scaleFactor = slConfig.size/slConfig.maxSize;
         let signer =  new THREE.Group();
         signer.name = name;
+        signer.visible = false;
 
         let x = _isHMD ? 0.6 * ( 1.48*slConfig.area/2 - slConfig.size/2 ) *slConfig.canvasPos.x : ( 1.48*slConfig.area/2 - slConfig.size/2 ) *slConfig.canvasPos.x;
         let y = slConfig.canvasPos.y * (vHeight*(1-safeFactor) - slConfig.size)/2;
@@ -88,17 +89,10 @@ THREE.MediaObjectData = function () {
         let signerColorBorderGeom = new THREE.PlaneGeometry( slConfig.maxSize, slConfig.maxSize, 32 );
         let signerColorBorderMat = new THREE.MeshBasicMaterial( {color: 0xffff00, side: THREE.DoubleSide} );
         let signColorBorder = new THREE.Mesh( signerColorBorderGeom, signerColorBorderMat );
-    
         signColorBorder.position.z = -0.01;
-
-        //This option is creating a border but it has an issue in windows, only 1px border is possible.
-        /*const signColorBorder = new THREE.LineSegments( 
-            new THREE.EdgesGeometry( geometry ), 
-            new THREE.LineBasicMaterial( { color: 0xffff00, linewidth: 4 } ) 
-        );*/
-
         signColorBorder.name = 'sl-colorFrame';
         signColorBorder.visible = false;
+
         if( !imsc1doc_SL ){        
             let textList = [{
                   text: "",
@@ -414,7 +408,7 @@ THREE.MediaObjectData = function () {
                     stGroup.position.x = savedPosition.x;
                 } else {
                     stGroup.position.y = initY;
-                    stGroup.position.x = 0 + _stMngr.checkOverlap(scaleFactor);
+                    stGroup.position.x = 0 + _stMngr.removeOverlap(scaleFactor);
                     
                 }
             } else if(stConfig.fixedScene){

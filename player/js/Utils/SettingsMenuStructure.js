@@ -758,7 +758,7 @@ const settingsSignLanguage = { title: 'Signlanguage', icon: './img/acc_serv_icon
             } 
         },
         { optId: 'signerDynamic', icon: './img/menu/st_background.png', text: 'Dynamic', 
-            available: function(){ return _slMngr.checkAvailableDynamic()},
+            available: function(){ return (imsc1doc_SL) ? true : false },
             function:  function(){ 
                 SettingsOptionCtrl.updateDropdownOptions(settingsSignLanguageDynamic);
             } 

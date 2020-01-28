@@ -270,6 +270,7 @@ VideoController = function() {
  * @param      {<type>}  index         The index
  * @param      {<type>}  source        The source
  * @param      {<type>}  videoElement  The video element
+ */
      this.play = function(index, source, videoElement){
         let video = listOfVideoContents[index].vid;
         video.currentTime = listOfVideoContents[0].vid.currentTime;
@@ -291,7 +292,6 @@ VideoController = function() {
                 video.pause();
             });
     };
-*/
 
 
     this.pauseAll = function()
@@ -371,7 +371,10 @@ VideoController = function() {
                     showEndingOptions();
                 }
 
-                _stMngr.updateSubtitleByTime( listOfVideoContents[0].vid.currentTime );
+                // Update ST by time.
+                if (imsc1doc) {
+                    subController.updateISD(listOfVideoContents[0].vid.currentTime);
+                }
 
                 if ( _AudioManager.getADEnabled() ) checkExtraADListByTime( listOfVideoContents[0].vid.currentTime );
 

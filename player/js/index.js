@@ -95,7 +95,7 @@ let actionPausedVideo = false;
 const canvasDistance = 70;
 let vFOV; // convert vertical fov to radians
 let vHeight; // visible height
-let safeFactor; //Creates a margin with the height of the scren. Diferent factor for HMD.
+let safeFactor = 0.1; //Creates a margin with the height of the scren. Diferent factor for HMD.
 
 /**
  * Initializes the web player.
@@ -109,7 +109,6 @@ function init_webplayer()
     if ( localStorage.ImAc_cookies ) gtag('set', {'user_id': localStorage.ImAc_UUID});   
 
     var myhash = window.location.hash.split('#');
-    safeFactor = (_isHMD) ? 0.2 : 0.1;
 
     _AudioManager.initAmbisonicResources();
 

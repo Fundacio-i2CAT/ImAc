@@ -344,8 +344,10 @@ THREE.InteractionsController = function () {
     			for(let inter = 0; inter < intersects.length; inter++){
                     if ( localStorage.ImAc_cookies ) gtag('event', (_isHMD) ? 'VRInteraction' : 'UserInteraction', {
                         'event_category' : 'PlayerConfig',
-                        'event_label' : intersects[inter].object.name
+                        'event_label' : intersects[inter].object.name,
+                        'anonymizeIp': true
                     });
+
 
                     if ( intersects[inter].object.type == 'Mesh' && intersects[inter].object.onexecute ){
         	            intersects[inter].object.onexecute();

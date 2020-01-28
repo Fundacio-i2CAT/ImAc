@@ -125,6 +125,7 @@ function createVRButton_1(renderer)
             display.isPresenting ? display.exitPresent() : display.requestPresent( [ { source: renderer.domElement } ] ).then(
                 function () { 
                     _isHMD = true;  
+                    safeFactor = 0.4;
                     createMenus();                 
                 });
             renderer.vr.setDevice( display );

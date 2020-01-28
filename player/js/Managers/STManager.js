@@ -76,7 +76,6 @@ STManager = function() {
  */
     this.move = function(pos){
         if (elementSelection) {
-            let safeFactor = 0.1; //10%
             scene.getObjectByName('trad-main-menu').visible = false;
             scene.getObjectByName('trad-option-menu').visible = false;
 
@@ -382,7 +381,6 @@ STManager = function() {
 
 
     this.checkOverlap = function(scaleFactor){
-        let safeFactor = 0.2;
         let signer = _slMngr.getSigner();
         let offset = 0;
 

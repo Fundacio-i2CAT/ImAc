@@ -11,8 +11,6 @@
  * ╠═════════════════════════════════════╣
  * ║ General                             ║
  * ║─────────────────────────────────────║
- * ║ Access                              ║
- * ║─────────────────────────────────────║
  * ║ [=] Subtitles                       ║
  * ║─────────────────────────────────────║
  * ║ [>] Sign Language                   ║
@@ -40,11 +38,6 @@ const settingsDropdownOpt = {title: 'Settings', final: false,
                 SettingsOptionCtrl.updateDropdownOptions(generalSettings); 
             }
         },
-        /*{ optId: 'settingsAccess', icon: './img/menu/accessibility_icon.png', text: 'Access', 
-            function: function(){ 
-                SettingsOptionCtrl.updateDropdownOptions(accessSettings);
-            } 
-        },*/
         { optId: 'settingsST', icon: './img/acc_serv_icon/st_off.png', text: 'Subtitles', 
             available: function() { return _stMngr.checkisSubAvailable() },
             function: function(){
@@ -377,161 +370,6 @@ const settingsUserProfile = { title: 'UserProfile', icon: './img/menu/user_profi
             } 
         }]
 };
-
-
-
-/* ***************************************  A C C E S S ***************************************                
- * ╔═════════════════════════════════════╗
- * ║ (<)        Access Settings       X  ║
- * ╠═════════════════════════════════════╣
- * ║ Indicator                           ║
- * ║─────────────────────────────────────║
- * ║ Safe Area                           ║
- * ╚═════════════════════════════════════╝
- * Visual example of dropdown
- *
- * @typedef  {Object}   accessSettings         Level 1.
- * @property {string}   title                  The title shown in the dropdown menu.
- * @property {string}   icon                   Icon path.
- * @property {Object}   parent                 Reference to previews dropdown menu for back navigation.
- * @property {boolean}  final                  Is the dropdown in the last level.
- * @property {array}    options                Array of the different dropdown options
- * @property {string}   options[].optId        Id reference for the next dropdown level.
- * @property {string}   options[].icon         Icon path.
- * @property {string}   options[].text         Title of the dropdown option.
- * @property {function} options[].available    Function that returns a bool true if option os available, false if option has to be omitted.
- * @property {function} options[].function     Function executed when option is clicked.
- */
-const accessSettings = { title: 'Access', icon: './img/menu/accessibility_icon.png', parent: settingsDropdownOpt, final: false, 
-    options: [
-        { optId: 'settingsIndicator', icon: './img/menu/indicator.png', text: 'Indicator', 
-            function: function(){ 
-                SettingsOptionCtrl.updateDropdownOptions(settingsIndicator);
-            } 
-        }/*, 
-        { optId: 'settingsSafeArea', icon: './img/menu/safe_area.png', text: 'SafeArea', 
-            function: function(){ 
-                SettingsOptionCtrl.updateDropdownOptions(settingsSafeArea);
-            } 
-        }*/]
-};
-
-/* *************************************** A C C E S S   L A N G U A G E S ***************************************
- * ╔═════════════════════════════════════╗
- * ║ (<)    Access Languages          X  ║
- * ╠═════════════════════════════════════╣
- * ║ English                       Final ║
- * ║─────────────────────────────────────║
- * ║ Español                       Final ║
- * ║─────────────────────────────────────║
- * ║ Deutsch                       Final ║
- * ║─────────────────────────────────────║
- * ║ Català                        Final ║
- * ╚═════════════════════════════════════╝
- * Visual example of dropdown
- *
- * @typedef  {Object}   settingsAccesLanguages Level 2.
- * @property {string}   title                  The title shown in the dropdown menu.
- * @property {string}   icon                   Icon path.
- * @property {Object}   parent                 Reference to previews dropdown menu for back navigation.
- * @property {boolean}  final                  Is the dropdown in the last level.
- * @property {array}    options                Array of the different dropdown options
- * @property {string}   options[].optId        Id reference for the next dropdown level.
- * @property {string}   options[].text         Title of the dropdown option.
- * @property {function} options[].available    Function that returns a bool true if option os available, false if option has to be omitted.
- * @property {function} options[].default      Function that returns a bool true if option is default and starts in yellow.
- * @property {function} options[].function     Function executed when option is clicked.
- */
-const settingsAccesLanguages = { title: 'Language', icon: './img/menu/language.png', parent: accessSettings, final: true, 
-    options: [
-        { optId: 'settingsAccesLanguageEngButton', text: 'English', 
-            available: function() { return MenuDictionary.isMainLanguageAvailable('en') }, 
-            default: function(){ return ('en'.localeCompare(_iconf.stlanguage) == 0) },
-            function: function(){ 
-                if(!settingsAccesLanguages.options[0].default()){
-                    MenuFunctionsManager.changeAccesLanguage('en')(); 
-                    SettingsOptionCtrl.setChildColumnActiveOpt(settingsAccesLanguages.options[0].optId);
-                    mainMenuCtrl.updateAccessOptionsView();
-                }
-            } 
-        }, 
-        { optId: 'settingsAccesLanguageEspButton', text: 'Español', 
-            available: function() { return MenuDictionary.isMainLanguageAvailable('es') },
-            default: function(){ return ('es'.localeCompare(_iconf.stlanguage) == 0)  },
-            function: function(){ 
-                if(!settingsAccesLanguages.options[1].default()){
-                    MenuFunctionsManager.changeAccesLanguage('es')(); 
-                    SettingsOptionCtrl.setChildColumnActiveOpt(settingsAccesLanguages.options[1].optId);
-                    mainMenuCtrl.updateAccessOptionsView();
-                }
-            } 
-        }, 
-        { optId: 'settingsAccesLanguageGerButton', text: 'Deutsch', 
-            available: function() { return MenuDictionary.isMainLanguageAvailable('de') },
-            default: function(){ return ('de'.localeCompare(_iconf.stlanguage) == 0)  },
-            function: function(){ 
-                if(!settingsAccesLanguages.options[2].default()){
-                    MenuFunctionsManager.changeAccesLanguage('de')(); 
-                    SettingsOptionCtrl.setChildColumnActiveOpt(settingsAccesLanguages.options[2].optId);
-                    mainMenuCtrl.updateAccessOptionsView();
-                }
-            } 
-        }, 
-        { optId: 'settingsAccesLanguageCatButton', text: 'Català', 
-            available: function() { return MenuDictionary.isMainLanguageAvailable('ca') },
-            default: function(){ return ('ca'.localeCompare(_iconf.stlanguage) == 0)  },
-            function: function(){ 
-                if(!settingsAccesLanguages.options[3].default()){
-                    MenuFunctionsManager.changeAccesLanguage('ca')(); 
-                    SettingsOptionCtrl.setChildColumnActiveOpt(settingsAccesLanguages.options[3].optId);
-                    mainMenuCtrl.updateAccessOptionsView();
-                }
-            } 
-        }]
-};
-
-
-/* *************************************** S A F E   A R E A ***************************************
- * ╔═════════════════════════════════════╗
- * ║ (<)        Safe Area             X  ║
- * ╠═════════════════════════════════════╣
- * ║ Small                         Final ║
- * ║─────────────────────────────────────║
- * ║ Large                         Final ║
- * ╚═════════════════════════════════════╝
- * Visual example of dropdown
- *
- * @typedef  {Object}   settingsSafeArea       Level 2.
- * @property {string}   title                  The title shown in the dropdown menu.
- * @property {string}   icon                   Icon path.
- * @property {Object}   parent                 Reference to previews dropdown menu for back navigation.
- * @property {boolean}  final                  Is the dropdown in the last level.
- * @property {array}    options                Array of the different dropdown options
- * @property {string}   options[].optId        Id reference for the next dropdown level.
- * @property {string}   options[].text         Title of the dropdown option.
- * @property {function} options[].default      Function that returns a bool true if option is default and starts in yellow.
- * @property {function} options[].function     Function executed when option is clicked.
-const settingsSafeArea = { title: 'SafeArea', icon: './img/menu/safe_area.png', parent: accessSettings, final: true, preview: true, 
-    options: [
-        { optId: 'settingsSafeAreaSmall', text: 'Small', 
-            default: function(){ return (50 == stConfig.area) },
-            function:  function(){ 
-                if(!settingsSafeArea.options[0].default()){
-                    _stMngr.setArea( 50 );
-                    SettingsOptionCtrl.setChildColumnActiveOpt(settingsSafeArea.options[0].optId);
-                }
-            } 
-        }, 
-        { optId: 'settingsSafeAreaLarge', text: 'Large', 
-            default: function(){ return (70 == stConfig.area) },
-            function:  function(){ 
-                if(!settingsSafeArea.options[1].default()){
-                    _stMngr.setArea( 70 );
-                    SettingsOptionCtrl.setChildColumnActiveOpt(settingsSafeArea.options[1].optId);
-                }
-            } 
-        }]
-};*/
 
 
 /* *************************************** S U B T I T L E S    (ST) ***************************************

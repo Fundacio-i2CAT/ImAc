@@ -1,3 +1,9 @@
+/**
+ * { function_description }
+ *
+ * @class      SLManager (name)
+ * @return     {<type>}  { description_of_the_return_value }
+ */
 
 SLManager = function() {
 
@@ -5,43 +11,47 @@ SLManager = function() {
     let subtitleSLMesh;
 
 /**
- * Initializes the configuration.
+ * This function initializes the parameters in order to create the signer video.
  *
- * @param      {<type>}  conf    The conf
- * @return     {<type>}  { description_of_the_return_value }
+ * @param      {Object}  conf    The pre selected parameters from the web.
+ * @return     {Object}  The final configuration parameters in order to created the signer video.
  */
     this.initConfig = function(conf){
 
+        // NEEDS TO BVE ADDED THE PRE STABLISHED VALUES FROM THE WEB (utils.js line 313)
         let config = {
-            url: '',
-            st4sltext: '',
-            isMoved: false,
-            isEnabled: false,
-            initPos: null,
-            canvasPos: new THREE.Vector2(1, -1),
-            scenePos: { lat: 0, lon: 0 },
-            language: 'en',
-            area: 60,
-            size: 18, //Default medium size
-            maxSize: 20,
-            autoHide: false,
-            availableLang: []
+            url: '',                              // {String}   Signer video url.
+            st4sltext: '',                        // {String}   Ttext for the signer subtitles.
+            isMoved: false,                       // {Boolean}  Has the signer been moved by the user.
+            isEnabled: false,                     // {Boolean}  Determines if the signer video is active or not.
+            initPos: null,                        // {Vector2}  Initial position of the signer video when 1st created.
+            canvasPos: new THREE.Vector2(1, -1),  // {Vector2}  Screen position of the signer video.
+            scenePos: { lat: 0, lon: 0 },         // {Object}   Wolrd position of the signer video.
+            language: 'en',                       // {String}   Language of the signer video. Default is English.
+            area: 60,                             // {Integer}  Limit area where objects can be placed.
+            size: 18,                             // {Integer}  Signer video size. Default medium size.
+            maxSize: 20,                          // {Integer}  Maximum size the signer video can be.
+            autoHide: false,                      // {Boolean}  Determines if the autohide option is enabled or not.
+            availableLang: []                     // {Array}    Array of available lamguages through which the video can change.
         };
+
+
 
         return config;
     };
 
 /**
- * Creates a signer.
+ * Creates the signer video and adds it to the canvas element. 
+ * Adds subtitles if they exist in the metadata. 
  */
     this.createSigner = function() {
         let slMesh;
-        removeSigner();
+        if(signer) removeSigner(); //Remove existing SLs if there is one in the scene already.
 
         slMesh = _moData.getSignVideoMesh('signer');
         slMesh.visible = false;
 
-        let SLTimeout = setTimeout( function() { slMesh.visible = true; }, 700);
+        //let SLTimeout = setTimeout( function() { slMesh.visible = true; }, 700);
         canvasMgr.addElement(slMesh);
 
         signer = canvas.getObjectByName('signer');
@@ -50,10 +60,9 @@ SLManager = function() {
                 _slMngr.createSLSubtitle(slConfig.st4sltext);  
             } 
         }
-
-        if (!VideoController.isPausedById(0)) {
-            VideoController.playAll();
-        }
+        //VideoController.play(1, slConfig.url, signer);
+        VideoController.playAll();
+        slMesh.visible = true;
     };
 
 /**
@@ -63,6 +72,7 @@ SLManager = function() {
         if (signer) {
             VideoController.removeContentById(signer.name);
             canvasMgr.removeElement(signer);
+            signer = undefined;
         }
     }
 
@@ -124,7 +134,6 @@ SLManager = function() {
     this.updatePositionY = function(){
         if (signer && !localStorage.getItem("slPosition")) {
             let y;
-            let safeFactor = 0.1; //10%       
             if (imsc1doc_SL || (stConfig.indicator.localeCompare('arrow') === 0 && !stConfig.isEnabled)){ 
                 if (slConfig.canvasPos.y < 0 && slConfig.isEnabled){
                     let st4slMesh = signer.getObjectByName('sl-subtitles').children[0].geometry.parameters.height;

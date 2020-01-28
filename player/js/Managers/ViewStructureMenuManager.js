@@ -550,15 +550,13 @@ function ViewStructureMenuManager() {
         coliderMesh.name = vpb_background.name;
         coliderMesh.position.z = 0.01
         vpb_background.add(coliderMesh);
-
-        let totaltime = VideoController.getPlayoutTime(VideoController.getListOfVideoContents()[0].vid.duration) || list_contents[demoId].duration;
         
         let videoTotalTime = new InteractiveElementModel();
         videoTotalTime.width = 0;
         videoTotalTime.height = 0;
         videoTotalTime.name = 'video-total-time';
         videoTotalTime.type =  'text';
-        videoTotalTime.text = totaltime;
+        videoTotalTime.text = list_contents[demoId].duration;
         videoTotalTime.textSize = menuWidth/50;
         videoTotalTime.color = 0xe6e6e6;
         videoTotalTime.visible = true;

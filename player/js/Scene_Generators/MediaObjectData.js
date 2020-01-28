@@ -62,15 +62,13 @@ THREE.MediaObjectData = function () {
 
     this.getSignVideoMesh = function(name) {
         const scaleFactor = slConfig.size/slConfig.maxSize;
-        //const scaleFactor = (slConfig.size/textMesh.geometry.parameters.width);
-        
         let signer =  new THREE.Group();
         signer.name = name;
 
-        let safeFactor = 0.1; //10%
         let x = _isHMD ? 0.6 * ( 1.48*slConfig.area/2 - slConfig.size/2 ) *slConfig.canvasPos.x : ( 1.48*slConfig.area/2 - slConfig.size/2 ) *slConfig.canvasPos.x;
         let y = slConfig.canvasPos.y * (vHeight*(1-safeFactor) - slConfig.size)/2;
 
+        //This will save the very 1st position.
         if(!slConfig.initPos){
             slConfig.initPos = new THREE.Vector2(x, y);
         }
@@ -80,7 +78,6 @@ THREE.MediaObjectData = function () {
             signer.position.set( savedPosition.x, savedPosition.y, 0)
         } else {
             signer.position.set(x, y, 0);
-            //This will save the very 1st position.
         }
 
         const geometry = new THREE.PlaneGeometry( slConfig.maxSize, slConfig.maxSize );
@@ -349,7 +346,6 @@ THREE.MediaObjectData = function () {
     }
 
     this.getSubtitleMesh = function (t, font, isSL, name){
-        const safeFactor = 0.1; //10%
         const opacity = stConfig.background;
         let scaleFactor = 1;
         let cnv;

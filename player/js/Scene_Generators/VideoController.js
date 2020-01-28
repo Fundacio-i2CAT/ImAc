@@ -264,6 +264,36 @@ VideoController = function() {
         }
     };
 
+/**
+ * { function_description }
+ *
+ * @param      {<type>}  index         The index
+ * @param      {<type>}  source        The source
+ * @param      {<type>}  videoElement  The video element
+     this.play = function(index, source, videoElement){
+        let video = listOfVideoContents[index].vid;
+        video.currentTime = listOfVideoContents[0].vid.currentTime;
+        video.load();
+
+        fetch(source)
+            .then(response =>{ 
+                return video.play();
+            })
+            .then(_ => {
+                // Video playback started ;)
+                console.log(`Playing ${listOfVideoContents[index].id} video`);
+                videoElement.visible = true;
+            })
+            .catch(e => {
+                // Video playback failed ;(
+                console.log(e);
+                videoElement.visible = true;
+                video.pause();
+            });
+    };
+*/
+
+
     this.pauseAll = function()
     {
         if (document.dispatchEvent(pauseEvent)){ //Custom code

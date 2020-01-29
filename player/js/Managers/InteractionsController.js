@@ -4,25 +4,16 @@
 
 THREE.InteractionsController = function () {
 
-	var raycaster = new THREE.Raycaster();
-	var interactiveListObjects = [];
-	var interactionState = true;
-	var nameMenuActive;
-
-    var subtitlesActive = false;
-    var signerActive = false;
-    var pointerState = true;
-
-    var radarInteraction;
-
+	let raycaster = new THREE.Raycaster();
+	let interactiveListObjects = [];
+	let interactionState = true;
+    let pointerState = true;
+    let radarInteraction;
     let hoverSubMenuOpt = '';
     let hoverSubMenuOptColor;
-
     let hoverAccessIcon = '';
-
     let optionHoverAnimation;
     let hoverTimer;
-
     let tooltipVisible = false;
 
 
@@ -30,16 +21,8 @@ THREE.InteractionsController = function () {
 // Private Functions
 //************************************************************************************
 
-	function enableInteractions(){
-		interactionState = true;
-	}
-
-	function disableInteractions(){
-		interactionState = false;
-	}
-
 	function getInteractiveObjectList(){
-    return interactiveListObjects;
+        return interactiveListObjects;
 	}
 
   function freeInteractionState(time){
@@ -49,20 +32,9 @@ THREE.InteractionsController = function () {
     },time);
   }
 
-  function freePointerState(time){
-    var myVar = setTimeout(function(){
-      pointerState = true;
-      clearTimeout(myVar);
-    },time);
-  }
-
 //************************************************************************************
 // Public Setters
 //************************************************************************************
-
-	this.setActiveMenuName = function(name){
-		nameMenuActive = name;
-	}
 
 	this.getInteractiveObjectList = function (){
 		return interactiveListObjects;
@@ -72,13 +44,6 @@ THREE.InteractionsController = function () {
 // Public Getters
 //************************************************************************************
 
-	this.getInteractionState = function(){
-		return interactionState;
-	};
-
-	this.getActiveMenuName = function(){
-		return nameMenuActive;
-	};
 
 //************************************************************************************
 // Public Functions
@@ -355,7 +320,7 @@ THREE.InteractionsController = function () {
                     } else if ( intersects[inter].object.type == 'Mesh' && intersects[inter].object.name && intersects[inter].object.parent ){
         				intersectedShapeId = intersects[inter].object.name;
         				break;
-        			} else console.error("Error in checkInteraction")
+                    } else console.error("Error in checkInteraction")
         		}
                 freeInteractionState(300);
             }
@@ -414,23 +379,6 @@ THREE.InteractionsController = function () {
         tooltipVisible = false;
     }
 
-
-    this.getSubtitlesActive = function(){
-    	return subtitlesActive;
-    };
-
-    this.getSignerActive = function(){
-        return signerActive;
-    };
-
-    this.setSubtitlesActive = function(activated){
-        subtitlesActive = activated;
-    };
-
-    this.setSignerActive = function(activated){
-        signerActive = activated;
-    };
-
 /**
  * [description]
  * @param  {[type]} object [description]
@@ -462,12 +410,6 @@ THREE.InteractionsController = function () {
 		interactiveListObjects = interactiveListObjects.filter(e => e.name != name);
         controls.removeInteractiveObject(name);
 	}
-
-    this.removeInteractiveRadar = function(name){
-        radarInteraction = undefined;
-        interactiveListObjects = interactiveListObjects.filter(e => e.name != name);
-        controls.removeInteractiveObject(name);
-    }
 
     this.clearInteractiveObjectList = function(name){
         interactiveListObjects = [];

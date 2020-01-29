@@ -58,7 +58,8 @@ SLManager = function() {
         canvasMgr.addElement(_moData.getSignVideoMesh('signer'));
         // Save the signer element in a global class variable.
         signer = canvas.getObjectByName('signer');
-        
+        slConfig.isEnabled = true;
+
         if (imsc1doc_SL) {
             // If the metadata has ST (imsc1doc_SL) for SL, 
             // create and add the ST mesh under the SL video.

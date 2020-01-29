@@ -25,8 +25,13 @@
 		* interController
 	
 	FUNCTIONALITIES:
-		* switchSigner = function( enable )          --> Enable or disable the signer using the boolean 'enable'
-		* updateRadar = function()                   --> Update the radar orientation using the camera orientation
+		* updateISD
+
+	PRIVATE: 
+		* print3DText
+		* checkSpeakerPosition
+		* arrowInteraction
+
 
 ************************************************************************************/
 
@@ -53,7 +58,7 @@ SubSignManager = function() {
 		    	} 
 
 		    	if (stConfig.indicator.localeCompare('radar') === 0) {
-	      			_rdr.updateRadarIndicator(subController.getSpeakerColor(), isd.imac);
+	      			_rdr.updateRadarIndicator(speakerColor, isd.imac);
 	      		}
 	      		
   		    	if (stConfig.indicator.localeCompare('arrow') === 0) {
@@ -90,7 +95,7 @@ SubSignManager = function() {
     			let isdContentText = isd.contents[0].contents[0].contents[0].contents[0].contents;		    	
 				for (let i = 0, l = isdContentText.length; i < l; ++i) {
 		      		if (isdContentText[i].kind == 'span' && isdContentText[i].contents) {
-			    		subController.setSpeakerColor(adaptRGBA(isdContentText[i].contents[0].styleAttrs['http://www.w3.org/ns/ttml#styling color']));
+			    		speakerColor = adaptRGBA(isdContentText[i].contents[0].styleAttrs['http://www.w3.org/ns/ttml#styling color']);
 		      		}
 			    }
 			}
@@ -106,20 +111,8 @@ SubSignManager = function() {
 		SLtextListMemory = value;
 	}
 
-	this.setArrows = function(value){
-		arrows = value;
-	}
-
 	this.getArrows = function(){
 		return arrows;
-	}
-
-	this.setSpeakerColor = function(value){
-		speakerColor = value;
-	}
-
-	this.getSpeakerColor = function(){
-		return speakerColor;
 	}
 
 	function print3DText(isdContent, accessService) {
@@ -137,7 +130,7 @@ SubSignManager = function() {
 	      		}
 	    	}
     		if (textList.length > 0) {
-    			subController.setSpeakerColor(textList[0].color);
+    			speakerColor = textList[0].color;
     			if (accessService.localeCompare('st') === 0) {
     				if (textListMemory.length > 0 && textList[0].text.localeCompare(textListMemory[0].text) != 0 || textList.length != textListMemory.length) {
 					    _stMngr.create(textList);
@@ -196,7 +189,7 @@ SubSignManager = function() {
 					slMesh.getObjectByName('sl-subtitles').visible = false;	
 				} 
 				if (stMesh) {
-					subController.setArrows(stMesh.getObjectByName('arrows'));
+					arrows = stMesh.getObjectByName('arrows');
 					width = stMesh.getObjectByName('emojitext').geometry.parameters.width;
 				} 
 				slMesh.getObjectByName('arrows').visible = false;
@@ -205,28 +198,28 @@ SubSignManager = function() {
 					slMesh.getObjectByName('sl-subtitles').visible = true;	
 				} 
 				slMesh.getObjectByName('arrows').visible = true;
-				subController.setArrows(slMesh.getObjectByName('arrows'));
+				arrows = slMesh.getObjectByName('arrows');
 				width = slMesh.getObjectByName('emojitext').geometry.parameters.width;
 			}
 		} else if (stConfig.isEnabled) {
 			if (stMesh) {
-				subController.setArrows(stMesh.getObjectByName('arrows'));
+				arrows = stMesh.getObjectByName('arrows');
 				width = stMesh.getObjectByName('emojitext').geometry.parameters.width;
 			} 
 		} else {
-			subController.setArrows(undefined);
+			arrows = undefined;
 		}
 
-		let arw = subController.getArrows();
+		let arw = arrows;
 		// cada 300 milis aprox
     	if (arw) {
     		let positionFactor = (!imsc1doc_SL && !stConfig.isEnabled) ? -1 : 1;
     		let arwSize = arw.children[0].children[1].geometry.parameters.width/2;
 
-    		arw.getObjectByName('right-img').material.color.set(subController.getSpeakerColor());
+    		arw.getObjectByName('right-img').material.color.set(speakerColor);
     		arw.getObjectByName('right').position.x = width/2 +positionFactor * arwSize;
 			arw.getObjectByName('right-img').material.opacity = (arw.getObjectByName('right-img').material.opacity === 1) ? 0.4 : 1;
-			arw.getObjectByName('left-img').material.color.set(subController.getSpeakerColor());
+			arw.getObjectByName('left-img').material.color.set(speakerColor);
 			arw.getObjectByName('left').position.x = -width/2 -positionFactor * arwSize;
 			arw.getObjectByName('left-img').material.opacity = (arw.getObjectByName('left-img').material.opacity === 1) ? 0.4 : 1;
     	}

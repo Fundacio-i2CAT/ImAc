@@ -287,7 +287,7 @@ VideoController = function() {
             })
             .catch(e => {
                 // Video playback failed ;(
-                console.log(e);
+                console.error(e);
                 videoElement.visible = true;
                 video.pause();
             });

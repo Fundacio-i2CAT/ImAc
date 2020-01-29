@@ -248,7 +248,6 @@ function MainMenuController() {
                     //_slMngr.setPosition(slConfig.canvasPos.x, data.isSTenabled ? stConfig.canvasPos.y : -1);
                     _slMngr.setPosition(slConfig.canvasPos.x*Math.abs(slConfig.initPos.x), Math.abs(slConfig.initPos.y) * (data.isSTenabled ? stConfig.canvasPos.y : -1));
                 }
-                
             });
         };
 

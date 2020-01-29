@@ -636,7 +636,7 @@ const settingsSubtitlesPosition = { title: 'Position', icon: './img/menu/st_posi
                 if(!settingsSubtitlesPosition.options[0].default()){
                     _stMngr.setPosition(new THREE.Vector2(0, 1), false, false);
                     SettingsOptionCtrl.setChildColumnActiveOpt(settingsSubtitlesPosition.options[0].optId);
-                    if( stConfig.isEnabled && !localStorage.getItem("slPosition")){
+                    if( slConfig.isEnabled && !localStorage.getItem("slPosition")){
                         _slMngr.setPosition( _slMngr.getSigner().position.x, -1 *_slMngr.getSigner().position.y );
                     } 
                 }
@@ -648,7 +648,7 @@ const settingsSubtitlesPosition = { title: 'Position', icon: './img/menu/st_posi
                 if(!settingsSubtitlesPosition.options[1].default()){
                     _stMngr.setPosition(new THREE.Vector2(0, -1), false, false);
                     SettingsOptionCtrl.setChildColumnActiveOpt(settingsSubtitlesPosition.options[1].optId);
-                    if( stConfig.isEnabled && !localStorage.getItem("slPosition")) {
+                    if( slConfig.isEnabled && !localStorage.getItem("slPosition")) {
                         _slMngr.setPosition( _slMngr.getSigner().position.x, -1 *_slMngr.getSigner().position.y ); 
                     }
                 }
@@ -921,7 +921,7 @@ const settingsSignLanguageSize = { title: 'Size', icon: './img/menu/sl_size.png'
             default: function(){ return (slConfig.size == 16) },
             function:  function(){ 
                 if(!settingsSignLanguageSize.options[0].default()){
-                    _slMngr.setSignerSize(16);
+                    _slMngr.setSize(16);
                     SettingsOptionCtrl.setChildColumnActiveOpt(settingsSignLanguageSize.options[0].optId);
                 }
             } 
@@ -930,7 +930,7 @@ const settingsSignLanguageSize = { title: 'Size', icon: './img/menu/sl_size.png'
             default: function(){ return (slConfig.size == 18) },
             function:  function(){ 
                 if(!settingsSignLanguageSize.options[1].default()){
-                    _slMngr.setSignerSize(18);
+                    _slMngr.setSize(18);
                     SettingsOptionCtrl.setChildColumnActiveOpt(settingsSignLanguageSize.options[1].optId);
                 }
             } 
@@ -939,7 +939,7 @@ const settingsSignLanguageSize = { title: 'Size', icon: './img/menu/sl_size.png'
             default: function(){ return (slConfig.size == 20) },
             function:  function(){ 
                 if(!settingsSignLanguageSize.options[2].default()){
-                    _slMngr.setSignerSize(20);
+                    _slMngr.setSize(20);
                     SettingsOptionCtrl.setChildColumnActiveOpt(settingsSignLanguageSize.options[2].optId);
                 }
             } 

@@ -207,8 +207,8 @@ ManifestParser = function() {
         if ( list_contents[demoId].signer && list_contents[demoId].signer[0] ){
             var cookielang = _slMngr.getSLAvailableLang( _iconf.sllanguage ); //_slMngr.getSignerLanguage();
             var siglang = cookielang ? cookielang : list_contents[demoId].signer[0][lang] ? lang : Object.keys(list_contents[demoId].signer[0])[0];
-            _slMngr.setSignerContent( list_contents[demoId].signer[0][siglang], siglang );
-            _slMngr.setSignerLanguagesArray( list_contents[demoId].signer[0] );
+            _slMngr.setContent( list_contents[demoId].signer[0][siglang], siglang );
+            _slMngr.setLanguagesArray( list_contents[demoId].signer[0] );
 
             if ( list_contents[ demoId ].st4sl && list_contents[ demoId ].st4sl[ 0 ] ) {
                 var sigSTlang = list_contents[ demoId ].st4sl[ 0 ][ lang ] ? lang : Object.keys( list_contents[ demoId ].st4sl[ 0 ] )[ 0 ];

@@ -60,6 +60,13 @@ SLManager = function() {
         signer = canvas.getObjectByName('signer');
         slConfig.isEnabled = true;
 
+        if(stConfig.isEnabled){
+            signer.position.y = Math.abs(signer.position.y) * stConfig.canvasPos.y;
+            let subtitles = _stMngr.getSubtitles();
+            //Not working as it should (CHECK)
+            subtitles.position.x = _stMngr.removeOverlap(subtitles.scale.x);
+        }
+
         if (imsc1doc_SL) {
             // If the metadata has ST (imsc1doc_SL) for SL, 
             // create and add the ST mesh under the SL video.
@@ -188,7 +195,7 @@ SLManager = function() {
             if (imsc1doc_SL || (stConfig.indicator.localeCompare('arrow') === 0 && !stConfig.isEnabled)){ 
                 if (slConfig.canvasPos.y < 0 && slConfig.isEnabled){
                     let st4slMesh = signer.getObjectByName('sl-subtitles').children[0].geometry.parameters.height;
-                    y = slConfig.initPos.y + st4slMesh * signer.getObjectByName('sl-subtitles').scale.x;
+                    y = signer.position.y + st4slMesh * signer.getObjectByName('sl-subtitles').scale.x;
                 } else {
                     y = (vHeight*(1-safeFactor) - slConfig.size)/2;
                 }
@@ -280,15 +287,20 @@ SLManager = function() {
  *
  * @param      {number}  size    The size
  */
-    this.setSignerSize = function(size){
+    this.setSize = function(size){
         let scaleFactor = size/slConfig.maxSize;
-        if (scene.getObjectByName('signer')) {
-            scene.getObjectByName('sl-video').scale.set(scaleFactor, scaleFactor, 1);
+        if (signer) {
+            signer.getObjectByName('sl-video').scale.set(scaleFactor, scaleFactor, 1);
             slConfig.size = size;
-            if(scene.getObjectByName('sl-subtitles')){
+            signer.position.y = slConfig.canvasPos.y * (vHeight*(1-safeFactor) - slConfig.size)/2;
+            if(signer.getObjectByName('sl-subtitles').visible){
                 updateST4SLPosition();
-            }
-            signer.position.y = slConfig.canvasPos.y * (vHeight*(1-0.1) - slConfig.size)/2;
+                _slMngr.updatePositionY();
+            }    
+        }
+        let subtitles = _stMngr.getSubtitles();
+        if(slConfig.isEnabled && subtitles){
+            subtitles.position.x = _stMngr.removeOverlap(subtitles.scale.x);
         }
     };
 
@@ -298,7 +310,7 @@ SLManager = function() {
  * @param      {<type>}  url     The new value
  * @param      {<type>}  lang    The language
  */
-    this.setSignerContent = function(url, lang) {
+    this.setContent = function(url, lang) {
         slConfig.url = url;
         slConfig.language = lang;
         if (slConfig.isEnabled) {
@@ -311,7 +323,7 @@ SLManager = function() {
  *
  * @param      {<type>}  subList  The sub list
  */
-    this.setSignerLanguagesArray = function(subList){
+    this.setLanguagesArray = function(subList){
         slConfig.availableLang = [];
 
         if (subList.en) {

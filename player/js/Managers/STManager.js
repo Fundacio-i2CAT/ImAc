@@ -347,7 +347,8 @@ STManager = function() {
             let esaySizeAjust = stConfig.easy2read ? 1.25 : 1;
             scaleFactor = (stConfig.area/130) * stConfig.size * esaySizeAjust;
             subtitles.scale.set( scaleFactor, scaleFactor, 1 );
-            subtitles.position.y = slConfig.canvasPos.y * (vHeight*(1-0.1) - stConfig.size)/2;
+            subtitles.position.x = (slConfig.isEnabled ? _stMngr.removeOverlap(scaleFactor) : 0);
+            subtitles.position.y = slConfig.canvasPos.y * (vHeight*(1-safeFactor) - scaleFactor*stConfig.height)/2;
         }
     };
 
@@ -393,9 +394,8 @@ STManager = function() {
             //Check if not fixed options and stConfig.initPos.y is initialized;
             //If stConfig.initPos.y is not initialized ST will have to be created
             if(!stConfig.fixedSpeaker && !stConfig.fixedScene && pos.y != 0 && stConfig.initPos.y != 0){
-                subtitles.position.x = _stMngr.removeOverlap(subtitles.scale.x);
-                
-                subtitles.position.y =  Math.abs(stConfig.initPos.y)*pos.y; 
+                subtitles.position.x = (slConfig.isEnabled ? _stMngr.removeOverlap(subtitles.scale.x) : 0);
+                subtitles.position.y =  Math.abs(subtitles.position.y)*pos.y; 
                 stConfig.fixedSpeaker = spFixed;
                 stConfig.fixedScene = scFixed;
             } else{

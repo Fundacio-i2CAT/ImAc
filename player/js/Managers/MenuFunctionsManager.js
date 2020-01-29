@@ -26,7 +26,7 @@ MenuFunctionsManager = function() {
                 case 'sl':
                     if ( list_contents[ demoId ].signer && list_contents[ demoId ].signer[ 0 ] && _slMngr.checkisSignAvailable( lang )) {
                         _iconf.sllanguage = lang;
-                        _slMngr.setSignerContent( list_contents[ demoId ].signer[ 0 ][ lang ], lang );
+                        _slMngr.setContent( list_contents[ demoId ].signer[ 0 ][ lang ], lang );
                     }else {
                         _slMngr.switchSigner(false);
                     } 

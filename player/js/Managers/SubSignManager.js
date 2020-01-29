@@ -191,6 +191,7 @@ SubSignManager = function() {
 				if (stMesh) {
 					arrows = stMesh.getObjectByName('arrows');
 					width = stMesh.getObjectByName('emojitext').geometry.parameters.width;
+	            	stMesh.position.x = _stMngr.removeOverlap(stMesh.scale.x);
 				} 
 				slMesh.getObjectByName('arrows').visible = false;
 			} else {
@@ -210,18 +211,18 @@ SubSignManager = function() {
 			arrows = undefined;
 		}
 
-		let arw = arrows;
 		// cada 300 milis aprox
-    	if (arw) {
+    	if (arrows) {
     		let positionFactor = (!imsc1doc_SL && !stConfig.isEnabled) ? -1 : 1;
-    		let arwSize = arw.children[0].children[1].geometry.parameters.width/2;
+    		let arwSize = arrows.children[0].children[1].geometry.parameters.width/2;
 
-    		arw.getObjectByName('right-img').material.color.set(speakerColor);
-    		arw.getObjectByName('right').position.x = width/2 +positionFactor * arwSize;
-			arw.getObjectByName('right-img').material.opacity = (arw.getObjectByName('right-img').material.opacity === 1) ? 0.4 : 1;
-			arw.getObjectByName('left-img').material.color.set(speakerColor);
-			arw.getObjectByName('left').position.x = -width/2 -positionFactor * arwSize;
-			arw.getObjectByName('left-img').material.opacity = (arw.getObjectByName('left-img').material.opacity === 1) ? 0.4 : 1;
+    		arrows.getObjectByName('right-img').material.color.set(speakerColor);
+    		arrows.getObjectByName('right').position.x = width/2 +positionFactor * arwSize;
+			arrows.getObjectByName('right-img').material.opacity = (arrows.getObjectByName('right-img').material.opacity === 1) ? 0.4 : 1;
+
+			arrows.getObjectByName('left-img').material.color.set(speakerColor);
+			arrows.getObjectByName('left').position.x = -width/2 -positionFactor * arwSize;
+			arrows.getObjectByName('left-img').material.opacity = (arrows.getObjectByName('left-img').material.opacity === 1) ? 0.4 : 1;
     	}
 	}
 };

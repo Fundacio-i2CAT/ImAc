@@ -367,21 +367,18 @@ THREE.MediaObjectData = function () {
             cnv.width = 260;
             cnv.height = ch;
         }
-        //stConfig.width = cnv.width/6;
+
+        stConfig.width = cnv.width/6;
+        stConfig.height = ch*t.length/6; 
 
         if ( t[0] ) createCanvasTextLine( ctx, t[0].text, font, t[0].color, 0, 0, cnv.width, ch, opacity, ( cnv.width - width )/2, fh );
         if ( t[1] ) createCanvasTextLine( ctx, t[1].text, font, t[1].color, 0, ch, cnv.width, ch, opacity, ( cnv.width - width2 )/2, fh + ch );
 
         let material = new THREE.MeshBasicMaterial( { map: new THREE.CanvasTexture( cnv ),  transparent: true } );
-        let textMesh = new THREE.Mesh( new THREE.PlaneGeometry( cnv.width/6, ch*t.length/6 ), material );
+        let textMesh = new THREE.Mesh( new THREE.PlaneGeometry( stConfig.width, stConfig.height ), material );
         textMesh.name = 'emojitext';
         textMesh.visible = true;
-        stConfig.width = textMesh.geometry.parameters.width;
 
-        //Depending on the line number the center of the text mesh will change;
-        let stLineFactorCorrection = (t[1]) ? (textMesh.geometry.parameters.height/4) : (textMesh.geometry.parameters.height/2);
-        stConfig.height = stLineFactorCorrection * 2; 
-        
         let arrows = getSubtitlesArrowMesh(6.5, t.length, t[0].color, t[0].backgroundColor, (!imsc1doc_SL && !stConfig.isEnabled) ? 0 : opacity);
 
         if (isSL){//&& !imsc1doc_SL){
@@ -389,14 +386,10 @@ THREE.MediaObjectData = function () {
             stGroup.position.y = -(slConfig.size + textMesh.geometry.parameters.height*scaleFactor)/2;
             stGroup.position.x = 0;
         } else {
-            let latitud = stConfig.canvasPos.y * (30 * stConfig.area/100);
-            let posY = _isHMD && !stConfig.fixedSpeaker ? 80 * Math.sin( Math.radians( latitud ) ) : 135 * Math.sin( Math.radians( latitud ) );
-            let  y = (stConfig.fixedSpeaker) ? posY : (stConfig.canvasPos.y * (vHeight/2));
-            let esaySizeAjust = stConfig.easy2read ? 1.25 : 1;
-
-            scaleFactor = (stConfig.area/130) * stConfig.size * esaySizeAjust;
+            scaleFactor = (stConfig.area/130) * stConfig.size * (stConfig.easy2read ? 1.25 : 1);
             if(!stConfig.fixedSpeaker && !stConfig.fixedScene){
-                let initY = stConfig.canvasPos.y * (vHeight*(1-safeFactor) - scaleFactor*(ch*t.length/6))/2;
+                let initY = stConfig.canvasPos.y * (vHeight*(1-safeFactor) - scaleFactor*stConfig.height)/2;
+
                 //This will save the very 1st position.
                 if(!stConfig.initPos){
                     stConfig.initPos = new THREE.Vector2(0, initY);
@@ -408,7 +401,7 @@ THREE.MediaObjectData = function () {
                     stGroup.position.x = savedPosition.x;
                 } else {
                     stGroup.position.y = initY;
-                    stGroup.position.x = 0 + _stMngr.removeOverlap(scaleFactor);
+                    stGroup.position.x = (slConfig.isEnabled ? _stMngr.removeOverlap(scaleFactor) : 0);
                     
                 }
             } else if(stConfig.fixedScene){

@@ -99,11 +99,78 @@
 
 </head>
 
-<body onload="init_webplayer()" id="body-container">
+<body onload="showPopup()" id="body-container">
 
 	<div id="container"></div>
 	<canvas id="canvas" style="display: contents;"></canvas>
 	<canvas id="canvas2" style="display: contents;"></canvas>
+
+	<div class="popupclass" id="mainpopup">
+		<div class="container">
+			<div class="popuptextbox">
+				<p><b>Hinweise zum Datenschutz</b></p>
+				<p>Stand 20.01.2020</p>
+				<p><b>Kontaktdaten des Verantwortlichen</b><br>Verantwortlicher im Sinne der EU-Datenschutz-Grundverordnung (DSGVO) sind:</p>
+				<p>
+					Rundfunk Berlin-Brandenburg (rbb)<br>
+					vertreten durch die Intendantin<br>
+					Anstalt des öffentlichen Rechts<br>
+					Masurenallee 8-14<br>
+					14057 Berlin<br>
+				</p>
+				<p>und</p>
+				<p>
+					i2CAT<br>
+					Calle Gran Capita 2-4<br>
+					Edifici Nexus I<br>
+					08034 Barcelona<br>
+					Spain<br>
+				</p>
+				<p>Die Verantwortlichen haben einen Joint Controller Vertrag im Sinne von Artikel 26 Absatz 1 EU-DSGVO abgeschlossen. Danach ist der Rundfunk Berlin-Brandenburg Federführer und dazu verpflichtet allen Informations- und Auskunftspflichten gemäß Artikel 13 und 14 EU-DSGVO nachzukommen.</p>
+				<br>
+				<p><b>Kontaktdaten der Datenschutzbeauftragten</b></p>
+				<p>
+					Datenschutzbeauftragte des rbb ist:<br>
+					Anke Naujock-Simon<br>
+					Masurenallee 8-14<br>
+					14057 Berlin<br>
+					Telefon: 030/9799360400<br>
+					E-Mail: Datenschutz@rbb-online.de<br>
+				</p>
+				<br>
+				<p><b>Verarbeitung personenbezogener Daten</b></p>
+				<p>Generell werden die personenbezogenen Daten der Nutzer nur verwendet, soweit dies zur Bereitstellung einer funktionsfähigen Website sowie der Inhalte und Leistungen erforderlich ist.</p>
+				<p>Für dieses Angebot nutzen die rbb Innovationsprojekte den ImAc Player. Dieser wurde im EU- Projekt ImAc (Immersive Accessibility) von der Firma i2CAT (https://www.i2cat.net/#home) entwickelt und tritt hier auch als technischer Betreiber auf.</p>
+				<p>Bei jedem Aufruf der Website erfasst das System automatisiert die IP-Adresse vom Computersystem des aufrufenden Endgerätes. Diese werden jedoch <u><b>NICHT</b></u> in Serverprotokolldateien sogenannte Logfiles gespeichert.</p>
+				<p>Außerdem verwendet i2CAT Cookies. Cookies sind kleine Textdateien, die bei Aufruf einer Website vom Internetbrowser temporär auf Ihrem Endgerät gespeichert werden. i2CAT setzt sogenannte funktionale Cookies aus technischen Gründen ein, um Ihnen einen komfortablen Zugriff auf das Online-Angebot zu ermöglichen und dieses nutzerfreundlicher zu gestalten. In den Cookies werden die Einstellungen im Player Menü gespeichert, damit Sie beim erneuten Aufruf nicht noch einmal alle Einstellungen tätigen müssen. Außerdem wird eine eindeutige Zeichenfolge gespeichert, die eine Identifizierung des erneuten Zugriffs ermöglicht damit der Hilfetext vor dem Video nicht noch einmal angezeigt wird. Rechtsgrundlage für die Verarbeitung personenbezogener Daten unter Verwendung von Cookies ist Art.6 Abs.1 S. 1 lit. e) DS-GVO.</p>
+				<p>Folgende zusätzliche Daten werden mit Ihrer ausdrücklichen Einwilligung erhoben und von uns ausgewertet:</p>
+				<p>&nbsp; 1) Qualitative Parameter</p>
+				<p>Gerät wird eine zufällige ID zugewiesen (Erkennung eines neuen oder bereits erfassten Gerätes); Startverzögerung (Verzögerung seit der Auswahl des Videos und der tatsächlichen Wiedergabe); Durchsatz sprich effektive Bandbreite; Videoqualität; Puffer Auslastung; Abspielverzögerungen und Betrachtungsrichtung (Breiten- und Längengrade).</p>
+				<p>Die Daten werden gelöscht, sobald sie für die Erreichung des Zweckes ihrer Erhebung nicht mehr erforderlich sind, spätestens zum 31.03.2020.</p>
+				<p>&nbsp; 2) Nutzerverhalten</p>
+				<p>Zur Erfassung des Nutzerverhaltens im ImAc Player wird Google Analytics eingesetzt zur statistischen Erfassung.</p>
+				<p>Folgende Daten werden erhoben: Gerät wird eine zufällige ID zugewiesen (Erkennung eines neuen oder bereits erfassten Gerätes), Region und Zugriffszeit, Gerätetyp, genutzter Internet Browser, Dauer der Videowiedergabe, genutzte barrierefreie Dienste und Nutzungszeit, verwendete Einstellungen im Player Menü und verwendete Funktionen zur Steuerung des Videos (Beispiel: Play / Pause)</p>
+				<p>Die auf diese Weise erhobenen Daten werden durch technische Vorkehrungen anonymisiert. Die IP-Adresse wird von Google gekürzt verarbeitet.</p>
+				<p>Google Analytics nutzt außerdem Cookies um einen erneuten Zugriff des Internetbrowsers zu erkennen und wie schnell die Website aufgerufen wurde. Die Ablaufzeit der Cookies beträgt 7 Tage.</p>
+				<p>Im Auftrag von i2CAT wird Google diese Informationen benutzen, um Ihre Nutzung der Website auszuwerten, um Reports über die Webseiten-Aktivitäten zusammenzustellen. i2CAT hat mit Google einen Vertrag zur Auftragsverarbeitung abgeschlossen. </p>
+				<p>Die statistischen Daten werden gelöscht, sobald sie für die Erreichung des Zweckes ihrer Erhebung nicht mehr erforderlich sind, spätestens zum 31.03.2020.</p>
+				<br>
+				<p><b>Sind Sie mit der Erhebung der Daten einverstanden? Sie können sich die Videos auch anschauen, wenn Sie sich gegen eine Erfassung entscheiden.</b></p>
+				<p><b>Ja    Nein</b></p>
+				<br>
+				<p><b>Ihre Rechte</b></p>
+				<p>Sie haben das Recht, Ihre Einwilligung zur Auswertung ihrer Nutzerdaten jederzeit zu widerrufen. In diesem Fall werden Ihre Daten unverzüglich gelöscht.</p>
+				<p>Bitte richten Sie Ihren Widerruf an innovationsprojekte@rbb-online.de. Dann erhalten Sie eine Bestätigungs-E-Mail über die Löschung Ihrer Angaben.</p>
+				<p>Sie haben überdies das Recht auf Auskunft, Löschung und Einschränkung der Verarbeitung der Daten. Bitte wenden Sie sich in diesem Fall an <a href="innovationsprojekte@rbb-online.de" target="_blank">innovationsprojekte@rbb-online.de</a>.</p>
+				<p>Wenn Sie der Ansicht sind, dass Sie bei der Verarbeitung der Sie betreffenden Daten in Ihren schutzwürdigen Interessen verletzt sind, steht Ihnen das Recht auf Beschwerde zu. Wenden Sie sich in diesem Fall an die rbb-Datenschutzbeauftragte oder an die zuständige Aufsichtsbehörde (Berliner Beauftragte für Datenschutz und Informationsfreiheit, Kontakt: <a href="https://www.datenschutz-berlin.de/kontakt.html" target="_blank">https://www.datenschutz-berlin.de/kontakt.html</a>.)</p>
+				<p>Sie können sich auch an die zuständige Aufsichtsbehörde für i2CAT wenden (Catalan Data Protection Authority, <a href="https://apdcat.gencat.cat/en/inici/" target="_blank">https://apdcat.gencat.cat/en/inici/</a>, apdcat@gencat.cat).</p>
+			</div>
+			<div class="popupbuttons">
+				<button type="button" class="btn btn-primary" id="popupbutton1" style="width: 70px; margin: 1rem">Ja</button>
+				<button type="button" class="btn btn-primary" id="popupbutton2" style="width: 70px; margin: 1rem">Nein</button>
+			</div>
+		</div>
+	</div>
 
 </body>
 </html>

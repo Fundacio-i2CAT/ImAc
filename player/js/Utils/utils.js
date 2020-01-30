@@ -663,3 +663,17 @@ function showEndingOptions()
     document.body.appendChild( createVRButton_3() );
     document.body.appendChild( createVRButton_4() );
 }
+
+function resolveAfter2Seconds() {
+  return new Promise(resolve => {
+    /*setTimeout(() => {
+      resolve('resolved');
+    }, 2000);*/
+      document.getElementById('popupbutton1').addEventListener('click', function(e) {
+          resolve(true)
+      });
+      document.getElementById('popupbutton2').addEventListener('click', function(e) {
+          resolve(false)
+      })
+  });
+}

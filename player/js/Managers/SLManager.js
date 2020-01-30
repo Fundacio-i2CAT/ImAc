@@ -28,7 +28,7 @@ SLManager = function() {
         // NEEDS TO BE ADDED THE PRE STABLISHED VALUES FROM THE WEB (utils.js line 313)
         let config = {
             url: '',                              // {String}   Signer video url.
-            st4sltext: '',                        // {String}   Ttext for the signer subtitles.
+            st4sltext: '',                        // {String}   Text for the signer subtitles.
             isMoved: false,                       // {Boolean}  Has the signer been moved by the user.
             isEnabled: false,                     // {Boolean}  Determines if the signer video is active or not.
             initPos: null,                        // {Vector2}  Initial position of the signer video when 1st created.
@@ -62,9 +62,11 @@ SLManager = function() {
 
         if(stConfig.isEnabled){
             signer.position.y = Math.abs(signer.position.y) * stConfig.canvasPos.y;
-            let subtitles = _stMngr.getSubtitles();
             //Not working as it should (CHECK)
-            subtitles.position.x = _stMngr.removeOverlap(subtitles.scale.x);
+            let subtitles = _stMngr.getSubtitles();
+            if(subtitles){
+                //subtitles.position.x = _stMngr.removeOverlap(subtitles.scale.x);
+            }
         }
 
         if (imsc1doc_SL) {
@@ -192,10 +194,11 @@ SLManager = function() {
     this.updatePositionY = function(){
         if (signer && !localStorage.getItem("slPosition")) {
             let y;
-            if (imsc1doc_SL || (stConfig.indicator.localeCompare('arrow') === 0 && !stConfig.isEnabled)){ 
+            let slst = signer.getObjectByName('sl-subtitles')
+            if ((imsc1doc_SL && slst) || (stConfig.indicator.localeCompare('arrow') === 0 && !stConfig.isEnabled)){ 
                 if (slConfig.canvasPos.y < 0 && slConfig.isEnabled){
-                    let st4slMesh = signer.getObjectByName('sl-subtitles').children[0].geometry.parameters.height;
-                    y = signer.position.y + st4slMesh * signer.getObjectByName('sl-subtitles').scale.x;
+                    let st4slMesh = slst.children[0].geometry.parameters.height;
+                    y = slConfig.initPos.y + st4slMesh * slst.scale.x;
                 } else {
                     y = (vHeight*(1-safeFactor) - slConfig.size)/2;
                 }

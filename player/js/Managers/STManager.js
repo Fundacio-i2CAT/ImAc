@@ -100,8 +100,11 @@ STManager = function() {
  */
     this.create = function(textList){
         let stMesh;
-        _stMngr.remove();
-        if ( !stConfig.fixedSpeaker && !stConfig.fixedScene ){
+        if(subtitles){
+            _stMngr.remove();
+        }
+        
+        if (!stConfig.fixedSpeaker && !stConfig.fixedScene){
             stMesh = _moData.getSubtitleMesh(textList, "500 40px Roboto, Arial", false, 'subtitles');
             canvasMgr.addElement(stMesh);
             subtitles = canvas.getObjectByName('subtitles');

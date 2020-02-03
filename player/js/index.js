@@ -103,7 +103,7 @@ let safeFactor = 0.1; //Creates a margin with the height of the scren. Diferent 
 
 async function showPopup()
 {
-    if ( window.location.pathname.indexOf('player_de/') > 0 && localStorage.ImAc_cookies == undefined )
+    /*if ( window.location.pathname.indexOf('player_de/') > 0 && localStorage.ImAc_cookies == undefined )
     {
         document.getElementById('mainpopup').style.display = 'inherit';
         await resolveAfter2Seconds().then( ( str ) => { 
@@ -113,10 +113,10 @@ async function showPopup()
         });
     }
     else 
-    {
+    {*/
         if ( localStorage.ImAc_cookies == undefined ) localStorage.ImAc_cookies = confirm("Do you give us consent to register behavior metrics for research purposes?");
         init_webplayer()
-    }
+    //}
 }
 
 function init_webplayer()

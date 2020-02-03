@@ -408,6 +408,11 @@ STManager = function() {
                 subController.updateISD( VideoController.getMediaTime() );
             }
         }
+        else {
+            stConfig.fixedSpeaker = spFixed;
+            stConfig.fixedScene = scFixed;
+
+        }
     };
 
 

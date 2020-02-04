@@ -351,7 +351,7 @@ STManager = function() {
             scaleFactor = (stConfig.area/130) * stConfig.size * esaySizeAjust;
             subtitles.scale.set( scaleFactor, scaleFactor, 1 );
             subtitles.position.x = (slConfig.isEnabled ? _stMngr.removeOverlap(scaleFactor) : 0);
-            subtitles.position.y = slConfig.canvasPos.y * (vHeight*(1-safeFactor) - scaleFactor*stConfig.height)/2;
+            subtitles.position.y = stConfig.canvasPos.y * (vHeight*(1-safeFactor) - scaleFactor*stConfig.height)/2;
         }
     };
 

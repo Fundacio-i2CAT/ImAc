@@ -49,7 +49,7 @@ function AplicationManager()
 		{
 			setInterval(function(){
 				statObj.add( new StatElements() );
-			}, 500);
+            }, 500);
 		}
 	}
 

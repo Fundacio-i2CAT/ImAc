@@ -137,10 +137,10 @@ function createVRButton_1(renderer)
 
     stylizeElement( button );
 
-    window.addEventListener( 'vrdisplaypresentchange', function ( event ) 
+    /*window.addEventListener( 'vrdisplaypresentchange', function ( event ) 
     {
         if ( event.display && !event.display.isPresenting ) location.reload();
-    }, false );
+    }, false );*/
 
     navigator.getVRDisplays().then( function ( displays ) 
     {
@@ -217,6 +217,12 @@ function createVRButton_3()
     var button = document.createElement( 'button' );
 
     stylizeElement( button );
+
+    navigator.getVRDisplays().then( function ( displays ) 
+    {
+        if ( displays.length > 0 ) displays[0].exitPresent()
+    });
+
     showEnterVR();
 
     return button;
@@ -659,6 +665,8 @@ function showEndingOptions()
     vrtext2.style.top = 2*window.innerHeight/6 + 150 +'px';
     vrtext2.textContent = MenuDictionary.getOption2Text();
     document.body.appendChild( vrtext2 );
+
+
 
     document.body.appendChild( createVRButton_3() );
     document.body.appendChild( createVRButton_4() );

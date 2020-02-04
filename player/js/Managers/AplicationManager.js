@@ -69,7 +69,7 @@ function AplicationManager()
 
 
         // Init World
-        camera = new THREE.PerspectiveCamera( 60.0, window.innerWidth / window.innerHeight, 1, 1000);
+        camera = new THREE.PerspectiveCamera( 60.0, window.innerWidth / window.innerHeight, 1, 2000);
         camera.name = 'perspectivecamera';
         scene = new THREE.Scene();
         scene.add( camera );

@@ -95,7 +95,7 @@ let actionPausedVideo = false;
 const canvasDistance = 70;
 let vFOV; // convert vertical fov to radians
 let vHeight; // visible height
-let safeFactor = 0.1; //Creates a margin with the height of the scren. Diferent factor for HMD.
+let safeFactor = 0.2; //Creates a margin with the height of the scren. Diferent factor for HMD.
 
 /**
  * Initializes the web player.

@@ -193,20 +193,15 @@ SLManager = function() {
  */
     this.updatePositionY = function(){
         if (signer && !localStorage.getItem("slPosition")) {
-            let y;
-            let slst = signer.getObjectByName('sl-subtitles')
-            if ((imsc1doc_SL && slst) || (stConfig.indicator.localeCompare('arrow') === 0 && !stConfig.isEnabled)){ 
+            let slst = signer.getObjectByName('sl-subtitles');
+            let y = (vHeight*(1-safeFactor) - slConfig.size)/2;                
+            let offsetY = 0;
+            if((imsc1doc_SL && slst) || (stConfig.indicator.localeCompare('arrow') === 0 && !stConfig.isEnabled)){
                 if (slConfig.canvasPos.y < 0 && slConfig.isEnabled){
-                    let st4slMesh = slst.children[0].geometry.parameters.height;
-                    y = slConfig.initPos.y + st4slMesh * slst.scale.x;
-                } else {
-                    y = (vHeight*(1-safeFactor) - slConfig.size)/2;
+                    offsetY = slConfig.canvasPos.y * slst.children[0].geometry.parameters.height * slst.scale.x;
                 }
             }
-             else{
-                y = (vHeight*(1-safeFactor) - slConfig.size)/2;
-            }
-            signer.position.y = slConfig.canvasPos.y * Math.abs(y);
+            signer.position.y = slConfig.canvasPos.y * Math.abs(y + offsetY);
         }
     }
 
@@ -295,11 +290,13 @@ SLManager = function() {
         if (signer) {
             signer.getObjectByName('sl-video').scale.set(scaleFactor, scaleFactor, 1);
             slConfig.size = size;
-            signer.position.y = slConfig.canvasPos.y * (vHeight*(1-safeFactor) - slConfig.size)/2;
             if(signer.getObjectByName('sl-subtitles').visible){
+                console.log('set size SL with ST')
                 updateST4SLPosition();
                 _slMngr.updatePositionY();
-            }    
+            } else {
+                signer.position.y = slConfig.canvasPos.y * (vHeight*(1-safeFactor) - slConfig.size)/2;
+            } 
         }
         let subtitles = _stMngr.getSubtitles();
         if(slConfig.isEnabled && subtitles){

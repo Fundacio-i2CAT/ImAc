@@ -113,7 +113,16 @@ THREE.MediaObjectData = function () {
 
     this.getSLSubtitleMesh = function(textList){
         const material = new THREE.MeshBasicMaterial( { color: 0x000000,  transparent: true, opacity: 0 } );
-        const font = textList[0].text.length < 13 ? "500 40px Roboto, Arial" : "500 36px Roboto, Arial";
+        let font;
+
+        if(textList[0].text.length < 14){
+            font = "500 40px Roboto, Arial";
+        } else if (textList[0].text.length < 16){
+            font = "500 35px Roboto, Arial"
+        } else if (textList[0].text.length < 18) {
+            font = "500 30px Roboto, Arial"
+        }
+
         let subtitles4SLMesh = _moData.getSubtitleMesh(textList, font, true, 'sl-subtitles');
         return subtitles4SLMesh;
     };

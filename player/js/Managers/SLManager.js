@@ -133,7 +133,6 @@ SLManager = function() {
         slConfig.st4sltext = textList;
         subtitleSLMesh = _moData.getSLSubtitleMesh(textList);
         canvas.getObjectByName('signer').add(subtitleSLMesh);
-        updateST4SLPosition();
        _slMngr.updatePositionY();
     };
 
@@ -193,12 +192,18 @@ SLManager = function() {
  */
     this.updatePositionY = function(){
         if (signer && !localStorage.getItem("slPosition")) {
-            let slst = signer.getObjectByName('sl-subtitles');
+            let st4slMesh = signer.getObjectByName('sl-subtitles');
             let y = (vHeight*(1-safeFactor) - slConfig.size)/2;                
             let offsetY = 0;
-            if((imsc1doc_SL && slst) || (stConfig.indicator.localeCompare('arrow') === 0 && !stConfig.isEnabled)){
+            if((imsc1doc_SL && st4slMesh) || (stConfig.indicator.localeCompare('arrow') === 0 && !stConfig.isEnabled)){
+                //Update the position of the signer subtitles.
+                let scaleFactor = (slConfig.size/st4slMesh.children[0].geometry.parameters.width);
+                st4slMesh.scale.set(scaleFactor, scaleFactor, 1);
+                st4slMesh.position.y = -(slConfig.size + st4slMesh.children[0].geometry.parameters.height*scaleFactor)/2;
+
+                // Add offset to the signer 'y' if the signer is on bottom position.
                 if (slConfig.canvasPos.y < 0 && slConfig.isEnabled){
-                    offsetY = slConfig.canvasPos.y * slst.children[0].geometry.parameters.height * slst.scale.x;
+                    offsetY = slConfig.canvasPos.y * st4slMesh.children[0].geometry.parameters.height * st4slMesh.scale.x;
                 }
             }
             signer.position.y = slConfig.canvasPos.y * Math.abs(y + offsetY);
@@ -209,20 +214,6 @@ SLManager = function() {
 /*****************************************************************************************************************************
 *                                           P R I V A T E    F U N C T I O N S  
 *****************************************************************************************************************************/
-
-/**
- * { function_description }
- */
-    function updateST4SLPosition(){
-        if (signer) {
-            let st4slMesh = signer.getObjectByName('sl-subtitles');
-            let scaleFactor = (slConfig.size/st4slMesh.children[0].geometry.parameters.width);
-            st4slMesh.scale.set(scaleFactor, scaleFactor, 1);
-            st4slMesh.position.y = -(slConfig.size + st4slMesh.children[0].geometry.parameters.height*scaleFactor)/2;
-        }
-    }
-
-
 
 
 /*****************************************************************************************************************************
@@ -291,8 +282,6 @@ SLManager = function() {
             signer.getObjectByName('sl-video').scale.set(scaleFactor, scaleFactor, 1);
             slConfig.size = size;
             if(signer.getObjectByName('sl-subtitles').visible){
-                console.log('set size SL with ST')
-                updateST4SLPosition();
                 _slMngr.updatePositionY();
             } else {
                 signer.position.y = slConfig.canvasPos.y * (vHeight*(1-safeFactor) - slConfig.size)/2;

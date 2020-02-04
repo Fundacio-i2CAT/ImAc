@@ -8,7 +8,6 @@ function togglefullscreen()
 
 function enterfullscreen() {
 	element = document.body;
-    console.log('fullscreen')
     if (document.fullscreenEnabled || document.msFullscreenEnabled || document.mozFullScreenEnabled || document.webkitFullscreenEnabled) 
     {
         if ( element.requestFullscreen ) 

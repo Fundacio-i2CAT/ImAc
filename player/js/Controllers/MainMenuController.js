@@ -543,7 +543,7 @@ function MainMenuController() {
  * @param      {<type>}  raycaster        The raycaster
  * @param      {<type>}  elementSelection  The slider selection
  */
-    this.updatePositionOnMouseMove = function(raycaster, elementSelection){
+    this.updatePositionOnMove = function(raycaster, elementSelection){
         if (elementSelection) {
             const x = elementSelection.position.x;
 

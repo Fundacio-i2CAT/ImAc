@@ -37,7 +37,7 @@ function SettingsOptionMenuView() {
             data.parentColumnDropdown.forEach(function(element){
                 element.children[0].material.color.set( 0xe6e6e6 );
             });
-            submenu.getObjectByName(data.childColumnActiveOpt).children[0].material.color.set( 0xffff00 );
+            //submenu.getObjectByName(data.childColumnActiveOpt).children[0].material.color.set( 0xffff00 );
         }
 
 //TODO: CREATE SEPARATE FUNCTION

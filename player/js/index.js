@@ -42,7 +42,7 @@ let menuParent;
 let menuHeight;
 let menuWidth;
 
-var loggerActivated = false;
+var loggerActivated = true;
 var firstQoEmsg = true;
 
 var sessionId = Date.now(); // logger

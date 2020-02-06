@@ -1,6 +1,6 @@
 
 var QoE_URL = 'http://' + window.location.hostname + ':8083/qoe';
-//var QoE_URL = 'http://192.168.10.248:8083/qoe';
+//var QoE_URL = 'http://195.81.194.222:8083/qoe';
 
 var _targetVector = new THREE.Vector3();
 
@@ -14,6 +14,7 @@ var StatObject = function ()
     		data: element
     	},
     	function(data,status){
+    		if (status == 'success' && firstQoEmsg ) firstQoEmsg = false;
         	//Debug.log("Data: " + data + "\nStatus: " + status);
     	});
     };
@@ -32,7 +33,6 @@ var StatElements = function ()
     var quality = player.getQualityFor('video');
 
 	this.messageType = firstQoEmsg ? "START" : "INFO";
-	firstQoEmsg = false;
 	this.date = Date.now();
 	//this.deviceId = 1;
 	this.sessionId = sessionId;

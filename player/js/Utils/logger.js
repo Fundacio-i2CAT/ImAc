@@ -38,6 +38,7 @@ var StatElements = function ()
 	this.sessionId = sessionId;
 	this.contentId = demoId;
 	this.msId = localStorage.ImAc_roomID;
+	this.calculatedDiff = globalDiff;
 
 	this.mediaTime = videoElement.vid.currentTime;
 

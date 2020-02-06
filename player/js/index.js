@@ -44,6 +44,7 @@ let menuWidth;
 
 var loggerActivated = true;
 var firstQoEmsg = true;
+var globalDiff = 0;
 
 var sessionId = Date.now(); // logger
 

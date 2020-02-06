@@ -151,7 +151,9 @@ VideoController = function() {
 
     function syncAll(dif)
     {  
-        dif = parseInt( dif*100 )/100;  
+        dif = parseInt( dif*100 )/100;
+
+        globalDiff = dif;  
 
         //console.log(dif) 
 

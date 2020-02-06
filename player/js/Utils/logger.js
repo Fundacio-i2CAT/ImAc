@@ -31,11 +31,13 @@ var StatElements = function ()
     var currentBufferLevel = player.getBufferLength('video');
     var quality = player.getQualityFor('video');
 
-	this.messageType = "INFO";
+	this.messageType = firstQoEmsg ? "START" : "INFO";
+	firstQoEmsg = false;
 	this.date = Date.now();
 	//this.deviceId = 1;
 	this.sessionId = sessionId;
 	this.contentId = demoId;
+	this.msId = localStorage.ImAc_roomID;
 
 	this.mediaTime = videoElement.vid.currentTime;
 

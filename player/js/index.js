@@ -43,6 +43,7 @@ let menuHeight;
 let menuWidth;
 
 var loggerActivated = false;
+var firstQoEmsg = true;
 
 var sessionId = Date.now(); // logger
 
@@ -140,6 +141,7 @@ function init_webplayer()
                 list_contents = json.contents;
 
                 loadEmojisIcons()
+                firstQoEmsg = true;
 
                 if ( myhash && myhash[1] && myhash[1] < list_contents.length && list_contents[ myhash[1] ] && localStorage.ImAc_init == myhash[1] ) 
                 {

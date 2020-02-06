@@ -10,6 +10,7 @@ function AplicationManager()
     var _display;
 
     var mouse3D = new THREE.Vector2( 0, 0 );
+    var hmdTouchVector = new THREE.Vector2( 0, 0 );
 
     var button_1;
     var button_2;
@@ -140,8 +141,9 @@ function AplicationManager()
         _AudioManager.updateRotationMatrix( camera.matrixWorld.elements );
 
         if( THREE.VRController.getTouchPadState() && _isHMD ) 
-        {           
-            interController.checkInteraction( mouse3D, camera, 'onDocumentMouseDown' );
+        {   
+            interController.checkInteractionVPB( hmdTouchVector, camera, true );        
+            interController.checkInteraction( hmdTouchVector, camera, false, true );
 
             // function to open menu with a simple click
             if ( menuMgr.getMenuType() == 2 && scene.getObjectByName( 'trad-main-menu' ).visible == false ) 

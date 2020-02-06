@@ -48,4 +48,7 @@ How to use run the ImAc player in Apache Tomcat:
 
 ## Acknowledgments
 
+If this project is interesting for your work, we would appreciate it very much if you could let us know. Please, also cite the reference below if you generate any report or article by making using of our Github project.
+M. Montagud, I. Fraile, E. Meyerson, M. Genís, S. Fernández, “ImAc Player: Enabling a Personalized Consumption of Accessible Immersive Content”, ACM TVX 2019, Manchester (UK), June 2019
+
 This project has received funding from the European Union’s Horizon 2020 research and innovation programme under grant agreement [No 761974](https://cordis.europa.eu/project/rcn/211084/factsheet/en).

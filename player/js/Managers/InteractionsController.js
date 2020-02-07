@@ -313,6 +313,8 @@ THREE.InteractionsController = function () {
                         'anonymizeIp': true
                     });
 
+                    if ( loggerActivated ) statObj.add( new StatElements( intersects[inter].object.name ) );
+
 
                     if ( intersects[inter].object.type == 'Mesh' && intersects[inter].object.onexecute ){
         	            intersects[inter].object.onexecute();

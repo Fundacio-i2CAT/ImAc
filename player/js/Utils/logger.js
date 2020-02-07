@@ -21,18 +21,15 @@ var StatObject = function ()
 
 };
 
-var StatElements = function () 
+var StatElements = function (userAction) 
 {
 	var videoElement = VideoController.getListOfVideoContents()[0];
 	var player = videoElement.dash;
-	//var metrics = player.getMetricsFor('video');
     var averageThroughput = player.getAverageThroughput('video');
-    //var dashMetrics = player.getDashMetrics();
-    //var currentBufferLevel = dashMetrics.getCurrentBufferLevel(metrics) ? dashMetrics.getCurrentBufferLevel(metrics) : 0;
     var currentBufferLevel = player.getBufferLength('video');
     var quality = player.getQualityFor('video');
 
-	this.messageType = firstQoEmsg ? "START" : "INFO";
+	this.messageType = firstQoEmsg ? "START" : userAction ? userAction : "INFO";
 	this.date = Date.now();
 	//this.deviceId = 1;
 	this.sessionId = sessionId;
@@ -64,4 +61,6 @@ var StatElements = function ()
 	this.viewX = view.x;
 	this.viewY = view.y;
 	this.viewZ = view.z;	
+
+	this.playerUrl = window.location.href;
 };

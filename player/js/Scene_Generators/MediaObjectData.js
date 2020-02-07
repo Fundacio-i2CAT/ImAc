@@ -434,6 +434,7 @@ THREE.MediaObjectData = function () {
             group.add( mesh );
         }
         group.name = 'subtitles';
+        group.position.y = -10
         return group;
     };
 

@@ -128,6 +128,8 @@ function init_webplayer()
     //if ( localStorage.ImAc_cookies == undefined ) localStorage.ImAc_cookies = confirm("Do you give us consent to register behavior metrics for research purposes?");
     if ( localStorage.ImAc_cookies ) gtag('set', {'user_id': localStorage.ImAc_UUID});   
 
+    loggerActivated = loggerActivated ? localStorage.ImAc_cookies : loggerActivated;
+
     var myhash = window.location.hash.split('#');
 
     _AudioManager.initAmbisonicResources();

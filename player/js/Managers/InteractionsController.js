@@ -265,8 +265,8 @@ THREE.InteractionsController = function () {
     }
    
 
-    this.checkInteractionVPB = function(origin, direction){
-        if(_isHMD){
+    this.checkInteractionVPB = function(origin, direction, hmdTouch=false){
+        if(_isHMD && !hmdTouch){
             raycaster.set( origin, direction );
         } else{
             raycaster.setFromCamera(  origin, direction );
@@ -293,8 +293,8 @@ THREE.InteractionsController = function () {
         }
     }
 
-    this.checkInteraction = function(origin, direction, _mouseMoved){
-        if(_isHMD){
+    this.checkInteraction = function(origin, direction, _mouseMoved, hmdTouch=false){
+        if(_isHMD && !hmdTouch){
             raycaster.set( origin, direction );
         } else{
             raycaster.setFromCamera(  origin, direction );
@@ -312,6 +312,8 @@ THREE.InteractionsController = function () {
                         'event_label' : intersects[inter].object.name,
                         'anonymizeIp': true
                     });
+
+                    if ( loggerActivated ) statObj.add( new StatElements( intersects[inter].object.name ) );
 
 
                     if ( intersects[inter].object.type == 'Mesh' && intersects[inter].object.onexecute ){

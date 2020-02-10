@@ -1,7 +1,7 @@
 
 // GLOBAL VARS
 
-var _PlayerVersion = 'v0.09.0';
+var _PlayerVersion = 'v0.10.0';
 
 var AplicationManager = new AplicationManager();
 var MenuFunctionsManager = new MenuFunctionsManager();
@@ -42,7 +42,9 @@ let menuParent;
 let menuHeight;
 let menuWidth;
 
-var loggerActivated = false;
+var loggerActivated = true;
+var firstQoEmsg = true;
+var globalDiff = 0;
 
 var sessionId = Date.now(); // logger
 
@@ -126,6 +128,8 @@ function init_webplayer()
     //if ( localStorage.ImAc_cookies == undefined ) localStorage.ImAc_cookies = confirm("Do you give us consent to register behavior metrics for research purposes?");
     if ( localStorage.ImAc_cookies ) gtag('set', {'user_id': localStorage.ImAc_UUID});   
 
+    loggerActivated = loggerActivated ? localStorage.ImAc_cookies : loggerActivated;
+
     var myhash = window.location.hash.split('#');
 
     _AudioManager.initAmbisonicResources();
@@ -140,6 +144,7 @@ function init_webplayer()
                 list_contents = json.contents;
 
                 loadEmojisIcons()
+                firstQoEmsg = true;
 
                 if ( myhash && myhash[1] && myhash[1] < list_contents.length && list_contents[ myhash[1] ] && localStorage.ImAc_init == myhash[1] ) 
                 {

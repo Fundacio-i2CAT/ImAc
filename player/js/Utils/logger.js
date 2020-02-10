@@ -1,7 +1,7 @@
 
 //var QoE_URL = 'http://' + window.location.hostname + ':4000/api/create';
 var QoE_URL = 'http://' + window.location.hostname + ':8083/qoe';
-//var QoE_URL = 'http://192.168.10.248:8083/qoe';
+//var QoE_URL = 'http://195.81.194.222:8083/qoe';
 
 var _targetVector = new THREE.Vector3();
 
@@ -16,28 +16,28 @@ var StatObject = function ()
     		data: element
     	},
     	function(data,status){
+    		if (status == 'success' && firstQoEmsg ) firstQoEmsg = false;
         	//Debug.log("Data: " + data + "\nStatus: " + status);
     	});
     };
 
 };
 
-var StatElements = function () 
+var StatElements = function (userAction) 
 {
 	var videoElement = VideoController.getListOfVideoContents()[0];
 	var player = videoElement.dash;
-	//var metrics = player.getMetricsFor('video');
     var averageThroughput = player.getAverageThroughput('video');
-    //var dashMetrics = player.getDashMetrics();
-    //var currentBufferLevel = dashMetrics.getCurrentBufferLevel(metrics) ? dashMetrics.getCurrentBufferLevel(metrics) : 0;
     var currentBufferLevel = player.getBufferLength('video');
     var quality = player.getQualityFor('video');
 
-	this.messageType = "INFO";
+	this.messageType = firstQoEmsg ? "START" : userAction ? userAction : "INFO";
 	this.date = Date.now();
 	//this.deviceId = 1;
 	this.sessionId = sessionId;
 	this.contentId = demoId;
+	this.msId = localStorage.ImAc_roomID;
+	this.calculatedDiff = globalDiff;
 
 	this.mediaTime = videoElement.vid.currentTime;
 
@@ -63,4 +63,6 @@ var StatElements = function ()
 	this.viewX = view.x;
 	this.viewY = view.y;
 	this.viewZ = view.z;	
+
+	this.playerUrl = window.location.href;
 };

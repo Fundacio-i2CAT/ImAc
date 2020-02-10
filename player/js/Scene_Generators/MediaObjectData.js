@@ -349,7 +349,7 @@ THREE.MediaObjectData = function () {
     }
 
     this.getSubtitleMesh = function (t, font, isSL, name){
-        const opacity = stConfig.background;
+        const opacity = (isSL) ? 0.75 : stConfig.background;
         let scaleFactor = 1;
         let cnv;
 

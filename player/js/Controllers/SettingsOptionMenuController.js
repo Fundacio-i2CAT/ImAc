@@ -63,9 +63,7 @@ function SettingsOptionMenuController() {
 	    	viewStructure.children.forEach(function(intrElement){
 	    		interController.removeInteractiveObject(intrElement.name);
 	    	});
-            //data.childColumnActiveOpt = undefined;
     	}
-
     }
 
 /**

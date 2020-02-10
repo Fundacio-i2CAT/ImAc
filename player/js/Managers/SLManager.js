@@ -269,6 +269,7 @@ SLManager = function() {
             slConfig.canvasPos.y = -1;
         }
         _slMngr.updatePositionY();
+        _rdr.updateRadarPosition();
     };
 
 /**

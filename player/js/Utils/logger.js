@@ -1,4 +1,5 @@
 
+//var QoE_URL = 'http://' + window.location.hostname + ':4000/api/create';
 var QoE_URL = 'http://' + window.location.hostname + ':8083/qoe';
 //var QoE_URL = 'http://192.168.10.248:8083/qoe';
 
@@ -8,8 +9,9 @@ var StatObject = function ()
 {
 
 	this.add = function (element) {
-		//console.log(element);
 
+		//console.log(element);
+    	//$.post( QoE_URL, element, function(data,status){ });
     	$.post( QoE_URL, {
     		data: element
     	},

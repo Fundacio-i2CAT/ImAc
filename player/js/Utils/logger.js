@@ -46,6 +46,7 @@ var StatElements = function (userAction)
 	this.url = player.getSource();
 
 	this.quality = quality;
+	this.vr = _isHMD;
 
 	this.averageThroughput = averageThroughput;
 	this.currentBufferLevel = currentBufferLevel;

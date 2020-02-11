@@ -391,8 +391,18 @@ VideoController = function() {
                     else syncAllVideos();
                     firtsIteration = false;
                 }
+                if ( listOfVideoContents.length > 1 )
+                {
+                    var dif = listOfVideoContents[0].vid.currentTime - listOfVideoContents[1].vid.currentTime
+                    if ( Math.abs(dif) > 1 ) {
+                        syncAllVideos();
+                    } 
+                }
                 //else if ( Math.trunc(listOfVideoContents[0].vid.currentTime)%10 != 0 ) firtsIteration = true;
             }; 
+            listOfVideoContents[0].vid.onpause = function() {
+                VideoController.pauseAll()
+            }
         });
     };
 

@@ -407,12 +407,12 @@ STManager = function() {
                 stConfig.fixedScene = scFixed;
                 subController.updateISD( VideoController.getMediaTime() );
             }
-        }
-        else {
+            _rdr.updateRadarPosition();
+        } else {
             stConfig.fixedSpeaker = spFixed;
             stConfig.fixedScene = scFixed;
-
         }
+
     };
 
 

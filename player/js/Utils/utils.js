@@ -364,7 +364,6 @@ function resetConfig(){
     let signer = _slMngr.getSigner();
     let subtitles = _stMngr.getSubtitles();
 
-    _rdr.updateRadarPosition();
     if(signer){
         slConfig.canvasPos = new THREE.Vector2(1, -1);
         signer.position.set(slConfig.initPos.x, slConfig.initPos.y, signer.position.z);  
@@ -375,7 +374,7 @@ function resetConfig(){
         stConfig.canvasPos = new THREE.Vector2(0, -1);
         subtitles.position.set(stConfig.initPos.x, stConfig.initPos.y, subtitles.position.z);  
     } 
-    //_stMngr.setPosition(new THREE.Vector2(0, -1), false, false);
+    _rdr.updateRadarPosition();
 }
 // Converts from degrees to radians.
 Math.radians = function(degrees) {

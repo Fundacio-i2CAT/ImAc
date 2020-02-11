@@ -1,4 +1,5 @@
 
+//var QoE_URL = 'http://' + window.location.hostname + ':4000/api/create';
 var QoE_URL = 'http://' + window.location.hostname + ':8083/qoe';
 //var QoE_URL = 'http://195.81.194.222:8083/qoe';
 
@@ -8,8 +9,9 @@ var StatObject = function ()
 {
 
 	this.add = function (element) {
-		//console.log(element);
 
+		//console.log(element);
+    	//$.post( QoE_URL, element, function(data,status){ });
     	$.post( QoE_URL, {
     		data: element
     	},
@@ -21,23 +23,21 @@ var StatObject = function ()
 
 };
 
-var StatElements = function () 
+var StatElements = function (userAction) 
 {
 	var videoElement = VideoController.getListOfVideoContents()[0];
 	var player = videoElement.dash;
-	//var metrics = player.getMetricsFor('video');
     var averageThroughput = player.getAverageThroughput('video');
-    //var dashMetrics = player.getDashMetrics();
-    //var currentBufferLevel = dashMetrics.getCurrentBufferLevel(metrics) ? dashMetrics.getCurrentBufferLevel(metrics) : 0;
     var currentBufferLevel = player.getBufferLength('video');
     var quality = player.getQualityFor('video');
 
-	this.messageType = firstQoEmsg ? "START" : "INFO";
+	this.messageType = firstQoEmsg ? "START" : userAction ? userAction : "INFO";
 	this.date = Date.now();
 	//this.deviceId = 1;
 	this.sessionId = sessionId;
 	this.contentId = demoId;
 	this.msId = localStorage.ImAc_roomID;
+	this.calculatedDiff = globalDiff;
 
 	this.mediaTime = videoElement.vid.currentTime;
 
@@ -46,6 +46,7 @@ var StatElements = function ()
 	this.url = player.getSource();
 
 	this.quality = quality;
+	this.vr = _isHMD;
 
 	this.averageThroughput = averageThroughput;
 	this.currentBufferLevel = currentBufferLevel;
@@ -63,4 +64,6 @@ var StatElements = function ()
 	this.viewX = view.x;
 	this.viewY = view.y;
 	this.viewZ = view.z;	
+
+	this.playerUrl = window.location.href;
 };

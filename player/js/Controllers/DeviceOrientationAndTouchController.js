@@ -166,6 +166,7 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
             		localStorage.setItem("slPosition", JSON.stringify(elementSelection.position));
 					break;
 				case'subtitles':
+					canvas.getObjectByName('st-colorFrame').visible = false;
 					localStorage.setItem("stPosition", JSON.stringify(elementSelection.position));
 		            //This will remove the checkmark so all optins of st position are available.
 					if(actionPausedVideo) mainMenuCtrl.playAllFunc();

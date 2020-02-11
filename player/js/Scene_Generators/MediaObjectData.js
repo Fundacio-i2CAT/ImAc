@@ -349,7 +349,7 @@ THREE.MediaObjectData = function () {
     }
 
     this.getSubtitleMesh = function (t, font, isSL, name){
-        const opacity = stConfig.background;
+        const opacity = (isSL) ? 0.75 : stConfig.background;
         let scaleFactor = 1;
         let cnv;
 
@@ -411,8 +411,14 @@ THREE.MediaObjectData = function () {
                 } else {
                     stGroup.position.y = initY;
                     stGroup.position.x = (slConfig.isEnabled ? _stMngr.removeOverlap(scaleFactor) : 0);
-                    
                 }
+                let stColorBorderGeom = new THREE.PlaneGeometry( stConfig.width+1, stConfig.height+1, 32 );
+                let stColorBorderMat = new THREE.MeshBasicMaterial( {color: 0xffff00, side: THREE.DoubleSide} );
+                let stColorBorder = new THREE.Mesh( stColorBorderGeom, stColorBorderMat );
+                stColorBorder.position.z = -0.01;
+                stColorBorder.name = 'st-colorFrame';
+                stColorBorder.visible = false;
+                stGroup.add(stColorBorder);
             } else if(stConfig.fixedScene){
                 textMesh.position.y = -20;
                 textMesh.position.z = -75;
@@ -434,6 +440,7 @@ THREE.MediaObjectData = function () {
             group.add( mesh );
         }
         group.name = 'subtitles';
+        group.position.y = -10
         return group;
     };
 

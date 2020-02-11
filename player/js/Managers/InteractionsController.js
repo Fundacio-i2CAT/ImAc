@@ -252,7 +252,7 @@ THREE.InteractionsController = function () {
                 elementSelection = intersects[0].object.parent;
                 _slMngr.scaleColorBorder(camera.getObjectByName('sl-colorFrame'))
             } else if(intersects[0].object.parent.name.localeCompare('subtitles') == 0){
-                //camera.getObjectByName('st-colorFrame').visible = true;
+                camera.getObjectByName('st-colorFrame').visible = true;
                 if(VideoController.isPausedById(0)){
                     actionPausedVideo = false;
                 } else{
@@ -312,6 +312,8 @@ THREE.InteractionsController = function () {
                         'event_label' : intersects[inter].object.name,
                         'anonymizeIp': true
                     });
+
+                    if ( loggerActivated ) statObj.add( new StatElements( intersects[inter].object.name ) );
 
 
                     if ( intersects[inter].object.type == 'Mesh' && intersects[inter].object.onexecute ){

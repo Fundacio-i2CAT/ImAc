@@ -79,16 +79,15 @@ THREE.Radar = function () {
  */
     this.updateRadarPosition = function(){
         if (radar && !localStorage.getItem("rdrPosition")){
+            let slSize = slConfig.size;
+            let offset = -stConfig.canvasPos.y * slSize;
+            let slArea = slConfig.area;
 	        if(slConfig.isEnabled){
-                let slSize = slConfig.size;
-                let offset = -stConfig.canvasPos.y * slSize;
-                let slArea = slConfig.area;
-
-	            radar.position.y = (_isHMD ? scene.getObjectByName('signer').position.y + offset : 0);
-                radar.position.x = (_isHMD ? 0.6*( 1.48*slArea/2 - slSize/2 ) : ( 1.48*slArea/2 - slSize/2 )) * slConfig.canvasPos.x;
+	            radar.position.y = 0;
 	        } else {
-                radar.position.y = stConfig.canvasPos.y;
+                radar.position.y = stConfig.canvasPos.y * (vHeight*(1-safeFactor) - 14)/2;
             }
+            radar.position.x = (_isHMD ? 0.6*( 1.48*slArea/2 - slSize/2 ) : ( 1.48*slArea/2 - slSize/2 )) * slConfig.canvasPos.x;
 	    }
     }
 

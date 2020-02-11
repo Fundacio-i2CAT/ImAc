@@ -84,6 +84,7 @@ SubSignManager = function() {
     			  		if (slConfig.autoHide) {
     			  			_slMngr.getSigner().visible = false;
     			  		}
+    			  		else _slMngr.removeSLSubtitle();
     			  	}
 		    	} 
 		  	} else if (SLtextListMemory.length > 0) {

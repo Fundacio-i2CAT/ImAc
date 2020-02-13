@@ -115,7 +115,7 @@ THREE.MediaObjectData = function () {
         const material = new THREE.MeshBasicMaterial( { color: 0x000000,  transparent: true, opacity: 0 } );
         let font;
 
-        if(textList[0].text.length < 14){
+        if(textList[0].text.length < 12){
             font = "500 40px Roboto, Arial";
         } else if (textList[0].text.length < 16){
             font = "500 35px Roboto, Arial"

@@ -199,9 +199,11 @@ SubSignManager = function() {
 				if(!imsc1doc_SL){
 					slMesh.getObjectByName('sl-subtitles').visible = true;	
 				} 
-				slMesh.getObjectByName('arrows').visible = true;
-				arrows = slMesh.getObjectByName('arrows');
-				width = slMesh.getObjectByName('emojitext').geometry.parameters.width;
+				if (slMesh.getObjectByName('arrows')) {
+					slMesh.getObjectByName('arrows').visible = true;
+					arrows = slMesh.getObjectByName('arrows');
+				}
+				if (slMesh.getObjectByName('emojitext'))  width = slMesh.getObjectByName('emojitext').geometry.parameters.width;
 			}
 		} else if (stConfig.isEnabled) {
 			if (stMesh) {

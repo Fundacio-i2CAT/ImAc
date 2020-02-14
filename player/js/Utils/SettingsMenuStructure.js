@@ -639,6 +639,7 @@ const settingsSubtitlesPosition = { title: 'Position', icon: './img/menu/st_posi
                     if( slConfig.isEnabled && !localStorage.getItem("slPosition")){
                         _slMngr.setPosition( _slMngr.getSigner().position.x, Math.abs(_slMngr.getSigner().position.y ) );
                     } 
+                    _rdr.updateRadarPosition();
                 }
             } 
         },
@@ -651,6 +652,7 @@ const settingsSubtitlesPosition = { title: 'Position', icon: './img/menu/st_posi
                     if( slConfig.isEnabled && !localStorage.getItem("slPosition")) {
                         _slMngr.setPosition( _slMngr.getSigner().position.x, -1 * Math.abs(_slMngr.getSigner().position.y) ); 
                     }
+                    _rdr.updateRadarPosition();
                 }
             } 
         },
@@ -660,6 +662,7 @@ const settingsSubtitlesPosition = { title: 'Position', icon: './img/menu/st_posi
                 if(!settingsSubtitlesPosition.options[2].default()){
                     _stMngr.setPosition(new THREE.Vector2(0, 0), false, true);
                     SettingsOptionCtrl.setChildColumnActiveOpt(settingsSubtitlesPosition.options[2].optId);
+                    _rdr.updateRadarPosition();
                 }
             } 
         },
@@ -669,6 +672,7 @@ const settingsSubtitlesPosition = { title: 'Position', icon: './img/menu/st_posi
                 if(!settingsSubtitlesPosition.options[3].default()){
                     _stMngr.setPosition(new THREE.Vector2(0, 0), true, false);
                     SettingsOptionCtrl.setChildColumnActiveOpt(settingsSubtitlesPosition.options[3].optId);
+                    _rdr.updateRadarPosition();
                 }
             } 
         }]

@@ -78,6 +78,7 @@ SLManager = function() {
         }
         // Play the SL video.
         VideoController.play(1, slConfig.url, signer);
+        if (VideoController.getListOfVideoContents()[0].vid.paused) VideoController.pauseAll()
     };
 
 /**

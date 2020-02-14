@@ -388,7 +388,7 @@ STManager = function() {
  * @param      {<type>}  spFixed  The speaker fixed
  */
     this.setPosition = function(pos, scFixed, spFixed){
-        stConfig.canvasPos.y = pos.y;
+        stConfig.canvasPos.y = (scFixed || spFixed) ? -1 : pos.y;
         if(subtitles){
             //Remove saved position in cookies so st can be placed in top/bottom/scene position
             if(localStorage.getItem("stPosition")){

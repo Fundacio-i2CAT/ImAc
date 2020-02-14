@@ -286,6 +286,7 @@ VideoController = function() {
                 // Video playback started ;)
                 console.log(`Playing ${listOfVideoContents[index].id} video`);
                 videoElement.visible = true;
+                if ( listOfVideoContents[0].vid.paused ) video.pause();
             })
             .catch(e => {
                 // Video playback failed ;(

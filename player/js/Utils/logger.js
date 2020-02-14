@@ -11,7 +11,12 @@ var StatObject = function ()
 	this.add = function (element) {
 
 		//console.log(element);
-    	//$.post( QoE_URL, element, function(data,status){ });
+    	/*$.post( QoE_URL, element, function(data, status){
+			if (status == 'success' && firstQoEmsg ){
+				firstQoEmsg = false;
+			}
+        	//Debug.log("Data: " + data + "\nStatus: " + status);
+    	});*/
     	$.post( QoE_URL, {
     		data: element
     	},
@@ -20,7 +25,6 @@ var StatObject = function ()
         	//Debug.log("Data: " + data + "\nStatus: " + status);
     	});
     };
-
 };
 
 var StatElements = function (userAction) 

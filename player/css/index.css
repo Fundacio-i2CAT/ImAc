@@ -62,8 +62,8 @@ canvas {
 }
 
 .popuptextbox {
-  padding-top: 2rem;
-  max-height: 60vh;
+  padding-top: 1rem;
+  max-height: 50vh;
   overflow-y: scroll;
   text-align: left;
 }

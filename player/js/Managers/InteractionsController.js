@@ -234,16 +234,20 @@ THREE.InteractionsController = function () {
         let radarArray = [];
         let signArray = [];
         let subtitlesArray = [];
-        let menuArray = [];
 
         if (scene.getObjectByName('radar').visible) radarArray = scene.getObjectByName('radar').children;
         if (scene.getObjectByName('signer')) signArray = scene.getObjectByName('signer').children;
         if (scene.getObjectByName('subtitles')) subtitlesArray = scene.getObjectByName('subtitles').children;
-        if (scene.getObjectByName('trad-main-menu').visible) menuArray = scene.getObjectByName('trad-main-menu').children;
 
-        let intersects = raycaster.intersectObjects( radarArray.concat(signArray).concat(subtitlesArray).concat(menuArray) , true );
+        let intersects = raycaster.intersectObjects( radarArray.concat(signArray).concat(subtitlesArray) , true );
 
         if ( intersects[0]){
+                if(VideoController.isPausedById(0)){
+                    actionPausedVideo = false;
+                } else{
+                    actionPausedVideo = true;
+                    mainMenuCtrl.pauseAllFunc();
+                }
             if(intersects[0].object.parent.name.localeCompare('radar') == 0){
                 camera.getObjectByName('rdr-colorFrame').visible = true;
                 elementSelection = intersects[0].object.parent;
@@ -253,12 +257,6 @@ THREE.InteractionsController = function () {
                 _slMngr.scaleColorBorder(camera.getObjectByName('sl-colorFrame'))
             } else if(intersects[0].object.parent.name.localeCompare('subtitles') == 0){
                 camera.getObjectByName('st-colorFrame').visible = true;
-                if(VideoController.isPausedById(0)){
-                    actionPausedVideo = false;
-                } else{
-                    actionPausedVideo = true;
-                    mainMenuCtrl.pauseAllFunc();
-                }
                 elementSelection = intersects[0].object.parent;
             } 
         }

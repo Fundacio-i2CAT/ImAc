@@ -178,6 +178,27 @@ function AplicationManager()
         //console.log(dt)
        
         controls.update();
+
+        /*window.onbeforeunload = sendTimeToServer;
+        function sendTimeToServer() {
+            // some ajax code
+            console.log('PAGE CLOSE');
+
+            var QoE_URL = 'http://' + window.location.hostname + ':4000/api/create';
+
+            let lastSessionLog = {
+                messageType: 'STOP',
+                sessionId: sessionId,
+                date: Date.now()
+            }
+
+            $.post( QoE_URL, lastSessionLog, function(data, status){
+                if (status == 'success' && firstQoEmsg ){
+                    firstQoEmsg = false;
+                }
+                //Debug.log("Data: " + data + "\nStatus: " + status);
+            });
+        }*/
     }
 
     function onDocumentMouseMove(event) {

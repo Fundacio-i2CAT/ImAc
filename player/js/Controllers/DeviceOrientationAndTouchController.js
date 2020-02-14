@@ -152,6 +152,7 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 
 		if(elementSelection){
 			//CODE DUPLICATES LOWER
+			if(actionPausedVideo) mainMenuCtrl.playAllFunc();		
 			switch(elementSelection.name){
 				case 'slider-progress':
 					mainMenuCtrl.setSlidingStatus(false);
@@ -169,7 +170,6 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 					canvas.getObjectByName('st-colorFrame').visible = false;
 					localStorage.setItem("stPosition", JSON.stringify(elementSelection.position));
 		            //This will remove the checkmark so all optins of st position are available.
-					if(actionPausedVideo) mainMenuCtrl.playAllFunc();
 					break;
 			}
 			menuMgr.checkMenuStateVisibility();

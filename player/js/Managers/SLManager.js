@@ -268,6 +268,7 @@ SLManager = function() {
         slConfig.canvasPos.x = Math.sign(x);
         if (stConfig.isEnabled) {
             slConfig.canvasPos.y = Math.sign(y);
+            _stMngr.remove();
         } else {
             slConfig.canvasPos.y = -1;
         }
@@ -291,9 +292,12 @@ SLManager = function() {
                 signer.position.y = slConfig.canvasPos.y * (vHeight*(1-safeFactor) - slConfig.size)/2;
             } 
         }
-        let subtitles = _stMngr.getSubtitles();
+        /*let subtitles = _stMngr.getSubtitles();
         if(slConfig.isEnabled && subtitles){
             subtitles.position.x = _stMngr.removeOverlap(subtitles.scale.x);
+        }*/
+        if(slConfig.isEnabled){
+            _stMngr.remove();
         }
     };
 

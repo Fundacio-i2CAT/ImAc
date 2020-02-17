@@ -71,6 +71,8 @@ THREE.Radar = function () {
             radar.position.set(x, 0, 0);
         }
 
+        radar.scale.set(0.8,0.8,1)
+
         return radar;
     } 
 

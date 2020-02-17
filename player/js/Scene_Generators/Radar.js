@@ -67,7 +67,7 @@ THREE.Radar = function () {
             radar.position.set(savedPosition.x, savedPosition.y, savedPosition.z);
         } else {
             let slArea = slConfig.area;
-            let x = (_isHMD ? 0.6*( 1.48*slArea/2 - 20/2) : ( 1.48*slArea/2 - 20/2 )) * slConfig.canvasPos.x;
+            let x = (_isHMD ? 0.5*( 1.48*slArea/2 - 20/2) : ( 1.48*slArea/2 - 20/2 )) * slConfig.canvasPos.x;
             radar.position.set(x, 0, 0);
         }
 
@@ -87,7 +87,7 @@ THREE.Radar = function () {
 	        } else {
                 radar.position.y = stConfig.canvasPos.y * (vHeight*(1-safeFactor) - 14)/2;
             }
-            radar.position.x = (_isHMD ? 0.6*( 1.48*slArea/2 - slSize/2 ) : ( 1.48*slArea/2 - slSize/2 )) * slConfig.canvasPos.x;
+            radar.position.x = (_isHMD ? 0.5*( 1.48*slArea/2 - slSize/2 ) : ( 1.48*slArea/2 - slSize/2 )) * slConfig.canvasPos.x;
 	    }
     }
 

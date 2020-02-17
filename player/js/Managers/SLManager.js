@@ -166,6 +166,8 @@ SLManager = function() {
                     scene.getObjectByName('backgroundSL').visible = !stConfig.isEnabled;
                 }
             }
+
+            if (stConfig.isEnabled) _stMngr.remove();
         }
     };
 
@@ -194,13 +196,13 @@ SLManager = function() {
     this.updatePositionY = function(){
         if (signer && !localStorage.getItem("slPosition")) {
             let st4slMesh = signer.getObjectByName('sl-subtitles');
-            let y = (vHeight*(1-safeFactor) - slConfig.size)/2;                
+            let y = _isHMD ? (vHeight*(1-safeFactor) - 0.8*slConfig.size)/2 : (vHeight*(1-safeFactor) - slConfig.size)/2;                
             let offsetY = 0;
             if((imsc1doc_SL && st4slMesh) || (stConfig.indicator.localeCompare('arrow') === 0 && !stConfig.isEnabled)){
                 //Update the position of the signer subtitles.
-                let scaleFactor = (slConfig.size/st4slMesh.children[0].geometry.parameters.width);
+                let scaleFactor = _isHMD ? 0.8*(slConfig.size/st4slMesh.children[0].geometry.parameters.width) : (slConfig.size/st4slMesh.children[0].geometry.parameters.width);
                 st4slMesh.scale.set(scaleFactor, scaleFactor, 1);
-                st4slMesh.position.y = -(slConfig.size + st4slMesh.children[0].geometry.parameters.height*scaleFactor)/2;
+                st4slMesh.position.y = _isHMD ? 0.825 *-(slConfig.size + st4slMesh.children[0].geometry.parameters.height*scaleFactor)/2 : -(slConfig.size + st4slMesh.children[0].geometry.parameters.height*scaleFactor)/2;
 
                 // Add offset to the signer 'y' if the signer is on bottom position.
                 if (slConfig.canvasPos.y < 0 && slConfig.isEnabled){
@@ -279,7 +281,7 @@ SLManager = function() {
  * @param      {number}  size    The size
  */
     this.setSize = function(size){
-        let scaleFactor = size/slConfig.maxSize;
+        let scaleFactor = _isHMD ? 0.8*size/slConfig.maxSize : size/slConfig.maxSize;
         if (signer) {
             signer.getObjectByName('sl-video').scale.set(scaleFactor, scaleFactor, 1);
             slConfig.size = size;

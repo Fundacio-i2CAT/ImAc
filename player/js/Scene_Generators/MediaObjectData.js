@@ -61,13 +61,13 @@ THREE.MediaObjectData = function () {
     };
 
     this.getSignVideoMesh = function(name) {
-        const scaleFactor = slConfig.size/slConfig.maxSize;
+        const scaleFactor = _isHMD ? 0.8*slConfig.size/slConfig.maxSize : slConfig.size/slConfig.maxSize; 
         let signer =  new THREE.Group();
         signer.name = name;
         signer.visible = false;
 
-        let x = _isHMD ? 0.6 * ( 1.48*slConfig.area/2 - slConfig.size/2 ) *slConfig.canvasPos.x : ( 1.48*slConfig.area/2 - slConfig.size/2 ) *slConfig.canvasPos.x;
-        let y = slConfig.canvasPos.y * (vHeight*(1-safeFactor) - slConfig.size)/2;
+        let x = _isHMD ? 0.5 * ( 1.48*slConfig.area/2 - slConfig.size/2 ) *slConfig.canvasPos.x : ( 1.48*slConfig.area/2 - slConfig.size/2 ) *slConfig.canvasPos.x;
+        let y = _isHMD ? slConfig.canvasPos.y * (vHeight*(1-safeFactor) - 0.8*slConfig.size)/2 : slConfig.canvasPos.y * (vHeight*(1-safeFactor) - slConfig.size)/2;
 
         //This will save the very 1st position.
         if(!slConfig.initPos){
@@ -148,7 +148,7 @@ THREE.MediaObjectData = function () {
 
         lon = lon > 0 ? 360 - lon : - lon;
 
-        if ( position != 'center' ) 
+        if ( position != 'center' && stConfig.indicator.localeCompare('arrow') === 0) 
         {
             var isRight = position == 'right' ? true : false;   
             var mesh = new THREE.Mesh( new THREE.PlaneGeometry( 0.001, 0.001 ), new THREE.MeshBasicMaterial( { color: 0xffffff } ) );
@@ -333,7 +333,7 @@ THREE.MediaObjectData = function () {
         var mesh = new THREE.Mesh( new THREE.PlaneGeometry( canvas.width/6, ch*t.length/6 ), material );
 
         let esaySizeAjust = stConfig.easy2read ? 1.25 : 1;
-        scaleFactor = (stConfig.area/130) * stConfig.size * esaySizeAjust;
+        scaleFactor = _isHMD ? 0.8*(stConfig.area/130) * stConfig.size * esaySizeAjust : (stConfig.area/130) * stConfig.size * esaySizeAjust;
         mesh.scale.set( scaleFactor, scaleFactor, 1 );
 
         mesh.name = 'emojitext';
@@ -395,7 +395,7 @@ THREE.MediaObjectData = function () {
             stGroup.position.y = -(slConfig.size + textMesh.geometry.parameters.height*scaleFactor)/2;
             stGroup.position.x = 0;
         } else {
-            scaleFactor = (stConfig.area/130) * stConfig.size * (stConfig.easy2read ? 1.25 : 1);
+            scaleFactor = _isHMD ? 0.8*(stConfig.area/130) * stConfig.size * (stConfig.easy2read ? 1.25 : 1) : (stConfig.area/130) * stConfig.size * (stConfig.easy2read ? 1.25 : 1);
             if(!stConfig.fixedSpeaker && !stConfig.fixedScene){
                 let initY = stConfig.canvasPos.y * (vHeight*(1-safeFactor) - scaleFactor*stConfig.height)/2;
 

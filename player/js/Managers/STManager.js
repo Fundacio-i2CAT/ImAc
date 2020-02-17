@@ -201,7 +201,7 @@ STManager = function() {
             let totalDif = 0;
             let arw = subController.getArrows();
             let stDif = (arw) ? scaleFactor*(stConfig.width/2 + arw.children[0].children[1].geometry.parameters.width) : scaleFactor*stConfig.width/2;
-            let slDif = signer.position.x + (-slConfig.canvasPos.x)*slConfig.size/2 * (1+safeFactor);
+            let slDif = signer.position.x + (-slConfig.canvasPos.x)*slConfig.size/2 * (0.45+safeFactor);
 
             totalDif = -slConfig.canvasPos.x * slDif + stDif;
             if(totalDif>0 || Math.abs(totalDif) < 5){

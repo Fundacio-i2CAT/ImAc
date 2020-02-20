@@ -475,11 +475,15 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 					} else if(elementSelection.name.localeCompare('signer') == 0){
 						canvas.getObjectByName('sl-colorFrame').visible = false;
 			            localStorage.setItem("slPosition", JSON.stringify(elementSelection.position));
+					} else if(elementSelection.name.localeCompare('subtitles') == 0){
+						canvas.getObjectByName('st-colorFrame').visible = false;
+						localStorage.setItem("stPosition", JSON.stringify(elementSelection.position));
 					}
 					//canvas.getObjectByName('cnv-fov').visible = false;
 					menuMgr.checkMenuStateVisibility();
 					elementSelection = null;
 				} 
+				if(actionPausedVideo) mainMenuCtrl.playAllFunc();
 			})
 			controller.addEventListener( 'button_0 press began', function( event ){
 				sendVRInteraction(event.target.quaternion)
@@ -495,11 +499,15 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 					} else if(elementSelection.name.localeCompare('signer') == 0){
 						canvas.getObjectByName('sl-colorFrame').visible = false;
 			            localStorage.setItem("slPosition", JSON.stringify(elementSelection.position));
+					} else if(elementSelection.name.localeCompare('subtitles') == 0){
+						canvas.getObjectByName('st-colorFrame').visible = false;
+						localStorage.setItem("stPosition", JSON.stringify(elementSelection.position));
 					}
 					//canvas.getObjectByName('cnv-fov').visible = false;
 					menuMgr.checkMenuStateVisibility();
 					elementSelection = null;
 				} 
+				if(actionPausedVideo) mainMenuCtrl.playAllFunc();
 			})	
 			controller.addEventListener( 'thumbpad press began', function( event ){
 				sendVRInteraction(event.target.quaternion)
@@ -515,11 +523,15 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 					} else if(elementSelection.name.localeCompare('signer') == 0){
 						canvas.getObjectByName('sl-colorFrame').visible = false;
 			            localStorage.setItem("slPosition", JSON.stringify(elementSelection.position));
+					} else if(elementSelection.name.localeCompare('subtitles') == 0){
+						canvas.getObjectByName('st-colorFrame').visible = false;
+						localStorage.setItem("stPosition", JSON.stringify(elementSelection.position));
 					}
 					//canvas.getObjectByName('cnv-fov').visible = false;
 					menuMgr.checkMenuStateVisibility();
 					elementSelection = null;
 				}  
+				if(actionPausedVideo) mainMenuCtrl.playAllFunc();
 			})	
 			controller.addEventListener( 'disconnected', function( event ){
 				controller.parent.remove( controller )
@@ -580,7 +592,7 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 	        if(elementSelection){
 		        if( elementSelection.name.localeCompare('slider-progress') == 0){
 					mainMenuCtrl.updatePositionOnMove(raycaster, elementSelection);
-		        } else if( elementSelection.name.localeCompare('radar') == 0 || elementSelection.name.localeCompare('signer') == 0){
+		        } else if( elementSelection.name.localeCompare('radar') == 0 || elementSelection.name.localeCompare('signer') == 0 || elementSelection.name.localeCompare('subtitles') == 0){
 		            interController.checkInteractionGrid(raycaster, mouse2D);
 		    	}
 	        }

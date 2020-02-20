@@ -391,8 +391,8 @@ THREE.MediaObjectData = function () {
         let arrows = getSubtitlesArrowMesh(6.5, t.length, t[0].color, t[0].backgroundColor, (!imsc1doc_SL && !stConfig.isEnabled) ? 0 : opacity);
 
         if (isSL){//&& !imsc1doc_SL){
-            scaleFactor = (slConfig.size/textMesh.geometry.parameters.width);
-            stGroup.position.y = -(slConfig.size + textMesh.geometry.parameters.height*scaleFactor)/2;
+            scaleFactor = _isHMD ? 0.8*(slConfig.size/textMesh.geometry.parameters.width) : (slConfig.size/textMesh.geometry.parameters.width);
+            stGroup.position.y =  _isHMD ? 0.825 *-(slConfig.size + textMesh.geometry.parameters.height*scaleFactor)/2 : -(slConfig.size + textMesh.geometry.parameters.height*scaleFactor)/2;
             stGroup.position.x = 0;
         } else {
             scaleFactor = _isHMD ? 0.8*(stConfig.area/130) * stConfig.size * (stConfig.easy2read ? 1.25 : 1) : (stConfig.area/130) * stConfig.size * (stConfig.easy2read ? 1.25 : 1);

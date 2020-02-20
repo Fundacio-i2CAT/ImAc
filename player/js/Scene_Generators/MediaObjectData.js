@@ -410,7 +410,7 @@ THREE.MediaObjectData = function () {
                     stGroup.position.x = savedPosition.x;
                 } else {
                     stGroup.position.y = initY;
-                    stGroup.position.x = (slConfig.isEnabled ? _stMngr.removeOverlap(scaleFactor) : 0);
+                    stGroup.position.x = ((slConfig.isEnabled || stConfig.indicator.localeCompare('radar') === 0) ? _stMngr.removeOverlap(scaleFactor) : 0);
                 }
                 let stColorBorderGeom = new THREE.PlaneGeometry( stConfig.width+1, stConfig.height+1, 32 );
                 let stColorBorderMat = new THREE.MeshBasicMaterial( {color: 0xffff00, side: THREE.DoubleSide} );

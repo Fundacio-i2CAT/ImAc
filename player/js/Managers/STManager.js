@@ -197,7 +197,7 @@ STManager = function() {
         let signer = _slMngr.getSigner();
         let offset = 0;
 
-        if(signer && !localStorage.getItem("slPosition")){
+        if( signer && !localStorage.getItem("slPosition") ){
             let totalDif = 0;
             let arw = subController.getArrows();
             let stDif = (arw) ? scaleFactor*(stConfig.width/2 + arw.children[0].children[1].geometry.parameters.width) : scaleFactor*stConfig.width/2;
@@ -207,6 +207,20 @@ STManager = function() {
             if(totalDif>0 || Math.abs(totalDif) < 5){
                 offset = -slConfig.canvasPos.x * totalDif
             }
+        }
+        else if( stConfig.indicator.localeCompare(indicators.RADAR) === 0 && !localStorage.getItem("rdrPosition") ){
+            let totalDif = 0;
+            let arw = subController.getArrows();
+            let stDif = (arw) ? scaleFactor*(stConfig.width/2 + arw.children[0].children[1].geometry.parameters.width) : scaleFactor*stConfig.width/2;
+            let slDif = canvas.getObjectByName('radar').position.x + (-slConfig.canvasPos.x)*slConfig.size/2 * (0.45+safeFactor);
+
+            totalDif = stDif;
+            
+            totalDif = -slConfig.canvasPos.x * slDif + stDif;
+            if(totalDif>0 || Math.abs(totalDif) < 5){
+                offset = -slConfig.canvasPos.x * totalDif
+            }
+            
         }
         return offset;
     };
@@ -335,7 +349,12 @@ STManager = function() {
                         subtitles.position.x = _stMngr.removeOverlap(subtitles.scale.x);
                     }
                 }
-            } 
+            }
+            else if(stConfig.isEnabled && stConfig.indicator.localeCompare('radar') === 0){
+                if (subtitles) {
+                    subtitles.position.x = _stMngr.removeOverlap(subtitles.scale.x);
+                }
+            }
         }
     };
 
@@ -350,7 +369,7 @@ STManager = function() {
             let esaySizeAjust = stConfig.easy2read ? 1.25 : 1;
             scaleFactor = (stConfig.area/130) * stConfig.size * esaySizeAjust;
             subtitles.scale.set( scaleFactor, scaleFactor, 1 );
-            subtitles.position.x = (slConfig.isEnabled ? _stMngr.removeOverlap(scaleFactor) : 0);
+            subtitles.position.x = ((slConfig.isEnabled || stConfig.indicator.localeCompare('radar') === 0) ? _stMngr.removeOverlap(scaleFactor) : 0);
             subtitles.position.y = stConfig.canvasPos.y * (vHeight*(1-safeFactor) - scaleFactor*stConfig.height)/2;
         }
     };
@@ -397,7 +416,7 @@ STManager = function() {
             //Check if not fixed options and stConfig.initPos.y is initialized;
             //If stConfig.initPos.y is not initialized ST will have to be created
             if(!stConfig.fixedSpeaker && !stConfig.fixedScene && pos.y != 0 && stConfig.initPos.y != 0){
-                subtitles.position.x = (slConfig.isEnabled ? _stMngr.removeOverlap(subtitles.scale.x) : 0);
+                subtitles.position.x = ((slConfig.isEnabled || stConfig.indicator.localeCompare('radar') === 0) ? _stMngr.removeOverlap(scaleFactor) : 0);
                 subtitles.position.y =  Math.abs(subtitles.position.y)*pos.y; 
                 stConfig.fixedSpeaker = spFixed;
                 stConfig.fixedScene = scFixed;

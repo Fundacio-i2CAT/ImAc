@@ -1358,6 +1358,31 @@ input:checked + .slider:before {
   text-align: center;
 }
 
+@media (min-width: 1200px){
+	.popupcontainer {
+		width: 1170px;
+	}
+}
+@media (min-width: 992px) {
+	.popupcontainer {
+		width: 970px;
+	}
+}
+
+@media (min-width: 768px) {
+	.popupcontainer {
+		width: 750px;
+	}
+}
+
+.popupcontainer {
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+
 .popupclass {
   text-align: center;
     z-index: 999;
@@ -1371,8 +1396,8 @@ input:checked + .slider:before {
 }
 
 .popuptextbox {
-  padding-top: 2rem;
-  max-height: 60vh;
+  padding-top: 1rem;
+  max-height: 50vh;
   overflow-y: scroll;
   text-align: left;
 }

@@ -16,12 +16,70 @@ var _ImAcCookies = false;
 // Main Functions
 //************************************************************************************
 
+	function checkPopupLang()
+	{
+		if ( navigator.language.includes('ca') )
+		{
+			document.getElementById('popup_ca').style.display = 'inherit'
+			return 'ca'
+		}
+		else if ( navigator.language.includes('es') )
+		{
+			document.getElementById('popup_es').style.display = 'inherit'
+			return 'es'
+		}
+		else if ( navigator.language.includes('de') )
+		{
+			document.getElementById('popup_de').style.display = 'inherit'
+			return 'de'
+		}
+		else
+		{
+			document.getElementById('popup_en').style.display = 'inherit'
+			return 'es'
+		}
+		
+	}
+	
+	function resolveAfter2Seconds(poplang) {
+	  return new Promise(resolve => {
+		/*setTimeout(() => {
+		  resolve('resolved');
+		}, 2000);*/
+		  document.getElementById('popupbutton1_' + poplang).addEventListener('click', function(e) {
+			  resolve(true)
+		  });
+		  document.getElementById('popupbutton2_' + poplang).addEventListener('click', function(e) {
+			  resolve(false)
+		  })
+	  });
+	}
+
+	
+	async function showPopup()
+	{
+		if ( localStorage.ImAc_cookies == undefined )
+		{
+			document.getElementById('mainpopup').style.display = 'inherit';
+			await resolveAfter2Seconds( checkPopupLang() ).then( ( str ) => { 
+				localStorage.ImAc_cookies = str;
+				document.getElementById('mainpopup').style.display = 'none';
+				init_webplayer() 
+			});
+		}
+		else 
+		{
+			document.getElementById('mainpopup').style.display = 'none';
+			init_webplayer()
+		}
+	}
+
     /**
      * Initializes the web player.
      */	
     function init_webplayer() 
     {
-        _ImAcCookies = localStorage.ImAc_cookies ? localStorage.ImAc_cookies : confirm("Do you give us consent to register behavior metrics for research purposes?");
+        //_ImAcCookies = localStorage.ImAc_cookies ? localStorage.ImAc_cookies : confirm("Do you give us consent to register behavior metrics for research purposes?");
 
         if ( _ImAcCookies ) 
         {

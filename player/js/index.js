@@ -105,7 +105,7 @@ let safeFactor = 0.2; //Creates a margin with the height of the scren. Diferent 
 
 async function showPopup()
 {
-    /*if ( window.location.pathname.indexOf('player_de/') > 0 && localStorage.ImAc_cookies == undefined )
+    /*if ( localStorage.ImAc_cookies == undefined )
     {
         document.getElementById('mainpopup').style.display = 'inherit';
         await resolveAfter2Seconds().then( ( str ) => { 
@@ -115,8 +115,8 @@ async function showPopup()
         });
     }
     else 
-    {*/
-        if ( localStorage.ImAc_cookies == undefined ) localStorage.ImAc_cookies = confirm("Do you give us consent to register behavior metrics for research purposes?");
+    {
+        document.getElementById('mainpopup').style.display = 'none';*/
         init_webplayer()
     //}
 }
@@ -125,7 +125,7 @@ function init_webplayer()
 {
 	console.log('Version: ' + _PlayerVersion);
 
-    //if ( localStorage.ImAc_cookies == undefined ) localStorage.ImAc_cookies = confirm("Do you give us consent to register behavior metrics for research purposes?");
+    if ( localStorage.ImAc_cookies == undefined ) localStorage.ImAc_cookies = confirm("Do you give us consent to register behavior metrics for research purposes?");
     if ( localStorage.ImAc_cookies ) gtag('set', {'user_id': localStorage.ImAc_UUID});   
 
     loggerActivated = loggerActivated ? localStorage.ImAc_cookies : loggerActivated;
@@ -175,6 +175,41 @@ function init_webplayer()
                         console.log( _iconf )
                         iniGeneralSettings( _iconf );
                     }
+					else {
+						_iconf = {
+							menutype: 'traditional',
+							pointersize: 'M',
+							voicecontrol: 'off',
+							userprofile: 'save',
+							mainlanguage: 'en',
+							//accesslanguage: 'en',
+							indicator: 'none',
+							safearea: 'L',
+							stsize: 'L',
+							stbackground: 'box',
+							stposition: 'down',
+							ste2r: 'off',
+							stlanguage: 'en',
+							slsize: 'M',
+							slposition: 'right',
+							sllanguage: 'en',
+							aste2r: 'off',
+							astmode: 'dynamic',
+							astvolume: 'mid',
+							astlanguage: 'en',
+							admode: 'dynamic',
+							advolume: 'mid',
+							adlanguage: 'en',
+							adspeed: 'x100'
+						}
+						stConfig = _stMngr.initConfig( _iconf );
+                        slConfig = _slMngr.initConfig( _iconf );
+                        adConfig =  _AudioManager.setADConfig( _iconf );
+                        astConfig =  _AudioManager.setASTConfig( _iconf );
+
+                        console.log( _iconf )
+                        iniGeneralSettings( _iconf );
+					}
                     ////////////////////////////////////////////////////////////////
 
                     if ( !_iconf ) _iconf = [];

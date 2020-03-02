@@ -34,16 +34,6 @@ function AplicationManager()
     	button_2 = button;
     };
 
-    /*this.getDisplays = function()
-    {
-    	return _display;
-    };
-
-    this.setDisplays = function(displays)
-    {
-    	_display = displays;
-    };*/
-
 	function activateLogger()
 	{
 		if ( loggerActivated )

@@ -2,40 +2,17 @@
  * @author isaac.fraile@i2cat.net
  */
 
-/************************************************************************************
-    
-    VideoController.js  
-        * Library used to manage audovisual contents
-
-    This library needs to use external libs:
-        * dash.all.min.js
-        * hls.js
-
-    This library needs to use the global vars:
-        * _ManifestParser
-        * _Sync
-        * mainMenuCtrl
-        * scene
-    
-    FUNCTIONALITIES:
-        * init = function()    --> Initialize the player contents
-        * Play, Pause, seek and Synchronization services
-        * Add and remove media content
-
-************************************************************************************/
-
 VideoController = function() {
 
 	var listOfVideoContents = [];
     var listOfAudioContents = [];
     var ft = true;
+    var periodCount = 0;
+    var ending = false;
 
     var playEvent = new Event('playevent');
     var pauseEvent = new Event('pauseevent');
     var seekEvent = new Event('seekevent');
-
-    //document.addEventListener('playevent', function (e) { console.error('playevent run') }, false);
-    //document.addEventListener('pauseevent', function (e) { console.error('pauseevent run') }, false);
 
 //************************************************************************************
 // Private Functions
@@ -60,27 +37,11 @@ VideoController = function() {
         //listOfAudioContents.forEach( function( elem ) { elem.currentTime = listOfVideoContents[0].vid.currentTime } ); 
     }
 
-    function setBitrateLimitationsFor(player)
-    {
-    	/*if ( window.screen.width * window.devicePixelRatio <= 1920 ) 
-        {
-            player.setMaxAllowedBitrateFor( 'video', 13000 );
-        }
-        else if ( window.screen.width * window.devicePixelRatio <= 2300 ) 
-        {
-            player.setMaxAllowedBitrateFor( 'video', 15000 );
-        }*/
-    }
-
     function createDashVO(id, vid, url, autoplay)
     {
     	var player = dashjs.MediaPlayer().create();
         player.initialize( vid, url, autoplay );
 
-
-        if ( navigator.userAgent.toLowerCase().indexOf("android") > -1 ) setBitrateLimitationsFor( player );
-
-        //player.getDebug().setLogToBrowserConsole( false );
         player.updateSettings({
             'debug': {
                 'logLevel': dashjs.Debug.LOG_LEVEL_WARNING
@@ -155,35 +116,27 @@ VideoController = function() {
 
         globalDiff = dif;  
 
-        //console.log(dif) 
+        let num = _isHMD ? 0.2 : 0.05;
 
-        if ( _isHMD ) 
+        if ( dif > -num && dif < num ) {} 
+
+        else if ( dif < -1 || dif > 1 ) 
         {
-            if ( dif > -0.2 && dif < 0.2 ) {} 
-
-            else if ( dif < -1 || dif > 1 ) 
-            {
-                changeAllCurrentTime( -dif );
-            } 
-            else
-            {
-                changeAllPlaybackRate( 1 - dif );
-                setTimeout( () => { changeAllPlaybackRate( 1 ) }, 900);
-            }
+            changeAllCurrentTime( -dif );
         } 
-        else 
+        else
         {
-            if ( dif > -0.05 && dif < 0.05 ) {} 
+            changeAllPlaybackRate( 1 - dif );
+            setTimeout( () => { changeAllPlaybackRate( 1 ) }, 900);
+        }
+    }
 
-            else if ( dif < -1 || dif > 1 ) 
-            {
-                changeAllCurrentTime( -dif );
-            } 
-            else
-            {
-                changeAllPlaybackRate( 1 - dif );
-                setTimeout( () => { changeAllPlaybackRate( 1 ) }, 900);
-            }
+    function checkVideoEnding()
+    {
+        if ( listOfVideoContents[0].vid.currentTime >= listOfVideoContents[0].vid.duration - 0.5 && !ending ) 
+        {
+            ending = true;
+            showEndingOptions();
         }
     }
 
@@ -266,14 +219,8 @@ VideoController = function() {
         }
     };
 
-/**
- * { function_description }
- *
- * @param      {<type>}  index         The index
- * @param      {<type>}  source        The source
- * @param      {<type>}  videoElement  The video element
- */
-     this.play = function(index, source, videoElement){
+    this.play = function(index, source, videoElement)
+    {
         let video = listOfVideoContents[index].vid;
         video.currentTime = listOfVideoContents[0].vid.currentTime;
         video.load();
@@ -348,8 +295,7 @@ VideoController = function() {
         }
     };
 
-    var periodCount = 0;
-    var ending = false;
+    
 
     /**
      * Initialize the library
@@ -368,11 +314,7 @@ VideoController = function() {
             listOfVideoContents[0].vid.ontimeupdate = function()
             {
                 // Video ending controller function
-                if (listOfVideoContents[0].vid.currentTime >= listOfVideoContents[0].vid.duration - 0.5 && !ending ) 
-                {
-                    ending = true;
-                    showEndingOptions();
-                }
+                checkVideoEnding();
 
                 // Update ST by time.
                 if (imsc1doc) {
@@ -427,32 +369,4 @@ VideoController = function() {
     {
         return listOfVideoContents[0].vid.duration;
     };
-
-}
-
-
-var isSeeking = false;
-
- 
-
-function addVideoEventListeners() {
-
-    var video = VideoController.getListOfVideoContents()[0].vid;
-
-    video.addEventListener('seeking', function() {
-
-        //log('video seeking');
-
-        isSeeking = true;
-
-    });
-
-    video.addEventListener('seeked', function() {
-
-        //log('video seeked');
-
-        isSeeking = false;
-
-    });
-
 }

@@ -386,83 +386,11 @@ Math.degrees = function(radians) {
     return radians * (180 / Math.PI);
 };
 
-var emoji_1, emoji_2, emoji_3, emoji_4, emoji_5, emoji_6, emoji_7, emoji_8, emoji_9, emoji_10;
-
-function loadEmojisIcons()
-{
-    emoji_1 = new Image() 
-    emoji_1.src = "./img/emojis/image001.png"; 
-
-    emoji_2 = new Image() 
-    emoji_2.src = "./img/emojis/image002.png"; 
-
-    emoji_3 = new Image() 
-    emoji_3.src = "./img/emojis/image003.png"; 
-
-    emoji_4 = new Image() 
-    emoji_4.src = "./img/emojis/image004.png"; 
-
-    emoji_5 = new Image() 
-    emoji_5.src = "./img/emojis/image005.png"; 
-
-    emoji_6 = new Image() 
-    emoji_6.src = "./img/emojis/image006.png"; 
-
-    emoji_7 = new Image() 
-    emoji_7.src = "./img/emojis/image007.png"; 
-
-    emoji_8 = new Image() 
-    emoji_8.src = "./img/emojis/image008.png"; 
-}
-
 function startSync()
 {
     var sync = new SyncController()
     sync.init();
 }
-
-var SLTImes = [
-    { state: 'on', time: 16.07 },
-    { state: 'off', time: 25.23 },
-    { state: 'on', time: 51.19 },
-    { state: 'off', time: 80.20 },
-    { state: 'on', time: 81.04 },
-    { state: 'off', time: 97.01 },
-    { state: 'on', time: 109.13 },
-    { state: 'off', time: 115.00 },
-    { state: 'on', time: 116.22 },
-    { state: 'off', time: 159.24 },
-    { state: 'on', time: 160.03 },
-    { state: 'off', time: 175.04 },
-    { state: 'on', time: 177.11 },
-    { state: 'off', time: 331.13 },
-    { state: 'on', time: 347.08 },
-    { state: 'off', time: 366.14 },
-    { state: 'on', time: 368.15 },
-    { state: 'off', time: 377.07 },
-    { state: 'on', time: 389.16 },
-    { state: 'off', time: 505.08 },
-    { state: 'on', time: 520.21 },
-    { state: 'off', time: 526.16 },
-    { state: 'on', time: 530.13 },
-    { state: 'off', time: 539.06 },
-    { state: 'on', time: 547.13 },
-    { state: 'off', time: 574.20 },
-    { state: 'on', time: 585.05 },
-    { state: 'off', time: 593.20 },
-    { state: 'on', time: 601.06 },
-    { state: 'off', time: 607.22 },
-    { state: 'on', time: 611.20 },
-    { state: 'off', time: 623.16 },
-    { state: 'on', time: 643.23 },
-    { state: 'off', time: 659.03 },
-    { state: 'on', time: 659.23 },
-    { state: 'off', time: 663.12 },
-    { state: 'on', time: 678.18 },
-    { state: 'off', time: 697.23 },
-    { state: 'on', time: 698.19 },
-    { state: 'off', time: 745.05 }
-];
 
 
 function getViewDifPositionTest(sp, fov)

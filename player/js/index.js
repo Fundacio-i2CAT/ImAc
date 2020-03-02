@@ -126,7 +126,10 @@ function init_webplayer()
 	console.log('Version: ' + _PlayerVersion);
 
     if ( localStorage.ImAc_cookies == undefined ) localStorage.ImAc_cookies = confirm("Do you give us consent to register behavior metrics for research purposes?");
-    if ( localStorage.ImAc_cookies ) gtag('set', {'user_id': localStorage.ImAc_UUID});   
+    if ( localStorage.ImAc_cookies ) {
+        gtag('set', {'user_id': localStorage.ImAc_UUID});  
+        sessionId = localStorage.ImAc_UUID
+    }  
 
     loggerActivated = loggerActivated ? localStorage.ImAc_cookies : loggerActivated;
 
@@ -143,7 +146,6 @@ function init_webplayer()
             .done(function( json ) {
                 list_contents = json.contents;
 
-                loadEmojisIcons()
                 firstQoEmsg = true;
 
                 if ( myhash && myhash[1] && myhash[1] < list_contents.length && list_contents[ myhash[1] ] && localStorage.ImAc_init == myhash[1] ) 

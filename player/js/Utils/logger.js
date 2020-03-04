@@ -31,9 +31,18 @@ var StatElements = function (userAction)
 {
 	var videoElement = VideoController.getListOfVideoContents()[0];
 	var player = videoElement.dash;
-    var averageThroughput = player.getAverageThroughput('video');
-    var currentBufferLevel = player.getBufferLength('video');
-    var quality = player.getQualityFor('video');
+
+	if ( player )
+	{
+	    var averageThroughput = player.getAverageThroughput('video');
+	    var currentBufferLevel = player.getBufferLength('video');
+	    var quality = player.getQualityFor('video');
+
+	    this.url = player.getSource();
+	    this.averageThroughput = averageThroughput;
+		this.currentBufferLevel = currentBufferLevel;
+		this.quality = quality;
+	}
 
 	this.messageType = firstQoEmsg ? "START" : userAction ? userAction : "INFO";
 	this.date = Date.now();
@@ -46,15 +55,8 @@ var StatElements = function (userAction)
 	this.mediaTime = videoElement.vid.currentTime;
 
 	//if (startupDelay > 0) this.startupDelay = startupDelay;
-
-	this.url = player.getSource();
-
-	this.quality = quality;
+	
 	this.vr = _isHMD;
-
-	this.averageThroughput = averageThroughput;
-	this.currentBufferLevel = currentBufferLevel;
-
 
 	//this.videoElements = undefined;
 	var view = camera.getWorldDirection( _targetVector );

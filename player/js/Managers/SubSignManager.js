@@ -2,39 +2,6 @@
  * @author isaac.fraile@i2cat.net
  */
 
-/************************************************************************************
-	
-	SubSignManager.js  
-		* Library used to manage Subtitle and Signer elements
-
-	This library needs to use external libs:
-		* MediaObjectData.js         -->  To create the subtilte, signer and radar meshs
-		* imsc_i2cat.js              -->  To parse the xml subtiles
-		* THREE.js                   -->  To modify the mesh attributes such as visiblity
-		* VideoController.js         -->  To get the video current time
-		* InteractionsController.js  -->  To add interactivity to a mesh object
-
-	This library needs to use the global vars:
-		* camera
-		* scene
-		* CameraParentObject
-		* _isHMD
-		* _moData
-		* AplicationManager
-		* VideoController
-		* interController
-	
-	FUNCTIONALITIES:
-		* updateISD
-
-	PRIVATE: 
-		* print3DText
-		* checkSpeakerPosition
-		* arrowInteraction
-
-
-************************************************************************************/
-
 SubSignManager = function() {
 
 	let textListMemory = [];

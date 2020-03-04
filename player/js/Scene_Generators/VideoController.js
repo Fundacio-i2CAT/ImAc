@@ -83,16 +83,20 @@ VideoController = function() {
     {
         return new Promise((resolve) => {
 
-            listOfVideoContents[0].dash.on( dashjs.MediaPlayer.events.PLAYBACK_STARTED, function() {
+            if ( listOfVideoContents[0].dash ) 
+            {
+                listOfVideoContents[0].dash.on( dashjs.MediaPlayer.events.PLAYBACK_STARTED, function() {
 
-                if ( ft ) 
-                {
-                    ft = false;
-                    _ManifestParser.init( listOfVideoContents[0].dash.getDashAdapter().geti2catMPD() );
-                }
+                    if ( ft ) 
+                    {
+                        ft = false;
+                        _ManifestParser.init( listOfVideoContents[0].dash.getDashAdapter().geti2catMPD() );
+                    }
 
-                resolve( 'ok' );
-            });   
+                    resolve( 'ok' );
+                }); 
+            }
+            else resolve( 'ok' );
         });
     }
 
@@ -302,11 +306,14 @@ VideoController = function() {
     */
     this.init = function()
     {
-        listOfVideoContents[0].dash.on( dashjs.MediaPlayer.events.PERIOD_SWITCH_STARTED, function() 
+        if ( listOfVideoContents[0].dash )
         {
-            if (periodCount > 0) _ManifestParser.updateSignerVideo(periodCount);
-            periodCount += 1;
-        });
+            listOfVideoContents[0].dash.on( dashjs.MediaPlayer.events.PERIOD_SWITCH_STARTED, function() 
+            {
+                if (periodCount > 0) _ManifestParser.updateSignerVideo(periodCount);
+                periodCount += 1;
+            });
+        }
 
         getAdaptationSets().then(( str ) => { 
 

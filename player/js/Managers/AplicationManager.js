@@ -7,32 +7,9 @@ var controls;
 function AplicationManager()
 {
     var renderer;
-    var _display;
 
     var mouse3D = new THREE.Vector2( 0, 0 );
     var hmdTouchVector = new THREE.Vector2( 0, 0 );
-
-    var button_1;
-    var button_2;
-
-    this.getRenderer = function() { return renderer };
-
-
-    this.disableVRButtons = function()
-    {
-    	button_1.style.display = 'none';
-		button_2.style.display = 'none';
-    };
-
-    this.setVRButton1 = function(button)
-    {
-    	button_1 = button;
-    };
-
-    this.setVRButton2 = function(button)
-    {
-    	button_2 = button;
-    };
 
 	function activateLogger()
 	{
@@ -44,23 +21,21 @@ function AplicationManager()
 		}
 	}
 
-    function render(){
+    function render()
+    {
         renderer.render( scene, camera );
-
         update();
-
         Reticulum.update();
     }
 
-    this.init = function()
+    this.init = function( mainContentURL )
     {
         console.log('Init AplicationManager')
 			
 		var container = document.getElementById( 'container' );
 
-
         // Init World
-        camera = new THREE.PerspectiveCamera( 60.0, window.innerWidth / window.innerHeight, 1, 2000);
+        camera = new THREE.PerspectiveCamera( 60.0, window.innerWidth / window.innerHeight, 1, 2000 );
         camera.name = 'perspectivecamera';
         scene = new THREE.Scene();
         scene.add( camera );
@@ -80,19 +55,23 @@ function AplicationManager()
         renderer.setPixelRatio( Math.floor( window.devicePixelRatio ) );
         renderer.setSize( window.innerWidth, window.innerHeight );
 	
-
         // CONTROLS
         controls = new THREE.DeviceOrientationAndTouchController( camera, renderer.domElement, renderer );
 
 		container.appendChild( renderer.domElement );
 
 		_moData.createOpenMenuMesh();
+        //camera.add( _meshGen.getOpenMenuMesh() )
 
-        //scene.add( _moData.getSphericalVideoMesh( 100, mainContentURL, 'contentsphere' ) )
+        //_isTV ? camera.add( _moData.getDirectiveVideo( mainContentURL, 'contentsphere' ) ) : scene.add( _moData.getSphericalVideoMesh( 1000, mainContentURL, 'contentsphere' ) );
 
-        _isTV ? camera.add( _moData.getDirectiveVideo( mainContentURL, 'contentsphere' ) ) : scene.add( _moData.getSphericalVideoMesh( 1000, mainContentURL, 'contentsphere' ) );
+        let mainVideo = VideoController.getVideObject( 'contentsphere', mainContentURL )
+        _isTV ? camera.add( _meshGen.getVideoMesh( mainVideo ) ) : scene.add( _meshGen.getVideo360Mesh( mainVideo )  );
 
+        // UPDATE TO XR
         if ( 'getVRDisplays' in navigator ) {
+
+            console.warn('This function needs to be updated')
 
             VideoController.init();
 
@@ -101,11 +80,10 @@ function AplicationManager()
 
         	navigator.getVRDisplays().then( function ( displays ) 
         	{
-				//_display = displays;
 				renderer.vr.enabled = true;
 				activateLogger();
 				renderer.animate( render );
-			} );
+			});
         }
         else alert("This browser don't support VR content");
 
@@ -124,7 +102,6 @@ function AplicationManager()
     function update()
     {
         THREE.VRController.update();
-
 
         //if ( controls ) controls.update();
         
@@ -168,27 +145,6 @@ function AplicationManager()
         //console.log(dt)
        
         controls.update();
-
-        /*window.onbeforeunload = sendTimeToServer;
-        function sendTimeToServer() {
-            // some ajax code
-            console.log('PAGE CLOSE');
-
-            var QoE_URL = 'http://' + window.location.hostname + ':4000/api/create';
-
-            let lastSessionLog = {
-                messageType: 'STOP',
-                sessionId: sessionId,
-                date: Date.now()
-            }
-
-            $.post( QoE_URL, lastSessionLog, function(data, status){
-                if (status == 'success' && firstQoEmsg ){
-                    firstQoEmsg = false;
-                }
-                //Debug.log("Data: " + data + "\nStatus: " + status);
-            });
-        }*/
     }
 
     function onDocumentMouseMove(event) {

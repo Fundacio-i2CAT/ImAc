@@ -1,9 +1,8 @@
 
 // GLOBAL VARS
 
-var _PlayerVersion = 'v0.10.0';
+var _PlayerVersion = 'v0.11.0';
 
-var AplicationManager = new AplicationManager();
 var MenuFunctionsManager = new MenuFunctionsManager();
 
 var _moData = new THREE.MediaObjectData();
@@ -42,16 +41,13 @@ let menuParent;
 let menuHeight;
 let menuWidth;
 
-var loggerActivated = true;
+var loggerActivated = false;
 var firstQoEmsg = true;
 var globalDiff = 0;
 
 var sessionId = Date.now(); // logger
 
 var demoId = 1;
-
-var mainContentURL = './resources/rapzember-young-hurn_edit.mp4';
-//var _selected_content = 'Radio';
 
 var list_contents;
 
@@ -71,8 +67,6 @@ var menuButtonActiveColor = 0xffff00;
 var secondarySubIndex = 0;
 
 var _isHMD = false;
-var autopositioning = false;
-var radarautopositioning = false;
 
 var _blockControls = false;
 
@@ -158,7 +152,7 @@ function init_webplayer()
                     _isTV = localStorage.ImAc_lineal == 'true' && list_contents[ myhash[1] ].urlTV ? true : false;
                     //_isTV = (list_contents[ myhash[1] ].urlTV) ? true : false;
 
-                    mainContentURL = ( _isTV && list_contents[ myhash[1] ].urlTV ) ? list_contents[ myhash[1] ].urlTV : list_contents[ myhash[1] ].url;
+                    let mainContentURL = ( _isTV && list_contents[ myhash[1] ].urlTV ) ? list_contents[ myhash[1] ].urlTV : list_contents[ myhash[1] ].url;
 
                     if ( localStorage.ImAc_voiceControl == 'on' ) connectVoiceControl( localStorage.ImAc_voiceControlId, "http://51.89.138.157:3000/" );
 
@@ -216,7 +210,8 @@ function init_webplayer()
 
                     if ( !_iconf ) _iconf = [];
 
-                    AplicationManager.init();
+                    let appMngr = new AplicationManager();
+                    appMngr.init( mainContentURL );
 
                 }
                 else window.location = window.location.origin + window.location.pathname.slice(0, -7);

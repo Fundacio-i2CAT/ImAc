@@ -3,7 +3,7 @@
  */
 
  // used libs: _slMngr, _stMngr, MenuManager, interController, MenuController, AplicationManager
- // used globals: subtitlesLanguage....., camera, autopositioning, menuList
+ // used globals: subtitlesLanguage....., camera, menuList
 
 MenuFunctionsManager = function() {
 

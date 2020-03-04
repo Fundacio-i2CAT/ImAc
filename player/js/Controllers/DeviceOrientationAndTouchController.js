@@ -234,10 +234,10 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 				break;
 
 			case 77:  // m
-				if ( !autopositioning ) {
-					if (scene.getObjectByName( "openMenu" ) && scene.getObjectByName( "openMenu" ).visible ) menuMgr.initFirstMenuState();
-					else menuMgr.ResetViews();
-				}
+
+				if (scene.getObjectByName( "openMenu" ) && scene.getObjectByName( "openMenu" ).visible ) menuMgr.initFirstMenuState();
+				else menuMgr.ResetViews();
+				
 				break;
 				
 			default:
@@ -361,7 +361,7 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 			
 			objQuat.copy( tmpQuat );
 
-			if ( appState === CONTROLLER_STATE.MANUAL_ROTATE && !autopositioning) {	
+			if ( appState === CONTROLLER_STATE.MANUAL_ROTATE ) {	
 				lat = ( startY - currentY ) * scrollSpeedY;
 				lon = ( startX - currentX ) * scrollSpeedX;
 
@@ -387,7 +387,7 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 
 				//scope.objectPather.quaternion.copy( objQuat );
 				scope.object.quaternion.copy( objQuat );
-			} else if ( appState === CONTROLLER_STATE.MANUAL_ROTATE_DEVICE && !autopositioning) {				
+			} else if ( appState === CONTROLLER_STATE.MANUAL_ROTATE_DEVICE ) {				
 				if ( !_isHMD ) {
 					lat = ( - startY + currentY ) * scrollSpeedY; 
 					phi	 = THREE.Math.degToRad( lat );  
@@ -451,7 +451,8 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 	this.onVRControllerUpdate = function( event ){
 		if ( !gamepadConnected ) {
 			gamepadConnected = true;
-			_moData.createPointer2(); 
+			//_moData.createPointer2();
+			scene.add( _meshGen.getPointer2Mesh() );
 
 			var controller = event.detail
 			controller.name = "controller"
@@ -547,7 +548,7 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 	        }	
 		}
 		
-		if (this.isAndroid && !autopositioning && _isHMD) {
+		if (this.isAndroid && _isHMD) {
 
 		} else if ( appState !== CONTROLLER_STATE.AUTO ) {
 			this.updateManualMove();	

@@ -54,10 +54,43 @@ SLManager = function() {
             // Remove existing SLs if there is one in the scene already.
             _slMngr.remove(); 
         } 
+
+        let scaleFactor = _isHMD ? 0.8*slConfig.size/slConfig.maxSize : slConfig.size/slConfig.maxSize;
+        let st4sl = undefined;
+        if( !imsc1doc_SL ){        
+            let textList = [{
+                  text: "",
+                  color: "rgb(255,255,255)",
+                  backgroundColor: "rgb(0,0,0)"
+            }];
+
+            st4sl = _stMngr.getST4SL( textList, "500 40px Roboto, Arial", 'sl-subtitles' );
+
+            st4sl.visible = (stConfig.indicator == 'arrow' && !stConfig.isEnabled) ? true : false;
+        }
+
+        let x = _isHMD ? 0.5 * ( 1.48*slConfig.area/2 - slConfig.size/2 ) *slConfig.canvasPos.x : ( 1.48*slConfig.area/2 - slConfig.size/2 ) *slConfig.canvasPos.x;
+        let y = _isHMD ? slConfig.canvasPos.y * (vHeight*(1-safeFactor) - 0.8*slConfig.size)/2 : slConfig.canvasPos.y * (vHeight*(1-safeFactor) - slConfig.size)/2;
+
+        //This will save the very 1st position.
+        if(!slConfig.initPos){
+            slConfig.initPos = new THREE.Vector2(x, y);
+        }
+
+        if(localStorage.getItem("slPosition")){
+            let savedPosition = JSON.parse(localStorage.getItem("slPosition"))
+            x = savedPosition.x;
+            y = savedPosition.y;
+        } 
+
+        let slvideo = VideoController.getVideObject( 'signer', slConfig.url )
+
         // Add signer element to the canvas.
-        canvasMgr.addElement(_moData.getSignVideoMesh('signer'));
+        //canvasMgr.addElement( _moData.getSignVideoMesh('signer'));
+        canvasMgr.addElement( _meshGen.getSignerMesh( slvideo, x, y, scaleFactor, slConfig.maxSize, st4sl ) );
+
         // Save the signer element in a global class variable.
-        signer = canvas.getObjectByName('signer');
+        signer = _canvasObj.getObjectByName('signer');
         slConfig.isEnabled = true;
 
         if(stConfig.isEnabled){
@@ -110,11 +143,11 @@ SLManager = function() {
                 let st4slHeight = (subtitleSLMesh) ? subtitleSLMesh.children[0].geometry.parameters.height : 0;
                 let w = vHeight * camera.aspect;
                 if (pos.x > -(w - slConfig.size)/2 && pos.x < (w- slConfig.size)/2) {
-                    canvas.getObjectByName('signer').position.x = pos.x;
+                    _canvasObj.getObjectByName('signer').position.x = pos.x;
                 }
 
                 if (pos.y > -(vHeight - (slConfig.size + st4slHeight))/2 && pos.y < (vHeight - slConfig.size)/2) {
-                    canvas.getObjectByName('signer').position.y = pos.y;
+                    _canvasObj.getObjectByName('signer').position.y = pos.y;
                 }
             }
         }
@@ -132,8 +165,13 @@ SLManager = function() {
 
         } 
         slConfig.st4sltext = textList;
-        subtitleSLMesh = _moData.getSLSubtitleMesh(textList);
-        canvas.getObjectByName('signer').add(subtitleSLMesh);
+        //subtitleSLMesh = _moData.getSLSubtitleMesh(textList);
+
+        let font = textList[0].text.length < 12 ? "500 40px Roboto, Arial" : textList[0].text.length < 16 ? "500 35px Roboto, Arial" : "500 30px Roboto, Arial";
+        //subtitleSLMesh = _meshGen.getSubtitleMesh( textList, font, true, 'sl-subtitles' );
+        subtitleSLMesh = _stMngr.getST4SL( textList, font, 'sl-subtitles' );
+
+        _canvasObj.getObjectByName('signer').add(subtitleSLMesh);
        _slMngr.updatePositionY();
     };
 
@@ -142,7 +180,7 @@ SLManager = function() {
  */
     this.removeSLSubtitle = function(){
         subController.setSLtextListMemory([]);
-        canvas.getObjectByName('signer').remove(subtitleSLMesh);
+        _canvasObj.getObjectByName('signer').remove(subtitleSLMesh);
         subtitleSLMesh = undefined;
     };
 
@@ -212,11 +250,6 @@ SLManager = function() {
             signer.position.y = slConfig.canvasPos.y * Math.abs(y + offsetY);
         }
     }
-
-
-/*****************************************************************************************************************************
-*                                           P R I V A T E    F U N C T I O N S  
-*****************************************************************************************************************************/
 
 
 /*****************************************************************************************************************************

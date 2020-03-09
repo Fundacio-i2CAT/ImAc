@@ -106,11 +106,11 @@ THREE.Radar = function () {
             let w = vHeight * camera.aspect;
             
             if(pos.x > -(w-14)/2 && pos.x < (w-14)/2){
-                canvas.getObjectByName('radar').position.x = pos.x; 
+                _canvasObj.getObjectByName('radar').position.x = pos.x; 
             }
 
             if(pos.y > -(vHeight-14)/2 && pos.y < (vHeight-14)/2){
-                canvas.getObjectByName('radar').position.y = pos.y;
+                _canvasObj.getObjectByName('radar').position.y = pos.y;
             } 
         }
     }

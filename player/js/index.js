@@ -5,7 +5,7 @@ var _PlayerVersion = 'v0.11.0';
 
 var MenuFunctionsManager = new MenuFunctionsManager();
 
-var _moData = new THREE.MediaObjectData();
+//var _moData = new THREE.MediaObjectData();
 var _rdr = new THREE.Radar();
 
 var vwStrucMMngr = new ViewStructureMenuManager();
@@ -34,10 +34,7 @@ let mainMenuCtrl;
 let SettingsOptionCtrl;
 let multiOptionsPreviewCtrl;
 
-let canvas;
-let menu;
-let settingsMenu;
-let menuParent;
+let _canvasObj;
 let menuHeight;
 let menuWidth;
 
@@ -48,12 +45,8 @@ var globalDiff = 0;
 var sessionId = Date.now(); // logger
 
 var demoId = 1;
-
 var list_contents;
 
-var __etype = 0;
-
-var _SLsubtitles = false;
 var _iconf;
 var _userprofile = true;
 var _ws_vc;
@@ -67,11 +60,9 @@ var menuButtonActiveColor = 0xffff00;
 var secondarySubIndex = 0;
 
 var _isHMD = false;
-
 var _blockControls = false;
 
 let timerCloseMenu;
-
 let elementSelection;
 
 var _isTV = false;
@@ -89,7 +80,6 @@ let astConfig;
 
 let actionPausedVideo = false;
 const canvasDistance = 70;
-let vFOV; // convert vertical fov to radians
 let vHeight; // visible height
 let safeFactor = 0.2; //Creates a margin with the height of the scren. Diferent factor for HMD.
 
@@ -131,94 +121,38 @@ function init_webplayer()
 
     _AudioManager.initAmbisonicResources();
 
-    _moData.setFont('./css/fonts/TiresiasScreenfont_Regular.json').then(() => { 
+    _meshGen.setFont('./css/fonts/TiresiasScreenfont_Regular.json').then(() => { 
 
-        //Remote
-        $.getJSON("https://imac.gpac-licensing.com/imac_content/content.json")
-        //Local            
-        //$.getJSON('./content.json')
-            .done(function( json ) {
-                list_contents = json.contents;
+        $.getJSON("https://imac.gpac-licensing.com/imac_content/content.json").done(function( json ) 
+        {
+            list_contents = json.contents;
 
-                firstQoEmsg = true;
+            firstQoEmsg = true;
 
-                if ( myhash && myhash[1] && myhash[1] < list_contents.length && list_contents[ myhash[1] ] && localStorage.ImAc_init == myhash[1] ) 
-                {
-                    demoId = myhash[1];
-                    
-                    localStorage.removeItem('ImAc_init');
-                    localStorage.ImAc_language ? MenuDictionary.setMainLanguage( localStorage.ImAc_language ) : MenuDictionary.setMainLanguage( 'en' );
+            if ( myhash && myhash[1] && myhash[1] < list_contents.length && list_contents[ myhash[1] ] && localStorage.ImAc_init == myhash[1] ) 
+            {
+                demoId = myhash[1];
+                
+                localStorage.removeItem('ImAc_init');
+                localStorage.ImAc_language ? MenuDictionary.setMainLanguage( localStorage.ImAc_language ) : MenuDictionary.setMainLanguage( 'en' );
 
-                    _isTV = localStorage.ImAc_lineal == 'true' && list_contents[ myhash[1] ].urlTV ? true : false;
-                    //_isTV = (list_contents[ myhash[1] ].urlTV) ? true : false;
+                _isTV = localStorage.ImAc_lineal == 'true' && list_contents[ myhash[1] ].urlTV ? true : false;
 
-                    let mainContentURL = ( _isTV && list_contents[ myhash[1] ].urlTV ) ? list_contents[ myhash[1] ].urlTV : list_contents[ myhash[1] ].url;
+                let mainContentURL = ( _isTV && list_contents[ myhash[1] ].urlTV ) ? list_contents[ myhash[1] ].urlTV : list_contents[ myhash[1] ].url;
 
-                    if ( localStorage.ImAc_voiceControl == 'on' ) connectVoiceControl( localStorage.ImAc_voiceControlId, "http://51.89.138.157:3000/" );
+                if ( localStorage.ImAc_voiceControl == 'on' ) connectVoiceControl( localStorage.ImAc_voiceControlId, "http://51.89.138.157:3000/" );
 
-                    ///////////////////////////////////////////////////////////////
-                    var cookieconf = readCookie("ImAcProfileConfig");
+                initAccessConf()
 
-                    if ( cookieconf && cookieconf != null )
-                    {
-                        _iconf = JSON.parse( cookieconf );
-                        
-                        stConfig = _stMngr.initConfig( _iconf );
-                        slConfig = _slMngr.initConfig( _iconf );
-                        adConfig =  _AudioManager.setADConfig( _iconf );
-                        astConfig =  _AudioManager.setASTConfig( _iconf );
+                let appMngr = new AplicationManager();
+                appMngr.init( mainContentURL );
 
-                        console.log( _iconf )
-                        iniGeneralSettings( _iconf );
-                    }
-					else {
-						_iconf = {
-							menutype: 'traditional',
-							pointersize: 'M',
-							voicecontrol: 'off',
-							userprofile: 'save',
-							mainlanguage: 'en',
-							//accesslanguage: 'en',
-							indicator: 'none',
-							safearea: 'L',
-							stsize: 'L',
-							stbackground: 'box',
-							stposition: 'down',
-							ste2r: 'off',
-							stlanguage: 'en',
-							slsize: 'M',
-							slposition: 'right',
-							sllanguage: 'en',
-							aste2r: 'off',
-							astmode: 'dynamic',
-							astvolume: 'mid',
-							astlanguage: 'en',
-							admode: 'dynamic',
-							advolume: 'mid',
-							adlanguage: 'en',
-							adspeed: 'x100'
-						}
-						stConfig = _stMngr.initConfig( _iconf );
-                        slConfig = _slMngr.initConfig( _iconf );
-                        adConfig =  _AudioManager.setADConfig( _iconf );
-                        astConfig =  _AudioManager.setASTConfig( _iconf );
-
-                        console.log( _iconf )
-                        iniGeneralSettings( _iconf );
-					}
-                    ////////////////////////////////////////////////////////////////
-
-                    if ( !_iconf ) _iconf = [];
-
-                    let appMngr = new AplicationManager();
-                    appMngr.init( mainContentURL );
-
-                }
-                else window.location = window.location.origin + window.location.pathname.slice(0, -7);
-          })
-          .fail(function( jqxhr, textStatus, error ) {
-            var err = textStatus + ", " + error;
-            console.log( "Request Failed: " + err );
+            }
+            else window.location = window.location.origin + window.location.pathname.slice(0, -7);
+        })
+        .fail(function( jqxhr, textStatus, error ) 
+        {
+            console.error( "Request Failed: " + textStatus + ", " + error );
         });
     });
 }

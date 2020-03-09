@@ -11,39 +11,22 @@ function AplicationManager()
     var mouse3D = new THREE.Vector2( 0, 0 );
     var hmdTouchVector = new THREE.Vector2( 0, 0 );
 
-	function activateLogger()
-	{
-		if ( loggerActivated )
-		{
-			setInterval(function(){
-				statObj.add( new StatElements() );
-            }, 500);
-		}
-	}
-
     function render()
     {
         renderer.render( scene, camera );
         update();
-        Reticulum.update();
     }
 
-    this.init = function( mainContentURL )
+    function initCamera()
     {
-        console.log('Init AplicationManager')
-			
-		var container = document.getElementById( 'container' );
-
-        // Init World
         camera = new THREE.PerspectiveCamera( 60.0, window.innerWidth / window.innerHeight, 1, 2000 );
         camera.name = 'perspectivecamera';
         scene = new THREE.Scene();
         scene.add( camera );
+    }
 
-        vFOV = THREE.Math.degToRad( camera.fov ); // convert vertical fov to radians
-        vHeight = 2 * Math.tan( vFOV / 2 ) * canvasDistance; // visible height
-
-        // Init Render
+    function inirRenderer()
+    {
         renderer = new THREE.WebGLRenderer({
             antialias: true,
             premultipliedAlpha: false,
@@ -54,19 +37,24 @@ function AplicationManager()
         renderer.sortObjects = true;
         renderer.setPixelRatio( Math.floor( window.devicePixelRatio ) );
         renderer.setSize( window.innerWidth, window.innerHeight );
-	
-        // CONTROLS
-        controls = new THREE.DeviceOrientationAndTouchController( camera, renderer.domElement, renderer );
+    }
 
+    this.init = function( mainContentURL )
+    {
+        console.log('Init AplicationManager')
+			
+		var container = document.getElementById( 'container' );
+
+        initCamera();
+        inirRenderer();
+
+        vHeight = 2 * Math.tan( THREE.Math.degToRad( camera.fov ) / 2 ) * canvasDistance; // visible height
+	
+        controls = new THREE.DeviceOrientationAndTouchController( camera, renderer.domElement, renderer );
 		container.appendChild( renderer.domElement );
 
-		_moData.createOpenMenuMesh();
-        //camera.add( _meshGen.getOpenMenuMesh() )
-
-        //_isTV ? camera.add( _moData.getDirectiveVideo( mainContentURL, 'contentsphere' ) ) : scene.add( _moData.getSphericalVideoMesh( 1000, mainContentURL, 'contentsphere' ) );
-
         let mainVideo = VideoController.getVideObject( 'contentsphere', mainContentURL )
-        _isTV ? camera.add( _meshGen.getVideoMesh( mainVideo ) ) : scene.add( _meshGen.getVideo360Mesh( mainVideo )  );
+        _isTV ? camera.add( _meshGen.getVideoMesh( mainVideo ) ) : scene.add( _meshGen.getVideo360Mesh( mainVideo ) );
 
         // UPDATE TO XR
         if ( 'getVRDisplays' in navigator ) {
@@ -88,14 +76,12 @@ function AplicationManager()
         else alert("This browser don't support VR content");
 
         if ( localStorage.ImAc_server ) _Sync.init( localStorage.ImAc_server );
-        runDemo();  
 
-        initReticulum( camera );
+        runDemo();  
 
         canvasMgr.Init();
 
-        document.addEventListener('mousemove', onDocumentMouseMove, false);
-        //document.addEventListener('mousedown', onDocumentMouseDown, false);
+        document.addEventListener( 'mousemove', onDocumentMouseMove, false );
 	};
 
 
@@ -123,7 +109,7 @@ function AplicationManager()
             }     
         }
 
-        if ( _isHMD ) canvas.rotation.z = -camera.rotation.z;
+        if ( _isHMD ) _canvasObj.rotation.z = -camera.rotation.z;
 
         if(camera.getObjectByName('radar') && camera.getObjectByName('radar').visible){
             _rdr.updateRadarAreaRotation();
@@ -147,7 +133,8 @@ function AplicationManager()
         controls.update();
     }
 
-    function onDocumentMouseMove(event) {
+    function onDocumentMouseMove(event) 
+    {
         event.preventDefault();
 
         mouse3D.x = (event.clientX / window.innerWidth) * 2 - 1;

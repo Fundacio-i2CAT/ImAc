@@ -164,109 +164,82 @@ THREE.MeshGenerator = function ()
         return signer;
     }
 
-    // revisar parametres a pasar a createSubtitleMesh
-    this.getSubtitleMesh = function ( t, font, isSL, name )
+    this.createSubtitleMesh = function( t, font, isSL, name, scaleFactor, opacity, arrowsOpacity, posY, posX, type='tradST' ) 
     {
-        return createSubtitleMesh( t, font, isSL, name );
+        let stGroup = new THREE.Group();
+        let textMesh = createTextMesh( t, font, opacity, isSL );
+        let arrows = getSubtitlesArrowMesh( 6.5, t.length, t[0].color, t[0].backgroundColor, arrowsOpacity );
+
+        stGroup.name = name;
+
+        textMesh.name = 'emojitext';
+        textMesh.visible = true;
+
+        stGroup.position.y = posY;
+        stGroup.position.x = posX;
+
+        if ( type == 'tradST' )
+        {
+            stGroup.add( getBorderMesh( textMesh.geometry.parameters.width + 1, textMesh.geometry.parameters.height + 1, 'st-colorFrame' ) );
+        }
+        else if ( type == 'sceneST' )
+        {
+            textMesh.position.y = -20;
+            textMesh.position.z = -75;
+        }
+
+        stGroup.add( textMesh );
+        stGroup.add( arrows );
+
+        stGroup.scale.set( scaleFactor, scaleFactor, 1 );
+
+        return stGroup;
     }
 
-    // revisar parametres a pasar a createSubtitleMesh
-    this.getST4SLMesh = function( textList )
-    {
-        let font = textList[0].text.length < 12 ? "500 40px Roboto, Arial" : textList[0].text.length < 16 ? "500 35px Roboto, Arial" : "500 30px Roboto, Arial";
-
-        return createSubtitleMesh( textList, font, true, 'sl-subtitles' );
-    }
-
-    // revisar -> eliminar crides a variables externes stConfig
-    this.getSpeakerSubtitleMesh = function( textList, position='center', arrow=false )
+    this.getSpeakerSubtitleMesh = function( textList, scaleFactor, x, y, z, rotY, opacity, arrowMesh=undefined )
     {
         let group = new THREE.Group();
+        let stmesh = createTextMesh( textList, "500 40px Roboto, Arial", opacity );
 
-        // position, indicator, indx, indy, indz, stx, sty, stz, rotationy
+        if ( arrowMesh ) group.add( arrowMesh );
 
+        stmesh.scale.set( scaleFactor, scaleFactor, 1 );
 
-        var target = new THREE.Vector3();
-        var camView = camera.getWorldDirection( target );
-        var offset = camView.z >= 0 ? 180 : -0;
+        stmesh.name = 'emojitext';
+        stmesh.renderOrder = 3;
 
-        var dist = Math.sqrt( Math.pow( camView.x,2 ) + Math.pow( camView.y,2 ) + Math.pow( camView.z,2 ) );
-        var lon = Math.degrees( Math.atan( camView.x/camView.z ) ) + offset;
-        var lat = Math.degrees( Math.asin( camView.y/-dist ) );
+        stmesh.position.z = z;
+        stmesh.position.y = y;
+        stmesh.position.x = x;
 
-        lon = lon > 0 ? 360 - lon : - lon;
+        stmesh.visible = true;
 
-        if ( position != 'center' && stConfig.indicator.localeCompare('arrow') === 0) 
-        {
-            var isRight = position == 'right' ? true : false;   
-            var mesh = new THREE.Mesh( new THREE.PlaneGeometry( 0.001, 0.001 ), new THREE.MeshBasicMaterial( { color: 0xffffff } ) );
-            setFixedArrow( mesh, 0, textList, isRight, opacity );
+        stmesh.lookAt( 0, 0, 0 );
 
-            mesh.position.x = 80 * Math.cos( Math.radians( lon-90 -stConfig.scenePos.lon) ) * Math.cos( Math.radians( -lat -20) );
-            mesh.position.y = 80 * Math.sin( Math.radians( -lat -20) );
-            mesh.position.z = 80 * Math.sin( Math.radians( lon-90 -stConfig.scenePos.lon) ) * Math.cos( Math.radians( -lat -20) );
+        group.add( stmesh ); 
 
-            mesh.lookAt(0,0,0)
-
-            group.add( mesh )
-        }
-
-        var needajust = false;
-        if ( stConfig.scenePos.lon ) {}
-        else {
-            stConfig.scenePos.lon = lon;
-            stConfig.scenePos.lat = -lat;
-            needajust = true;
-        }
-
-        var stmesh = getSpeakerSubMesh( textList, ST_font ) 
-
-        if ( needajust ) 
-        {
-            stmesh.position.x = 80 * Math.cos( Math.radians( stConfig.scenePos.lat ) ) * Math.cos( Math.radians( lon-90 -stConfig.scenePos.lon) ) * Math.cos( Math.radians( -lat -20) );
-            stmesh.position.y = 80 * Math.cos( Math.radians( stConfig.scenePos.lat ) ) * Math.sin( Math.radians( -lat -20) );
-            stmesh.position.z = 80 * Math.cos( Math.radians( stConfig.scenePos.lat ) ) * Math.sin( Math.radians( lon-90 -stConfig.scenePos.lon) ) * Math.cos( Math.radians( -lat -20) );
-
-            stmesh.lookAt(0,0,0)
-        }
-
-        group.add( stmesh );      
-        group.rotation.y = Math.radians( -stConfig.scenePos.lon );
+        group.rotation.y = rotY;
         group.name = 'subtitles';
 
         return group;
-    };
-
-    // revisar quins paremetres s'han de pasar a createSubtitleMesh
-    this.getSceneFixedSubtitles = function( textList, stReps )
-    {
-        let group = new THREE.Group();
-
-        for ( let i = 0; i < stReps ; i++ ) 
-        {
-            let mesh = createSubtitleMesh( textList, "500 40px Roboto, Arial", false, 'fixed-st-' + i );
-
-            mesh.rotation.y = Math.radians( i*( 360/stReps ) );
-            group.add( mesh );
-        }
-
-        group.name = 'subtitles';
-        group.position.y = -20;
-
-        return group;
     }
 
-    // revisar si es necessari en el cas de deixar d'utilitzar reticulum
-    this.getOpenMenuMesh = function()
+    this.getSpeakerArrowMesh = function( textList, x, y, z, isRight=false, opacity=0.75 )
     {
-        let openMenuText = getTextMesh( "Menu", 22, 0xe6e6e6, "openmenutext" ); 
+        let mesh = new THREE.Mesh( 
+            new THREE.PlaneGeometry( 0.001, 0.001 ), 
+            new THREE.MeshBasicMaterial( { color: 0xffffff } ) 
+        );
 
-        openMenuText.position.y = 6;
-        openMenuText.position.z = -60;
-        openMenuText.scale.set( 0.15, 0.15, 1 )
-        openMenuText.visible = false;
+        mesh.add( getFixedArrow( isRight, textList[0].color, textList[0].backgroundColor, opacity ) );
 
-        return openMenuText;
+        mesh.position.x = x;
+        mesh.position.y = y;
+        mesh.position.z = z;
+
+        mesh.lookAt( 0, 0, 0 );
+
+        return mesh;
     }
 
     this.getLine = function( c, startvector, endvector )
@@ -305,9 +278,30 @@ THREE.MeshGenerator = function ()
         return ctx;
     }
 
-    this.getTextMesh = function()
+    this.getTextMesh = function( text, size, color, name )
     {
+        let shape = new THREE.BufferGeometry();
+        let material = new THREE.MeshBasicMaterial( { color: color } );
+        let geometry = new THREE.ShapeGeometry( subtitleFont.generateShapes( text, size ) );
 
+        geometry.computeBoundingBox();
+        shape.fromGeometry( geometry );
+        shape.center();
+
+        let mesh = new THREE.Mesh( shape, material )
+        mesh.name = name + '-text';
+
+        return mesh;
+    }
+
+    this.getImageIEMesh = function( w, h, img, color, name, rotation )
+    {
+        let mesh = createImageMesh( img, new THREE.PlaneGeometry( w, h ), color ) ;
+        mesh.name = name + '-image';
+
+        if ( rotation ) mesh.rotation.z = rotation;
+
+        return mesh;
     }
     
     function createVideoMesh( video, geometry ) 
@@ -319,14 +313,18 @@ THREE.MeshGenerator = function ()
         return new THREE.Mesh( geometry, new THREE.MeshBasicMaterial( { map: texture, side: THREE.FrontSide } ) );
     }
 
-    function createImageMesh( img, geometry ) 
+    function createImageMesh( img, geometry, color=undefined ) 
     {
         let loader = new THREE.TextureLoader();
         let texture = loader.load( img );
         texture.minFilter = THREE.LinearFilter;
         texture.format = THREE.RGBAFormat;
 
-        return new THREE.Mesh( geometry, new THREE.MeshBasicMaterial( { map: texture, transparent: true, side: THREE.FrontSide } ) );
+        let material = color ?  
+            new THREE.MeshBasicMaterial( { color: color, map: texture, transparent: true, side: THREE.FrontSide } ) : 
+            new THREE.MeshBasicMaterial( { map: texture, transparent: true, side: THREE.FrontSide } )
+
+        return new THREE.Mesh( geometry, material );
     }
 
     function getCubeGeometryByVertexUVs( size, f, l, r, t, b, bo )
@@ -620,168 +618,86 @@ THREE.MeshGenerator = function ()
         );
     }
 
-    function setFixedArrow( mesh, cw, t, right, opacity )
+    function createArrowMesh( color, name, rotation=false )
     {
         let geometry = new THREE.PlaneGeometry( 6.5, 6.5 );
-        let name = right ? 'right' : 'left';
-        let arrow = getImageMesh( geometry, './img/arrow_final.png', name, 3 );
+        let arrow = createImageMesh( './img/arrow_final.png', geometry, color );
 
-        arrow.material.color.set( t[0].color );
+        arrow.name = name;
 
-        if ( !right ) arrow.rotation.z = Math.PI;
+        if ( rotation ) arrow.rotation.z = Math.PI;
 
-        let arrowback = getBackgroundMesh ( geometry.parameters.width * 1.5, 8.4, t[0].backgroundColor, opacity );
-        arrowback.position.z = -0.01;
-        arrow.add( arrowback );
-        mesh.add( arrow );
+        return arrow;
     }
 
-    // revisar -> eliminar crides a variables externes stConfig
-    // getSubtitleMesh, getST4SLMesh, getSceneFixedSubtitles
-    function createSubtitleMesh( t, font, isSL, name ) 
+    function getFixedArrow( right, color, backgroundColor, opacity )
     {
-        let stGroup = new THREE.Group();
+        let name = right ? 'right' : 'left';
+        let arrow = createArrowMesh( color, name, !right );
 
-        stGroup.name = name;
+        let arrowback = getBackgroundMesh ( geometry.parameters.width * 1.5, 8.4, backgroundColor, opacity );
+        arrowback.position.z = -0.01;
+        arrow.add( arrowback );
 
+        return arrow;
+    }
 
-        const opacity = (isSL) ? 0.75 : stConfig.background;
-        let scaleFactor = 1;
+    function getSubtitlesArrowMesh( size, lineFactor, color, backgroundColor, o )
+    {   
+        let arrowGroup = new THREE.Group();
+        arrowGroup.name = 'arrows';
 
+        let arrowR = new THREE.Group();
+        let arrowL = new THREE.Group();
+
+        arrowR.name = 'right';
+        arrowL.name = 'left';
+
+        let arrowImgR = createArrowMesh( color, 'right-img', false );
+        let arrowImgL = createArrowMesh( color, 'left-img', true );
+
+        let arrowBckgR = getBackgroundMesh ( 6.5 * 1.5, 8.3*lineFactor, backgroundColor, o );
+        let arrowBckgL = getBackgroundMesh ( 6.5 * 1.5, 8.3*lineFactor, backgroundColor, o );
+
+        arrowImgR.position.z = 0.01;
+        arrowImgL.position.z = 0.01;
+
+        arrowR.add( arrowImgR );
+        arrowR.add( arrowBckgR );
+        arrowR.visible = false;  
+
+        arrowL.add( arrowImgL );
+        arrowL.add( arrowBckgL );
+        arrowL.visible = false;
+
+        arrowGroup.add( arrowL );
+        arrowGroup.add( arrowR );
+
+        return arrowGroup;
+    }
+
+    function createTextMesh( t, font, opacity, isSL=false )
+    {
         let cnv = isSL ? document.getElementById( "canvas2" ) : document.getElementById( "canvas" );
         let ctx = cnv.getContext( "2d" );
         let ch = 50; // canvas height x line
         let fh = 40; // font height 
-        
+
         ctx.font = font;
 
         let width = ctx.measureText( t[0].text ).width;
-        let width2;
+        let width2 = isSL ? undefined : t[1] ? ctx.measureText( t[1].text ).width : 0;
 
-        if(!isSL){
-            width2 = t[1] ? ctx.measureText( t[1].text ).width : 0;
-            cnv.width = ( width > width2 ) ? width + 20 : width2 + 20;
-            cnv.height = ch*t.length;
-        } else{ 
-            cnv.width = 260;
-            cnv.height = ch;
-        }
-
-        stConfig.width = cnv.width/6;
-        stConfig.height = ch*t.length/6; 
+        cnv.width = isSL ? 260 : ( width > width2 ) ? width + 20 : width2 + 20;
+        cnv.height = isSL ? ch : ch*t.length;
 
         if ( t[0] ) createCanvasTextLine( ctx, t[0].text, font, t[0].color, 0, 0, cnv.width, ch, opacity, ( cnv.width - width )/2, fh );
         if ( t[1] ) createCanvasTextLine( ctx, t[1].text, font, t[1].color, 0, ch, cnv.width, ch, opacity, ( cnv.width - width2 )/2, fh + ch );
 
         let material = new THREE.MeshBasicMaterial( { map: new THREE.CanvasTexture( cnv ),  transparent: true } );
-        let textMesh = new THREE.Mesh( new THREE.PlaneGeometry( stConfig.width, stConfig.height ), material );
-        textMesh.name = 'emojitext';
-        textMesh.visible = true;
+        let textMesh = new THREE.Mesh( new THREE.PlaneGeometry( cnv.width/6, ch*t.length/6 ), material );
 
-        let arrows = getSubtitlesArrowMesh( 6.5, t.length, t[0].color, t[0].backgroundColor, (!imsc1doc_SL && !stConfig.isEnabled) ? 0 : opacity );
-
-        if (isSL){//&& !imsc1doc_SL){
-            scaleFactor = _isHMD ? 0.8*(slConfig.size/textMesh.geometry.parameters.width) : (slConfig.size/textMesh.geometry.parameters.width);
-            stGroup.position.y =  _isHMD ? 0.825 *-(slConfig.size + textMesh.geometry.parameters.height*scaleFactor)/2 : -(slConfig.size + textMesh.geometry.parameters.height*scaleFactor)/2;
-            stGroup.position.x = 0;
-        } else {
-            scaleFactor = _isHMD ? 0.8*(stConfig.area/130) * stConfig.size * (stConfig.easy2read ? 1.25 : 1) : (stConfig.area/130) * stConfig.size * (stConfig.easy2read ? 1.25 : 1);
-            if(!stConfig.fixedSpeaker && !stConfig.fixedScene){
-                let initY = stConfig.canvasPos.y * (vHeight*(1-safeFactor) - scaleFactor*stConfig.height)/2;
-
-                //This will save the very 1st position.
-                if(!stConfig.initPos){
-                    stConfig.initPos = new THREE.Vector2(0, initY);
-                }
-
-                if(localStorage.getItem("stPosition")) {
-                    let savedPosition = JSON.parse(localStorage.getItem("stPosition"));
-                    stGroup.position.y = savedPosition.y;
-                    stGroup.position.x = savedPosition.x;
-                } else {
-                    stGroup.position.y = initY;
-                    stGroup.position.x = ((slConfig.isEnabled || stConfig.indicator.localeCompare('radar') === 0) ? _stMngr.removeOverlap(scaleFactor) : 0);
-                }
-
-                stGroup.add( getBorderMesh( stConfig.width+1, stConfig.height+1, 'st-colorFrame' ) );
-
-            } else if(stConfig.fixedScene){
-                textMesh.position.y = -20;
-                textMesh.position.z = -75;
-            }
-        }
-
-        stGroup.add(textMesh);
-        stGroup.add(arrows);
-        stGroup.scale.set(scaleFactor, scaleFactor, 1);
-
-        return stGroup;
-    };
-
-    // revisar -> eliminar crides a variables externes stConfig
-    function getSpeakerSubMesh( t, font )
-    {
-        var canvas = document.getElementById( "canvas" );
-        var ctx = canvas.getContext( "2d" );
-        var ch = 50; // canvas height x line
-        var fh = 40; // font height
-
-        ctx.font = font;
-        var width = ctx.measureText( t[0].text ).width;
-        var width2 = t[1] ? ctx.measureText( t[1].text ).width : 0;
-        canvas.width = ( width > width2 ) ? width + 20 : width2 + 20;
-        canvas.height = ch*t.length;
-
-        if ( t[0] ) createCanvasTextLine( ctx, t[0].text, font, t[0].color, 0, 0, canvas.width, ch, stConfig.background, ( canvas.width - width )/2, fh );
-        if ( t[1] ) createCanvasTextLine( ctx, t[1].text, font, t[1].color, 0, ch, canvas.width, ch, stConfig.background, ( canvas.width - width2 )/2, fh + ch );
-
-        var material = new THREE.MeshBasicMaterial( { map: new THREE.CanvasTexture( canvas ),  transparent: true } );
-        var mesh = new THREE.Mesh( new THREE.PlaneGeometry( canvas.width/6, ch*t.length/6 ), material );
-
-        let esaySizeAjust = stConfig.easy2read ? 1.25 : 1;
-        scaleFactor = _isHMD ? 0.8*(stConfig.area/130) * stConfig.size * esaySizeAjust : (stConfig.area/130) * stConfig.size * esaySizeAjust;
-        mesh.scale.set( scaleFactor, scaleFactor, 1 );
-
-        mesh.name = 'emojitext';
-        mesh.renderOrder = 3;
-        mesh.position.z = -80 * Math.cos( Math.radians( stConfig.scenePos.lat ) );
-        mesh.position.y = 80 * Math.sin( Math.radians( stConfig.scenePos.lat ) );
-        mesh.position.x = 0;
-        mesh.visible = true;
-
-        mesh.lookAt( 0, 0, 0 );
-
-        return mesh;
-    }
-
-    function getTextMesh( text, size, color, name, func, cw, ch )
-    {
-        let textShape = new THREE.BufferGeometry();
-        let textmaterial = new THREE.MeshBasicMaterial( { color: color} );
-        let shapes = subtitleFont.generateShapes( text, size );
-        let geometry = new THREE.ShapeGeometry( shapes );
-
-        geometry.computeBoundingBox();
-        textShape.fromGeometry( geometry );
-        textShape.center();
-
-        let mesh = new THREE.Mesh( textShape, textmaterial );
-
-        let coliderMesh = new THREE.Mesh( 
-            new THREE.PlaneGeometry( cw, ch ), 
-            new THREE.MeshBasicMaterial( { visible: false } ) 
-        );
-        
-        coliderMesh.name = name;
-        coliderMesh.position.z = 0.06;
-
-        if ( func ) coliderMesh.onexecute = func;
-
-        mesh.add( coliderMesh );   
-        mesh.position.z = 0.05;
-        mesh.name = name;
-
-        return mesh;
+        return textMesh;
     }
 }
 

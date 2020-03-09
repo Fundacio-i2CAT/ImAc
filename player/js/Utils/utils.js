@@ -40,37 +40,6 @@ function cartesianToAngular (x, y, z)
     return outAng;
 }
 
-function initReticulum(cam)
-{
-    Reticulum.init(cam, {
-        proximity: false,
-        clickevents: true,
-        reticle: {
-            visible: false,
-            restPoint: 50, //Defines the reticle's resting point when no object has been targeted
-            color: 0xe6e6e6,
-            innerRadius: 0.0004,
-            outerRadius: 0.003,
-            hover: {
-                color: 0x13ec56,
-                innerRadius: 0.02,
-                outerRadius: 0.024,
-                speed: 5,
-                vibrate: 50 //Set to 0 or [] to disable
-            }
-        },
-        fuse: {
-            visible: false,
-            duration: 3,
-            color: 0xc91355,
-            innerRadius: 0.045,
-            outerRadius: 0.06,
-            vibrate: 100, //Set to 0 or [] to disable
-            clickCancelFuse: false //If users clicks on targeted object fuse is canceled
-        }
-    });
-}
-
 function createDelayedMenu()
 {
     setTimeout(function(){
@@ -402,4 +371,67 @@ function resolveAfter2Seconds() {
           resolve(false)
       })
   });
+}
+
+function activateLogger()
+{
+    if ( loggerActivated )
+    {
+        setInterval(function(){
+            statObj.add( new StatElements() );
+        }, 500);
+    }
+}
+
+function initAccessConf()
+{
+    var cookieconf = readCookie("ImAcProfileConfig");
+
+    if ( cookieconf && cookieconf != null )
+    {
+        _iconf = JSON.parse( cookieconf );
+        
+        stConfig = _stMngr.initConfig( _iconf );
+        slConfig = _slMngr.initConfig( _iconf );
+        adConfig =  _AudioManager.setADConfig( _iconf );
+        astConfig =  _AudioManager.setASTConfig( _iconf );
+
+        iniGeneralSettings( _iconf );
+    }
+    else {
+        _iconf = {
+            menutype: 'traditional',
+            pointersize: 'M',
+            voicecontrol: 'off',
+            userprofile: 'save',
+            mainlanguage: 'en',
+            //accesslanguage: 'en',
+            indicator: 'none',
+            safearea: 'L',
+            stsize: 'L',
+            stbackground: 'box',
+            stposition: 'down',
+            ste2r: 'off',
+            stlanguage: 'en',
+            slsize: 'M',
+            slposition: 'right',
+            sllanguage: 'en',
+            aste2r: 'off',
+            astmode: 'dynamic',
+            astvolume: 'mid',
+            astlanguage: 'en',
+            admode: 'dynamic',
+            advolume: 'mid',
+            adlanguage: 'en',
+            adspeed: 'x100'
+        }
+        stConfig = _stMngr.initConfig( _iconf );
+        slConfig = _slMngr.initConfig( _iconf );
+        adConfig =  _AudioManager.setADConfig( _iconf );
+        astConfig =  _AudioManager.setASTConfig( _iconf );
+
+        iniGeneralSettings( _iconf );
+    }
+
+    if ( !_iconf ) _iconf = [];
 }

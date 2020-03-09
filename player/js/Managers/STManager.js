@@ -1,44 +1,8 @@
-/**
- * { function_description }
- *
- * @class      STManager (name)
- * @return     {<type>}  { description_of_the_return_value }
- * 
- * - MAIN FUNCTION:
- *         · initConfig             -->
- *         · create                 -->
- *         · remove                 -->
- *         · move                   --> 
- *         
- * - PUBLIC FUNCTION:
- *         · switchSubtitles        -->  Enable or disable the subtitles.
- *         · removeOverlap          -->
- *         
- * - PRIVATE FUNCTION:
- * 
- * - PUBLIC GETTERS:
- *         · getSubtitles           -->
- *         · getSTAvailableLang     -->
- *         
- * - PUBLIC SETTERS: 
- *         · setSubtitle            -->
- *         · setIndicator           -->
- *         · setSize                -->
- *         · setBackground          -->
- *         · setEasy2Read           -->
- *         · setPosition            -->
- *         · setScenePos            -->
- *         · setLanguagesArray      -->
- *         
- * - PUBLIC CHECKERS:
- *         · checkisSubAvailable    --> 
- *         · checkSubEasyAvailable  --> 
- *         · checkSubtitleIdicator  -->      
- *         
- */
+
 STManager = function() {
 
-    let subtitles;    
+    let subtitles;
+
     const indicators = {
         NONE: 'none',
         ARROW: 'arrow',
@@ -49,14 +13,8 @@ STManager = function() {
 *                                           M A I N     F U N C T I O N S  
 ******************************************************************************************************************************/    
 
-/**
- * Initializes the configuration.
- *
- * @param      {<type>}  conf    The conf
- * @return     {<type>}  { description_of_the_return_value }
- */
-    this.initConfig = function(conf){
-
+    this.initConfig = function(conf)
+    {
         let config = {
             width: 0,
             height: 0,
@@ -93,35 +51,166 @@ STManager = function() {
         return config;
     };
 
-/**
- * { function_description }
- *
- * @param      {<type>}  textList  The text list
- */
-    this.create = function(textList){
+    this.create = function( textList )
+    {
+        _stMngr.remove();
+
         let stMesh;
-        if(subtitles){
-            _stMngr.remove();
-        }
         
-        if (!stConfig.fixedSpeaker && !stConfig.fixedScene){
-            stMesh = _moData.getSubtitleMesh(textList, "500 40px Roboto, Arial", false, 'subtitles');
-            canvasMgr.addElement(stMesh);
-            subtitles = canvas.getObjectByName('subtitles');
-        } else{
-            stMesh = !stConfig.fixedScene ? _moData.getSpeakerSubtitleMesh(textList) : _moData.getSceneFixedSubtitles(textList, 3);
+        if ( !stConfig.fixedSpeaker && !stConfig.fixedScene )
+        {
+            stMesh = createTraditionalST( textList, false, "500 40px Roboto, Arial", 'subtitles', 'tradST' );
+            canvasMgr.addElement( stMesh );
+        } 
+        else
+        {
+            stMesh = !stConfig.fixedScene ? createSpeakerST( textList ) : createSceneST( textList, 3 );
             scene.add( stMesh );
-            subtitles = scene.getObjectByName('subtitles');
         }
+
+        subtitles = stMesh;
     };
+
+    this.getST4SL = function( textList, font, name )
+    {
+        return createTraditionalST( textList, true, font, name, 'SL4ST' );
+    }
+
+    function createTraditionalST( textList, isSL, font, name, type )
+    {
+        const opacity = (isSL) ? 0.75 : stConfig.background;
+
+        let scaleFactor = 1;
+        let posX = 0;
+        let posY = 0;
+        let arrowsOpacity = (!imsc1doc_SL && !stConfig.isEnabled) ? 0 : opacity;
+
+        stConfig.height = 50*textList.length/6; 
+
+        if ( isSL ) 
+        {
+            scaleFactor = _isHMD ? 0.8*( slConfig.size/( 260/6 ) ) : ( slConfig.size/( 260/6 ) );
+            posY = _isHMD ? 0.825 *-(slConfig.size + stConfig.height*scaleFactor)/2 : -(slConfig.size + stConfig.height*scaleFactor)/2;
+            posX = 0;
+        }
+        else
+        {
+            scaleFactor = _isHMD ? 0.8*(stConfig.area/130) * stConfig.size * (stConfig.easy2read ? 1.25 : 1) : (stConfig.area/130) * stConfig.size * (stConfig.easy2read ? 1.25 : 1);
+            if ( !stConfig.fixedSpeaker && !stConfig.fixedScene )
+            {
+                let initY = stConfig.canvasPos.y * (vHeight*(1-safeFactor) - scaleFactor*stConfig.height)/2;
+
+                //This will save the very 1st position.
+                if ( !stConfig.initPos )
+                {
+                    stConfig.initPos = new THREE.Vector2(0, initY);
+                }
+
+                if ( localStorage.getItem("stPosition") ) 
+                {
+                    let savedPosition = JSON.parse(localStorage.getItem("stPosition"));
+                    posY = savedPosition.y;
+                    posX = savedPosition.x;
+                } 
+                else 
+                {
+                    posY = initY;
+                    posX = ((slConfig.isEnabled || stConfig.indicator.localeCompare('radar') === 0) ? _stMngr.removeOverlap(scaleFactor) : 0);
+                }
+            } 
+        }
+
+        return _meshGen.createSubtitleMesh( textList, font, isSL, name, scaleFactor, opacity, arrowsOpacity, posY, posX, type )
+    }
+
+    function createSpeakerST( textList )
+    {
+        let esaySizeAjust = stConfig.easy2read ? 1.25 : 1;
+        let scaleFactor = _isHMD ? 0.8*(stConfig.area/130) * stConfig.size * esaySizeAjust : (stConfig.area/130) * stConfig.size * esaySizeAjust;
+
+        let difPosition = stConfig.scenePos.lon ? getViewDifPositionTest( stConfig.scenePos.lon, camera.fov ) : 0;
+
+        if ( difPosition == 0 ) position = 'center';
+        else position = difPosition < 0 ? 'left' : 'right';
+
+        var target = new THREE.Vector3();
+        var camView = camera.getWorldDirection( target );
+        var offset = camView.z >= 0 ? 180 : -0;
+
+        var dist = Math.sqrt( Math.pow( camView.x,2 ) + Math.pow( camView.y,2 ) + Math.pow( camView.z,2 ) );
+        var lon = Math.degrees( Math.atan( camView.x/camView.z ) ) + offset;
+        var lat = Math.degrees( Math.asin( camView.y/-dist ) );
+
+        lon = lon > 0 ? 360 - lon : - lon;
+
+        let arrowMesh = undefined;
+
+        if ( position != 'center' && stConfig.indicator.localeCompare('arrow') === 0) 
+        {
+            let isRight = position == 'right' ? true : false;   
+            let posX = 80 * Math.cos( Math.radians( lon - 90 - stConfig.scenePos.lon ) ) * Math.cos( Math.radians( -lat - 20 ) );
+            let posY = 80 * Math.sin( Math.radians( -lat - 20 ) );
+            let posZ = 80 * Math.sin( Math.radians( lon - 90 - stConfig.scenePos.lon ) ) * Math.cos( Math.radians( -lat - 20 ) );
+
+            arrowMesh = _meshGen.getSpeakerArrowMesh( textList, posX, posY, posZ, isRight, stConfig.background )
+        }
+
+        var needajust = false;
+
+        if ( stConfig.scenePos.lon ) {}
+        else {
+            stConfig.scenePos.lon = lon;
+            stConfig.scenePos.lat = -lat;
+            needajust = true;
+        }
+
+        let x, y, z;
+
+        if ( needajust ) 
+        {
+            x = 80 * Math.cos( Math.radians( stConfig.scenePos.lat ) ) * Math.cos( Math.radians( lon-90 -stConfig.scenePos.lon) ) * Math.cos( Math.radians( -lat -20) );
+            y = 80 * Math.cos( Math.radians( stConfig.scenePos.lat ) ) * Math.sin( Math.radians( -lat -20) );
+            z = 80 * Math.cos( Math.radians( stConfig.scenePos.lat ) ) * Math.sin( Math.radians( lon-90 -stConfig.scenePos.lon) ) * Math.cos( Math.radians( -lat -20) );
+        }
+        else
+        {
+            x = 0;
+            y = 80 * Math.sin( Math.radians( stConfig.scenePos.lat ) );
+            z = -80 * Math.cos( Math.radians( stConfig.scenePos.lat ) );
+        }
+
+        let rotY = Math.radians( -stConfig.scenePos.lon );
+
+        return _meshGen.getSpeakerSubtitleMesh( textList, scaleFactor, x, y, z, rotY, stConfig.background, arrowMesh );
+    }
+
+    function createSceneST( textList, stReps )
+    {
+        let group = new THREE.Group();
+
+        for ( let i = 0; i < stReps ; i++ ) 
+        {
+            let mesh = createTraditionalST( textList, false, "500 40px Roboto, Arial", 'fixed-st-' + i, 'sceneST' );
+
+            mesh.rotation.y = Math.radians( i*( 360/stReps ) );
+            group.add( mesh );
+        }
+
+        group.name = 'subtitles';
+        group.position.y = -20;
+
+        return group;
+    }
 
 /**
  * Removes the object.
  */
-    this.remove = function(){
-        if(subtitles){
+    this.remove = function()
+    {
+        if ( subtitles )
+        {
             subController.setTextListMemory( [] );
-            (stConfig.fixedScene || stConfig.fixedSpeaker) ? scene.remove( subtitles ) : canvasMgr.removeElement( subtitles );
+            ( stConfig.fixedScene || stConfig.fixedSpeaker ) ? scene.remove( subtitles ) : canvasMgr.removeElement( subtitles );
             subtitles = undefined;
         }
     };
@@ -131,8 +220,10 @@ STManager = function() {
  *
  * @param      {<type>}  pos     The position
  */
-    this.move = function(pos){
-        if (elementSelection) {
+    this.move = function( pos )
+    {
+        if ( elementSelection ) 
+        {
             scene.getObjectByName('trad-main-menu').visible = false;
             scene.getObjectByName('trad-option-menu').visible = false;
 
@@ -144,11 +235,11 @@ STManager = function() {
                 }
 
                 if(pos.x > -w/2 && pos.x < w/2){
-                    canvas.getObjectByName('subtitles').position.x = pos.x;
+                    _canvasObj.getObjectByName('subtitles').position.x = pos.x;
                 }
 
                 if(pos.y > -h/2 && pos.y < h/2){
-                    canvas.getObjectByName('subtitles').position.y = pos.y;
+                    _canvasObj.getObjectByName('subtitles').position.y = pos.y;
                 }
             }
         }
@@ -212,7 +303,7 @@ STManager = function() {
             let totalDif = 0;
             let arw = subController.getArrows();
             let stDif = (arw) ? scaleFactor*(stConfig.width/2 + arw.children[0].children[1].geometry.parameters.width) : scaleFactor*stConfig.width/2;
-            let slDif = canvas.getObjectByName('radar').position.x + (-slConfig.canvasPos.x)*slConfig.size/2 * (0.45+safeFactor);
+            let slDif = _canvasObj.getObjectByName('radar').position.x + (-slConfig.canvasPos.x)*slConfig.size/2 * (0.45+safeFactor);
 
             totalDif = stDif;
             
@@ -224,10 +315,6 @@ STManager = function() {
         }
         return offset;
     };
-
-/*****************************************************************************************************************************
-*                                           P R I V A T E    F U N C T I O N S  
-*****************************************************************************************************************************/
 
 
 /*****************************************************************************************************************************
@@ -369,7 +456,7 @@ STManager = function() {
             let esaySizeAjust = stConfig.easy2read ? 1.25 : 1;
             scaleFactor = (stConfig.area/130) * stConfig.size * esaySizeAjust;
             subtitles.scale.set( scaleFactor, scaleFactor, 1 );
-            subtitles.position.x = ((slConfig.isEnabled || stConfig.indicator.localeCompare('radar') === 0) ? _stMngr.removeOverlap(scaleFactor) : 0);
+            subtitles.position.x = ((slConfig.isEnabled || stConfig.indicator.localeCompare('radar') === 0) ? _stMngr.removeOverlap(subtitles.scale.x) : 0);
             subtitles.position.y = stConfig.canvasPos.y * (vHeight*(1-safeFactor) - scaleFactor*stConfig.height)/2;
         }
     };
@@ -416,7 +503,7 @@ STManager = function() {
             //Check if not fixed options and stConfig.initPos.y is initialized;
             //If stConfig.initPos.y is not initialized ST will have to be created
             if(!stConfig.fixedSpeaker && !stConfig.fixedScene && pos.y != 0 && stConfig.initPos.y != 0){
-                subtitles.position.x = ((slConfig.isEnabled || stConfig.indicator.localeCompare('radar') === 0) ? _stMngr.removeOverlap(scaleFactor) : 0);
+                subtitles.position.x = ((slConfig.isEnabled || stConfig.indicator.localeCompare('radar') === 0) ? _stMngr.removeOverlap(subtitles.scale.x) : 0);
                 subtitles.position.y =  Math.abs(subtitles.position.y)*pos.y; 
                 stConfig.fixedSpeaker = spFixed;
                 stConfig.fixedScene = scFixed;

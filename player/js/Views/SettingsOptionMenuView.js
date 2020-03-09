@@ -41,7 +41,7 @@ function SettingsOptionMenuView() {
         }
 
 //TODO: CREATE SEPARATE FUNCTION
-		let menuShape = _moData.roundedRect( new THREE.Shape(), optWidth, (data.parentColumnDropdown.length+1)*optHeight, 3*menuWidth/100 );
+		let menuShape = _meshGen.getRoundedRect( new THREE.Shape(), optWidth, (data.parentColumnDropdown.length+1)*optHeight, 3*menuWidth/100 );
         let material = new THREE.MeshBasicMaterial( { color: 0x111111});
         let geometry = new THREE.ShapeGeometry( menuShape );
         let mesh =  new THREE.Mesh( geometry, material);

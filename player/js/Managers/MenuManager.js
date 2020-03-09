@@ -14,6 +14,9 @@ function MenuManager() {
 
     let isMenuOpen;
 
+    let _menuObj;
+    let _menuParent;
+
 /**
  * { function_description }
  *
@@ -28,20 +31,20 @@ function MenuManager() {
         menuWidth = (menuType == 2) ? 80 : 130;
         menuHeight = menuWidth/4;
 
-        menuParent = _isHMD ? scene : canvas;
-        menu = vwStrucMMngr.TraditionalMenu('trad-main-menu');
+        _menuParent = _isHMD ? scene : _canvasObj;
+        _menuObj = vwStrucMMngr.TraditionalMenu('trad-main-menu');
 
         if (_isHMD) {
-            menu.scale.set( 0.8, 0.8, 0.8 );
+            _menuObj.scale.set( 0.8, 0.8, 0.8 );
         }
-        menuParent.add(menu);
+        _menuParent.add(_menuObj);
 
-        settingsMenu = vwStrucMMngr.TraditionalOptionMenu('trad-option-menu')
+        let settingsMenu = vwStrucMMngr.TraditionalOptionMenu('trad-option-menu')
         //Depending on the menu type the menu is attached to the menuParent or to the traditional menu
         if(menuMgr.getMenuType() == 2){
-            menu.add(settingsMenu);
+            _menuObj.add(settingsMenu);
         } else {
-            menuParent.add(settingsMenu);
+            _menuParent.add(settingsMenu);
         }  
 
         mainMenuCtrl = new MainMenuController();
@@ -168,12 +171,12 @@ function MenuManager() {
             scene.getObjectByName('pointer').scale.set(1*_pointerSize,1*_pointerSize,1*_pointerSize);
         }
 
-        if(menu) {
-            menu.visible = false;
+        if(_menuObj) {
+            _menuObj.visible = false;
             // If the Enhaced menu is selected on initial settings, 
             // hide menu options which is not attached to the proper menu.
             if(menuMgr.getMenuType() == 1){
-                menuParent.getObjectByName('trad-option-menu').visible = false;
+                _menuParent.getObjectByName('trad-option-menu').visible = false;
             } 
         }
 
@@ -193,7 +196,7 @@ function MenuManager() {
         menuActivationElement = new THREE.Mesh( geometry, material );
         menuActivationElement.name = 'openMenu';
 
-        Reticulum.add( menuActivationElement, {
+        /*Reticulum.add( menuActivationElement, {
             reticleHoverColor: 0xc91355,
             fuseDuration: 2, // Overrides global fuse duration
             fuseVisible: true,
@@ -212,7 +215,7 @@ function MenuManager() {
                 menuMgr.initFirstMenuState(); // Initialize the first menu state when the time has expired.         
 
             }
-        });
+        });*/
 
         scene.add(menuActivationElement);
     }
@@ -227,7 +230,7 @@ function MenuManager() {
     this.initFirstMenuState = function() {
         lastUpdate = Date.now();
         menuActivationElement.visible = false;
-        scene.getObjectByName( "openmenutext" ).visible = false;
+        //scene.getObjectByName( "openmenutext" ).visible = false;
 
         if ( scene.getObjectByName('pointer2') && _isHMD ) {
             scene.getObjectByName('pointer2').visible = true;
@@ -242,11 +245,11 @@ function MenuManager() {
         SettingsOptionCtrl.Exit();
 
         if (_isHMD) {
-            resetMenuPosition( menu )
+            resetMenuPosition( _menuObj )
             if(menuMgr.getMenuType() == 1) resetMenuPosition( settingsMenu )
         }
 
-        menu.visible = true;
+        _menuObj.visible = true;
     }
 
     this.checkMenuStateVisibility = function() { 
@@ -272,8 +275,8 @@ function MenuManager() {
  * Removes a menu from parent.
  */
     this.removeMenuFromParent = function() {
-        menuParent.remove(scene.getObjectByName('trad-main-menu'));
-        menuParent.remove(scene.getObjectByName('trad-option-menu'));
+        _menuParent.remove(scene.getObjectByName('trad-main-menu'));
+        _menuParent.remove(scene.getObjectByName('trad-option-menu'));
     }
 
 /**

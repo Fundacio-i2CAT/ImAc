@@ -206,7 +206,7 @@ function MainMenuController() {
             let zoomFactor = data.zoomLevel;
             camera.zoom = zoomFactor;
 
-            canvas.scale.set((1/zoomFactor), (1/zoomFactor), 1); 
+            _canvasObj.scale.set((1/zoomFactor), (1/zoomFactor), 1); 
             if(stConfig.fixedSpeaker) scene.getObjectByName('subtitles').scale.set((1/zoomFactor), (1/zoomFactor), 1); 
             camera.updateProjectionMatrix();
         } )};

@@ -204,7 +204,7 @@ THREE.InteractionsController = function () {
 
 
     this.checkInteractionGrid = function(raycaster, mouse2D){
-        var intersects = raycaster.intersectObjects([canvas.getObjectByName('cnv-background')] , true );
+        var intersects = raycaster.intersectObjects([_canvasObj.getObjectByName('cnv-background')] , true );
 
         if (intersects[0]){
             let v = new  THREE.Vector2(0,0);

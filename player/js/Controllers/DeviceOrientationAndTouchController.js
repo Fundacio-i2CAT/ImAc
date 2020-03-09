@@ -159,21 +159,21 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 					mainMenuCtrl.onSlideSeek();
 					break;
 				case'radar':
-					canvas.getObjectByName('rdr-colorFrame').visible = false;
+					_canvasObj.getObjectByName('rdr-colorFrame').visible = false;
 	            	localStorage.setItem("rdrPosition", JSON.stringify(elementSelection.position));
 					break;
 				case'signer':
-					canvas.getObjectByName('sl-colorFrame').visible = false;
+					_canvasObj.getObjectByName('sl-colorFrame').visible = false;
             		localStorage.setItem("slPosition", JSON.stringify(elementSelection.position));
 					break;
 				case'subtitles':
-					canvas.getObjectByName('st-colorFrame').visible = false;
+					_canvasObj.getObjectByName('st-colorFrame').visible = false;
 					localStorage.setItem("stPosition", JSON.stringify(elementSelection.position));
 		            //This will remove the checkmark so all optins of st position are available.
 					break;
 			}
 			menuMgr.checkMenuStateVisibility();
-			//canvas.getObjectByName('cnv-fov').visible = false;
+			//_canvasObj.getObjectByName('cnv-fov').visible = false;
 			elementSelection = null;
 		} else {
 			interController.checkInteraction(mouse2D, scope.object, _mouseMoved);
@@ -435,7 +435,7 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 
 	    	interController.checkInteractionVPB( _origin, direction);
 
-        	if(canvas.getObjectByName('radar').visible || canvas.getObjectByName('signer') || canvas.getObjectByName('subtitles')){
+        	if(_canvasObj.getObjectByName('radar').visible || _canvasObj.getObjectByName('signer') || _canvasObj.getObjectByName('subtitles')){
         		interController.checkInteractionCanvasElements( _origin, direction);
         	}
 
@@ -451,7 +451,7 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 	this.onVRControllerUpdate = function( event ){
 		if ( !gamepadConnected ) {
 			gamepadConnected = true;
-			//_moData.createPointer2();
+
 			scene.add( _meshGen.getPointer2Mesh() );
 
 			var controller = event.detail
@@ -474,13 +474,13 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 						camera.getObjectByName('rdr-colorFrame').visible = false;
 						localStorage.setItem("rdrPosition", JSON.stringify(elementSelection.position));
 					} else if(elementSelection.name.localeCompare('signer') == 0){
-						canvas.getObjectByName('sl-colorFrame').visible = false;
+						_canvasObj.getObjectByName('sl-colorFrame').visible = false;
 			            localStorage.setItem("slPosition", JSON.stringify(elementSelection.position));
 					} else if(elementSelection.name.localeCompare('subtitles') == 0){
-						canvas.getObjectByName('st-colorFrame').visible = false;
+						_canvasObj.getObjectByName('st-colorFrame').visible = false;
 						localStorage.setItem("stPosition", JSON.stringify(elementSelection.position));
 					}
-					//canvas.getObjectByName('cnv-fov').visible = false;
+					//_canvasObj.getObjectByName('cnv-fov').visible = false;
 					menuMgr.checkMenuStateVisibility();
 					elementSelection = null;
 				} 
@@ -495,16 +495,16 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 						mainMenuCtrl.setSlidingStatus(false);
 						mainMenuCtrl.onSlideSeek();
 					} else if(elementSelection.name.localeCompare('radar') == 0){
-						canvas.getObjectByName('rdr-colorFrame').visible = false;
+						_canvasObj.getObjectByName('rdr-colorFrame').visible = false;
 						localStorage.setItem("rdrPosition", JSON.stringify(elementSelection.position));
 					} else if(elementSelection.name.localeCompare('signer') == 0){
-						canvas.getObjectByName('sl-colorFrame').visible = false;
+						_canvasObj.getObjectByName('sl-colorFrame').visible = false;
 			            localStorage.setItem("slPosition", JSON.stringify(elementSelection.position));
 					} else if(elementSelection.name.localeCompare('subtitles') == 0){
-						canvas.getObjectByName('st-colorFrame').visible = false;
+						_canvasObj.getObjectByName('st-colorFrame').visible = false;
 						localStorage.setItem("stPosition", JSON.stringify(elementSelection.position));
 					}
-					//canvas.getObjectByName('cnv-fov').visible = false;
+					//_canvasObj.getObjectByName('cnv-fov').visible = false;
 					menuMgr.checkMenuStateVisibility();
 					elementSelection = null;
 				} 
@@ -519,16 +519,16 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 						mainMenuCtrl.setSlidingStatus(false);
 						mainMenuCtrl.onSlideSeek();
 					}else if(elementSelection.name.localeCompare('radar') == 0){
-						canvas.getObjectByName('rdr-colorFrame').visible = false;
+						_canvasObj.getObjectByName('rdr-colorFrame').visible = false;
 						localStorage.setItem("rdrPosition", JSON.stringify(elementSelection.position));
 					} else if(elementSelection.name.localeCompare('signer') == 0){
-						canvas.getObjectByName('sl-colorFrame').visible = false;
+						_canvasObj.getObjectByName('sl-colorFrame').visible = false;
 			            localStorage.setItem("slPosition", JSON.stringify(elementSelection.position));
 					} else if(elementSelection.name.localeCompare('subtitles') == 0){
-						canvas.getObjectByName('st-colorFrame').visible = false;
+						_canvasObj.getObjectByName('st-colorFrame').visible = false;
 						localStorage.setItem("stPosition", JSON.stringify(elementSelection.position));
 					}
-					//canvas.getObjectByName('cnv-fov').visible = false;
+					//_canvasObj.getObjectByName('cnv-fov').visible = false;
 					menuMgr.checkMenuStateVisibility();
 					elementSelection = null;
 				}  

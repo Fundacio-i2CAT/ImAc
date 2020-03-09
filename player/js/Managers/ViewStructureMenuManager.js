@@ -33,7 +33,7 @@ function ViewStructureMenuManager() {
         let radius = 3*menuWidth/100;        
 
 
-        let menuShape = _moData.roundedRect( new THREE.Shape(), menuWidth, menuHeight, radius );
+        let menuShape = _meshGen.getRoundedRect( new THREE.Shape(), menuWidth, menuHeight, radius );
         let material = new THREE.MeshBasicMaterial( { color: 0x111111});
         let geometry = new THREE.ShapeGeometry( menuShape );
         let mesh =  new THREE.Mesh( geometry, material);
@@ -43,24 +43,24 @@ function ViewStructureMenuManager() {
         let menuTradLineDivisions =  new THREE.Group();
         menuTradLineDivisions.name = 'trad-menu-lines';
 
-        let lineTop = _moData.createLine( 0x3a3a3a, new THREE.Vector3( -menuWidth/2, -menuHeight/6, 0.01 ), new THREE.Vector3( menuWidth/2, -menuHeight/6, 0.01 ));
+        let lineTop = _meshGen.getLine( 0x3a3a3a, new THREE.Vector3( -menuWidth/2, -menuHeight/6, 0.01 ), new THREE.Vector3( menuWidth/2, -menuHeight/6, 0.01 ));
 
-        let lineLeftRect = _moData.createLine( 0x3a3a3a, new THREE.Vector3( -menuWidth/2 +0.1, -menuHeight/6, 0.01 ), new THREE.Vector3( -menuWidth/2 +0.1, -menuHeight/2 + radius, 0.01 ));
-        let lineRightRect = _moData.createLine( 0x3a3a3a, new THREE.Vector3( menuWidth/2 -0.1, -menuHeight/6, 0.01 ), new THREE.Vector3( menuWidth/2 -0.1, -menuHeight/2 + radius, 0.01 ));
+        let lineLeftRect = _meshGen.getLine( 0x3a3a3a, new THREE.Vector3( -menuWidth/2 +0.1, -menuHeight/6, 0.01 ), new THREE.Vector3( -menuWidth/2 +0.1, -menuHeight/2 + radius, 0.01 ));
+        let lineRightRect = _meshGen.getLine( 0x3a3a3a, new THREE.Vector3( menuWidth/2 -0.1, -menuHeight/6, 0.01 ), new THREE.Vector3( menuWidth/2 -0.1, -menuHeight/2 + radius, 0.01 ));
         
-        let lineLeftCurved = _moData.createCurvedLine( 0x3a3a3a, new THREE.Vector3( -menuWidth/2+0.1, -menuHeight/2 +0.1 + radius, 0.01 ), 
+        let lineLeftCurved = _meshGen.getCurvedLine( 0x3a3a3a, new THREE.Vector3( -menuWidth/2+0.1, -menuHeight/2 +0.1 + radius, 0.01 ), 
             new THREE.Vector3( -menuWidth/2 , -menuHeight/2, 0.01),
             new THREE.Vector3( -menuWidth/2 +0.1 + radius, -menuHeight/2 +0.1, 0.01 ));
 
-        let lineRightCurved = _moData.createCurvedLine( 0x3a3a3a, new THREE.Vector3( menuWidth/2-0.1, -menuHeight/2 +0.1 + radius, 0.01 ), 
+        let lineRightCurved = _meshGen.getCurvedLine( 0x3a3a3a, new THREE.Vector3( menuWidth/2-0.1, -menuHeight/2 +0.1 + radius, 0.01 ), 
             new THREE.Vector3( menuWidth/2 , -menuHeight/2, 0.01),
             new THREE.Vector3( menuWidth/2 -0.1 - radius, -menuHeight/2 +0.1, 0.01 ));
 
-        let lineV1 = _moData.createLine( 0x3a3a3a, new THREE.Vector3( -menuWidth/4, -menuHeight/6, 0.01 ), new THREE.Vector3( -menuWidth/4, -menuHeight/2, 0.01 ));
-        let lineV2 = _moData.createLine( 0x3a3a3a, new THREE.Vector3( 0, -menuHeight/6, 0.01 ), new THREE.Vector3( 0, -menuHeight/2, 0.01 ));
-        let lineV3 = _moData.createLine( 0x3a3a3a, new THREE.Vector3( menuWidth/4, -menuHeight/6, 0.01 ), new THREE.Vector3( menuWidth/4, -menuHeight/2, 0.01 ));
+        let lineV1 = _meshGen.getLine( 0x3a3a3a, new THREE.Vector3( -menuWidth/4, -menuHeight/6, 0.01 ), new THREE.Vector3( -menuWidth/4, -menuHeight/2, 0.01 ));
+        let lineV2 = _meshGen.getLine( 0x3a3a3a, new THREE.Vector3( 0, -menuHeight/6, 0.01 ), new THREE.Vector3( 0, -menuHeight/2, 0.01 ));
+        let lineV3 = _meshGen.getLine( 0x3a3a3a, new THREE.Vector3( menuWidth/4, -menuHeight/6, 0.01 ), new THREE.Vector3( menuWidth/4, -menuHeight/2, 0.01 ));
 
-        let lineBot = _moData.createLine( 0x3a3a3a, new THREE.Vector3( -menuWidth/2 + radius, -menuHeight/2 +0.1, 0.01 ), new THREE.Vector3( menuWidth/2 - radius, -menuHeight/2 +0.1, 0.01 ));
+        let lineBot = _meshGen.getLine( 0x3a3a3a, new THREE.Vector3( -menuWidth/2 + radius, -menuHeight/2 +0.1, 0.01 ), new THREE.Vector3( menuWidth/2 - radius, -menuHeight/2 +0.1, 0.01 ));
         
         menuTradLineDivisions.add(lineTop);
         menuTradLineDivisions.add(lineLeftRect);
@@ -171,7 +171,7 @@ function ViewStructureMenuManager() {
 
         closeBtnGroup.name = 'close-button-group';
 
-        let menuShapeCloseBtn = _moData.roundedRect( new THREE.Shape(), 2.5 * menuWidth/25, 2.5 * menuWidth/25, 3*menuWidth/100 );
+        let menuShapeCloseBtn = _meshGen.getRoundedRect( new THREE.Shape(), 2.5 * menuWidth/25, 2.5 * menuWidth/25, 3*menuWidth/100 );
         let materialCloseBtn = new THREE.MeshBasicMaterial( { color: 0x111111});
         let geometryCloseBtn = new THREE.ShapeGeometry( menuShapeCloseBtn );
         let meshCloseBtn =  new THREE.Mesh( geometryCloseBtn, materialCloseBtn);
@@ -498,7 +498,7 @@ function ViewStructureMenuManager() {
 
         enhancedMenuBtnGroup.name = 'enhanced-menu-button-group';
 
-        let menuShape = _moData.roundedRect( new THREE.Shape(), 2.5 * menuWidth/25, 2.5 * menuWidth/25, 3*menuWidth/100 );
+        let menuShape = _meshGen.getRoundedRect( new THREE.Shape(), 2.5 * menuWidth/25, 2.5 * menuWidth/25, 3*menuWidth/100 );
         let material = new THREE.MeshBasicMaterial( { color: 0x111111});
         let geometry = new THREE.ShapeGeometry( menuShape );
         let mesh =  new THREE.Mesh( geometry, material);
@@ -535,7 +535,7 @@ function ViewStructureMenuManager() {
 |     VIDEO PROGRESS BAR ELEMENT     |
 \************************************/
         // This is where the video progress bar is created for the traditional menu.
-        let vpb_shape_background = _moData.roundedRect( new THREE.Shape(), 4*menuWidth/5, menuHeight/25, menuWidth/200 );
+        let vpb_shape_background = _meshGen.getRoundedRect( new THREE.Shape(), 4*menuWidth/5, menuHeight/25, menuWidth/200 );
         let vpb =  new THREE.Group();
         vpb.name = "video-progress-bar";
         vpb.visible = true;
@@ -649,7 +649,7 @@ function ViewStructureMenuManager() {
         let tradOptionMenuDropdown =  new THREE.Group();
         tradOptionMenuDropdown.name = 'parentcolumndropdown';
 
-        let line = _moData.createLine( 0xc91355, new THREE.Vector3( -optWidth/2, -optHeight/2, 0.01 ), new THREE.Vector3( optWidth/2, -optHeight/2, 0.01 ) );
+        let line = _meshGen.getLine( 0xc91355, new THREE.Vector3( -optWidth/2, -optHeight/2, 0.01 ), new THREE.Vector3( optWidth/2, -optHeight/2, 0.01 ) );
 
         let checkMark = new InteractiveElementModel();
         checkMark.width = menuWidth/20;

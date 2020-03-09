@@ -3,9 +3,9 @@ function CanvasManager() {
 
     this.Init = function() {
     	//Init canvas and add the base elements (help grid and radar);
-        canvas = createCanvas(100,100);
+        _canvasObj = createCanvas(100,100);
     	canvasMgr.addElement(_rdr.createRadarMeshGroup());
-        camera.add(canvas);  
+        camera.add(_canvasObj);  
     };
 
 
@@ -35,14 +35,14 @@ function CanvasManager() {
     }
 
     this.addElement = function(element){
-    	let cnvElmts = canvas.getObjectByName('cnv-elements');
+    	let cnvElmts = _canvasObj.getObjectByName('cnv-elements');
 
     	//Needs check for duplicates
     	cnvElmts.add(element);
     }
 
     this.removeElement = function(element){
-    	let cnvElmts = canvas.getObjectByName('cnv-elements');
+    	let cnvElmts = _canvasObj.getObjectByName('cnv-elements');
     	cnvElmts.remove(element);
     }
 };

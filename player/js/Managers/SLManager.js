@@ -86,7 +86,6 @@ SLManager = function() {
         let slvideo = VideoController.getVideObject( 'signer', slConfig.url )
 
         // Add signer element to the canvas.
-        //canvasMgr.addElement( _moData.getSignVideoMesh('signer'));
         canvasMgr.addElement( _meshGen.getSignerMesh( slvideo, x, y, scaleFactor, slConfig.maxSize, st4sl ) );
 
         // Save the signer element in a global class variable.
@@ -165,10 +164,9 @@ SLManager = function() {
 
         } 
         slConfig.st4sltext = textList;
-        //subtitleSLMesh = _moData.getSLSubtitleMesh(textList);
 
         let font = textList[0].text.length < 12 ? "500 40px Roboto, Arial" : textList[0].text.length < 16 ? "500 35px Roboto, Arial" : "500 30px Roboto, Arial";
-        //subtitleSLMesh = _meshGen.getSubtitleMesh( textList, font, true, 'sl-subtitles' );
+
         subtitleSLMesh = _stMngr.getST4SL( textList, font, 'sl-subtitles' );
 
         _canvasObj.getObjectByName('signer').add(subtitleSLMesh);

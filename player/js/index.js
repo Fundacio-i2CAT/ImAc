@@ -5,10 +5,8 @@ var _PlayerVersion = 'v0.11.0';
 
 var MenuFunctionsManager = new MenuFunctionsManager();
 
-//var _moData = new THREE.MediaObjectData();
 var _rdr = new THREE.Radar();
 
-var vwStrucMMngr = new ViewStructureMenuManager();
 var menuMgr = new MenuManager();
 var canvasMgr = new CanvasManager();
 
@@ -55,9 +53,6 @@ var _pointerSize = 1; // 2=Big, 1=Mid, 0.6=Small
 
 var optHeight;
 var optWidth;
-var menuDefaultColor = 0xe6e6e6;
-var menuButtonActiveColor = 0xffff00;
-var secondarySubIndex = 0;
 
 var _isHMD = false;
 var _blockControls = false;
@@ -66,7 +61,6 @@ let timerCloseMenu;
 let elementSelection;
 
 var _isTV = false;
-let isMenuInteracted = false;
 
 var lastUpdate = Date.now();
 
@@ -79,7 +73,6 @@ let adConfig;
 let astConfig;
 
 let actionPausedVideo = false;
-const canvasDistance = 70;
 let vHeight; // visible height
 let safeFactor = 0.2; //Creates a margin with the height of the scren. Diferent factor for HMD.
 
@@ -111,8 +104,10 @@ function init_webplayer()
 
     if ( localStorage.ImAc_cookies == undefined ) localStorage.ImAc_cookies = confirm("Do you give us consent to register behavior metrics for research purposes?");
     if ( localStorage.ImAc_cookies ) {
-        gtag('set', {'user_id': localStorage.ImAc_UUID});  
-        sessionId = localStorage.ImAc_UUID
+        let UUID = localStorage.ImAc_UUID ? localStorage.ImAc_UUID : uuidv4();
+        localStorage.ImAc_UUID = UUID;
+        gtag('set', {'user_id': UUID});  
+        sessionId = UUID
     }  
 
     loggerActivated = loggerActivated ? localStorage.ImAc_cookies : loggerActivated;

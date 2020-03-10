@@ -146,7 +146,7 @@ function MainMenuController() {
      */
     function AddVisualFeedbackOnClick(view, buttonName, callback){
         data.clickedButtonName = buttonName;
-        view.pressButtonFeedback(data);
+        doButtonFeedback( data );
         setTimeout(callback, 300);
     };
 

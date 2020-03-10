@@ -40,14 +40,11 @@ function SettingsOptionMenuView() {
             //submenu.getObjectByName(data.childColumnActiveOpt).children[0].material.color.set( 0xffff00 );
         }
 
-//TODO: CREATE SEPARATE FUNCTION
-		let menuShape = _meshGen.getRoundedRect( new THREE.Shape(), optWidth, (data.parentColumnDropdown.length+1)*optHeight, 3*menuWidth/100 );
-        let material = new THREE.MeshBasicMaterial( { color: 0x111111});
-        let geometry = new THREE.ShapeGeometry( menuShape );
-        let mesh =  new THREE.Mesh( geometry, material);
-        mesh.name = 'tradoptionmenubackground';
+		let mesh = _meshGen.getRoundedRectMesh( optWidth, (data.parentColumnDropdown.length+1)*optHeight, 3*menuWidth/100, 0x111111 );
 
-        submenu.remove(submenu.getObjectByName('tradoptionmenubackground')).add(mesh);
+        mesh.name = 'tradoptionmenubackground';
+        
+        submenu.remove(submenu.getObjectByName('tradoptionmenubackground')).add( mesh );
 	}
 
 	function updateTitle(data) {
@@ -66,24 +63,6 @@ function SettingsOptionMenuView() {
         optTitle.position = new THREE.Vector3( 0, 0, 0.01 );
         optTitle.interactiveArea =  new THREE.Mesh( new THREE.PlaneGeometry(optTitle.width,  optHeight), new THREE.MeshBasicMaterial({visible:  false}));
 
-		return optTitle.create();
+        return createIEMesh( optTitle )
 	}
-
-	this.pressButtonFeedback = function(data) {
-
-        interController.removeInteractiveObject(data.clickedButtonName);
-
-        let sceneElement = submenu.getObjectByName(data.clickedButtonName);
-        let initScale = sceneElement.scale;
-
-        sceneElement.material.color.set( menuButtonActiveColor );
-        sceneElement.scale.set( initScale.x*0.8, initScale.y*0.8, 1 );
-
-        // Set color 'menuDefaultColor' (white), size to initial and add interactivity within 300ms to sceneElement;
-        setTimeout(function() {
-            sceneElement.material.color.set( menuDefaultColor );
-            sceneElement.scale.set( initScale.x*1.25, initScale.y*1.25, 1 );
-            interController.addInteractiveObject( sceneElement );
-        }, 300);
-    }
 }

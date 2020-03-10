@@ -1,5 +1,6 @@
 
-function MainMenuModel() {
+function MainMenuModel() 
+{
 	this.name = 'trad-main-menu';
 
 	//PlayPause

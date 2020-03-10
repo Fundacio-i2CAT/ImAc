@@ -48,13 +48,15 @@ function AplicationManager()
         initCamera();
         inirRenderer();
 
-        vHeight = 2 * Math.tan( THREE.Math.degToRad( camera.fov ) / 2 ) * canvasDistance; // visible height
+        vHeight = 2 * Math.tan( THREE.Math.degToRad( camera.fov ) / 2 ) * 70; // visible height
 	
         controls = new THREE.DeviceOrientationAndTouchController( camera, renderer.domElement, renderer );
 		container.appendChild( renderer.domElement );
 
         let mainVideo = VideoController.getVideObject( 'contentsphere', mainContentURL )
         _isTV ? camera.add( _meshGen.getVideoMesh( mainVideo ) ) : scene.add( _meshGen.getVideo360Mesh( mainVideo ) );
+
+        //createCamPortal()
 
         // UPDATE TO XR
         if ( 'getVRDisplays' in navigator ) {
@@ -76,6 +78,9 @@ function AplicationManager()
         else alert("This browser don't support VR content");
 
         if ( localStorage.ImAc_server ) _Sync.init( localStorage.ImAc_server );
+
+        _AudioManager.initializeAudio( mainVideo, list_contents[demoId].audioChannels, camera.matrixWorld.elements );
+        VideoController.createMainAudioList();
 
         runDemo();  
 

@@ -141,7 +141,7 @@ function SettingsOptionMenuController() {
  */
     function AddVisualFeedbackOnClick(buttonName, callback){
         data.clickedButtonName = buttonName;
-        view.pressButtonFeedback(data);
+        doButtonFeedback( data );
         setTimeout(callback, 300);
     }
 
@@ -187,7 +187,8 @@ function SettingsOptionMenuController() {
             } 
 
 
-            dropdownInteractiveElements.push(dropdownIE.create());
+            //dropdownInteractiveElements.push(dropdownIE.create());
+            dropdownInteractiveElements.push( createMixIE( dropdownIE ) )
         });
 
         return dropdownInteractiveElements

@@ -25,6 +25,8 @@ function MenuManager() {
  */
     this.Init = function(type) {
 
+        var vwStrucMMngr = new ViewStructureMenuManager();
+
         menuMgr.setMenuType(type);
 
         //The size depends on the menu type.

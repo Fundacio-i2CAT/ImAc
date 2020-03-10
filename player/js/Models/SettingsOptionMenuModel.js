@@ -1,6 +1,6 @@
 
-function SettingsOptionMenuModel() {
-
+function SettingsOptionMenuModel() 
+{
 	this.name = 'trad-option-menu';
 	this.isOptEnabled;
 	this.title;

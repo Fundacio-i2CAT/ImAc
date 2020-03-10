@@ -57,9 +57,10 @@ THREE.Radar = function () {
         radarColorBorder.name = 'rdr-colorFrame';
 
         radar.add(radarColorBorder);
-        radar.add(radarOutline.create());
-        radar.add(radarArea.create());
-        radar.add(radarIndicator.create());
+
+        radar.add( createIEMesh( radarOutline ) );
+        radar.add( createIEMesh( radarArea ) );
+        radar.add( createIEMesh( radarIndicator ) );
 
         
         if(localStorage.getItem("rdrPosition")){

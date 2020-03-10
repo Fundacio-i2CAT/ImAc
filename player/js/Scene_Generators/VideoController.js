@@ -14,6 +14,8 @@ VideoController = function() {
     var pauseEvent = new Event('pauseevent');
     var seekEvent = new Event('seekevent');
 
+    var listOfMainAudios = [];
+
 //************************************************************************************
 // Private Functions
 //************************************************************************************
@@ -376,4 +378,19 @@ VideoController = function() {
     {
         return listOfVideoContents[0].vid.duration;
     };
+
+    this.createMainAudioList = function()
+    {
+        if ( listOfVideoContents[0].dash ) listOfMainAudios = listOfVideoContents[0].dash.getTracksFor('audio');
+    }
+
+    this.getMainAudioList = function()
+    {
+        return listOfMainAudios;
+    }
+
+    this.changeMainAudioById = function(id)
+    {
+        if ( listOfVideoContents[0].dash ) listOfVideoContents[0].dash.setCurrentTrack( listOfMainAudios[id] );
+    }
 }

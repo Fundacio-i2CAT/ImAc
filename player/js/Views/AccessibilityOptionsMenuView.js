@@ -36,32 +36,6 @@ function AccessibilityOptionsMenuView() {
         }
     }
 
-/**
- * [description]
- * @param  {[type]} data [description]
- * @return {[type]}      [description]
- */
-  this.pressButtonFeedback = function(data){
-
-    //The interactivity is removed from the list so the user cannot click during the animation.
-    interController.removeInteractiveObject(data.clickedButtonName);
-
-    let sceneElement = submenu.getObjectByName(data.clickedButtonName);
-    let initScale = sceneElement.scale;
-    // The material is cloned in order to set the same color to the element after the animation
-    let initialMaterial = sceneElement.material.clone();
-
-    //sceneElement.material.color.set( menuButtonActiveColor );
-    sceneElement.scale.set( initScale.x*0.8, initScale.y*0.8, 1 );
-
-   setTimeout(function() {
-        //Set the material color to the initial after the animation
-        sceneElement.material.color.set( initialMaterial.color );
-        sceneElement.scale.set( initScale.x*1.25, initScale.y*1.25, 1 );
-        //Add the interactivity to the list after the animation ends.
-        interController.addInteractiveObject( sceneElement );
-    }, 300);
-  };
 
 /**
  * [description]

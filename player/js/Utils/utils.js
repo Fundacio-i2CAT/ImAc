@@ -435,3 +435,134 @@ function initAccessConf()
 
     if ( !_iconf ) _iconf = [];
 }
+
+function uuidv4() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+    });
+}
+
+
+
+
+
+async function createCamPortal()
+{
+    try {
+        const constraints = window.constraints = {
+            audio: false,
+            video: true
+        };
+        const stream = await navigator.mediaDevices.getUserMedia(constraints);
+
+        const video = document.createElement( "video" );
+        const videoTracks = stream.getVideoTracks();
+        console.log('Got stream with constraints:', constraints);
+        console.log(`Using video device: ${videoTracks[0].label}`);
+        window.stream = stream; // make variable available to browser console
+        video.srcObject = stream;
+        video.play();
+
+        let mesh = _meshGen.getVideoMesh( video, "16:9", 1 );
+        mesh.position.x = ( 1.48*slConfig.area/2 - slConfig.size/2 ) *slConfig.canvasPos.x;
+        mesh.position.y = -slConfig.canvasPos.y * (vHeight*(1-safeFactor) - slConfig.size)/2;
+        canvasMgr.addElement( mesh )
+    } catch (e) {
+        console.warn(e);
+    }
+
+
+    
+}
+
+
+function doButtonFeedback( data )
+{
+    let submenu = scene.getObjectByName( data.name );
+
+    interController.removeInteractiveObject( data.clickedButtonName );
+
+    let sceneElement = submenu.getObjectByName( data.clickedButtonName )
+    let initScale = sceneElement.scale;
+
+    sceneElement.material.color.set( 0xffff00 );
+    sceneElement.scale.set( initScale.x*0.8, initScale.y*0.8, 1 );
+
+    // Set color (white), size to initial and add interactivity within 300ms to sceneElement;
+    setTimeout( function() { 
+        sceneElement.material.color.set( 0xe6e6e6 );
+        sceneElement.scale.set( initScale.x*1.25, initScale.y*1.25, 1 ); 
+        interController.addInteractiveObject( sceneElement );
+    }, 300);
+}
+
+
+function getColiderIE( element )
+{
+    let coliderMesh = element.interactiveArea;
+
+    if ( element.rotation ) coliderMesh.rotation.z = -element.rotation;
+
+    coliderMesh.name = element.name;
+    coliderMesh.position.z = 0.01
+    coliderMesh.onexecute = element.onexecute;
+
+    return coliderMesh
+}
+
+function createIEMesh( element )
+{
+    let mesh = element.type == 'text' ? 
+        _meshGen.getTextMesh( element.text, element.textSize, element.color, element.name ) :
+        _meshGen.getImageIEMesh( element.width, element.height, element.path, element.color, element.name, element.rotation );
+
+    if ( element.interactiveArea )
+    {
+        mesh.onexecute = element.onexecute;
+        mesh.add( getColiderIE( element ) );
+    }
+
+    mesh.visible = element.visible;
+    mesh.position.set( element.position.x, element.position.y, element.position.z );
+    mesh.name = element.name;
+
+    return mesh;
+}
+
+function createMixIE( element )
+{
+    let mesh =  new THREE.Group();
+    let text = _meshGen.getTextMesh( element.text, element.textSize, element.color, element.name );
+
+    const w = text.geometry.boundingBox.max.x;
+    
+    mesh.name = element.name;
+    mesh.width = text.geometry.boundingBox.max.x;
+    
+    if ( element.path ) 
+    {
+        element.width = element.textSize*2;
+        element.height = element.textSize*2;
+
+        let image = _meshGen.getImageIEMesh( element.width, element.height, element.path, element.color, element.name, element.rotation );
+        
+        mesh.width = w + image.geometry.parameters.width;
+        image.position.x = -mesh.width;
+        mesh.add( image );
+    }
+    mesh.add(text);
+    
+    if ( element.interactiveArea )
+    {
+        mesh.onexecute = element.onexecute;
+        mesh.add( getColiderIE( element ) );
+    }
+
+    mesh.visible = element.visible;
+    mesh.position.set( element.position.x, element.position.y, element.position.z );
+    mesh.name = element.name;
+
+    return mesh;
+}
+

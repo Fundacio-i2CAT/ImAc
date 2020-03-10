@@ -252,19 +252,21 @@ THREE.MeshGenerator = function ()
         return new THREE.Line( geometry, material );
     }
 
-    this.getCurvedLine = function( c, startvector, control, endvector )
+    this.getCurvedLine = function( color, startvector, control, endvector )
     {
         let curve = new THREE.QuadraticBezierCurve3( startvector, control, endvector );
         let points = curve.getPoints( 50 );
 
         return new THREE.Line( 
             new THREE.BufferGeometry().setFromPoints( points ), 
-            new THREE.LineBasicMaterial( { color : c } ) 
+            new THREE.LineBasicMaterial( { color : color } ) 
         );      
     }
 
-    this.getRoundedRect = function( ctx, width, height, radius )
+    this.getRoundedRectMesh = function( width, height, radius, color=0x111111, opacity=1 )
     {
+        let ctx = new THREE.Shape();
+
         ctx.moveTo( -width/2, 0 );
         ctx.lineTo( -width/2, height/2 - radius );  
         ctx.quadraticCurveTo( -width/2, height/2, -width/2 + radius, height/2 );
@@ -275,7 +277,10 @@ THREE.MeshGenerator = function ()
         ctx.lineTo( -width/2 + radius, -height/2 );
         ctx.quadraticCurveTo( -width/2,-height/2, -width/2,-height/2 + radius );
         
-        return ctx;
+        return new THREE.Mesh( 
+            new THREE.ShapeGeometry( ctx ), 
+            new THREE.MeshBasicMaterial( { color: color, transparent: true, opacity: opacity } ) 
+        );
     }
 
     this.getTextMesh = function( text, size, color, name )

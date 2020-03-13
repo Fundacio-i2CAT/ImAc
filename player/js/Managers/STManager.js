@@ -3,15 +3,13 @@ STManager = function() {
 
     let subtitles;
 
+    let _arrows;
+
     const indicators = {
         NONE: 'none',
         ARROW: 'arrow',
         RADAR: 'radar'
-    };
-
-/*****************************************************************************************************************************
-*                                           M A I N     F U N C T I O N S  
-******************************************************************************************************************************/    
+    };   
 
     this.initConfig = function(conf)
     {
@@ -83,7 +81,7 @@ STManager = function() {
         let scaleFactor = 1;
         let posX = 0;
         let posY = 0;
-        let arrowsOpacity = (!imsc1doc_SL && !stConfig.isEnabled) ? 0 : opacity;
+        let arrowsOpacity = (!subController.hasImsc1docSL() && !stConfig.isEnabled) ? 0 : opacity;
 
         stConfig.height = 50*textList.length/6; 
 
@@ -115,7 +113,7 @@ STManager = function() {
                 else 
                 {
                     posY = initY;
-                    posX = ((slConfig.isEnabled || stConfig.indicator.localeCompare('radar') === 0) ? _stMngr.removeOverlap(scaleFactor) : 0);
+                    posX = ((_slMngr.isSLEnabled() || stConfig.indicator.localeCompare('radar') === 0) ? _stMngr.removeOverlap(scaleFactor) : 0);
                 }
             } 
         }
@@ -202,24 +200,16 @@ STManager = function() {
         return group;
     }
 
-/**
- * Removes the object.
- */
     this.remove = function()
     {
         if ( subtitles )
         {
-            subController.setTextListMemory( [] );
+            subController.resetSTMemory();
             ( stConfig.fixedScene || stConfig.fixedSpeaker ) ? scene.remove( subtitles ) : canvasMgr.removeElement( subtitles );
             subtitles = undefined;
         }
     };
 
-/**
- * Function that moves the subtitles.
- *
- * @param      {<type>}  pos     The position
- */
     this.move = function( pos )
     {
         if ( elementSelection ) 
@@ -245,22 +235,13 @@ STManager = function() {
         }
     };
 
-/*****************************************************************************************************************************
-*                                           P U B L I C    F U N C T I O N S  
-******************************************************************************************************************************/
-
-/**
- * { function_description }
- *
- * @param      {<type>}  enable  The enable
- */
     this.switchSubtitles = function(enable){
         let signerMesh = _slMngr.getSigner();
         if (!enable){
             _stMngr.remove();
             //_rdr.hideRadar();
-            if (stConfig.indicator.localeCompare(indicators.ARROW) === 0 && slConfig.isEnabled){
-                if(!imsc1doc_SL) {
+            if (stConfig.indicator.localeCompare(indicators.ARROW) === 0 && _slMngr.isSLEnabled()){
+                if(!subController.hasImsc1docSL()) {
                     signerMesh.getObjectByName('sl-subtitles').visible = true;
                 }
             }
@@ -268,8 +249,8 @@ STManager = function() {
             if (stConfig.indicator.localeCompare(indicators.RADAR) === 0){
                 _rdr.showRadar();
             }
-            if (slConfig.isEnabled){
-                if (!imsc1doc_SL){
+            if (_slMngr.isSLEnabled()){
+                if (!subController.hasImsc1docSL()){
                     signerMesh.getObjectByName('sl-subtitles').visible = false;
                 }
             }
@@ -278,19 +259,13 @@ STManager = function() {
         stConfig.isEnabled = enable;
     };
 
-/**
- * Removes an overlap.
- *
- * @param      {number}  scaleFactor  The scale factor
- * @return     {number}  { description_of_the_return_value }
- */
     this.removeOverlap = function(scaleFactor){
         let signer = _slMngr.getSigner();
         let offset = 0;
 
         if( signer && !localStorage.getItem("slPosition") ){
             let totalDif = 0;
-            let arw = subController.getArrows();
+            let arw = _arrows;
             let stDif = (arw) ? scaleFactor*(stConfig.width/2 + arw.children[0].children[1].geometry.parameters.width) : scaleFactor*stConfig.width/2;
             let slDif = signer.position.x + (-slConfig.canvasPos.x)*slConfig.size/2 * (0.45+safeFactor);
 
@@ -301,7 +276,7 @@ STManager = function() {
         }
         else if( stConfig.indicator.localeCompare(indicators.RADAR) === 0 && !localStorage.getItem("rdrPosition") ){
             let totalDif = 0;
-            let arw = subController.getArrows();
+            let arw = _arrows;
             let stDif = (arw) ? scaleFactor*(stConfig.width/2 + arw.children[0].children[1].geometry.parameters.width) : scaleFactor*stConfig.width/2;
             let slDif = _canvasObj.getObjectByName('radar').position.x + (-slConfig.canvasPos.x)*slConfig.size/2 * (0.45+safeFactor);
 
@@ -316,27 +291,11 @@ STManager = function() {
         return offset;
     };
 
-
-/*****************************************************************************************************************************
-*                                          P U B L I C    G E T T E R S 
-*****************************************************************************************************************************/
-
-/**
- * Gets the subtitles.
- *
- * @return     {<type>}  The subtitles.
- */
     this.getSubtitles = function(){
         return subtitles;
     };
 
-/**
- * Gets the st available language.
- *
- * @param      {<type>}  lang     The language
- * @param      {number}  [e2r=0]  The e 2 r
- * @return     {<type>}  The st available language.
- */
+
     this.getSTAvailableLang = function(lang, e2r=0){
         if (list_contents[demoId].subtitles[e2r][lang]) {
            return lang;
@@ -346,56 +305,15 @@ STManager = function() {
         } else return;
     };
 
-/*****************************************************************************************************************************
-*                                          P U B L I C    S E T T E R S 
-*****************************************************************************************************************************/
-
-/**
- * Sets the subtitle.
- *
- * @param      {string}  xml            The path of the xml where the subtitles info is
- * @param      {<type>}  lang           The language of the subtitles
- * @param      {<type>}  accessService  The access service between st or sl
- */
-    this.setSubtitle = function(xml, lang, accessService){
-        stConfig.language = lang;
-        let r = new XMLHttpRequest();
-        r.open( "GET", xml );
-
-        r.onreadystatechange = function (){
-            if ( r.readyState === 4 && r.status === 200 ){
-                switch (accessService){
-                    case 'st':
-                        imsc1doc = imsc.fromXML( r.responseText );
-                        break;
-
-                    case 'sl':
-                        imsc1doc_SL = imsc.fromXML( r.responseText );
-                        break;
-                }
-                subController.updateISD( VideoController.getMediaTime() );
-            } else if ( r.readyState === 4 ){
-                console.error('Status = ' + r.status + ' xml = ' + xml);
-            }
-        };
-        r.send();
-    };
-
-/**
- * Sets the indicator.
- *
- * @param      {string}  value           The value
- * @param      {<type>}  childColumnOpt  The child column option
- */
     this.setIndicator = function(value, childColumnOpt){
         if(stConfig.indicator.localeCompare(value) != 0){
             stConfig.indicator = value;
             let signerMesh = _slMngr.getSigner();
-            let arw = subController.getArrows();
+            let arw = _arrows;
 
             switch (stConfig.indicator){
                 case indicators.NONE:
-                    if (slConfig.isEnabled && !imsc1doc_SL){
+                    if (_slMngr.isSLEnabled() && !subController.hasImsc1docSL()){
                         signerMesh.getObjectByName('sl-subtitles').visible = false;
                     }
                     if (arw){
@@ -407,11 +325,11 @@ STManager = function() {
                 case indicators.ARROW:
                     _rdr.hideRadar();
                     if (stConfig.isEnabled){
-                        if (slConfig.isEnabled && !imsc1doc_SL){
+                        if (_slMngr.isSLEnabled() && !subController.hasImsc1docSL()){
                             signerMesh.getObjectByName('sl-subtitles').visible = false;
                         }
                     } else {
-                        if (slConfig.isEnabled && !imsc1doc_SL){
+                        if (_slMngr.isSLEnabled() && !subController.hasImsc1docSL()){
                             signerMesh.getObjectByName('sl-subtitles').visible = true;
                         }
                     }
@@ -419,7 +337,7 @@ STManager = function() {
 
                 case indicators.RADAR:
                     _rdr.showRadar();
-                    if( slConfig.isEnabled && !imsc1doc_SL){
+                    if( _slMngr.isSLEnabled() && !subController.hasImsc1docSL()){
                         signerMesh.getObjectByName('sl-subtitles').visible = false;
                     }
                     if(arw){
@@ -430,7 +348,7 @@ STManager = function() {
             }
             _slMngr.updatePositionY();
 
-            if (slConfig.isEnabled){
+            if (_slMngr.isSLEnabled()){
                 if(stConfig.isEnabled){
                     if (subtitles) {
                         subtitles.position.x = _stMngr.removeOverlap(subtitles.scale.x);
@@ -445,54 +363,31 @@ STManager = function() {
         }
     };
 
-/**
- * Sets the size.
- *
- * @param      {number}  value   The value
- */
     this.setSize = function(value){
         stConfig.size = value;
         if(subtitles){
             let esaySizeAjust = stConfig.easy2read ? 1.25 : 1;
             scaleFactor = (stConfig.area/130) * stConfig.size * esaySizeAjust;
             subtitles.scale.set( scaleFactor, scaleFactor, 1 );
-            subtitles.position.x = ((slConfig.isEnabled || stConfig.indicator.localeCompare('radar') === 0) ? _stMngr.removeOverlap(subtitles.scale.x) : 0);
+            subtitles.position.x = ((_slMngr.isSLEnabled() || stConfig.indicator.localeCompare('radar') === 0) ? _stMngr.removeOverlap(subtitles.scale.x) : 0);
             subtitles.position.y = stConfig.canvasPos.y * (vHeight*(1-safeFactor) - scaleFactor*stConfig.height)/2;
         }
     };
 
-/**
- * Sets the background.
- *
- * @param      {<type>}  value   The value
- */
     this.setBackground = function(value){
         stConfig.background = value;
 
         //FIND METHOD FOR DYNAMIC UPDATE (WITHOUT REMOVE/CREATE)
-        subController.setTextListMemory( [] );
+        subController.resetSTMemory();
         subController.updateISD( VideoController.getMediaTime() );
     };
 
-/**
- * Sets the easy 2 read.
- *
- * @param      {<type>}  value   The value
- * @param      {<type>}  xml     The new value
- */
     this.setEasy2Read = function(value, xml){
         stConfig.easy2read = value;
-        subController.setTextListMemory( [] );
-        _stMngr.setSubtitle( xml, stConfig.language, 'st');
+        subController.resetSTMemory();
+        subController.setSubtitle( xml, stConfig.language, 'st');
     };
 
-/**
- * Sets the position of the subtitles.
- *
- * @param      {<type>}  pos      The new value
- * @param      {<type>}  scFixed  The screen fixed
- * @param      {<type>}  spFixed  The speaker fixed
- */
     this.setPosition = function(pos, scFixed, spFixed){
         stConfig.canvasPos.y = (scFixed || spFixed) ? -1 : pos.y;
         if(subtitles){
@@ -503,7 +398,7 @@ STManager = function() {
             //Check if not fixed options and stConfig.initPos.y is initialized;
             //If stConfig.initPos.y is not initialized ST will have to be created
             if(!stConfig.fixedSpeaker && !stConfig.fixedScene && pos.y != 0 && stConfig.initPos.y != 0){
-                subtitles.position.x = ((slConfig.isEnabled || stConfig.indicator.localeCompare('radar') === 0) ? _stMngr.removeOverlap(subtitles.scale.x) : 0);
+                subtitles.position.x = ((_slMngr.isSLEnabled() || stConfig.indicator.localeCompare('radar') === 0) ? _stMngr.removeOverlap(subtitles.scale.x) : 0);
                 subtitles.position.y =  Math.abs(subtitles.position.y)*pos.y; 
                 stConfig.fixedSpeaker = spFixed;
                 stConfig.fixedScene = scFixed;
@@ -522,13 +417,7 @@ STManager = function() {
     };
 
 
-/**
- * Sets the scene position.
- *
- * @param      {number}  lat     The new value
- * @param      {number}  lon     The new value
- */
-//THIS NEEDS TO BE CHECKED
+    //THIS NEEDS TO BE CHECKED
     this.setScenePos = function(lat, lon){
         stConfig.scenePos.lat = lat;
         stConfig.scenePos.lon = lon;
@@ -545,11 +434,6 @@ STManager = function() {
         //console.log('x: '+x+', y: '+y+', z: '+z);
     };
 
-/**
- * Sets the languages array.
- *
- * @param      {<type>}  subList  The sub list
- */
     this.setLanguagesArray = function(subList){
         stConfig.availableLang = [];
 
@@ -583,16 +467,6 @@ STManager = function() {
         }
     };
 
-/*****************************************************************************************************************************
-*                                          P U B L I C    C H E C K E R S 
-*****************************************************************************************************************************/
-
-/**
- * { function_description }
- *
- * @param      {<type>}  lang    The language
- * @return     {<type>}  { description_of_the_return_value }
- */
     this.checkisSubAvailable = function(lang){
         if (!lang && list_contents[demoId].acces[0].ST){
             lang = list_contents[demoId].acces[0].ST[0];
@@ -600,24 +474,14 @@ STManager = function() {
         return (list_contents[demoId].acces && list_contents[demoId].acces[0].ST && list_contents[demoId].acces[0].ST.includes((lang) ? lang : _iconf.stlanguage));
     };
 
-/**
- * { function_description }
- *
- * @param      {<type>}  lang    The language
- * @return     {<type>}  { description_of_the_return_value }
- */
+
     this.checkSubEasyAvailable = function(lang){
         return (list_contents[demoId].subtitles && list_contents[demoId].subtitles[1] && list_contents[demoId].subtitles[1][lang]);
     };
 
-/**
- * { function_description }
- *
- * @param      {string}  position  The position
- */
     this.checkSubtitleIdicator = function(position){
         if (stConfig.indicator != indicators.NONE) {
-            let arw = subController.getArrows();
+            let arw = _arrows;
             if(arw){
                 arw.getObjectByName("right").visible = (position == 'right') ? true : false;
                 arw.getObjectByName("left").visible = (position == 'left')? true : false;
@@ -625,4 +489,98 @@ STManager = function() {
         }
     };
 
-};
+
+
+
+
+
+
+
+    this.setLanguage = function( lang )
+    {
+        stConfig.language = lang;
+    }
+
+    this.generateST = function( isd )
+    {
+        if ( stConfig.isEnabled ) 
+        {
+            _stMngr.setScenePos( -isd.imacY, isd.imac ); //latitude, longitude
+            subController.printText( isd.contents[0], false );
+        } 
+
+        if ( stConfig.indicator.localeCompare('radar') === 0 ) {
+            _rdr.updateRadarIndicator( subController.getSpeakerColor(), isd.imac );
+        }
+        
+        if ( stConfig.indicator.localeCompare('arrow') === 0 ) {
+            arrowInteraction();
+        }
+        checkSpeakerPosition( isd.imac );
+    }
+
+    function checkSpeakerPosition( isdImac )
+    {
+        if ( stConfig.isEnabled || ( _slMngr.isSLEnabled() && stConfig.indicator != 'none' ) ) 
+        {
+            let difPosition = getViewDifPosition( isdImac, camera.fov );
+            let position = ( isdImac == undefined || difPosition == 0 ) ? 'center' : difPosition < 0 ? 'left' : 'right';
+
+            _stMngr.checkSubtitleIdicator( position );
+        }
+    }
+
+    function arrowInteraction()
+    {
+        let slMesh = _slMngr.getSigner();
+        let stMesh = _stMngr.getSubtitles();
+        let width = stConfig.width;
+
+        let hasImsc1docSL = subController.hasImsc1docSL()
+
+        //Depending on which access service is active the arrow group changes.
+        if (_slMngr.isSLEnabled() && slMesh) {
+            if (stConfig.isEnabled){
+                if(!hasImsc1docSL){
+                    slMesh.getObjectByName('sl-subtitles').visible = false; 
+                } 
+                if (stMesh) {
+                    _arrows = stMesh.getObjectByName('arrows');
+                    width = stMesh.getObjectByName('emojitext').geometry.parameters.width;
+                    stMesh.position.x = _stMngr.removeOverlap(stMesh.scale.x);
+                } 
+                slMesh.getObjectByName('arrows').visible = false;
+            } else {
+                if(!hasImsc1docSL){
+                    slMesh.getObjectByName('sl-subtitles').visible = true;  
+                } 
+                if (slMesh.getObjectByName('arrows')) {
+                    slMesh.getObjectByName('arrows').visible = true;
+                    _arrows = slMesh.getObjectByName('arrows');
+                }
+                if (slMesh.getObjectByName('emojitext'))  width = slMesh.getObjectByName('emojitext').geometry.parameters.width;
+            }
+        } else if (stConfig.isEnabled) {
+            if (stMesh) {
+                _arrows = stMesh.getObjectByName('arrows');
+                width = stMesh.getObjectByName('emojitext').geometry.parameters.width;
+            } 
+        } else {
+            _arrows = undefined;
+        }
+
+        // cada 300 milis aprox
+        if (_arrows) {
+            let positionFactor = (!hasImsc1docSL && !stConfig.isEnabled) ? -1 : 1;
+            let arwSize = _arrows.children[0].children[1].geometry.parameters.width/2;
+
+            _arrows.getObjectByName('right-img').material.color.set( subController.getSpeakerColor() );
+            _arrows.getObjectByName('right').position.x = width/2 +positionFactor * arwSize;
+            _arrows.getObjectByName('right-img').material.opacity = (_arrows.getObjectByName('right-img').material.opacity === 1) ? 0.4 : 1;
+
+            _arrows.getObjectByName('left-img').material.color.set( subController.getSpeakerColor() );
+            _arrows.getObjectByName('left').position.x = -width/2 -positionFactor * arwSize;
+            _arrows.getObjectByName('left-img').material.opacity = (_arrows.getObjectByName('left-img').material.opacity === 1) ? 0.4 : 1;
+        }
+    }
+}

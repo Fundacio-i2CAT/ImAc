@@ -636,9 +636,7 @@ const settingsSubtitlesPosition = { title: 'Position', icon: './img/menu/st_posi
                 if(!settingsSubtitlesPosition.options[0].default()){
                     _stMngr.setPosition(new THREE.Vector2(0, 1), false, false);
                     SettingsOptionCtrl.setChildColumnActiveOpt(settingsSubtitlesPosition.options[0].optId);
-                    if( slConfig.isEnabled && !localStorage.getItem("slPosition")){
-                        _slMngr.setPosition( _slMngr.getSigner().position.x, Math.abs(_slMngr.getSigner().position.y ) );
-                    } 
+                    _slMngr.updateSLPosition( 1 )
                     _rdr.updateRadarPosition();
                 }
             } 
@@ -649,9 +647,7 @@ const settingsSubtitlesPosition = { title: 'Position', icon: './img/menu/st_posi
                 if(!settingsSubtitlesPosition.options[1].default()){
                     _stMngr.setPosition(new THREE.Vector2(0, -1), false, false);
                     SettingsOptionCtrl.setChildColumnActiveOpt(settingsSubtitlesPosition.options[1].optId);
-                    if( slConfig.isEnabled && !localStorage.getItem("slPosition")) {
-                        _slMngr.setPosition( _slMngr.getSigner().position.x, -1 * Math.abs(_slMngr.getSigner().position.y) ); 
-                    }
+                    _slMngr.updateSLPosition( -1 )
                     _rdr.updateRadarPosition();
                 }
             } 
@@ -762,7 +758,7 @@ const settingsSignLanguage = { title: 'Signlanguage', icon: './img/acc_serv_icon
             } 
         },
         { optId: 'signerDynamic', icon: './img/menu/st_background.png', text: 'Dynamic', 
-            available: function(){ return (imsc1doc_SL) ? true : false },
+            available: function(){ return subController.hasImsc1docSL() },
             function:  function(){ 
                 SettingsOptionCtrl.updateDropdownOptions(settingsSignLanguageDynamic);
             } 

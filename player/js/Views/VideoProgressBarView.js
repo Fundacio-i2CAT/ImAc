@@ -5,16 +5,16 @@ function VideoProgressBarView()
     this.UpdateView = function( data )
     {
         let submenu = scene.getObjectByName( data.name );
-        let vpb = submenu.getObjectByName('video-progress-bar');
+        let vpb = submenu.getObjectByName( 'video-progress-bar' );
        
-        submenu.getObjectByName("play-progress").scale.set(data.playScaleX,1,1);
-        submenu.getObjectByName("play-progress").position.x = data.playPositionX;
-        submenu.getObjectByName("slider-progress").position.x = data.sliderPositionX;
+        submenu.getObjectByName( "play-progress" ).scale.set( data.playScaleX, 1, 1 );
+        submenu.getObjectByName( "play-progress" ).position.x = data.playPositionX;
+        submenu.getObjectByName( "slider-progress" ).position.x = data.sliderPositionX;
 
         mainMenuCtrl.setSeekingProcess(false);
 
-        vpb.remove(scene.getObjectByName('video-playout-time'));
-        vpb.add(refreshPlayOutTime(data));
+        vpb.remove( scene.getObjectByName( 'video-playout-time' ) );
+        vpb.add( refreshPlayOutTime( data ) );
     }
 
     function refreshPlayOutTime( data )

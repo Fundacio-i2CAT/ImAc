@@ -11,7 +11,6 @@ var menuMgr = new MenuManager();
 var canvasMgr = new CanvasManager();
 
 var MenuDictionary = new MenuDictionary();
-
 var _ManifestParser = new ManifestParser();
 
 var _AudioManager = new AudioManager();
@@ -30,7 +29,6 @@ var _Sync = new SyncController();
 
 let mainMenuCtrl;
 let SettingsOptionCtrl;
-let multiOptionsPreviewCtrl;
 
 let _canvasObj;
 let menuHeight;
@@ -46,7 +44,6 @@ var demoId = 1;
 var list_contents;
 
 var _iconf;
-var _userprofile = true;
 var _ws_vc;
 
 var _pointerSize = 1; // 2=Big, 1=Mid, 0.6=Small
@@ -57,15 +54,11 @@ var optWidth;
 var _isHMD = false;
 var _blockControls = false;
 
-let timerCloseMenu;
 let elementSelection;
 
 var _isTV = false;
 
 var lastUpdate = Date.now();
-
-var imsc1doc;
-var imsc1doc_SL;
 
 let stConfig;
 let slConfig;

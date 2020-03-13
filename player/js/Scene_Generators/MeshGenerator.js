@@ -114,7 +114,10 @@ THREE.MeshGenerator = function ()
         let par = aspect.split(':');
         par = par.length == 2 ? par : ["16", "9"];
         
-        return new THREE.Mesh( new THREE.PlaneGeometry( par[0]*size, par[1]*size ), new THREE.MeshBasicMaterial( { color: color, transparent: true, opacity: opacity } ) );
+        return new THREE.Mesh( 
+            new THREE.PlaneGeometry( par[0]*size, par[1]*size ), 
+            new THREE.MeshBasicMaterial( { color: color, transparent: true, opacity: opacity } ) 
+        );
     }
 
     this.getPointerMesh = function()

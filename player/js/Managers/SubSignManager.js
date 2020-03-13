@@ -1,198 +1,204 @@
-/**
- * @author isaac.fraile@i2cat.net
- */
 
-SubSignManager = function() {
 
-	let textListMemory = [];
-	let SLtextListMemory = [];
-	let arrows;
+SubSignManager = function() 
+{
+	const TTMLColor = 'http://www.w3.org/ns/ttml#styling color';
+	const TTMLBackgroundColor = 'http://www.w3.org/ns/ttml#styling backgroundColor';
+
 	let speakerColor = 'rgb(255,255,255)';
 
+	let _imsc1doc;
+	let _imsc1docSL;
 
-//************************************************************************************
-// Private Functions
-//************************************************************************************
+	let _textMem = [];
+	let _textMemSL = [];
 
-	this.updateISD = function(offset){
-		let isd;
-		if (imsc1doc) {
-			isd = imsc.generateISD(imsc1doc, offset);
-			if (isd.contents.length > 0) {
-		    	if (stConfig.isEnabled) {
-			  		_stMngr.setScenePos(-isd.imacY, isd.imac); //latitude, longitude
-		    		print3DText(isd.contents[0], 'st');
-		    	} 
+	this.setSubtitle = function( xml, lang, isSL=false )
+    {
+        let r = new XMLHttpRequest();
+        r.open( "GET", xml );
 
-		    	if (stConfig.indicator.localeCompare('radar') === 0) {
-	      			_rdr.updateRadarIndicator(speakerColor, isd.imac);
-	      		}
-	      		
-  		    	if (stConfig.indicator.localeCompare('arrow') === 0) {
-					arrowInteraction();
-		    	}
-		    	checkSpeakerPosition( isd.imac );
-		  	} else if (textListMemory.length > 0) {
-		    	_stMngr.remove();
-		    	_rdr.hideRadarIndicator();
-		  	}
-		}
+        r.onreadystatechange = function()
+        {
+            if ( r.readyState === 4 && r.status === 200 )
+            {
+            	isSL ? _imsc1docSL = imsc.fromXML( r.responseText ) : _imsc1doc = imsc.fromXML( r.responseText );
 
-		if (imsc1doc_SL) {
-			isd = imsc.generateISD(imsc1doc_SL, offset);
-			if (isd.contents.length > 0) {
-		    	if (slConfig.isEnabled) {
-    			  	if (isd.contents[0].contents.length > 0) { 
-    			  		if (slConfig.autoHide) {
-    			  			_slMngr.getSigner().visible = true;	
-    			  		}
-    			  		print3DText( isd.contents[0], 'sl' );
-    			  	} else {
-    			  		if (slConfig.autoHide) {
-    			  			_slMngr.getSigner().visible = false;
-    			  		}
-    			  		else _slMngr.removeSLSubtitle();
-    			  	}
-		    	} 
-		  	} else if (SLtextListMemory.length > 0) {
-		    	_slMngr.removeSLSubtitle();
-		    	_rdr.hideRadarIndicator();
-		  	}
-		} else {
-			if (isd.contents[0].contents.length > 0) {		
-    			let isdContentText = isd.contents[0].contents[0].contents[0].contents[0].contents;		    	
-				for (let i = 0, l = isdContentText.length; i < l; ++i) {
-		      		if (isdContentText[i].kind == 'span' && isdContentText[i].contents) {
-			    		speakerColor = adaptRGBA(isdContentText[i].contents[0].styleAttrs['http://www.w3.org/ns/ttml#styling color']);
-		      		}
-			    }
-			}
-		}
+            	_stMngr.setLanguage( lang );
+
+                updateByTime( VideoController.getMediaTime() );
+            } 
+            else if ( r.readyState === 4 )
+            {
+                console.error( 'Status = ' + r.status + ' xml = ' + xml );
+            }
+        };
+        r.send();
+    }
+
+    this.updateISD = function( offset )
+	{
+		updateByTime( offset );
 	}
 
-
-	this.setTextListMemory = function(value){
-		textListMemory = value;
+	this.printText = function( isdContent, isSL=false ) 
+	{
+		print3DText( isdContent, isSL )
 	}
 
-	this.setSLtextListMemory = function(value){
-		SLtextListMemory = value;
+	this.hasImsc1doc = function()
+	{
+		return _imsc1doc ? true : false;
 	}
 
-	this.getArrows = function(){
-		return arrows;
+	this.hasImsc1docSL = function()
+	{
+		return _imsc1docSL ? true : false;
 	}
 
-	function print3DText(isdContent, accessService) {
-	  	if (isdContent.contents.length > 0) {
-	  		let isdContentText = isdContent.contents[0].contents[0].contents[0].contents;
-	    	let textList = [];
-	    	for (let i = 0; i < isdContentText.length; ++i) {
-	      		if(isdContentText[i].kind == 'span' && isdContentText[i].contents){
-	        		let isdTextObject = {
-	          			text: isdContentText[i].contents[0].text, //'MMMMMWWWWWMMMMMWWWWWMMMMMWWWWWMMMMM',
-	          			color: adaptRGBA( isdContentText[i].contents[0].styleAttrs['http://www.w3.org/ns/ttml#styling color'] ),
-	          			backgroundColor: adaptRGBA( isdContentText[i].contents[0].styleAttrs['http://www.w3.org/ns/ttml#styling backgroundColor'] )
-	        		};
-	        		textList.push( isdTextObject );
-	      		}
-	    	}
-    		if (textList.length > 0) {
-    			speakerColor = textList[0].color;
-    			if (accessService.localeCompare('st') === 0) {
-    				if (textListMemory.length > 0 && textList[0].text.localeCompare(textListMemory[0].text) != 0 || textList.length != textListMemory.length) {
-					    _stMngr.create(textList);
-			      		subController.setTextListMemory(textList);
-	    			}
-	    		}
+	this.getSpeakerColor = function()
+	{
+		return speakerColor;
+	}
 
-    			if (accessService.localeCompare('sl') === 0) {
-    				if (SLtextListMemory.length > 0 && textList[0].text.localeCompare(SLtextListMemory[0].text) != 0 || textList.length != SLtextListMemory.length) {
-			    		_slMngr.createSLSubtitle(textList);
-	      				subController.setSLtextListMemory(textList);
-	    			}
-    			}
-    		}
-    	}else {
-	    	if(accessService.localeCompare('st') === 0) {
-	    		_stMngr.remove();
-	    	}
-	    	if(accessService.localeCompare('sl') === 0) {
-	    		_slMngr.removeSLSubtitle();
-	    	}
+	this.resetSTMemory = function()
+	{
+		_textMem = [];
+	}
+
+	this.resetST4SLMenory = function()
+	{
+		_textMemSL = [];
+	}
+
+    function updateByTime( offset )
+    {
+    	let isd;
+
+    	if ( _imsc1doc ) isd = updateST( offset );
+    	if ( _imsc1docSL ) isd = updateST4SL( offset );
+    	else updateSpeakerColor( isd );
+    }
+
+    function updateST( offset )
+    {
+    	let isd = imsc.generateISD( _imsc1doc, offset );
+
+		if ( isd.contents.length > 0 )
+		{
+	    	_stMngr.generateST( isd )
+	  	} 
+	  	else if ( _textMem.length > 0 ) 
+	  	{
+	    	_stMngr.remove();
 	    	_rdr.hideRadarIndicator();
 	  	}
-	}
 
+	  	return isd;
+    }
 
-	function checkSpeakerPosition(isdImac){
-		let difPosition = getViewDifPosition( isdImac, camera.fov );
-	  	let position;
+    function updateST4SL( offset )
+    {
+    	let isd = imsc.generateISD( _imsc1docSL, offset );
 
-	  	if (isdImac == undefined || difPosition == 0) {
-	  		position = 'center';
-	  	} else {
-	    	position = difPosition < 0 ? 'left' : 'right';
+		if ( isd.contents.length > 0 ) 
+		{
+			_slMngr.generateST4SL( isd.contents[0] )
+	  	} 
+	  	else if ( _textMemSL.length > 0 ) 
+	  	{
+	    	_slMngr.removeSLSubtitle();
+	    	_rdr.hideRadarIndicator();
 	  	}
-	  	if (stConfig.isEnabled) {
-	  		_stMngr.checkSubtitleIdicator(position);
-	  	}
-	    if(slConfig.isEnabled){
-	        if (stConfig.indicator != 'none') {
-		        _stMngr.checkSubtitleIdicator( position );
+
+	  	return isd;
+    }
+
+	function updateSpeakerColor( isd )
+	{
+		if ( isd && isd.contents[0].contents.length > 0 ) 
+		{		
+			let isdContentText = isd.contents[0].contents[0].contents[0].contents[0].contents;
+
+			for ( let i = 0, l = isdContentText.length; i < l; ++i ) 
+			{
+	      		if ( isdContentText[i].kind == 'span' && isdContentText[i].contents ) 
+	      		{
+		    		speakerColor = adaptRGBA( isdContentText[i].contents[0].styleAttrs[ TTMLColor ] );
+	      		}
 		    }
-	    }
-	}
-	
-
-	function arrowInteraction(){
-		let slMesh = _slMngr.getSigner();
-		let stMesh = _stMngr.getSubtitles();
-		let width = stConfig.width;
-
-		//Depending on which access service is active the arrow group changes.
-		if (slConfig.isEnabled && slMesh) {
-			if (stConfig.isEnabled){
-				if(!imsc1doc_SL){
-					slMesh.getObjectByName('sl-subtitles').visible = false;	
-				} 
-				if (stMesh) {
-					arrows = stMesh.getObjectByName('arrows');
-					width = stMesh.getObjectByName('emojitext').geometry.parameters.width;
-	            	stMesh.position.x = _stMngr.removeOverlap(stMesh.scale.x);
-				} 
-				slMesh.getObjectByName('arrows').visible = false;
-			} else {
-				if(!imsc1doc_SL){
-					slMesh.getObjectByName('sl-subtitles').visible = true;	
-				} 
-				if (slMesh.getObjectByName('arrows')) {
-					slMesh.getObjectByName('arrows').visible = true;
-					arrows = slMesh.getObjectByName('arrows');
-				}
-				if (slMesh.getObjectByName('emojitext'))  width = slMesh.getObjectByName('emojitext').geometry.parameters.width;
-			}
-		} else if (stConfig.isEnabled) {
-			if (stMesh) {
-				arrows = stMesh.getObjectByName('arrows');
-				width = stMesh.getObjectByName('emojitext').geometry.parameters.width;
-			} 
-		} else {
-			arrows = undefined;
 		}
-
-		// cada 300 milis aprox
-    	if (arrows) {
-    		let positionFactor = (!imsc1doc_SL && !stConfig.isEnabled) ? -1 : 1;
-    		let arwSize = arrows.children[0].children[1].geometry.parameters.width/2;
-
-    		arrows.getObjectByName('right-img').material.color.set(speakerColor);
-    		arrows.getObjectByName('right').position.x = width/2 +positionFactor * arwSize;
-			arrows.getObjectByName('right-img').material.opacity = (arrows.getObjectByName('right-img').material.opacity === 1) ? 0.4 : 1;
-
-			arrows.getObjectByName('left-img').material.color.set(speakerColor);
-			arrows.getObjectByName('left').position.x = -width/2 -positionFactor * arwSize;
-			arrows.getObjectByName('left-img').material.opacity = (arrows.getObjectByName('left-img').material.opacity === 1) ? 0.4 : 1;
-    	}
 	}
-};
+
+	function adaptRGBA( rgb )
+	{
+	    return ( rgb && rgb.length === 4 ) ? "rgb(" + rgb[0] + "," + rgb[1] + "," + rgb[2] + ")" : '';
+	}
+
+	function getTextList( isdContent )
+	{
+		let isdContentText = isdContent.contents[0].contents[0].contents[0].contents;
+	    let textList = [];
+
+		return new Promise( resolve => {
+
+			isdContentText.forEach( function( elem ) 
+			{ 
+	      		if ( elem.kind == 'span' && elem.contents )
+	      		{
+	      			let textObj = elem.contents[0];
+	        		let isdTextObject = {
+	          			text: textObj.text, //'MMMMMWWWWWMMMMMWWWWWMMMMMWWWWWMMMMM',
+	          			color: adaptRGBA( textObj.styleAttrs[ TTMLColor ] ),
+	          			backgroundColor: adaptRGBA( textObj.styleAttrs[ TTMLBackgroundColor ] )
+	        		};
+
+	        		textList.push( isdTextObject );
+	      		}
+	    	});
+	    	resolve( textList )
+		});
+	}
+
+	function createST4SL( textList )
+	{
+		let tlength = _textMemSL.length;
+
+		if ( tlength > 0 && textList[0].text.localeCompare( _textMemSL[0].text ) != 0 || textList.length != tlength ) 
+		{
+    		_slMngr.createSLSubtitle( textList );
+			_textMemSL = textList;
+		}
+	}
+
+	function createST( textList )
+	{
+		let tlength = _textMem.length;
+
+		if ( tlength > 0 && textList[0].text.localeCompare( _textMem[0].text ) != 0 || textList.length != tlength ) 
+		{
+		    _stMngr.create( textList );
+      		_textMem = textList;
+		}
+	}
+
+	function print3DText( isdContent, isSL=false ) 
+	{
+	  	if ( isdContent.contents.length > 0 ) 
+	  	{
+	    	getTextList( isdContent ).then( ( textList ) => { 
+
+	    		if ( textList.length > 0 ) 
+	    		{
+	    			speakerColor = textList[0].color;
+	    			isSL ? createST4SL( textList ) : createST( textList );
+	    		}
+	    	});
+    	}
+    	else 
+    	{
+    		isSL ? _slMngr.removeSLSubtitle() : _stMngr.remove();
+	    	_rdr.hideRadarIndicator();
+	  	}
+	}	
+}

@@ -97,7 +97,7 @@ function MainMenuController() {
         settingsView.UpdateView(data);
 
         accessOptionsView = new AccessibilityOptionsMenuView();
-        accessOptionsView.UpdateView(data);
+        accessOptionsView.UpdateView( data );
 
         videoProgressBarView = new VideoProgressBarView();
         videoProgressBarView.UpdateView(data);
@@ -222,7 +222,7 @@ function MainMenuController() {
         //Save the state of all the accessibility services.
         //In case the services is unavailable the button will be disabled and shown in grey.
         data.isSTenabled = stConfig.isEnabled;
-        data.isSLenabled = slConfig.isEnabled;
+        data.isSLenabled = _slMngr.isSLEnabled();
         data.isADenabled = _AudioManager.getADEnabled();
         data.isASTenabled = _AudioManager.getASTEnabled();
 
@@ -238,16 +238,14 @@ function MainMenuController() {
                 //Change the state of the subtiles from enabled to disabled and viceversa.
                 data.isSTenabled = !data.isSTenabled;
                 
-                _stMngr.switchSubtitles(data.isSTenabled);
+                _stMngr.switchSubtitles( data.isSTenabled );
                 SettingsOptionCtrl.UpdateView();
-                accessOptionsView.UpdateAccessibilityOptionsIconStatusView(data);
+                //accessOptionsView.UpdateAccessibilityOptionsIconStatusView(data);
+                accessOptionsView.UpdateView( data );
                 // Add interactivity to visible elements and remove interactivity to none visible elements.
-                menuMgr.AddInteractionIfVisible(viewStructure);
+                menuMgr.AddInteractionIfVisible( viewStructure );
                 //If subtitles are disabled signer goes back to bottom position.
-                if (!localStorage.getItem("slPosition") && _slMngr.getSigner() && !stConfig.fixedScene ) {
-                    //_slMngr.setPosition(slConfig.canvasPos.x, data.isSTenabled ? stConfig.canvasPos.y : -1);
-                    _slMngr.setPosition(slConfig.canvasPos.x*Math.abs(slConfig.initPos.x), Math.abs(slConfig.initPos.y) * (data.isSTenabled ? stConfig.canvasPos.y : -1));
-                }
+                _slMngr.updateSLPositionByST( stConfig.fixedScene, data.isSTenabled ? stConfig.canvasPos.y : -1 );
             });
         };
 
@@ -258,7 +256,8 @@ function MainMenuController() {
                 data.isSLenabled = !data.isSLenabled;
                 _slMngr.switchSigner(data.isSLenabled);
                 
-                accessOptionsView.UpdateAccessibilityOptionsIconStatusView(data);
+                //accessOptionsView.UpdateAccessibilityOptionsIconStatusView(data);
+                accessOptionsView.UpdateView( data );
                 // Add interactivity to visible elements and remove interactivity to none visible elements.
                 menuMgr.AddInteractionIfVisible(viewStructure);
 
@@ -275,7 +274,8 @@ function MainMenuController() {
                 data.isADenabled = !data.isADenabled;
                 _AudioManager.switchAD(data.isADenabled);
                 
-                accessOptionsView.UpdateAccessibilityOptionsIconStatusView(data);
+                //accessOptionsView.UpdateAccessibilityOptionsIconStatusView(data);
+                accessOptionsView.UpdateView( data );
                 // Add interactivity to visible elements and remove interactivity to none visible elements.
                 menuMgr.AddInteractionIfVisible(viewStructure);
             });
@@ -288,7 +288,8 @@ function MainMenuController() {
                 data.isASTenabled = !data.isASTenabled;
                 _AudioManager.switchAST(data.isASTenabled);
                 
-                accessOptionsView.UpdateAccessibilityOptionsIconStatusView(data);
+                //accessOptionsView.UpdateAccessibilityOptionsIconStatusView(data);
+                accessOptionsView.UpdateView( data );
                 // Add interactivity to visible elements and remove interactivity to none visible elements.
                 menuMgr.AddInteractionIfVisible(viewStructure);
             });
@@ -426,7 +427,7 @@ function MainMenuController() {
     this.updateAccessOptionsView = function(){
 
         data.isSTenabled = stConfig.isEnabled;
-        data.isSLenabled = slConfig.isEnabled;
+        data.isSLenabled = _slMngr.isSLEnabled();
         data.isADenabled = _AudioManager.getADEnabled();
         data.isASTenabled = _AudioManager.getASTEnabled();
 

@@ -38,7 +38,7 @@ function VolumeMenuView()
         volumeLevel.height = 0;
         volumeLevel.name = 'volume-level-text';
         volumeLevel.type =  'text';
-        volumeLevel.text = data.volumeLevel*100+'%';
+        volumeLevel.text = data.volumeLevel*100 + '%';
         volumeLevel.textSize = menuWidth/50;
         volumeLevel.color = 0xffffff; 
         volumeLevel.position = submenu.getObjectByName( 'unmute-volume-button' ).position;

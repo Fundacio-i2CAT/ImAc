@@ -326,9 +326,8 @@ VideoController = function() {
                 checkVideoEnding();
 
                 // Update ST by time.
-                if (imsc1doc) {
-                    subController.updateISD(listOfVideoContents[0].vid.currentTime);
-                }
+                subController.updateISD( listOfVideoContents[0].vid.currentTime );
+
 
                 if ( _AudioManager.getADEnabled() ) checkExtraADListByTime( listOfVideoContents[0].vid.currentTime );
 

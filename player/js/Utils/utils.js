@@ -1,26 +1,5 @@
 
 
-/*function SphericalToCartesian (polar ,elevation) 
-{
-    //Vector3 outCart = new Vector3();
-    var outCart = new Array(3);
-
-    outCart.x = Math.cos(elevation) * Math.sin(polar);
-    outCart.y = Math.sin(elevation);
-    outCart.z = Math.cos(elevation) * Math.cos(polar);
-
-    return outCart;
-}
-
-function convertAngular_toCartesian(latitud, longitud)
-{
-    var elevation = Math.radians(latitud);
-    var polar = Math.radians(longitud);
-    var position = SphericalToCartesian(polar, elevation);
-
-    return position;
-}*/
-
 function cartesianToAngular (x, y, z)
 {
     var dist = Math.round(Math.sqrt(Math.pow(x,2) + Math.pow(y,2) + Math.pow(z,2))*100)/100;
@@ -90,7 +69,7 @@ function saveConfig()
     _iconf.voicecontrol = _ws_vc ? 'on' : 'off';
     _iconf.userprofile = 'save';
     _iconf.mainlanguage = localStorage.ImAc_language;
-    //_iconf.accesslanguage = subController.getSubLanguage();
+
     _iconf.stlanguage = stConfig.language;
     _iconf.stsize = stConfig.size;
     _iconf.stbackground = stConfig.background;
@@ -102,7 +81,6 @@ function saveConfig()
     _iconf.sllanguage = slConfig.language;
     _iconf.slsize = slConfig.size;
     _iconf.slposition = _slMngr.getSignerPosition().x == 1 ? 'right' : 'left';
-
 
     _iconf.astlanguage = _AudioManager.getASTLanguage();
     _iconf.adlanguage = _AudioManager.getADLanguage();
@@ -236,13 +214,6 @@ function disconnectVoiceControl()
 }
 
 
-function iniGeneralSettings(conf)
-{
-    _pointerSize = conf.pointersize == 'M' ? 1 : conf.pointersize == 'L' ? 2 : 0.6;// 2=Big, 1=Mid, 0.6=Small
-    _userprofile = conf.userprofile == 'save' ? true : false;
-}
-
-
 // Funcion para activar una pista de audio adicional pausando el contenido principal
 var extraADenabled = false;
 
@@ -316,9 +287,7 @@ function doZoom(mode)
     }
 }
 
-function adaptRGBA(rgb){
-    return ( rgb && rgb.length === 4 ) ? "rgb(" + rgb[0] + "," + rgb[1] + "," + rgb[2] + ")" : '';
-}
+
 
 function getViewDifPosition(sp, fov){
     var target = new THREE.Vector3();
@@ -396,7 +365,7 @@ function initAccessConf()
         adConfig =  _AudioManager.setADConfig( _iconf );
         astConfig =  _AudioManager.setASTConfig( _iconf );
 
-        iniGeneralSettings( _iconf );
+        _pointerSize = _iconf.pointersize == 'M' ? 1 : _iconf.pointersize == 'L' ? 2 : 0.6;// 2=Big, 1=Mid, 0.6=Small
     }
     else {
         _iconf = {
@@ -430,7 +399,7 @@ function initAccessConf()
         adConfig =  _AudioManager.setADConfig( _iconf );
         astConfig =  _AudioManager.setASTConfig( _iconf );
 
-        iniGeneralSettings( _iconf );
+        _pointerSize = _iconf.pointersize == 'M' ? 1 : _iconf.pointersize == 'L' ? 2 : 0.6;// 2=Big, 1=Mid, 0.6=Small
     }
 
     if ( !_iconf ) _iconf = [];

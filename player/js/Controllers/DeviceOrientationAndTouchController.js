@@ -218,7 +218,7 @@ THREE.DeviceOrientationAndTouchController = function( object, domElement, render
 				break;
 
 			case 50:  // 2
-				slConfig.isEnabled ? _slMngr.switchSigner( false ) : _slMngr.switchSigner( true );
+				_slMngr.isSLEnabled() ? _slMngr.switchSigner( false ) : _slMngr.switchSigner( true );
 				break;
 
 			case 51:  // 3

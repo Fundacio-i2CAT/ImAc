@@ -43,8 +43,12 @@ ManifestParser = function() {
         var ast_list;
         var ast_list_e2r;
 
-        adaptationSetArray.forEach( function( elem ) { 
-            if ( elem.Role && elem.Role.value == 'subtitle' ) {
+        var st4sl_list;
+
+        adaptationSetArray.forEach( function( elem ) 
+        { 
+            if ( elem.Role && elem.Role.value == 'subtitle' ) 
+            {
                 var representationArray = elem.Representation_asArray;
                 if ( !st_list ) st_list = {};
                 if ( !st_list_e2r ) st_list_e2r = {};
@@ -52,13 +56,26 @@ ManifestParser = function() {
                     if ( representation.e2r == "true" ) st_list_e2r[ MenuDictionary.translate( elem.lang ) ] = _mpd.manifest.baseUri + representation.BaseURL; 
                     else st_list[ MenuDictionary.translate( elem.lang ) ] = _mpd.manifest.baseUri + representation.BaseURL; 
                 });
-            } else if ( elem.Role && elem.Role.value == 'sign'){
+            } 
+            else if ( elem.Role && elem.Role.value == 'sign')
+            {
                 var representationArray = elem.Representation_asArray;
                 if ( !sl_list ) sl_list = {};
                 representationArray.forEach( function( representation ) { 
-                    sl_list[ MenuDictionary.translate( elem.lang ) ] = _mpd.manifest.baseUri + representation.SegmentList.SegmentURL.media; 
+                    sl_list[ MenuDictionary.translate( elem.lang ) ] = _mpd.manifest.baseUri + representation.SegmentList.SegmentURL.media;
+                    //sl_list[ MenuDictionary.translate( elem.lang ) ] = _mpd.manifest.baseUri + representation.BaseURL; 
                 });
-            } else if ( elem.Role && elem.Role.value == 'ad') {
+            }
+            else if ( elem.Role && elem.Role.value == 'sign-metadata' ) 
+            {
+                var representationArray = elem.Representation_asArray;
+                if ( !st4sl_list ) st4sl_list = {};
+                representationArray.forEach( function( representation ) { 
+                    st4sl_list[ MenuDictionary.translate( elem.lang ) ] = _mpd.manifest.baseUri + representation.BaseURL; 
+                });
+            } 
+            else if ( elem.Role && elem.Role.value == 'ad') 
+            {
                 var representationArray = elem.Representation_asArray;
                 if ( !ad_list ) ad_list = {};
                 var ad_modeList = {};
@@ -80,7 +97,9 @@ ManifestParser = function() {
                  	//ad_modeList[ representation.mode ] = _mpd.manifest.baseUri + representation.BaseURL;
                 });
                 ad_list[ MenuDictionary.translate( elem.lang ) ] = ad_modeList;
-            } else if ( elem.Role && elem.Role.value == 'ast') {
+            } 
+            else if ( elem.Role && elem.Role.value == 'ast') 
+            {
                 var representationArray = elem.Representation_asArray;
                 if ( !ast_list ) ast_list = {};
                 if ( !ast_list_e2r ) ast_list_e2r = {};
@@ -102,6 +121,8 @@ ManifestParser = function() {
         if ( sl_list ) restartSLContent( sl_list );
         if ( ad_list ) restartADContent( ad_list );
         if ( ast_list ) restartASTContent( ast_list, ast_list_e2r );
+
+        if ( st4sl_list ) restartST4SLContent( st4sl_list );
 
         var lang = MenuDictionary.getMainLanguage();
       
@@ -183,6 +204,11 @@ ManifestParser = function() {
         list_contents[demoId].signer.push( object );
     }
 
+    function restartST4SLContent(object){
+        list_contents[demoId].st4sl = [];
+        list_contents[demoId].st4sl.push( object );
+    }
+
     function restartADContent(object){
         list_contents[demoId].ad = [];
         list_contents[demoId].ad.push( object );
@@ -198,7 +224,7 @@ ManifestParser = function() {
         if ( list_contents[demoId].subtitles && list_contents[demoId].subtitles[0] && Object.entries(list_contents[demoId].subtitles[0]).length > 0 ) {
             var cookielang = _stMngr.getSTAvailableLang( _iconf.stlanguage, 0 ); //_stMngr.getSubLanguage();
             var sublang = cookielang ? cookielang : list_contents[demoId].subtitles[0][lang] ? lang : Object.keys(list_contents[demoId].subtitles[0])[0];
-            _stMngr.setSubtitle( list_contents[demoId].subtitles[0][sublang], sublang, 'st');
+            subController.setSubtitle( list_contents[demoId].subtitles[0][sublang], sublang, false );
             _stMngr.setLanguagesArray( list_contents[demoId].subtitles[0] );
         }
     }
@@ -212,7 +238,7 @@ ManifestParser = function() {
 
             if ( list_contents[ demoId ].st4sl && list_contents[ demoId ].st4sl[ 0 ] ) {
                 var sigSTlang = list_contents[ demoId ].st4sl[ 0 ][ lang ] ? lang : Object.keys( list_contents[ demoId ].st4sl[ 0 ] )[ 0 ];
-                _stMngr.setSubtitle( list_contents[demoId].st4sl[0][sigSTlang], sigSTlang, 'sl' ); 
+                subController.setSubtitle( list_contents[demoId].st4sl[0][sigSTlang], sigSTlang, true ); 
             }
         }
     }

@@ -17,7 +17,7 @@ MenuFunctionsManager = function() {
                     let ste2r = stConfig.easy2read ? 1 : 0;
                     if ( list_contents[ demoId ].subtitles && list_contents[ demoId ].subtitles[ ste2r ] && _stMngr.checkisSubAvailable( lang )) {
                         _iconf.stlanguage = lang;
-                        _stMngr.setSubtitle( list_contents[ demoId ].subtitles[ ste2r ][ lang ], lang, 'st');
+                        subController.setSubtitle( list_contents[ demoId ].subtitles[ ste2r ][ lang ], lang, false );
                     }else {
                         _stMngr.switchSubtitles(false);
                     }
@@ -33,7 +33,7 @@ MenuFunctionsManager = function() {
 
                     if ( list_contents[ demoId ].st4sl && list_contents[ demoId ].st4sl[ 0 ] && _slMngr.checkisSignAvailable( lang )) {
                         var siglang = list_contents[ demoId ].st4sl[ 0 ][ lang ] ? lang : Object.keys( list_contents[ demoId ].st4sl[ 0 ] )[ 0 ];
-                        _slMngr.setSubtitle( list_contents[demoId].st4sl[0][siglang], siglang, 'sl' ); 
+                        subController.setSubtitle( list_contents[demoId].st4sl[0][siglang], siglang, true ); 
                     }              
                     break;
 

@@ -85,7 +85,7 @@ THREE.Radar = function () {
             let slSize = slConfig.size;
             let offset = -stConfig.canvasPos.y * slSize;
             let slArea = slConfig.area;
-	        if(slConfig.isEnabled){
+	        if(_slMngr.isSLEnabled()){
 	            radar.position.y = 0;
 	        } else {
                 radar.position.y = stConfig.canvasPos.y * (vHeight*(1-safeFactor) - 14)/2;
